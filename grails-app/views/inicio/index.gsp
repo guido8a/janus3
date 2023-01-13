@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <title>${empr.sigla}</title>
+    <title>${empr.empresa}</title>
     <meta name="layout" content="main"/>
     <style type="text/css">
     @page {
@@ -60,8 +60,8 @@
         font-family: 'open sans condensed';
         font-weight: bold;
         text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.25);
-    %{--<g:if test="${janus.Parametros.findByEmpresaLike('CNSL-GADLR')}">--}%
-    <g:if test="${empr.sigla == message(code: 'ambiente2')}">
+    <g:if test="${janus.Parametros.findByEmpresaLike('CNSL-GADLR')}">
+    %{--<g:if test="${empr.sigla == message(code: 'ambiente2')}">--}%
         color: #1a7031;
     </g:if>
     <g:else>
@@ -73,8 +73,8 @@
     }
 
     .bordes {
-    %{--<g:if test="${janus.Parametros.findByEmpresaLike('CNSL-GADLR')}">--}%
-    <g:if test="${empr.sigla == message(code: 'ambiente2')}">
+    <g:if test="${janus.Parametros.findByEmpresaLike('CNSL-GADLR')}">
+    %{--<g:if test="${empr.sigla == message(code: 'ambiente2')}">--}%
         background: #1a7031;
     </g:if>
     <g:else>

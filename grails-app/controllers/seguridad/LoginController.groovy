@@ -141,7 +141,7 @@ class LoginController {
             eq("login", params.login, [ignoreCase: true])
             eq("activo", 1)
         }
-//        println "usuario: ${user.nombre} pass: ${user.password}"
+        println "usuario: ${user.nombre} pass: ${user.password}"
 
         if (user.size() == 0) {
             flash.message = "No se ha encontrado el usuario"
@@ -152,7 +152,7 @@ class LoginController {
         } else {
             user = user[0]
 
-//            println "está activo " + user.estaActivo
+            println "está activo " + user.estaActivo
 
             if (!user.estaActivo) {
                 flash.message = "El usuario ingresado no esta activo."
@@ -168,9 +168,10 @@ class LoginController {
 //                println "pone valores " + session.usuario
 
                 def perf = Sesn.findAllByUsuario(user)
+                println "perfiles: $perf"
                 def perfiles = []
                 perf.each { p ->
-//                    println "añade a perfiles $p activo:${p.estaActivo}"
+                    println "añade a perfiles $p activo:${p.estaActivo}"
                     if (p.estaActivo) {
                         perfiles.add(p)
                     }
