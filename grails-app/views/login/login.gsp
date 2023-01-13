@@ -19,13 +19,11 @@
 
 <div style="text-align: center; margin-top: 22px; height: ${(flash.message) ? '680' : '700'}px;" class="well">
 
-    <h1 class="titl" style="font-size: 24px; color: #06a">SISTEMA DE PLANIFICACIÓN, SEGUIMIENTO Y EVALUACIÓN PARA EL</h1>
-    <h1 class="titl" style="font-size: 16px; color: #06a">PROYECTO FORTALECIMIENTO DE LOS ACTORES RURALES DE LA ECONOMÍA POPULAR Y SOLIDARIA (FAREPS)</h1>
     <elm:flashMessage tipo="${flash.tipo}" icon="${flash.icon}"
                       clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
     <div class="centrado"><h1 class="titl" style="font-size: 32px;">${empr.empresa}</h1>
-        <h1 class="titl" style="font-size: 24px;">${empr.nombre}</h1>
+        <h1 class="titl" style="font-size: 24px;">${raw(empr.nombre)})</h1>
 
         <div class="dialog ui-corner-all logo">
             <div>
