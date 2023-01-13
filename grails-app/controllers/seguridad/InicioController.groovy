@@ -27,7 +27,7 @@ class InicioController {
 
     }
 
-    def parametros = {
+    def parametros() {
 
     }
 

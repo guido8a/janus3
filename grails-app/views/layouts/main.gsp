@@ -62,7 +62,6 @@
     <asset:javascript src="/apli/bootstrap-datetimepicker.min.js"/>
     <asset:javascript src="/apli/bootstrap-maxlength.min.js"/>
 
-
     <asset:javascript src="/bootstrap-3.3.2/dist/js/bootstrap.min.js"/>
 
     <script type="text/javascript">
@@ -81,7 +80,7 @@
 %{--<div id="modalTableGray"></div>--}%
 
 %{--<g:if test="${session?.usuario}">--}%
-   <mn:menu title="${g.layoutTitle(default: 'Monitor')}"/>
+   <mn:menu title="${g.layoutTitle(default: 'janus3')}"/>
 %{--</g:if>--}%
 
 <div class="container" style="min-width: 1000px !important; margin-top: 0px; overflow-y: hidden">
