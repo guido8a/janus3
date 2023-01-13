@@ -24,38 +24,25 @@
     <elm:flashMessage tipo="${flash.tipo}" icon="${flash.icon}"
                       clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
-    <div class="dialog ui-corner-all" style="height: 295px;padding: 10px;width: 910px;margin: auto;margin-top: -50px">
-        <div>
-%{--            <img src="${resource(dir: 'images/bitacora', file: 'bitacora.png')}" style="padding: 40px;"/>--}%
-            <asset:image src="apli/portada.png" style="margin-top: 40px;"/>
-        </div>
-        <div style="margin-top: 10px; text-align: left">
-        <h3 style="margin-top: -20px">RESOLUCIÓN No. 012-IEPS-2022</h3>
-        <p>POLITICA DE MANEJO DE LA INFORMACIÓN DEL INSTITUTO NACIONAL DE ECONOMÍA POPULAR Y SOLIDARIA</p>
-        <p style="font-weight: bold">"Artículo 6.- Responsabilidad del manejo de la información.-</p>
-        <p style="text-align: justify !important; width: 900px">Los Directores Nacionales y Zonales, desde el ámbito de sus comptetencias, son
-        responsables solidarios de la información generada, cargada y almacenada, en los
-        aplicativos descritos en el artículo precedente y responderán civil, administrativa y
-        penalmente por errores u omisiones contenidas en dichos sistemas."</p>
-        </div>
-        <div style="width: 100%;height: 40px;float: left; margin-bottom:30px; text-align: center">
-            <a href="#" id="ingresar" class="btn btn-primary" style="width: 120px; margin: auto">
-                <i class="icon-off"></i>Ingresar</a>
-        </div>
+    <div class="centrado"><h1 class="titl" style="font-size: 32px;">${empr.empresa}</h1>
+        <h1 class="titl" style="font-size: 24px;">${empr.nombre}</h1>
 
-%{--
-        <div>
-            Para mayor información puede consultar el
-            <a href="${createLink(uri: '/descriptivo.pdf')}">
-            <asset:image src="apli/pdf_pq.png" style="padding: 10px;"/> descriptivo del sistema</a>
+        <div class="dialog ui-corner-all logo">
+            <div>
+                %{--            <img src="${resource(dir: 'images/bitacora', file: 'bitacora.png')}" style="padding: 40px;"/>--}%
+                <asset:image src="apli/portada.png" style="margin-top: 40px;"/>
+            </div>
+            <div style="width: 100%;height: 40px;float: left; margin-bottom:30px; text-align: center">
+                <a href="#" id="ingresar" class="btn btn-primary" style="width: 120px; margin: auto">
+                    <i class="icon-off"></i>Ingresar</a>
+            </div>
+
+            <div style="text-align: center ; color:#004060; margin-top:90px; ">
+                Desarrollado por: TEDEIN S.A. Versión ${message(code: 'version', default: '1.1.0x')}</div>
+
         </div>
---}%
-
-
-        <p class="text-info pull-right" style="font-size: 10px; margin-top: 20px">
-            Desarrollado por: Guido Ochoa Moreno. Versión ${message(code: 'version', default: '1.1.0x')}
-        </p>
     </div>
+
 </div>
 
 

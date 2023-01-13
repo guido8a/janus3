@@ -1,5 +1,7 @@
 package seguridad
 
+import janus.Parametros
+
 class LoginController {
 
     def mail
@@ -127,12 +129,14 @@ class LoginController {
     }
 
     def login() {
-        def usro = session.usuario
-        def cn = "inicio"
-        def an = "index"
-        if (usro) {
-            redirect(controller: cn, action: an)
-        }
+//        def usro = session.usuario
+//        def cn = "inicio"
+//        def an = "index"
+//        if (usro) {
+//            redirect(controller: cn, action: an)
+//        }
+        def empr = Parametros.get(1)
+        [empr: empr]
     }
 
     def validar() {
