@@ -1,4 +1,3 @@
-
 <%@ page import="janus.Administracion" %>
 <!doctype html>
 <html>
@@ -7,8 +6,8 @@
         <title>
             Lista de Administraciones
         </title>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+%{--        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+%{--        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
     </head>
     <body>
 
@@ -22,8 +21,8 @@
         </div>
 
         <div class="span12 btn-group" role="navigation">
-            <a href="#" class="btn btn-ajax btn-new">
-                <i class="icon-file"></i>
+            <a href="#" class="btn btn-info btn-ajax btn-new">
+                <i class="fa fa-file"></i>
                 Nueva Administración
             </a>
         </div>
@@ -37,40 +36,30 @@
             <table class="table table-bordered table-striped table-condensed table-hover">
                 <thead>
                     <tr>
-                    
-                        <g:sortableColumn property="nombrePrefecto" title="Nombre Prefecto" />
-                    
-                        <g:sortableColumn property="descripcion" title="Descripción" />
-                    
-                        <g:sortableColumn property="fechaInicio" title="Fecha Inicio" />
-                    
-                        <g:sortableColumn property="fechaFin" title="Fecha Fin" />
-                    
+                        <th>Nombre Prefecto</th>
+                        <th>Descripción</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
                         <th width="150">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                 <g:each in="${administracionInstanceList}" status="i" var="administracionInstance">
                     <tr>
-                    
-                        <td>${fieldValue(bean: administracionInstance, field: "nombrePrefecto")}</td>
-                    
-                        <td>${fieldValue(bean: administracionInstance, field: "descripcion")}</td>
-                    
-                        <td><g:formatDate date="${administracionInstance.fechaInicio}" format="dd-MM-yyyy" /></td>
-                    
+                        <td>${administracionInstance?.nombrePrefecto}</td>
+                        <td>${administracionInstance?.descripcion}</td>
+                        <td><g:formatDate date="${administracionInstance.fechaInicio}" format="dd-MM-yyyy"/></td>
                         <td><g:formatDate date="${administracionInstance.fechaFin}" format="dd-MM-yyyy"/></td>
-                    
                         <td>
-                            <a class="btn btn-small btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${administracionInstance.id}">
-                                <i class="icon-zoom-in"></i>
+                            <a class="btn btn-info btn-xs btn-show" href="#" rel="tooltip" title="Ver" data-id="${administracionInstance.id}">
+                                <i class="fa fa-clipboard"></i>
                             </a>
-                            <a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${administracionInstance.id}">
-                                <i class="icon-pencil"></i>
+                            <a class="btn btn-success btn-xs btn-edit" href="#" rel="tooltip" title="Editar" data-id="${administracionInstance.id}">
+                                <i class="fa fa-edit"></i>
                             </a>
 
-                            <a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${administracionInstance.id}">
-                                <i class="icon-trash"></i>
+                            <a class="btn btn-danger btn-xs btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${administracionInstance.id}">
+                                <i class="fa fa-trash"></i>
                             </a>
                         </td>
                     </tr>
@@ -78,7 +67,7 @@
                 </tbody>
             </table>
             <div class="pagination">
-                <elm:paginate total="${administracionInstanceTotal}" params="${params}" />
+%{--                <elm:paginate total="${administracionInstanceTotal}" params="${params}"/>--}%
             </div>
         </div>
 
@@ -97,8 +86,8 @@
         </div>
 
         <script type="text/javascript">
-            var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-            var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
+            %{--var url = "${resource(dir:'images', file:'spinner_24.gif')}";--}%
+            // var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
 
 
             $(function () {
@@ -114,7 +103,7 @@
 
                             btnSave.click(function () {
                                 if ($("#frmSave-administracionInstance").valid()) {
-                                    btnSave.replaceWith(spinner);
+                                    // btnSave.replaceWith(spinner);
                                 }
                                 $("#frmSave-administracionInstance").submit();
                                 return false;
@@ -143,7 +132,7 @@
 
                             btnSave.click(function () {
                                 if ($("#frmSave-administracionInstance").valid()) {
-                                    btnSave.replaceWith(spinner);
+                                    // btnSave.replaceWith(spinner);
                                 }
                                 $("#frmSave-administracionInstance").submit();
                                 return false;
@@ -184,7 +173,7 @@
                     var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
 
                     btnDelete.click(function () {
-                        btnDelete.replaceWith(spinner);
+                        // btnDelete.replaceWith(spinner);
                         $("#frmDelete-administracionInstance").submit();
                         return false;
                     });

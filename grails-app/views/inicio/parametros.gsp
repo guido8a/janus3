@@ -256,8 +256,146 @@
             </ul>
         </div>
     </div>
-</div>
 
+    <div class="tab-pane " id="contratacion">
+        <div class="left pull-left">
+            <ul class="fa-ul">
+                <li>
+                    <div class="row">
+                        <div class="col-md-12" >
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Parámetros de contratación</h3>
+                                </div>
+
+                                <div class="row" style="margin-left: 5px;">
+                                    <div class="col-md-12 col-xs-5">
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="tipoContrato" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de Contrato
+                                            </g:link>
+                                            <strong style="font-size: 14px">que puede registrarse en el sistema para la ejecución de una Obra.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="tipoGarantia" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de Garantía
+                                            </g:link>
+                                            <strong style="font-size: 14px">que se puede recibir en un contrato.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="tipoDocumentoGarantia" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de documento de garantía
+                                            </g:link>
+                                            <strong style="font-size: 14px">que se puede recibir para garantizar las distintas estipulaciones de una contrato.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="estadoGarantia" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Estado de la garantía
+                                            </g:link>
+                                            <strong style="font-size: 14px">  dentro del período contractual.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="tipoAseguradora" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de aseguradora
+                                            </g:link>
+                                            <strong style="font-size: 14px"> que emite la garantía.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="aseguradora" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Aseguradora
+                                            </g:link>
+                                            <strong style="font-size: 14px"> o institución bancaria que emite la garantía.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="inicio" action="variables">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Unidad del Item
+                                            </g:link>
+                                            <strong style="font-size: 14px"> Unidades que se emplean en el INCOP.</strong>
+                                        </p>
+
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="tipoProcedimiento" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de Procedimiento
+                                            </g:link>
+                                            <strong style="font-size: 14px"> de contratación, se diferencian según el monto a contratar.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="tipoCompra" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de Compra
+                                            </g:link>
+                                            <strong style="font-size: 14px"> Bien, Obra o Servicio a adquirir</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="fuenteFinanciamiento" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Fuente de financiamiento
+                                            </g:link>
+                                            <strong style="font-size: 14px">Entidad que financia la adquisición o construcción.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-warning btn-ajax" controller="especialidadProveedor" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Especialidad del Proveedor o Contratista
+                                            </g:link>
+                                            <strong style="font-size: 14px">Experiencia o especialidad en los servicios que presta.</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-pane " id="ejecucion">
+        <div class="left pull-left">
+            <ul class="fa-ul">
+                <li>
+                    <div class="row">
+                        <div class="col-md-12" >
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Parámetros de ejecución</h3>
+                                </div>
+
+                                <div class="row" style="margin-left: 5px;">
+                                    <div class="col-md-12 col-xs-5">
+                                        <p>
+                                            <g:link class="link btn btn-danger btn-ajax" controller="tipoMulta" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de multa de la planilla
+                                            </g:link>
+                                            <strong style="font-size: 14px">que puede tener dentro del proceso de ejecución de la obra.</strong>
+                                        </p>
+                                        <p>
+                                            <g:link class="link btn btn-danger btn-ajax" controller="tipoPlanilla" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Tipo de planilla
+                                            </g:link>
+                                            <strong style="font-size: 14px">que puede tener el proceso de ejecución de la obra: anticipo, liquidación, avance <br/> de obra, reajuste, etc.</strong>
+                                        </p>
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 
 <script type="text/javascript">
