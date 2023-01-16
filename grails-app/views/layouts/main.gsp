@@ -11,6 +11,7 @@
 
 %{--    prueba--}%
     <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap.css"/>
+
 %{--    <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap.min.css"/>--}%
     <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap-theme.css"/>
 %{--  fin  prueba--}%
@@ -60,7 +61,8 @@
     <asset:javascript src="/apli/bootstrap-datetimepicker.min.js"/>
     <asset:javascript src="/apli/bootstrap-maxlength.min.js"/>
     <asset:javascript src="/apli/jquery.switcher.min.js"/>
-    <asset:javascript src="/bootstrap-3.3.2/dist/js/bootstrap.min.js"/>
+    %{--<asset:javascript src="/bootstrap-3.3.2/dist/js/bootstrap.min.js"/>--}%
+    <asset:javascript src="/bootstrap.min.js"/>
 
     <script type="text/javascript">
         var spinner = $('<asset:image src="apli/spinner32.gif" style="padding: 40px;"/>');
@@ -88,20 +90,20 @@
 <script type="text/javascript">
 
 
-    var affixElement = '#navbar-main';
-
-    $(affixElement).affix({
-        offset: {
-            // Distance of between element and top page
-            top: function () {
-                return (this.top = $(affixElement).offset().top)
-            },
-            // when start #footer
-            bottom: function () {
-                return (this.bottom = $('#footer').outerHeight(true))
-            }
-        }
-    });
+//    var affixElement = '#navbar-main';
+//
+//    $(affixElement).affix({
+//        offset: {
+//            // Distance of between element and top page
+//            top: function () {
+//                return (this.top = $(affixElement).offset().top)
+//            },
+//            // when start #footer
+//            bottom: function () {
+//                return (this.bottom = $('#footer').outerHeight(true))
+//            }
+//        }
+//    });
 
 
 </script>

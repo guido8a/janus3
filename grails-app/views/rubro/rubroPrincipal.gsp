@@ -117,61 +117,40 @@
 
             <div class="row-fluid">
 
-                <div class="col-md-2" style="width: 150px;">
+                <div class="col-md-1" style="width: 140px;">
                     Código
-                %{--<input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"--}%
-                %{--id="input_codigo" maxlength="30" minlength="2">--}%
-                %{--                    <input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small"--}%
-                %{--                           value="${rubro?.codigo}"--}%
-                %{--                           id="input_codigo" maxlength="30" minlength="2">--}%
+                <input type="text" name="rubro.codigo" class="col-md-12 allCaps required input-small"
+                       value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"
+                id="input_codigo" maxlength="30" minlength="2">
+                                    %{--<input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small"--}%
+                                           %{--value="${rubro?.codigo}"--}%
+                                           %{--id="input_codigo" maxlength="30" minlength="2">--}%
 
-                %{--                    <p class="help-block ui-helper-hidden"></p>--}%
+                                    <p class="help-block ui-helper-hidden"></p>
 
-                    <g:if test="${rubro?.id}">
-                        %{--<g:if test="${rubro?.codigo?.contains(empresa?.codigo?.toString()?.toUpperCase())}">--}%
-                            %{--<div class="input-prepend">--}%
-                                %{--<span class="add-on">${empresa?.codigo?.toUpperCase() + "-"}</span>--}%
-                                %{--<g:textField name="rubro.codigo" id="input_codigo" class="allCaps required input-small" maxlength="30" minlength="3" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"/>--}%
-%{----}%
-                                %{--<p class="help-block ui-helper-hidden"></p>--}%
-                            %{--</div>--}%
-                        %{--</g:if>--}%
-                        %{--<g:else>--}%
-                            %{--<input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"--}%
-                            <input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small" value="${rubro?.codigo}"
-                                   id="input_codigo" maxlength="30" minlength="3">
-                            <p class="help-block ui-helper-hidden"></p>
-                        %{--</g:else>--}%
-                    </g:if>
-                    <g:else>
-                        <div class="input-prepend">
-                            <span class="add-on">${empresa?.toUpperCase() + "-"}</span>
-                            <g:textField name="rubro.codigo" id="input_codigo" class="allCaps required input-small" maxlength="30" minlength="3" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1]?.padLeft(3, '0') : rubro?.codigo?.padLeft(3, '0')) : ''}"/>
-                            <p class="help-block ui-helper-hidden"></p>
-                        </div>
-                    </g:else>
                 </div>
 
-                <div class="col-md-2" style="width: 130px; margin-left: 10px">
+                <div class="col-md-2" style="margin-left: -20px">
                     Código Especificación
-                    <input type="text" name="rubro.codigoEspecificacion" class="col-md-24 allCaps required input-small" value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30">
+                    <input type="text" name="rubro.codigoEspecificacion" class="allCaps required input-small"
+                           value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30">
 
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
 
-                <div class="col-md-6" style="width: 500px; margin-left: 10px">
+                <div class="col-md-5" style="margin-left: -10px">
                     Descripción
-                    <input type="text" name="rubro.nombre" class="col-md-7" value="${rubro?.nombre}" id="input_descripcion">
+                    <input type="text" name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion">
                 </div>
 
-                <div class="col-md-2" style="width: 105px; margin-left: 10px">
+                <div class="col-md-2" style="margin-left: -10px">
                     Fecha Creación
-                    <elm:datepicker name="rubro.fechaReg" class="col-md-24" value="${rubro?.fecha}" disabled="true" id="fechaCreacion"/>
+                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fecha}" disabled="true" id="fechaCreacion"/>
                 </div>
 
-                <div class="col-md-2"  style="width: 140px; margin-left: 10px">
+                <div class="col-md-1"  style="width: 170px; margin-left: -10px">
                     Fecha Modificación
-                    <elm:datepicker name="rubro.fechaReg" class="col-md-24" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm " disabled="true" id="fchaMod"/>
+                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm " disabled="true" id="fchaMod"/>
                 </div>
 
             </div>
@@ -205,16 +184,16 @@
                     </g:else>
                 </div>
 
-                <div class="col-md-1" style="width: 75px; margin-left: 10px">
+                <div class="col-md-1" style="width: 100px; margin-left: 10px">
                     Unidad
                     <g:select name="rubro.unidad.id" from="${janus.Unidad.list()}" class="col-md-12" optionKey="id" optionValue="codigo" value="${rubro?.unidad?.id}"/>
                 </div>
 
-                <div class="col-md-2" style="color: #01a; width: 260px; margin-left: 10px" >
+                <div class="col-md-2" style="color: #01a; width: 200px; margin-left: 10px" >
                     Responsable: <br>
                     <g:if test="${rubro?.aprobado != 'R'}">
-                        <input type="hidden" name="rubro.responsable" class="col-md-7" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
-                        <input type="text" name="persona" class="col-md-7" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly>
+                        <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
+                        <input type="text" name="persona" class="col-md-12" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly>
                     </g:if>
                     <g:else>
                         <g:textField name="persona_res" value="${rubro?.responsable}" readonly="true" title="${rubro?.responsable}" class="col-md-12"/>
@@ -228,36 +207,43 @@
         </g:form>
     </div>
 
-    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative;">
+    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative; height: 80px">
         <p class="css-vertical-text">Items</p>
 
         <div class="linea" style="height: 100px;"></div>
 
         <div class="row-fluid" style="color: #248">
 
-            <div class="col-md-6" style="width: 500px;">
+            <div class="col-md-3" style="width: 440px;">
                 Lista de precios: MO y Equipos
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}" optionKey="id" optionValue="descripcion" class="col-md-10" id="ciudad" style="width: 300px"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}"
+                          optionKey="id" optionValue="descripcion" id="ciudad" style="width: 250px"/>
             </div>
 
             <div class="col-md-3" style="width: 180px;">
                 % costos indirectos
-                <input type="text" style="width: 30px;" id="costo_indi" value="20.0">
+                <input type="text" style="width: 40px;" id="costo_indi" value="20.0">
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-2" style="width: 200px; margin-left: -20px; display: inline">
                 Fecha
-                <elm:datepicker name="item.fecha" class="col-md-8" id="fecha_precios" value="${new java.util.Date()}" format="dd-MM-yyyy"/>
+                <elm:datepicker name="item.fecha" id="fecha_precios"  style="width: 160px" value="${new java.util.Date()}"
+                                format="dd-MM-yyyy"/>
+            </div>
+
+            <div class="col-md-1"  style="width: 170px; margin-left: -10px">
+                Fecha Modificación
+                <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm " disabled="true" id="fchaMod"/>
             </div>
 
             <g:if test="${rubro}">
                 <g:if test="${rubro?.aprobado != 'R'}">
-                    <div class="col-md-2" style="margin-left: -10px">
+                    <div class="col-md-2" style="margin-left: -20px">
                         <a class="btn btn-small btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
                             Copiar composición
                         </a>
                     </div>
-                    <div class="col-md-1" style="margin-left: -10px">
+                    <div class="col-md-1" style="margin-left: -10px; width: 80px">
                         <a class="btn btn-small btn-info infoItem" href="#" rel="tooltip" title="Información">
                             <i class="icon-exclamation"></i> Info</a>
                     </div>
