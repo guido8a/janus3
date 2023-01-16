@@ -29,7 +29,11 @@ class AdministracionController {
         return [administracionInstance: administracionInstance]
     } //form_ajax
 
-    def save() {
+    def saveAdministracion_ajax() {
+
+        def administracion
+        def texto = params.id ? 'actualizada' : 'creada'
+
         if(params.fechaInicio){
             params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio)
         }
@@ -37,54 +41,27 @@ class AdministracionController {
             params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
         }
 
-
         if(params.fechaInicio >= params.fechaFin){
-            flash.clase = "alert-error"
-            flash.message = "No se pudo guardar, la Fecha de Inicio debe ser menor a la Fecha Fin"
-            redirect(action: 'list')
-            return
+            render "no_La Fecha de Inicio debe ser menor a la Fecha Fin"
         }else{
-        def administracionInstance
-        if (params.id) {
-            administracionInstance = Administracion.get(params.id)
-            if (!administracionInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Administracion con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            administracionInstance.properties = params
-        }//es edit
-        else {
-            administracionInstance = new Administracion(params)
-        } //es create
-        if (!administracionInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Administracion " + (administracionInstance.id ? administracionInstance.id : "") + "</h4>"
 
-            str += "<ul>"
-            administracionInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
+            if(params.id){
+                administracion = Administracion.get(params.id)
+                if(!administracion){
+                    render "no_Error al guardar la administración"
                 }
-                str += "<li>" + msg + "</li>"
+            }else{
+                administracion = new Administracion()
             }
-            str += "</ul>"
 
-            flash.message = str
-            redirect(action: 'list')
-            return
-        }
+            administracion.properties = params
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Administracion " + administracionInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Administracion " + administracionInstance.descripcion
-        }
-        redirect(action: 'list')
+            if(!administracion.save(flush:true)){
+                println("error al guardar la administracion " + administracion.errors)
+                render "no_Error al guardar los datos de administración"
+            }else{
+                render "ok_Administración ${texto} correctamente"
+            }
         }
     } //save
 
@@ -120,4 +97,5 @@ class AdministracionController {
             redirect(action: "list")
         }
     } //delete
+
 } //fin controller

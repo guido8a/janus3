@@ -1,193 +1,181 @@
 <%@ page import="janus.Administracion" %>
 <!doctype html>
 <html>
-    <head>
-        <meta name="layout" content="main">
-        <title>
-            Lista de Administraciones
-        </title>
-%{--        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-%{--        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-    </head>
-    <body>
+<head>
+    <meta name="layout" content="main">
+    <title>
+        Lista de Administraciones
+    </title>
+</head>
+<body>
 
-        <div class="span12">
-            <g:if test="${flash.message}">
-                <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                    <a class="close" data-dismiss="alert" href="#">×</a>
-                    ${flash.message}
-                </div>
-            </g:if>
-        </div>
+<div class="span12 btn-group" role="navigation">
+    <a href="#" class="btn btn-info btn-ajax btn-new">
+        <i class="fa fa-file"></i>
+        Nueva Administración
+    </a>
+</div>
 
-        <div class="span12 btn-group" role="navigation">
-            <a href="#" class="btn btn-info btn-ajax btn-new">
-                <i class="fa fa-file"></i>
-                Nueva Administración
-            </a>
-        </div>
+<g:form action="delete" name="frmDelete-administracionInstance">
+    <g:hiddenField name="id"/>
+</g:form>
 
-        <g:form action="delete" name="frmDelete-administracionInstance">
-            <g:hiddenField name="id"/>
-        </g:form>
+<div id="list-administracion" class="span12" role="main" style="margin-top: 10px;">
 
-        <div id="list-administracion" class="span12" role="main" style="margin-top: 10px;">
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Nombre Prefecto</th>
+            <th>Descripción</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th style="width: 100px">Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <g:each in="${administracionInstanceList}" status="i" var="administracionInstance">
+            <tr>
+                <td>${administracionInstance?.nombrePrefecto}</td>
+                <td>${administracionInstance?.descripcion}</td>
+                <td><g:formatDate date="${administracionInstance.fechaInicio}" format="dd-MM-yyyy"/></td>
+                <td><g:formatDate date="${administracionInstance.fechaFin}" format="dd-MM-yyyy"/></td>
+                <td>
+                    <a class="btn btn-info btn-xs btn-show" href="#"  title="Ver" data-id="${administracionInstance.id}">
+                        <i class="fa fa-clipboard"></i>
+                    </a>
+                    <a class="btn btn-success btn-xs btn-edit" href="#"  title="Editar" data-id="${administracionInstance.id}">
+                        <i class="fa fa-edit"></i>
+                    </a>
 
-            <table class="table table-bordered table-striped table-condensed table-hover">
-                <thead>
-                    <tr>
-                        <th>Nombre Prefecto</th>
-                        <th>Descripción</th>
-                        <th>Fecha Inicio</th>
-                        <th>Fecha Fin</th>
-                        <th width="150">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <g:each in="${administracionInstanceList}" status="i" var="administracionInstance">
-                    <tr>
-                        <td>${administracionInstance?.nombrePrefecto}</td>
-                        <td>${administracionInstance?.descripcion}</td>
-                        <td><g:formatDate date="${administracionInstance.fechaInicio}" format="dd-MM-yyyy"/></td>
-                        <td><g:formatDate date="${administracionInstance.fechaFin}" format="dd-MM-yyyy"/></td>
-                        <td>
-                            <a class="btn btn-info btn-xs btn-show" href="#" rel="tooltip" title="Ver" data-id="${administracionInstance.id}">
-                                <i class="fa fa-clipboard"></i>
-                            </a>
-                            <a class="btn btn-success btn-xs btn-edit" href="#" rel="tooltip" title="Editar" data-id="${administracionInstance.id}">
-                                <i class="fa fa-edit"></i>
-                            </a>
+                    <a class="btn btn-danger btn-xs btn-delete" href="#" title="Eliminar" data-id="${administracionInstance.id}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>
 
-                            <a class="btn btn-danger btn-xs btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${administracionInstance.id}">
-                                <i class="fa fa-trash"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
-            <div class="pagination">
-%{--                <elm:paginate total="${administracionInstanceTotal}" params="${params}"/>--}%
-            </div>
-        </div>
+<script type="text/javascript">
 
-        <div class="modal hide fade" id="modal-administracion">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">×</button>
+    function createEditRow(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
 
-                <h3 id="modalTitle"></h3>
-            </div>
-
-            <div class="modal-body" id="modalBody">
-            </div>
-
-            <div class="modal-footer" id="modalFooter">
-            </div>
-        </div>
-
-        <script type="text/javascript">
-            %{--var url = "${resource(dir:'images', file:'spinner_24.gif')}";--}%
-            // var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
-
-
-            $(function () {
-                $('[rel=tooltip]').tooltip();
-
-                $(".btn-new").click(function () {
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
-
-                            btnSave.click(function () {
-                                if ($("#frmSave-administracionInstance").valid()) {
-                                    // btnSave.replaceWith(spinner);
-                                }
-                                $("#frmSave-administracionInstance").submit();
-                                return false;
-                            });
-
-                            $("#modalTitle").html("Crear Administración");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-administracion").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn new
-
-                $(".btn-edit").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        data    : {
-                            id : id
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : title + " Prefecto",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
                         },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormAdministracion();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").not(".datepicker").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
-                            btnSave.click(function () {
-                                if ($("#frmSave-administracionInstance").valid()) {
-                                    // btnSave.replaceWith(spinner);
-                                }
-                                $("#frmSave-administracionInstance").submit();
-                                return false;
-                            });
-
-                            $("#modalTitle").html("Editar Administración");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-administracion").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn edit
-
-                $(".btn-show").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                            $("#modalTitle").html("Ver Administración");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk);
-                            $("#modal-administracion").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn show
-
-                $(".btn-delete").click(function () {
-                    var id = $(this).data("id");
-                    $("#id").val(id);
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-                    btnDelete.click(function () {
-                        // btnDelete.replaceWith(spinner);
-                        $("#frmDelete-administracionInstance").submit();
+    function submitFormAdministracion() {
+        var $form = $("#frmAdministracion");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;
-                    });
-
-                    $("#modalTitle").html("Eliminar Administración");
-                    $("#modalBody").html("<p>¿Está seguro de querer eliminar este administración?</p>");
-                    $("#modalFooter").html("").append(btnOk).append(btnDelete);
-                    $("#modal-administracion").modal("show");
-                    return false;
-                });
-
+                    }
+                }
             });
+        } else {
+            return false;
+        }
+    }
 
-        </script>
+    $(function () {
 
-    </body>
+        $(".btn-new").click(function () {
+            createEditRow();
+        }); //click btn new
+
+        $(".btn-edit").click(function () {
+            var id = $(this).data("id");
+            createEditRow(id);
+        }); //click btn edit
+
+        $(".btn-show").click(function () {
+            var id = $(this).data("id");
+            %{--$.ajax({--}%
+            %{--    type    : "POST",--}%
+            %{--    url     : "${createLink(action:'show_ajax')}",--}%
+            %{--    data    : {--}%
+            %{--        id : id--}%
+            %{--    },--}%
+            %{--    success : function (msg) {--}%
+            %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');--}%
+            %{--        $("#modalTitle").html("Ver Administración");--}%
+            %{--        $("#modalBody").html(msg);--}%
+            %{--        $("#modalFooter").html("").append(btnOk);--}%
+            %{--        $("#modal-administracion").modal("show");--}%
+            %{--    }--}%
+            %{--});--}%
+            %{--return false;--}%
+        }); //click btn show
+
+        $(".btn-delete").click(function () {
+            var id = $(this).data("id");
+            // $("#id").val(id);
+            // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+            // var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
+            //
+            // btnDelete.click(function () {
+            //     // btnDelete.replaceWith(spinner);
+            //     $("#frmDelete-administracionInstance").submit();
+            //     return false;
+            // });
+            //
+            // $("#modalTitle").html("Eliminar Administración");
+            // $("#modalBody").html("<p>¿Está seguro de querer eliminar este administración?</p>");
+            // $("#modalFooter").html("").append(btnOk).append(btnDelete);
+            // $("#modal-administracion").modal("show");
+            // return false;
+        });
+
+    });
+
+</script>
+
+</body>
 </html>

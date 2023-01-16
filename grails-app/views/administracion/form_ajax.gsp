@@ -1,105 +1,94 @@
-<%@ page import="janus.Administracion" %>
-
-<div id="create-administracionInstance" class="span" role="main" %{--style="width: 600px"--}%>
-<g:form class="form-horizontal" name="frmSave-administracionInstance" action="save">
+<g:form class="form-horizontal" name="frmAdministracion" action="saveAdministracion_ajax">
     <g:hiddenField name="id" value="${administracionInstance?.id}"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Nombre Prefecto
+    <div class="form-group ${hasErrors(bean: administracionInstance, field: 'nombrePrefecto', 'error')} ">
+        <span class="grupo">
+            <label for="nombrePrefecto" class="col-md-3 control-label text-info">
+                Nombre prefecto
+            </label>
+            <span class="col-md-6">
+                <g:textField name="nombrePrefecto" maxlength="63" class="form-control required" value="${administracionInstance?.nombrePrefecto}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField style="width: 290px" name="nombrePrefecto" maxlength="63" class=" required" value="${administracionInstance?.nombrePrefecto}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: administracionInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
                 Descripción
+            </label>
+            <span class="col-md-6">
+                <g:textField name="descripcion" maxlength="63" class="form-control required" value="${administracionInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textArea cols="5" rows="3" name="descripcion" maxlength="63" style="resize: none; height: 70px" class=" required" value="${administracionInstance?.descripcion}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Fecha Inicio
+    <div class="form-group ${hasErrors(bean: administracionInstance, field: 'fechaInicio', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-3 control-label text-info">
+               Fecha inicio
+            </label>
+            <span class="col-md-6">
+                <input aria-label="" name="fechaInicio" id='datetimepicker1' type='text' class="form-control required"
+                       value="${administracionInstance?.fechaInicio?.format("dd-MM-yyyy")}"/>
             </span>
-        </div>
-
-        <div class="controls">
-            <elm:datepicker name="fechaInicio" class="datepicker required" style="width: 90px" value="${administracionInstance?.fechaInicio}"/>
-            %{--<g:textField name="fechaInicio" class="datepicker required" style="width: 90px" value="${administracionInstance?.fechaInicio}"/>--}%
-            %{--<script type="text/javascript">--}%
-            %{--$("#fechaInicio").datepicker({--}%
-            %{--changeMonth: true,--}%
-            %{--changeYear: true,--}%
-            %{--showOn: "both",--}%
-            %{--buttonImage: "${resource(dir:'images', file:'calendar.png')}",--}%
-            %{--buttonImageOnly: true--}%
-            %{--});--}%
-            %{--</script>--}%
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Fecha Fin
+    <div class="form-group ${hasErrors(bean: administracionInstance, field: 'fechaFin', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-3 control-label text-info">
+                Fecha fin
+            </label>
+            <span class="col-md-6">
+                <input aria-label="" name="fechaFin" id='datetimepicker2' type='text' class="form-control required"
+                       value="${administracionInstance?.fechaFin?.format("dd-MM-yyyy")}"/>
             </span>
-        </div>
-
-        <div class="controls">
-            <elm:datepicker name="fechaFin" class="datepicker required" style="width: 90px" value="${administracionInstance?.fechaFin}"/>
-            %{--<g:textField name="fechaFin" class="datepicker" style="width: 90px" value="${administracionInstance?.fechaFin}"/>--}%
-            %{--<script type="text/javascript">--}%
-                %{--$("#fechaFin").datepicker({--}%
-                    %{--changeMonth     : true,--}%
-                    %{--changeYear      : true,--}%
-                    %{--showOn          : "both",--}%
-                    %{--buttonImage     : "${resource(dir:'images', file:'calendar.png')}",--}%
-                    %{--buttonImageOnly : true--}%
-                %{--});--}%
-            %{--</script>--}%
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
 </g:form>
 
 <script type="text/javascript">
-    var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-    var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>")
 
-    $("#frmSave-administracionInstance").validate({
+    $('#datetimepicker1').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        // daysOfWeekDisabled: [0, 6],
+        sideBySide: true,
+        icons: {
+        }
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
+
+    var validator = $("#frmAdministracion").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function (form) {
-            $("[name=btnSave-administracionInstance]").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormAdministracion();
+            return false;
+        }
+        return true;
     });
 </script>
