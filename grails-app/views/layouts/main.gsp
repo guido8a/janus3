@@ -61,8 +61,8 @@
     <asset:javascript src="/apli/bootstrap-datetimepicker.min.js"/>
     <asset:javascript src="/apli/bootstrap-maxlength.min.js"/>
     <asset:javascript src="/apli/jquery.switcher.min.js"/>
-    %{--<asset:javascript src="/bootstrap-3.3.2/dist/js/bootstrap.min.js"/>--}%
-    <asset:javascript src="/bootstrap.min.js"/>
+    <asset:javascript src="/bootstrap-3.3.2/dist/js/bootstrap.min.js"/>
+    %{--<asset:javascript src="/bootstrap.min.js"/>--}%
 
     <script type="text/javascript">
         var spinner = $('<asset:image src="apli/spinner32.gif" style="padding: 40px;"/>');

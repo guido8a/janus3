@@ -225,16 +225,12 @@
                 <input type="text" style="width: 40px;" id="costo_indi" value="20.0">
             </div>
 
-            <div class="col-md-2" style="width: 200px; margin-left: -20px; display: inline">
+            <div class="col-md-2" style="width: 300px; margin-left: -20px; display: inline">
                 Fecha
                 <elm:datepicker name="item.fecha" id="fecha_precios"  style="width: 160px" value="${new java.util.Date()}"
                                 format="dd-MM-yyyy"/>
             </div>
 
-            <div class="col-md-1"  style="width: 170px; margin-left: -10px">
-                Fecha Modificación
-                <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm " disabled="true" id="fchaMod"/>
-            </div>
 
             <g:if test="${rubro}">
                 <g:if test="${rubro?.aprobado != 'R'}">
