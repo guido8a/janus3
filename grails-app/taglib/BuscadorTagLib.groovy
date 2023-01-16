@@ -114,7 +114,8 @@ class BuscadorTagLib {
         salida += '<a href="#" id="btn_reporte" style="margin:10px;margin-left:20px;color:white">Reporte</a>'
         salida += '<a href="#" id="btn_excel" style="margin:10px;margin-left:20px;color:white">Excel</a>'
         salida += '</div>'
-        salida += "<script type='text/javascript' src='${createLinkTo(dir: 'js', file: 'buscador.js')}' ></script>"
+//        salida += "<script type='text/javascript' src='${createLinkTo(dir: 'js', file: 'buscador.js')}' ></script>"
+        salida += "<asset:javascript src='/jquery/buscador.js'/>"
 //        salida += "<script type='text/javascript' src='${createLinkTo(dir: 'js/jquery/plugins', file: 'jquery.livequery.js')}' ></script>"
         salida += "<script type='text/javascript'>"
 

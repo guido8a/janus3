@@ -6,16 +6,24 @@
     <title>
         Rubros
     </title>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+
+    <asset:stylesheet src="/jquery/plugins/box/css/jquery.luz.box.css"/>
+
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
+    <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
+    <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
+
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 </head>
 
 <body>
 
-<div class="span12">
+<div class="col-md-12">
     <g:if test="${flash.message}">
         <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
             <a class="close" data-dismiss="alert" href="#">×</a>
@@ -24,8 +32,8 @@
     </g:if>
 </div>
 
-<div class="span12 btn-group" role="navigation">
-    <a href="#" class="btn  " id="btn_lista">
+<div class="col-md-12 btn-group" role="navigation">
+    <a href="#" class="btn" id="btn_lista">
         <i class="icon-list-ul"></i>
         Lista
     </a>
@@ -97,7 +105,7 @@
     </g:if>
 </div>
 
-<div id="list-grupo" class="span12" role="main" style="margin-top: 10px;margin-left: -10px">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
 
     <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;">
         <g:form name="frmRubro" action="save" style="height: 100px;">
@@ -109,11 +117,11 @@
 
             <div class="row-fluid">
 
-                <div class="span2" style="width: 150px;">
+                <div class="col-md-2" style="width: 150px;">
                     Código
-                %{--<input type="text" name="rubro.codigo" class="span20 allCaps required input-small" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"--}%
+                %{--<input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"--}%
                 %{--id="input_codigo" maxlength="30" minlength="2">--}%
-                %{--                    <input type="text" name="rubro.codigo" class="span20 allCaps required input-small"--}%
+                %{--                    <input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small"--}%
                 %{--                           value="${rubro?.codigo}"--}%
                 %{--                           id="input_codigo" maxlength="30" minlength="2">--}%
 
@@ -129,92 +137,92 @@
                             %{--</div>--}%
                         %{--</g:if>--}%
                         %{--<g:else>--}%
-                            %{--<input type="text" name="rubro.codigo" class="span20 allCaps required input-small" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"--}%
-                            <input type="text" name="rubro.codigo" class="span20 allCaps required input-small" value="${rubro?.codigo}"
+                            %{--<input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"--}%
+                            <input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small" value="${rubro?.codigo}"
                                    id="input_codigo" maxlength="30" minlength="3">
                             <p class="help-block ui-helper-hidden"></p>
                         %{--</g:else>--}%
                     </g:if>
                     <g:else>
                         <div class="input-prepend">
-                            <span class="add-on">${empresa?.codigo?.toUpperCase() + "-"}</span>
+                            <span class="add-on">${empresa?.toUpperCase() + "-"}</span>
                             <g:textField name="rubro.codigo" id="input_codigo" class="allCaps required input-small" maxlength="30" minlength="3" value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1]?.padLeft(3, '0') : rubro?.codigo?.padLeft(3, '0')) : ''}"/>
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </g:else>
                 </div>
 
-                <div class="span2" style="width: 130px; margin-left: 10px">
+                <div class="col-md-2" style="width: 130px; margin-left: 10px">
                     Código Especificación
-                    <input type="text" name="rubro.codigoEspecificacion" class="span24 allCaps required input-small" value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30">
+                    <input type="text" name="rubro.codigoEspecificacion" class="col-md-24 allCaps required input-small" value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30">
 
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
 
-                <div class="span6" style="width: 500px; margin-left: 10px">
+                <div class="col-md-6" style="width: 500px; margin-left: 10px">
                     Descripción
-                    <input type="text" name="rubro.nombre" class="span72" value="${rubro?.nombre}" id="input_descripcion">
+                    <input type="text" name="rubro.nombre" class="col-md-7" value="${rubro?.nombre}" id="input_descripcion">
                 </div>
 
-                <div class="span2" style="width: 105px; margin-left: 10px">
+                <div class="col-md-2" style="width: 105px; margin-left: 10px">
                     Fecha Creación
-                    <elm:datepicker name="rubro.fechaReg" class="span24" value="${rubro?.fecha}" disabled="true" id="fechaCreacion"/>
+                    <elm:datepicker name="rubro.fechaReg" class="col-md-24" value="${rubro?.fecha}" disabled="true" id="fechaCreacion"/>
                 </div>
 
-                <div class="span2"  style="width: 140px; margin-left: 10px">
+                <div class="col-md-2"  style="width: 140px; margin-left: 10px">
                     Fecha Modificación
-                    <elm:datepicker name="rubro.fechaReg" class="span24" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm " disabled="true" id="fchaMod"/>
+                    <elm:datepicker name="rubro.fechaReg" class="col-md-24" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm " disabled="true" id="fchaMod"/>
                 </div>
 
             </div>
 
             <div class="row-fluid">
-                <div class="span2" style="width: 150px;">
+                <div class="col-md-2" style="width: 150px;">
                     Dirección responsable
-                    <g:select name="rubro.grupo.id" id="selClase" from="${grupos}" class="span12" optionKey="id" optionValue="descripcion"
+                    <g:select name="rubro.grupo.id" id="selClase" from="${grupos}" class="col-md-12" optionKey="id" optionValue="descripcion"
                               value="${rubro?.departamento?.subgrupo?.grupo?.id}" noSelection="['': '--Seleccione--']"/>
                 </div>
 
-                <div class="span2" style="width: 310px; margin-left: 10px">
+                <div class="col-md-2" style="width: 310px; margin-left: 10px">
                     Grupo
                     <g:if test="${rubro?.departamento?.subgrupo?.id}">
                         <g:select id="selGrupo" name="rubro.suggrupoItem.id" from="${janus.SubgrupoItems.findAllByGrupo(rubro?.departamento?.subgrupo?.grupo)}"
-                                  class="span12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.subgrupo?.id}" noSelection="['': '--Seleccione--']"/>
+                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.subgrupo?.id}" noSelection="['': '--Seleccione--']"/>
                     </g:if>
                     <g:else>
-                        <select id="selGrupo" class="span12"></select>
+                        <select id="selGrupo" class="col-md-12"></select>
                     </g:else>
                 </div>
 
-                <div class="span3" style="width: 200px; margin-left: 10px">
+                <div class="col-md-3" style="width: 200px; margin-left: 10px">
                     Sub grupo
                     <g:if test="${rubro?.departamento?.id}">
                         <g:select name="rubro.departamento.id" id="selSubgrupo" from="${janus.DepartamentoItem.findAllBySubgrupo(rubro?.departamento?.subgrupo)}"
-                                  class="span12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.id}"/>
+                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.id}"/>
                     </g:if>
                     <g:else>
-                        <select id="selSubgrupo" class="span12"></select>
+                        <select id="selSubgrupo" class="col-md-12"></select>
                     </g:else>
                 </div>
 
-                <div class="span1" style="width: 75px; margin-left: 10px">
+                <div class="col-md-1" style="width: 75px; margin-left: 10px">
                     Unidad
-                    <g:select name="rubro.unidad.id" from="${janus.Unidad.list()}" class="span12" optionKey="id" optionValue="codigo" value="${rubro?.unidad?.id}"/>
+                    <g:select name="rubro.unidad.id" from="${janus.Unidad.list()}" class="col-md-12" optionKey="id" optionValue="codigo" value="${rubro?.unidad?.id}"/>
                 </div>
 
-                <div class="span2" style="color: #01a; width: 260px; margin-left: 10px" >
+                <div class="col-md-2" style="color: #01a; width: 260px; margin-left: 10px" >
                     Responsable: <br>
                     <g:if test="${rubro?.aprobado != 'R'}">
-                        <input type="hidden" name="rubro.responsable" class="span72" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
-                        <input type="text" name="persona" class="span72" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly>
+                        <input type="hidden" name="rubro.responsable" class="col-md-7" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
+                        <input type="text" name="persona" class="col-md-7" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly>
                     </g:if>
                     <g:else>
-                        <g:textField name="persona_res" value="${rubro?.responsable}" readonly="true" title="${rubro?.responsable}" class="span12"/>
+                        <g:textField name="persona_res" value="${rubro?.responsable}" readonly="true" title="${rubro?.responsable}" class="col-md-12"/>
                     </g:else>
                 </div>
-                <div class="span1" style="width: 50px; color: #01a">
+                <div class="col-md-1" style="width: 50px; color: #01a">
                     Estado
-                    <g:textField name="estadoSuper" value="${rubro?.aprobado == null ? 'N' : 'R'}" readonly="true" title="${rubro?.aprobado == null ? 'Ingresado' : 'Registrado'}" class="span12"/>
+                    <g:textField name="estadoSuper" value="${rubro?.aprobado == null ? 'N' : 'R'}" readonly="true" title="${rubro?.aprobado == null ? 'Ingresado' : 'Registrado'}" class="col-md-12"/>
                 </div>
             </div>
         </g:form>
@@ -227,29 +235,29 @@
 
         <div class="row-fluid" style="color: #248">
 
-            <div class="span6" style="width: 500px;">
+            <div class="col-md-6" style="width: 500px;">
                 Lista de precios: MO y Equipos
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoListaAndEmpresa(janus.TipoLista.get(6), empresa)}" optionKey="id" optionValue="descripcion" class="span10" id="ciudad" style="width: 300px"/>
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(6))}" optionKey="id" optionValue="descripcion" class="col-md-10" id="ciudad" style="width: 300px"/>
             </div>
 
-            <div class="span3" style="width: 180px;">
+            <div class="col-md-3" style="width: 180px;">
                 % costos indirectos
                 <input type="text" style="width: 30px;" id="costo_indi" value="20.0">
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 Fecha
-                <elm:datepicker name="item.fecha" class="span8" id="fecha_precios" value="${new java.util.Date()}" format="dd-MM-yyyy"/>
+                <elm:datepicker name="item.fecha" class="col-md-8" id="fecha_precios" value="${new java.util.Date()}" format="dd-MM-yyyy"/>
             </div>
 
             <g:if test="${rubro}">
                 <g:if test="${rubro?.aprobado != 'R'}">
-                    <div class="span2" style="margin-left: -10px">
+                    <div class="col-md-2" style="margin-left: -10px">
                         <a class="btn btn-small btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
                             Copiar composición
                         </a>
                     </div>
-                    <div class="span1" style="margin-left: -10px">
+                    <div class="col-md-1" style="margin-left: -10px">
                         <a class="btn btn-small btn-info infoItem" href="#" rel="tooltip" title="Información">
                             <i class="icon-exclamation"></i> Info</a>
                     </div>
@@ -259,41 +267,41 @@
         </div>
 
         <div class="row-fluid" style="margin-bottom: 5px">
-            <div class="span2">
+            <div class="col-md-2">
                 CÓDIGO
-                <input type="text" name="item.codigo" id="cdgo_buscar" class="span24" readonly="true">
+                <input type="text" name="item.codigo" id="cdgo_buscar" class="col-md-24" readonly="true">
                 <input type="hidden" id="item_id">
                 <input type="hidden" id="item_tipoLista">
             </div>
 
-            <div class="span1" style="margin-top: 20px; width: 80px">
+            <div class="col-md-1" style="margin-top: 20px; width: 80px">
                 <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">
                     <i class="icon-search"></i> Buscar
                 </a>
             </div>
 
-            <div class="span5">
+            <div class="col-md-5">
                 DESCRIPCIÓN
-                <input type="text" name="item.descripcion" id="item_desc" class="span11" readonly="true">
+                <input type="text" name="item.descripcion" id="item_desc" class="col-md-11" readonly="true">
             </div>
 
-            <div class="span1" style="margin-right: 0px;margin-left: -30px;">
+            <div class="col-md-1" style="margin-right: 0px;margin-left: -30px;">
                 UNIDAD
-                <input type="text" name="item.unidad" id="item_unidad" class="span8" readonly="true">
+                <input type="text" name="item.unidad" id="item_unidad" class="col-md-8" readonly="true">
             </div>
 
-            <div class="span1" style="margin-left: -5px !important;">
+            <div class="col-md-1" style="margin-left: -5px !important;">
                 CANTIDAD
-                <input type="text" name="item.cantidad" class="span12" id="item_cantidad" value="0" style="text-align: right">
+                <input type="text" name="item.cantidad" class="col-md-12" id="item_cantidad" value="0" style="text-align: right">
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 RENDIMIENTO
-                <input type="text" name="item.rendimiento" class="span8" id="item_rendimiento" value="1" style="text-align: right; color: #44a;width: 170px;">
+                <input type="text" name="item.rendimiento" class="col-md-8" id="item_rendimiento" value="1" style="text-align: right; color: #44a;width: 170px;">
             </div>
 
             <g:if test="${rubro?.aprobado != 'R'}">
-                <div class="span1" style="border: 0px solid black;height: 45px;padding-top: 22px;margin-left: 10px">
+                <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 22px;margin-left: 10px">
                     <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
                         <i class="icon-plus"></i>
                     </a>
@@ -508,158 +516,158 @@
 
     <div class="modal-body" id="modal_trans_body">
         <div class="row-fluid">
-            <div class="span2">
+            <div class="col-md-2">
                 Volquete
             </div>
 
-            <div class="span5">
+            <div class="col-md-5">
                 <g:select name="volquetes" from="${volquetes2}" optionKey="id" optionValue="nombre" id="cmb_vol" noSelection="${['-1': 'Seleccione']}" value="${aux.volquete.id}"/>
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 Costo
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 <input type="text" style="width: 60px;text-align: right" disabled="" id="costo_volqueta">
             </div>
         </div>
 
         <div class="row-fluid">
-            <div class="span2">
+            <div class="col-md-2">
                 Chofer
             </div>
 
-            <div class="span5">
+            <div class="col-md-5">
                 <g:select name="volquetes" from="${choferes}" optionKey="id" optionValue="nombre" id="cmb_chof" style="" noSelection="${['-1': 'Seleccione']}" value="${aux.chofer.id}"/>
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 Costo
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 <input type="text" style="width: 60px;text-align: right" disabled="" id="costo_chofer">
             </div>
         </div>
 
         <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 5px">
-            <div class="span6">
+            <div class="col-md-6">
                 <b>Distancia peso</b>
             </div>
 
-            <div class="span5" style="margin-left: 30px;">
+            <div class="col-md-5" style="margin-left: 30px;">
                 <b>Distancia volumen</b>
             </div>
         </div>
 
         <div class="row-fluid">
-            <div class="span2">
+            <div class="col-md-2">
                 Canton
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 <input type="text" style="width: 50px;" id="dist_p1" value="0.00">
             </div>
 
-            <div class="span4">
+            <div class="col-md-4">
                 Materiales Petreos Hormigones
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 <input type="text" style="width: 50px;" id="dist_v1" value="0.00">
             </div>
 
         </div>
 
         <div class="row-fluid">
-            <div class="span2">
+            <div class="col-md-2">
                 Especial
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 <input type="text" style="width: 50px;" id="dist_p2" value="0.00">
             </div>
 
-            <div class="span4">
+            <div class="col-md-4">
                 Materiales Mejoramiento
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 <input type="text" style="width: 50px;" id="dist_v2" value="0.00">
             </div>
         </div>
 
         <div class="row-fluid">
-            <div class="span5">
+            <div class="col-md-5">
 
             </div>
 
-            <div class="span4">
+            <div class="col-md-4">
                 Materiales Carpeta Asfáltica
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 <input type="text" style="width: 50px;" id="dist_v3" value="0.00">
             </div>
         </div>
 
         <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">
-            <div class="span6">
+            <div class="col-md-6">
                 <b>Listas de precios</b>
             </div>
         </div>
 
         <div class="row-fluid">
-            <div class="span1">
+            <div class="col-md-1">
                 Canton
             </div>
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoListaAndEmpresa(janus.TipoLista.get(1), empresa)}"
-                          optionKey="id" optionValue="descripcion" class="span10" id="lista_1"/>
+            <div class="col-md-4">
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(1))}"
+                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_1"/>
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 Petreos Hormigones
             </div>
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoListaAndEmpresa(janus.TipoLista.get(3), empresa)}"
-                          optionKey="id" optionValue="descripcion" class="span10" id="lista_3"/>
+            <div class="col-md-4">
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(3))}"
+                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_3"/>
             </div>
         </div>
 
         <div class="row-fluid">
-            <div class="span1">
+            <div class="col-md-1">
                 Especial
             </div>
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoListaAndEmpresa(janus.TipoLista.get(2), empresa)}"
-                          optionKey="id" optionValue="descripcion" class="span10" id="lista_2"/>
+            <div class="col-md-4">
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(2))}"
+                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_2"/>
             </div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 Mejoramiento
             </div>
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoListaAndEmpresa(janus.TipoLista.get(4), empresa)}"
-                          optionKey="id" optionValue="descripcion" class="span10" id="lista_4"/>
+            <div class="col-md-4">
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(4))}"
+                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_4"/>
             </div>
         </div>
 
         <div class="row-fluid">
-            <div class="span5"></div>
+            <div class="col-md-5"></div>
 
-            <div class="span3">
+            <div class="col-md-3">
                 Carpeta Asfáltica
             </div>
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoListaAndEmpresa(janus.TipoLista.get(5), empresa)}"
-                          optionKey="id" optionValue="descripcion" class="span10" id="lista_5"/>
+            <div class="col-md-4">
+                <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(5))}"
+                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_5"/>
             </div>
         </div>
 
@@ -672,13 +680,13 @@
 
     <div id="imprimirTransporteDialog">
         <fieldset>
-            <div class="span4" style="margin-top: 10px">
+            <div class="col-md-4" style="margin-top: 10px">
                 Se imprime a la Fecha de:
-                <elm:datepicker  name="fechaSalida" class="span8" id="fechaSalidaId" value="${rubro?.fechaModificacion}"
+                <elm:datepicker  name="fechaSalida" class="col-md-8" id="fechaSalidaId" value="${rubro?.fechaModificacion}"
                                  style="width: 100px"/>
             </div>
 
-            <div class="span4" style="margin-top: 10px;">
+            <div class="col-md-4" style="margin-top: 10px;">
                 <strong>¿Desea imprimir el reporte desglosando el transporte?</strong>
             </div>
         </fieldset>
@@ -708,34 +716,34 @@
 <div id="busqueda" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid" style="margin-left: 20px">
-            <div class="span2">Grupo</div>
+            <div class="col-md-2">Grupo</div>
 
-            <div class="span2">Buscar Por</div>
+            <div class="col-md-2">Buscar Por</div>
 
-            <div class="span2">Criterio</div>
+            <div class="col-md-2">Criterio</div>
 
-            <div class="span2">Ordenado por</div>
+            <div class="col-md-2">Ordenado por</div>
         </div>
 
         <div class="row-fluid" style="margin-left: 20px">
-            <div class="span2">
+            <div class="col-md-2">
                 <g:select name="buscarGrupo_name"  id="buscarGrupo" from="['1': 'Materiales', '2': 'Mano de Obra', '3': 'Equipos']"
                           style="width: 100%" optionKey="key" optionValue="value"/></div>
 
-            <div class="span2"><g:select name="buscarPor" class="buscarPor" from="${[1: 'Nombre', 2: 'Código']}"
+            <div class="col-md-2"><g:select name="buscarPor" class="buscarPor" from="${[1: 'Nombre', 2: 'Código']}"
                                          style="width: 100%" optionKey="key"
                                          optionValue="value"/></div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <g:textField name="criterio" class="criterio" style="width: 80%"/>
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <g:select name="ordenar" class="ordenar" from="${[1: 'Nombre', 2: 'Código']}"
                           style="width: 100%" optionKey="key"
                           optionValue="value"/></div>
 
-            <div class="span2" style="margin-left: 60px"><button class="btn btn-info" id="btn-consultar"><i
+            <div class="col-md-2" style="margin-left: 60px"><button class="btn btn-info" id="btn-consultar"><i
                     class="icon-check"></i> Consultar
             </button></div>
 
@@ -1801,7 +1809,7 @@
 
         $("#selClase").change(function () {
             var clase = $(this).val();
-            var $subgrupo = $("<select id='selSubgrupo' class='span12'></select>");
+            var $subgrupo = $("<select id='selSubgrupo' class='col-md-12'></select>");
             $("#selSubgrupo").replaceWith($subgrupo);
             $.ajax({
                 type    : "POST",

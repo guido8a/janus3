@@ -64,22 +64,22 @@ class RubroController {
     def rubroPrincipal() {
 //        println "rubroPrincipal params: $params"
         def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
+//        def empresa = usuario.empresa
+        def aux = Parametros.get(1)
+        def empresa = aux.empresa
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"], "unidad": ["Unidad", "string"]]
         def grupos = []
         def volquetes = []
         def volquetes2 = []
         def choferes = []
-        def aux = Parametros.get(1)
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
         def dpto = Departamento.findAllByPermisosIlike("APU")
         def resps = Persona.findAllByDepartamentoInList(dpto)
         def datos
 
         def sql = "select max(substr(itemcdgo, length(emprcdgo)+2,3)::integer)+1 total from item, empr " +
-                "where itemcdgo ilike emprcdgo||'-%' and empr.empr__id = ${empresa?.id} and " +
-                "item.empr__id = empr.empr__id;"
+                "where itemcdgo ilike emprcdgo||'-%' and item.empr__id = empr.empr__id"
         try {
             def cn = dbConnectionService.getConnection()
             datos = cn.rows(sql)
@@ -146,7 +146,7 @@ class RubroController {
     def addItem() {
 //        println "add item " + params
         def persona = Persona.get(session.usuario.id)
-        def empresa = persona.empresa
+        def empresa = Parametros.get(1).empresa
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
         def detalle
@@ -1022,12 +1022,12 @@ class RubroController {
         def listaItems = ['itemnmbr', 'itemcdgo']
         def datos;
         def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
+        def empresa = Parametros.get('1').empresa
 
         def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
                 "from item, undd, dprt, sbgr "
         def txwh = "where tpit__id = 1 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
-                "sbgr.sbgr__id = dprt.sbgr__id and empr__id = ${empresa.id}"
+                "sbgr.sbgr__id = dprt.sbgr__id"
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger()-1]
         def ordn = listaItems[params.ordenar.toInteger()-1]

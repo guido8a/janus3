@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>
-        <g:layoutTitle default="monitor"/>
+        <g:layoutTitle default="FIDA"/>
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico"/>
@@ -32,7 +32,7 @@
     <asset:stylesheet src="/apli/font-awesome.min.css"/>
     <asset:stylesheet src="/apli/CustomSvt.css"/>
     <asset:stylesheet src="/apli/tulpen/stylesheet.css"/>
-
+    <asset:stylesheet src="/apli/switcher.css"/>
 
 
     <asset:stylesheet src="/fonts/fontawesome-webfont.woff"/>
@@ -43,8 +43,6 @@
 
     <asset:javascript src="/apli/moment.js"/>
     <asset:javascript src="/apli/moment-with-locales.js"/>
-
-%{--    <asset:javascript src="/apli/bootstrap.min.js"/>--}%
 
     <asset:javascript src="/apli/funciones.js"/>
     <asset:javascript src="/apli/functions.js"/>
@@ -61,7 +59,7 @@
 
     <asset:javascript src="/apli/bootstrap-datetimepicker.min.js"/>
     <asset:javascript src="/apli/bootstrap-maxlength.min.js"/>
-
+    <asset:javascript src="/apli/jquery.switcher.min.js"/>
     <asset:javascript src="/bootstrap-3.3.2/dist/js/bootstrap.min.js"/>
 
     <script type="text/javascript">
@@ -74,14 +72,12 @@
 
 </head>
 
-<body style="padding-top: 60px">
+<body>
 
 
 %{--<div id="modalTableGray"></div>--}%
 
-%{--<g:if test="${session?.usuario}">--}%
-   <mn:menu title="${g.layoutTitle(default: 'janus3')}"/>
-%{--</g:if>--}%
+<mn:menu title="${g.layoutTitle(default: 'FIDA')}"/>
 
 <div class="container" style="min-width: 1000px !important; margin-top: 0px; overflow-y: hidden">
     <g:layoutBody/>
