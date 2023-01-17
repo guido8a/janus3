@@ -53,18 +53,10 @@
 
 <script type="text/javascript">
 
-    $('#datetimepicker1').datetimepicker({
+    $('#datetimepicker1, #datetimepicker2').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
         // daysOfWeekDisabled: [0, 6],
-        sideBySide: true,
-        icons: {
-        }
-    });
-
-    $('#datetimepicker2').datetimepicker({
-        locale: 'es',
-        format: 'DD-MM-YYYY',
         sideBySide: true,
         icons: {
         }

@@ -10,15 +10,15 @@
 <body>
 
 <div class="span12 btn-group" role="navigation">
-    <a href="#" class="btn btn-info btn-ajax btn-new">
+    <g:link class="link btn btn-info" controller="inicio" action="parametros">
+        <i class="fa fa-arrow-left"></i>
+        Parámetros
+    </g:link>
+    <a href="#" class="btn btn-success btn-new">
         <i class="fa fa-file"></i>
         Nueva Administración
     </a>
 </div>
-
-<g:form action="delete" name="frmDelete-administracionInstance">
-    <g:hiddenField name="id"/>
-</g:form>
 
 <div id="list-administracion" class="span12" role="main" style="margin-top: 10px;">
 
@@ -124,6 +124,47 @@
         }
     }
 
+    function deleteRow(itemId) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este registro? Esta acción no se puede deshacer.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash'></i> Eliminar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        var v = cargarLoader("Eliminando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(action:'delete_ajax')}',
+                            data    : {
+                                id : itemId
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 800);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
     $(function () {
 
         $(".btn-new").click(function () {
@@ -137,40 +178,32 @@
 
         $(".btn-show").click(function () {
             var id = $(this).data("id");
-            %{--$.ajax({--}%
-            %{--    type    : "POST",--}%
-            %{--    url     : "${createLink(action:'show_ajax')}",--}%
-            %{--    data    : {--}%
-            %{--        id : id--}%
-            %{--    },--}%
-            %{--    success : function (msg) {--}%
-            %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');--}%
-            %{--        $("#modalTitle").html("Ver Administración");--}%
-            %{--        $("#modalBody").html(msg);--}%
-            %{--        $("#modalFooter").html("").append(btnOk);--}%
-            %{--        $("#modal-administracion").modal("show");--}%
-            %{--    }--}%
-            %{--});--}%
-            %{--return false;--}%
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(controller: 'administracion', action:'show_ajax')}",
+                data    : {
+                    id : id
+                },
+                success : function (msg) {
+                    bootbox.dialog({
+                        title   : "Administración",
+                        message : msg,
+                        buttons : {
+                            ok : {
+                                label     : "Aceptar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            });
         }); //click btn show
 
         $(".btn-delete").click(function () {
             var id = $(this).data("id");
-            // $("#id").val(id);
-            // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-            // var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-            //
-            // btnDelete.click(function () {
-            //     // btnDelete.replaceWith(spinner);
-            //     $("#frmDelete-administracionInstance").submit();
-            //     return false;
-            // });
-            //
-            // $("#modalTitle").html("Eliminar Administración");
-            // $("#modalBody").html("<p>¿Está seguro de querer eliminar este administración?</p>");
-            // $("#modalFooter").html("").append(btnOk).append(btnDelete);
-            // $("#modal-administracion").modal("show");
-            // return false;
+            deleteRow(id);
         });
 
     });

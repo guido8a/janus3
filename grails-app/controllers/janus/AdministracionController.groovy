@@ -67,34 +67,21 @@ class AdministracionController {
 
     def show_ajax() {
         def administracionInstance = Administracion.get(params.id)
-        if (!administracionInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Administracion con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [administracionInstance: administracionInstance]
     } //show
 
-    def delete() {
+    def delete_ajax() {
         def administracionInstance = Administracion.get(params.id)
-        if (!administracionInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Administracion con id " + params.id
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            administracionInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Administracion " + administracionInstance.descripcion
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Administracion " + (administracionInstance.id ? administracionInstance.id : "")
-            redirect(action: "list")
+        if(!administracionInstance){
+            render "no_Error al borrar el registro"
+        }else{
+            try {
+              administracionInstance.delete(flush: true)
+              render "ok_Registro borrado correctamente"
+            }catch(e){
+                println("error al borrar el registro de administracion " + administracionInstance.errors)
+                render "no_Error al borrar el registro"
+            }
         }
     } //delete
 

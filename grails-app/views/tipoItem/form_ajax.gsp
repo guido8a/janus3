@@ -1,5 +1,19 @@
 
-<%@ page import="janus.TipoItem" %>
+<g:form class="form-horizontal" name="frmTipoItem" action="saveTipoItem_ajax">
+    <g:hiddenField name="id" value="${tipoItemInstance?.id}"/>
+
+    <div class="form-group ${hasErrors(bean: tipoItemInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-3 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-2">
+                <g:textField name="codigo" maxlength="1" class="form-control allCaps required" value="${tipoItemInstance?.codigo}" readonly=""/>
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+</g:form>
 
 <div id="create-tipoItemInstance" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave-tipoItemInstance" action="save">

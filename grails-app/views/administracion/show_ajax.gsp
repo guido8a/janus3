@@ -1,77 +1,43 @@
+<g:if test="${administracionInstance?.nombrePrefecto}">
+    <div class="row">
+        <div class="col-md-3 text-info">
+            Nombre del Prefecto
+        </div>
+        <div class="col-md-6">
+            ${administracionInstance?.nombrePrefecto}
+        </div>
+    </div>
+</g:if>
 
-<%@ page import="janus.Administracion" %>
+<g:if test="${administracionInstance?.descripcion}">
+    <div class="row">
+        <div class="col-md-3 text-info">
+            Descripción
+        </div>
+        <div class="col-md-6">
+            ${administracionInstance?.descripcion}
+        </div>
+    </div>
+</g:if>
 
-<div id="show-administracion" class="span5" role="main">
+<g:if test="${administracionInstance?.fechaInicio}">
+    <div class="row">
+        <div class="col-md-3 text-info">
+           Fecha Inicio
+        </div>
+        <div class="col-md-6">
+            <g:formatDate date="${administracionInstance?.fechaInicio}" format="dd-MM-yyyy"/>
+        </div>
+    </div>
+</g:if>
 
-    <form class="form-horizontal">
-    
-    <g:if test="${administracionInstance?.nombrePrefecto}">
-        <div class="control-group">
-            <div>
-                <span id="nombrePrefecto-label" class="control-label label label-inverse">
-                    Nombre del Prefecto
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="nombrePrefecto-label">
-                    <g:fieldValue bean="${administracionInstance}" field="nombrePrefecto"/>
-                </span>
-        
-            </div>
+<g:if test="${administracionInstance?.fechaFin}">
+    <div class="row">
+        <div class="col-md-3 text-info">
+            Fecha Fin
         </div>
-    </g:if>
-    
-    <g:if test="${administracionInstance?.descripcion}">
-        <div class="control-group">
-            <div>
-                <span id="descripcion-label" class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="descripcion-label">
-                    <g:fieldValue bean="${administracionInstance}" field="descripcion"/>
-                </span>
-        
-            </div>
+        <div class="col-md-6">
+            <g:formatDate date="${administracionInstance?.fechaFin}" format="dd-MM-yyyy"/>
         </div>
-    </g:if>
-    
-    <g:if test="${administracionInstance?.fechaInicio}">
-        <div class="control-group">
-            <div>
-                <span id="fechaInicio-label" class="control-label label label-inverse">
-                    Fecha Inicio
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="fechaInicio-label">
-                    <g:formatDate date="${administracionInstance?.fechaInicio}" />
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${administracionInstance?.fechaFin}">
-        <div class="control-group">
-            <div>
-                <span id="fechaFin-label" class="control-label label label-inverse">
-                    Fecha Fin
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="fechaFin-label">
-                    <g:formatDate date="${administracionInstance?.fechaFin}" />
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    </form>
-</div>
+    </div>
+</g:if>
