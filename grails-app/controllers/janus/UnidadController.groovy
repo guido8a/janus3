@@ -1,8 +1,5 @@
 package janus
 
-
-import org.springframework.dao.DataIntegrityViolationException
-
 class UnidadController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -30,88 +27,47 @@ class UnidadController {
         return [unidadInstance: unidadInstance]
     } //form_ajax
 
-    def save() {
-        def unidadInstance
-        if (params.id) {
-            unidadInstance = Unidad.get(params.id)
-            if (!unidadInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Unidad con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            unidadInstance.properties = params
-        }//es edit
-        else {
-            def existe= Unidad.findByCodigo(params.codigo)
-            if(!existe)
-                unidadInstance = new Unidad(params)
-            else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el código ya existe."
-                redirect(action: 'list')
-                return
-            }
-        } //es create
-        if (!unidadInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Unidad " + (unidadInstance.id ? unidadInstance.id : "") + "</h4>"
+    def saveUnidad_ajax() {
+        def unidad
+        def texto = params.id ? 'actualizada' : 'creada'
 
-            str += "<ul>"
-            unidadInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
+        if(params.id){
+            unidad = Unidad.get(params.id)
+            if(!unidad){
+                render "no_Error al guardar la unidad"
             }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+        }else{
+            unidad = new Unidad()
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Unidad " + unidadInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Unidad " + unidadInstance.id
+        params.descripcion = params.descripcion.toUpperCase();
+        unidad.properties = params
+
+        if(!unidad.save(flush:true)){
+            println("error al guardar la unidad " + unidad.errors)
+            render "no_Error al guardar la unidad"
+        }else{
+            render "ok_Unidad ${texto} correctamente"
         }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def unidadInstance = Unidad.get(params.id)
-        if (!unidadInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Unidad con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [unidadInstance: unidadInstance]
     } //show
 
-    def delete() {
+    def delete_ajax() {
         def unidadInstance = Unidad.get(params.id)
-        if (!unidadInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Unidad con id " + params.id
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            unidadInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Unidad " + unidadInstance.id
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Unidad " + (unidadInstance.id ? unidadInstance.id : "")
-            redirect(action: "list")
+        if(!unidadInstance){
+            render "no_Error al borrar la unidad"
+        }else{
+            try {
+                unidadInstance.delete(flush: true)
+                render "ok_Unidad borrada correctamente"
+            }catch(e){
+                println("error al borrar la unidad " + unidadInstance.errors)
+                render "no_Error al borrar la unidad"
+            }
         }
     } //delete
 } //fin controller

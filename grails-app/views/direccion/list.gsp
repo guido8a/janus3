@@ -1,212 +1,210 @@
-
 <%@ page import="janus.Direccion" %>
 <!doctype html>
 <html>
-    <head>
-        <meta name="layout" content="main">
-        <title>
-            Lista de Direcciones
-        </title>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    </head>
-    <body>
+<head>
+    <meta name="layout" content="main">
+    <title>
+        Lista de Direcciones
+    </title>
+</head>
+<body>
 
-        <g:if test="${flash.message}">
-            <div class="row">
-                <div class="span12">
-                    <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                        <a class="close" data-dismiss="alert" href="#">×</a>
-                        ${flash.message}
-                    </div>
-                </div>
-            </div>
-        </g:if>
+<div class="span12 btn-group" role="navigation">
+    <g:link class="link btn btn-info" controller="inicio" action="parametros">
+        <i class="fa fa-arrow-left"></i>
+        Parámetros
+    </g:link>
+    <a href="#" class="btn btn-success btn-new">
+        <i class="fa fa-file"></i>
+        Nueva Dirección
+    </a>
+</div>
 
-        <div class="row">
-            <div class="span9 btn-group" role="navigation">
-                <a href="#" class="btn btn-ajax btn-new">
-                    <i class="icon-file"></i>
-                    Crear  Dirección
-                </a>
-            </div>
-            <div class="span3" id="busqueda-Direccion"></div>
-        </div>
+<div id="list-Direccion" class="span12"  role="main" style="margin-top: 10px;">
 
-        <g:form action="delete" name="frmDelete-Direccion">
-            <g:hiddenField name="id"/>
-        </g:form>
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Jefatura</th>
+            <th style="width: 100px">Acciones</th>
+        </tr>
+        </thead>
+        <tbody class="paginate">
+        <g:each in="${direccionInstanceList}" status="i" var="direccionInstance">
+            <tr>
+                <td>${direccionInstance?.nombre}</td>
+                <td>${direccionInstance?.jefatura}</td>
+                <td>
+                    <a class="btn btn-info btn-xs btn-show" href="#"  title="Ver" data-id="${direccionInstance.id}">
+                        <i class="fa fa-clipboard"></i>
+                    </a>
+                    <a class="btn btn-success btn-xs btn-edit" href="#"  title="Editar" data-id="${direccionInstance.id}">
+                        <i class="fa fa-edit"></i>
+                    </a>
 
-        <div id="list-Direccion" role="main" style="margin-top: 10px;">
+                    <a class="btn btn-danger btn-xs btn-delete" href="#" title="Eliminar" data-id="${direccionInstance.id}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
 
-            <table class="table table-bordered table-striped table-condensed table-hover">
-                <thead>
-                    <tr>
-                    
-                        <g:sortableColumn property="nombre" title="Nombre" />
-                    
-                        <g:sortableColumn property="jefatura" title="Jefatura" />
-                    
-                        <th width="150">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="paginate">
-                <g:each in="${direccionInstanceList}" status="i" var="direccionInstance">
-                    <tr>
-                    
-                        <td>${fieldValue(bean: direccionInstance, field: "nombre")}</td>
-                    
-                        <td>${fieldValue(bean: direccionInstance, field: "jefatura")}</td>
-                    
-                        <td>
-                            <a class="btn btn-small btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${direccionInstance.id}">
-                                <i class="icon-zoom-in icon-large"></i>
-                            </a>
-                            <a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${direccionInstance.id}">
-                                <i class="icon-pencil icon-large"></i>
-                            </a>
+</div>
 
-                            <a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${direccionInstance.id}">
-                                <i class="icon-trash icon-large"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
+<elm:pagination total="${direccionInstanceTotal}" params="${params}" />
 
-        </div>
+<script type="text/javascript">
 
-        <div class="modal hide fade" id="modal-Direccion" style="width: 700px; margin-left: -400px;">
-        %{--<div class="modal hide fade" id="modal-Direccion" style="width: 700px;">--}%
-            <div class="modal-header" id="modalHeader">
-                <button type="button" class="close darker" data-dismiss="modal">
-                    <i class="icon-remove-circle"></i>
-                </button>
+    function createEditRow(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
 
-                <h3 id="modalTitle"></h3>
-            </div>
-
-            <div class="modal-body" id="modalBody">
-            </div>
-
-            <div class="modal-footer" id="modalFooter">
-            </div>
-        </div>
-
-        <script type="text/javascript">
-            var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-            var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
-
-            function submitForm(btn) {
-                if ($("#frmSave-Direccion").valid()) {
-                    btn.replaceWith(spinner);
-                }
-                $("#frmSave-Direccion").submit();
-            }
-
-            $(function () {
-                $('[rel=tooltip]').tooltip();
-
-                $(".paginate").paginate({
-                    maxRows        : 15,
-                    searchPosition : $("#busqueda-Direccion"),
-                    float          : "right"
-                });
-
-                $(".btn-new").click(function () {
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                            btnSave.click(function () {
-                                submitForm(btnSave);
-                                return false;
-                            });
-
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                            $("#modalTitle").html("Crear Dirección");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-Direccion").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn new
-
-                $(".btn-edit").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        data    : {
-                            id : id
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : title + " Dirección",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
                         },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormDireccion();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
-                            btnSave.click(function () {
-                                submitForm(btnSave);
-                                return false;
-                            });
-
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
-                            $("#modalTitle").html("Editar Dirección");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-Direccion").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn edit
-
-                $(".btn-show").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
-                            $("#modalTitle").html("Ver Dirección");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk);
-                            $("#modal-Direccion").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn show
-
-                $(".btn-delete").click(function () {
-                    var id = $(this).data("id");
-                    $("#id").val(id);
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-                    btnDelete.click(function () {
-                        btnDelete.replaceWith(spinner);
-                        $("#frmDelete-Direccion").submit();
+    function submitFormDireccion() {
+        var $form = $("#frmDireccion");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-                    $("#modalTitle").html("Eliminar Dirección");
-                    $("#modalBody").html("<p>¿Está seguro de querer eliminar esta Dirección?</p>");
-                    $("#modalFooter").html("").append(btnOk).append(btnDelete);
-                    $("#modal-Direccion").modal("show");
-                    return false;
-                });
-
+                    }
+                }
             });
+        } else {
+            return false;
+        }
+    }
 
-        </script>
+    function deleteRow(itemId) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este registro? Esta acción no se puede deshacer.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash'></i> Eliminar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        var v = cargarLoader("Eliminando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(action:'delete_ajax')}',
+                            data    : {
+                                id : itemId
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.reload()
+                                    }, 800);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
 
-    </body>
+    $(function () {
+
+        $(".btn-new").click(function () {
+            createEditRow();
+        }); //click btn new
+
+        $(".btn-edit").click(function () {
+            var id = $(this).data("id");
+            createEditRow(id);
+        }); //click btn edit
+
+        $(".btn-show").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(action:'show_ajax')}",
+                data    : {
+                    id : id
+                },
+                success : function (msg) {
+                    bootbox.dialog({
+                        title   : "Direccion",
+                        message : msg,
+                        buttons : {
+                            ok : {
+                                label     : "Aceptar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }); //click btn show
+
+        $(".btn-delete").click(function () {
+            var id = $(this).data("id");
+            deleteRow(id);
+        });
+
+    });
+
+</script>
+
+</body>
 </html>

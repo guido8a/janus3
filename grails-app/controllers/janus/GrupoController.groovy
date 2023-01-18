@@ -589,110 +589,53 @@ class GrupoController {
         return [grupoInstance: grupoInstance]
     } //form_ajax
 
-    def save() {
+    def saveGrupo_ajax() {
 
-//        println("params " + params)
+        def grupo
+        def texto = params.id ? 'actualizado' : 'creado'
 
-        def grupos = Grupo.list()
-        def codigos = []
-        def existe  = 0
-        grupos.each {
-            codigos += it?.codigo
-        }
-
-//        println("codigos " + codigos)
-
-        def grupoInstance
-        if (params.id) {
-            grupoInstance = Grupo.get(params.id)
-            if (!grupoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Grupo con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            grupoInstance.properties = params
-        }//es edit
-        else {
-             codigos.each {
-                 if(it == params.codigo){
-                  existe = 1
-                 }
-             }
-
-            if(existe != 1){
-                grupoInstance = new Grupo(params)
+        if(params.id){
+            grupo = Grupo.get(params.id)
+            if(!grupo){
+                render "no_Error al guardar el grupo"
+            }
+        }else{
+            if(Grupo.findAllByCodigo(params.codigo)){
+                render "no_El código ya se encuentra ingresado"
             }else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el grupo, el código ya existe!!"
-                redirect(action: 'list')
-                return
+                grupo = new Grupo()
             }
-
-
-        } //es create
-        if (!grupoInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Grupo " + (grupoInstance.id ? grupoInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            grupoInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-//            flash.message = "Se ha actualizado correctamente Grupo " + grupoInstance.id
-            flash.message = "Se ha actualizado correctamente Grupo: " + grupoInstance?.descripcion
-        } else {
-            flash.clase = "alert-success"
-//            flash.message = "Se ha creado correctamente Grupo " + grupoInstance.id
-            flash.message = "Se ha creado correctamente Grupo: " + grupoInstance?.descripcion
+        params.descripcion = params.descripcion.toUpperCase();
+        grupo.properties = params
+
+        if(!grupo.save(flush:true)){
+            println("error al guardar el grupo " + grupo.errors)
+            render "no_Error al guardar el grupo"
+        }else{
+            render "ok_Grupo ${texto} correctamente"
         }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def grupoInstance = Grupo.get(params.id)
-        if (!grupoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Grupo con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [grupoInstance: grupoInstance]
     } //show
 
     def delete() {
         def grupoInstance = Grupo.get(params.id)
-        if (!grupoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Grupo con id " + params.id
-            redirect(action: "list")
-            return
-        }
 
-        try {
-            grupoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-//            flash.message = "Se ha eliminado correctamente Grupo " + grupoInstance.id
-            flash.message = "Se ha eliminado correctamente Grupo: " + grupoInstance?.descripcion
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Grupo " + (grupoInstance.id ? grupoInstance.id : "")
-            redirect(action: "list")
+        if(!grupoInstance){
+            render "no_Error al borrar el grupo"
+        }else{
+            try {
+                grupoInstance.delete(flush: true)
+                render "ok_Grupo borrado correctamente"
+            }catch(e){
+                println("error al borrar el grupo " + grupoInstance.errors)
+                render "no_Error al borrar el grupo"
+            }
         }
     } //delete
 } //fin controller

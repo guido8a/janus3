@@ -1,8 +1,6 @@
 package janus
 
 
-import org.springframework.dao.DataIntegrityViolationException
-
 class FuncionController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -21,8 +19,6 @@ class FuncionController {
         if (params.id) {
             funcionInstance = Funcion.get(params.id)
             if (!funcionInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Funcion con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -30,92 +26,52 @@ class FuncionController {
         return [funcionInstance: funcionInstance]
     } //form_ajax
 
-    def save() {
-        params.codigo = params.codigo.toUpperCase();
+    def saveFuncion_ajax() {
+        def funcion
+        def texto = params.id ? 'actualizada' : 'creada'
 
-        def existe = Funcion.findByCodigo(params.codigo)
-
-        def funcionInstance
-        if (params.id) {
-            funcionInstance = Funcion.get(params.id)
-            if (!funcionInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Funcion con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            funcionInstance.properties = params
-        }//es edit
-        else {
-            if(!existe){
-                funcionInstance = new Funcion(params)
+        if(params.id){
+            funcion = Funcion.get(params.id)
+            if(!funcion){
+                render "no_Error al guardar la función"
+            }
+        }else{
+            if(Funcion.findAllByCodigo(params.codigo.toUpperCase())){
+                render "no_El código ya se encuentra ingresado"
             }else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar la función, el código ya existe!!"
-                redirect(action: 'list')
-                return
+                funcion = new Funcion()
             }
-
-        } //es create
-        if (!funcionInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Funcion " + (funcionInstance.id ? funcionInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            funcionInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Funcion " + funcionInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Funcion " + funcionInstance.descripcion
+        params.descripcion = params.descripcion.toUpperCase();
+        params.codigo = params.codigo.toUpperCase();
+        funcion.properties = params
+
+        if(!funcion.save(flush:true)){
+            println("error al guardar la función " + funcion.errors)
+            render "no_Error al guardar la función"
+        }else{
+            render "ok_Función ${texto} correctamente"
         }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def funcionInstance = Funcion.get(params.id)
-        if (!funcionInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Funcion con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [funcionInstance: funcionInstance]
     } //show
 
-    def delete() {
+    def delete_ajax() {
         def funcionInstance = Funcion.get(params.id)
-        if (!funcionInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Funcion con id " + params.id
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            funcionInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Funcion " + funcionInstance.descripcion
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Funcion " + (funcionInstance.descripcion ? funcionInstance.descripcion : "")
-            redirect(action: "list")
+        if(!funcionInstance){
+            render "no_Error al borrar la función"
+        }else{
+            try {
+                funcionInstance.delete(flush: true)
+                render "ok_Función borrada correctamente"
+            }catch(e){
+                println("error al borrar la función " + funcionInstance.errors)
+                render "no_Error al borrar la función"
+            }
         }
     } //delete
 } //fin controller

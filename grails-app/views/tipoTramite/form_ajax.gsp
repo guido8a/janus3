@@ -1,112 +1,83 @@
-<%@ page import="janus.TipoTramite" %>
-
-<div id="create-TipoTramite" class="span" role="main">
-<g:form class="form-horizontal" name="frmSave-TipoTramite" action="save">
+<g:form class="form-horizontal" name="frmTipoTramite" action="saveTipoTramite_ajax">
     <g:hiddenField name="id" value="${tipoTramiteInstance?.id}"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Codigo
+    <div class="form-group ${hasErrors(bean: tipoTramiteInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-2 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-2">
+                <g:textField name="codigo" maxlength="4" minlength="4" class="form-control allCaps required" value="${tipoTramiteInstance?.codigo}" />
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="codigo" maxlength="4" class=" required" value="${tipoTramiteInstance?.codigo}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Descripcion
+    <div class="form-group ${hasErrors(bean: tipoTramiteInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-2 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-8">
+                <g:textField name="descripcion" maxlength="63" class="form-control allCaps required" value="${tipoTramiteInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="descripcion" maxlength="63" class=" required" value="${tipoTramiteInstance?.descripcion}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: tipoTramiteInstance, field: 'padre', 'error')} ">
+        <span class="grupo">
+            <label for="padre" class="col-md-2 control-label text-info">
                 Padre
+            </label>
+            <span class="col-md-8">
+                <g:select name="padre" from="${janus.TipoTramite.list()}" optionKey="id" optionValue="descripcion" class="many-to-one form-control" value="${tipoTramiteInstance?.padre?.id}" noSelection="['null': '']"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:select id="padre" name="padre.id" from="${janus.TipoTramite.list()}" optionKey="id" class="many-to-one " value="${tipoTramiteInstance?.padre?.id}" noSelection="['null': '']"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: tipoTramiteInstance, field: 'tiempo', 'error')} ">
+        <span class="grupo">
+            <label for="tiempo" class="col-md-2 control-label text-info">
                 Tiempo
+            </label>
+            <span class="col-md-3">
+                <g:textField name="tiempo" maxlength="4" class="form-control number required" value="${tipoTramiteInstance?.tiempo}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <div class="input-append">
-                <g:field type="number" name="tiempo" class=" required digits span1" value="${fieldValue(bean: tipoTramiteInstance, field: 'tiempo')}"/>
-                <span class="add-on">días</span>
-            </div>
-
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: tipoTramiteInstance, field: 'tipo', 'error')} ">
+        <span class="grupo">
+            <label for="tipo" class="col-md-2 control-label text-info">
                 Tipo
+            </label>
+            <span class="col-md-3">
+                <g:select name="tipo" from="${['O' : 'Obra', 'C': 'Contrato', 'P' : 'Planilla']}"  optionValue="value" optionKey="key"  class="form-control required" value="${tipoTramiteInstance?.tipo}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:select name="tipo" from="${tipoTramiteInstance.constraints.tipo.inList}" class=" required" value="${tipoTramiteInstance?.tipo}" valueMessagePrefix="tipoTramite.tipo"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Requiere Respuesta
+    <div class="form-group ${hasErrors(bean: tipoTramiteInstance, field: 'requiereRespuesta', 'error')} ">
+        <span class="grupo">
+            <label for="requiereRespuesta" class="col-md-2 control-label text-info">
+                Requiere respuesta
+            </label>
+            <span class="col-md-3">
+                <g:select name="requiereRespuesta" from="${['S' : 'SI', 'N' : 'NO']}" optionValue="value" optionKey="key" class="form-control required" value="${tipoTramiteInstance?.requiereRespuesta}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:select name="requiereRespuesta" from="${tipoTramiteInstance.constraints.requiereRespuesta.inList}" class=" required" value="${tipoTramiteInstance?.requiereRespuesta}"
-                      valueMessagePrefix="tipoTramite.requiereRespuesta"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
 </g:form>
 
+
 <script type="text/javascript">
-    $("#frmSave-TipoTramite").validate({
+
+    var validator = $("#frmTipoTramite").validate({
         rules          : {
             codigo : {
                 remote : {
                     url  : "${createLink(action:'checkCd_ajax')}",
-                    type : "post",
+                    type : "POST",
                     data : {
                         id : "${tipoTramiteInstance?.id}"
                     }
@@ -118,22 +89,25 @@
                 remote : "El código ya se ha ingresado para otro tipo de trámite"
             }
         },
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
 
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormUnidad();
+            return false;
         }
+        return true;
     });
 </script>

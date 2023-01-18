@@ -1,55 +1,50 @@
+<g:form class="form-horizontal" name="frmUnidad" action="saveUnidad_ajax">
+    <g:hiddenField name="id" value="${unidadInstance?.id}"/>
 
-<%@ page import="janus.Unidad" %>
-
-<div id="create-unidadInstance" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave-unidadInstance" action="save">
-        <g:hiddenField name="id" value="${unidadInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="codigo" maxlength="5" style="width: 60px" class=" required" value="${unidadInstance?.codigo}"  disabled="${unidadInstance.id?'true':'false'}"  />
-                <span class="mandatory">*</span>
+    <div class="form-group ${hasErrors(bean: unidadInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-3 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-2">
+                <g:textField name="codigo" maxlength="5" class="form-control required" value="${unidadInstance?.codigo}" readonly="${unidadInstance?.id ? true : false}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" style="width: 310px" maxlength="31" class=" required" value="${unidadInstance?.descripcion}"/>
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: unidadInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-6">
+                <g:textField name="descripcion" maxlength="31" class="form-control allCaps required" value="${unidadInstance?.descripcion}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-    </g:form>
+            </span>
+        </span>
+    </div>
+</g:form>
 
 <script type="text/javascript">
-    var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-    var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>")
-
-    $("#frmSave-unidadInstance").validate({
+    var validator = $("#frmUnidad").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $("[name=btnSave-unidadInstance]").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormUnidad();
+            return false;
+        }
+        return true;
     });
 </script>

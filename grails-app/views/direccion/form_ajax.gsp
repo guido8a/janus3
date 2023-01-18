@@ -1,58 +1,50 @@
+<g:form class="form-horizontal" name="frmDireccion" action="saveDireccion_ajax">
+    <g:hiddenField name="id" value="${direccionInstance?.id}"/>
 
-<%@ page import="janus.Direccion" %>
-
-<div id="create-Direccion" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave-Direccion" action="save">
-        <g:hiddenField name="id" value="${direccionInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Nombre
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="nombre" maxlength="63" class=" required" value="${direccionInstance?.nombre}" style="width:440px;"/>
-                <span class="mandatory">*</span>
+    <div class="form-group ${hasErrors(bean: direccionInstance, field: 'nombre', 'error')} ">
+        <span class="grupo">
+            <label for="nombre" class="col-md-3 control-label text-info">
+                Nombre
+            </label>
+            <span class="col-md-6">
+                <g:textField name="nombre" maxlength="63" class="form-control allCaps required" value="${direccionInstance?.nombre}" />
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Jefatura
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="jefatura" maxlength="63" class=" required" value="${direccionInstance?.jefatura}" style="width:400px;" />
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: direccionInstance, field: 'jefatura', 'error')} ">
+        <span class="grupo">
+            <label for="jefatura" class="col-md-3 control-label text-info">
+                Jefatura
+            </label>
+            <span class="col-md-6">
+                <g:textField name="jefatura" maxlength="63" class="form-control allCaps required" value="${direccionInstance?.jefatura}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-    </g:form>
+            </span>
+        </span>
+    </div>
+</g:form>
 
 <script type="text/javascript">
-    $("#frmSave-Direccion").validate({
+    var validator = $("#frmDireccion").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormDireccion();
+            return false;
         }
+        return true;
     });
 </script>

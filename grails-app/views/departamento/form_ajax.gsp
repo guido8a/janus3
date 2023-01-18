@@ -1,106 +1,75 @@
+<g:form class="form-horizontal" name="frmDepartamento" action="saveDepartamento_ajax">
+    <g:hiddenField name="id" value="${departamentoInstance?.id}"/>
 
-<%@ page import="janus.Departamento" %>
-
-<div id="create-Departamento" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave-Departamento" action="save">
-        <g:hiddenField name="id" value="${departamentoInstance?.id}"/>
-        <g:hiddenField name="documento" value="${0}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="63" class=" required" value="${departamentoInstance?.descripcion}"
-                style="width: 290px;"/>
-                <span class="mandatory">*</span>
+    <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-8">
+                <g:textField name="descripcion" maxlength="63" class="form-control allCaps required" value="${departamentoInstance?.descripcion}" />
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Dirección
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:select id="direccion" name="direccion.id" from="${janus.Direccion.list()}" optionKey="id" class="many-to-one  required" value="${departamentoInstance?.direccion?.id}"
-                          style="width: 300px;"/>
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'direccion', 'error')} ">
+        <span class="grupo">
+            <label for="direccion" class="col-md-3 control-label text-info">
+                Dirección
+            </label>
+            <span class="col-md-8">
+                <g:select name="direccion" from="${janus.Direccion.list()}" optionKey="id" optionValue="nombre" class="form-control many-to-one required" value="${departamentoInstance?.direccion?.id}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="codigo" maxlength="6" class=" required allCaps" value="${departamentoInstance?.codigo}"/>
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-3 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-4">
+                <g:textField name="codigo" maxlength="6" class="form-control allCaps required" value="${departamentoInstance?.codigo}" />
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Permisos
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="permisos" maxlength="124" class="" value="${departamentoInstance?.permisos}"/>
-                
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-
-
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Es requirente de Obras?
-
-                </span>
-            </div>
-
-            <div class="controls">
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: departamentoInstance, field: 'requirente', 'error')} ">
+        <span class="grupo">
+            <label for="requirente" class="col-md-3 control-label text-info">
+                Es requirente de Obras?
+            </label>
+            <span class="col-md-4">
                 <g:select name="requirente" from="${[1: 'SI', 0: 'NO']}" optionKey="key" optionValue="value"
-                          class="form-control" value="${departamentoInstance?.requirente?:0}"/>
+                          class="form-control" value="${departamentoInstance?.requirente ?: 0}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-
-    </g:form>
+            </span>
+        </span>
+    </div>
+</g:form>
 
 <script type="text/javascript">
-    $("#frmSave-Departamento").validate({
+    var validator = $("#frmDepartamento").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormDepartamento();
+            return false;
         }
+        return true;
     });
 </script>
+
+

@@ -1,8 +1,5 @@
 package janus
 
-
-import org.springframework.dao.DataIntegrityViolationException
-
 class DireccionController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -12,7 +9,8 @@ class DireccionController {
     } //index
 
     def list() {
-        [direccionInstanceList: Direccion.list(params), params: params]
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [direccionInstanceList: Direccion.list(params), direccionInstanceTotal: Unidad.count(), params: params]
     } //list
 
     def form_ajax() {
@@ -29,80 +27,49 @@ class DireccionController {
         return [direccionInstance: direccionInstance]
     } //form_ajax
 
-    def save() {
-        def direccionInstance
-        if(params.id) {
-            direccionInstance = Direccion.get(params.id)
-            if(!direccionInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Direccion con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            direccionInstance.properties = params
-        }//es edit
-        else {
-            direccionInstance = new Direccion(params)
-        } //es create
-        if (!direccionInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Direccion " + (direccionInstance.id ? direccionInstance.id : "") + "</h4>"
+    def saveDireccion_ajax() {
+        def direccion
+        def texto = params.id ? 'actualizada' : 'creada'
 
-            str += "<ul>"
-            direccionInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
+        if(params.id){
+            direccion = Direccion.get(params.id)
+            if(!direccion){
+                render "no_Error al guardar la dirección"
             }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+        }else{
+            direccion = new Direccion()
         }
 
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Direccion " + direccionInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Direccion " + direccionInstance.id
+        params.nombre = params.nombre.toUpperCase();
+        params.jefatura = params.jefatura.toUpperCase();
+        direccion.properties = params
+
+        if(!direccion.save(flush:true)){
+            println("error al guardar la dirección " + direccion.errors)
+            render "no_Error al guardar la dirección"
+        }else{
+            render "ok_Dirección ${texto} correctamente"
         }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def direccionInstance = Direccion.get(params.id)
-        if (!direccionInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Direccion con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [direccionInstance: direccionInstance]
     } //show
 
-    def delete() {
+    def delete_ajax() {
         def direccionInstance = Direccion.get(params.id)
-        if (!direccionInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Direccion con id " + params.id
-            redirect(action: "list")
-            return
+        if(!direccionInstance){
+            render "no_Error al borrar la dirección"
+        }else{
+            try {
+                direccionInstance.delete(flush: true)
+                render "ok_Dirección borrada correctamente"
+            }catch(e){
+                println("error al borrar la dirección " + direccionInstance.errors)
+                render "no_Error al borrar la dirección"
+            }
         }
 
-        try {
-            direccionInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Direccion " + direccionInstance.id
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Direccion " + (direccionInstance.id ? direccionInstance.id : "")
-            redirect(action: "list")
-        }
     } //delete
 } //fin controller

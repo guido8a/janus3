@@ -5,8 +5,10 @@
         <div class="span1 bold">Rol</div>
 
         <div class="span3">
-            <elm:select id="rolTramite" name="rolTramite.id" from="${janus.RolTramite.list()}" optionKey="id"
-                        class="many-to-one  required" optionClass="codigo"/>
+%{--            <elm:select id="rolTramite" name="rolTramite.id" from="${janus.RolTramite.list()}" optionKey="id"--}%
+%{--                        class="many-to-one  required" optionClass="codigo"/>--}%
+            <g:select name="rolTramite" from="${janus.RolTramite.list()}" optionKey="id" optionValue="descripcion" class="many-to-one form-control required" />
+
         </div>
     </div>
 

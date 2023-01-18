@@ -1,65 +1,50 @@
+<g:form class="form-horizontal" name="frmFuncion" action="saveFuncion_ajax">
+    <g:hiddenField name="id" value="${funcionInstance?.id}"/>
 
-<%@ page import="janus.Funcion" %>
-
-<div id="create-funcionInstance" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave-funcionInstance" action="save">
-        <g:hiddenField name="id" value="${funcionInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-
-            <g:if test="${funcionInstance?.id}">
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="1" style="width: 20px" class=" required" value="${funcionInstance?.codigo}" readonly="readonly"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:if><g:else>
-            <div class="controls">
-                <g:textField name="codigo" maxlength="1" style="width: 20px" class=" required allCaps" value="${funcionInstance?.codigo}" />
-                <span class="mandatory">*</span>
+    <div class="form-group ${hasErrors(bean: funcionInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-3 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-2">
+                <g:textField name="codigo" maxlength="1" class="form-control allCaps required" value="${funcionInstance?.codigo}" readonly="${funcionInstance?.id ? true : false}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-            </g:else>
-
-
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="31" class=" required" value="${funcionInstance?.descripcion}"/>
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: funcionInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-6">
+                <g:textField name="descripcion" maxlength="31" class="form-control allCaps required" value="${funcionInstance?.descripcion}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-    </g:form>
+            </span>
+        </span>
+    </div>
+</g:form>
 
 <script type="text/javascript">
-    var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-    var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>")
-
-    $("#frmSave-funcionInstance").validate({
+    var validator = $("#frmFuncion").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $("[name=btnSave-funcionInstance]").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormFuncion();
+            return false;
+        }
+        return true;
     });
 </script>

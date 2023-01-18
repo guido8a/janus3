@@ -1,4 +1,3 @@
-
 <g:form class="form-horizontal" name="frmTipoItem" action="saveTipoItem_ajax">
     <g:hiddenField name="id" value="${tipoItemInstance?.id}"/>
 
@@ -8,72 +7,45 @@
                 Código
             </label>
             <span class="col-md-2">
-                <g:textField name="codigo" maxlength="1" class="form-control allCaps required" value="${tipoItemInstance?.codigo}" readonly=""/>
+                <g:textField name="codigo" maxlength="1" class="form-control allCaps required" value="${tipoItemInstance?.codigo}" readonly="${tipoItemInstance?.id ? true : false}"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: tipoItemInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-6">
+                <g:textField name="descripcion" maxlength="20" class="form-control allCaps required" value="${tipoItemInstance?.descripcion}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
     </div>
 </g:form>
 
-<div id="create-tipoItemInstance" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave-tipoItemInstance" action="save">
-        <g:hiddenField name="id" value="${tipoItemInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-
-            <g:if test="${tipoItemInstance?.id}">
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="1" style="width: 20px" class=" required" value="${tipoItemInstance?.codigo}" readonly="readonly"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:if>
-            <g:else>
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="1" style="width: 20px" class=" required allCaps" value="${tipoItemInstance?.codigo}" />
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:else>
-
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="20" style="width: 200px" class=" required" value="${tipoItemInstance?.descripcion}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-    </g:form>
-
 <script type="text/javascript">
-    var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-    var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>")
 
-    $("#frmSave-tipoItemInstance").validate({
+    var validator = $("#frmTipoItem").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $("[name=btnSave-tipoItemInstance]").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormTipoItem();
+            return false;
+        }
+        return true;
     });
 </script>

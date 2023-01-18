@@ -1,65 +1,50 @@
+<g:form class="form-horizontal" name="frmTransporte" action="saveTransporte_ajax">
+    <g:hiddenField name="id" value="${transporteInstance?.id}"/>
 
-<%@ page import="janus.Transporte" %>
-
-<div id="create-transporteInstance" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave-transporteInstance" action="save">
-        <g:hiddenField name="id" value="${transporteInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-            <g:if test="${transporteInstance?.id}">
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="1" style="width: 20px" class=" required" value="${transporteInstance?.codigo}" readonly="readonly"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:if>
-            <g:else>
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="1" style="width: 20px" class=" required allCaps" value="${transporteInstance?.codigo}"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:else>
-
-
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="31" style="width: 280px" class=" required" value="${transporteInstance?.descripcion}"/>
-                <span class="mandatory">*</span>
+    <div class="form-group ${hasErrors(bean: transporteInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-3 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-2">
+                <g:textField name="codigo" maxlength="1" class="form-control allCaps required" value="${transporteInstance?.codigo}" readonly="${transporteInstance?.id ? true : false}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-    </g:form>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: transporteInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-6">
+                <g:textField name="descripcion" maxlength="31" class="form-control allCaps required" value="${transporteInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+</g:form>
 
 <script type="text/javascript">
-    var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-    var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>")
-
-    $("#frmSave-transporteInstance").validate({
+    var validator = $("#frmTransporte").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $("[name=btnSave-transporteInstance]").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormTransporte();
+            return false;
+        }
+        return true;
     });
 </script>

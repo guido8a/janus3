@@ -12,8 +12,8 @@ class DepartamentoController {
     } //index
 
     def list() {
-        def lista = Departamento.findAll("from Departamento order by direccion desc, descripcion")
-        [departamentoInstanceList: lista, params: params]
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [departamentoInstanceList: Departamento.list(params).sort{it.descripcion}, departamentoInstanceTotal: Departamento.count(),  params: params]
     } //list
 
     def form_ajax() {
@@ -30,83 +30,53 @@ class DepartamentoController {
         return [departamentoInstance: departamentoInstance]
     } //form_ajax
 
-    def save() {
+    def saveDepartamento_ajax() {
+        def departamento
+        def texto = params.id ? 'actualizado' : 'creado'
 
-        params.codigo = params.codigo.toUpperCase();
-
-        def departamentoInstance
-        if(params.id) {
-            departamentoInstance = Departamento.get(params.id)
-            if(!departamentoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró el Departamento con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            departamentoInstance.properties = params
-        }//es edit
-        else {
-            departamentoInstance = new Departamento(params)
-        } //es create
-        if (!departamentoInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar el Departamento " + (departamentoInstance.id ? departamentoInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            departamentoInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
+        if(params.id){
+            departamento = Departamento.get(params.id)
+            if(!departamento){
+                render "no_Error al guardar el departamento"
             }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+        }else{
+            if(Departamento.findAllByCodigo(params.codigo.toUpperCase())){
+                render "no_El código ya se encuentra ingresado"
+            }else{
+                departamento = new Departamento()
+            }
         }
 
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente el Departamento " + departamentoInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente el Departamento " + departamentoInstance.descripcion
+        params.descripcion = params.descripcion.toUpperCase();
+        params.codigo = params.codigo.toUpperCase();
+        departamento.properties = params
+
+        if(!departamento.save(flush:true)){
+            println("error al guardar el departamento " + departamento.errors)
+            render "no_Error al guardar el departamento"
+        }else{
+            render "ok_Departamento ${texto} correctamente"
         }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def departamentoInstance = Departamento.get(params.id)
-        if (!departamentoInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Departamento con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [departamentoInstance: departamentoInstance]
     } //show
 
-    def delete() {
+    def delete_ajax() {
         def departamentoInstance = Departamento.get(params.id)
-        if (!departamentoInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Departamento con id " + params.id
-            redirect(action: "list")
-            return
+        if(!departamentoInstance){
+            render "no_Error al borrar el departamento"
+        }else{
+            try {
+                departamentoInstance.delete(flush: true)
+                render "ok_Departamento borrado correctamente"
+            }catch(e){
+                println("error al borrar el departamento " + departamentoInstance.errors)
+                render "no_Error al borrar el departamento"
+            }
         }
 
-        try {
-            departamentoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente el Departamento " + departamentoInstance.descripcion
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar el Departamento " + (departamentoInstance.id ? departamentoInstance.id : "")
-            redirect(action: "list")
-        }
     } //delete
 } //fin controller

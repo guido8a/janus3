@@ -30,93 +30,54 @@ class TransporteController {
         return [transporteInstance: transporteInstance]
     } //form_ajax
 
-    def save() {
-        params.codigo = params.codigo.toUpperCase();
+    def saveTransporte_ajax() {
 
-        def existe = Transporte.findByCodigo(params.codigo)
+        def transporte
+        def texto = params.id ? 'actualizado' : 'creado'
 
-        def transporteInstance
-        if (params.id) {
-            transporteInstance = Transporte.get(params.id)
-            if (!transporteInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Transporte con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-
-            transporteInstance.properties = params
-        }//es edit
-        else {
-            if(!existe){
-                transporteInstance = new Transporte(params)
+        if(params.id){
+            transporte = Transporte.get(params.id)
+            if(!transporte){
+                render "no_Error al guardar el transporte"
+            }
+        }else{
+            if(Transporte.findAllByCodigo(params.codigo.toUpperCase())){
+                render "no_El código ya se encuentra ingresado"
             }else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el transporte, el código ya existe!!"
-                redirect(action: 'list')
-                return
+                transporte = new Transporte()
             }
-
-        } //es create
-        if (!transporteInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Transporte " + (transporteInstance.id ? transporteInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            transporteInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Transporte " + transporteInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Transporte " + transporteInstance.descripcion
+        params.codigo = params.codigo.toUpperCase();
+        params.descripcion = params.descripcion.toUpperCase();
+        transporte.properties = params
+
+        if(!transporte.save(flush:true)){
+            println("error al guardar el transporte " + transporte.errors)
+            render "no_Error al guardar el transporte"
+        }else{
+            render "ok_Transporte ${texto} correctamente"
         }
-        redirect(action: 'list')
+
     } //save
 
     def show_ajax() {
         def transporteInstance = Transporte.get(params.id)
-        if (!transporteInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Transporte con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [transporteInstance: transporteInstance]
     } //show
 
-    def delete() {
+    def delete_ajax() {
         def transporteInstance = Transporte.get(params.id)
-        if (!transporteInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Transporte con id " + params.id
-            redirect(action: "list")
-            return
-        }
-
-        try {
-            transporteInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Transporte " + transporteInstance.descripcion
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Transporte " + (transporteInstance.descripcion ? transporteInstance.descripcion : "")
-            redirect(action: "list")
+        if(!transporteInstance){
+            render "no_Error al borrar el transporte"
+        }else{
+            try {
+                transporteInstance.delete(flush: true)
+                render "ok_Transporte borrado correctamente"
+            }catch(e){
+                println("error al borrar el transporte " + transporteInstance.errors)
+                render "no_Error al borrar el transporte"
+            }
         }
     } //delete
 } //fin controller

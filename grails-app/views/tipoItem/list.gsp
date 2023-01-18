@@ -26,7 +26,7 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th>Código</th>
+            <th style="width: 100px" >Código</th>
             <th>Descripción</th>
             <th style="width: 100px">Acciones</th>
         </tr>

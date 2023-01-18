@@ -86,14 +86,14 @@
                                             <strong style="font-size: 14px"> de medida para los materiales, mano de obra y equipos</strong>
                                         </p>
                                         <p>
-                                            <g:link class="link btn btn-primary btn-xs" controller="unidad" action="list">
+                                            <g:link class="link btn btn-primary btn-xs" controller="grupo" action="list">
                                                 <i class="fa fa-globe fa-2x"></i>
                                                 Grupos de Rubros
                                             </g:link>
                                             <strong style="font-size: 14px"> para clasificar los distintos análisis de precios</strong>
                                         </p>
                                         <p>
-                                            <g:link class="link btn btn-primary btn-xs" controller="unidad" action="list">
+                                            <g:link class="link btn btn-primary btn-xs" controller="transporte" action="list">
                                                 <i class="fa fa-globe fa-2x"></i>
                                                 Transporte
                                             </g:link>

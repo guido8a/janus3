@@ -2,8 +2,6 @@ package janus
 
 import groovy.json.JsonBuilder
 
-import org.springframework.dao.DataIntegrityViolationException
-
 class TipoTramiteController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -13,7 +11,8 @@ class TipoTramiteController {
     } //index
 
     def list() {
-        [tipoTramiteInstanceList: TipoTramite.list(params), params: params]
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [tipoTramiteInstanceList: TipoTramite.list(params), tipoTramiteInstanceTotal: TipoTramite.count(),  params: params]
     } //list
 
     def addDep() {
@@ -62,13 +61,9 @@ class TipoTramiteController {
     }
 
     def checkCd_ajax() {
-        //        println params
         if (params.id) {
             def tipoTramite = TipoTramite.get(params.id)
-//            println params.codigo
-//            println params.codigo.class
-//            println departamento.codigo
-//            println departamento.codigo.class
+
             if (params.codigo == tipoTramite.codigo.toString()) {
                 render true
             } else {
@@ -94,8 +89,6 @@ class TipoTramiteController {
         if (params.id) {
             tipoTramiteInstance = TipoTramite.get(params.id)
             if (!tipoTramiteInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Tipo Tramite con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -103,69 +96,41 @@ class TipoTramiteController {
         return [tipoTramiteInstance: tipoTramiteInstance]
     } //form_ajax
 
-    def save() {
+    def saveTipoTramite_ajax() {
         def tipoTramiteInstance
-        params.codigo = params.codigo.toUpperCase()
-        if (params.id) {
+        def texto = params.id ? 'actualizado' : 'creado'
+
+        if(params.id){
             tipoTramiteInstance = TipoTramite.get(params.id)
-            if (!tipoTramiteInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Tipo Tramite con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            tipoTramiteInstance.properties = params
-        }//es edit
-        else {
-            tipoTramiteInstance = new TipoTramite(params)
-        } //es create
-        if (!tipoTramiteInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Tipo Tramite " + (tipoTramiteInstance.id ? tipoTramiteInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            tipoTramiteInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
+            if(!tipoTramiteInstance){
+                render "no_Error al guardar el tipo de trámite"
             }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+        }else{
+            tipoTramiteInstance = new TipoTramite()
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Tipo Tramite " + tipoTramiteInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Tipo Tramite " + tipoTramiteInstance.id
+        params.codigo = params.codigo.toUpperCase()
+        tipoTramiteInstance.properties = params
+
+        if(!tipoTramiteInstance.save(flush:true)){
+            println("error al guardar  el tipo de trámite " + tipoTramiteInstance.errors)
+            render "no_Error al guardar el tipo de trámite"
+        }else{
+            render "ok_Tipo de trámite ${texto} correctamente"
         }
-        redirect(action: 'list')
+
     } //save
 
     def show_ajax() {
         def tipoTramiteInstance = TipoTramite.get(params.id)
-        if (!tipoTramiteInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Tipo Tramite con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [tipoTramiteInstance: tipoTramiteInstance]
     } //show
 
     def delete() {
         def tipoTramiteInstance = TipoTramite.get(params.id)
+
         if (!tipoTramiteInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Tipo Tramite con id " + params.id
-            redirect(action: "list")
-            return
+            render "no_Error al borrar el tipo de trámite"
         }
 
         def hijos = TipoTramite.countByPadre(tipoTramiteInstance)
@@ -190,22 +155,16 @@ class TipoTramiteController {
                 }
                 str += tramites + " trámite${tramites == 1 ? '' : 's'}"
             }
-            flash.clase = "alert-error"
-            flash.message += str + " por lo que no pudo ser eliminado."
-            redirect(action: "list")
-            return
+            render "no_Error al borrar el tipo de trámite: ${str}"
         }
 
         try {
             tipoTramiteInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Tipo Tramite " + tipoTramiteInstance.id
-            redirect(action: "list")
+            render "ok_Tipo de trámite borrado correctamente"
         }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Tipo Tramite " + (tipoTramiteInstance.id ? tipoTramiteInstance.id : "")
-            redirect(action: "list")
+        catch (e) {
+            println("error al borrar el tipo de trámite" + tipoTramiteInstance.errors)
+            render "no_Error al borrar el tipo de trámite"
         }
     } //delete
 } //fin controller
