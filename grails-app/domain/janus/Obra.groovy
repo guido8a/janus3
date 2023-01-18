@@ -128,8 +128,8 @@ class Obra implements Serializable {
     double indiceCampamento = 0
     double indiceGastoObra = 0
     String coordenadasVia
-    double precioManoObra = 0
-    double precioMateriales = 0
+//    double precioManoObra = 0
+//    double precioMateriales = 0
 
 //    Empresa empresa
 
@@ -264,9 +264,9 @@ class Obra implements Serializable {
             indiceCampo column: 'indicmpo'
             indiceCampamento column: 'indicmpm'
             indiceGastoObra column: 'indigaob'
-            coordenadasVia column: 'obracrvi'
-            precioManoObra column: 'obrapcmo'
-            precioMateriales column: 'obrapcmt'
+//            coordenadasVia column: 'obracrvi'
+//            precioManoObra column: 'obrapcmo'
+//            precioMateriales column: 'obrapcmt'
 //            empresa column: 'empr__id'
 
         }
@@ -397,7 +397,7 @@ class Obra implements Serializable {
         indiceCampamento(blank:true, nullable:true)
         indiceGastoObra(blank:true, nullable:true)
 
-        coordenadasVia(blank:true, nullable:true)
+//        coordenadasVia(blank:true, nullable:true)
 //        empresa(blank:false, nullable:false)
     }
 

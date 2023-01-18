@@ -7,11 +7,12 @@ import com.lowagie.text.PageSize
 import com.lowagie.text.Paragraph
 import com.lowagie.text.pdf.PdfPTable
 import com.lowagie.text.pdf.PdfWriter
+import com.lowagie.text.Font
 
 
 import java.awt.*
 
-class ReportesRubrosController {
+class reportesRubrosController {
 
     def preciosService
     def reportesPdfService
@@ -61,7 +62,7 @@ class ReportesRubrosController {
 
 
     def reporteRubrosTransporteV2(){
-//        println("params " + params)
+        println("params " + params)
         def auxiliar = Auxiliar.get(1)
 
         def obra
@@ -74,7 +75,8 @@ class ReportesRubrosController {
         }
 
         if(params.fechaSalida){
-            fecha1 = new Date().parse("dd-MM-yyyy", params.fechaSalida)
+//            fecha1 = new Date().parse("dd-MM-yyyy", params.fechaSalida)
+            fecha1 = new Date().parse("MM/dd/yyyy", params.fechaSalida)
         }
 
         def bandMat = 0

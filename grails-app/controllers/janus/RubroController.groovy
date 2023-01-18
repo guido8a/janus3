@@ -62,40 +62,22 @@ class RubroController {
     }
 
     def rubroPrincipal() {
-//        println "rubroPrincipal params: $params"
-        def usuario = Persona.get(session.usuario.id)
-//        def empresa = usuario.empresa
-        def aux = Parametros.get(1)
-        def empresa = aux.empresa
+        println "rubroPrincipal params: $params"
         def rubro
-        def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"], "unidad": ["Unidad", "string"]]
+        def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
         def volquetes = []
         def volquetes2 = []
         def choferes = []
+        def aux = Parametros.get(1)
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
         def dpto = Departamento.findAllByPermisosIlike("APU")
         def resps = Persona.findAllByDepartamentoInList(dpto)
-        def datos
 
-        def sql = "select max(substr(itemcdgo, length(emprcdgo)+2,3)::integer)+1 total from item, empr " +
-                "where itemcdgo ilike emprcdgo||'-%' and item.empr__id = empr.empr__id"
-        try {
-            def cn = dbConnectionService.getConnection()
-            datos = cn.rows(sql)
-        } catch (Exception e)
-        {
+        def listaAdqc = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
+        def listaItems = [1: 'Nombre', 2: 'Código']
 
-        }
-
-//        println("sql " + sql)
-//        println("datos " + datos[0].total)
-
-        def cdgo = 1
-        if(datos) {
-            cdgo = datos[0].total
-        }
-
+//        println "depto "+dpto
         def dptoUser = Persona.get(session.usuario.id).departamento
         def modifica = false
         if (dpto.size()>0) {
@@ -103,6 +85,7 @@ class RubroController {
                 if (d.id.toInteger() == dptoUser.id.toInteger())
                     modifica = true
             }
+
         }
 
         grupoTransporte.each {
@@ -110,24 +93,57 @@ class RubroController {
                 choferes = Item.findAllByDepartamento(it)
             if (it.transporte.codigo == "T")
                 volquetes = Item.findAllByDepartamento(it)
+
             volquetes2 += volquetes
+
         }
 
         grupos=Grupo.findAll("from Grupo  where id>3")
-        if (params.idRubro) {
-            rubro = Item.get(params.idRubro)
+        if (params.id) {
+            rubro = Item.get(params.id)
             def items = Rubro.findAllByRubro(rubro)
             items.sort { it.item.codigo }
             resps = rubro.responsable
+            println "grupos: $grupos.id"
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
-             aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps, empresa: empresa]
+             aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
+             listaAdqc: listaAdqc, listaItems: listaItems]
         } else {
-            rubro = new Item()
-            rubro.codigo = cdgo
-            [campos: campos, rubro: rubro, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
-             volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps, empresa: empresa]
+
+//            println "Nuevo .... responsable: ${resps?.id} ${resps}"
+
+            [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
+             volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
+             listaAdqc: listaAdqc, listaItems: listaItems]
         }
     }
+
+    def listaRubros(){
+        println "listaItems" + params
+        def datos;
+        def listaAdqc = ['grpo__id', 'grpo__id', 'grpo__id']
+        def listaItems = ['itemnmbr', 'itemcdgo']
+
+        def select = "select item__id, itemnmbr, itemcdgo, unddcdgo " +
+                "from item, undd, dprt, sbgr "
+        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id "
+        def sqlTx = ""
+        def item = listaAdqc[params.buscarTipo.toInteger()-1]
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def ordn = listaAdqc[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by itemnmbr, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos]
+
+    }
+
 
     def getDatosItem() {
 //        println "get datos items "+params
@@ -144,9 +160,7 @@ class RubroController {
     }
 
     def addItem() {
-//        println "add item " + params
-        def persona = Persona.get(session.usuario.id)
-        def empresa = Parametros.get(1).empresa
+        println "add item " + params
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
         def detalle
@@ -168,11 +182,12 @@ class RubroController {
         if (detalle.item.departamento.subgrupo.grupo.id == 1)
             detalle.rendimiento = 1
         if (!detalle.save(flush: true)) {
-//            println "detalle " + detalle.errors
+            println "detalle " + detalle.errors
         } else {
             rubro.fechaModificacion = new Date()
             rubro.save(flush: true)
-            render "" + item.departamento.subgrupo.grupo.id + ";" + detalle.id + ";" + detalle.item.id + ";" + detalle.cantidad + ";" + detalle.rendimiento + ";" + ((item.tipoLista) ? item.tipoLista?.id : "0")
+            render "" + item.departamento.subgrupo.grupo.id + ";" + detalle.id + ";" + detalle.item.id + ";" +
+                    detalle.cantidad + ";" + detalle.rendimiento + ";" + ((item.tipoLista) ? item.tipoLista?.id : "0")
         }
     }
 
@@ -243,7 +258,7 @@ class RubroController {
         def url = g.createLink(action: "buscaRubro", controller: "rubro")
         def funcionJs = "function(){"
         funcionJs += '$("#modal-rubro").modal("hide");'
-        funcionJs += 'location.href="' + g.createLink(action: 'rubroPrincipal', controller: 'rubro') + '?idRubro="+$(this).attr("regId");'
+        funcionJs += 'location.href="' + g.createLink(action: 'rubroPrincipal', controller: 'rubro') + '/"+$(this).attr("regId");'
         funcionJs += '}'
         def numRegistros = 20
         def extras = " and tipoItem = 2 and empr__id = ${empresa.id}"
@@ -420,10 +435,6 @@ class RubroController {
     def save() {
 //        println "save rubro " + params.rubro
 //        println("params " +  params)
-        def persona = Persona.get(session.usuario.id)
-        def empresa = persona.empresa
-        def existente
-
         params.rubro.codigo = params.rubro.codigo.toUpperCase()
         params.rubro.codigoEspecificacion = params.rubro.codigoEspecificacion.toUpperCase()
 
@@ -433,19 +444,10 @@ class RubroController {
             params.remove("rubro.fecha")
             rubro.tipoItem = TipoItem.get(2)
             rubro.fechaModificacion = new Date()
-
-/*
-            if(rubro?.codigo?.contains(empresa?.codigo?.toString()?.toUpperCase())){
-                params.rubro.codigo = empresa?.codigo?.toUpperCase() + "-" + params.rubro.codigo
-            }
-*/
-
         } else {
             rubro = new Item(params)
-            rubro.empresa = empresa
             params.rubro.fecha = new Date()
             rubro.tipoItem = TipoItem.get(2)
-            params."rubro.codigo" = empresa?.codigo?.toUpperCase() + "-" + params."rubro.codigo"
         }
 
         if (params.rubro.registro != "R") {
@@ -460,53 +462,33 @@ class RubroController {
 
         rubro.properties = params.rubro
         rubro.tipoItem = TipoItem.get(2)
-
+//        println "ren " + rubro.rendimiento
         if (!rubro.save(flush: true)) {
             println "error " + rubro.errors
         }else{
             if(rubro.codigoEspecificacion!="" && rubro.codigoEspecificacion){
                 def rubros = Item.findByCodigoNotEqualAndCodigoEspecificacion(rubro.codigo,rubro.codigoEspecificacion,[sort:"codigo"])
+//                println "mismo codigo "+rubros
                 if(rubros){
+//                    println "actualizando "+rubros.especificaciones+"  "+rubros.foto
                     rubro.especificaciones=rubros.especificaciones
                     rubro.save(flush: true)
                 }
+
             }
+
         }
 
-        redirect(action: 'rubroPrincipal', params: [idRubro: rubro.id])
+        redirect(action: 'rubroPrincipal', params: [id: rubro.id])
     } //save
 
     def repetido = {
-        println("params " + params)
-        def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
-        def existentes
-
         if (!params.id) {
-            existentes = Item.findAllByCodigoAndEmpresa(empresa?.codigo?.toUpperCase() + "-" + params.codigo?.toUpperCase(), empresa)
-            if(existentes){
-                render "no"
-            }else{
-                render "ok"
-            }
-        }else{
-            def rubro = Item.get(params.id)
-            if(rubro?.codigo?.contains(empresa?.codigo?.toString()?.toUpperCase())){
-                existentes = Item.findAllByCodigoAndEmpresaAndIdNotEqual((empresa?.codigo?.toUpperCase() + "-" + params.codigo?.toUpperCase()), empresa, rubro?.id?.toLong())
-                if(existentes){
-                    render "no"
-                }else{
-                    render "ok"
-                }
-            }else{
-                existentes = Item.findAllByCodigoAndEmpresaAndIdNotEqual(params.codigo, empresa, rubro?.id?.toLong())
-                if(existentes){
-                    render "no"
-                }else{
-                    render "ok"
-                }
-            }
-        }
+            def hayOtros = Item.findAllByCodigo(params.codigo?.toUpperCase()).size() > 0
+//        println "repetido: " + hayOtros
+            render hayOtros ? "repetido" : "ok"
+        } else
+            render "ok"
     }
 
     def show_ajax() {

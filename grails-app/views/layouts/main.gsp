@@ -40,7 +40,8 @@
     <asset:stylesheet src="/apli/bootstrap-datetimepicker.min.css"/>
 
     <asset:javascript src="/jquery/jquery-2.2.4.js"/>
-    <asset:javascript src="/jquery/jquery-ui.js"/>
+    <asset:javascript src="/jquery/jquery-ui-1.10.2.custom.js"/>
+    %{--<asset:javascript src="/jquery/ui.js"/>--}%
 
     <asset:javascript src="/apli/moment.js"/>
     <asset:javascript src="/apli/moment-with-locales.js"/>

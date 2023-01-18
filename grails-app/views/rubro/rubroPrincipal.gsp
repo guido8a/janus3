@@ -6,19 +6,10 @@
     <title>
         Rubros
     </title>
-
-    <asset:stylesheet src="/jquery/plugins/box/css/jquery.luz.box.css"/>
-
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
     <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
-    <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
 
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 </head>
 
 <body>
@@ -91,18 +82,18 @@
             Ilust.
         </a>
     </g:if>
-    <g:if test="${session.perfil.codigo == 'APRB' && rubro?.aprobado == null && rubro?.id}">
-        <a href="#" class="btn btn-ajax btn-new btn-success" id="btnRegistrar" title="Aprobar el rubro">
-            <i class="icon-check"></i>
-            Aprobar
-        </a>
-    </g:if>
-    <g:if test="${session.perfil.codigo == 'APRB' && rubro?.aprobado == 'R'}">
-        <a href="#" class="btn btn-ajax btn-new btn-warning" id="btnQuitarRegistro" title="Quitar el aprobado del rubro">
-            <i class="icon-check"></i>
-            Desaprobar
-        </a>
-    </g:if>
+    %{--<g:if test="${session.perfil.codigo == 'APRB' && rubro?.aprobado == null && rubro?.id}">--}%
+        %{--<a href="#" class="btn btn-ajax btn-new btn-success" id="btnRegistrar" title="Aprobar el rubro">--}%
+            %{--<i class="icon-check"></i>--}%
+            %{--Aprobar--}%
+        %{--</a>--}%
+    %{--</g:if>--}%
+    %{--<g:if test="${session.perfil.codigo == 'APRB' && rubro?.aprobado == 'R'}">--}%
+        %{--<a href="#" class="btn btn-ajax btn-new btn-warning" id="btnQuitarRegistro" title="Quitar el aprobado del rubro">--}%
+            %{--<i class="icon-check"></i>--}%
+            %{--Desaprobar--}%
+        %{--</a>--}%
+    %{--</g:if>--}%
 </div>
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
@@ -119,10 +110,10 @@
 
                 <div class="col-md-1" style="width: 140px;">
                     Código
-                <input type="text" name="rubro.codigo" class="col-md-12 allCaps required input-small"
+                <g:textField name="rubro.codigo" id="input_codigo" class="col-md-12 allCaps required input-small"
                        value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"
-                id="input_codigo" maxlength="30" minlength="2">
-                                    %{--<input type="text" name="rubro.codigo" class="col-md-20 allCaps required input-small"--}%
+                maxlength="30" minlength="2"/>
+                                    %{--<g:textField name="rubro.codigo" class="col-md-20 allCaps required input-small"--}%
                                            %{--value="${rubro?.codigo}"--}%
                                            %{--id="input_codigo" maxlength="30" minlength="2">--}%
 
@@ -132,15 +123,15 @@
 
                 <div class="col-md-2" style="margin-left: -20px">
                     Código Especificación
-                    <input type="text" name="rubro.codigoEspecificacion" class="allCaps required input-small"
-                           value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30">
+                    <g:textField name="rubro.codigoEspecificacion" class="allCaps required input-small"
+                           value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30"/>
 
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
 
                 <div class="col-md-5" style="margin-left: -10px">
                     Descripción
-                    <input type="text" name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion">
+                    <g:textField name="rubro.nombre" class="col-md-12" value="${rubro?.nombre}" id="input_descripcion"/>
                 </div>
 
                 <div class="col-md-2" style="margin-left: -10px">
@@ -150,7 +141,7 @@
 
                 <div class="col-md-1"  style="width: 170px; margin-left: -10px">
                     Fecha Modificación
-                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm " disabled="true" id="fchaMod"/>
+                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm" disabled="true" id="fchaMod"/>
                 </div>
 
             </div>
@@ -159,7 +150,7 @@
                 <div class="col-md-2" style="width: 150px;">
                     Dirección responsable
                     <g:select name="rubro.grupo.id" id="selClase" from="${grupos}" class="col-md-12" optionKey="id" optionValue="descripcion"
-                              value="${rubro?.departamento?.subgrupo?.grupo?.id}" noSelection="['': '--Seleccione--']"/>
+                              value="${rubro?.departamento?.subgrupo?.grupo?.id}" noSelection="${['': '--Seleccione--']}"/>
                 </div>
 
                 <div class="col-md-2" style="width: 310px; margin-left: 10px">
@@ -193,16 +184,16 @@
                     Responsable: <br>
                     <g:if test="${rubro?.aprobado != 'R'}">
                         <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
-                        <input type="text" name="persona" class="col-md-12" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly>
+                        <g:textField name="persona" class="col-md-12" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly="true" />
                     </g:if>
                     <g:else>
                         <g:textField name="persona_res" value="${rubro?.responsable}" readonly="true" title="${rubro?.responsable}" class="col-md-12"/>
                     </g:else>
                 </div>
-                <div class="col-md-1" style="width: 50px; color: #01a">
-                    Estado
-                    <g:textField name="estadoSuper" value="${rubro?.aprobado == null ? 'N' : 'R'}" readonly="true" title="${rubro?.aprobado == null ? 'Ingresado' : 'Registrado'}" class="col-md-12"/>
-                </div>
+                %{--<div class="col-md-1" style="width: 50px; color: #01a">--}%
+                    %{--Estado--}%
+                    %{--<g:textField name="estadoSuper" value="${rubro?.aprobado == null ? 'N' : 'R'}" readonly="true" title="${rubro?.aprobado == null ? 'Ingresado' : 'Registrado'}" class="col-md-12"/>--}%
+                %{--</div>--}%
             </div>
         </g:form>
     </div>
@@ -222,72 +213,90 @@
 
             <div class="col-md-3" style="width: 180px;">
                 % costos indirectos
-                <input type="text" style="width: 40px;" id="costo_indi" value="20.0">
+                <g:textField style="width: 40px;" name="costo_indi" value="20.0"/>
             </div>
 
-            <div class="col-md-2" style="width: 300px; margin-left: -20px; display: inline">
-                Fecha
-                <elm:datepicker name="item.fecha" id="fecha_precios"  style="width: 160px" value="${new java.util.Date()}"
-                                format="dd-MM-yyyy"/>
+            <div class="form-group ${hasErrors(bean: administracionInstance, field: 'fechaInicio', 'error')} ">
+                <span class="grupo">
+                    <label class="col-md-1 control-label text-info">
+                        Fecha
+                    </label>
+                    <span class="col-md-2" style="width: 150px; margin-left: -40px">
+                        <input aria-label="" name="item.fecha" id='fecha_precios' type='text' class="form-control required input-small"
+                               value="${new java.util.Date().format("dd-MM-yyyy")}"/>
+                    </span>
+                </span>
             </div>
-
-
+            
             <g:if test="${rubro}">
                 <g:if test="${rubro?.aprobado != 'R'}">
-                    <div class="col-md-2" style="margin-left: -20px">
+                    <div class="col-md-2" style="margin-left: 30px">
                         <a class="btn btn-small btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
                             Copiar composición
                         </a>
                     </div>
-                    <div class="col-md-1" style="margin-left: -10px; width: 80px">
+                    <div class="col-md-1" style="margin-left: -20px; width: 40px">
                         <a class="btn btn-small btn-info infoItem" href="#" rel="tooltip" title="Información">
                             <i class="icon-exclamation"></i> Info</a>
                     </div>
                 </g:if>
             </g:if>
+            <g:else>
+                <div class="col-md-2" style="margin-left: 30px">
+                    <a class="btn btn-small btn-warning " href="#" rel="tooltip" title="Copiar " disabled>
+                        Copiar composición
+                    </a>
+                </div>
+                <div class="col-md-1" style="margin-left: -20px; width: 40px">
+                    <a class="btn btn-small btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>
+                        <i class="icon-exclamation"></i> Info</a>
+                </div>
+            </g:else>
+
 
         </div>
 
         <div class="row-fluid" style="margin-bottom: 5px">
             <div class="col-md-2">
                 CÓDIGO
-                <input type="text" name="item.codigo" id="cdgo_buscar" class="col-md-24" readonly="true">
+                <g:textField name="item.codigo" id="cdgo_buscar" class="col-md-12 allCaps required input-small" readonly="true"/>
                 <input type="hidden" id="item_id">
                 <input type="hidden" id="item_tipoLista">
             </div>
 
-            <div class="col-md-1" style="margin-top: 20px; width: 80px">
-                <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">
+            <div class="col-md-1" style="margin-top: 16px; width: 60px; margin-left: -28px">
+                <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar rubro" id="btnRubro">
                     <i class="icon-search"></i> Buscar
                 </a>
             </div>
 
             <div class="col-md-5">
                 DESCRIPCIÓN
-                <input type="text" name="item.descripcion" id="item_desc" class="col-md-11" readonly="true">
+                <g:textField name="item.descripcion" id="item_desc" class="col-md-12" readonly="true"/>
             </div>
 
-            <div class="col-md-1" style="margin-right: 0px;margin-left: -30px;">
+            <div class="col-md-1" style="margin-right: 0px;margin-left: -20px; width: 120px">
                 UNIDAD
-                <input type="text" name="item.unidad" id="item_unidad" class="col-md-8" readonly="true">
+                <g:textField name="item.unidad" id="item_unidad" class="col-md-8" readonly="true"/>
             </div>
 
-            <div class="col-md-1" style="margin-left: -5px !important;">
+            <div class="col-md-1" style="margin-left: -50px !important; width: 120px">
                 CANTIDAD
-                <input type="text" name="item.cantidad" class="col-md-12" id="item_cantidad" value="0" style="text-align: right">
+                <g:textField name="item.cantidad" class="col-md-12" id="item_cantidad" value="0" style="text-align: right"/>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-1" style="width: 160px; margin-left: -20px">
                 RENDIMIENTO
-                <input type="text" name="item.rendimiento" class="col-md-8" id="item_rendimiento" value="1" style="text-align: right; color: #44a;width: 170px;">
+                <g:textField name="item.rendimiento" class="col-md-12" id="item_rendimiento" value="1"
+                             style="text-align: right; color: #44a;"/>
             </div>
 
             <g:if test="${rubro?.aprobado != 'R'}">
-                <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 22px;margin-left: 10px">
-                    <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
-                        <i class="icon-plus"></i>
+                <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 16px;margin-left: -10px; width: 90px">
+                    <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
+                        <i class="fa fa-plus"></i>
                     </a>
-                    <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip" title="Precio" id="btn_precio">$</a>
+                    <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Precio" id="btn_precio">$</a>
                 </div>
             </g:if>
         </div>
@@ -336,8 +345,8 @@
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
                             <g:if test="${rubro?.aprobado != 'R'}">
-                                <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                    <i class="icon-trash"></i>
+                                <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                    <i class="fa fa-trash"></i>
                                 </a>
                             </g:if>
                         </td>
@@ -384,8 +393,8 @@
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
                             <g:if test="${rubro?.aprobado != 'R'}">
-                                <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                    <i class="icon-trash"></i>
+                                <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                    <i class="fa fa-trash"></i>
                                 </a>
                             </g:if>
                         </td>
@@ -429,8 +438,8 @@
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
                             <g:if test="${rubro?.aprobado != 'R'}">
-                                <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                    <i class="icon-trash"></i>
+                                <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                    <i class="fa fa-trash"></i>
                                 </a>
                             </g:if>
                         </td>
@@ -487,16 +496,20 @@
     </div>
 </div>
 
-<div class="modal large hide fade " id="modal-transporte" style=";overflow: hidden;">
-    <div class="modal-header btn-primary">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+%{--<div class="modal large hide fade " id="modal-transporte" style=";overflow: hidden;">--}%
+%{--<div id="modal-transporte" style=";overflow: hidden;">--}%
+<div id="dialTransporte" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+    %{--<div class="modal-header btn-primary">--}%
+        %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modal_trans_title">
-            Variables de transporte
-        </h3>
-    </div>
+        %{--<h3 id="modal_trans_title">--}%
+            %{--Variables de transporte--}%
+        %{--</h3>--}%
+    %{--</div>--}%
 
-    <div class="modal-body" id="modal_trans_body">
+    %{--<div class="modal-body" id="modal_trans_body">--}%
+    <div class="row-fluid" id="modal_trans_body">
         <div class="row-fluid">
             <div class="col-md-2">
                 Volquete
@@ -511,7 +524,7 @@
             </div>
 
             <div class="col-md-3">
-                <input type="text" style="width: 60px;text-align: right" disabled="" id="costo_volqueta">
+                <g:textField style="width: 60px;text-align: right" disabled="" name="costo_volqueta" />
             </div>
         </div>
 
@@ -529,7 +542,7 @@
             </div>
 
             <div class="col-md-3">
-                <input type="text" style="width: 60px;text-align: right" disabled="" id="costo_chofer">
+                <g:textField style="width: 60px;text-align: right" disabled="" name="costo_chofer"/>
             </div>
         </div>
 
@@ -549,7 +562,7 @@
             </div>
 
             <div class="col-md-3">
-                <input type="text" style="width: 50px;" id="dist_p1" value="0.00">
+                <g:textField style="width: 50px;" name="dist_p1" value="0.00"/>
             </div>
 
             <div class="col-md-4">
@@ -557,7 +570,7 @@
             </div>
 
             <div class="col-md-3">
-                <input type="text" style="width: 50px;" id="dist_v1" value="0.00">
+                <g:textField style="width: 50px;" name="dist_v1" value="0.00"/>
             </div>
 
         </div>
@@ -568,7 +581,7 @@
             </div>
 
             <div class="col-md-3">
-                <input type="text" style="width: 50px;" id="dist_p2" value="0.00">
+                <g:textField style="width: 50px;" name="dist_p2" value="0.00"/>
             </div>
 
             <div class="col-md-4">
@@ -576,7 +589,7 @@
             </div>
 
             <div class="col-md-3">
-                <input type="text" style="width: 50px;" id="dist_v2" value="0.00">
+                <g:textField style="width: 50px;" name="dist_v2" value="0.00"/>
             </div>
         </div>
 
@@ -590,7 +603,7 @@
             </div>
 
             <div class="col-md-3">
-                <input type="text" style="width: 50px;" id="dist_v3" value="0.00">
+                <g:textField style="width: 50px;" name="dist_v3" value="0.00"/>
             </div>
         </div>
 
@@ -656,16 +669,18 @@
     </div>
     <input type="hidden" id="totMat_h">
 
-    <div class="modal-footer" id="modal_trans_footer">
-        <a href="#" data-dismiss="modal" class="btn btn-primary">OK</a>
-    </div>
+    %{--<div class="modal-footer" id="modal_trans_footer">--}%
+        %{--<a href="#" data-dismiss="modal" class="btn btn-primary">OK</a>--}%
+    %{--</div>--}%
 
     <div id="imprimirTransporteDialog">
         <fieldset>
-            <div class="col-md-4" style="margin-top: 10px">
+            <div class="col-md-6" style="margin-top: 10px">
                 Se imprime a la Fecha de:
-                <elm:datepicker  name="fechaSalida" class="col-md-8" id="fechaSalidaId" value="${rubro?.fechaModificacion}"
-                                 style="width: 100px"/>
+                <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fecha}" disabled="true" id="fechaCreacion"/>
+                <elm:datepicker  name="fechaSalida" class="col-md-8" id="fechaSalidaId" format="dd-MM-yyyy hh:mm"
+                                 value="${rubro?.fechaModificacion}"
+                                 style="width: 180px"/>
             </div>
 
             <div class="col-md-4" style="margin-top: 10px;">
@@ -676,9 +691,9 @@
 
     <div id="copiar_dlg">
         <input type="hidden" id="rub_select">
-        Factor: <input type="text" id="factor" class="ui-corner-all" style="width:150px;">
+        Factor: <g:textField name="factor" class="ui-corner-all" style="width:150px;"/>
     </div>
-
+    </fieldset>
 </div>
 
 <div class="modal hide fade" id="modal-tree">
@@ -698,37 +713,32 @@
 <div id="busqueda" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid" style="margin-left: 20px">
-            <div class="col-md-2">Grupo</div>
+            <div class="col-md-2">Grupo
+                <g:select name="buscarGrupo_name"  id="buscarGrupo"
+                      from="['1': 'Materiales', '2': 'Mano de Obra', '3': 'Equipos']"
+                      optionKey="key" optionValue="value"/>
+            </div>
 
-            <div class="col-md-2">Buscar Por</div>
+            <div class="col-md-2">Buscar Por
+                <g:select name="buscarPor" class="buscarPor" from="${[1: 'Nombre', 2: 'Código']}"
+                      style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
 
-            <div class="col-md-2">Criterio</div>
-
-            <div class="col-md-2">Ordenado por</div>
-        </div>
-
-        <div class="row-fluid" style="margin-left: 20px">
-            <div class="col-md-2">
-                <g:select name="buscarGrupo_name"  id="buscarGrupo" from="['1': 'Materiales', '2': 'Mano de Obra', '3': 'Equipos']"
-                          style="width: 100%" optionKey="key" optionValue="value"/></div>
-
-            <div class="col-md-2"><g:select name="buscarPor" class="buscarPor" from="${[1: 'Nombre', 2: 'Código']}"
-                                         style="width: 100%" optionKey="key"
-                                         optionValue="value"/></div>
-
-            <div class="col-md-2">
+            <div class="col-md-2">Criterio
                 <g:textField name="criterio" class="criterio" style="width: 80%"/>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-2">Ordenado por
                 <g:select name="ordenar" class="ordenar" from="${[1: 'Nombre', 2: 'Código']}"
-                          style="width: 100%" optionKey="key"
-                          optionValue="value"/></div>
-
-            <div class="col-md-2" style="margin-left: 60px"><button class="btn btn-info" id="btn-consultar"><i
+                      style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="btn-consultar"><i
                     class="icon-check"></i> Consultar
-            </button></div>
-
+            </button>
+            </div>
         </div>
     </fieldset>
 
@@ -738,7 +748,53 @@
     </fieldset>
 </div>
 
+
+<div id="listaRbro" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+            <div class="col-md-2">
+                Tipo
+                <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaAdqc}" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
+                      optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Criterio
+                <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+                <g:select name="ordenar" class="ordenar" from="${listaAdqc}" style="width: 100%" optionKey="key"
+                          optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="cnsl-rubros"><i class="fa fa-search"></i> Consultar</button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaAdqc" style="height: 460px; overflow: auto">
+        </div>
+    </fieldset>
+</div>
+
+
 <script type="text/javascript">
+
+    $('#fecha_precios').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        // daysOfWeekDisabled: [0, 6],
+        sideBySide: true,
+        icons: {
+        }
+    });
+
 
     function validarNumDec(ev) {
         /*
@@ -775,7 +831,7 @@
         modal: true,
         draggable: false,
         width: 1000,
-        height: 600,
+        height: 500,
         position: 'center',
         title: 'Items'
     });
@@ -913,7 +969,8 @@
         var idRubro = '${rubro?.id}';
         $.box({
             imageClass: "box_info",
-            text: "Está seguro de cambiar el estado de este"  + '<p style="margin-left: 42px">' + "rubro a " + '<strong style="color: #1a7031">' + "APROBADO" + "?" + '</strong>' + '</p>',
+            text: "Está seguro de cambiar el estado de este"  + '<p style="margin-left: 42px">' + "rubro a " +
+            '<strong style="color: #1a7031">' + "APROBADO" + "?" + '</strong>' + '</p>',
             title: "Registrar rubro",
             dialog: {
                 resizable: false,
@@ -1021,7 +1078,7 @@
                     data     : data,
                     success  : function (msg) {
                         if(tipo=="H"){
-                            window.location.href="${g.createLink(action: 'rubroPrincipal')}?idRubro="+id
+                            window.location.href="${g.createLink(action: 'rubroPrincipal')}/"+id
                         }
                         var tr = $("<tr class='item_row'>");
                         var td = $("<td>");
@@ -1639,9 +1696,9 @@
             </g:if>
         });
 
-        <g:if test="${!rubro?.departamento?.subgrupo?.grupo?.id}">
-        $("#selClase").val("");
-        </g:if>
+        %{--<g:if test="${!rubro?.departamento?.subgrupo?.grupo?.id}">--}%
+        %{--$("#selClase").val("");--}%
+        %{--</g:if>--}%
         $("#costo_indi").blur(function () {
             var indi = $(this).val()
             if (isNaN(indi) || indi * 1 < 0) {
@@ -1680,8 +1737,19 @@
             location.href = url
         });
 
-        $("#imprimir").click(function () {
+        $("#imprimir").click(function (e) {
             $("#imprimirTransporteDialog").dialog("open");
+        });
+
+        $("#dialTransporte").dialog({
+            autoOpen: false,
+            resizable: true,
+            modal: true,
+            draggable: false,
+            width: 1000,
+            height: 500,
+            position: 'center',
+            title: 'Rubros'
         });
 
         $("#transporte").click(function () {
@@ -1703,7 +1771,9 @@
                 });
                 $(this).removeClass("active")
             } else {
-                $("#modal-transporte").modal("show");
+//                $("#modal-transporte").modal("show");
+                $("#dialTransporte").dialog("open");
+                $(".ui-dialog-titlebar-close").html("x")
             }
         })
 
@@ -2114,55 +2184,60 @@
             });
         });
 
+//        $("#btn_lista").click(function () {
+//            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+//            $("#modalTitle").html("Lista de rubros");
+//            $("#modalFooter").html("").append(btnOk);
+//            $(".contenidoBuscador").html("")
+//            $("#tipos").hide()
+//            $("#btn_reporte").show()
+//            $("#btn_excel").show()
+//            $("#modal-rubro").modal("show");
+//            $("#buscarDialog").unbind("click")
+//            $("#buscarDialog").bind("click", enviar)
+//            setTimeout( function() { $( '#criterio' ).focus() }, 500 );
+//        }); //click btn new
+
         $("#btn_lista").click(function () {
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            $("#modalTitle").html("Lista de rubros");
-            $("#modalFooter").html("").append(btnOk);
-            $(".contenidoBuscador").html("")
-            $("#tipos").hide()
-            $("#btn_reporte").show()
-            $("#btn_excel").show()
-            $("#modal-rubro").modal("show");
-            $("#buscarDialog").unbind("click")
-            $("#buscarDialog").bind("click", enviar)
-            setTimeout( function() { $( '#criterio' ).focus() }, 500 );
-        }); //click btn new
+            $("#listaRbro").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
+        });
 
-        %{--$("#cdgo_buscar").dblclick(function () {--}%
-        %{--    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
-        %{--    $("#modalTitle").html("Lista de items");--}%
-        %{--    $("#modalFooter").html("").append(btnOk);--}%
-        %{--    $(".contenidoBuscador").html("")--}%
-        %{--    $("#tipos").show()--}%
-        %{--    $("#btn_reporte").hide()--}%
-        %{--    $("#btn_excel").hide()--}%
-        %{--    $("#modal-rubro").modal("show");--}%
-        %{--    $("#buscarDialog").unbind("click")--}%
-        %{--    $("#buscarDialog").bind("click", enviarItem)--}%
-        %{--    setTimeout( function() { $( '#criterio' ).focus() }, 500 );--}%
-        %{--});--}%
+        $("#listaRbro").dialog({
+            autoOpen: false,
+            resizable: true,
+            modal: true,
+            draggable: false,
+            width: 1000,
+            height: 500,
+            position: 'center',
+            title: 'Rubros'
+        });
 
-        %{--$("#cdgo_buscar").blur(function () {--}%
-        %{--    if ($("#item_id").val() == "" && $("#cdgo_buscar").val() != "") {--}%
-        %{--        $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'buscarRubroCodigo')}",--}%
-        %{--            data     : "codigo=" + $("#cdgo_buscar").val(),--}%
-        %{--            success  : function (msg) {--}%
-        %{--                if (msg != "-1") {--}%
-        %{--                    var parts = msg.split("&&")--}%
-        %{--                    $("#item_tipoLista").val(parts[1])--}%
-        %{--                    $("#item_id").val(parts[0])--}%
-        %{--                    $("#item_desc").val(parts[2])--}%
-        %{--                    $("#item_unidad").val(parts[3])--}%
-        %{--                } else {--}%
-        %{--                    $("#item_tipoLista").val("")--}%
-        %{--                    $("#item_id").val("")--}%
-        %{--                    $("#item_desc").val("")--}%
-        %{--                    $("#item_unidad").val("")--}%
-        %{--                }--}%
-        %{--            }--}%
-        %{--        });--}%
-        %{--    }--}%
-        %{--});--}%
+        $("#cnsl-rubros").click(function () {
+            buscaRubros();
+        });
+
+        function buscaRubros() {
+            var buscarPor = $("#buscarPor").val();
+            var tipo = $("#buscarTipo").val();
+            var criterio = $("#criterioCriterio").val();
+            var ordenar = $("#ordenar").val();
+            $.ajax({
+                type: "POST",
+                url: "${createLink(controller: 'rubro', action:'listaRubros')}",
+                data: {
+                    buscarPor: buscarPor,
+                    buscarTipo: tipo,
+                    criterio: criterio,
+                    ordenar: ordenar
+
+                },
+                success: function (msg) {
+                    $("#divTablaAdqc").html(msg);
+                }
+            });
+        }
 
         $("#cdgo_buscar").keydown(function (ev) {
             if (ev.keyCode * 1 != 9 && (ev.keyCode * 1 < 37 || ev.keyCode * 1 > 40)) {
@@ -2203,7 +2278,7 @@
             if (resp == "-1") {
                 msg += "<br><strong>Error:</strong> Seleccione un responsable."
             }
-
+            console.log('Grabar: ', desc);
             $.ajax({
                 type : "POST",
                 url : "${g.createLink(controller: 'rubro', action:'repetido')}",

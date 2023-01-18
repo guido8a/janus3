@@ -4,6 +4,8 @@
   Date: 27/09/21
   Time: 11:32
 --%>
+
+
 <table class="table table-bordered table-striped table-hover table-condensed" id="tabla">
     <thead>
     <tr>
@@ -28,7 +30,7 @@
                 <td style="width: 8%">
                     <div style="text-align: center" class="selecciona" id="reg_${i}"
                          regNmbr="${dt?.itemnmbr}" regCdgo="${dt?.itemcdgo}"
-                         regUn="${dt?.unddcdgo}" data-id="${dt?.item__id}" data-tpl="${dt?.tpls__id}">
+                         regUn="${dt?.unddcdgo}" data-id="${dt?.item__id}">
                         <button class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
                     </div></td>
             </tr>
@@ -38,11 +40,15 @@
 
 <script type="text/javascript">
     $(".selecciona").click(function () {
-        $("#item_id").val($(this).data("id"));
-        $("#cdgo_buscar").val($(this).attr("regCdgo"));
-        $("#item_desc").val($(this).attr("regNmbr"));
-        $("#item_tipoLista").val($(this).data("tpl"));
-        $("#item_unidad").val($(this).attr("regUn"));
-        $("#busqueda").dialog("close");
+        var ad = $(this).data("id");
+        location.href = "${g.createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + ad
     });
+//    $(".selecciona").click(function () {
+//        $("#item_id").val($(this).data("id"));
+//        $("#cdgo_buscar").val($(this).attr("regCdgo"));
+//        $("#item_desc").val($(this).attr("regNmbr"));
+//        $("#item_unidad").val($(this).attr("regUn"));
+//        $("#item_cantidad").val(1);
+//        $("#listaAdq").dialog("close");
+//    });
 </script>

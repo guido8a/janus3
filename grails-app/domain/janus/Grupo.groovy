@@ -22,7 +22,7 @@ class Grupo implements Serializable {
     static constraints = {
         codigo(size: 1..3, blank: false, attributes: [title: 'numero'])
         descripcion(size: 1..31, blank: false, attributes: [title: 'descripcion'])
-//        direccion(blank: false, attributes: [title: 'direccion'])
+        direccion(blank: true, nullable: true, attributes: [title: 'direccion'])
     }
     String toString() {
         descripcion
