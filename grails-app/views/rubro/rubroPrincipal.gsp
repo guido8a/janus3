@@ -235,7 +235,7 @@
                             Copiar composición
                         </a>
                     </div>
-                    <div class="col-md-1" style="margin-left: -20px; width: 40px">
+                    <div class="col-md-1" style="margin-left: -50px; width: 40px">
                         <a class="btn btn-small btn-info infoItem" href="#" rel="tooltip" title="Información">
                             <i class="icon-exclamation"></i> Info</a>
                     </div>
@@ -247,7 +247,7 @@
                         Copiar composición
                     </a>
                 </div>
-                <div class="col-md-1" style="margin-left: -20px; width: 40px">
+                <div class="col-md-1" style="margin-left: -50px; width: 40px">
                     <a class="btn btn-small btn-info infoItem" href="#" rel="tooltip" title="Información" disabled>
                         <i class="icon-exclamation"></i> Info</a>
                 </div>
@@ -296,7 +296,7 @@
                     <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
                         <i class="fa fa-plus"></i>
                     </a>
-                    <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Precio" id="btn_precio">$</a>
+                    %{--<a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Precio" id="btn_precio">$</a>--}%
                 </div>
             </g:if>
         </div>
