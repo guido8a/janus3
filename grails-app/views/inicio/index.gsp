@@ -33,12 +33,9 @@
         /*border: solid 1px black;*/
         margin: auto;
         margin: 8px;
-        /*font-family: fantasy; */
-        font-size: 16px;
-
-        /*
-                font-weight: bolder;
-        */
+        /*font-family: fantasy;*/
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 13px;
         font-style: normal;
         /*text-align: justify;*/
     }
@@ -73,12 +70,12 @@
     }
 
     .bordes {
-    <g:if test="${janus.Parametros.findByEmpresaLike('CNSL-GADLR')}">
+    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-GADPP')}">
     %{--<g:if test="${empr.sigla == message(code: 'ambiente2')}">--}%
-        background: #1a7031;
+        background: #002934;
     </g:if>
     <g:else>
-        background: #00485a;
+        background: #204954;
     </g:else>
 
     }

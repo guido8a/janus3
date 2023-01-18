@@ -6628,15 +6628,15 @@ button.close {
   border-bottom: 2px solid #ddd;
 }
 .table > thead > tr > th.sortable {
-  background-image: url("../../../images/skin/upDown.png");
+  background-image: url("../../images/upDown.png");
   background-repeat: no-repeat;
   background-position: right;
 }
 .table > thead > tr > th.sortable.asc {
-  background-image: url("../../../images/skin/up.png");
+  background-image: url("../../images/up.png");
 }
 .table > thead > tr > th.sortable.desc {
-  background-image: url("../../../images/skin/down.png");
+  background-image: url("../../images/down.png");
 }
 .table > thead > tr > th > a {
   color: #eee;
