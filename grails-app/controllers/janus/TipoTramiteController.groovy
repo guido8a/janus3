@@ -1,7 +1,5 @@
 package janus
 
-import groovy.json.JsonBuilder
-
 class TipoTramiteController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -15,49 +13,9 @@ class TipoTramiteController {
         [tipoTramiteInstanceList: TipoTramite.list(params), tipoTramiteInstanceTotal: TipoTramite.count(),  params: params]
     } //list
 
-    def addDep() {
-        def dep = new DepartamentoTramite([
-                tipoTramite: TipoTramite.get(params.tipo.toLong()),
-                rolTramite: RolTramite.get(params.rol.toLong()),
-                departamento: Departamento.get(params.dep.toLong())
-        ])
-
-        if (dep.save(flush: true)) {
-            render "OK_" + dep.id
-        } else {
-            println "Error al guardar tipo tramite - rol - departamento: " + dep.errors
-            render "NO"
-        }
-    }
-
-    def delDep() {
-        def dep = DepartamentoTramite.get(params.id.toLong())
-        def ok = "OK"
-        try {
-            dep.delete(flush: true)
-        } catch (e) {
-            println e
-            ok = "NO"
-        }
-        render ok
-    }
-
     def departamentos_ajax() {
         def tipoTramite = TipoTramite.get(params.tramite.toLong())
-
-        def dps = []
-        DepartamentoTramite.findAllByTipoTramite(tipoTramite).each { dep ->
-            dps.add([
-                    id: dep.id,
-                    departamento: dep.departamento.descripcion,
-                    departamento_id: dep.departamentoId,
-                    rol: dep.rolTramite.descripcion,
-                    rol_id: dep.rolTramiteId
-            ])
-        }
-        def json = new JsonBuilder(dps)
-
-        return [tipoTramite: tipoTramite, departamentos: json]
+        return [tipoTramite: tipoTramite]
     }
 
     def checkCd_ajax() {
@@ -167,4 +125,45 @@ class TipoTramiteController {
             render "no_Error al borrar el tipo de trámite"
         }
     } //delete
+
+    def tablaTipoTramite_ajax () {
+        def tipoTramite = TipoTramite.get(params.id)
+        def departamentos = DepartamentoTramite.findAllByTipoTramite(tipoTramite)
+        return [departamentos: departamentos, tipoTramite: tipoTramite]
+    }
+
+    def guardarDepartamentoTramite_ajax (){
+        def tipoTramite = TipoTramite.get(params.tipoTramite)
+        def rolTramite = RolTramite.get(params.rolTramite)
+        def departamento = Departamento.get(params.departamento)
+
+        def existente = DepartamentoTramite.findByTipoTramiteAndDepartamentoAndRolTramite(tipoTramite, departamento, rolTramite)
+
+        if(existente){
+            render "no_Ya existe un registro asignado con ese rol y coordinación"
+        }else{
+            def departamentoTramite = new DepartamentoTramite()
+            departamentoTramite.properties = params
+
+            if(!departamentoTramite.save(flush: true)){
+                println("error al guardar el departamento tramite " + departamentoTramite.errors)
+                render "no_Error al guardar el registro"
+            }else{
+                render "ok_Guardado correctamente"
+            }
+        }
+    }
+
+    def borrarDepartamentoTramite_ajax (){
+        def departamentoTramite = DepartamentoTramite.get(params.id)
+
+        try{
+            departamentoTramite.delete(flush:true)
+            render "ok_Registro borrado correctamente"
+        }catch(e){
+            render "no_Error al borrar el registro"
+        }
+    }
+
+
 } //fin controller

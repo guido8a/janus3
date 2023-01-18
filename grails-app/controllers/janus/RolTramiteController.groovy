@@ -87,8 +87,6 @@ class RolTramiteController {
     def show_ajax() {
         def rolTramiteInstance = RolTramite.get(params.id)
         if (!rolTramiteInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró RolTramite con id " + params.id
             redirect(action: "list")
             return
         }

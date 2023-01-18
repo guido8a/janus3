@@ -1,43 +1,21 @@
-
-<%@ page import="janus.RolTramite" %>
-
-<div id="show-rolTramite" class="span5" role="main">
-
-    <form class="form-horizontal">
-    
-    <g:if test="${rolTramiteInstance?.codigo}">
-        <div class="control-group">
-            <div>
-                <span id="codigo-label" class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="codigo-label">
-                    <g:fieldValue bean="${rolTramiteInstance}" field="codigo"/>
-                </span>
-        
-            </div>
+<g:if test="${rolTramiteInstance?.codigo}">
+    <div class="row">
+        <div class="col-md-3 text-info">
+            Código
         </div>
-    </g:if>
-    
-    <g:if test="${rolTramiteInstance?.descripcion}">
-        <div class="control-group">
-            <div>
-                <span id="descripcion-label" class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="descripcion-label">
-                    <g:fieldValue bean="${rolTramiteInstance}" field="descripcion"/>
-                </span>
-        
-            </div>
+        <div class="col-md-6">
+            ${rolTramiteInstance?.codigo}
         </div>
-    </g:if>
-    
-    </form>
-</div>
+    </div>
+</g:if>
+
+<g:if test="${rolTramiteInstance?.descripcion}">
+    <div class="row">
+        <div class="col-md-3 text-info">
+            Descripción
+        </div>
+        <div class="col-md-6">
+            ${rolTramiteInstance?.descripcion}
+        </div>
+    </div>
+</g:if>

@@ -2,156 +2,87 @@
 
 <div class="well">
     <div class="row">
-        <div class="span1 bold">Rol</div>
-
-        <div class="span3">
-%{--            <elm:select id="rolTramite" name="rolTramite.id" from="${janus.RolTramite.list()}" optionKey="id"--}%
-%{--                        class="many-to-one  required" optionClass="codigo"/>--}%
-            <g:select name="rolTramite" from="${janus.RolTramite.list()}" optionKey="id" optionValue="descripcion" class="many-to-one form-control required" />
-
-        </div>
+        <span class="grupo">
+            <label for="rolTramite" class="col-md-2 control-label text-info">
+                Rol
+            </label>
+            <span class="col-md-8">
+                <g:select name="rolTramite" from="${janus.RolTramite.list()}" optionKey="id" optionValue="descripcion" class="many-to-one form-control required" />
+            </span>
+        </span>
     </div>
 
     <div class="row">
-        <div class="span1 bold">Coordinación</div>
-
-        <div class="span4">
-            <g:select id="departamento" name="departamento.id" from="${janus.Departamento.list()}" optionKey="id" optionValue="descripcion"
-                      class="many-to-one span4 required"/>
-        </div>
-
-        <div class="span2" style="width:110px;">
-            <a href="#" id="btnAdd" class="btn">
-                <i class="icon-plus"></i>
-                Agregar
-            </a>
-        </div>
+        <span class="grupo">
+            <label for="departamento" class="col-md-2 control-label text-info">
+                Coordinación
+            </label>
+            <span class="col-md-8">
+                <g:select name="departamento" from="${janus.Departamento.list()}" optionKey="id" optionValue="descripcion" class="many-to-one form-control required" />
+            </span>
+            <span class="span2" style="width:110px;margin-top: 10px">
+                <a href="#" id="btnAdd" class="btn btn-success">
+                    <i class="fa fa-plus"></i>
+                    Agregar
+                </a>
+            </span>
+        </span>
     </div>
-</div>
-
-<div class="alert alert-error hide" id="divError">
-    Error
 </div>
 
 <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
-        <tr>
-            <th>Rol</th>
-            <th>Departamento</th>
-            <th></th>
-        </tr>
+    <tr>
+        <th style="width: 25%">Rol</th>
+        <th style="width: 65%">Coordinación</th>
+        <th style="width: 10%">Acciones</th>
+    </tr>
     </thead>
-    <tbody id="tbDepRol">
+    <tbody id="tablaDepartamentos">
     </tbody>
 </table>
 
 
 <script type="text/javascript">
-    function addRow(data) {
-        var $tr = $("<tr>");
-        $tr.data(data);
 
-        var $del = $("<a href='#' class='btn btn-small'><i class='icon-trash'></i></a>");
+    cargarTablaDepartamentos(${tipoTramite?.id});
 
-        $del.click(function () {
-            $(this).replaceWith(spinner);
-
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'delDep')}",
-                data    : {
-                    id : data.id
-                },
-                success : function (msg) {
-                    if (msg == "OK") {
-                        $tr.remove();
-                    } else {
-                        $("#divError").html("Ha ocurrido un error").show();
-                    }
-                }
-            });
-
-            return false;
-        });
-
-        $("<td>").html(data.rol).appendTo($tr);
-        $("<td>").html(data.departamento).appendTo($tr);
-        $("<td>").html($del).appendTo($tr);
-
-        $("#tbDepRol").append($tr);
+    function cargarTablaDepartamentos(id) {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(action: 'tablaTipoTramite_ajax')}",
+            data:{
+                id: id
+            },
+            success: function (msg) {
+                $("#tablaDepartamentos").html(msg)
+            }
+        })
     }
 
-    function existe(tipo, id) {
-        var b = false;
-        $("#tbDepRol").children("tr").each(function () {
-            if ($(this).data(tipo + "_id").toString() == id.toString()) {
-                b = true;
-            }
-        });
-        return b;
-    }
+    $("#btnAdd").click(function () {
+        var rol = $("#rolTramite option:selected").val();
+        var coordinacion = $("#departamento option:selected").val();
 
-    $(function () {
-        $.each(${departamentos}, function (i, val) {
-            addRow(val);
-        });
-
-        $("select").change(function () {
-            $("#divError").html("").hide();
-        });
-
-        $("#btnAdd").click(function () {
-            var rolId = $("#rolTramite").val();
-            var depId = $("#departamento").val();
-
-            var rolCdg = $("#rolTramite option:selected").attr("class");
-
-            var rol = $("#rolTramite option:selected").text();
-            var dep = $("#departamento option:selected").text();
-
-            $("#divError").html("").hide();
-
-            if ($.trim(rolCdg) == "CC" || !existe("rol", rolId)) {
-                if (existe("rol", rolId) && existe("departamento", depId)) {
-                    $("#divError").html("No puede ingresar el mismo departamento con el mismo rol").show();
-                } else {
-                    $(this).hide().after(spinner);
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'addDep')}",
-                        data    : {
-                            tipo : ${tipoTramite.id},
-                            rol  : rolId,
-                            dep  : depId
-                        },
-                        success : function (msg) {
-                            spinner.remove();
-                            $("#btnAdd").show();
-                            var p = msg.split("_");
-                            if (p[0] == "OK") {
-                                var data = {
-                                    id              : p[1],
-                                    rol_id          : rolId,
-                                    rol             : rol,
-                                    departamento_id : depId,
-                                    departamento    : dep
-                                };
-                                addRow(data);
-                            } else {
-                                $("#divError").html("Ha ocurrido un error").show();
-                            }
-                        }
-                    });
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(action: 'guardarDepartamentoTramite_ajax')}',
+            data:{
+                tipoTramite: '${tipoTramite?.id}',
+                rolTramite: rol,
+                departamento: coordinacion
+            },
+            success: function (msg) {
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    cargarTablaDepartamentos(${tipoTramite?.id});
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                 }
-            } else {
-                $("#divError").html("No puede ingresar otro departamento con ese rol").show();
             }
-            return false;
-        });
+        })
 
     });
-
-
-
 
 </script>
