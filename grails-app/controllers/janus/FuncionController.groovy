@@ -38,6 +38,7 @@ class FuncionController {
         }else{
             if(Funcion.findAllByCodigo(params.codigo.toUpperCase())){
                 render "no_El código ya se encuentra ingresado"
+                return
             }else{
                 funcion = new Funcion()
             }

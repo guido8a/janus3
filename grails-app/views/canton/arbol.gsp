@@ -1,625 +1,983 @@
+
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="layout" content="main"/>
+<head>
+    <meta name="layout" content="main">
 
-        <script type="text/javascript"
-                src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script type="text/javascript"
-                src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'additional-methods.js')}"></script>
-        <script type="text/javascript"
-                src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+    <title>División Política</title>
 
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.hotkeys.js')}"></script>
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins', file: 'jquery.cookie.js')}"></script>
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>
+    <asset:javascript src="/jstree-3.0.8/dist/jstree.min.js"/>
+    <asset:stylesheet src="/jstree-3.0.8/dist/themes/default/style.min.css"/>
 
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-        <link href='${resource(dir: "js/jquery/plugins/box/css", file: "jquery.luz.box.css")}' rel='stylesheet' type='text/css'>
+    <style type="text/css">
+    #tree {
+        overflow-y : auto;
+        height     : 440px;
+    }
 
-        <title>Los Ríos</title>
+    .jstree-search {
+        color : #5F87B2 !important;
+    }
+    </style>
 
+</head>
 
-        <style type="text/css">
-        .div {
-            width      : 424px;
-            min-height : 150px;
-            border     : solid 3px #768CC1;
-            padding    : 5px;
-            background : #EAF2FF !important;
-        }
+<body>
 
-        .info {
-            margin-left : 15px;
-        }
+<div id="cargando" class="text-center">
+    <p>Cargando los departamentos</p>
 
-        #infoCont {
-            margin-top : 5px;
-        }
+    <img src="${resource(dir: 'images', file: 'spinner.gif')}" alt='Cargando...' width="64px" height="64px"/>
 
-        .label {
-            padding     : 0 5px 0 15px;
-            font-weight : bold;
-        }
+    <p>Por favor espere</p>
+</div>
 
-        .scroll {
-            overflow-x : hidden !important;
-            overflow-y : hidden;
-        }
+<div class="row" style="margin-bottom: 10px;">
 
-        </style>
+    <div class="btn-toolbar toolbar">
+        <div class="btn-group">
+            <g:link controller="inicio" action="parametros" class="btn btn-info">
+                <i class="fa fa-arrow-left"></i> Parámetros
+            </g:link>
+        </div>
+    </div>
 
-    </head>
+    <div class="col-md-2">
+        <div class="input-group input-group-sm">
+            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
+            <span class="input-group-btn">
+                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">
+                    <i class="fa fa-search"></i>&nbsp;
+                </a>
+            </span>
+        </div><!-- /input-group -->
+    </div>
 
-    <body>
-        <div class="dialog">
+    <div class="col-md-3 hidden" id="divSearchRes">
+        <span id="spanSearchRes">
+            5 resultados
+        </span>
 
-            <div class="body">
-                <g:if test="${flash.message}">
-                    <div class="message">${flash.message}</div>
-                </g:if>
+        <div class="btn-group">
+            <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
+                <i class="fa fa-chevron-down"></i>&nbsp;
+            </a>
+            <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
+                <i class="fa fa-chevron-up"></i>&nbsp;
+            </a>
+            <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
+                <i class="fa fa-times-circle"></i>&nbsp;
+            </a>
+        </div>
+    </div>
 
-                <div id="tree" class="div left ui-corner-all"
-                     style="height:600px; width: 400px;overflow-y: auto">
+    <div class="col-md-1">
+        <div class="btn-group">
+            <a href="#" class="btn btn-xs btn-default" id="btnCollapseAll" title="Cerrar todos los nodos">
+                <i class="fa fa-minus-square"></i>&nbsp;
+            </a>
+            <a href="#" class="btn btn-xs btn-default" id="btnExpandAll" title="Abrir todos los nodos">
+                <i class="fa fa-plus-square"></i>&nbsp;
+            </a>
+        </div>
+    </div>
 
-                </div>
+    <div class="col-md-4 text-right pull-right" style="font-size: 14px">
+        <i class="fa fa-parking text-success"></i> Provincia
+        <i class="fa fa-copyright text-primary"></i> Cantón
+        <i class="fa fa-registered text-danger"></i> Parroquia
+    %{--        <i class="fa fa-info-circle text-warning"></i> Comunidad--}%
+    </div>
+</div>
 
-                <div id="info" class="div info left ui-corner-all" style="margin-left: 420px; margin-top: -615px">
-                    <div id="infoTitle"></div>
+<div id="tree" class="well hidden">
 
-                    <div id="infoCont"></div>
-                </div>
+</div>
 
-                <div id="dlg_editar"></div>
-
-            </div> <!-- body -->
-        </div> <!-- dialog -->
-
-        <script type="text/javascript">
-
-            var icons = {
-                add       : "${resource(dir: 'images/ico', file:'Add.png')}",
-                edit      : "${resource(dir: 'images/ico', file:'Edit.png')}",
-                remove    : "${resource(dir: 'images/ico', file:'Delete.png')}",
-                pais      : "${resource(dir:'images/ico', file:'pais.png')}",
-                zona      : "${resource(dir:'images/ico', file:'zona.png')}",
-                provincia : "${resource(dir:'images/ico', file:'provincia.png')}",
-                canton    : "${resource(dir:'images/ico', file:'canton.png')}",
-                parroquia : "${resource(dir:'images/ico', file:'parroquia.png')}",
-                comunidad : "${resource(dir: 'images/ico', file: 'comunidad.png')}"
-
-            };
-
-            var lrg_icons = {
-                add       : "${resource(dir: 'images/ico', file:'Add.png')}",
-                edit      : "${resource(dir: 'images/ico', file:'Edit.png')}",
-                remove    : "${resource(dir: 'images/ico', file:'Delete.png')}",
-                pais      : "${resource(dir:'images/ico', file:'pais.png')}",
-                zona      : "${resource(dir:'images/ico', file:'zona_32.png')}",
-                provincia : "${resource(dir:'images/ico', file:'provincia_32.png')}",
-                canton    : "${resource(dir:'images/ico', file:'canton_32.png')}",
-                parroquia : "${resource(dir:'images/ico', file:'parroquia_32.png')}",
-                comunidad : "${resource(dir: 'images/ico', file: 'comunidad.png')}"
-            };
-
-            function createContextmenu(node) {
-
-                var parent = node.parent().parent();
-
-                var textNode = $.trim(node.children("a").text());
-                var textParent = $.trim(parent.children("a").text());
-
-                var strIdNode = node.attr("id");
-                var strIdParent = parent.attr("id");
-
-                var parts = strIdNode.split("_");
-                var idNode = parts[1];
-                parts = strIdParent.split("_");
-                var idParent = parts[1];
-
-                var tipoNode = node.attr("rel");
-                var tipoParent = parent.attr("rel");
-
-                var submenu;
-
-                switch (tipoNode) {
-                    case "provincia" :
-                        submenu = {
-                            "canton" : {
-                                "label"  : "Cantón",
-                                "action" : function (obj) {
-                                    var url = "${createLink(controller: 'canton', action: 'editar')}";
-                                    $.ajax({
-                                        "type"    : "POST",
-                                        "url"     : url,
-                                        "data"    : {
-                                            "tipo"      : "canton",
-                                            "crear"     : true,
-                                            "padre"     : idNode,
-                                            "tipoPadre" : tipoNode
-                                        },
-                                        "success" : function (msg) {
-                                            $("#dlg_editar").dialog("option", "title", "Crear cantón en la " + tipoNode + " " + textNode);
-                                            $("#dlg_editar").html(msg);
-                                            $("#dlg_editar").dialog("open");
-                                        }
-                                    }); //ajax
-                                }, //action canton
-                                "icon"   : icons.canton
-                            } //canton
-                        };
-                        break;
-                    case "canton":
-                        submenu = {
-                            "canton"    : {
-                                "label"  : "Cantón",
-                                "action" : function (obj) {
-                                    var url = "${createLink(controller: 'canton', action: 'editar')}";
-                                    $.ajax({
-                                        "type"    : "POST",
-                                        "url"     : url,
-                                        "data"    : {
-                                            "tipo"      : "canton",
-                                            "crear"     : true,
-                                            "padre"     : idParent,
-                                            "tipoPadre" : tipoParent
-                                        },
-                                        "success" : function (msg) {
-                                            $("#dlg_editar").dialog("option", "title", "Crear cantón en la " + tipoParent + " " + textParent);
-                                            $("#dlg_editar").html(msg);
-                                            $("#dlg_editar").dialog("open");
-
-                                        }
-                                    }); //ajax
-                                }, //action canton
-                                "icon"   : icons.canton
-                            }, //canton
-                            "parroquia" : {
-
-                                "label"  : "Parroquia",
-                                "action" : function (obj) {
-                                    var url = "${createLink(controller: 'canton', action: 'editar')}";
-                                    $.ajax({
-                                        "type"    : "POST",
-                                        "url"     : url,
-                                        "data"    : {
-                                            "tipo"  : "parroquia",
-                                            "crear" : true,
-                                            "padre" : idNode
-                                        },
-                                        "success" : function (msg) {
-                                            $("#dlg_editar").dialog("option", "title", "Crear parroquia en el cantón " + textNode);
-                                            $("#dlg_editar").html(msg);
-                                            $("#dlg_editar").dialog("open");
-                                        }
-                                    }); //ajax
-                                }, //action parroquia
-                                "icon"   : icons.parroquia
-                            }//parroquia
-                            %{--"comunidad" : {--}%
-                            %{--"label": "Comunidad",--}%
-                            %{--"action": function (obj) {--}%
-                            %{--var url = "${createLink(controller: 'canton', action: 'editar')}";--}%
-                            %{--$.ajax({--}%
-                            %{--"type": "POST",--}%
-                            %{--"url": url,--}%
-                            %{--"data": {--}%
-                            %{--"tipo": "comunidad",--}%
-                            %{--"crear": true,--}%
-                            %{--"padre": idNode--}%
-                            %{--},--}%
-                            %{--"success": function(msg) {--}%
-                            %{--$("#dlg_editar").dialog("option", "title", "Crear comunidad en la parroquia " + textNode);--}%
-                            %{--$("#dlg_editar").html(msg);--}%
-                            %{--$("#dlg_editar").dialog("open");--}%
-                            %{--}--}%
-                            %{--}); //ajax--}%
-                            %{--},--}%
-                            %{--"icon": icons.comunidad--}%
-                            %{--} //parroquia--}%
-                        };
-                        break;
-                    case "parroquia":
-                        submenu = {
-                            "parroquia" : {
-                                "label"  : "Parroquia",
-                                "action" : function (obj) {
-                                    var url = "${createLink(controller: 'canton', action: 'editar')}";
-                                    $.ajax({
-                                        "type"    : "POST",
-                                        "url"     : url,
-                                        "data"    : {
-                                            "tipo"      : "parroquia",
-                                            "crear"     : true,
-                                            "padre"     : idParent,
-                                            "tipoPadre" : tipoParent
-                                        },
-                                        "success" : function (msg) {
-                                            $("#dlg_editar").dialog("option", "title", "Crear parroquia en el cantón " + textParent);
-                                            $("#dlg_editar").html(msg);
-                                            $("#dlg_editar").dialog("open");
-                                        }
-                                    }); //ajax
-                                }, //action parroquia
-                                "icon"   : icons.parroquia
-                            }, //parroquia
-                            "comunidad" : {
-                                "label"  : "Comunidad",
-                                "action" : function (obj) {
-                                    var url = "${createLink(controller: 'canton', action: 'editar')}";
-                                    $.ajax({
-                                        "type"    : "POST",
-                                        "url"     : url,
-                                        "data"    : {
-                                            "tipo"  : "comunidad",
-                                            "crear" : true,
-                                            "padre" : idNode
+<script type="text/javascript">
+    var searchRes = [];
+    var posSearchShow = 0;
+    var $treeContainer = $("#tree");
 
 
-
-                                        },
-                                        "success" : function (msg) {
-                                            $("#dlg_editar").dialog("option", "title", "Crear comunidad en la parroquia " + textNode);
-                                            $("#dlg_editar").html(msg);
-                                            $("#dlg_editar").dialog("open");
-                                        }
-                                    }); //ajax
-                                },
-                                "icon"   : icons.comunidad
-                            } //parroquia
-
-                        };
-                        break;
-                    case "comunidad":
-                        submenu = {
-                            "comunidad" : {
-                                "label"  : "Comunidad",
-                                "action" : function (obj) {
-                                    var url = "${createLink(controller: 'canton', action: 'editar')}";
-                                    $.ajax({
-                                        "type"    : "POST",
-                                        "url"     : url,
-                                        "data"    : {
-                                            "tipo"      : "comunidad",
-                                            "crear"     : true,
-//                                    "padre": idNode
-                                            "padre"     : idParent,
-                                            "tipoPadre" : tipoParent
-
-                                        },
-                                        "success" : function (msg) {
-                                            $("#dlg_editar").dialog("option", "title", "Crear comunidad en la parroquia " + textNode);
-                                            $("#dlg_editar").html(msg);
-                                            $("#dlg_editar").dialog("open");
-                                        }
-                                    }); //ajax
-                                },
-                                "icon"   : icons.comunidad
-                            } //parroquia
-
-                        }
-                }
-
-                var nuevo = {
-                    "label"            : "Crear",
-                    "_disabled"        : false,        // clicking the item won't do a thing
-                    "_class"           : "class",    // class is applied to the item LI node
-                    "separator_before" : false,    // Insert a separator before the item
-                    "separator_after"  : true,        // Insert a separator after the item
-                    "icon"             : icons.add,
-                    "submenu"          : submenu //submenu
-                };
-                var items = {
-                    "create" : false,
-                    "remove" : false,
-                    "rename" : false,
-                    "ccp"    : false,
-
-                    "nuevo" : nuevo //nuevo
-                }; //items
-
-                if (tipoNode != "provincia") {
-                    items.editar = {
-                        // The item label
-                        "label"            : "Editar",
-                        // The function to execute upon a click
-                        "action"           : function (obj) {
-                            var tipo = $(obj).attr("rel");
-                            var str = $(obj).attr("id");
-                            var parts = str.split("_");
-                            var id = parts[1];
-                            var url = "${createLink(controller: 'canton', action: 'editar')}";
-
-                            $.ajax({
-                                "type"    : "POST",
-                                "url"     : url,
-                                "data"    : {
-                                    "tipo"      : tipo,
-                                    "id"        : id,
-                                    "tipoPadre" : tipoParent
-                                },
-                                "success" : function (msg) {
-                                    $("#dlg_editar").dialog("option", "title", "Editar " + ((tipo == "canton") ? "cantón" : tipo));
-                                    $("#dlg_editar").html(msg);
-                                    $("#dlg_editar").dialog("open");
-                                }
-                            });
-
-                        },
-                        // All below are optional
-                        "_disabled"        : false,        // clicking the item won't do a thing
-                        "_class"           : "class",    // class is applied to the item LI node
-                        "separator_before" : false,    // Insert a separator before the item
-                        "separator_after"  : false,        // Insert a separator after the item
-                        // false or string - if does not contain `/` - used as classname
-                        "icon"             : icons.edit
-                    }; //editar
-
-                    items.eliminar = {
-                        // The item label
-                        "label"            : "Eliminar",
-                        // The function to execute upon a click
-                        "action"           : function (obj) {
-                            var tipo = $(obj).attr("rel");
-                            var str = "";
-                            switch (tipo) {
-                                case "zona":
-                                    str = "Está seguro de querer eliminar esta zona?\nEsta acción no se puede deshacer...";
-                                    break;
-                                case "provincia":
-                                    str = "Está seguro de querer eliminar esta provincia?\nEsta acción no se puede deshacer...";
-                                    break;
-                                case "canton":
-                                    str = "Está seguro de querer eliminar este cantón?\nEsta acción no se puede deshacer...";
-                                    break;
-                                case "parroquia":
-                                    str = "Está seguro de querer eliminar esta parroquia?\nEsta acción no se puede deshacer...";
-                                    break;
-                                case "comunidad":
-                                    str = "Está seguro de querer eliminar esta comunidad?\nEsta acción no se puede deshacer...";
-                                    break;
-
-                            }
-
-                            if (confirm(str)) {
-                                var str = $(obj).attr("id");
-                                var parts = str.split("_");
-                                var id = parts[1];
-
-                                var url = "${createLink(action: 'deleteFromTree')}";
-                                $.ajax({
-                                    "type"    : "POST",
-                                    "url"     : url,
-                                    "data"    : {
-                                        tipo : tipo,
-                                        id   : id
-                                    },
-                                    "success" : function (msg) {
-                                        //////console.log(msg)
-
-                                        if (msg == "OK") {
-                                            $("#infoCont").html("");
-                                            $("#infoTitle").html("");
-//                                    reloadTree();
-                                            window.location.reload(true);
-                                        } else {
-                                            alert(msg);
-                                        }
-                                    }
-                                });
+    function createEditProvincia(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'provincia', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEdit",
+                    title : title + " Provincia",
+                    // class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
                         },
-                        // All below are optional
-                        "_disabled"        : false,        // clicking the item won't do a thing
-                        "_class"           : "class",    // class is applied to the item LI node
-                        "separator_before" : false,    // Insert a separator before the item
-                        "separator_after"  : false,        // Insert a separator after the item
-                        // false or string - if does not contain `/` - used as classname
-                        "icon"             : icons.remove
-                    }; //eliminar
-                }
-                return items;
-            } //createContextmenu
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormProvincia();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
-            function initTree() {
-                $("#tree").jstree({
-                    "plugins"     : ["themes", "html_data", "ui", "hotkeys", "cookies", "types", "contextmenu", "json_data", "search"/*, "crrm", "wholerow"*/],
-                    open_parents  : false,
-                    "html_data"   : {
-                        "data" : "<ul type='provincia'><li id='provincia_21' class='provincia jstree-closed' " +
-                                 "rel='provincia'><a href='#' class='label_arbol'>Los Ríos</a></ul>",
-                        "ajax" : {
-                            "url"   : "${createLink(action: 'loadTreePart')}",
-                            "data"  : function (n) {
-                                var obj = $(n);
-                                var id = obj.attr("id");
-                                var parts = id.split("_");
-                                var tipo = parts[0];
-                                var id = 0;
-                                if (parts.length > 1) {
-                                    id = parts[1]
-                                }
-                                return {tipo : tipo, id : id}
-                            },
-                            success : function (data) {
+    function createEditCanton(id, parentId) {
 
-                            },
-                            error   : function (data) {
-                                ////////console.log("error");
-                                ////////console.log(data);
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.padre = parentId;
+        }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'canton', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditC",
+                    title : title + " Cantón",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-                        }
-                    },
-                    "types"       : {
-                        "valid_children" : [ "root" ],
-                        "types"          : {
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormCanton();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
-                            "provincia" : {
-                                "icon"           : {
-                                    "image" : icons.provincia
-                                },
-                                "valid_children" : [ "canton" ]
-                            },
-                            "canton"    : {
-                                "icon"           : {
-                                    "image" : icons.canton
-                                },
-                                "valid_children" : ["parroquia"]
-                            },
-                            "parroquia" : {
-                                "icon"           : {
-                                    "image" : icons.parroquia
-                                },
-                                "valid_children" : ["comunidad"]
-                            },
-                            "comunidad" : {
-                                "icon"           : {
+    function createEditParroquia(id, parentId) {
 
-                                    "image" : icons.comunidad
-
-                                },
-                                "valid_children" : [" "]
-
-
-
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.padre = parentId;
+        }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'parroquia', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditP",
+                    title : title + " Parroquia",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-                        }
-                    },
-                    "themes"      : {
-                        "theme" : "default"
-                    },
-                    "contextmenu" : {
-                        select_node : true,
-                        "items"     : createContextmenu
-                    }, //contextmenu
-                    "ui"          : {
-                        "select_limit" : 1
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormParroquia();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+
+    function createEditComunidad(id, parentId) {
+
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.padre = parentId;
+        }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'comunidad', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditCo",
+                    title : title + " Comunidad",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormComunidad();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormProvincia() {
+        var $form = $("#frmSave-provinciaInstance");
+        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            var dialog2 = cargarLoader("Cargando...");
+                            location.reload();
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
                     }
-                })//js tree
-                        .bind("select_node.jstree", function (event, data) {
-                            // `data.rslt.obj` is the jquery extended node that was clicked
-//                        //////console.log(data.rslt.obj);
-//                        //////console.log(data.rslt.obj.attr("id"));
-                            var obj = data.rslt.obj;
-                            $("#tree").jstree("toggle_node", "#" + obj.attr("id"));
-                            var title = obj.children("a").text();
-                            var tipo = $(obj).attr("rel");
-                            var str = $(obj).attr("id");
-                            var parts = str.split("_");
-                            var id = parts[1];
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
-                            var img = "<img src='" + lrg_icons[tipo] + "' alt='" + tipo + "' />";
-                            $("#infoTitle").html("<h1>" + img + "  " + title + "</h1>");
+    function submitFormCanton() {
+        var $form = $("#frmSave-cantonInstance");
+        var $btn = $("#dlgCreateEditC").find("#btnSave");
+        if ($form.valid()) {
+            $("#provincia").attr("disabled", false);
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            var dialog3 = cargarLoader("Cargando...");
+                            location.reload();
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
-                            var url = "${createLink(action: 'infoForTree')}";
-                            $.ajax({
-                                "type"    : "POST",
-                                "url"     : url,
-                                "data"    : {
-                                    tipo : tipo,
-                                    id   : id
-                                },
-                                "success" : function (msg) {
-                                    $("#infoCont").html(msg);
-                                },
-                                "error"   : function () {
-                                    $("#infoCont").html("");
-                                }
-                            }); //ajax
-                        }); //click en los nodos
+    function submitFormParroquia() {
+        var $form = $("#frmSave-parroquiaInstance");
+        var $btn = $("#dlgCreateEditP").find("#btnSave");
+        if ($form.valid()) {
+            $("#canton").attr("disabled", false);
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            var dialog4 = cargarLoader("Cargando...");
+                            location.reload();
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
-                var h = $("#tree").height();
-                var h2 = $("#info").height();
+    function submitFormComunidad() {
+        var $form = $("#frmSave-comunidadInstance");
+        var $btn = $("#dlgCreateEditCo").find("#btnSave");
+        if ($form.valid()) {
+            $("#parroquia").attr("disabled", false);
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
-                var extra = 0;
+    function createContextMenu(node) {
+        $(".lzm-dropdown-menu").hide();
 
-                $("#info").height(Math.max(h, h2) + extra);
-                $("#tree").height(Math.max(h, h2) + extra);
+        var nodeStrId = node.id;
+        var $node = $("#" + nodeStrId);
+        var nodeId = nodeStrId.split("_")[1];
+        var nodeType = $node.data("jstree").type;
+        var esRoot = nodeType === "root";
+        var esPrincipal = nodeType === "principal";
+        var esCanton = nodeType.contains("canton");
+        var esParroquia = nodeType.contains("parroquia");
+        var esComunidad = nodeType.contains("comunidad");
 
-            } //init tree
+        var items = {};
 
-            function reloadTree() {
-                //////console.log("reloadTree")
+        // var agregarProvincia = {
+        //     label  : "Agregar Provincia",
+        //     icon   : "fa fa-parking text-success",
+        //     action : function () {
+        //         createEditProvincia(null);
+        //     }
+        // };
+
+        var agregarCanton = {
+            label  : "Agregar Cantón",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditCanton(null, nodeId);
             }
+        };
 
-            %{--function reloadTree() {--}%
-            %{--var url = "${createLink(controller: 'canton', action: 'renderArbol')}";--}%
-            %{--$.ajax({--}%
-            %{--"type": "POST",--}%
-            %{--"url": url,--}%
-            %{--"success": function(msg) {--}%
-            %{--$("#tree").html(msg);--}%
-            %{----}%
-            %{----}%
-            %{--initTree();--}%
-            %{--}--}%
-            %{--});--}%
-            %{--}--}%
+        var agregarCanton2 = {
+            label  : "Agregar Cantón",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditCanton(null, $node.parent().parent().children()[1].id.split("_")[1]);
+            }
+        };
 
-            $(function () {
+        var agregarParroquia = {
+            label  : "Agregar Parroquia",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditParroquia(null, nodeId);
+            }
+        };
 
-                $("#dlg_editar").dialog({
-                    autoOpen    : false,
-                    modal       : true,
-                    width       : 700,
-                    buttons     : {
-                        "Cancelar" : function () {
-                            $("#dlg_editar").dialog("close");
-                        },
-                        "Guardar"  : function () {
-                            var url = "${createLink(action: 'saveFromTree')}";
-                            if ($(".frm_editar").valid()) {
-                                var data = $(".frm_editar").serialize();
-                                $.ajax({
-                                    "type"    : "POST",
-                                    "url"     : url,
-                                    "data"    : data,
-                                    "success" : function (msg) {
-                                        if (msg == "OK") {
-//                                    reloadTree();
-                                            $('.jstree-clicked').click();
-                                            $("#dlg_editar").dialog("close");
-                                            window.location.reload(true);
-                                        } else {
-                                            $.box({
-                                                imageClass : "box_info",
-                                                text       : msg,
-                                                title      : "ERROR",
-                                                iconClose  : false,
-                                                dialog     : {
-                                                    resizable     : false,
-                                                    draggable     : false,
-                                                    closeOnEscape : false,
-                                                    buttons       : {
-                                                        "Aceptar" : function () {
-                                                        }
-                                                    }
-                                                }
-                                            });
-//                                            window.location.reload(true);
-                                        }
-                                    }
-                                });
-                            }
-                        }
+        var agregarParroquia2 = {
+            label  : "Agregar Parroquia",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditParroquia(null, $node.parent().parent().children()[1].id.split("_")[1]);
+            }
+        };
+
+        var agregarComunidad = {
+            label  : "Agregar Comunidad",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditComunidad(null, nodeId);
+            }
+        };
+
+        var agregarComunidad2 = {
+            label  : "Agregar Comunidad",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditComunidad(null, $node.parent().parent().children()[1].id.split("_")[1]);
+            }
+        };
+
+        var editarProvincia = {
+            label  : "Editar Provincia",
+            icon   : "fa fa-pen text-info",
+            action : function () {
+                createEditProvincia(nodeId);
+            }
+        };
+
+        var editarCanton = {
+            label  : "Editar Cantón",
+            icon   : "fa fa-pen text-info",
+            action : function () {
+                createEditCanton(nodeId, null);
+            }
+        };
+
+        var editarParroquia = {
+            label  : "Editar Parroquia",
+            icon   : "fa fa-pen text-info",
+            action : function () {
+                createEditParroquia(nodeId, null);
+            }
+        };
+
+        var editarComunidad = {
+            label  : "Editar Comunidad",
+            icon   : "fa fa-pen text-info",
+            action : function () {
+                createEditComunidad(nodeId, null);
+            }
+        };
+
+        var verProvincia = {
+            label            : "Ver datos de la provincia",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "provincia", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
                     },
-                    beforeClose : function () {
-                        $(".ui-tooltip-rounded").hide();
-                        return true;
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Provincia",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
                     }
                 });
+            }
+        };
 
-                initTree();
+        var verCanton = {
+            label            : "Ver datos del cantón",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "canton", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Cantón",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
 
-//        $(".linkArbol").livequery(function() {
-//            $(this).click(function() {
-//                $("#link_" + $(this).attr("tipo")).click();
-//                return false;
-//            });
-//        });
+        var verParroquia = {
+            label            : "Ver datos de la parroquia",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "parroquia", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Parroquia",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
 
-            });
-        </script>
+        var verComunidad = {
+            label            : "Ver datos de la comunidad",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "comunidad", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Comunidad",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
 
-    </body>
+        var borrarProvincia = {
+            label            : "Borrar Provincia",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Borrar Provincia",
+                    message: "Está seguro de borrar esta provincia? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'provincia', action: 'borrarProvincia_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'ok'){
+                                        log("Provincia borrada correctamente","success");
+                                        setTimeout(function () {
+                                            var dialog3 = cargarLoader("Cargando...");
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar la provincia", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarCanton = {
+            label            : "Borrar Cantón",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Borrar Cantón",
+                    message: "Está seguro de borrar este cantón? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'canton', action: 'borrarCanton_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'ok'){
+                                        log("Cantón borrado correctamente","success");
+                                        setTimeout(function () {
+                                            var dialog3 = cargarLoader("Cargando...");
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar el canton", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarParroquia = {
+            label            : "Borrar Parroquia",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Borrar Parroquia",
+                    message: "Está seguro de borrar esta parroquia? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'parroquia', action: 'borrarParroquia_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'ok'){
+                                        log("Parroquia borrada correctamente","success");
+                                        setTimeout(function () {
+                                            var dialog3 = cargarLoader("Cargando...");
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar la parroquia", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarComunidad = {
+            label            : "Borrar comunidad",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Borrar Comunidad",
+                    message: "Está seguro de borrar esta comunidad? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'comunidad', action: 'borrarComunidad_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'ok'){
+                                        log("Comunidad borrada correctamente","success");
+                                        setTimeout(function () {
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar la comunidad", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        if (esRoot) {
+            // items.agregarProvincia = agregarProvincia;
+        } else if (esPrincipal) {
+            // items.agregarProvincia = agregarProvincia;
+            items.agregarCanton = agregarCanton;
+            items.verProvincia = verProvincia;
+            items.editarProvincia = editarProvincia;
+            // items.borrarProvincia = borrarProvincia;
+        } else if (esCanton) {
+            items.agregarCanton = agregarCanton2;
+            items.agregarParroquia = agregarParroquia;
+            items.verCanton = verCanton;
+            items.editarCanton = editarCanton;
+            items.borrarCanton = borrarCanton;
+        } else if (esParroquia) {
+            items.agregarParroquia = agregarParroquia2;
+            // items.agregarComunidad = agregarComunidad;
+            items.verParroquia = verParroquia;
+            items.editarParroquia = editarParroquia;
+            items.borrarParroquia = borrarParroquia;
+        } else if (esComunidad) {
+            items.agregarComunidad = agregarComunidad2;
+            items.verComunidad = verComunidad;
+            items.editarComunidad = editarComunidad;
+            items.borrarComunidad = borrarComunidad;
+        }
+        return items;
+    }
+
+    function scrollToNode($scrollTo) {
+        $treeContainer.jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+            scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+        });
+    }
+
+    function scrollToRoot() {
+        var $scrollTo = $("#root");
+        scrollToNode($scrollTo);
+    }
+
+    function scrollToSearchRes() {
+        var $scrollTo = $(searchRes[posSearchShow]).parents("li").first();
+        $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + searchRes.length);
+        scrollToNode($scrollTo);
+    }
+
+    $(function () {
+
+        $treeContainer.on("loaded.jstree", function () {
+            $("#cargando").hide();
+            $("#tree").removeClass("hidden");
+
+        }).on("select_node.jstree", function (node, selected, event) {
+        }).jstree({
+            plugins     : ["types", "state", "contextmenu", "search"],
+            core        : {
+                multiple       : false,
+                check_callback : true,
+                themes         : {
+                    variant : "small",
+                    dots    : true,
+                    stripes : true
+                },
+                data           : {
+                    url   : '${createLink(controller: 'canton' , action:"loadTreePart_ajax")}',
+                    data  : function (node) {
+                        return {
+                            id    : node.id,
+                            sort  : "${params.sort?:'nombre'}",
+                            order : "${params.order?:'asc'}"
+                        };
+                    }
+                }
+            },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
+            state       : {
+                key : "unidades",
+                opened: false
+            },
+            search      : {
+                fuzzy             : false,
+                show_only_matches : false,
+                ajax              : {
+                    url     : "${createLink(controller: 'canton', action:'arbolSearch_ajax')}",
+                    success : function (msg) {
+                        var json = $.parseJSON(msg);
+                        $.each(json, function (i, obj) {
+                            $('#tree').jstree("open_node", obj);
+                        });
+                        setTimeout(function () {
+                            searchRes = $(".jstree-search");
+                            var cantRes = searchRes.length;
+                            posSearchShow = 0;
+                            $("#divSearchRes").removeClass("hidden");
+                            $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                            scrollToSearchRes();
+                        }, 300);
+
+                    }
+                }
+            },
+            types       : {
+                root                : {
+                    icon : "fa fa-sitemap text-info"
+                },
+                yachay              : {
+                    icon : "fa fa-building text-info"
+                },
+                unidadPadreActivo   : {
+                    icon : "fa fa-building-o text-info"
+                },
+                unidadPadreInactivo : {
+                    icon : "fa fa-building-o text-muted"
+                },
+                unidadHijoActivo    : {
+                    icon : "fa fa-home text-success"
+                },
+                unidadHijoInactivo  : {
+                    icon : "fa fa-home text-muted"
+                },
+                usuarioActivo       : {
+                    icon : "fa fa-user text-info"
+                },
+                usuarioInactivo     : {
+                    icon : "fa fa-user text-muted"
+                }
+            }
+        });
+
+        $("#btnExpandAll").click(function () {
+            $treeContainer.jstree("open_all");
+            scrollToRoot();
+            return false;
+        });
+
+        $("#btnCollapseAll").click(function () {
+            $treeContainer.jstree("close_all");
+            scrollToRoot();
+            return false;
+        });
+
+        $('#btnSearchArbol').click(function () {
+            $treeContainer.jstree("open_all");
+            $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+            return false;
+        });
+        $("#searchArbol").keypress(function (ev) {
+            if (ev.keyCode === 13) {
+                $treeContainer.jstree("open_all");
+                $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+                return false;
+            }
+        });
+
+        $("#btnPrevSearch").click(function () {
+            if (posSearchShow > 0) {
+                posSearchShow--;
+            } else {
+                posSearchShow = searchRes.length - 1;
+            }
+            scrollToSearchRes();
+            return false;
+        });
+
+        $("#btnNextSearch").click(function () {
+            if (posSearchShow < searchRes.length - 1) {
+                posSearchShow++;
+            } else {
+                posSearchShow = 0;
+            }
+            scrollToSearchRes();
+            return false;
+        });
+
+        $("#btnClearSearch").click(function () {
+            $treeContainer.jstree("clear_search");
+            $("#searchArbol").val("");
+            posSearchShow = 0;
+            searchRes = [];
+            scrollToRoot();
+            $("#divSearchRes").addClass("hidden");
+            $("#spanSearchRes").text("");
+        });
+
+    });
+</script>
+
+</body>
 </html>

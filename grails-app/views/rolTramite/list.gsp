@@ -9,7 +9,6 @@
 </head>
 <body>
 
-
 <div class="span12 btn-group" role="navigation">
     <g:link class="link btn btn-info" controller="inicio" action="parametros">
         <i class="fa fa-arrow-left"></i>
@@ -20,7 +19,6 @@
         Nuevo Rol trámite
     </a>
 </div>
-
 
 <div id="list-rolTramite" class="span12" role="main" style="margin-top: 10px;">
 

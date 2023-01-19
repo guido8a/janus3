@@ -602,6 +602,7 @@ class GrupoController {
         }else{
             if(Grupo.findAllByCodigo(params.codigo)){
                 render "no_El código ya se encuentra ingresado"
+                return
             }else{
                 grupo = new Grupo()
             }

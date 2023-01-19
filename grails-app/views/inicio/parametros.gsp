@@ -58,7 +58,7 @@
                                     <div class="col-md-12">
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="administracion" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-building fa-2x"></i>
                                                 Administración
                                             </g:link>
 
@@ -73,28 +73,28 @@
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="tipoItem" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-box fa-2x"></i>
                                                 Tipo de Item
                                             </g:link>
                                             <strong style="font-size: 14px">Para diferenciar entre ítems y rubros</strong>
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="unidad" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-folder-open fa-2x"></i>
                                                 Unidades
                                             </g:link>
                                             <strong style="font-size: 14px"> de medida para los materiales, mano de obra y equipos</strong>
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="grupo" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-clone fa-2x"></i>
                                                 Grupos de Rubros
                                             </g:link>
                                             <strong style="font-size: 14px"> para clasificar los distintos análisis de precios</strong>
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="transporte" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-truck fa-2x"></i>
                                                 Transporte
                                             </g:link>
                                             <strong style="font-size: 14px"> para diferenciar los ítems que participan en el transporte</strong>
@@ -108,14 +108,14 @@
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="departamento" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-users fa-2x"></i>
                                                 Coordinación del personal
                                             </g:link>
                                             <strong style="font-size: 14px"> para la organización de los usuarios.</strong>
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="funcion" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-user fa-2x"></i>
                                                 Funciones del personal
                                             </g:link>
                                             <strong style="font-size: 14px"> que pueden desempeñar en la construcción de la obra
@@ -123,30 +123,30 @@
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="tipoTramite" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-file fa-2x"></i>
                                                 Tipo de Trámite
                                             </g:link>
                                             <strong style="font-size: 14px"> para la gestión de procesos y flujo de trabajo. </strong>
                                         </p>
                                         <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="rolTramite" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                                <i class="fa fa-credit-card fa-2x"></i>
                                                 Rol de la persona en el Trámite
                                             </g:link>
                                             <strong style="font-size: 14px"> quien envía, quien recibe el documento.</strong>
                                         </p>
                                         <p>
-                                            <g:link class="link btn btn-primary btn-xs" controller="rolTramite" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                            <g:link class="link btn btn-primary btn-xs" controller="diaLaborable" action="calendario">
+                                                <i class="fa fa-calendar fa-2x"></i>
                                                 Días laborables
                                             </g:link>
                                             <strong style="font-size: 14px"> permite definir los días laborables en un calendario anual.</strong>
                                         </p>
                                         <p>
-                                            <g:link class="link btn btn-primary btn-xs" controller="rolTramite" action="list">
-                                                <i class="fa fa-globe fa-2x"></i>
+                                            <a href="#" class="btn btn-primary btn-xs" id="btnCambiarIva" title="Cambiar Iva">
+                                                <i class="fa fa-file fa-2x"></i>
                                                 IVA
-                                            </g:link>
+                                            </a>
                                             <strong style="font-size: 14px"> permite cambiar el valor del IVA.</strong>
                                         </p>
                                     </div>
@@ -245,8 +245,6 @@
                                         </p>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -395,49 +393,67 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
+
+    function submitFormIva() {
+        var $form = $("#frmIva");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
     $("#btnCambiarIva").click(function () {
         $.ajax({
             type: "POST",
             url: "${createLink(controller: "obra", action:'formIva_ajax')}",
             data: {
-
             },
             success: function (msg) {
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                btnSave.click(function () {
-                    $(this).replaceWith(spinner);
-                    $.ajax({
-                        type: "POST",
-                        url: "${createLink(controller: 'obra', action:'guardarIva_ajax')}",
-                        data: $("#frmIva").serialize(),
-                        success: function (msg) {
-                            if(msg == 'ok'){
-                                alert('Iva cambiado correctamente!');
-                                $("#modal-TipoObra").modal("hide");
-                            }else{
-                                alert("Error al cambiar el Iva")
-
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "IVA",
+                    class: 'modal-sm',
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-                            $("#modal-TipoObra").modal("hide");
-                        }
-                    });
-                    return false;
-                });
-
-                $("#modalHeader_tipo").removeClass("btn-edit btn-show btn-delete");
-                $("#modalTitle_tipo").html("Cambiar IVA");
-                $("#modalBody_tipo").html(msg);
-                $("#modalFooter_tipo").html("").append(btnOk).append(btnSave);
-                $("#modal-TipoObra").modal("show");
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormIva();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
             }
         });
-        return false;
-
     });
 
 

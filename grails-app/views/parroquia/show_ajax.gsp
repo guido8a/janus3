@@ -1,113 +1,67 @@
 
-<%@ page import="janus.Parroquia" %>
+<style type="text/css">
+.tama {
+    font-size: 14px;
+}
+</style>
 
-<div id="show-parroquia" class="span5" role="main">
+<div id="show-parroquia" class="span5 tama" role="main">
 
     <form class="form-horizontal">
-    
-    <g:if test="${parroquiaInstance?.nombre}">
-        <div class="control-group">
-            <div>
-                <span id="nombre-label" class="control-label label label-inverse">
-                    Nombre
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="nombre-label">
-                    <g:fieldValue bean="${parroquiaInstance}" field="nombre"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${parroquiaInstance?.codigo}">
-        <div class="control-group">
-            <div>
-                <span id="codigo-label" class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="codigo-label">
-                    <g:fieldValue bean="${parroquiaInstance}" field="codigo"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${parroquiaInstance?.canton}">
-        <div class="control-group">
-            <div>
-                <span id="canton-label" class="control-label label label-inverse">
+
+        <g:if test="${parroquiaInstance?.canton}">
+            <div class="row">
+                <div class="col-md-2 text-info">
                     Cantón
-                </span>
+                </div>
+                <div class="col-md-8">
+                    ${parroquiaInstance?.canton?.nombre}
+                </div>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="canton-label">
-        %{--<g:link controller="canton" action="show" id="${parroquiaInstance?.canton?.id}">--}%
-                    ${parroquiaInstance?.canton?.encodeAsHTML()}
-        %{--</g:link>--}%
-                </span>
-        
+        </g:if>
+
+        <g:if test="${parroquiaInstance?.codigo}">
+            <div class="row">
+                <div class="col-md-2 text-info">
+                    Código
+                </div>
+                <div class="col-md-3">
+                    <g:fieldValue bean="${parroquiaInstance}" field="codigo"/>
+                </div>
             </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${parroquiaInstance?.urbana}">
-        <div class="control-group">
-            <div>
-                <span id="urbana-label" class="control-label label label-inverse">
-                    Urbana
-                </span>
+        </g:if>
+
+        <g:if test="${parroquiaInstance?.nombre}">
+            <div class="row">
+                <div class="col-md-2 text-info">
+                    Nombre
+                </div>
+                <div class="col-md-8">
+                    <g:fieldValue bean="${parroquiaInstance}" field="nombre"/>
+                </div>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="urbana-label">
-                    <g:fieldValue bean="${parroquiaInstance}" field="urbana"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${parroquiaInstance?.latitud}">
-        <div class="control-group">
-            <div>
-                <span id="latitud-label" class="control-label label label-inverse">
+        </g:if>
+
+        <g:if test="${parroquiaInstance?.latitud}">
+            <div class="row">
+                <div class="col-md-2 text-info">
                     Latitud
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="latitud-label">
+                </div>
+                <div class="col-md-3">
                     <g:fieldValue bean="${parroquiaInstance}" field="latitud"/>
-                </span>
-        
+                </div>
             </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${parroquiaInstance?.longitud}">
-        <div class="control-group">
-            <div>
-                <span id="longitud-label" class="control-label label label-inverse">
+        </g:if>
+
+        <g:if test="${parroquiaInstance?.longitud}">
+            <div class="row">
+                <div class="col-md-2 text-info">
                     Longitud
-                </span>
+                </div>
+                <div class="col-md-3">
+            <g:fieldValue bean="${parroquiaInstance}" field="longitud"/>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="longitud-label">
-                    <g:fieldValue bean="${parroquiaInstance}" field="longitud"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
+        </g:if>
+
     </form>
 </div>

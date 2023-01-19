@@ -42,6 +42,7 @@ class DepartamentoController {
         }else{
             if(Departamento.findAllByCodigo(params.codigo.toUpperCase())){
                 render "no_El código ya se encuentra ingresado"
+                return
             }else{
                 departamento = new Departamento()
             }

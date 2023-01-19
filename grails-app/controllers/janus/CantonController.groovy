@@ -1,7 +1,9 @@
 package janus
 
-
-import org.springframework.dao.DataIntegrityViolationException
+import janus.Canton
+import janus.Comunidad
+import janus.Obra
+import janus.Parroquia
 
 class CantonController {
 
@@ -15,7 +17,6 @@ class CantonController {
         render(makeBasicTree(params.tipo, params.id))
     }
 
-
     def saveFromTree = {
 
         switch (params.tipo) {
@@ -28,7 +29,6 @@ class CantonController {
                     if (!cantonInstance) {
                         flash.clase = "alert-error"
                         flash.message = "No se encontró Canton con id " + params.id
-//                        redirect(action: 'list')
                         return
                     }//no existe el objeto
                     cantonInstance.properties = params
@@ -45,27 +45,18 @@ class CantonController {
                         def msg = err.defaultMessage
                         err.arguments.eachWithIndex {  arg, i ->
                             msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                        }
+                        } ''
                         str += "<li>" + msg + "</li>"
                     }
                     str += "</ul>"
 
                     flash.message = str
-//                    redirect(action: 'list')
-
-//                    loadTreePart()
-
                     return
                 }
 
                 if (params.id) {
                     flash.clase = "alert-success"
                     flash.message = "Se ha actualizado correctamente Canton " + cantonInstance.nombre
-
-
-
-
-
                 } else {
                     flash.clase = "alert-success"
                     flash.message = "Se ha creado correctamente Canton " + cantonInstance.nombre
@@ -114,126 +105,89 @@ class CantonController {
                     flash.clase = "alert-success"
                     flash.message = "Se ha actualizado correctamente parroquia " + parroquiaInstance.nombre
 
-
-
                 } else {
                     flash.clase = "alert-success"
                     flash.message = "Se ha creado correctamente Parroquia " + parroquiaInstance.nombre
                 }
 
-
-
                 break;
 
             case "comunidad":
 
-                def comunidadInstance
-                if (params.id) {
-                    comunidadInstance = Comunidad.get(params.id)
-                    if (!comunidadInstance) {
-                        flash.clase = "alert-error"
-                        return
-                    }//no existe el objeto
-                    comunidadInstance.properties = params
-                }//es edit
-                else {
-                    comunidadInstance = new Comunidad(params)
-                } //es create
-                if (!comunidadInstance.save(flush: true)) {
-                    flash.clase = "alert-error"
-                    def str = "<h4>No se pudo guardar Comunidad " + (comunidadInstance.id ? comunidadInstance.id : "") + "</h4>"
-
-                    str += "<ul>"
-                    comunidadInstance.errors.allErrors.each { err ->
-                        def msg = err.defaultMessage
-                        err.arguments.eachWithIndex {  arg, i ->
-                            msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                        }
-                        str += "<li>" + msg + "</li>"
-                    }
-                    str += "</ul>"
-
-                    flash.message = str
-                    return
-                }
-
-                if (params.id) {
-                    flash.clase = "alert-success"
-                    flash.message = "Se ha actualizado correctamente la Comunidad " + comunidadInstance.nombre
-
-
-
-                } else {
-                    flash.clase = "alert-success"
-                    flash.message = "Se ha creado correctamente la Comunidad " + comunidadInstance.nombre
-                }
+//                def comunidadInstance
+//                if (params.id) {
+//                    comunidadInstance = Comunidad.get(params.id)
+//                    if (!comunidadInstance) {
+//                        flash.clase = "alert-error"
+//                        return
+//                    }//no existe el objeto
+//                    comunidadInstance.properties = params
+//                }//es edit
+//                else {
+//                    comunidadInstance = new Comunidad(params)
+//                } //es create
+//                if (!comunidadInstance.save(flush: true)) {
+//                    flash.clase = "alert-error"
+//                    def str = "<h4>No se pudo guardar Comunidad " + (comunidadInstance.id ? comunidadInstance.id : "") + "</h4>"
+//
+//                    str += "<ul>"
+//                    comunidadInstance.errors.allErrors.each { err ->
+//                        def msg = err.defaultMessage
+//                        err.arguments.eachWithIndex {  arg, i ->
+//                            msg = msg.replaceAll("\\{" + i + "}", arg.toString())
+//                        }
+//                        str += "<li>" + msg + "</li>"
+//                    }
+//                    str += "</ul>"
+//
+//                    flash.message = str
+//                    return
+//                }
+//
+//                if (params.id) {
+//                    flash.clase = "alert-success"
+//                    flash.message = "Se ha actualizado correctamente la Comunidad " + comunidadInstance.nombre
+//
+//
+//
+//                } else {
+//                    flash.clase = "alert-success"
+//                    flash.message = "Se ha creado correctamente la Comunidad " + comunidadInstance.nombre
+//                }
 
 
 
                 break;
-
-
         }
 
-
         render ("OK")
-
     }
 
-
     def deleteFromTree = {
-
-//        println(params)
-
 
         switch (params.tipo) {
 
             case "canton":
                 def canton = Canton.get(params.id)
                 def parroquias = Parroquia.findAllByCanton(canton)
-
-//                println(parroquias.size())
-
                 def band = true
                 def p = [:]
                 p.actionName = "deleteFromTree: Canton"
                 p.controllerName = "Zona"
                 if (parroquias.size() != 0  ){
 
-
                     render ("No se puede borrar el Cantón " + canton?.nombre)
-
-
-
                 }else {
-
                     canton.delete(flush:  true)
                     render ("OK")
-
-//                    parroquias.each { parroquia ->
-////                    p.id = parroquia.id
-//                        parroquia.delete(flush: true)
-//
-//                    }
-//
-//                    if (canton.delete(flush: true)) {
-//                        render("OK")
-//                    } else {
-//                        render("NO")
-//                    }
-
-
                 }
 
 
                 break;
             case "parroquia":
 
-
                 def parroquia = Parroquia.get(params.id)
-
                 def obra = Obra.findAllByParroquia(parroquia)
-
                 def comunidad = Comunidad.findAllByParroquia(parroquia)
 
                 params.actionName = "deleteFromTree: Parroquia"
@@ -244,22 +198,10 @@ class CantonController {
 
                 } else {
 
-
                     parroquia.delete(flush: true)
                     render ("OK")
-
-//
-//                    if (parroquia.delete(flush: true)) {
-//                        render("OK")
-//                    } else {
-//                        render("NO")
-//                    }
-
                 }
-
-
                 break;
-
 
             case "comunidad":
 
@@ -271,28 +213,9 @@ class CantonController {
 
                 comunidad.delete(flush:  true)
                 render ("OK")
-
-//                if (comunidad.size() != 0 && obra.size() != 0 ){
-//
-//                    render("No se puede borrar la Parroquia " + parroquia.nombre)
-//
-//                } else {
-//
-//
-//                    comunidad.delete(flush: true)
-//                    render ("OK")
-//
-//                }
-
-
                 break;
-
         }
-
     }
-
-
-
 
     def editarCanton = {
         def obj, crear
@@ -322,113 +245,26 @@ class CantonController {
     def editarComunidad = {
 
         def obj,crear
-        if (params.id){
-            obj =  Comunidad.get(params.id)
-            crear = false
-
-        }else {
-            obj = new Comunidad();
-            obj.parroquia = Parroquia.get(params.padre)
-            crear = true
-
-
-        }
+//        if (params.id){
+//            obj =  Comunidad.get(params.id)
+//            crear = false
+//
+//        }else {
+//            obj = new Comunidad();
+//            obj.parroquia = Parroquia.get(params.padre)
+//            crear = true
+//
+//
+//        }
 
         return [comunidadInstance: obj, tipo: params.tipo, crear: crear]
-
-
     }
 
-
-
-
-
-    String makeBasicTree(tipo, id) {
-        println "params: $params"
-        String tree = "", clase = ""
-        switch (tipo) {
-            case "init": //cargo "Division politica"
-                tree += "<ul type='pais'>" // <ul pais
-                clase = ""
-                tree += "<li id='pais_' class='pais jstree-closed' rel='pais'>" // <li pais
-                tree += "<a href='#' class='label_arbol'>División política</a>" // </> a href pais
-                tree += "</ul>"
-                break;
-
-
-            case "provincia": // cargo los cantones de la provincia
-                def provincia = Provincia.get(params.id)
-
-                def cantones = Canton.findAllByProvincia(provincia, [sort: 'nombre'])
-                clase = (cantones.size() > 0) ? "jstree-closed" : ""
-
-                if (cantones.size() > 0) {
-                    tree += "<ul type='canton'>" // < ul cantones
-                    cantones.each { canton ->
-                        def parroquias = Parroquia.findAllByCanton(canton, [sort: 'nombre'])
-
-                        clase = (parroquias.size() > 0) ? "jstree-closed" : ""
-                        tree += "<li id='canton_" + canton.id + "' class='canton " + clase + "' rel='canton'>" // <li canton
-                        tree += "<a href='#' id='link_canton_" + canton.id + "' class='label_arbol'>" + canton.nombre + "</a>" // </> a href canton
-                        tree += "</li>" // </> li canton
-                    }
-                    tree += "</ul>" // </> ul cantones
-                }
-                break;
-            case "canton":
-                def canton = Canton.get(params.id)
-
-                def parroquias = Parroquia.findAllByCanton(canton, [sort: 'nombre'])
-
-                clase = ""
-
-                if (parroquias.size() > 0) {
-                    tree += "<ul type='parroquia'>" // < ul parroquias
-                    parroquias.each { parroquia ->
-
-
-                        def comunidades = Comunidad.countByParroquia(parroquia)
-
-                        clase = (comunidades > 0) ? "jstree-closed" : ""
-
-                        tree += "<li id='parroquia_" + parroquia.id + "' class='parroquia " + clase + "' rel='parroquia'>" // <li parroquia
-                        tree += "<a href='#' id='link_parroquia_" + parroquia.id + "' class='label_arbol'>" + parroquia.nombre + "</a>" // </> a href parroquia
-                        tree += "</li>" // </> li parroquia
-                    }
-                    tree += "</ul>" // </> ul parroquias
-                }
-                break;
-            case "parroquia":
-                def parroquia = Parroquia.get(params.id)
-                def comunidades = Comunidad.findAllByParroquia(parroquia, [sort: 'nombre'])
-
-                clase = ""
-                if (comunidades.size() > 0) {
-
-
-                    tree += "<ul type='comunidad'>" // < ul parroquias
-                    comunidades.each { comunidad ->
-                        tree += "<li id='comunidad_" + comunidad.id + "' class='comunidad " + clase + "' rel='comunidad'>" // <li parroquia
-                        tree += "<a href='#' id='link_comunidad_" + comunidad.id + "' class='label_arbol'>" + comunidad.nombre + "</a>" // </> a href parroquia
-                        tree += "</li>" // </> li parroquia
-
-                    }
-                    tree += "</ul>"
-
-                }
-
-
-                break;
-
-        }
-
-        return tree
-    }
 
     def infoForTree = {
         redirect(action: 'info' + (params.tipo).capitalize(), params: params)
     }
-//
+
     def infoProvincia = {
         def obj = Provincia.get(params.id)
         return [provinciaInstance: obj]
@@ -443,20 +279,112 @@ class CantonController {
     }
 
     def infoComunidad = {
-
         def obj = Comunidad.get(params.id)
         return [comunidadInstance: obj]
-
     }
-
-
 
     def arbol () {
-
     }
 
+    def loadTreePart_ajax() {
+        render(makeTreeNode(params))
+    }
 
+    def makeTreeNode(params) {
+        println "makeTreeNode.. $params"
+        def id = params.id
+        def tipo = ""
+        def liId = ""
+        def ico = ""
 
+        if(id.contains("_")) {
+            id = params.id.split("_")[1]
+            tipo = params.id.split("_")[0]
+        }
+
+        if (!params.order) {
+            params.order = "asc"
+        }
+
+        String tree = "", clase = "", rel = ""
+        def padre
+        def hijos = []
+
+//        println "---> id: $id, tipo: $tipo, es #: ${id == '#'}"
+
+        if (id == "#") {
+            //root
+//            def hh = Provincia.countByZonaIsNull()
+            def hh = Provincia.count()
+            if (hh > 0) {
+                clase = "hasChildren jstree-closed"
+            }
+
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
+                    "<a href='#' class='label_arbol'>División Geográfica</a>" +
+                    "</li>"
+        } else {
+//            println "---- no es raiz... procesa: $tipo"
+
+            if(id == 'root'){
+                hijos = Provincia.findAll().sort{it.nombre}
+                def data = ""
+                ico = ", \"icon\":\"fa fa-parking text-success\""
+                hijos.each { hijo ->
+//                println "procesa ${hijo.nombre}"
+                    clase = Canton.findByProvincia(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
+
+//                    tree += "<ul>"
+                    tree += "<li id='prov_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    tree += "<a href='#' class='label_arbol'>" + hijo?.nombre + "</a>"
+                    tree += "</li>"
+                }
+            }else{
+                switch(tipo) {
+                    case "prov":
+                        hijos = Canton.findAllByProvincia(Provincia.get(id), [sort: params.sort])
+                        liId = "cntn_"
+//                    println "tipo: $tipo, ${hijos.size()}"
+                        ico = ", \"icon\":\"fa fa-copyright text-info\""
+                        hijos.each { h ->
+//                        println "procesa $h"
+                            clase = Parroquia.findByCanton(h)? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"canton"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" + h.nombre + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                    case "cntn":
+                        hijos = Parroquia.findAllByCanton(Canton.get(id), [sort: params.sort])
+                        liId = "parr_"
+//                    println "tipo: $tipo, ${hijos.size()}"
+                        ico = ", \"icon\":\"fa fa-registered text-danger\""
+                        hijos.each { h ->
+//                        println "procesa $h"
+//                        clase = Comunidad.findByParroquia(h)? "jstree-closed hasChildren" : ""
+                            clase = ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"parroquia"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" + h.nombre + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                    case "parr":
+//                    hijos = Comunidad.findAllByParroquia(Parroquia.get(id), [sort: params.sort])
+//                    liId = "cmnd_"
+//                    ico = ", \"icon\":\"fa fa-info-circle text-warning\""
+//                    hijos.each { h ->
+//                        clase = ""
+//                        tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"comunidad"}\" ${ico}}'>"
+//                        tree += "<a href='#' class='label_arbol'>" + h.nombre + "</a>"
+//                        tree += "</li>"
+//                    }
+                        break
+                }
+            }
+        }
+//        println "arbol: $tree"
+        return tree
+    }
 
     def index() {
         redirect(action: "list", params: params)
@@ -467,98 +395,119 @@ class CantonController {
         [cantonInstanceList: Canton.list(params), cantonInstanceTotal: Canton.count(), params: params]
     } //list
 
-
     def form_ajax() {
         def cantonInstance = new Canton(params)
         if (params.id) {
             cantonInstance = Canton.get(params.id)
-            if (!cantonInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Canton con id " + params.id
-                redirect(action: "list")
-                return
-            } //no existe el objeto
         } //es edit
-        return [cantonInstance: cantonInstance]
+        return [cantonInstance: cantonInstance, padre: params.padre ?: cantonInstance?.provincia?.id]
     } //form_ajax
 
     def save() {
+
         def cantonInstance
-        if (params.id) {
+
+        if(params.id) {
             cantonInstance = Canton.get(params.id)
-            if (!cantonInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Canton con id " + params.id
-                redirect(action: 'list')
+            if(!cantonInstance) {
+                render "no_No se encontró el cantón"
                 return
             }//no existe el objeto
-            cantonInstance.properties = params
+
+            if(cantonInstance?.numero?.toInteger() == params.numero.toInteger()){
+                cantonInstance.properties = params
+            }else{
+                if(Canton.findAllByNumero(params.numero)){
+                    render "no_Ya existe un cantón registrado con este número!"
+                    return
+                }else{
+                    cantonInstance.properties = params
+                }
+            }
         }//es edit
         else {
-            cantonInstance = new Canton(params)
+            if(Canton.findAllByNumero(params.numero)){
+                render "no_Ya existe un cantón registrado con este número!"
+                return
+            }else{
+                cantonInstance = new Canton(params)
+            }
         } //es create
         if (!cantonInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Canton " + (cantonInstance.id ? cantonInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            cantonInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
+            render "no_Error al guardar el cantón"
+        }else{
+            if(params.id) {
+                render  "ok_Se ha actualizado correctamente el Cantón "
+            } else {
+                render "ok_Se ha creado correctamente el Cantón "
             }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Canton " + cantonInstance.id
-
-
-
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Canton " + cantonInstance.id
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def cantonInstance = Canton.get(params.id)
-        if (!cantonInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Canton con id " + params.id
-            redirect(action: "list")
-            return
-        }
         [cantonInstance: cantonInstance]
     } //show
 
-    def delete() {
-        def cantonInstance = Canton.get(params.id)
-        if (!cantonInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Canton con id " + params.id
-            redirect(action: "list")
-            return
-        }
+    def borrarCanton_ajax () {
+        def canton = Canton.get(params.id)
 
-        try {
-            cantonInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Canton " + cantonInstance.id
-            redirect(action: "list")
+        try{
+            canton.delete(flush: true)
+            render "ok"
+        }catch(e){
+            println("error al borrar la canton " + e)
+            render "no"
         }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Canton " + (cantonInstance.id ? cantonInstance.id : "")
-            redirect(action: "list")
+    }
+
+    /**
+     * Acción llamada con ajax que permite realizar búsquedas en el árbol
+     */
+    def arbolSearch_ajax() {
+        println "arbolSearch_ajax $params"
+        def search = params.str.trim()
+        if (search != "") {
+            def c = Canton.createCriteria()
+            def find = c.list(params) {
+                or {
+                    ilike("nombre", "%" + search + "%")
+                    provincia {
+                        or {
+                            ilike("nombre", "%" + search + "%")
+                        }
+                    }
+                }
+            }
+//            println find
+            def provincias = []
+            find.each { pers ->
+                if (pers.provincia && !provincias.contains(pers.provincia)) {
+                    provincias.add(pers.provincia)
+                    def dep = pers.provincia
+//                    def padre = dep.padre
+//                    while (padre) {
+//                        dep = padre
+//                        padre = dep.padre
+//                        if (!provincias.contains(dep)) {
+//                            provincias.add(dep)
+//                        }
+//                    }
+                }
+            }
+            provincias = provincias.reverse()
+            def ids = "["
+            if (find.size() > 0) {
+                ids += "\"#root\","
+                provincias.each { dp ->
+                    ids += "\"#lidep_" + dp.id + "\","
+                }
+                ids = ids[0..-2]
+            }
+            ids += "]"
+            render ids
+        } else {
+            render ""
         }
-    } //delete
+    }
 } //fin controller

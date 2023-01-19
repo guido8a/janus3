@@ -1,45 +1,30 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 02/06/16
-  Time: 01:04 PM
---%>
-
-<g:form class="form-horizontal" name="frmIva" action="save_ext">
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+<g:form class="form-horizontal" name="frmIva" action="guardarIva_ajax">
+    <div class="form-group">
+        <span class="grupo">
+            <label for="iva_name" class="col-md-2 control-label text-info">
                 IVA
+            </label>
+            <span class="col-md-4">
+                <g:textField name="iva_name" maxlength="2" class="form-control number required" value="${janus.Parametros.first().iva}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="iva_name" maxlength="2" class=" required number" value="${janus.Parametros.first().iva}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 </g:form>
 
-
 <script type="text/javascript">
-
-
-
-//    $("#frmIva").validate({
-//        errorPlacement : function (error, element) {
-//            element.parent().find(".help-block").html(error).show();
-//        },
-//        success        : function (label) {
-//            label.parent().hide();
-//        },
-//        errorClass     : "label label-important",
-//        submitHandler  : function (form) {
-//            $("[name=btnSave-claseObraInstance]").replaceWith(spinner);
-//            form.submit();
-//        }
-//    });
-
-
+    var validator = $("#frmIva").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        }
+    });
 </script>

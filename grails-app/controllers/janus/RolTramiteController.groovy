@@ -1,8 +1,5 @@
 package janus
 
-
-import org.springframework.dao.DataIntegrityViolationException
-
 class RolTramiteController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -21,8 +18,6 @@ class RolTramiteController {
         if (params.id) {
             rolTramiteInstance = RolTramite.get(params.id)
             if (!rolTramiteInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró RolTramite con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -30,58 +25,35 @@ class RolTramiteController {
         return [rolTramiteInstance: rolTramiteInstance]
     } //form_ajax
 
-    def save() {
-        params.codigo = params.codigo.toUpperCase();
-        def existe = RolTramite.findByCodigo(params.codigo)
-        def rolTramiteInstance
-        if (params.id) {
-            rolTramiteInstance = RolTramite.get(params.id)
-            if (!rolTramiteInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró RolTramite con id " + params.id
-                redirect(action: 'list')
+    def saveRolTramite_ajax() {
+
+        def rol
+        def texto = params.id ? 'actualizado' : 'creado'
+
+        if(params.id){
+            rol = RolTramite.get(params.id)
+            if(!rol){
+                render "no_Error al guardar el rol"
+            }
+        }else{
+            if(RolTramite.findAllByCodigo(params.codigo.toUpperCase())){
+                render "no_El código ya se encuentra ingresado"
                 return
-            }//no existe el objeto
-            rolTramiteInstance.properties = params
-        }//es edit
-        else {
-            if(!existe){
-                rolTramiteInstance = new RolTramite(params)
             }else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el Rol Trámite, el código ya existe!!"
-                redirect(action: 'list')
-                return
+                rol = new RolTramite()
             }
-
-        } //es create
-        if (!rolTramiteInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar RolTramite " + (rolTramiteInstance.id ? rolTramiteInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            rolTramiteInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente RolTramite " + rolTramiteInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente RolTramite " + rolTramiteInstance.descripcion
+        params.codigo = params.codigo.toUpperCase();
+        rol.properties = params
+
+        if(!rol.save(flush:true)){
+            println("error al guardar el rol " + rol.errors)
+            render "no_Error al guardar el rol"
+        }else{
+            render "ok_Rol ${texto} correctamente"
         }
-        redirect(action: 'list')
+
     } //save
 
     def show_ajax() {
@@ -95,23 +67,17 @@ class RolTramiteController {
 
     def delete() {
         def rolTramiteInstance = RolTramite.get(params.id)
-        if (!rolTramiteInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró RolTramite con id " + params.id
-            redirect(action: "list")
-            return
+        if(!rolTramiteInstance){
+            render "no_Error al borrar el rol"
+        }else{
+            try {
+                rolTramiteInstance.delete(flush: true)
+                render "ok_Rol borrado correctamente"
+            }catch(e){
+                println("error al borrar el rol " + rolTramiteInstance.errors)
+                render "no_Error al borrar el rol"
+            }
         }
 
-        try {
-            rolTramiteInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente RolTramite " + rolTramiteInstance.descripcion
-            redirect(action: "list")
-        }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar RolTramite " + (rolTramiteInstance.descripcion ? rolTramiteInstance.descripcion : "")
-            redirect(action: "list")
-        }
     } //delete
 } //fin controller
