@@ -20,7 +20,7 @@ class MantenimientoItemsController {
         println "PARAMS  "+params
 
         def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
+//        def empresa = usuario.empresa
         def id = params.id
         def tipo = params.tipo
         def precios = params.precios
@@ -41,7 +41,8 @@ class MantenimientoItemsController {
                 break;
             case "subgrupo_manoObra":
             case "subgrupo_consultoria":
-                hijos = Item.findAllByDepartamentoAndEmpresa(DepartamentoItem.get(id), empresa, [sort: 'codigo'])
+//                hijos = Item.findAllByDepartamentoAndEmpresa(DepartamentoItem.get(id), empresa, [sort: 'codigo'])
+                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
                 break;
             case "subgrupo_material":
             case "subgrupo_equipo":
@@ -51,13 +52,14 @@ class MantenimientoItemsController {
             case "departamento_consultoria":
             case "departamento_material":
             case "departamento_equipo":
-                hijos = Item.findAllByDepartamentoAndEmpresa(DepartamentoItem.get(id), empresa,[sort: 'codigo'])
+//                hijos = Item.findAllByDepartamentoAndEmpresa(DepartamentoItem.get(id), empresa,[sort: 'codigo'])
+                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
                 break;
             case "item_manoObra":
             case "item_consultoria":
             case "item_material":
             case "item_equipo":
-                println "....1 Empresa: ${empresa.id}"
+//                println "....1 Empresa: ${empresa.id}"
                 def tipoLista = Item.get(id).tipoLista
                 if (precios) {
                     println "....2 tipoLista: ${tipoLista.id}"
@@ -66,7 +68,8 @@ class MantenimientoItemsController {
                     } else {
                         hijos = []
                         if (tipoLista) {
-                            hijos = Lugar.findAllByEmpresaAndTipoListaAndTipo(empresa, tipoLista, 'B')
+//                            hijos = Lugar.findAllByEmpresaAndTipoListaAndTipo(empresa, tipoLista, 'B')
+                            hijos = Lugar.findAllByTipoListaAndTipo(tipoLista, 'B')
                         }
                     }
                 } else if(vae){
@@ -84,7 +87,8 @@ class MantenimientoItemsController {
             println "hijo ... "+tipo
             switch (tipo) {
                 case "grupo_manoObra":
-                    hijosH = Item.findAllByDepartamentoAndEmpresa(hijo, empresa,[sort: 'codigo'])
+//                    hijosH = Item.findAllByDepartamentoAndEmpresa(hijo, empresa,[sort: 'codigo'])
+                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
                     desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
                     def parts = tipo.split("_")
                     rel = "departamento_" + parts[1]
@@ -102,7 +106,8 @@ class MantenimientoItemsController {
                     break;
                 case "subgrupo_material":
                 case "subgrupo_equipo":
-                    hijosH = Item.findAllByDepartamentoAndEmpresa(hijo, empresa,[sort: 'codigo'])
+//                    hijosH = Item.findAllByDepartamentoAndEmpresa(hijo, empresa,[sort: 'codigo'])
+                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
                     desc = hijo.subgrupo.codigo.toString().padLeft(3, '0') + '.' + hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
                     def parts = tipo.split("_")
                     rel = "departamento_" + parts[1]
@@ -116,7 +121,8 @@ class MantenimientoItemsController {
                             hijosH = ["Todos"]
                         } else {
                             if (tipoLista) {
-                                hijosH = Lugar.findAllByEmpresaAndTipoLista(empresa, tipoLista)
+//                                hijosH = Lugar.findAllByEmpresaAndTipoLista(empresa, tipoLista)
+                                hijosH = Lugar.findAllByTipoLista(tipoLista)
                             }
                         }
                     } else if(vae){
@@ -136,7 +142,8 @@ class MantenimientoItemsController {
                             hijosH = ["Todos"]
                         } else {
                             if (tipoLista) {
-                                hijosH = Lugar.findAllByEmpresaAndTipoLista(empresa, tipoLista)
+//                                hijosH = Lugar.findAllByEmpresaAndTipoLista(empresa, tipoLista)
+                                hijosH = Lugar.findAllByTipoLista(tipoLista)
                             }
                         }
                     } else if(vae){
@@ -526,6 +533,7 @@ class MantenimientoItemsController {
     }
 
     def loadMO() {
+        println "loadMO"
         def hijos = SubgrupoItems.findAllByGrupo(Grupo.get(2), [sort: 'codigo'])
         def html = ""
         def open = ""
@@ -905,7 +913,7 @@ class MantenimientoItemsController {
 
     def formIt_ajax() {
         def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
+//        def empresa = usuario.empresa
         def departamento = DepartamentoItem.get(params.departamento)
         def itemInstance = new Item()
         if (params.id) {
@@ -919,7 +927,8 @@ class MantenimientoItemsController {
         println("sub " + subgrupo)
 
 
-        def sql="select max(substr(itemcdgo, length(itemcdgo)-2,3)::integer+1) from item where itemcdgo ilike '${grupo.toString() + "." + subgrupo.toString() + ".%"}' and empr__id = ${empresa?.id}"
+        def sql="select max(substr(itemcdgo, length(itemcdgo)-2,3)::integer+1) from item where itemcdgo ilike " +
+                "'${grupo.toString() + "." + subgrupo.toString() + ".%"}' "
         def cn = dbConnectionService.getConnection()
         def maximo = cn.rows(sql)
 
@@ -971,7 +980,7 @@ class MantenimientoItemsController {
     def checkCdIt_ajax() {
         def dep = DepartamentoItem.get(params.dep)
         def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
+//        def empresa = usuario.empresa
         if (dep.subgrupo.grupo.id != 2)
             params.codigo = dep.subgrupo.codigo.toString().padLeft(3, '0') + "." + dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
         else
@@ -983,7 +992,8 @@ class MantenimientoItemsController {
             if (params.codigo.toString().trim() == item.codigo.toString().trim()) {
                 render true
             } else {
-                def items = Item.findAllByCodigoAndEmpresa(params.codigo, empresa)
+//                def items = Item.findAllByCodigoAndEmpresa(params.codigo, empresa)
+                def items = Item.findAllByCodigo(params.codigo)
                 if (items.size() == 0) {
                     render true
                 } else {
@@ -991,7 +1001,8 @@ class MantenimientoItemsController {
                 }
             }
         } else {
-            def items = Item.findAllByCodigoAndEmpresa(params.codigo, empresa)
+//            def items = Item.findAllByCodigoAndEmpresa(params.codigo, empresa)
+            def items = Item.findAllByCodigo(params.codigo)
             if (items.size() == 0) {
                 render true
             } else {
@@ -1002,13 +1013,13 @@ class MantenimientoItemsController {
 
     def checkNmIt_ajax() {
         def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
+//        def empresa = usuario.empresa
         if (params.id) {
             def item = Item.get(params.id)
             if (params.nombre == item.nombre) {
                 render true
             } else {
-                def items = Item.findAllByNombreAndEmpresa(params.nombre, empresa)
+                def items = Item.findAllByNombre(params.nombre)
                 if (items.size() == 0) {
                     render true
                 } else {
@@ -1016,7 +1027,8 @@ class MantenimientoItemsController {
                 }
             }
         } else {
-            def items = Item.findAllByNombreAndEmpresa(params.nombre, empresa)
+//            def items = Item.findAllByNombreAndEmpresa(params.nombre, empresa)
+            def items = Item.findAllByNombre(params.nombre)
             if (items.size() == 0) {
                 render true
             } else {
@@ -1072,7 +1084,7 @@ class MantenimientoItemsController {
     def saveIt_ajax() {
         println 'SAVE ITEM: ' + params
         def persona = Persona.get(session.usuario.id)
-        def empresa = persona.empresa
+//        def empresa = persona.empresa
         def dep = DepartamentoItem.get(params.departamento.id)
         params.tipoItem = TipoItem.findByCodigo("I")
         params.fechaModificacion = new Date()
@@ -1111,7 +1123,7 @@ class MantenimientoItemsController {
             item = Item.get(params.id)
             accion = "edit"
         }else{
-            item.empresa = empresa
+//            item.empresa = empresa
         }
 //        println "ITEM: " + params
         item.properties = params
@@ -1553,7 +1565,7 @@ class MantenimientoItemsController {
 
     def saveLg_ajax() {
         def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
+//        def empresa = usuario.empresa
         def accion = "create"
         def lugar = new Lugar()
         params.descripcion = params.descripcion.toString().toUpperCase()
@@ -1562,7 +1574,7 @@ class MantenimientoItemsController {
             accion = "edit"
         }
         lugar.properties = params
-        lugar.empresa = empresa
+//        lugar.empresa = empresa
 
         if (lugar.save(flush: true)) {
             render "OK_" + accion + "_" + lugar.id + "_" + (lugar.descripcion + (params.all.toString().toBoolean() ? " (" + lugar.tipo + ")" : "")) + "_c"

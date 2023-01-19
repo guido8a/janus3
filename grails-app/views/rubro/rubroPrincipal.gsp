@@ -147,7 +147,7 @@
             </div>
 
             <div class="row-fluid">
-                <div class="col-md-2" style="width: 150px;">
+                <div class="col-md-3" style="width: 150px;">
                     Dirección responsable
                     <g:select name="rubro.grupo.id" id="selClase" from="${grupos}" class="col-md-12" optionKey="id" optionValue="descripcion"
                               value="${rubro?.departamento?.subgrupo?.grupo?.id}" noSelection="${['': '--Seleccione--']}"/>
@@ -499,54 +499,40 @@
 %{--<div class="modal large hide fade " id="modal-transporte" style=";overflow: hidden;">--}%
 %{--<div id="modal-transporte" style=";overflow: hidden;">--}%
 <div id="dialTransporte" style="overflow: hidden">
-    <fieldset class="borde" style="border-radius: 4px">
-    %{--<div class="modal-header btn-primary">--}%
-        %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-        %{--<h3 id="modal_trans_title">--}%
-            %{--Variables de transporte--}%
-        %{--</h3>--}%
-    %{--</div>--}%
-
-    %{--<div class="modal-body" id="modal_trans_body">--}%
-    <div class="row-fluid" id="modal_trans_body">
-        <div class="row-fluid">
+    <fieldset class="borde" style="border-radius: 4px; margin-top: 10px">
             <div class="col-md-2">
                 Volquete
             </div>
-
-            <div class="col-md-5">
-                <g:select name="volquetes" from="${volquetes2}" optionKey="id" optionValue="nombre" id="cmb_vol" noSelection="${['-1': 'Seleccione']}" value="${aux.volquete.id}"/>
+            <div class="col-md-2">
+                <g:select name="volquetes" from="${volquetes2}" optionKey="id" optionValue="nombre" id="cmb_vol"
+                          noSelection="${['-1': 'Seleccione']}" value="${aux.volquete.id}"/>
             </div>
+
+            <div class="col-md-3"></div>
 
             <div class="col-md-2">
                 Costo
             </div>
-
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <g:textField style="width: 60px;text-align: right" disabled="" name="costo_volqueta" />
             </div>
-        </div>
-
-        <div class="row-fluid">
             <div class="col-md-2">
                 Chofer
             </div>
 
             <div class="col-md-5">
-                <g:select name="volquetes" from="${choferes}" optionKey="id" optionValue="nombre" id="cmb_chof" style="" noSelection="${['-1': 'Seleccione']}" value="${aux.chofer.id}"/>
+                <g:select name="volquetes" from="${choferes}" optionKey="id" optionValue="nombre" id="cmb_chof"
+                          style="" noSelection="${['-1': 'Seleccione']}" value="${aux.chofer.id}"/>
             </div>
 
             <div class="col-md-2">
                 Costo
             </div>
-
             <div class="col-md-3">
                 <g:textField style="width: 60px;text-align: right" disabled="" name="costo_chofer"/>
             </div>
-        </div>
-
-        <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 5px">
+        </fieldset>
+        <fieldset class="borde" style="border-radius: 4px; margin-top: 15px; border-style: solid; border-color: #444; border-width: 1px">
             <div class="col-md-6">
                 <b>Distancia peso</b>
             </div>
@@ -554,15 +540,14 @@
             <div class="col-md-5" style="margin-left: 30px;">
                 <b>Distancia volumen</b>
             </div>
-        </div>
+        </fieldset>
 
-        <div class="row-fluid">
+        <div class="row-fluid" style="margin-top: 10px">
             <div class="col-md-2">
                 Canton
             </div>
-
             <div class="col-md-3">
-                <g:textField style="width: 50px;" name="dist_p1" value="0.00"/>
+                <g:textField name="dist_p1" value="0.00"/>
             </div>
 
             <div class="col-md-4">
@@ -570,7 +555,7 @@
             </div>
 
             <div class="col-md-3">
-                <g:textField style="width: 50px;" name="dist_v1" value="0.00"/>
+                <g:textField name="dist_v1" value="0.00"/>
             </div>
 
         </div>
@@ -595,7 +580,6 @@
 
         <div class="row-fluid">
             <div class="col-md-5">
-
             </div>
 
             <div class="col-md-4">
@@ -607,20 +591,21 @@
             </div>
         </div>
 
-        <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">
+        <fieldset class="borde" style="border-radius: 4px; margin-top: 90px; border-style: solid;
+            border-color: #444; border-width: 1px">
             <div class="col-md-6">
                 <b>Listas de precios</b>
             </div>
-        </div>
+        </fieldset>
 
-        <div class="row-fluid">
+        <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-1">
                 Canton
             </div>
 
             <div class="col-md-4">
                 <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(1))}"
-                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_1"/>
+                          optionKey="id" optionValue="descripcion" class="col-md-11" id="lista_1"/>
             </div>
 
             <div class="col-md-3">
@@ -629,18 +614,18 @@
 
             <div class="col-md-4">
                 <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(3))}"
-                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_3"/>
+                          optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_3"/>
             </div>
         </div>
 
-        <div class="row-fluid">
+        <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-1">
                 Especial
             </div>
 
             <div class="col-md-4">
                 <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(2))}"
-                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_2"/>
+                          optionKey="id" optionValue="descripcion" class="col-md-11" id="lista_2"/>
             </div>
 
             <div class="col-md-3">
@@ -649,11 +634,11 @@
 
             <div class="col-md-4">
                 <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(4))}"
-                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_4"/>
+                          optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_4"/>
             </div>
         </div>
 
-        <div class="row-fluid">
+        <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-5"></div>
 
             <div class="col-md-3">
@@ -662,16 +647,13 @@
 
             <div class="col-md-4">
                 <g:select name="item.ciudad.id" from="${janus.Lugar.findAllByTipoLista(janus.TipoLista.get(5))}"
-                          optionKey="id" optionValue="descripcion" class="col-md-10" id="lista_5"/>
+                          optionKey="id" optionValue="descripcion" class="col-md-12" id="lista_5"/>
             </div>
         </div>
 
     </div>
-    <input type="hidden" id="totMat_h">
 
-    %{--<div class="modal-footer" id="modal_trans_footer">--}%
-        %{--<a href="#" data-dismiss="modal" class="btn btn-primary">OK</a>--}%
-    %{--</div>--}%
+    %{--<input type="hidden" id="totMat_h">--}%
 
     <div id="imprimirTransporteDialog">
         <fieldset>
@@ -1746,10 +1728,15 @@
             resizable: true,
             modal: true,
             draggable: false,
-            width: 1000,
-            height: 500,
+            width: 800,
+            height: 400,
             position: 'center',
-            title: 'Rubros'
+            title: 'Variables de Transporte',
+            buttons   : {
+                "Cerrar": function () {
+                    $("#dialTransporte").dialog("close");
+                },
+            },
         });
 
         $("#transporte").click(function () {

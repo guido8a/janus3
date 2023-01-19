@@ -2,23 +2,34 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <title>REGISTRO Y MANT. DE ITEMS</title>
+        <title>ITEMS</title>
 
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>
+        <asset:javascript src="/jquery/plugins/jstree/jquery.jstree.js"/>
+        <asset:javascript src="/jquery/plugins/jstree/_lib/jquery.cookie.js"/>
+        <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
+        <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
+        <asset:javascript src="/jquery/plugins/jgrowl/jquery.jgrowl.js"/>
 
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>--}%
+        %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
 
-        <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>
-        <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>
+        <asset:stylesheet src="/jquery/plugins/jgrowl/jquery.jgrowl.css"/>
+        <asset:stylesheet src="/jquery/plugins/jgrowl/jquery.jgrowl.customThemes.css"/>
+
+        %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
+        %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
+
         <g:if test="${janus.Parametros.findByEmpresaLike(message(code: 'ambiente2'))}">
-            <link href="${resource(dir: 'css', file: 'treeV2.css')}" rel="stylesheet"/>
+            <asset:stylesheet src="treeV2.css"/>
+            %{--<link href="${resource(dir: 'css', file: 'treeV2.css')}" rel="stylesheet"/>--}%
         </g:if>
         <g:else>
-            <link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>
-            <link href="${resource(dir: 'js/jquery/plugins/jstree/themes/default', file: 'style.css')}" rel="stylesheet"/>
+            %{--<link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>--}%
+            %{--<link href="${resource(dir: 'js/jquery/plugins/jstree/themes/default', file: 'style.css')}" rel="stylesheet"/>--}%
+            <asset:stylesheet src="jquery/plugins/jstree/themes/default/style.css"/>
         </g:else>
 
 
@@ -30,6 +41,19 @@
         %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'custom-methods.js')}"></script>--}%
         %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
         %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet"/>--}%
+
+    <style>
+
+    .hide {
+        display: none;
+    }
+
+    .show {
+        display: block;
+    }
+
+    </style>
+
     </head>
 
     <body>
@@ -75,7 +99,8 @@
 
 
         <div id="treeArea" class="hide">
-
+        %{--<div id="treeArea">--}%
+            Arbol
             <div id="tree" class="ui-corner-all"></div>
 
             <div id="info" class="ui-corner-all"></div>
@@ -735,10 +760,13 @@
                         li = "<li id='" + id + "' class='root hasChildren jstree-closed' rel='" + rel + "' ><a href='#' class='label_arbol'>" + label + "</a></li>";
                         break;
                 }
+
+                console.log('Carga árbol');
+                
                 $("#tree").bind("loaded.jstree",
                         function (event, data) {
-                            $("#loading").hide();
-                            $("#treeArea").show();
+                            $("#loading").addClass("hide");
+                            $("#treeArea").addClass("show");
                         }).jstree({
                             "core"        : {
                                 "initially_open" : [ id ]
