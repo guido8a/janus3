@@ -16,12 +16,230 @@ class MantenimientoItemsController {
         redirect(action: "registro", params: params)
     } //index
 
-    def precios () {
-    }
-
-    def loadTreePart_ajax() {
-        render(makeTreeNode(params))
-    }
+//    String makeBasicTree(params) {
+//
+//        println "makeTreeNode.. $params"
+//        def id = params.id
+//        def tipo = ""
+//        def liId = ""
+//        def ico = ""
+//
+//        if(id.contains("_")) {
+//            id = params.id.split("_")[1]
+//            tipo = params.id.split("_")[0]
+//        }
+//
+//        if (!params.order) {
+//            params.order = "asc"
+//        }
+//
+//        String tree = "", clase = "", rel = ""
+//        def padre
+//        def hijos = []
+//
+//
+//
+////        println "PARAMS  "+params
+////
+////        def id = params.id
+////        def tipo = params.tipo
+////        def precios = params.precios
+////        def all = params.all ? params.all.toBoolean() : false
+////        def ignore = params.ignore ? params.ignore.toBoolean() : false
+////        def vae = params.vae
+////
+////        def hijos = []
+//
+//        switch (tipo) {
+//            case "grupo_manoObra":
+//            case "grupo_consultoria":
+//                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
+//                break;
+//            case "grupo_material":
+//            case "grupo_equipo":
+//                hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
+//                break;
+//            case "subgrupo_manoObra":
+//            case "subgrupo_consultoria":
+//                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
+//                break;
+//            case "subgrupo_material":
+//            case "subgrupo_equipo":
+//                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
+//                break;
+//            case "departamento_manoObra":
+//            case "departamento_consultoria":
+//            case "departamento_material":
+//            case "departamento_equipo":
+//                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
+//                break;
+//            case "item_manoObra":
+//            case "item_consultoria":
+//            case "item_material":
+//            case "item_equipo":
+//                def tipoLista = Item.get(id).tipoLista
+//                if (precios) {
+//                    println "....2 tipoLista: ${tipoLista.id}"
+//                    if (ignore) {
+//                        hijos = ["Todos"]
+//                    } else {
+//                        hijos = []
+//                        if (tipoLista) {
+//                            hijos = Lugar.findAllByTipoListaAndTipo(tipoLista, 'B')
+//                        }
+//                    }
+//                } else if(vae){
+//                    hijos = VaeItems.findAllByItem(Item.get(params.id),[max:1])
+//                }
+//                break;
+//        }
+//
+////        String tree = "", clase = "", rel = "", extra = ""
+//
+//        println "....3 hijos: ${hijos.size()}"
+////        tree += "<ul>"
+//
+//        hijos.each { hijo ->
+////            def hijosH, desc, liId
+//            def hijosH, desc
+//            println "hijo ... "+tipo
+//            switch (tipo) {
+//                case "grupo_manoObra":
+//                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
+//                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
+//                    def parts = tipo.split("_")
+//                    rel = "departamento_" + parts[1]
+//                    liId = "dp" + "_" + hijo.id
+//                    break;
+//                case "grupo_material":
+//                case "grupo_equipo":
+//                    hijosH = DepartamentoItem.findAllBySubgrupo(hijo, [sort: 'codigo'])
+//                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
+//                    def parts = tipo.split("_")
+//                    rel = "subgrupo_" + parts[1]
+//                    liId = "sg" + "_" + hijo.id
+//                    break;
+//                case "subgrupo_manoObra":
+//                    break;
+//                case "subgrupo_material":
+//                case "subgrupo_equipo":
+//                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
+//                    desc = hijo.subgrupo.codigo.toString().padLeft(3, '0') + '.' + hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
+//                    def parts = tipo.split("_")
+//                    rel = "departamento_" + parts[1]
+//                    liId = "dp" + "_" + hijo.id
+//                    break;
+//                case "departamento_manoObra":
+//                    hijosH = []
+//                    def tipoLista = hijo.tipoLista
+//                    if (precios) {
+//                        if (ignore) {
+//                            hijosH = ["Todos"]
+//                        } else {
+//                            if (tipoLista) {
+//                                hijosH = Lugar.findAllByTipoLista(tipoLista)
+//                            }
+//                        }
+//                    } else if(vae){
+//                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
+//                    }
+//                    desc = hijo.codigo + " " + hijo.nombre
+//                    def parts = tipo.split("_")
+//                    rel = "item_" + parts[1]
+//                    liId = "it" + "_" + hijo.id
+//                    break;
+//                case "departamento_material":
+//                case "departamento_equipo":
+//                    hijosH = []
+//                    def tipoLista = hijo.tipoLista
+//                    if (precios) {
+//                        if (ignore) {
+//                            hijosH = ["Todos"]
+//                        } else {
+//                            if (tipoLista) {
+//                                hijosH = Lugar.findAllByTipoLista(tipoLista)
+//                            }
+//                        }
+//                    } else if(vae){
+//                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
+//                    }
+//                    desc = hijo.codigo + " " + hijo.nombre
+//                    def parts = tipo.split("_")
+//                    rel = "item_" + parts[1]
+//                    liId = "it" + "_" + hijo.id
+//                    break;
+//                case "item_manoObra":
+//                    hijosH = []
+//                    if (precios) {
+//                        hijosH = []
+//                        if (ignore) {
+//                            desc = "mo4  " + "Todos los lugares"
+//                            rel = "lugar_all"
+//                            liId = "lg_" + id + "_all"
+//                        } else {
+//                            if (all) {
+//                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
+//                            } else {
+//                                desc = hijo.descripcion
+//                            }
+//                            rel = "lugar"
+//                            liId = "lg_" + id + "_" + hijo.id
+//
+//                            def obras = Obra.countByLugar(hijo)
+//                            extra = "data-obras='${obras}'"
+//                        }
+//                    } else if(vae && hijo){
+//                        hijosH = []
+//                        desc = "VAE"
+//                        rel = "vae"
+//                        liId = "vae_"+id+"_"+hijo.id
+//                    }
+//                    break;
+//                case "item_material":
+//                case "item_equipo":
+//                    println "....2"
+//                    if (precios) {
+//                        hijosH = []
+//                        if (ignore) {
+//                            desc = "Todos los lugares"
+//                            rel = "lugar_all"
+//                            liId = "lg_" + id + "_all"
+//                        } else {
+//                            if (all) {
+//                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
+//                            } else {
+//                                desc = hijo.descripcion
+//                            }
+//                            rel = "lugar"
+//                            liId = "lg_" + id + "_" + hijo.id
+//
+//                            def obras = Obra.countByLugar(hijo)
+//                            extra = "data-obras='${obras}'"
+//                        }
+//                    }  else if(vae){
+//                        hijosH = []
+//                        desc = "VAE"
+//                        rel = "vae"
+//                        liId = "vae_"+id+"_"+hijo.id
+//                    }
+//                    break;
+//            }
+//
+//            if (!hijosH) {
+//                hijosH = []
+//            }
+//            clase = (hijosH?.size() > 0) ? "jstree-closed hasChildren" : ""
+//
+//            tree += "<li id='" + liId + "' class='" + clase + "' rel='" + rel + "' " + extra + ">"
+//            tree += "<a href='#' class='label_arbol'>" + desc + "</a>"
+//            tree += "</li>"
+//
+////            println "hijos: ${hijos}, \n hijosH: ${hijosH}"
+//        }
+////        tree += "</ul>"
+//
+//        return tree
+//    }
 
     def makeTreeNode(params) {
         println "makeTreeNode.. $params"
@@ -43,293 +261,277 @@ class MantenimientoItemsController {
         def padre
         def hijos = []
 
-//        println "---> id: $id, tipo: $tipo, es #: ${id == '#'}"
-
         if (id == "#") {
             //root
-//            def hh = Provincia.countByZonaIsNull()
-            def hh = Provincia.count()
-            if (hh > 0) {
+            def hh = Grupo.get(params.tipo)
+            if (hh) {
                 clase = "hasChildren jstree-closed"
             }
-
             tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
-                    "<a href='#' class='label_arbol'>Precios</a>" +
+                    "<a href='#' class='label_arbol'>ITEMS</a>" +
                     "</li>"
         } else {
-//            println "---- no es raiz... procesa: $tipo"
-
             if(id == 'root'){
-                hijos = SubgrupoItems.findAll().sort{it.descripcion}
+                hijos = Grupo.get(params.tipo)
                 def data = ""
                 ico = ", \"icon\":\"fa fa-parking text-success\""
                 hijos.each { hijo ->
-//                println "procesa ${hijo.nombre}"
-                    clase = DepartamentoItem.findBySubgrupo(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
-
-//                    tree += "<ul>"
-                    tree += "<li id='prov_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    clase = SubgrupoItems.findAllByGrupo(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
+                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
                     tree += "<a href='#' class='label_arbol'>" + hijo?.descripcion + "</a>"
                     tree += "</li>"
                 }
             }else{
                 switch(tipo) {
-                    case "prov":
-                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get('1'), [sort: params.sort])
-                        liId = "cntn_"
-//                    println "tipo: $tipo, ${hijos.size()}"
+                    case "gp":
+                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'descripcion'])
+                        liId = "sg_"
                         ico = ", \"icon\":\"fa fa-copyright text-info\""
                         hijos.each { h ->
-//                        println "procesa $h"
-                            clase = DepartamentoItem.findBySubgrupo(h)? "jstree-closed hasChildren" : ""
-                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"canton"}\" ${ico}}'>"
+                            clase = DepartamentoItem.findBySubgrupo(h) ? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
                             tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
                             tree += "</li>"
                         }
                         break
-                    case "cntn":
-                        hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: params.sort])
-                        liId = "parr_"
-//                    println "tipo: $tipo, ${hijos.size()}"
+                    case "sg":
+                        hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'descripcion'])
+                        liId = "dp_"
                         ico = ", \"icon\":\"fa fa-registered text-danger\""
                         hijos.each { h ->
-//                        println "procesa $h"
-//                        clase = Comunidad.findByParroquia(h)? "jstree-closed hasChildren" : ""
-                            clase = ""
-                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"parroquia"}\" ${ico}}'>"
+                        clase = Item.findByDepartamento(h)? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"departamento"}\" ${ico}}'>"
                             tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
                             tree += "</li>"
                         }
                         break
-                    case "parr":
-//                    hijos = Comunidad.findAllByParroquia(Parroquia.get(id), [sort: params.sort])
-//                    liId = "cmnd_"
-//                    ico = ", \"icon\":\"fa fa-info-circle text-warning\""
-//                    hijos.each { h ->
-//                        clase = ""
-//                        tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"comunidad"}\" ${ico}}'>"
-//                        tree += "<a href='#' class='label_arbol'>" + h.nombre + "</a>"
-//                        tree += "</li>"
-//                    }
+                    case "dp":
+                    hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'nombre'])
+                    liId = "it_"
+                    ico = ", \"icon\":\"fa fa-info-circle text-warning\""
+                    hijos.each { h ->
+                        clase = ""
+                        tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
+                        tree += "<a href='#' class='label_arbol'>" + h.nombre + "</a>"
+                        tree += "</li>"
+                    }
                         break
                 }
             }
         }
-//        println "arbol: $tree"
         return tree
     }
 
 
-    String makeBasicTree(params) {
-        println "PARAMS  "+params
+    //printlnborrar
 
-        def usuario = Persona.get(session.usuario.id)
-//        def empresa = usuario.empresa
-        def id = params.id
-        def tipo = params.tipo
-        def precios = params.precios
-        def all = params.all ? params.all.toBoolean() : false
-        def ignore = params.ignore ? params.ignore.toBoolean() : false
-        def vae = params.vae
 
-        def hijos = []
-
-        switch (tipo) {
-            case "grupo_manoObra":
-            case "grupo_consultoria":
-                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
-                break;
-            case "grupo_material":
-            case "grupo_equipo":
-                hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
-                break;
-            case "subgrupo_manoObra":
-            case "subgrupo_consultoria":
-//                hijos = Item.findAllByDepartamentoAndEmpresa(DepartamentoItem.get(id), empresa, [sort: 'codigo'])
-                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
-                break;
-            case "subgrupo_material":
-            case "subgrupo_equipo":
-                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
-                break;
-            case "departamento_manoObra":
-            case "departamento_consultoria":
-            case "departamento_material":
-            case "departamento_equipo":
-//                hijos = Item.findAllByDepartamentoAndEmpresa(DepartamentoItem.get(id), empresa,[sort: 'codigo'])
-                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
-                break;
-            case "item_manoObra":
-            case "item_consultoria":
-            case "item_material":
-            case "item_equipo":
-//                println "....1 Empresa: ${empresa.id}"
-                def tipoLista = Item.get(id).tipoLista
-                if (precios) {
-                    println "....2 tipoLista: ${tipoLista.id}"
-                    if (ignore) {
-                        hijos = ["Todos"]
-                    } else {
-                        hijos = []
-                        if (tipoLista) {
-//                            hijos = Lugar.findAllByEmpresaAndTipoListaAndTipo(empresa, tipoLista, 'B')
-                            hijos = Lugar.findAllByTipoListaAndTipo(tipoLista, 'B')
-                        }
-                    }
-                } else if(vae){
-                    hijos = VaeItems.findAllByItem(Item.get(params.id),[max:1])
-                }
-                break;
-        }
-
-        String tree = "", clase = "", rel = "", extra = ""
-
-        println "....3 hijos: ${hijos.size()}"
-        tree += "<ul>"
-        hijos.each { hijo ->
-            def hijosH, desc, liId
-            println "hijo ... "+tipo
-            switch (tipo) {
-                case "grupo_manoObra":
-//                    hijosH = Item.findAllByDepartamentoAndEmpresa(hijo, empresa,[sort: 'codigo'])
-                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
-                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
-                    def parts = tipo.split("_")
-                    rel = "departamento_" + parts[1]
-                    liId = "dp" + "_" + hijo.id
-                    break;
-                case "grupo_material":
-                case "grupo_equipo":
-                    hijosH = DepartamentoItem.findAllBySubgrupo(hijo, [sort: 'codigo'])
-                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
-                    def parts = tipo.split("_")
-                    rel = "subgrupo_" + parts[1]
-                    liId = "sg" + "_" + hijo.id
-                    break;
-                case "subgrupo_manoObra":
-                    break;
-                case "subgrupo_material":
-                case "subgrupo_equipo":
-//                    hijosH = Item.findAllByDepartamentoAndEmpresa(hijo, empresa,[sort: 'codigo'])
-                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
-                    desc = hijo.subgrupo.codigo.toString().padLeft(3, '0') + '.' + hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
-                    def parts = tipo.split("_")
-                    rel = "departamento_" + parts[1]
-                    liId = "dp" + "_" + hijo.id
-                    break;
-                case "departamento_manoObra":
-                    hijosH = []
-                    def tipoLista = hijo.tipoLista
-                    if (precios) {
-                        if (ignore) {
-                            hijosH = ["Todos"]
-                        } else {
-                            if (tipoLista) {
-//                                hijosH = Lugar.findAllByEmpresaAndTipoLista(empresa, tipoLista)
-                                hijosH = Lugar.findAllByTipoLista(tipoLista)
-                            }
-                        }
-                    } else if(vae){
-                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
-                    }
-                    desc = hijo.codigo + " " + hijo.nombre
-                    def parts = tipo.split("_")
-                    rel = "item_" + parts[1]
-                    liId = "it" + "_" + hijo.id
-                    break;
-                case "departamento_material":
-                case "departamento_equipo":
-                    hijosH = []
-                    def tipoLista = hijo.tipoLista
-                    if (precios) {
-                        if (ignore) {
-                            hijosH = ["Todos"]
-                        } else {
-                            if (tipoLista) {
-//                                hijosH = Lugar.findAllByEmpresaAndTipoLista(empresa, tipoLista)
-                                hijosH = Lugar.findAllByTipoLista(tipoLista)
-                            }
-                        }
-                    } else if(vae){
-                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
-                    }
-                    desc = hijo.codigo + " " + hijo.nombre
-                    def parts = tipo.split("_")
-                    rel = "item_" + parts[1]
-                    liId = "it" + "_" + hijo.id
-                    break;
-                case "item_manoObra":
-                    hijosH = []
-                    if (precios) {
-                        hijosH = []
-                        if (ignore) {
-                            desc = "mo4  " + "Todos los lugares"
-                            rel = "lugar_all"
-                            liId = "lg_" + id + "_all"
-                        } else {
-                            if (all) {
-                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
-                            } else {
-                                desc = hijo.descripcion
-                            }
-                            rel = "lugar"
-                            liId = "lg_" + id + "_" + hijo.id
-
-                            def obras = Obra.countByLugar(hijo)
-                            extra = "data-obras='${obras}'"
-                        }
-                    } else if(vae && hijo){
-                        hijosH = []
-                        desc = "VAE"
-                        rel = "vae"
-                        liId = "vae_"+id+"_"+hijo.id
-                    }
-                    break;
-                case "item_material":
-                case "item_equipo":
-                    println "....2"
-                    if (precios) {
-                        hijosH = []
-                        if (ignore) {
-                            desc = "Todos los lugares"
-                            rel = "lugar_all"
-                            liId = "lg_" + id + "_all"
-                        } else {
-                            if (all) {
-                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
-                            } else {
-                                desc = hijo.descripcion
-                            }
-                            rel = "lugar"
-                            liId = "lg_" + id + "_" + hijo.id
-
-                            def obras = Obra.countByLugar(hijo)
-                            extra = "data-obras='${obras}'"
-                        }
-                    }  else if(vae){
-                        hijosH = []
-                        desc = "VAE"
-                        rel = "vae"
-                        liId = "vae_"+id+"_"+hijo.id
-                    }
-                    break;
-            }
-
-            if (!hijosH) {
-                hijosH = []
-            }
-            clase = (hijosH?.size() > 0) ? "jstree-closed hasChildren" : ""
-
-            tree += "<li id='" + liId + "' class='" + clase + "' rel='" + rel + "' " + extra + ">"
-            tree += "<a href='#' class='label_arbol'>" + desc + "</a>"
-            tree += "</li>"
-
-//            println "hijos: ${hijos}, \n hijosH: ${hijosH}"
-        }
-        tree += "</ul>"
-
-        return tree
-    }
+//    String makeBasicTree(params) {
+//        println "PARAMS  "+params
+//
+//        def usuario = Persona.get(session.usuario.id)
+//        def id = params.id
+//        def tipo = params.tipo
+//        def precios = params.precios
+//        def all = params.all ? params.all.toBoolean() : false
+//        def ignore = params.ignore ? params.ignore.toBoolean() : false
+//        def vae = params.vae
+//
+//        def hijos = []
+//
+//        switch (tipo) {
+//            case "grupo_manoObra":
+//            case "grupo_consultoria":
+//                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
+//                break;
+//            case "grupo_material":
+//            case "grupo_equipo":
+//                hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
+//                break;
+//            case "subgrupo_manoObra":
+//            case "subgrupo_consultoria":
+//                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
+//                break;
+//            case "subgrupo_material":
+//            case "subgrupo_equipo":
+//                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
+//                break;
+//            case "departamento_manoObra":
+//            case "departamento_consultoria":
+//            case "departamento_material":
+//            case "departamento_equipo":
+//                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
+//                break;
+//            case "item_manoObra":
+//            case "item_consultoria":
+//            case "item_material":
+//            case "item_equipo":
+//                def tipoLista = Item.get(id).tipoLista
+//                if (precios) {
+//                    println "....2 tipoLista: ${tipoLista.id}"
+//                    if (ignore) {
+//                        hijos = ["Todos"]
+//                    } else {
+//                        hijos = []
+//                        if (tipoLista) {
+//                            hijos = Lugar.findAllByTipoListaAndTipo(tipoLista, 'B')
+//                        }
+//                    }
+//                } else if(vae){
+//                    hijos = VaeItems.findAllByItem(Item.get(params.id),[max:1])
+//                }
+//                break;
+//        }
+//
+//        String tree = "", clase = "", rel = "", extra = ""
+//
+//        println "....3 hijos: ${hijos.size()}"
+////        tree += "<ul>"
+//        tree += "<li id='root' class='root hasChildren jstree-closed' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
+//                "<a href='#' class='label_arbol'>División Geográfica</a>" +
+//                "</li>"
+//
+//
+//        hijos.each { hijo ->
+//            def hijosH, desc, liId
+//            println "hijo ... "+tipo
+//            switch (tipo) {
+//                case "grupo_manoObra":
+//                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
+//                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
+//                    def parts = tipo.split("_")
+//                    rel = "departamento_" + parts[1]
+//                    liId = "dp" + "_" + hijo.id
+//                    break;
+//                case "grupo_material":
+//                case "grupo_equipo":
+//                    hijosH = DepartamentoItem.findAllBySubgrupo(hijo, [sort: 'codigo'])
+//                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
+//                    def parts = tipo.split("_")
+//                    rel = "subgrupo_" + parts[1]
+//                    liId = "sg" + "_" + hijo.id
+//                    break;
+//                case "subgrupo_manoObra":
+//                    break;
+//                case "subgrupo_material":
+//                case "subgrupo_equipo":
+//                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
+//                    desc = hijo.subgrupo.codigo.toString().padLeft(3, '0') + '.' + hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
+//                    def parts = tipo.split("_")
+//                    rel = "departamento_" + parts[1]
+//                    liId = "dp" + "_" + hijo.id
+//                    break;
+//                case "departamento_manoObra":
+//                    hijosH = []
+//                    def tipoLista = hijo.tipoLista
+//                    if (precios) {
+//                        if (ignore) {
+//                            hijosH = ["Todos"]
+//                        } else {
+//                            if (tipoLista) {
+//                                hijosH = Lugar.findAllByTipoLista(tipoLista)
+//                            }
+//                        }
+//                    } else if(vae){
+//                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
+//                    }
+//                    desc = hijo.codigo + " " + hijo.nombre
+//                    def parts = tipo.split("_")
+//                    rel = "item_" + parts[1]
+//                    liId = "it" + "_" + hijo.id
+//                    break;
+//                case "departamento_material":
+//                case "departamento_equipo":
+//                    hijosH = []
+//                    def tipoLista = hijo.tipoLista
+//                    if (precios) {
+//                        if (ignore) {
+//                            hijosH = ["Todos"]
+//                        } else {
+//                            if (tipoLista) {
+//                                hijosH = Lugar.findAllByTipoLista(tipoLista)
+//                            }
+//                        }
+//                    } else if(vae){
+//                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
+//                    }
+//                    desc = hijo.codigo + " " + hijo.nombre
+//                    def parts = tipo.split("_")
+//                    rel = "item_" + parts[1]
+//                    liId = "it" + "_" + hijo.id
+//                    break;
+//                case "item_manoObra":
+//                    hijosH = []
+//                    if (precios) {
+//                        hijosH = []
+//                        if (ignore) {
+//                            desc = "mo4  " + "Todos los lugares"
+//                            rel = "lugar_all"
+//                            liId = "lg_" + id + "_all"
+//                        } else {
+//                            if (all) {
+//                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
+//                            } else {
+//                                desc = hijo.descripcion
+//                            }
+//                            rel = "lugar"
+//                            liId = "lg_" + id + "_" + hijo.id
+//
+//                            def obras = Obra.countByLugar(hijo)
+//                            extra = "data-obras='${obras}'"
+//                        }
+//                    } else if(vae && hijo){
+//                        hijosH = []
+//                        desc = "VAE"
+//                        rel = "vae"
+//                        liId = "vae_"+id+"_"+hijo.id
+//                    }
+//                    break;
+//                case "item_material":
+//                case "item_equipo":
+//                    println "....2"
+//                    if (precios) {
+//                        hijosH = []
+//                        if (ignore) {
+//                            desc = "Todos los lugares"
+//                            rel = "lugar_all"
+//                            liId = "lg_" + id + "_all"
+//                        } else {
+//                            if (all) {
+//                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
+//                            } else {
+//                                desc = hijo.descripcion
+//                            }
+//                            rel = "lugar"
+//                            liId = "lg_" + id + "_" + hijo.id
+//
+//                            def obras = Obra.countByLugar(hijo)
+//                            extra = "data-obras='${obras}'"
+//                        }
+//                    }  else if(vae){
+//                        hijosH = []
+//                        desc = "VAE"
+//                        rel = "vae"
+//                        liId = "vae_"+id+"_"+hijo.id
+//                    }
+//                    break;
+//            }
+//
+//            if (!hijosH) {
+//                hijosH = []
+//            }
+//            clase = (hijosH?.size() > 0) ? "jstree-closed hasChildren" : ""
+//
+//            tree += "<li id='" + liId + "' class='" + clase + "' rel='" + rel + "' " + extra + ">"
+//            tree += "<a href='#' class='label_arbol'>" + desc + "</a>"
+//            tree += "</li>"
+//
+////            println "hijos: ${hijos}, \n hijosH: ${hijosH}"
+//        }
+////        tree += "</ul>"
+//
+//        return tree
+//    }
 
     String makeBasicTree_bck(params) {
 //        println "PARAMS: "+params
@@ -662,6 +864,11 @@ class MantenimientoItemsController {
         render(makeBasicTree(params))
     }
 
+    def loadTreePart_nuevo() {
+        println ("cargar arbol")
+        render(makeTreeNode(params))
+    }
+
     def searchTree_ajax() {
 //        println params
 //        def parts = params.search_string.split("~")
@@ -824,9 +1031,9 @@ class MantenimientoItemsController {
         return [lugares: lugares, grupo: grupo]
     }
 
-//    def precios() {
-//        //rubro precio
-//    }
+    def precios() {
+        //rubro precio
+    }
 
     def showGr_ajax() {
         def grupoInstance = Grupo.get(params.id)
