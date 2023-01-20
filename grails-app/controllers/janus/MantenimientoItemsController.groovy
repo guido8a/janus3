@@ -16,6 +16,113 @@ class MantenimientoItemsController {
         redirect(action: "registro", params: params)
     } //index
 
+    def precios () {
+    }
+
+    def loadTreePartPrecios_ajax() {
+        render(arbolSearchPrecios_ajax(params))
+    }
+
+    def arbolSearchPrecios_ajax(params) {
+        println "makeTreeNode.. $params"
+        def id = params.id
+        def tipo = ""
+        def liId = ""
+        def ico = ""
+
+        if(id.contains("_")) {
+            id = params.id.split("_")[1]
+            tipo = params.id.split("_")[0]
+        }
+
+        if (!params.order) {
+            params.order = "asc"
+        }
+
+        String tree = "", clase = "", rel = ""
+        def padre
+        def hijos = []
+
+//        println "---> id: $id, tipo: $tipo, es #: ${id == '#'}"
+
+        if (id == "#") {
+            //root
+//            def hh = Provincia.countByZonaIsNull()
+            def hh = Provincia.count()
+            if (hh > 0) {
+                clase = "hasChildren jstree-closed"
+            }
+
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
+                    "<a href='#' class='label_arbol'>Precios</a>" +
+                    "</li>"
+        } else {
+//            println "---- no es raiz... procesa: $tipo"
+
+            if(id == 'root'){
+//                hijos = SubgrupoItems.findAll().sort{it.descripcion}
+                hijos = Grupo.get(params.tipo)
+                def data = ""
+                ico = ", \"icon\":\"fa fa-parking text-success\""
+                hijos.each { hijo ->
+//                println "procesa ${hijo.nombre}"
+//                    clase = SubgrupoItems.findAllByGrupo(hijo)
+                    clase = SubgrupoItems.findByGrupo(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
+
+//                    tree += "<ul>"
+                    tree += "<li id='prov_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    tree += "<a href='#' class='label_arbol'>" + hijo?.descripcion + "</a>"
+                    tree += "</li>"
+                }
+            }else{
+                switch(tipo) {
+                    case "prov":
+                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'descripcion'])
+//                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: params.sort])
+                        liId = "cntn_"
+//                    println "tipo: $tipo, ${hijos.size()}"
+                        ico = ", \"icon\":\"fa fa-copyright text-info\""
+                        hijos.each { h ->
+//                        println "procesa $h"
+                            clase = DepartamentoItem.findBySubgrupo(h)? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"canton"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                    case "cntn":
+                        hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: params.sort])
+                        liId = "parr_"
+//                    println "tipo: $tipo, ${hijos.size()}"
+                        ico = ", \"icon\":\"fa fa-registered text-danger\""
+                        hijos.each { h ->
+//                        println "procesa $h"
+//                        clase = Comunidad.findByParroquia(h)? "jstree-closed hasChildren" : ""
+                            clase = ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"parroquia"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                    case "parr":
+//                    hijos = Comunidad.findAllByParroquia(Parroquia.get(id), [sort: params.sort])
+//                    liId = "cmnd_"
+//                    ico = ", \"icon\":\"fa fa-info-circle text-warning\""
+//                    hijos.each { h ->
+//                        clase = ""
+//                        tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"comunidad"}\" ${ico}}'>"
+//                        tree += "<a href='#' class='label_arbol'>" + h.nombre + "</a>"
+//                        tree += "</li>"
+//                    }
+                        break
+                }
+            }
+        }
+//        println "arbol: $tree"
+        return tree
+    }
+
+
 //    String makeBasicTree(params) {
 //
 //        println "makeTreeNode.. $params"
@@ -1029,10 +1136,6 @@ class MantenimientoItemsController {
         def lugares = Lugar.list()
         def grupo = Grupo.get(params.grupo)
         return [lugares: lugares, grupo: grupo]
-    }
-
-    def precios() {
-        //rubro precio
     }
 
     def showGr_ajax() {
