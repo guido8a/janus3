@@ -40,7 +40,7 @@
         Mano de obra
     </a>
     <a href="#" id="btnEquipos" class="btn btn-info ">
-        <i class="fa fa-truck"></i>
+        <i class="fa fa-box"></i>
         Equipos
     </a>
 
@@ -89,7 +89,7 @@
 
 <div id="alerta1" class="alert alert-info hide" style="margin-top: 5px">MATERIALES</div>
 <div id="alerta2" class="alert alert-warning hide" style="margin-top: 5px">MANO DE OBRA</div>
-<div id="alerta3" class="alert alert-success hide" style="margin-top: 5px">TRANSPORTE</div>
+<div id="alerta3" class="alert alert-success hide" style="margin-top: 5px">EQUIPOS</div>
 
 <div id="tree" class="ui-corner-all"></div>
 <div id="tree2" class="ui-corner-all hide"></div>
