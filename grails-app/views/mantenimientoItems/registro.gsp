@@ -141,7 +141,7 @@
             },
             contextmenu : {
                 show_at_node : false,
-                // items        : createContextMenu
+                items        : createContextMenu
             },
             state       : {
                 key : "unidades",
@@ -334,6 +334,623 @@
             }
         });
     });
+
+    function createContextMenu(node) {
+        // $(".lzm-dropdown-menu").hide();
+
+        var nodeStrId = node.id;
+        var $node = $("#" + nodeStrId);
+        var nodeId = nodeStrId.split("_")[1];
+        var parentId = $node.parent().parent().children()[1].id.split("_")[1]
+        var nodeType = $node.data("jstree").type;
+        var esRoot = nodeType === "root";
+        var esPrincipal = nodeType === "principal";
+        var esSubgrupo = nodeType.contains("subgrupo");
+        var esDepartamento = nodeType.contains("departamento");
+        var esItem = nodeType.contains("item");
+
+        var items = {};
+
+        var nuevoGrupo = {
+            label  : "Nuevo grupo",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditGrupo(null, nodeId);
+            }
+        };
+
+        var editarGrupo = {
+            label  : "Editar grupo",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditGrupo(nodeId, 1);
+            }
+        };
+
+        var nuevoSubgrupo = {
+            label  : "Nuevo subgrupo",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditSubgrupo(null, nodeId);
+            }
+        };
+
+        var editarSubgrupo = {
+            label  : "Editar subgrupo",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditSubgrupo(nodeId, parentId);
+            }
+        };
+
+        var nuevoMaterial = {
+            label  : "Nuevo material",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(null, nodeId);
+            }
+        };
+
+        // var agregarCanton2 = {
+        //     label  : "Agregar Cantón",
+        //     icon   : "fa fa-copyright text-info",
+        //     action : function () {
+        //         createEditCanton(null, $node.parent().parent().children()[1].id.split("_")[1]);
+        //     }
+        // };
+        //
+           //
+        // var agregarParroquia2 = {
+        //     label  : "Agregar Parroquia",
+        //     icon   : "fa fa-registered text-danger",
+        //     action : function () {
+        //         createEditParroquia(null, $node.parent().parent().children()[1].id.split("_")[1]);
+        //     }
+        // };
+        //
+        // var agregarComunidad = {
+        //     label  : "Agregar Comunidad",
+        //     icon   : "fa fa-info-circle text-warning",
+        //     action : function () {
+        //         createEditComunidad(null, nodeId);
+        //     }
+        // };
+        //
+        // var agregarComunidad2 = {
+        //     label  : "Agregar Comunidad",
+        //     icon   : "fa fa-info-circle text-warning",
+        //     action : function () {
+        //         createEditComunidad(null, $node.parent().parent().children()[1].id.split("_")[1]);
+        //     }
+        // };
+        //
+        // var editarProvincia = {
+        //     label  : "Editar Provincia",
+        //     icon   : "fa fa-pen text-info",
+        //     action : function () {
+        //         createEditProvincia(nodeId);
+        //     }
+        // };
+        //
+        // var editarCanton = {
+        //     label  : "Editar Cantón",
+        //     icon   : "fa fa-pen text-info",
+        //     action : function () {
+        //         createEditCanton(nodeId, null);
+        //     }
+        // };
+        //
+        // var editarParroquia = {
+        //     label  : "Editar Parroquia",
+        //     icon   : "fa fa-pen text-info",
+        //     action : function () {
+        //         createEditParroquia(nodeId, null);
+        //     }
+        // };
+        //
+        // var editarComunidad = {
+        //     label  : "Editar Comunidad",
+        //     icon   : "fa fa-pen text-info",
+        //     action : function () {
+        //         createEditComunidad(nodeId, null);
+        //     }
+        // };
+
+        var verProvincia = {
+            label            : "Ver datos de la provincia",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "provincia", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Provincia",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        var verCanton = {
+            label            : "Ver datos del cantón",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "canton", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Cantón",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        var verParroquia = {
+            label            : "Ver datos de la parroquia",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "parroquia", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Parroquia",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        var verComunidad = {
+            label            : "Ver datos de la comunidad",
+            icon             : "fa fa-laptop text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(controller: "comunidad", action:'show_ajax')}",
+                    data    : {
+                        id : nodeId
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Comunidad",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        var borrarGrupo = {
+            label            : "Eliminar Grupo",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Eliminar Grupo",
+                    message: "Está seguro de borrar este grupo? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(action: 'deleteSg_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'OK'){
+                                        log("Grupo borrado correctamente","success");
+                                        setTimeout(function () {
+                                            var dialog3 = cargarLoader("Cargando...");
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar el grupo", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarCanton = {
+            label            : "Borrar Cantón",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Borrar Cantón",
+                    message: "Está seguro de borrar este cantón? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'canton', action: 'borrarCanton_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'ok'){
+                                        log("Cantón borrado correctamente","success");
+                                        setTimeout(function () {
+                                            var dialog3 = cargarLoader("Cargando...");
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar el canton", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarParroquia = {
+            label            : "Borrar Parroquia",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Borrar Parroquia",
+                    message: "Está seguro de borrar esta parroquia? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'parroquia', action: 'borrarParroquia_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'ok'){
+                                        log("Parroquia borrada correctamente","success");
+                                        setTimeout(function () {
+                                            var dialog3 = cargarLoader("Cargando...");
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar la parroquia", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarComunidad = {
+            label            : "Borrar comunidad",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Borrar Comunidad",
+                    message: "Está seguro de borrar esta comunidad? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'comunidad', action: 'borrarComunidad_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'ok'){
+                                        log("Comunidad borrada correctamente","success");
+                                        setTimeout(function () {
+                                            location.reload();
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar la comunidad", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        if (esRoot) {
+        } else if (esPrincipal) {
+            items.nuevoGrupo = nuevoGrupo;
+        } else if (esSubgrupo) {
+            items.editarGrupo = editarGrupo;
+            items.nuevoSubgrupo = nuevoSubgrupo;
+            items.borrarGrupo = borrarGrupo;
+        } else if (esDepartamento) {
+            items.editarSubgrupo = editarSubgrupo;
+            // items.nuevoSubgrupo = nuevoSubgrupo;
+
+        } else if (esItem) {
+
+        }
+        return items;
+    }
+
+    function createEditSubgrupo(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.subgrupo = parentId;
+        }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formDp_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditDP",
+                    title : title + " subgrupo",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormSubgrupo();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormSubgrupo() {
+        var $form = $("#frmSave");
+        var $btn = $("#dlgCreateEditDP").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            var dialog3 = cargarLoader("Cargando...");
+                            location.reload();
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    function createEditGrupo(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+            data.grupo = parentId;
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formSg_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditGP",
+                    title : title + " grupo",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormGrupo();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormGrupo() {
+        var $form = $("#frmSave");
+        var $btn = $("#dlgCreateEditGP").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            var dialog3 = cargarLoader("Cargando...");
+                            location.reload();
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    function createEditItem(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.departamento = parentId;
+        }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formDp_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditIT",
+                    title : title + " item",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormItem();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
 
     // var searchRes = [];
