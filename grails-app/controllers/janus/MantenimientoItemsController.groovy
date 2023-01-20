@@ -1046,6 +1046,7 @@ class MantenimientoItemsController {
     }
 
     def formSg_ajax() {
+        println("params sg " + params)
         def grupo = Grupo.get(params.grupo)
         def subgrupoItemsInstance = new SubgrupoItems()
         if (params.id) {
@@ -1117,6 +1118,7 @@ class MantenimientoItemsController {
     }
 
     def formDp_ajax() {
+        println("params dp " + params)
         def mos = SubgrupoItems.findAllByGrupo(Grupo.get(2), [sort: 'codigo']).id
 
         def subgrupo = SubgrupoItems.get(params.subgrupo)
