@@ -9,7 +9,6 @@ class ObraService {
         def cn = dbConnectionService.getConnection()
         def sql = " SELECT * from rgst_obra_v2(${obra.id})"
         def result = []
-        println "sql registrarObra: " + sql
         cn.eachRow(sql.toString()){r->
             println "res "+r
         }
@@ -62,14 +61,14 @@ class ObraService {
     def esDuenoObra(obra, usro) {
         def dueno = false
         def funcionElab = Funcion.findByCodigo('E')
-        def personasPRSP = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP')))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
         if (responsableRol) {
 //            if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
             if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(usro).departamento?.direccion?.id) {
                 dueno = true
             } else {
-                dueno = personasPRSP.contains(responsableRol) && (Persona.get(usro).departamento?.codigo == 'PRSP')
+                dueno = personasUtfpu.contains(responsableRol) && (Persona.get(usro).departamento?.codigo == 'UTFPU')
             }
         }
         dueno

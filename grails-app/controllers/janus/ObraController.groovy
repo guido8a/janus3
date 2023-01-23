@@ -527,7 +527,7 @@ class ObraController {
                 matrizOk = true
             }
             def concurso = janus.pac.Concurso.findByObra(obra)
-            println "concursos: $concurso?.fechaLimiteEntregaOfertas"
+            println "concursos: ${concurso?.fechaLimiteEntregaOfertas}"
             if (concurso) {
                 if (!concurso.fechaLimiteEntregaOfertas)
                     concurso = null
@@ -536,7 +536,7 @@ class ObraController {
             cn.close()
 
             duenoObra = esDuenoObra(obra) ? 1 : 0
-            println "dueÑo: $duenoObra, concurso: $concurso"
+            println "dueño: $duenoObra, concurso: $concurso, obra: $obra"
 
             [campos: campos, camposCPC: camposCPC, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
@@ -1028,7 +1028,7 @@ class ObraController {
 
     def getPersonas2() {
 
-//        println("--->" + params)
+        println("getPersonas2 --->" + params)
 
         def obra = Obra.get(params.obra)
         def usuario = session.usuario.id

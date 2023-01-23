@@ -42,10 +42,10 @@
 
 <script type="text/javascript">
     $(".selecciona").click(function () {
-        var ad = $(this).data("id");
+        var id = $(this).data("id");
         $("#listaObra").dialog("close");
         $("#spinner").removeClass("hide");
-        location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}/" + ad
+        location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}" + "?obra=" + id
     });
 
 </script>

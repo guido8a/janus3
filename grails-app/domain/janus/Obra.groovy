@@ -1,5 +1,7 @@
 package janus
 
+import janus.pac.CodigoComprasPublicas
+
 //import janus.construye.Empresa
 
 class Obra implements Serializable {
@@ -109,10 +111,11 @@ class Obra implements Serializable {
     Persona firmaInicioObra
     String anexos
 
-    String observacionesInicioObra
-	Date fechaImpresionInicioObra
 
-	double longitudVia = 0
+    String observacionesInicioObra
+    Date fechaImpresionInicioObra
+
+    double longitudVia = 0
     double anchoVia = 0
 
     String memoSif
@@ -127,11 +130,8 @@ class Obra implements Serializable {
     double indiceCampo = 0
     double indiceCampamento = 0
     double indiceGastoObra = 0
-//    String coordenadasVia
-//    double precioManoObra = 0
-//    double precioMateriales = 0
 
-//    Empresa empresa
+    CodigoComprasPublicas codigoComprasPublicas
 
     static auditable = true
     static mapping = {
@@ -264,10 +264,7 @@ class Obra implements Serializable {
             indiceCampo column: 'indicmpo'
             indiceCampamento column: 'indicmpm'
             indiceGastoObra column: 'indigaob'
-//            coordenadasVia column: 'obracrvi'
-//            precioManoObra column: 'obrapcmo'
-//            precioMateriales column: 'obrapcmt'
-//            empresa column: 'empr__id'
+            codigoComprasPublicas column: 'cpac__id'
 
         }
     }
@@ -397,11 +394,11 @@ class Obra implements Serializable {
         indiceCampamento(blank:true, nullable:true)
         indiceGastoObra(blank:true, nullable:true)
 
-//        coordenadasVia(blank:true, nullable:true)
-//        empresa(blank:false, nullable:false)
+        codigoComprasPublicas(blank:true, nullable:true)
     }
 
     String toString() {
         return this.nombre
     }
+
 }
