@@ -736,7 +736,7 @@
         <div class="row-fluid" style="margin-left: 20px">
             <div class="col-md-2">
                 Tipo
-                <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaAdqc}" optionKey="key"
+                <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"
                       optionValue="value"/>
             </div>
             <div class="col-md-2">
@@ -750,7 +750,7 @@
             </div>
 
             <div class="col-md-2">Ordenado por
-                <g:select name="ordenar" class="ordenar" from="${listaAdqc}" style="width: 100%" optionKey="key"
+                <g:select name="ordenar" class="ordenar" from="${listaRbro}" style="width: 100%" optionKey="key"
                           optionValue="value"/>
             </div>
             <div class="col-md-2" style="margin-top: 6px">
@@ -760,7 +760,7 @@
     </fieldset>
 
     <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaAdqc" style="height: 460px; overflow: auto">
+        <div id="divTablaRbro" style="height: 460px; overflow: auto">
         </div>
     </fieldset>
 </div>
@@ -2221,7 +2221,7 @@
 
                 },
                 success: function (msg) {
-                    $("#divTablaAdqc").html(msg);
+                    $("#divTablaRbro").html(msg);
                 }
             });
         }

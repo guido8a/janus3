@@ -2,7 +2,6 @@ package janus
 
 import janus.pac.DocumentoObra
 import janus.pac.TipoProcedimiento
-
 import org.springframework.dao.DataIntegrityViolationException
 
 class ObraController {
@@ -26,7 +25,7 @@ class ObraController {
     }
 
     def iniciarObraAdm() {
-        //println "incio obra dm " + params
+        println "incio obra dm " + params
         def obra = Obra.get(params.obra)
         def fecha
         try {
@@ -288,18 +287,18 @@ class ObraController {
         if(consultoria) valorMenorCuantia = 0
         println "es consultoría: ${consultoria}"
         def valorObra = obra.valor
-//        if (valorObra <= valorMenorCuantia) {
-//            if (obra.tipo != 'D') {
-//                if (totalP.toDouble().round(6) != 1.000) {
-//                    render "La suma de los coeficientes de la formula polinómica (${totalP}) es diferente a 1.000"
-//                    return
-//                }
-//                if (totalC.toDouble().round(6) != 1.000) {
-//                    render "La suma de los coeficientes de la Cuadrilla tipo (${totalC}) es diferente a 1.000"
-//                    return
-//                }
-//            }
-//        }
+        if (valorObra <= valorMenorCuantia) {
+            if (obra.tipo != 'D') {
+                if (totalP.toDouble().round(6) != 1.000) {
+                    render "La suma de los coeficientes de la formula polinómica (${totalP}) es diferente a 1.000"
+                    return
+                }
+                if (totalC.toDouble().round(6) != 1.000) {
+                    render "La suma de los coeficientes de la Cuadrilla tipo (${totalC}) es diferente a 1.000"
+                    return
+                }
+            }
+        }
 
         def documentos = DocumentoObra.findAllByObra(obra)
         if (documentos.size() < 2) {
@@ -318,7 +317,7 @@ class ObraController {
             }
         }
 
-        println "regsitrarObra..."
+
         obraService.registrarObra(obra)
         obra.estado = "R"
         obra.desgloseTransporte = null  //obliga a genrar matriz con valores históricos almacenados por grst_obra
@@ -436,11 +435,9 @@ class ObraController {
     }
 
     def registroObra() {
-        def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
 
         def cn = dbConnectionService.getConnection()
-
+        println "---" + params
         def obra
         def perfil = session.perfil
         def persona = Persona.get(session.usuario.id)
@@ -452,20 +449,9 @@ class ObraController {
         def claseObra
         def duenoObra = 0
         def funcionElab = Funcion.findByCodigo('E')
-        def personasPRSP1 = Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP'))
-        def personasPRSP = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasPRSP1)
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
         def responsableObra
-        def sql = ""
-
-        def sqlCodigo = "select max(substr(obracdgo, length(emprcdgo)+2,3)::integer)+1 total from obra, empr where obracdgo ilike emprcdgo||'-%' and empr.empr__id = ${empresa?.id} and obra.empr__id = empr.empr__id;"
-        def cnC = dbConnectionService.getConnection()
-        def datos = cnC.rows(sqlCodigo)
-
-        println("sql " + sqlCodigo)
-
-        def cdgo = datos[0].total
-
-        println("cdgo " + cdgo)
 
         def fechaPrecio = new Date()
         cn.eachRow("select max(rbpcfcha) fcha from rbpc, item where rbpc.item__id = item.item__id and " +
@@ -474,40 +460,36 @@ class ObraController {
         }
 
         def sbprMF = [:]
-        def tipoLista = TipoLista.get(6)
-        def listaPrecios = Lugar.findAllByEmpresaAndTipoLista(empresa, tipoLista)
 
         programa = Programacion.list();
         tipoObra = TipoObra.list();
         claseObra = ClaseObra.list();
 
         def matrizOk = false
-
+        println "...1"
         def prov = Provincia.list();
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazoEjecucionMeses": ["Plazo", "number"], "canton": ["Canton", "string"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"], "fechaCreacionObra": ["Fecha", "date"], "estado": ["Estado", "string"], "valor": ["Monto", "number"]]
+        def camposCPC = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
         if (params.obra) {
             obra = Obra.get(params.obra)
-//            cn.eachRow("select distinct sbpr__id from mfrb where obra__id = ${obra.id} order by sbpr__id".toString()) { d ->
-            sql = "SELECT distinct sbpr__id FROM vlobitem WHERE obra__id = ${obra.id} order by 1"
-//            println "sql: $sql"
-            cn.eachRow(sql.toString()) { d ->
-                if(d.sbpr__id == 0) {
+            cn.eachRow("select distinct sbpr__id from mfrb where obra__id = ${obra.id} order by sbpr__id".toString()) { d ->
+                if(d.sbpr__id == 0)
                     sbprMF << ["0" : 'Todos los subpresupuestos']
-                } else {
+                else
                     sbprMF << ["${d.sbpr__id}" : SubPresupuesto.get(d.sbpr__id).descripcion]
-                }
-//                println "sbprMF: ${sbprMF}"
             }
 
+//            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
             def subs = VolumenesObra.findAllByObra(obra).subPresupuesto.unique().sort{it.id}
             def volumen = VolumenesObra.findByObra(obra)
             def formula = FormulaPolinomica.findByObra(obra)
 
-            def sqlVer = "SELECT voit__id id FROM  vlobitem WHERE obra__id= ${params.obra} limit 1"
+            def sqlVer = "SELECT voit__id id FROM  vlobitem WHERE obra__id= ${params.obra}"
             def verif = cn.rows(sqlVer.toString())
             def verifOK = false
 
             if (verif != []) {
+
                 verifOK = true
             }
 
@@ -517,6 +499,7 @@ class ObraController {
                 matrizOk = true
             }
             def concurso = janus.pac.Concurso.findByObra(obra)
+            println "concursos: $concurso?.fechaLimiteEntregaOfertas"
             if (concurso) {
                 if (!concurso.fechaLimiteEntregaOfertas)
                     concurso = null
@@ -525,22 +508,19 @@ class ObraController {
             cn.close()
 
             duenoObra = esDuenoObra(obra) ? 1 : 0
+            println "dueÑo: $duenoObra, concurso: $concurso"
 
-//            println "dueÑo: $duenoObra, concurso: $concurso"
-//            println "sbprMF: ${sbprMF}"
-
-            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
+            [campos: campos, camposCPC: camposCPC, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
              claseObra: claseObra, grupoDir: grupo, dire  : direccion, depar: departamentos, concurso: concurso,
-             personasPRSP: personasPRSP, duenoObra: duenoObra, sbprMF:sbprMF, listaPreciosC: listaPrecios, empresa: empresa]
+             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF: sbprMF]
         } else {
 
             duenoObra = 0
 
-
-            [campos: campos, prov: prov, persona: persona, matrizOk: matrizOk, perfil: perfil, programa: programa,
+            [campos: campos, camposCPC: camposCPC, prov: prov, persona: persona, matrizOk: matrizOk, perfil: perfil, programa: programa,
              tipoObra: tipoObra, claseObra: claseObra, grupoDir: grupo, dire: direccion, depar: departamentos,
-             fcha: fechaPrecio, personasPRSP: personasPRSP, duenoObra: duenoObra, sbprMF:sbprMF, listaPreciosC: listaPrecios, empresa: empresa, cdgo: cdgo]
+             fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF]
         }
     }
 
@@ -550,14 +530,14 @@ class ObraController {
 /*
         def dueno = false
         def funcionElab = Funcion.findByCodigo('E')
-        def personasPRSP = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP')))
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
 
         if (responsableRol) {
             if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
                 dueno = true
             } else {
-                dueno = personasPRSP.contains(responsableRol) && session.usuario.departamento.codigo == 'PRSP'
+                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
             }
         }
         dueno
@@ -632,10 +612,6 @@ class ObraController {
 
     def buscarObra() {
 //        println "buscar obra "+params
-
-        def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
-
         def extraParr = ""
         def extraCom = ""
         def extraDep = ""
@@ -770,7 +746,7 @@ class ObraController {
         }
 
 
-        def extras = " and empr__id = ${empresa?.id} and liquidacion=0"
+        def extras = " and liquidacion=0"
         if (extraParr.size() > 0)
             extras += " and parroquia in (${extraParr})"
         if (extraCan.size() > 0)
@@ -1059,9 +1035,9 @@ class ObraController {
         def personasRolResp = PersonaRol.findAllByFuncionAndPersonaInList(funcionResp, personas)
         def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
 
-        def personasPRSP1 = Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP'))
+        def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
 
-        def personasPRSP = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasPRSP1)
+        def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
 
 
         def responsableObra
@@ -1088,7 +1064,7 @@ class ObraController {
             def responsableRol = PersonaRol.findByPersonaAndFuncion(responsableObra, funcionElab)
 
             if (responsableRol) {
-                personasPRSP.each {
+                personasUtfpu.each {
                     if (it.id == responsableRol.id) {
                         duenoObra = 1
                     } else {
@@ -1104,7 +1080,7 @@ class ObraController {
 
 //            responsableObra = obra?.responsableObra
 //
-//            personasPRSP.each{
+//            personasUtfpu.each{
 //                if(it.id == responsableObra){
 //                    duenoObra = 1
 //                }else {
@@ -1121,17 +1097,18 @@ class ObraController {
 
 
         return [personas       : personas, personasRolInsp: personasRolInsp.persona, personasRolRevi: personasRolRevi.persona,
-                personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra, persona: persona, personasPRSP: personasPRSP.persona, duenoObra: duenoObra]
+                personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra, persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra]
     }
 
     def getSalida() {
 
-//        println("params:" + params)
+        println("getSalida:" + params)
 
         def direccion = Direccion.get(params.direccion)
         def departamentos = Departamento.findAllByDireccion(direccion)
         def obra = Obra.get(params.obra)
 
+        println "direccion: $direccion, dept: $departamentos"
         return [dire: direccion, depar: departamentos, obra: obra]
     }
 
@@ -1155,12 +1132,41 @@ class ObraController {
 
         txwh += " and ${campos[cmpo - 1]} ilike '%${params.criterio}%'"
 
-        sqlTx = "${select} ${txwh} order by ${campos[cmpo - 1]} limit 100 ".toString()
+        sqlTx = "${select} ${txwh} order by ${campos[cmpo - 1]} ".toString()
 
         def cn = dbConnectionService.getConnection()
         comunidades = cn.rows(sqlTx)
         [comunidades: comunidades, colorComn: colorComn, colorProv: colorProv, colorParr: colorParr, colorCant: colorCant]
 
+    }
+
+    def codigoCPC_ajax() {
+//        println "params codigo cpc" + params
+
+        def codigos
+        def orden;
+        def select = "select * from cpac"
+//        def txwh = "where cntn.prov__id = prov.prov__id and parr.cntn__id = cntn.cntn__id and cmnd.parr__id = parr.parr__id"
+        def campos = ['cpacnmro', 'cpacdscr']
+        def cmpo = params.buscarPor.toInteger()
+        def sqlTx = ""
+
+        if (params.ordenar == '1') {
+            orden = "asc";
+        } else {
+            orden = "desc";
+        }
+
+        def txwh = " where ${campos[cmpo - 1]} ilike '%${params.criterio}%'"
+
+        sqlTx = "${select} ${txwh} order by ${campos[cmpo - 1]} ${orden} limit 40".toString()
+
+        def cn = dbConnectionService.getConnection()
+        codigos = cn.rows(sqlTx)
+
+//        println("sql " + sqlTx)
+
+        return [codigos: codigos]
     }
 
     def form_ajax() {
@@ -1178,31 +1184,57 @@ class ObraController {
     } //form_ajax
 
     def save() {
+
+//        println "save " + params
+
         def usuario = session.usuario.id
+
         def persona = Persona.get(usuario)
-        def empresa = persona.empresa
+
+//        def dpto = persona.departamento
+//        def numero = null
+
+//        println("usuario" + usuario)
+//        println("dep" + persona.departamento.id)
 
         params.oficioIngreso = params.oficioIngreso.toUpperCase()
         params.memoCantidadObra = params.memoCantidadObra.toUpperCase()
-        params.oficioSalida = params.oficioSalida.toUpperCase()
-        params.memoSalida = params.memoSalida.toUpperCase()
+
+        if(params.memoSalida){
+            params.memoSalida = params.memoSalida.toUpperCase()
+        }else{
+            params.memoSalida = null
+        }
+
+        if(params.oficioSalida){
+            params.oficioSalida = params.oficioSalida.toUpperCase()
+        }else{
+            params.oficioSalida = null
+        }
+
         params.codigo = params.codigo.toUpperCase()
 
         if (params.anchoVia) {
             params.anchoVia = params.anchoVia.toDouble()
+
         } else {
+
             params.anchoVia = 0
         }
 
         if (params.longitudVia) {
+
             params.longitudVia = params.longitudVia.replaceAll(",", "").toDouble()
         } else {
+
             params.longitudVia = 0
+
         }
 
         if (params.formulaPolinomica) {
             params.formulaPolinomica = params.formulaPolinomica.toUpperCase()
         }
+
 
         if (params.fechaOficioSalida) {
             params.fechaOficioSalida = new Date().parse("dd-MM-yyyy", params.fechaOficioSalida)
@@ -1216,22 +1248,26 @@ class ObraController {
             params.fechaCreacionObra = new Date().parse("dd-MM-yyyy", params.fechaCreacionObra)
         }
 
+
         if (params.id) {
             if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
                 params.departamento = Departamento.get(params.per.id)
             } else {
                 params.departamento = Departamento.get(params.departamento.id)
             }
-        }
 
+        }
         params."departamento.id" = params.departamento.id
 
+//        println("depto" + params.departamento.id)
+//        println("depto aaaa " + params."departamento.id")
+
         def obraInstance
+
 
         if (params.id) {
 
             obraInstance = Obra.get(params.id)
-            def existentes
 
             if (!obraInstance) {
                 flash.clase = "alert-error"
@@ -1256,49 +1292,21 @@ class ObraController {
                 }
             }
 
-//            if(obraInstance?.codigo?.contains(empresa?.codigo?.toString()?.toUpperCase())){
-//
-//            }
+//            println("-->" +params.departamento.id)
 
-            def ps = false
+            obraInstance.properties = params
 
-            if(obraInstance?.codigo?.contains(empresa?.codigo?.toString()?.toUpperCase())){
-                existentes = Obra.findAllByCodigoAndEmpresaAndIdNotEqual((empresa?.codigo?.toUpperCase() + "-" + params.codigo?.toUpperCase()), empresa, obraInstance?.id?.toLong())
-                if(existentes){
-                    ps = false
-                }else{
-                    ps = true
-                    params.codigo = empresa?.codigo?.toUpperCase() + "-" + params.codigo
-                }
-            }else{
-                existentes = Obra.findAllByCodigoAndEmpresaAndIdNotEqual(params.codigo, empresa, obraInstance?.id?.toLong())
-                if(existentes){
-                   ps = false
-                }else{
-                   ps = true
-                }
-            }
+            obraInstance.departamento = params.departamento
 
-            if(ps){
-                obraInstance.properties = params
-                obraInstance.departamento = params.departamento
-            }else{
-                flash.clase = "alert-error"
-                flash.message = " No se pudo guardar la obra,  código duplicado!"
-                redirect(action: 'registroObra')
-                return
-            }
+//            println("-->" +params.departamento.id)
 
         }//es edit
         else {
+            if(!Obra.findByCodigo(params.codigo)){
 
-//            if(!Obra.findByCodigoAndEmpresa(params.codigo, empresa)){
-            if(!Obra.findByCodigoAndEmpresa(empresa?.codigo?.toUpperCase() + "-" + params.codigo?.toUpperCase(), empresa)){
+                obraInstance = new Obra(params)
 
                 def departamento
-                obraInstance = new Obra(params)
-                obraInstance.empresa = empresa
-                obraInstance.codigo = empresa?.codigo?.toUpperCase() + "-" + params.codigo
 
                 if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
                     departamento = Departamento.get(persona?.departamento?.id)
@@ -1337,27 +1345,43 @@ class ObraController {
                 obraInstance.distanciaPeso = 10
                 obraInstance.distanciaVolumen = 30
 
+
+//                obraInstance.indiceGastosGenerales = (obraInstance.indiceCostosIndirectosObra + obraInstance.indiceCostosIndirectosPromocion + obraInstance.indiceCostosIndirectosMantenimiento +
+//                        obraInstance.administracion + obraInstance.indiceCostosIndirectosGarantias + obraInstance.indiceCostosIndirectosCostosFinancieros + obraInstance.indiceCostosIndirectosVehiculos)
+
+
                 obraInstance.indiceGastosGenerales = (obraInstance?.indiceAlquiler + obraInstance?.administracion + obraInstance?.indiceProfesionales + obraInstance?.indiceCostosIndirectosMantenimiento + obraInstance?.indiceSeguros + obraInstance?.indiceSeguridad)
+
                 obraInstance.indiceGastoObra = (obraInstance?.indiceCampo + obraInstance?.indiceCostosIndirectosCostosFinancieros + obraInstance?.indiceCostosIndirectosGarantias + obraInstance?.indiceCampamento)
+
+//                obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceCostosIndirectosTimbresProvinciales + obraInstance.indiceGastosGenerales)
                 obraInstance.totales = (obraInstance.impreso + obraInstance.indiceUtilidad + obraInstance.indiceGastoObra + obraInstance.indiceGastosGenerales)
 
                 /* si pefiles administración directa o cogestion pone obratipo = 'D' */
                 if (session.perfil.codigo == 'ADDI' || session.perfil.codigo == 'COGS') {
                     obraInstance.tipo = 'D'
                 }
-                obraInstance.coordenadas = 'S 1 45.3193 W 79 32.4346'
             }else {
+
+//                println("entro codigo no")
+
                 flash.clase = "alert-error"
                 flash.message = " No se pudo guardar la obra,  código duplicado!"
                 redirect(action: 'registroObra')
                 return
+
             }
+
+
+
         } //es create
 
         obraInstance.estado = "N"
 //        obraInstance.departamento.id = params.departamento.id
 
         if (!obraInstance.save(flush: true)) {
+
+//            println("--->>>>>>>>>>>>>>>>>>>")
             flash.clase = "alert-error"
             def str = "<h4>No se pudo guardar Obra " + (obraInstance.id ? obraInstance.id : "") + "</h4>"
 
@@ -1375,14 +1399,15 @@ class ObraController {
             redirect(action: 'registroObra')
             return
         } else {
+//            println("entro")
         }
 
         if (params.id) {
             flash.clase = "alert-success"
-            flash.message = "Obra actualizada correctamente"
+            flash.message = "Se ha actualizado correctamente Obra "
         } else {
             flash.clase = "alert-success"
-            flash.message = "Obra creada correctamente"
+            flash.message = "Se ha creado correctamente Obra "
         }
         redirect(action: 'registroObra', params: [obra: obraInstance.id])
     } //save
@@ -1431,7 +1456,7 @@ class ObraController {
 //            println "busca direccion de usuario ${session.usuario}"
 
             def persona = Persona.get(session.usuario.id)
-            if(session.usuario.departamento?.codigo != 'PRSP'){
+            if(session.usuario.departamento?.codigo != 'UTFPU'){
                 def direccion = Direccion.get(persona.departamento.direccion.id)
                 def departamentos = Departamento.findAllByDireccion(direccion)
                 def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
@@ -1446,8 +1471,10 @@ class ObraController {
                 obraInstance.revisor = personasRolRevi.first().persona
                 obraInstance.responsableObra = personasRolElab.first().persona
             } else {
-                obraInstance.responsableObra = persona   // cambia de dueño al usuario que copia de la PRSP
+                obraInstance.responsableObra = persona   // cambia de dueño al usuario que copia de la UTFPU
             }
+
+
 
             if (!obraInstance.save(flush: true)) {
                 flash.clase = "alert-error"
@@ -1527,7 +1554,7 @@ class ObraController {
         try {
             obraInstance.delete(flush: true)
             flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente la obra:  " + obraInstance.nombre
+            flash.message = "Se ha eliminado correctamente Obra " + obraInstance.nombre
             render("ok")
         }
         catch (DataIntegrityViolationException e) {
@@ -1537,20 +1564,24 @@ class ObraController {
         }
     } //delete
 
+
     def formIva_ajax () {
+
     }
 
+
     def guardarIva_ajax () {
+
         def paux = Parametros.first()
         def nuevoIva = params.iva_name
 
         paux.iva = nuevoIva.toInteger()
 
-        if(!paux.save(flush: true)){
-            println("error al guardar el iva " + paux.errors)
-            render "no_Error al guardar el IVA"
-        }else{
-            render "ok_IVA guardado correctamente"
+        try{
+            paux.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
         }
     }
 
@@ -1566,4 +1597,6 @@ class ObraController {
             render "no"
         }
     }
+
+
 } //fin controller

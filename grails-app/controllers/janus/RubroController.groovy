@@ -74,7 +74,7 @@ class RubroController {
         def dpto = Departamento.findAllByPermisosIlike("APU")
         def resps = Persona.findAllByDepartamentoInList(dpto)
 
-        def listaAdqc = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
+        def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
         def listaItems = [1: 'Nombre', 2: 'Código']
 
 //        println "depto "+dpto
@@ -107,21 +107,21 @@ class RubroController {
             println "grupos: $grupos.id"
             [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes,
              aux: aux, volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
-             listaAdqc: listaAdqc, listaItems: listaItems]
+             listaRbro: listaRbro, listaItems: listaItems]
         } else {
 
 //            println "Nuevo .... responsable: ${resps?.id} ${resps}"
 
             [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,
              volquetes2: volquetes2, dpto: dpto, modifica: modifica, resps: resps,
-             listaAdqc: listaAdqc, listaItems: listaItems]
+             listaRbro: listaRbro, listaItems: listaItems]
         }
     }
 
     def listaRubros(){
         println "listaItems" + params
         def datos;
-        def listaAdqc = ['grpo__id', 'grpo__id', 'grpo__id']
+        def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
         def listaItems = ['itemnmbr', 'itemcdgo']
 
         def select = "select item__id, itemnmbr, itemcdgo, unddcdgo " +
@@ -129,9 +129,9 @@ class RubroController {
         def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
                 "sbgr.sbgr__id = dprt.sbgr__id "
         def sqlTx = ""
-        def item = listaAdqc[params.buscarTipo.toInteger()-1]
+        def item = listaRbro[params.buscarTipo.toInteger()-1]
         def bsca = listaItems[params.buscarPor.toInteger()-1]
-        def ordn = listaAdqc[params.ordenar.toInteger()-1]
+        def ordn = listaRbro[params.ordenar.toInteger()-1]
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by itemnmbr, ${ordn} limit 100 ".toString()
