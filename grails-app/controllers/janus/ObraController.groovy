@@ -69,6 +69,32 @@ class ObraController {
         [campos: campos, perfil: perfil]
     }
 
+    /*lista obrtas */
+    def listaObras(){
+        println "listaItems" + params
+        def datos;
+        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
+
+        def select = "select obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
+                "from obra, parr, dpto "
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id "
+        def sqlTx = ""
+        def bsca = listaObra[params.buscarPor.toInteger()-1]
+        def ordn = listaObra[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos]
+
+    }
+
+
+
     def buscarObraFin() {
 //        println "buscar obra fin"
 
@@ -459,6 +485,8 @@ class ObraController {
             fechaPrecio = d.fcha
         }
 
+        def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Inrgeso', 4: 'Mem. Salida', 5: 'Estado']
+
         def sbprMF = [:]
 
         programa = Programacion.list();
@@ -513,14 +541,14 @@ class ObraController {
             [campos: campos, camposCPC: camposCPC, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
              claseObra: claseObra, grupoDir: grupo, dire  : direccion, depar: departamentos, concurso: concurso,
-             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF: sbprMF]
+             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF: sbprMF, listaObra: listaObra]
         } else {
 
             duenoObra = 0
-
+            println "...ok"
             [campos: campos, camposCPC: camposCPC, prov: prov, persona: persona, matrizOk: matrizOk, perfil: perfil, programa: programa,
              tipoObra: tipoObra, claseObra: claseObra, grupoDir: grupo, dire: direccion, depar: departamentos,
-             fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF]
+             fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF, listaObra: listaObra]
         }
     }
 

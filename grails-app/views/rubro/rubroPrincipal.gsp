@@ -23,6 +23,13 @@
     </g:if>
 </div>
 
+<div id="spinner" class="row col-md-12 hide" style="z-index: 1; position: absolute; border: 1px solid black;
+    width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; text-align: center">
+    <img src="${resource(dir: 'images', file: 'spinner.gif')}" alt='Cargando...' width="64px" height="64px" z-index="100"/>
+    <p>Cargando...Por favor espere</p>
+</div>
+
+
 <div class="col-md-12 btn-group" role="navigation">
     <a href="#" class="btn" id="btn_lista">
         <i class="icon-list-ul"></i>

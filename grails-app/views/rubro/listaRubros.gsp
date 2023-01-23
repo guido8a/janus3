@@ -41,6 +41,8 @@
 <script type="text/javascript">
     $(".selecciona").click(function () {
         var ad = $(this).data("id");
+        $("#listaRbro").dialog("close");
+        $("#spinner").removeClass("hide");
         location.href = "${g.createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + ad
     });
 //    $(".selecciona").click(function () {
