@@ -119,7 +119,7 @@
                     Código
                 <g:textField name="rubro.codigo" id="input_codigo" class="col-md-12 allCaps required input-small"
                        value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"
-                maxlength="30" minlength="2"/>
+                             maxlength="30" minlength="2"/>
                                     %{--<g:textField name="rubro.codigo" class="col-md-20 allCaps required input-small"--}%
                                            %{--value="${rubro?.codigo}"--}%
                                            %{--id="input_codigo" maxlength="30" minlength="2">--}%
@@ -148,7 +148,8 @@
 
                 <div class="col-md-1"  style="width: 170px; margin-left: -10px">
                     Fecha Modificación
-                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}" format="dd-MM-yyyy hh:mm" disabled="true" id="fchaMod"/>
+                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}"
+                                    format="dd-MM-yyyy hh:mm" disabled="true" id="fchaMod"/>
                 </div>
 
             </div>

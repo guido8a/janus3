@@ -1037,13 +1037,18 @@ class ObraController {
 
         def rolUsuario = PersonaRol.findByPersona(persona)
 
-        def direccion = Direccion.get(params.id)
+        def direccion
+        def departamentos
+        if(params.id){
+            direccion = Direccion.get(params.id)
+            departamentos = Departamento.findAllByDireccion(direccion)
+        } else {
+            println "dueño--> departamento: ${params.idDep}"
+            departamentos = [Departamento.get(params.idDep)]
 
-        def departamentos = Departamento.findAllByDireccion(direccion)
+        }
 
-//        def departamentos = Departamento.get(params.idDep)
-
-//        println("depar " + departamentos)
+        println("depar " + departamentos)
 
         def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
 
@@ -1120,12 +1125,12 @@ class ObraController {
             duenoObra = 0
 
         }
-
-
-
+        
+        println "presonas utfpu: ${personasUtfpu.persona}"
 
         return [personas       : personas, personasRolInsp: personasRolInsp.persona, personasRolRevi: personasRolRevi.persona,
-                personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra, persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra]
+                personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra,
+                persona: persona, personasUtfpu: personasUtfpu.persona, duenoObra: duenoObra]
     }
 
     def getSalida() {
