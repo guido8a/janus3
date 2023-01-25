@@ -1,376 +1,249 @@
-<%@ page import="janus.pac.CodigoComprasPublicas; janus.Item" %>
+<%@ page import="janus.TipoLista; janus.pac.CodigoComprasPublicas; janus.Item" %>
 
-<div id="create" class="span" role="main">
-<link href="${resource(dir: 'js/jquery/css/bw', file: 'jquery-ui-1.10.2.custom.min.css')}" rel="stylesheet"/>
-<script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.2.custom.min.js')}"></script>
 <g:form class="form-horizontal" name="frmSave" action="saveIt_ajax">
     <g:hiddenField name="id" value="${itemInstance?.id}"/>
-    <table>
-        <tr>
-            <td width="500px">
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            Subgrupo
-                        </span>
-                    </div>
+    <g:hiddenField name="departamento" value="${departamento.id}"/>
 
-                    <div class="controls">
-                        <g:hiddenField name="departamento.id" value="${departamento.id}"/>
-                        ${departamento.descripcion}
-                    </div>
-                </div>
-
-            </td>
-            <td>
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            Código
-                        </span>
-                    </div>
-
-                    <div class="controls" style="font-weight: bolder">
-                        <g:set var="cd1" value="${departamento.subgrupo.codigo.toString().padLeft(3, '0')}"/>
-                        <g:set var="cd2" value="${departamento.codigo.toString().padLeft(3, '0')}"/>
-                        <g:set var="cd" value="${itemInstance?.codigo}"/>
-                        <g:if test="${itemInstance.id && cd}">
-                            <g:set var="cd" value="${cd?.replace(cd1 + ".", '')?.replace(cd2 + ".", '')}"/>
-                        </g:if>
-                        <g:if test="${itemInstance.id}">
-                            <g:if test="${itemInstance?.departamento?.subgrupo?.grupoId != 2 && departamento.subgrupo.grupoId != 2}">
-                                ${cd1}.</g:if>${cd2}.${cd}
-                        </g:if>
-                        <g:else>
-                            <div class="input-prepend">
-                                <g:if test="${itemInstance?.departamento?.subgrupo?.grupoId != 2 && departamento.subgrupo.grupoId != 2}">
-                                    <span class="add-on">${cd1}</span>
-                                </g:if>
-                                <span class="add-on">${cd2}</span>
-                                <g:textField name="codigo" maxlength="20" minlength="3" class="allCaps required input-small" value="${cd ? cd : (maximo?.toString()?.padLeft(3, '0') ?: 001.toString()?.padLeft(3, '0'))}"/>
-                                <span class="mandatory">*</span>
-
-                                <p class="help-block ui-helper-hidden"></p>
-                            </div>
-                        </g:else>
-                    %{--<span class="mandatory">*</span>--}%
-
-                    %{--<p class="help-block ui-helper-hidden"></p>--}%
-                    </div>
-                </div>
-
-            </td>
-        </tr>
-    </table>
-
-
-%{--<div class="control-group">--}%
-%{--<div>--}%
-%{--<span class="control-label label label-inverse">--}%
-%{--Nombre corto--}%
-%{--</span>--}%
-%{--</div>--}%
-
-%{--<div class="controls">--}%
-%{--<g:textField name="campo" maxlength="29" style="width: 300px" class="allCaps" value="${itemInstance?.campo}"/>--}%
-
-%{--<p class="help-block ui-helper-hidden"></p>--}%
-%{--</div>--}%
-%{--</div>--}%
-
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'departamento', 'error')} ">
+        <span class="grupo">
+            <label for="departamentoName" class="col-md-2 control-label text-info">
+                Subgrupo
+            </label>
+            <span class="col-md-8">
+                <g:textField name="departamentoName" class="form-control" value="${departamento?.descripcion}" readonly="" />
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-2 control-label text-info">
+                Código
+            </label>
+            <g:if test="${itemInstance?.id}">
+                <span class="col-md-2">
+                    <g:textField name="codigo" maxlength="20" minlength="3" class="form-control" value="${itemInstance?.codigo ?: ''}" readonly="" />
+                    <p class="help-block ui-helper-hidden"></p>
+                </span>
+            </g:if>
+            <g:else>
+                <span class="col-md-2">
+                    <g:textField name="codigoSubgrupo" class="form-control" value="${departamento?.subgrupo?.codigo ?: ''}" readonly=""/>
+                </span>
+                <span class="col-md-2">
+                    <g:textField name="codigoDepartamento" class="form-control" value="${departamento?.codigo ?: ''}" readonly=""/>
+                </span>
+                <span class="col-md-2">
+                    <g:textField name="codigo" maxlength="20" minlength="3" class="form-control allCaps number required" value="${itemInstance?.codigo ?: ''}" />
+                    <p class="help-block ui-helper-hidden"></p>
+                </span>
+            </g:else>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'nombre', 'error')} ">
+        <span class="grupo">
+            <label for="nombre" class="col-md-2 control-label text-info">
                 Nombre
+            </label>
+            <span class="col-md-8">
+                <g:textField name="nombre" maxlength="160" class="form-control allCaps required" value="${itemInstance?.nombre}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="nombre" maxlength="160" class="allCaps required input-xxlarge" value="${itemInstance?.nombre}" style="width: 600px"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'unidad', 'error')} ">
+        <span class="grupo">
+            <label for="unidad" class="col-md-2 control-label text-info">
+                Unidad
+            </label>
+            <span class="col-md-8">
+                <g:select name="unidad" from="${janus.Unidad.list([sort: 'descripcion'])}" optionValue="descripcion" optionKey="id" class="form-control" value="${itemInstance?.unidad?.id}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'codigoComprasPublicas', 'error')} ">
+        <span class="grupo">
+            <label for="item_codigo" class="col-md-2 control-label text-info">
+                Código CPC (SERCOP)
+            </label>
+            <span class="col-md-2">
+                <g:hiddenField name="codigoComprasPublicas" value="${itemInstance?.codigoComprasPublicas?.id}" />
+                <g:textField name="item_codigo" class="form-control required" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.numero ?: ''}" readonly=""/>
+            </span>
+            <span class="col-md-3">
+                <g:textField name="item_desc" class="form-control" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.descripcion ?: ''}" readonly=""/>
+            </span>
+            <span class="col-md-1">
+                <a href="#" id="btnBuscadrCPC" class="btn btn-info ">
+                    <i class="fa fa-search"></i>
+                    Buscar
+                </a>
+            </span>
+        </span>
     </div>
 
-
-    <table>
-        <tr>
-            <td width="500px">
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            Unidad
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <g:select id="unidad" name="unidad.id" from="${janus.Unidad.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"
-                                  class="many-to-one " value="${itemInstance?.unidad?.id}"/>
-
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            Código CPC (SERCOP)
-                        </span>
-                    </div>
-                    <div class="controls">
-                        <input readonly="" type="text" style="width: 154px;;font-size: 12px;" id="item_codigo" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.numero}">
-                        <input type="hidden" style="width: 60px" id="item_cpac" name="codigoComprasPublicas.id" value="${itemInstance?.codigoComprasPublicas?.id}">
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-%{--
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Tipo de Bien
-            </span>
-        </div>
-
-        <div class="controls" >
-            <g:select id="tipoDeBien" name="tipoDeBien.id" from="${janus.TipoDeBien.list([sort: 'descripcion'])}" optionKey="id"
-                      optionValue="descripcion" class="span4" value="${itemInstance?.tipoDeBien?.id}"
-                      noSelection="['': '']"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
---}%
-
-    <g:if test="${grupo.toString() == '1'}">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+    <g:if test="${grupoGeneral == '1'}">
+        <div class="form-group ${hasErrors(bean: itemInstance, field: 'tipoLista', 'error')} ">
+            <span class="grupo">
+                <label for="tipoLista" class="col-md-2 control-label text-info">
                     Lista de Precios
+                </label>
+                <span class="col-md-8">
+                    <g:select name="tipoLista" from="${janus.TipoLista.findAllByUnidadIsNotNull([sort: 'id'])}" dataAttrs="${['unidad': {it.unidad}]}" optionValue="descripcion" optionKey="id" class="form-control" value="${itemInstance?.tipoLista?.id}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                %{--<g:select from="['P': 'Peso (capital de cantón)', 'P1': 'Peso (especial)', 'V': 'Volumen (materiales pétreos para hormigones)', 'V1': 'Volumen (materiales pétreos para mejoramiento)', 'V2': 'Volumen (materiales pétreos para carpeta asfáltica)']"--}%
-                %{--name="transporte" class="span4" value="${itemInstance?.transporte}" optionKey="key" optionValue="value"/>--}%
-                <elm:select from="${janus.TipoLista.findAllByUnidadIsNotNull([sort: 'id'])}" optionClass="unidad" id="tipoLista"
-                            name="tipoLista.id" class="span4" value="${itemInstance?.tipoListaId}" optionKey="id" optionValue="descripcion"/>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-
-        <div class="control-group" id="grupoPeso">
-            <div>
-                <span class="control-label label label-inverse">
+        <div id="grupoPeso"  class="form-group ${hasErrors(bean: itemInstance, field: 'peso', 'error')} ">
+            <span class="grupo">
+                <label for="peso" class="col-md-2 control-label text-info">
                     Peso/Volumen
+                </label>
+                <span class="col-md-6">
+                    <g:textField name="peso" maxlength="20" class="form-control allCaps required" value="${formatNumber(number: itemInstance?.peso, format: '##,######0', minFractionDigits: 6, maxFractionDigits: 6, locale: 'ec')}"
+                                 step="${10**-(formatNumber(number: itemInstance?.peso, format: '#,#####0', minFractionDigits: 3, maxFractionDigits: 6, locale: 'ec').toString().size()-2)}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <div class="input-append">
-
-                    %{--<g:field type="number" name="peso" maxlength="20" class=" required input-small peso" value="${fieldValue(bean: itemInstance, field: 'peso')}"/>--}%
-                    <g:field type="number" name="peso" maxlength="20"
-                             step="${10**-(formatNumber(number: itemInstance?.peso, format: '#,#####0', minFractionDigits: 3, maxFractionDigits: 6, locale: 'ec').toString().size()-2)}"
-                             class=" required input-small peso" value="${formatNumber(number: itemInstance?.peso, format: '##,######0', minFractionDigits: 6, maxFractionDigits: 6, locale: 'ec')}"/>
-
-                    <span class="add-on" id="spanPeso">
-                        %{--<g:if test="${itemInstance && itemInstance.id}">--}%
-                        %{--${(itemInstance?.transporte == 'P' || itemInstance?.transporte == 'P1') ? 'Ton' : 'm<sup>3</sup>'}--}%
-                        %{--</g:if>--}%
-                        %{--<g:else>--}%
-                        %{--Ton--}%
-                        %{--</g:else>--}%
-                    </span>
-                </div>
-                <span class="mandatory">*</span>
-
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+                <span class="col-md-2" id="spanPeso">
+                    <g:textField name="item_unidad" class="form-control" value="" readonly=""/>
+                </span>
+            </span>
         </div>
     </g:if>
     <g:else>
-        <g:hiddenField name="peso" maxlength="20" class=" required input-small" value="0"/>
+        <g:hiddenField name="peso" value="${0}"/>
     </g:else>
 
-
-    <table>
-        <tr>
-            <td width="500px">
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            Fecha
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <elm:datepicker name="fecha" class="datepicker" style="width: 90px" value="${itemInstance?.fecha}"/>
-
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            Estado
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <g:select from="['A': 'Activo', 'B': 'Dado de baja']" name="estado" class="input-medium" value="${itemInstance?.estado}" optionKey="key" optionValue="value"/>
-
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-%{--
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Indice INEC
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'fecha', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-2 control-label text-info">
+                Fecha
+            </label>
+            <span class="col-md-2">
+                <input aria-label="" name="fecha" id='datetimepicker1' type='text' class="form-control"
+                       value="${itemInstance?.fecha?.format("dd-MM-yyyy")}"/>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="inec" maxlength="1" style="width: 20px" class="" value="${itemInstance?.inec}"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
---}%
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'estado', 'error')} ">
+        <span class="grupo">
+            <label for="estado" class="col-md-2 control-label text-info">
+                Estado
+            </label>
+            <span class="col-md-2">
+                <g:select name="estado" from="${['A': 'Activo', 'B': 'Dado de baja']}" optionValue="value" optionKey="key" class="form-control" value="${itemInstance?.estado}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
 
     <g:if test="${grupo.toString() == '3'}">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: itemInstance, field: 'combustible', 'error')} ">
+            <span class="grupo">
+                <label for="combustible" class="col-md-2 control-label text-info">
                     Combustible
+                </label>
+                <span class="col-md-2">
+                    <g:select name="combustible" from="${['S': 'Sí', 'N': 'No']}" optionValue="value" optionKey="key" class="form-control" value="${itemInstance?.combustible}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:select from="['S': 'Sí', 'N': 'No']" name="combustible" class="input-small" value="${itemInstance?.combustible}" optionKey="key" optionValue="value"/>
-
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
     </g:if>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'observaciones', 'error')} ">
+        <span class="grupo">
+            <label for="observaciones" class="col-md-2 control-label text-info">
                 Observaciones
+            </label>
+            <span class="col-md-8">
+                <g:textArea name="observaciones" maxlength="127"  style="resize: none" class="form-control" value="${itemInstance?.observaciones ?: ''}" />
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textArea style="resize: none; height: 45px; width: 600px" name="observaciones" maxlength="127" class="input-xxlarge allC3aps" value="${itemInstance?.observaciones}"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
 </g:form>
 
-<div class="modal grande hide fade" id="modal-ccp" style="overflow: hidden;">
-    <div class="modal-header btn-info">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-
-        <h3 id="modalTitle2"></h3>
-    </div>
-
-    <div class="modal-body" id="modalBody2">
-        <bsc:buscador name="pac.buscador.id" value="" accion="buscaCpac" controlador="mantenimientoItems" campos="${campos}" label="cpac" tipo="lista"/>
-    </div>
-
-    <div class="modal-footer" id="modalFooter2">
-    </div>
-</div>
-
-
 <script type="text/javascript">
 
+    var bcpc;
+
+    $("#btnBuscadrCPC").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'buscadorCPC')}",
+            data    : {},
+            success : function (msg) {
+                bcpc = bootbox.dialog({
+                    id      : "dlgBuscarCPC",
+                    title   : "Buscar Código Compras Públicas",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function cerrarBuscadorCPC(){
+        bcpc.modal("hide")
+    }
+
+    $('#datetimepicker1').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        // daysOfWeekDisabled: [0, 6],
+        sideBySide: true,
+        icons: {
+        }
+    });
+
     function label() {
-        var c = $("#tipoLista").children("option:selected").attr("class");
-        if (c == "null") {
+        var c = $("#tipoLista option:selected").data("unidad");
+        if (c === "null") {
             $("#grupoPeso").hide();
         } else {
             $("#grupoPeso").show();
-            $("#spanPeso").text(c);
+            $("#item_unidad").val(c);
         }
     }
 
     function validarNum(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
             (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-            ev.keyCode == 190 || ev.keyCode == 110 ||
-            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-            ev.keyCode == 37 || ev.keyCode == 39);
+            ev.keyCode === 190 || ev.keyCode === 110 ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-
-
     function validarNumDec(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
             (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-            ev.keyCode == 37 || ev.keyCode == 39);
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode ===9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
     }
 
     $("#codigo").keydown(function (ev) {
         return validarNumDec(ev)
     });
 
-
-
-
-
     label();
 
     $(".peso").bind({
         keydown : function (ev) {
             // esta parte valida el punto: si empieza con punto le pone un 0 delante, si ya hay un punto lo ignora
-            if (ev.keyCode == 190 || ev.keyCode == 110) {
+            if (ev.keyCode === 190 || ev.keyCode === 110) {
                 var val = $(this).val();
-                if (val.length == 0) {
+                if (val.length === 0) {
                     $(this).val("0");
                 }
-                return val.indexOf(".") == -1;
+                return val.indexOf(".") === -1;
             } else {
                 // esta parte valida q sean solo numeros, punto, tab, backspace, delete o flechas izq/der
                 return validarNum(ev);
@@ -399,33 +272,15 @@
         this.value = this.value.toUpperCase();
     });
 
-    //    $("#nombre").keyup(function () {
-    //        var orig = $(this).val().toUpperCase();
-    //
-    //        var cleanString = orig.replace(/[|&;$%@"<>()+,'\[\]\{\}=]/g, "");
-    //        cleanString = cleanString.replace(/[ ]/g, "_");
-    //        cleanString = cleanString.replace(/[áàâäãÁÀÂÄÃ]/g, "A");
-    //        cleanString = cleanString.replace(/[éèêëẽÉÈÊËẼ]/g, "E");
-    //        cleanString = cleanString.replace(/[íìîïĩÍÌÎÏĨ]/g, "I");
-    //        cleanString = cleanString.replace(/[óòôöõÓÒÔÖÕ]/g, "O");
-    //        cleanString = cleanString.replace(/[úùûüũÚÙÛÜŨ]/g, "U");
-    //        cleanString = cleanString.replace(/[ñÑ]/g, "N");
-    //
-    //        if (cleanString.length > 20) {
-    //            cleanString = cleanString.substring(0, 19);
-    //        }
-    //        $("#campo").val(cleanString);
-    //    });
-
     $("#transporte").change(function () {
         var v = $(this).val();
         var l = "";
-        if (v == 'P' || v == 'P1') {
+        if (v === 'P' || v === 'P1') {
             l = "Ton";
         } else {
             l = "M<sup>3</sup>";
         }
-        $("#spanPeso").html(l);
+        $("#item_unidad").val(l);
     });
 
     $("#frmSave").validate({
@@ -473,33 +328,17 @@
             }
         },
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
+            label.parents(".grupo").removeClass('has-error');
         },
-        errorClass     : "label label-important"
+        errorClass     : "help-block",
     });
-
-    $(function () {
-        $("#item_codigo").dblclick(function () {
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            $("#modalTitle2").html("Código compras públicas");
-            $("#modalFooter2").html("").append(btnOk);
-            $(".contenidoBuscador").html("")
-            $("#modal-ccp").modal("show");
-            $("#buscarDialog").unbind("click")
-            $("#buscarDialog").bind("click", enviar)
-        });
-    });
-
-
-    /*
-        $(document).ready(function() {
-            console.log($("#frmSave").scrollTop())
-    //        $("#modalBody").scrollTop(0);
-            $("#modalBody").scrollTop(10);
-        });
-    */
 
 </script>

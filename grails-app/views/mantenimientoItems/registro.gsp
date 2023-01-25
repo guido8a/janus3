@@ -16,23 +16,13 @@
         display: block;
     }
     </style>
-
 </head>
 
 <body>
 
-<g:if test="${flash.message}">
-    <div class="span12">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            ${flash.message}
-        </div>
-    </div>
-</g:if>
-
 <div class="span12 btn-group" data-toggle="buttons-radio">
     <a href="#" id="btnMateriales" class="btn btn-info">
-        <i class="fa fa-folder"></i>
+        <i class="fa fa-box"></i>
         Materiales
     </a>
     <a href="#" id="btnMano" class="btn btn-info ">
@@ -40,9 +30,10 @@
         Mano de obra
     </a>
     <a href="#" id="btnEquipos" class="btn btn-info ">
-        <i class="fa fa-box"></i>
+        <i class="fa fa-briefcase"></i>
         Equipos
     </a>
+
 
     <div class="col-md-4">
         <div class="input-group input-group-sm">
@@ -55,9 +46,17 @@
         </div><!-- /input-group -->
     </div>
 
+    <div class="col-md-1" style="float: right">
+        <div class="btn-group">
+            <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
+                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
+            </a>
+        </div>
+    </div>
+
     <div class="col-md-4 hidden" id="divSearchRes">
         <span id="spanSearchRes">
-            5 resultados
+
         </span>
 
         <div class="btn-group">
@@ -73,13 +72,6 @@
         </div>
     </div>
 
-    <div class="col-md-1">
-        <div class="btn-group">
-            <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
-                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
-            </a>
-        </div>
-    </div>
 </div>
 
 <div id="cargando" class="text-center hide">
@@ -95,10 +87,116 @@
 <div id="tree2" class="ui-corner-all hide"></div>
 <div id="tree3" class="ui-corner-all hide"></div>
 
-
 <script type="text/javascript">
+    var searchRes = [];
+    var posSearchShow = 0;
+    var tipoSeleccionado = 1;
+
+    var $treeContainer = $("#tree");
+
+    // if(tipoSeleccionado === 1){
+    //     $treeContainer = $("#tree");
+    // }else if(tipoSeleccionado === 2){
+    //     $treeContainer = $("#tree2");
+    // }else{
+    //     $treeContainer = $("#tree3");
+    // }
+
+    $("#btnCollapseAll").click(function () {
+        $("#tree, #tree2, #tree3").jstree("close_all");
+        var $scrollTo = $("#root");
+        $("#tree, #tree2, #tree3").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+            scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+        });
+        return false;
+    });
+
+    function scrollToNode($scrollTo) {
+        $("#tree").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+            scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+        });
+    }
+
+    function scrollToRoot() {
+        var $scrollTo = $("#root");
+        scrollToNode($scrollTo);
+    }
+
+    function scrollToSearchRes() {
+        var $scrollTo = $(searchRes[posSearchShow]).parents("li").first();
+        $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + searchRes.length);
+        scrollToNode($scrollTo);
+    }
+
+    $('#btnSearchArbol').click(function () {
+        // $treeContainer.jstree("open_all");
+        $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+        return false;
+    });
+
+    $("#searchArbol").keypress(function (ev) {
+        if (ev.keyCode === 13) {
+            // $treeContainer.jstree("open_all");
+            $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+            return false;
+        }
+    });
+
+    $("#btnPrevSearch").click(function () {
+        if (posSearchShow > 0) {
+            posSearchShow--;
+        } else {
+            posSearchShow = searchRes.length - 1;
+        }
+        scrollToSearchRes();
+        return false;
+    });
+
+    $("#btnNextSearch").click(function () {
+        if (posSearchShow < searchRes.length - 1) {
+            posSearchShow++;
+        } else {
+            posSearchShow = 0;
+        }
+        scrollToSearchRes();
+        return false;
+    });
+
+    $("#btnClearSearch").click(function () {
+        limpiarBusqueda();
+    });
+
+    function limpiarBusqueda(){
+        $treeContainer.jstree("clear_search");
+        $("#searchArbol").val("");
+        posSearchShow = 0;
+        searchRes = [];
+        scrollToRoot();
+        $("#divSearchRes").addClass("hidden");
+        $("#spanSearchRes").text("");
+    }
 
     $("#btnMateriales").click(function () {
+        tipoSeleccionado = 1;
+        cargarMateriales();
+        // limpiarBusqueda();
+    });
+
+    function recargarMateriales () {
+        $("#tree").removeClass("hide");
+        $("#tree2").addClass("hide") ;
+        $("#tree3").addClass("hide");
+        $("#btnMateriales").addClass('active');
+        $("#btnMano").removeClass('active');
+        $("#btnEquipos").removeClass('active');
+        $("#alerta1").removeClass('hide');
+        $("#alerta2").addClass('hide');
+        $("#alerta3").addClass('hide');
+        var $treeContainer = $("#tree");
+        $treeContainer.jstree("refresh")
+    }
+
+    function cargarMateriales() {
         $("#tree").removeClass("hide");
         $("#tree2").addClass("hide") ;
         $("#tree3").addClass("hide");
@@ -131,7 +229,6 @@
                 data           : {
                     url   : '${createLink(action:"loadTreePart_nuevo")}',
                     data  : function (node) {
-                        console.log("--> " + node.id);
                         return {
                             id    : node.id,
                             tipo  : 1
@@ -147,37 +244,37 @@
                 key : "unidades",
                 opened: false
             },
-            %{--search      : {--}%
-            %{--    fuzzy             : false,--}%
-            %{--    show_only_matches : false,--}%
-            %{--    ajax              : {--}%
-            %{--        url     : "${createLink(action:'arbolSearch_ajax')}",--}%
-            %{--        success : function (msg) {--}%
-            %{--            var json = $.parseJSON(msg);--}%
-            %{--            $.each(json, function (i, obj) {--}%
-            %{--                $('#tree').jstree("open_node", obj);--}%
-            %{--            });--}%
-            %{--            setTimeout(function () {--}%
-            %{--                searchRes = $(".jstree-search");--}%
-            %{--                var cantRes = searchRes.length;--}%
-            %{--                posSearchShow = 0;--}%
-            %{--                $("#divSearchRes").removeClass("hidden");--}%
-            %{--                $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);--}%
-            %{--                scrollToSearchRes();--}%
-            %{--            }, 300);--}%
+            search      : {
+                fuzzy             : false,
+                show_only_matches : false,
+                ajax              : {
+                    url     : "${createLink(action:'arbolSearch_ajax')}",
+                    success : function (msg) {
+                        var json = $.parseJSON(msg);
+                        $.each(json, function (i, obj) {
+                            $('#tree').jstree("open_node", obj);
+                        });
+                        setTimeout(function () {
+                            searchRes = $(".jstree-search");
+                            var cantRes = searchRes.length;
+                            posSearchShow = 0;
+                            $("#divSearchRes").removeClass("hidden");
+                            $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                            scrollToSearchRes();
+                        }, 300);
 
-            %{--        }--}%
-            %{--    }--}%
-            %{--},--}%
+                    }
+                }
+            },
             types       : {
                 root                : {
                     icon : "fa fa-sitemap text-info"
                 }
             }
         });
-    });
+    }
 
-    $("#btnMano").click(function () {
+    function cargarMano () {
         $("#tree").addClass("hide");
         $("#tree2").removeClass("hide") ;
         $("#tree3").addClass("hide");
@@ -210,7 +307,6 @@
                 data           : {
                     url   : '${createLink(action:"loadTreePart_nuevo")}',
                     data  : function (node) {
-                        console.log("--> " + node.id);
                         return {
                             id    : node.id,
                             tipo  : 2
@@ -220,43 +316,67 @@
             },
             contextmenu : {
                 show_at_node : false,
-                // items        : createContextMenu
+                items        : createContextMenu
             },
             state       : {
                 key : "unidades",
                 opened: false
             },
-            %{--search      : {--}%
-            %{--    fuzzy             : false,--}%
-            %{--    show_only_matches : false,--}%
-            %{--    ajax              : {--}%
-            %{--        url     : "${createLink(action:'arbolSearch_ajax')}",--}%
-            %{--        success : function (msg) {--}%
-            %{--            var json = $.parseJSON(msg);--}%
-            %{--            $.each(json, function (i, obj) {--}%
-            %{--                $('#tree').jstree("open_node", obj);--}%
-            %{--            });--}%
-            %{--            setTimeout(function () {--}%
-            %{--                searchRes = $(".jstree-search");--}%
-            %{--                var cantRes = searchRes.length;--}%
-            %{--                posSearchShow = 0;--}%
-            %{--                $("#divSearchRes").removeClass("hidden");--}%
-            %{--                $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);--}%
-            %{--                scrollToSearchRes();--}%
-            %{--            }, 300);--}%
+            search      : {
+                fuzzy             : false,
+                show_only_matches : false,
+                ajax              : {
+                    url     : "${createLink(action:'arbolSearch_ajax')}",
+                    success : function (msg) {
+                        var json = $.parseJSON(msg);
+                        $.each(json, function (i, obj) {
+                            $('#tree2').jstree("open_node", obj);
+                        });
+                        setTimeout(function () {
+                            searchRes = $(".jstree-search");
+                            var cantRes = searchRes.length;
+                            posSearchShow = 0;
+                            $("#divSearchRes").removeClass("hidden");
+                            $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                            scrollToSearchRes();
+                        }, 300);
 
-            %{--        }--}%
-            %{--    }--}%
-            %{--},--}%
+                    }
+                }
+            },
             types       : {
                 root                : {
                     icon : "fa fa-sitemap text-info"
                 }
             }
         });
+    }
+
+    $("#btnMano").click(function () {
+        tipoSeleccionado = 2;
+        // limpiarBusqueda();
+        cargarMano();
     });
 
+    function recargaMano(){
+        $("#tree").addClass("hide");
+        $("#tree2").removeClass("hide") ;
+        $("#tree3").addClass("hide");
+        $("#btnMateriales").removeClass('active');
+        $("#btnMano").addClass('active');
+        $("#btnEquipos").removeClass('active');
+        $("#alerta1").addClass('hide');
+        $("#alerta2").removeClass('hide');
+        $("#alerta3").addClass('hide');
+        var $treeContainer = $("#tree2");
+        $treeContainer.jstree("refresh")
+    }
+
     $("#btnEquipos").click(function () {
+
+        tipoSeleccionado = 3;
+        // limpiarBusqueda();
+
         $("#tree").addClass("hide");
         $("#tree2").addClass("hide") ;
         $("#tree3").removeClass("hide");
@@ -289,7 +409,6 @@
                 data           : {
                     url   : '${createLink(action:"loadTreePart_nuevo")}',
                     data  : function (node) {
-                        console.log("--> " + node.id);
                         return {
                             id    : node.id,
                             tipo  : 3
@@ -299,34 +418,34 @@
             },
             contextmenu : {
                 show_at_node : false,
-                // items        : createContextMenu
+                items        : createContextMenu
             },
             state       : {
                 key : "unidades",
                 opened: false
             },
-            %{--search      : {--}%
-            %{--    fuzzy             : false,--}%
-            %{--    show_only_matches : false,--}%
-            %{--    ajax              : {--}%
-            %{--        url     : "${createLink(action:'arbolSearch_ajax')}",--}%
-            %{--        success : function (msg) {--}%
-            %{--            var json = $.parseJSON(msg);--}%
-            %{--            $.each(json, function (i, obj) {--}%
-            %{--                $('#tree').jstree("open_node", obj);--}%
-            %{--            });--}%
-            %{--            setTimeout(function () {--}%
-            %{--                searchRes = $(".jstree-search");--}%
-            %{--                var cantRes = searchRes.length;--}%
-            %{--                posSearchShow = 0;--}%
-            %{--                $("#divSearchRes").removeClass("hidden");--}%
-            %{--                $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);--}%
-            %{--                scrollToSearchRes();--}%
-            %{--            }, 300);--}%
+            search      : {
+                fuzzy             : false,
+                show_only_matches : false,
+                ajax              : {
+                    url     : "${createLink(action:'arbolSearch_ajax')}",
+                    success : function (msg) {
+                        var json = $.parseJSON(msg);
+                        $.each(json, function (i, obj) {
+                            $('#tree3').jstree("open_node", obj);
+                        });
+                        setTimeout(function () {
+                            searchRes = $(".jstree-search");
+                            var cantRes = searchRes.length;
+                            posSearchShow = 0;
+                            $("#divSearchRes").removeClass("hidden");
+                            $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                            scrollToSearchRes();
+                        }, 300);
 
-            %{--        }--}%
-            %{--    }--}%
-            %{--},--}%
+                    }
+                }
+            },
             types       : {
                 root                : {
                     icon : "fa fa-sitemap text-info"
@@ -335,19 +454,41 @@
         });
     });
 
+    function recargaEquipo(){
+        $("#tree").addClass("hide");
+        $("#tree2").addClass("hide") ;
+        $("#tree3").removeClass("hide");
+        $("#btnMateriales").removeClass('active');
+        $("#btnMano").removeClass('active');
+        $("#btnEquipos").addClass('active');
+        $("#alerta1").addClass('hide');
+        $("#alerta2").addClass('hide');
+        $("#alerta3").removeClass('hide');
+        var $treeContainer = $("#tree3");
+        $treeContainer.jstree("refresh")
+    }
+
     function createContextMenu(node) {
-        // $(".lzm-dropdown-menu").hide();
 
         var nodeStrId = node.id;
         var $node = $("#" + nodeStrId);
         var nodeId = nodeStrId.split("_")[1];
-        var parentId = $node.parent().parent().children()[1].id.split("_")[1]
+        var parentId = $node.parent().parent().children()[1].id.split("_")[1];
         var nodeType = $node.data("jstree").type;
         var esRoot = nodeType === "root";
         var esPrincipal = nodeType === "principal";
         var esSubgrupo = nodeType.contains("subgrupo");
         var esDepartamento = nodeType.contains("departamento");
         var esItem = nodeType.contains("item");
+        var tipoGrupo = $node.data("tipo");
+        var nodeHasChildren = $node.hasClass("hasChildren");
+        var abueloId = null;
+
+        if(esDepartamento){
+            abueloId = $node.parent().parent().parent().parent().children()[1].id.split("_")[1];
+        }else{
+            abueloId = parentId
+        }
 
         var items = {};
 
@@ -363,7 +504,7 @@
             label  : "Editar grupo",
             icon   : "fa fa-copyright text-info",
             action : function () {
-                createEditGrupo(nodeId, 1);
+                createEditGrupo(nodeId, parentId);
             }
         };
 
@@ -371,7 +512,7 @@
             label  : "Nuevo subgrupo",
             icon   : "fa fa-registered text-danger",
             action : function () {
-                createEditSubgrupo(null, nodeId);
+                createEditSubgrupo(null, nodeId, abueloId);
             }
         };
 
@@ -379,7 +520,7 @@
             label  : "Editar subgrupo",
             icon   : "fa fa-registered text-danger",
             action : function () {
-                createEditSubgrupo(nodeId, parentId);
+                createEditSubgrupo(nodeId, parentId, abueloId);
             }
         };
 
@@ -391,173 +532,62 @@
             }
         };
 
-        // var agregarCanton2 = {
-        //     label  : "Agregar Cantón",
-        //     icon   : "fa fa-copyright text-info",
-        //     action : function () {
-        //         createEditCanton(null, $node.parent().parent().children()[1].id.split("_")[1]);
-        //     }
-        // };
-        //
-           //
-        // var agregarParroquia2 = {
-        //     label  : "Agregar Parroquia",
-        //     icon   : "fa fa-registered text-danger",
-        //     action : function () {
-        //         createEditParroquia(null, $node.parent().parent().children()[1].id.split("_")[1]);
-        //     }
-        // };
-        //
-        // var agregarComunidad = {
-        //     label  : "Agregar Comunidad",
-        //     icon   : "fa fa-info-circle text-warning",
-        //     action : function () {
-        //         createEditComunidad(null, nodeId);
-        //     }
-        // };
-        //
-        // var agregarComunidad2 = {
-        //     label  : "Agregar Comunidad",
-        //     icon   : "fa fa-info-circle text-warning",
-        //     action : function () {
-        //         createEditComunidad(null, $node.parent().parent().children()[1].id.split("_")[1]);
-        //     }
-        // };
-        //
-        // var editarProvincia = {
-        //     label  : "Editar Provincia",
-        //     icon   : "fa fa-pen text-info",
-        //     action : function () {
-        //         createEditProvincia(nodeId);
-        //     }
-        // };
-        //
-        // var editarCanton = {
-        //     label  : "Editar Cantón",
-        //     icon   : "fa fa-pen text-info",
-        //     action : function () {
-        //         createEditCanton(nodeId, null);
-        //     }
-        // };
-        //
-        // var editarParroquia = {
-        //     label  : "Editar Parroquia",
-        //     icon   : "fa fa-pen text-info",
-        //     action : function () {
-        //         createEditParroquia(nodeId, null);
-        //     }
-        // };
-        //
-        // var editarComunidad = {
-        //     label  : "Editar Comunidad",
-        //     icon   : "fa fa-pen text-info",
-        //     action : function () {
-        //         createEditComunidad(nodeId, null);
-        //     }
-        // };
-
-        var verProvincia = {
-            label            : "Ver datos de la provincia",
-            icon             : "fa fa-laptop text-info",
-            separator_before : true,
-            action           : function () {
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(controller: "provincia", action:'show_ajax')}",
-                    data    : {
-                        id : nodeId
-                    },
-                    success : function (msg) {
-                        bootbox.dialog({
-                            title   : "Ver Provincia",
-                            message : msg,
-                            buttons : {
-                                ok : {
-                                    label     : "Aceptar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
+        var nuevaManoObra = {
+            label  : "Nueva mano de obra",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(null, nodeId);
             }
         };
 
-        var verCanton = {
-            label            : "Ver datos del cantón",
-            icon             : "fa fa-laptop text-info",
-            separator_before : true,
-            action           : function () {
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(controller: "canton", action:'show_ajax')}",
-                    data    : {
-                        id : nodeId
-                    },
-                    success : function (msg) {
-                        bootbox.dialog({
-                            title   : "Ver Cantón",
-                            message : msg,
-                            buttons : {
-                                ok : {
-                                    label     : "Aceptar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
+        var nuevoEquipo = {
+            label  : "Nuevo equipo",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(null, nodeId);
             }
         };
 
-        var verParroquia = {
-            label            : "Ver datos de la parroquia",
-            icon             : "fa fa-laptop text-info",
-            separator_before : true,
-            action           : function () {
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(controller: "parroquia", action:'show_ajax')}",
-                    data    : {
-                        id : nodeId
-                    },
-                    success : function (msg) {
-                        bootbox.dialog({
-                            title   : "Ver Parroquia",
-                            message : msg,
-                            buttons : {
-                                ok : {
-                                    label     : "Aceptar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                }
-                            }
-                        });
-                    }
-                });
+        var editarMaterial = {
+            label  : "Editar material",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
             }
         };
 
-        var verComunidad = {
-            label            : "Ver datos de la comunidad",
+        var editarManoObra = {
+            label  : "Editar mano de obra",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var editarEquipo = {
+            label  : "Editar equipo",
+            icon   : "fa fa-info-circle text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var verItem = {
+            label            : "Ver información del Item",
             icon             : "fa fa-laptop text-info",
             separator_before : true,
             action           : function () {
                 $.ajax({
                     type    : "POST",
-                    url     : "${createLink(controller: "comunidad", action:'show_ajax')}",
+                    url     : "${createLink(action:'infoItems')}",
                     data    : {
                         id : nodeId
                     },
                     success : function (msg) {
                         bootbox.dialog({
-                            title   : "Ver Comunidad",
+                            title   : "Ver información del Item",
                             message : msg,
+                            class : 'modal-lg',
                             buttons : {
                                 ok : {
                                     label     : "Aceptar",
@@ -604,8 +634,13 @@
                                     if(msg === 'OK'){
                                         log("Grupo borrado correctamente","success");
                                         setTimeout(function () {
-                                            var dialog3 = cargarLoader("Cargando...");
-                                            location.reload();
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
                                         }, 1000);
                                     }else{
                                         log("Error al borrar el grupo", "error")
@@ -618,14 +653,14 @@
             }
         };
 
-        var borrarCanton = {
-            label            : "Borrar Cantón",
+        var borrarSubgrupo = {
+            label            : "Eliminar subgrupo",
             icon             : "fa fa-trash text-danger",
             separator_before : true,
             action           : function () {
                 bootbox.confirm({
-                    title: "Borrar Cantón",
-                    message: "Está seguro de borrar este cantón? Esta acción no puede deshacerse.",
+                    title: "Eliminar subgrupo",
+                    message: "Está seguro de borrar este subgrupo? Esta acción no puede deshacerse.",
                     buttons: {
                         cancel: {
                             label: '<i class="fa fa-times"></i> Cancelar',
@@ -641,20 +676,25 @@
                             var dialog = cargarLoader("Borrando...");
                             $.ajax({
                                 type: 'POST',
-                                url: '${createLink(controller: 'canton', action: 'borrarCanton_ajax')}',
+                                url: '${createLink(action: 'deleteDp_ajax')}',
                                 data:{
                                     id: nodeId
                                 },
                                 success: function (msg) {
                                     dialog.modal('hide');
-                                    if(msg === 'ok'){
-                                        log("Cantón borrado correctamente","success");
+                                    if(msg === 'OK'){
+                                        log("Subgrupo borrado correctamente","success");
                                         setTimeout(function () {
-                                            var dialog3 = cargarLoader("Cargando...");
-                                            location.reload();
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
                                         }, 1000);
                                     }else{
-                                        log("Error al borrar el canton", "error")
+                                        log("Error al borrar el Subgrupo", "error")
                                     }
                                 }
                             });
@@ -664,14 +704,14 @@
             }
         };
 
-        var borrarParroquia = {
-            label            : "Borrar Parroquia",
+        var borrarItem = {
+            label            : "Eliminar item",
             icon             : "fa fa-trash text-danger",
             separator_before : true,
             action           : function () {
                 bootbox.confirm({
-                    title: "Borrar Parroquia",
-                    message: "Está seguro de borrar esta parroquia? Esta acción no puede deshacerse.",
+                    title: "Eliminar item",
+                    message: "Está seguro de borrar este item? Esta acción no puede deshacerse.",
                     buttons: {
                         cancel: {
                             label: '<i class="fa fa-times"></i> Cancelar',
@@ -687,20 +727,25 @@
                             var dialog = cargarLoader("Borrando...");
                             $.ajax({
                                 type: 'POST',
-                                url: '${createLink(controller: 'parroquia', action: 'borrarParroquia_ajax')}',
+                                url: '${createLink(action: 'deleteIt_ajax')}',
                                 data:{
                                     id: nodeId
                                 },
                                 success: function (msg) {
                                     dialog.modal('hide');
-                                    if(msg === 'ok'){
-                                        log("Parroquia borrada correctamente","success");
+                                    if(msg === 'OK'){
+                                        log("Borrado correctamente","success");
                                         setTimeout(function () {
-                                            var dialog3 = cargarLoader("Cargando...");
-                                            location.reload();
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
                                         }, 1000);
                                     }else{
-                                        log("Error al borrar la parroquia", "error")
+                                        log("Error al borrar", "error")
                                     }
                                 }
                             });
@@ -710,69 +755,74 @@
             }
         };
 
-        var borrarComunidad = {
-            label            : "Borrar comunidad",
-            icon             : "fa fa-trash text-danger",
+        var copiarOferentes = {
+            label            : "Copiar a oferentes",
+            icon             : "fa fa-file text-success",
             separator_before : true,
             action           : function () {
-                bootbox.confirm({
-                    title: "Borrar Comunidad",
-                    message: "Está seguro de borrar esta comunidad? Esta acción no puede deshacerse.",
-                    buttons: {
-                        cancel: {
-                            label: '<i class="fa fa-times"></i> Cancelar',
-                            className: 'btn-primary'
-                        },
-                        confirm: {
-                            label: '<i class="fa fa-trash"></i> Borrar',
-                            className: 'btn-danger'
-                        }
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'copiarOferentes')}",
+                    data    : {
+                        id : nodeId
                     },
-                    callback: function (result) {
-                        if(result){
-                            var dialog = cargarLoader("Borrando...");
-                            $.ajax({
-                                type: 'POST',
-                                url: '${createLink(controller: 'comunidad', action: 'borrarComunidad_ajax')}',
-                                data:{
-                                    id: nodeId
-                                },
-                                success: function (msg) {
-                                    dialog.modal('hide');
-                                    if(msg === 'ok'){
-                                        log("Comunidad borrada correctamente","success");
-                                        setTimeout(function () {
-                                            location.reload();
-                                        }, 1000);
-                                    }else{
-                                        log("Error al borrar la comunidad", "error")
-                                    }
-                                }
-                            });
+                    success : function (msg) {
+                        var parts =  msg.split("_");
+                        if(parts[0] === 'OK'){
+                            log("Item copiado a oferentes","success")
+                        }else{
+                            log("Error al copiar el item a oferentes","error")
                         }
                     }
                 });
             }
         };
+
 
         if (esRoot) {
         } else if (esPrincipal) {
-            items.nuevoGrupo = nuevoGrupo;
+            if(tipoGrupo !== 2){
+                items.nuevoGrupo = nuevoGrupo;
+            }
         } else if (esSubgrupo) {
-            items.editarGrupo = editarGrupo;
+            if(tipoGrupo !== 2){
+                items.editarGrupo = editarGrupo;
+            }
             items.nuevoSubgrupo = nuevoSubgrupo;
-            items.borrarGrupo = borrarGrupo;
+            if(!nodeHasChildren){
+                items.borrarGrupo = borrarGrupo;
+            }
         } else if (esDepartamento) {
             items.editarSubgrupo = editarSubgrupo;
-            // items.nuevoSubgrupo = nuevoSubgrupo;
+            if(tipoGrupo === 1){
+                items.nuevoMaterial= nuevoMaterial;
+            }else if(tipoGrupo === 2){
+                items.nuevaManoObra= nuevaManoObra;
+            }else if(tipoGrupo === 3){
+                items.nuevoEquipo= nuevoEquipo;
+            }
+            if(!nodeHasChildren){
+                items.borrarSubgrupo = borrarSubgrupo;
+            }
 
         } else if (esItem) {
-
+            items.verItem = verItem;
+            if(tipoGrupo === 1){
+                items.editarMaterial= editarMaterial;
+            }else if(tipoGrupo === 2){
+                items.editarManoObra= editarManoObra;
+            }else if(tipoGrupo === 3){
+                items.editarEquipo= editarEquipo;
+            }
+            items.copiarOferentes = copiarOferentes;
+            if(!nodeHasChildren){
+                items.borrarItem = borrarItem;
+            }
         }
         return items;
     }
 
-    function createEditSubgrupo(id, parentId) {
+    function createEditSubgrupo(id, parentId, abueloId) {
         var title = id ? "Editar" : "Crear";
         var data = id ? {id : id} : {};
         if (parentId) {
@@ -800,7 +850,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitFormSubgrupo();
+                                return submitFormSubgrupo(abueloId);
                             } //callback
                         } //guardar
                     } //buttons
@@ -812,7 +862,7 @@
         }); //ajax
     } //createEdit
 
-    function submitFormSubgrupo() {
+    function submitFormSubgrupo(tipo) {
         var $form = $("#frmSave");
         var $btn = $("#dlgCreateEditDP").find("#btnSave");
         if ($form.valid()) {
@@ -829,8 +879,13 @@
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
                         setTimeout(function () {
-                            var dialog3 = cargarLoader("Cargando...");
-                            location.reload();
+                            if(tipo === '1'){
+                                recargarMateriales();
+                            }else if(tipo === '2'){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
                         }, 1000);
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -846,7 +901,7 @@
     function createEditGrupo(id, parentId) {
         var title = id ? "Editar" : "Crear";
         var data = id ? {id : id} : {};
-            data.grupo = parentId;
+        data.grupo = parentId;
         $.ajax({
             type    : "POST",
             url     : "${createLink( action:'formSg_ajax')}",
@@ -869,7 +924,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                return submitFormGrupo();
+                                return submitFormGrupo(parentId);
                             } //callback
                         } //guardar
                     } //buttons
@@ -881,7 +936,7 @@
         }); //ajax
     } //createEdit
 
-    function submitFormGrupo() {
+    function submitFormGrupo(tipo) {
         var $form = $("#frmSave");
         var $btn = $("#dlgCreateEditGP").find("#btnSave");
         if ($form.valid()) {
@@ -898,8 +953,13 @@
                     if(parts[0] === 'ok'){
                         log(parts[1], "success");
                         setTimeout(function () {
-                            var dialog3 = cargarLoader("Cargando...");
-                            location.reload();
+                            if(tipo === '1'){
+                                recargarMateriales();
+                            }else if(tipo === '2'){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
                         }, 1000);
                     }else{
                         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
@@ -920,7 +980,7 @@
         }
         $.ajax({
             type    : "POST",
-            url     : "${createLink( action:'formDp_ajax')}",
+            url     : "${createLink( action:'formIt_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -952,27 +1012,44 @@
         }); //ajax
     } //createEdit
 
+    function submitFormItem() {
+        var $form = $("#frmSave");
+        var $btn = $("#dlgCreateEditIT").find("#btnSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            $btn.replaceWith(spinner);
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(parts[2] === '1'){
+                                recargarMateriales();
+                            }else if(parts[2] === '2'){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
-    // var searchRes = [];
-    // var posSearchShow = 0;
-    // var $treeContainer = $("#tree");
-    //
-    // function scrollToNode($scrollTo) {
-    //     $treeContainer.jstree("deselect_all").jstree("select_node", $scrollTo).animate({
-    //         scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
-    //     });
-    // }
-    //
-    // function scrollToRoot() {
-    //     var $scrollTo = $("#root");
-    //     scrollToNode($scrollTo);
-    // }
-    //
-    // function scrollToSearchRes() {
-    //     var $scrollTo = $(searchRes[posSearchShow]).parents("li").first();
-    //     $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + searchRes.length);
-    //     scrollToNode($scrollTo);
-    // }
+
+
 
     %{--$(function () {--}%
 

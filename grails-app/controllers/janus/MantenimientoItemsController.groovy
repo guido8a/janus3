@@ -349,7 +349,7 @@ class MantenimientoItemsController {
 //    }
 
     def makeTreeNode(params) {
-        println "makeTreeNode.. $params"
+//        println "makeTreeNode.. $params"
         def id = params.id
         def tipo = ""
         def liId = ""
@@ -375,7 +375,7 @@ class MantenimientoItemsController {
                 clase = "hasChildren jstree-closed"
             }
             tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
-                    "<a href='#' class='label_arbol'>ITEMS</a>" +
+                    "<a href='#' class='label_arbol'></a>" +
                     "</li>"
         } else {
             if(id == 'root'){
@@ -384,7 +384,7 @@ class MantenimientoItemsController {
                 ico = ", \"icon\":\"fa fa-parking text-success\""
                 hijos.each { hijo ->
                     clase = SubgrupoItems.findAllByGrupo(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
-                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
                     tree += "<a href='#' class='label_arbol'>" + hijo?.descripcion + "</a>"
                     tree += "</li>"
                 }
@@ -396,8 +396,8 @@ class MantenimientoItemsController {
                         ico = ", \"icon\":\"fa fa-copyright text-info\""
                         hijos.each { h ->
                             clase = DepartamentoItem.findBySubgrupo(h) ? "jstree-closed hasChildren" : ""
-                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
-                            tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>"  +  "<strong>" + "(" + h?.codigo + ") "  + "</strong>" +  h.descripcion + "</a>"
                             tree += "</li>"
                         }
                         break
@@ -406,27 +406,71 @@ class MantenimientoItemsController {
                         liId = "dp_"
                         ico = ", \"icon\":\"fa fa-registered text-danger\""
                         hijos.each { h ->
-                        clase = Item.findByDepartamento(h)? "jstree-closed hasChildren" : ""
-                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"departamento"}\" ${ico}}'>"
-                            tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
+                            clase = Item.findByDepartamento(h)? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "'  data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"departamento"}\" ${ico}}'>"
+                            if(Grupo.get(params.tipo)?.id == 2){
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "(" + h?.codigo + ") " + "</strong>"  + h.descripcion + "</a>"
+                            }else{
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "(" + h?.subgrupo?.codigo + "." +  h?.codigo + ") " + "</strong>"  + h.descripcion + "</a>"
+                            }
                             tree += "</li>"
                         }
                         break
                     case "dp":
-                    hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'nombre'])
-                    liId = "it_"
-                    ico = ", \"icon\":\"fa fa-info-circle text-warning\""
-                    hijos.each { h ->
-                        clase = ""
-                        tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
-                        tree += "<a href='#' class='label_arbol'>" + h.nombre + "</a>"
-                        tree += "</li>"
-                    }
+                        hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'nombre'])
+                        liId = "it_"
+                        ico = ", \"icon\":\"fa fa-info-circle text-warning\""
+                        hijos.each { h ->
+                            clase = ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "(" + h?.codigo + ") " + "</strong>" + h.nombre + "</a>"
+                            tree += "</li>"
+                        }
                         break
                 }
             }
         }
         return tree
+    }
+
+    /**
+     * Acción llamada con ajax que permite realizar búsquedas en el árbol
+     */
+    def arbolSearch_ajax() {
+        println "arbolSearch_ajax $params"
+        def search = params.str.trim()
+        if (search != "") {
+            def c = Item.createCriteria()
+            def find = c.list(params) {
+                or {
+                    ilike("nombre", "%" + search + "%")
+                    departamento {
+                        or {
+                            ilike("descripcion", "%" + search + "%")
+                        }
+                    }
+                }
+            }
+            def departamentos = []
+            find.each { pers ->
+                if (pers.departamento && !departamentos.contains(pers.departamento)) {
+                    departamentos.add(pers.departamento)
+                }
+            }
+            departamentos = departamentos.reverse()
+            def ids = "["
+            if (find.size() > 0) {
+                ids += "\"#root\","
+                departamentos.each { dp ->
+                    ids += "\"#dp_" + dp.id + "\","
+                }
+                ids = ids[0..-2]
+            }
+            ids += "]"
+            render ids
+        } else {
+            render ""
+        }
     }
 
 
@@ -972,7 +1016,6 @@ class MantenimientoItemsController {
     }
 
     def loadTreePart_nuevo() {
-        println ("cargar arbol")
         render(makeTreeNode(params))
     }
 
@@ -1149,7 +1192,6 @@ class MantenimientoItemsController {
     }
 
     def formSg_ajax() {
-        println("params sg " + params)
         def grupo = Grupo.get(params.grupo)
         def subgrupoItemsInstance = new SubgrupoItems()
         if (params.id) {
@@ -1182,8 +1224,10 @@ class MantenimientoItemsController {
     }
 
     def saveSg_ajax() {
-        def accion = "create"
-        def subgrupo = new SubgrupoItems()
+        def subgrupo
+        def grupo = Grupo.get(params.grupo)
+        def existe = false
+
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
         }
@@ -1192,14 +1236,22 @@ class MantenimientoItemsController {
         }
         if (params.id) {
             subgrupo = SubgrupoItems.get(params.id)
-            accion = "edit"
+            existe = SubgrupoItems.findAllByGrupoAndCodigoAndIdNotEqual(grupo, params.codigo, subgrupo.id)
+        }else{
+            subgrupo = new SubgrupoItems()
         }
-        subgrupo.properties = params
-        if (subgrupo.save(flush: true)) {
-            render "OK_" + accion + "_" + subgrupo.id + "_" + subgrupo.codigo + " " + subgrupo.descripcion
-        } else {
-            def errores = g.renderErrors(bean: subgrupo)
-            render "NO_" + errores
+
+        if(existe){
+            render "no_El código ingresado ya ha sido utilizado"
+        }else{
+            subgrupo.properties = params
+
+            if (subgrupo.save(flush: true)) {
+                render "ok_Grupo guardado correctamente"
+            } else {
+                println("error al guardar el grupo " + subgrupo.errors)
+                render "no_Error al guardar el grupo"
+            }
         }
     }
 
@@ -1221,7 +1273,6 @@ class MantenimientoItemsController {
     }
 
     def formDp_ajax() {
-        println("params dp " + params)
         def mos = SubgrupoItems.findAllByGrupo(Grupo.get(2), [sort: 'codigo']).id
 
         def subgrupo = SubgrupoItems.get(params.subgrupo)
@@ -1284,28 +1335,28 @@ class MantenimientoItemsController {
     }
 
     def saveDp_ajax() {
-//        println params
-        def accion = "create"
-        def departamento = new DepartamentoItem()
+
+        def departamento
+
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
         }
         if (params.descripcion) {
             params.descripcion = params.descripcion.toString().toUpperCase()
         }
+
         if (params.id) {
-//            println "EDIT!!!!"
             departamento = DepartamentoItem.get(params.id)
-//            println "\t\t" + departamento.codigo
-            accion = "edit"
+        }else{
+            departamento = new DepartamentoItem()
         }
+
         departamento.properties = params
         if (departamento.save(flush: true)) {
-            render "OK_" + accion + "_" + departamento.id + "_" + departamento.subgrupo.codigo + "." + departamento.codigo + " " + departamento.descripcion
+            render "ok_Subgrupo guardado correctamente"
         } else {
-            println "mantenimiento items controller l 617: " + departamento.errors
-            def errores = g.renderErrors(bean: departamento)
-            render "NO_" + errores
+            println("error al guardar el subgrupo " + departamento.errors)
+            render "no_Error al guardar el subgrupo"
         }
     }
 
@@ -1322,14 +1373,12 @@ class MantenimientoItemsController {
     }
 
     def showIt_ajax() {
-//        println "showIt_ajax" + params
         def itemInstance = Item.get(params.id)
         return [itemInstance: itemInstance]
     }
 
     def formIt_ajax() {
-        def usuario = Persona.get(session.usuario.id)
-//        def empresa = usuario.empresa
+
         def departamento = DepartamentoItem.get(params.departamento)
         def itemInstance = new Item()
         if (params.id) {
@@ -1339,21 +1388,24 @@ class MantenimientoItemsController {
         def grupo = departamento.codigo.toString().padLeft(3, '0')
         def subgrupo = departamento.subgrupo.codigo.toString().padLeft(3, '0')
 
-        println("grupo " + grupo)
-        println("sub " + subgrupo)
-
+//        println("grupo " + grupo)
+//        println("sub " + subgrupo)
 
         def sql="select max(substr(itemcdgo, length(itemcdgo)-2,3)::integer+1) from item where itemcdgo ilike " +
                 "'${grupo.toString() + "." + subgrupo.toString() + ".%"}' "
         def cn = dbConnectionService.getConnection()
         def maximo = cn.rows(sql)
 
-        println("sql " + sql)
-        println("maximo " + maximo[0].max)
+//        println("sql " + sql)
+//        println("maximo " + maximo[0].max)
+
+        def grupoGeneral = departamento?.subgrupo?.grupo?.codigo
+
+//        println("gg " + grupoGeneral)
 
         def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
 
-        return [departamento: departamento, itemInstance: itemInstance, grupo: params.grupo, campos: campos, maximo: maximo[0].max]
+        return [departamento: departamento, itemInstance: itemInstance, grupo: params.grupo, campos: campos, maximo: maximo[0].max, grupoGeneral: grupoGeneral]
     }
 
     def buscaCpac() {
@@ -1394,21 +1446,23 @@ class MantenimientoItemsController {
 
 
     def checkCdIt_ajax() {
+
+        println("params cit " + params)
+
         def dep = DepartamentoItem.get(params.dep)
-        def usuario = Persona.get(session.usuario.id)
-//        def empresa = usuario.empresa
+
         if (dep.subgrupo.grupo.id != 2)
             params.codigo = dep.subgrupo.codigo.toString().padLeft(3, '0') + "." + dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
         else
             params.codigo = dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
-        //println params
-        //println dep.subgrupo.grupo.id
+
+        println("codigo " + params.codigo)
+
         if (params.id) {
             def item = Item.get(params.id)
             if (params.codigo.toString().trim() == item.codigo.toString().trim()) {
                 render true
             } else {
-//                def items = Item.findAllByCodigoAndEmpresa(params.codigo, empresa)
                 def items = Item.findAllByCodigo(params.codigo)
                 if (items.size() == 0) {
                     render true
@@ -1417,7 +1471,6 @@ class MantenimientoItemsController {
                 }
             }
         } else {
-//            def items = Item.findAllByCodigoAndEmpresa(params.codigo, empresa)
             def items = Item.findAllByCodigo(params.codigo)
             if (items.size() == 0) {
                 render true
@@ -1499,9 +1552,9 @@ class MantenimientoItemsController {
 
     def saveIt_ajax() {
         println 'SAVE ITEM: ' + params
+        def item
         def persona = Persona.get(session.usuario.id)
-//        def empresa = persona.empresa
-        def dep = DepartamentoItem.get(params.departamento.id)
+        def dep = DepartamentoItem.get(params.departamento)
         params.tipoItem = TipoItem.findByCodigo("I")
         params.fechaModificacion = new Date()
         params.nombre = params.nombre.toString().toUpperCase()
@@ -1512,9 +1565,7 @@ class MantenimientoItemsController {
         if (!params.id) {
             if (!params.codigo.contains(".")) {
                 if (dep.subgrupo.grupoId == 2) {
-//                println "?"
                     params.codigo = dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
-//                println params.codigo
                 } else {
                     params.codigo = dep.subgrupo.codigo.toString().padLeft(3, '0') + "." + dep.codigo.toString().padLeft(3, '0') + "." + params.codigo
                 }
@@ -1526,30 +1577,25 @@ class MantenimientoItemsController {
             params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         } else {
             params.fecha = new Date()
-
         }
 
         if (!params.tipoLista) {
             params.tipoLista = TipoLista.get(6)
         }
 
-        def accion = "create"
-        def item = new Item()
         if (params.id) {
             item = Item.get(params.id)
-            accion = "edit"
         }else{
-//            item.empresa = empresa
+            item = new Item()
         }
-//        println "ITEM: " + params
+
         item.properties = params
 
         if (item.save(flush: true)) {
-            render "OK_" + accion + "_" + item.id + "_" + item.codigo + " " + item.nombre
+            render "ok_Item guardado correctamente_" + item?.departamento?.subgrupo?.grupo?.id
         }else {
             println "mantenimiento items controller l 784: " + item.errors
-            def errores = g.renderErrors(bean: item)
-            render "NO_" + errores
+            render "no_Error al guardar el item"
         }
     }
 
@@ -2150,5 +2196,26 @@ class MantenimientoItemsController {
         }
     }
 
+    def buscadorCPC(){
+        def listaItems = [1: 'Descripción', 2: 'Código']
+        return  [listaItems: listaItems]
+    }
+
+    def tablaCPC(){
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['cpacdscr', 'cpacnmro']
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+
+        def select = "select * from cpac"
+        def txwh = " where $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by cpacdscr limit 30 ".toString()
+//        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println("data " + datos)
+        [data: datos]
+    }
 
 }
