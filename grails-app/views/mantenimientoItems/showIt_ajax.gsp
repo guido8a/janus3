@@ -1,286 +1,167 @@
 <%@ page import="janus.Item" %>
 
+<div class="" style="border: solid; border: 1px">
+    <fieldset class="borde">
+        <legend>${itemInstance.nombre}</legend>
 
-
-    <div class="" style="border: solid; border: 1px">
-        <fieldset class="borde">
-            <legend>${itemInstance.nombre}</legend>
-
-            <g:if test="${itemInstance?.codigo}">
-                <div class="row">
-                    <div class="col-md-3 text-info">
-                        Código
-                    </div>
-                    <div class="col-md-6">
-                        ${itemInstance?.codigo}
-                    </div>
+        <g:if test="${itemInstance?.departamento}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Subgrupo
                 </div>
-            </g:if>
-        </fieldset>
-    </div>
+                <div class="col-md-6">
+                    ${itemInstance?.departamento?.descripcion}
+                </div>
+            </div>
+        </g:if>
 
-<form class="form-horizontal">
-
-
-    <g:if test="${itemInstance?.unidad}">
-        <div class="control-group">
-            <div>
-                <span id="unidad-label" class="control-label label label-inverse">
+        <g:if test="${itemInstance?.codigo}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Código
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.codigo}
+                </div>
+            </div>
+        </g:if>
+        <g:if test="${itemInstance?.unidad}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Unidad
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.unidad}
+                </div>
             </div>
-
-            <div class="controls">
-                <span aria-labelledby="unidad-label">
-                    ${itemInstance?.unidad?.codigo}
-                </span>
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance.departamento.subgrupo.grupo.id.toString() == '1'}">
-        <div class="control-group">
-            <div>
-                <span id="peso-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance.departamento.subgrupo.grupo.id.toString() == '1'}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     ${(itemInstance?.tipoLista?.codigo[0] == 'P') ? 'Peso' : 'Volumen'}
-                </span>
-            </div>
-
-            <div class="controls">
-                <span aria-labelledby="peso-label">
+                </div>
+                <div class="col-md-6">
                     <g:formatNumber number="${itemInstance.peso}" maxFractionDigits="6" minFractionDigits="6" format='##,######0' locale='ec'/>
                     ${itemInstance?.tipoLista?.unidad}
-                </span>
-
+                </div>
             </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.departamento}">
-        <div class="control-group">
-            <div>
-                <span id="departamento-label" class="control-label label label-inverse">
-                    Subgrupo
-                </span>
-            </div>
-
-            <div class="controls">
-                <span aria-labelledby="departamento-label">
-                    ${itemInstance?.departamento?.descripcion}
-                </span>
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.estado}">
-        <div class="control-group">
-            <div>
-                <span id="estado-label" class="control-label label label-inverse">
-                    Estado
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="estado-label">
+        </g:if>
+        <g:if test="${itemInstance?.estado}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Unidad
+                </div>
+                <div class="col-md-6">
                     ${itemInstance.estado == 'A' ? 'ACTIVO' : itemInstance.estado == 'B' ? 'DADO DE BAJA' : ''}
-                </span>
-
+                </div>
             </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.fecha}">
-        <div class="control-group">
-            <div>
-                <span id="fecha-label" class="control-label label label-inverse">
-                    Fecha creación
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="fecha-label">
+        </g:if>
+        <g:if test="${itemInstance?.fecha}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Fecha de creación
+                </div>
+                <div class="col-md-6">
                     <g:formatDate date="${itemInstance?.fecha}" format="dd-MM-yyyy"/>
-                </span>
-
+                </div>
             </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.fechaModificacion}">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Fecha última modificación
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="fecha-label">
+        </g:if>
+        <g:if test="${itemInstance?.fechaModificacion}">
+            <div class="row">
+                <div class="col-md-3 text-info">
+                    Fecha de modificación
+                </div>
+                <div class="col-md-6">
                     <g:formatDate date="${itemInstance?.fechaModificacion}" format="dd-MM-yyyy"/>
-                </span>
-
+                </div>
             </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.fechaModificacion}">
-        <div class="control-group">
-            <div>
-                <span id="fechaModificacion-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.codigoComprasPublicas}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Código CPC
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="fecha-label">
+                </div>
+                <div class="col-md-6">
                     ${itemInstance?.codigoComprasPublicas?.numero}
-                </span>
-
+                </div>
             </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.transportePeso}">
-        <div class="control-group">
-            <div>
-                <span id="transportePeso-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.transportePeso}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Transporte Peso
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.transportePeso}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="transportePeso-label">
-                    <g:fieldValue bean="${itemInstance}" field="transportePeso"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.transporteVolumen}">
-        <div class="control-group">
-            <div>
-                <span id="transporteVolumen-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.transporteVolumen}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Transporte Volumen
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.transporteVolumen}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="transporteVolumen-label">
-                    <g:fieldValue bean="${itemInstance}" field="transporteVolumen"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.padre}">
-        <div class="control-group">
-            <div>
-                <span id="padre-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.padre}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Padre
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.padre}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="padre-label">
-                    <g:fieldValue bean="${itemInstance}" field="padre"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.inec}">
-        <div class="control-group">
-            <div>
-                <span id="inec-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.inec}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Inec
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.inec}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="inec-label">
-                    <g:fieldValue bean="${itemInstance}" field="inec"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.rendimiento}">
-        <div class="control-group">
-            <div>
-                <span id="rendimiento-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.rendimiento}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Rendimiento
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.rendimiento}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="rendimiento-label">
-                    <g:fieldValue bean="${itemInstance}" field="rendimiento"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.tipo}">
-        <div class="control-group">
-            <div>
-                <span id="tipo-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.tipo}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Tipo
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.tipo}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="tipo-label">
-                    <g:fieldValue bean="${itemInstance}" field="tipo"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.registro}">
-        <div class="control-group">
-            <div>
-                <span id="registro-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.registro}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Registro
-                </span>
+                </div>
+                <div class="col-md-6">
+                    ${itemInstance?.registro}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="registro-label">
-                    <g:fieldValue bean="${itemInstance}" field="registro"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.transporte}">
-        <div class="control-group">
-            <div>
-                <span id="transporte-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.transporte}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Transporte
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="transporte-label">
+                </div>
+                <div class="col-md-6">
                     ${(itemInstance.transporte == 'P') ? 'PESO' : itemInstance.transporte == 'V' ? 'VOLUMEN' : ''}
                     <g:if test="${itemInstance.transporte == 'P'}">
                         Peso (capital de cantón)
@@ -297,47 +178,28 @@
                     <g:elseif test="${itemInstance.transporte == 'V2'}">
                         Volumen (materiales pétreos para carpeta asfáltica)
                     </g:elseif>
-
-                </span>
-
+                </div>
             </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.combustible}">
-        <div class="control-group">
-            <div>
-                <span id="combustible-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.combustible}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Combustible
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="combustible-label">
+                </div>
+                <div class="col-md-6">
                     ${itemInstance.combustible == 'S' ? 'SI' : itemInstance.combustible == 'N' ? 'NO' : ''}
-                </span>
-
+                </div>
             </div>
-        </div>
-    </g:if>
-
-    <g:if test="${itemInstance?.observaciones}">
-        <div class="control-group">
-            <div>
-                <span id="observaciones-label" class="control-label label label-inverse">
+        </g:if>
+        <g:if test="${itemInstance?.observaciones}">
+            <div class="row">
+                <div class="col-md-3 text-info">
                     Observaciones
-                </span>
+                </div>
+                <div class="col-md-8">
+                    ${itemInstance.observaciones}
+                </div>
             </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="observaciones-label">
-                    <g:fieldValue bean="${itemInstance}" field="observaciones"/>
-                </span>
-
-            </div>
-        </div>
-    </g:if>
-
-</form>
+        </g:if>
+    </fieldset>
+</div>

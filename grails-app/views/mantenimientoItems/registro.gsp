@@ -223,36 +223,34 @@
         $("#divSearchRes").addClass("hidden")
     });
 
-    function showInfo(tipo) {
-        var node = $("#tree").jstree().get_selected();
-
-        if(tipo === 1){
-            node = $("#tree").jstree().get_selected();
-        }else if(tipo === 2){
-            node = $("#tree2").jstree().get_selected();
-        }else{
-            node = $("#tree3").jstree().get_selected();
-        }
+    function showInfo() {
+        var node = $("#tree").jstree(true).get_selected();
 
         var nodeId = node.toString().split("_")[1];
         var nodeNivel = node.toString().split("_")[0];
 
+        cargarInfo(nodeNivel, nodeId);
+    }
 
-        // var parent = node.parent().parent();
+    function showInfo2() {
+        var node = $("#tree2").jstree(true).get_selected();
 
-        %{--var nodeStrId = node.attr("id");--}%
-        %{--var nodeText = $.trim(node.children("a").text());--}%
+        var nodeId = node.toString().split("_")[1];
+        var nodeNivel = node.toString().split("_")[0];
 
-        %{--var nodeRel = node.attr("rel");--}%
-        %{--var parts = nodeRel.split("_");--}%
-        %{--var nodeNivel = parts[0];--}%
-        %{--var nodeTipo = parts[1];--}%
+        cargarInfo(nodeNivel, nodeId);
+    }
 
-        %{--parts = nodeStrId.split("_");--}%
-        %{--var nodeId = parts[1];--}%
+    function showInfo3() {
+        var node = $("#tree3").jstree(true).get_selected();
 
-        var url = "";
+        var nodeId = node.toString().split("_")[1];
+        var nodeNivel = node.toString().split("_")[0];
 
+        cargarInfo(nodeNivel, nodeId);
+    }
+
+    function cargarInfo(nodeNivel, nodeId){
         switch (nodeNivel) {
             case "gp":
                 url = "${createLink(action:'showGr_ajax')}";
@@ -373,7 +371,7 @@
                 }
             }
         }).bind("select_node.jstree", function (node, selected) {
-            // showInfo(1);
+            showInfo();
         });
     }
 
@@ -454,7 +452,7 @@
                 }
             }
         }).bind("select_node.jstree", function (node, selected) {
-            // showInfo(2);
+            showInfo2();
         });
     }
 
@@ -563,7 +561,7 @@
                 }
             }
         }).bind("select_node.jstree", function (node, selected) {
-            // showInfo(3);
+            showInfo3();
         });
     }
 
