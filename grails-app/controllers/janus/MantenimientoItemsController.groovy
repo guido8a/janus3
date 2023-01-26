@@ -1388,20 +1388,12 @@ class MantenimientoItemsController {
         def grupo = departamento.codigo.toString().padLeft(3, '0')
         def subgrupo = departamento.subgrupo.codigo.toString().padLeft(3, '0')
 
-//        println("grupo " + grupo)
-//        println("sub " + subgrupo)
-
         def sql="select max(substr(itemcdgo, length(itemcdgo)-2,3)::integer+1) from item where itemcdgo ilike " +
                 "'${grupo.toString() + "." + subgrupo.toString() + ".%"}' "
         def cn = dbConnectionService.getConnection()
         def maximo = cn.rows(sql)
 
-//        println("sql " + sql)
-//        println("maximo " + maximo[0].max)
-
         def grupoGeneral = departamento?.subgrupo?.grupo?.codigo
-
-//        println("gg " + grupoGeneral)
 
         def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
 
