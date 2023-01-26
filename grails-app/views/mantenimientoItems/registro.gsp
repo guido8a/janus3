@@ -34,7 +34,6 @@
         Equipos
     </a>
 
-
     <div class="col-md-4">
         <div class="input-group input-group-sm">
             <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
@@ -93,14 +92,8 @@
     var tipoSeleccionado = 1;
 
     var $treeContainer = $("#tree");
-
-    // if(tipoSeleccionado === 1){
-    //     $treeContainer = $("#tree");
-    // }else if(tipoSeleccionado === 2){
-    //     $treeContainer = $("#tree2");
-    // }else{
-    //     $treeContainer = $("#tree3");
-    // }
+    var $treeContainer2 = $("#tree2");
+    var $treeContainer3 = $("#tree3");
 
     $("#btnCollapseAll").click(function () {
         $("#tree, #tree2, #tree3").jstree("close_all");
@@ -112,9 +105,19 @@
     });
 
     function scrollToNode($scrollTo) {
-        $("#tree").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
-            scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
-        });
+        if(tipoSeleccionado === 1){
+            $("#tree").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+        }else if(tipoSeleccionado === 2){
+            $("#tree2").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+        }else{
+            $("#tree3").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+                scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+            });
+        }
     }
 
     function scrollToRoot() {
@@ -130,14 +133,26 @@
 
     $('#btnSearchArbol').click(function () {
         // $treeContainer.jstree("open_all");
-        $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+        if(tipoSeleccionado === 1){
+            $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+        }else if(tipoSeleccionado === 2){
+            $treeContainer2.jstree(true).search($.trim($("#searchArbol").val()));
+        }else{
+            $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
+        }
         return false;
     });
 
     $("#searchArbol").keypress(function (ev) {
         if (ev.keyCode === 13) {
             // $treeContainer.jstree("open_all");
-            $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+            if(tipoSeleccionado === 1){
+                $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
+            }else if(tipoSeleccionado === 2){
+                $treeContainer2.jstree(true).search($.trim($("#searchArbol").val()));
+            }else{
+                $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
+            }
             return false;
         }
     });
@@ -168,10 +183,11 @@
 
     function limpiarBusqueda(){
         $treeContainer.jstree("clear_search");
+        $treeContainer2.jstree("clear_search");
+        $treeContainer3.jstree("clear_search");
         $("#searchArbol").val("");
         posSearchShow = 0;
         searchRes = [];
-        scrollToRoot();
         $("#divSearchRes").addClass("hidden");
         $("#spanSearchRes").text("");
     }
@@ -179,7 +195,8 @@
     $("#btnMateriales").click(function () {
         tipoSeleccionado = 1;
         cargarMateriales();
-        // limpiarBusqueda();
+        limpiarBusqueda();
+        $("#divSearchRes").addClass("hidden")
     });
 
     function recargarMateriales () {
@@ -354,8 +371,9 @@
 
     $("#btnMano").click(function () {
         tipoSeleccionado = 2;
-        // limpiarBusqueda();
         cargarMano();
+        limpiarBusqueda();
+        $("#divSearchRes").addClass("hidden")
     });
 
     function recargaMano(){
@@ -373,10 +391,13 @@
     }
 
     $("#btnEquipos").click(function () {
-
         tipoSeleccionado = 3;
-        // limpiarBusqueda();
+        cargarEquipo();
+        limpiarBusqueda();
+        $("#divSearchRes").addClass("hidden")
+    });
 
+    function cargarEquipo(){
         $("#tree").addClass("hide");
         $("#tree2").addClass("hide") ;
         $("#tree3").removeClass("hide");
@@ -452,7 +473,7 @@
                 }
             }
         });
-    });
+    }
 
     function recargaEquipo(){
         $("#tree").addClass("hide");
