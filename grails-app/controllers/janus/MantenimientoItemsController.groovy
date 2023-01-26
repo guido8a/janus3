@@ -397,7 +397,7 @@ class MantenimientoItemsController {
                         hijos.each { h ->
                             clase = DepartamentoItem.findBySubgrupo(h) ? "jstree-closed hasChildren" : ""
                             tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
-                            tree += "<a href='#' class='label_arbol'>"  +  "<strong>" + "(" + h?.codigo + ") "  + "</strong>" +  h.descripcion + "</a>"
+                            tree += "<a href='#' class='label_arbol'>"  +  "<strong>" + "" + h?.codigo + " "  + "</strong>" +  h.descripcion + "</a>"
                             tree += "</li>"
                         }
                         break
@@ -409,9 +409,9 @@ class MantenimientoItemsController {
                             clase = Item.findByDepartamento(h)? "jstree-closed hasChildren" : ""
                             tree += "<li id='" + liId + h.id + "' class='" + clase + "'  data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"departamento"}\" ${ico}}'>"
                             if(Grupo.get(params.tipo)?.id == 2){
-                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "(" + h?.codigo + ") " + "</strong>"  + h.descripcion + "</a>"
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "" + h?.codigo + " " + "</strong>"  + h.descripcion + "</a>"
                             }else{
-                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "(" + h?.subgrupo?.codigo + "." +  h?.codigo + ") " + "</strong>"  + h.descripcion + "</a>"
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "" + h?.subgrupo?.codigo + "." +  h?.codigo + " " + "</strong>"  + h.descripcion + "</a>"
                             }
                             tree += "</li>"
                         }
@@ -423,7 +423,7 @@ class MantenimientoItemsController {
                         hijos.each { h ->
                             clase = ""
                             tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
-                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "(" + h?.codigo + ") " + "</strong>" + h.nombre + "</a>"
+                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + h?.codigo + " " + "</strong>" + h.nombre + "</a>"
                             tree += "</li>"
                         }
                         break
