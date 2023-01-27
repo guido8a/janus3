@@ -82,7 +82,7 @@
 <div id="alerta2" class="alert alert-warning hide" style="margin-top: 5px">MANO DE OBRA</div>
 <div id="alerta3" class="alert alert-success hide" style="margin-top: 5px">EQUIPOS</div>
 
-<div id="tree" class="col-md-8 ui-corner-all"></div>
+<div id="tree" class="col-md-8 ui-corner-all" style="overflow: auto"></div>
 <div id="tree2" class="col-md-8 ui-corner-all hide"></div>
 <div id="tree3" class="col-md-8 ui-corner-all hide"></div>
 <div id="info" class="col-md-4 ui-corner-all hide" style="border-style: groove; border-color: #0d7bdc"></div>
@@ -123,6 +123,9 @@
             tipoSeleccionado = 3;
             recargaEquipo();
         }
+
+        $("#info").addClass('hide');
+        $("#info").html('');
 
         return false;
     });
@@ -229,7 +232,9 @@
         var nodeId = node.toString().split("_")[1];
         var nodeNivel = node.toString().split("_")[0];
 
-        cargarInfo(nodeNivel, nodeId);
+        if(nodeNivel !== 'root'){
+            cargarInfo(nodeNivel, nodeId);
+        }
     }
 
     function showInfo2() {
@@ -238,7 +243,9 @@
         var nodeId = node.toString().split("_")[1];
         var nodeNivel = node.toString().split("_")[0];
 
-        cargarInfo(nodeNivel, nodeId);
+        if(nodeNivel !== 'root'){
+            cargarInfo(nodeNivel, nodeId);
+        }
     }
 
     function showInfo3() {
@@ -247,7 +254,9 @@
         var nodeId = node.toString().split("_")[1];
         var nodeNivel = node.toString().split("_")[0];
 
-        cargarInfo(nodeNivel, nodeId);
+        if(nodeNivel !== 'root'){
+            cargarInfo(nodeNivel, nodeId);
+        }
     }
 
     function cargarInfo(nodeNivel, nodeId){

@@ -1,9 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-
     <title>Información</title>
-
 
     <style type="text/css">
     .scroll {
@@ -12,7 +10,6 @@
     }
     </style>
 </head>
-
 
 <body>
 
@@ -30,10 +27,7 @@
             <div class="alert alert-danger" style="font-weight: bold">
                 El item no puede eliminarse.
             </div>
-
-
         </g:else>
-
     </div>
 </g:if>
 
@@ -45,15 +39,11 @@
     </ul>
 
     <div id="tab-rubro" class="tab">
-
         <div class="control-group scroll">
-
             <fieldset class="borde">
                 <legend>Rubro</legend>
-
                 <div class="span6" style="width: 700px">
                     <table class="table table-bordered table-striped table-hover table-condensed " id="tablaRubros">
-
                         <thead>
                         <tr>
                             <th style="width: 100px">Código</th>
@@ -70,44 +60,26 @@
                                 <td style="width: 300px">${r?.rubro?.nombre}</td>
                             </tr>
                         </g:each>
-
-
                         </tbody>
-
                     </table>
                 </div>
-
-
             </fieldset>
-
-
         </div>
-
-
     </div>
 
     <div id="tab-precioRubro" class="tab">
-
-
         <div class="control-group scroll">
-
             <fieldset class="borde">
                 <legend>Lista de precios</legend>
-
-
-
                 <div class="span6" style="width: 700px">
                     <table class="table table-bordered table-striped table-hover table-condensed " id="tablaListaPrecios">
-
                         <thead>
                         <tr>
                             <th style="width: 100px">Fecha</th>
                             <th style="width: 100px">Precio</th>
                             <th style="width: 300px">Lista</th>
                         </tr>
-
                         </thead>
-
                         <tbody id="bodyListaPrecios">
 
                         <g:each in="${precios}" var="p">
@@ -117,36 +89,19 @@
                                 <td style="width: 300px">${p?.lugar?.descripcion}</td>
                             </tr>
                         </g:each>
-
-
                         </tbody>
-
                     </table>
                 </div>
-
             </fieldset>
-
-
         </div>
-
-
     </div>
 
-
     <div id="tab-formula" class="tab">
-
-
-
         <div class="control-group scroll">
-
             <fieldset class="borde">
                 <legend>Fórmula Polinómica de la Obra</legend>
-
-
-
                 <div class="span6" style="width: 700px">
                     <table class="table table-bordered table-striped table-hover table-condensed " id="tablaFormulaPolinomica">
-
                         <thead>
                         <tr>
                             <th style="width: 100px">F.P. Número</th>
@@ -165,73 +120,35 @@
                                 <td style="width: 300px">${f?.formulaPolinomica?.obra?.nombre}</td>
                             </tr>
                         </g:each>
-
-
                         </tbody>
-
                     </table>
                 </div>
-
-
-
-
             </fieldset>
-
-
         </div>
-
-
-
     </div>
-
-
-
-
-
-
 </div>
 
 
 <script type="text/javascript">
 
-
-
     $("#tabs").tabs({
     });
-
-
-
     $("#btnEliminar").click(function () {
-
-       ////console.log("entro");
-
-
         var idItem = ("it_") + ${item?.id};
-
-        ////console.log(idItem);
-
         $.ajax({
 
-                    type    : "POST",
-                    url     : "${createLink(action: 'deleteIt_ajax')}",
-                    data    : {
-                        id: "${item?.id}"
-                    },
-                    success : function (msg) {
-
-                        $("#tree").jstree('delete_node', $("#" + idItem));
-                        $("#modal-tree").modal("hide");
-
-                    }
-
-
-
-    });
-
+            type    : "POST",
+            url     : "${createLink(action: 'deleteIt_ajax')}",
+            data    : {
+                id: "${item?.id}"
+            },
+            success : function (msg) {
+                $("#tree").jstree('delete_node', $("#" + idItem));
+                $("#modal-tree").modal("hide");
+            }
+        });
     });
 
 </script>
-
-
 </body>
 </html>

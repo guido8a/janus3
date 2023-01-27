@@ -7,96 +7,86 @@
                 <i class="icon-money"></i>
                 Nuevo Precio
             </a>
-            %{--<a href="#" class="btn" id="btnCopy">--}%
-            %{--<i class="icon-copy"></i>--}%
-            %{--Copiar Precios--}%
-            %{--</a>--}%
             <a href="#" class="btn btn-success btn-ajax" id="btnSave">
                 <i class="icon-save"></i>
                 Guardar
             </a>
             <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
-            %{--<g:if test="${!precioRef}">--}%
                 <a href="#" class="btn btn-ajax" id="btnCalc${item.departamento.subgrupo.grupoId}">
                     <i class="icon-money"></i>
                     Calcular precio
                 </a>
-            %{--</g:if>--}%
             </g:if>
         </g:if>
     </div>
 
     <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
         <span style="margin-left: 10px;" id="spanRef">
-            %{--<g:if test="${precioRef}">--}%
-            %{--Precio ref:--}%
-            %{--<g:formatNumber number="${precioRef}" minFractionDigits="5" , maxFractionDigits="5" locale="ec"/>--}%
-            %{--</g:if>--}%
+
         </span>
     </g:if>
 
-<g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
-    <div class="btn-group pull-left">
-    <a href="#" class="btn btn-ajax" id="btnPrint" style="display: none; margin-left: 10px" data-id="${item.id}" data-nombre="${item.nombre}">
-        <i class="icon-print"></i>
-        Imprimir
-    </a>
-    </div>
-</g:if>
+    <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
+        <div class="btn-group pull-left">
+            <a href="#" class="btn btn-ajax" id="btnPrint" style="display: none; margin-left: 10px" data-id="${item.id}" data-nombre="${item.nombre}">
+                <i class="icon-print"></i>
+                Imprimir
+            </a>
+        </div>
+    </g:if>
 </div>
 
 <div id="divTabla" style="height: 630px; width: 100%; overflow-x: hidden; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover table-condensed" id="tablaPrecios">
         <thead>
-            <tr>
-                <g:if test="${lgar}">
-                    <th>Lugar</th>
-                </g:if>
-                <th>Fecha</th>
-                <th class="precio">Precio</th>
-                <th class="delete"></th>
-            </tr>
+        <tr>
+            <g:if test="${lgar}">
+                <th>Lugar</th>
+            </g:if>
+            <th>Fecha</th>
+            <th class="precio">Precio</th>
+            <th class="delete"></th>
+        </tr>
         </thead>
         <tbody>
-            <g:each in="${precios}" var="precio" status="i">
-                <tr>
-                    <g:if test="${lgar}">
-                        <td>
-                            ${precio.lugar.descripcion}
-                        </td>
-                    </g:if>
+        <g:each in="${precios}" var="precio" status="i">
+            <tr>
+                <g:if test="${lgar}">
                     <td>
-                        <g:formatDate date="${precio.fecha}" format="dd-MM-yyyy"/>
+                        ${precio.lugar.descripcion}
                     </td>
+                </g:if>
+                <td>
+                    <g:formatDate date="${precio.fecha}" format="dd-MM-yyyy"/>
+                </td>
 
-                    <g:if test="${session.perfil.codigo == 'CSTO'}">
-                        <td class="precio textRight ${precio.registrado != 'R' ? 'editable' : ''}" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">
-                            <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
-                        </td>
-                        <td class="delete">
-                        %{--<g:if test="${precio.fechaIngreso == new java.util.Date().clearTime()}">--}%
-                            <g:if test="${precio.registrado != 'R'}">
-                                <a href="#" class="btn btn-danger btn-small btnDelete" rel="tooltip" title="Eliminar" id="${precio.id}">
-                                    <i class="icon-trash icon-large"></i>
-                                </a>
-                            </g:if>
-                            <g:else>
-                                <a href="#" class="btn btn-danger btn-small btnDeleteReg" rel="tooltip" title="Eliminar" id="${precio.id}">
-                                    <i class="icon-trash icon-large"></i>
-                                </a>
-                            </g:else>
-                        </td>
-                    </g:if>
-                    <g:else>
-                        <td class="precio textRight" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">
-                            <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
-                        </td>
-                        <td class="delete">
+                <g:if test="${session.perfil.codigo == 'CSTO'}">
+                    <td class="precio textRight ${precio.registrado != 'R' ? 'editable' : ''}" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">
+                        <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
+                    </td>
+                    <td class="delete">
+                        <g:if test="${precio.registrado != 'R'}">
+                            <a href="#" class="btn btn-danger btn-small btnDelete" rel="tooltip" title="Eliminar" id="${precio.id}">
+                                <i class="icon-trash icon-large"></i>
+                            </a>
+                        </g:if>
+                        <g:else>
+                            <a href="#" class="btn btn-danger btn-small btnDeleteReg" rel="tooltip" title="Eliminar" id="${precio.id}">
+                                <i class="icon-trash icon-large"></i>
+                            </a>
+                        </g:else>
+                    </td>
+                </g:if>
+                <g:else>
+                    <td class="precio textRight" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">
+                        <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
+                    </td>
+                    <td class="delete">
 
-                        </td>
-                    </g:else>
-                </tr>
-            </g:each>
+                    </td>
+                </g:else>
+            </tr>
+        </g:each>
         </tbody>
     </table>
 </div>
@@ -143,41 +133,25 @@
     </div>
 </div>
 
-
 <div id="imprimirDialog">
-
     <fieldset>
         <div class="span3">
             Elija la fecha de validez del cálculo:
             <div class="span2" style="margin-top: 20px; margin-left: 50px">
-            <elm:datepicker name="fechaCalculo" class="span24" id="fechaCalculoId" value="${new java.util.Date()}" style="width: 100px" minDate="new Date(${new Date().format('yyyy')},0,1)" maxDate="new Date(${new Date().format('yyyy')},11,31)"
-            readonly="true" />
-        </div>
-
+                <elm:datepicker name="fechaCalculo" class="span24" id="fechaCalculoId" value="${new java.util.Date()}" style="width: 100px" minDate="new Date(${new Date().format('yyyy')},0,1)" maxDate="new Date(${new Date().format('yyyy')},11,31)"
+                                readonly="true" />
+            </div>
         </div>
     </fieldset>
 </div>
 
-
 <script type="text/javascript">
     function validarNum(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-                (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-                (ev.keyCode == 188 || ev.keyCode == 190 || ev.keyCode == 110) ||
-                ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-                ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            (ev.keyCode === 188 || ev.keyCode === 190 || ev.keyCode === 110) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
     }
 
     $('[rel=tooltip]').tooltip();
@@ -197,7 +171,6 @@
                 ignore      : "${params.ignore}"
             },
             success : function (msg) {
-                //////console.log($("#fcDefecto").val())
                 var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
                 var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
 
@@ -205,14 +178,13 @@
                     if ($("#frmSave").valid()) {
                         btnSave.replaceWith(spinner);
                     }
-//                    $("#frmSave").submit();
 
                     $.ajax({
                         type    : "POST",
                         url     : $("#frmSave").attr("action"),
                         data    : $("#frmSave").serialize(),
                         success : function (msg) {
-                            if (msg == "OK") {
+                            if (msg === "OK") {
                                 $("#modal-tree").modal("hide");
                                 var loading = $("<div></div>");
                                 loading.css({
@@ -264,8 +236,8 @@
             var id = $(this).attr("id");
             var valor = $(this).data("valor");
 
-            if (parseFloat(valor) > 0 && parseFloat($(this).data("original")) != parseFloat(valor)) {
-                if (data != "") {
+            if (parseFloat(valor) > 0 && parseFloat($(this).data("original")) !== parseFloat(valor)) {
+                if (data !== "") {
                     data += "&";
                 }
                 data += "item=" + id + "_" + valor;
@@ -301,7 +273,7 @@
                     id : id
                 },
                 success : function (msg) {
-                    if (msg == "OK") {
+                    if (msg === "OK") {
                         $("#modal-tree1").modal("hide");
                         log("Precio eliminado correctamente", false);
                         $.ajax({
@@ -334,19 +306,16 @@
         return false;
     });
 
-    var valorSueldo
-    var id2
+    var valorSueldo;
+    var id2;
 
     $("#btnCalc2").click(function () {
-
 
         var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
         var btnCalc = $('<a href="#"  class="btn btn-success"><i class="icon-check"></i> Calcular</a>');
         var a = "${anioRef}";
 
         var $valor = $("<input type='number' placeholder='Sueldo " + (new Date().getFullYear()) + "'/> ");
-
-
 
         $valor.bind({
             keydown : function (ev) {
@@ -379,12 +348,7 @@
         });
 
         btnCalc.click(function () {
-
-
-           valorSueldo = $valor.val();
-
-
-
+            valorSueldo = $valor.val();
 
             $(this).replaceWith(spinner);
 
@@ -403,13 +367,12 @@
                 }
             });
 
-          return valorSueldo
+            return valorSueldo
 
         });
 
         var $p1 = $("<p>").html("Por favor ingrese el sueldo básico para el Obrero del año " + (new Date().getFullYear()));
         var $p2 = $("<p>").html($valor);
-
         var $div = $("<div>").append($p1).append($p2);
 
         $("#modalTitle-tree1").html("Cálculo del valor por Hora");
@@ -420,9 +383,6 @@
 
         return false;
     });
-
-
-
 
     $("#btnCalc3").click(function () {
         var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
@@ -461,7 +421,7 @@
         var id = $(this).attr("id");
         btnSave.click(function () {
             var auto = $.trim($auto.val());
-            if (auto != "") {
+            if (auto !== "") {
                 btnSave.replaceWith(spinner);
                 $.ajax({
                     type    : "POST",
@@ -471,7 +431,7 @@
                         auto : $auto.val()
                     },
                     success : function (msg) {
-                        if (msg == "OK") {
+                        if (msg === "OK") {
                             $("#modal-tree1").modal("hide");
                             log("Precio eliminado correctamente", false);
                             $.ajax({
@@ -512,51 +472,33 @@
     });
 
     $("#btnPrint").click(function () {
-
-        %{--location.href="${g.createLink(controller: 'reportes3',action: 'imprimirCalculoValor', id: item.id)}?valor=" + valorSueldo--}%
-
         $("#imprimirDialog").dialog("open");
-
-
-        %{--var datos = "item=${item.nombre}&valor=" + $("spanRef").val()--}%
-        %{--$.ajax({type: "POST", url: "${g.createLink(controller: 'reportes3',action:'imprimirCalculoValor')}",--}%
-            %{--data: datos,--}%
-            %{--success: function (msg) {--}%
-
-            %{--}--}%
-        %{--});--}%
-
     });
 
-  $("#imprimirDialog").dialog({
+    $("#imprimirDialog").dialog({
+        autoOpen  : false,
+        resizable : false,
+        modal     : true,
+        dragable  : false,
+        width     : 320,
+        height    : 220,
+        position  : 'center',
+        title     : 'Elegir fecha de validez de cálculo',
+        buttons   : {
+            "Aceptar" : function () {
+                console.log( $("#btnPrint").data("id"))
+                location.href="${g.createLink(controller: 'reportes3',action: 'imprimirCalculoValor')}?valor=" + valorSueldo + "&fechaCalculo=" + $("#fechaCalculoId").val() + "&id=" +
+                    $("#btnPrint").data("id")
+                $("#imprimirDialog").dialog("close");
 
-          autoOpen  : false,
-          resizable : false,
-          modal     : true,
-          dragable  : false,
-          width     : 320,
-          height    : 220,
-          position  : 'center',
-          title     : 'Elegir fecha de validez de cálculo',
-          buttons   : {
-              "Aceptar" : function () {
-                      console.log( $("#btnPrint").data("id"))
-                  location.href="${g.createLink(controller: 'reportes3',action: 'imprimirCalculoValor')}?valor=" + valorSueldo + "&fechaCalculo=" + $("#fechaCalculoId").val() + "&id=" +
-                          $("#btnPrint").data("id")
-                  $("#imprimirDialog").dialog("close");
+            },
+            "Cancelar" : function () {
 
-              },
-              "Cancelar" : function () {
+                $("#imprimirDialog").dialog("close");
 
-                  $("#imprimirDialog").dialog("close");
-
-              }
-
-
-
-          }
-
-  })
+            }
+        }
+    })
 
 </script>
 <script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandler.js')}"></script>

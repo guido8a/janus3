@@ -391,7 +391,7 @@ class MantenimientoItemsController {
             }else{
                 switch(tipo) {
                     case "gp":
-                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'descripcion'])
+                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
                         liId = "sg_"
                         ico = ", \"icon\":\"fa fa-copyright text-info\""
                         hijos.each { h ->
@@ -402,7 +402,7 @@ class MantenimientoItemsController {
                         }
                         break
                     case "sg":
-                        hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'descripcion'])
+                        hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
                         liId = "dp_"
                         ico = ", \"icon\":\"fa fa-registered text-danger\""
                         hijos.each { h ->
@@ -417,7 +417,7 @@ class MantenimientoItemsController {
                         }
                         break
                     case "dp":
-                        hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'nombre'])
+                        hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
                         liId = "it_"
                         ico = ", \"icon\":\"fa fa-info-circle text-warning\""
                         hijos.each { h ->
@@ -471,6 +471,102 @@ class MantenimientoItemsController {
         } else {
             render ""
         }
+    }
+
+    def makeTreeNodePrecios(params) {
+//        println "makeTreeNode.. $params"
+        def id = params.id
+        def tipo = ""
+        def liId = ""
+        def ico = ""
+
+        if(id.contains("_")) {
+            id = params.id.split("_")[1]
+            tipo = params.id.split("_")[0]
+        }
+
+        if (!params.order) {
+            params.order = "asc"
+        }
+
+        String tree = "", clase = "", rel = ""
+        def padre
+        def hijos = []
+
+        if (id == "#") {
+            //root
+            def hh = Grupo.get(params.tipo)
+            if (hh) {
+                clase = "hasChildren jstree-closed"
+            }
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
+                    "<a href='#' class='label_arbol'></a>" +
+                    "</li>"
+        } else {
+            if(id == 'root'){
+                hijos = Grupo.get(params.tipo)
+                def data = ""
+                ico = ", \"icon\":\"fa fa-parking text-success\""
+                hijos.each { hijo ->
+                    clase = SubgrupoItems.findAllByGrupo(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
+                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    tree += "<a href='#' class='label_arbol'>" + hijo?.descripcion + "</a>"
+                    tree += "</li>"
+                }
+            }else{
+                switch(tipo) {
+                    case "gp":
+                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
+                        liId = "sg_"
+                        ico = ", \"icon\":\"fa fa-copyright text-info\""
+                        hijos.each { h ->
+                            clase = DepartamentoItem.findBySubgrupo(h) ? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>"  +  "<strong>" + "" + h?.codigo + " "  + "</strong>" +  h.descripcion + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                    case "sg":
+                        hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
+                        liId = "dp_"
+                        ico = ", \"icon\":\"fa fa-registered text-danger\""
+                        hijos.each { h ->
+                            clase = Item.findByDepartamento(h)? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "'  data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"departamento"}\" ${ico}}'>"
+                            if(Grupo.get(params.tipo)?.id == 2){
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "" + h?.codigo + " " + "</strong>"  + h.descripcion + "</a>"
+                            }else{
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "" + h?.subgrupo?.codigo + "." +  h?.codigo + " " + "</strong>"  + h.descripcion + "</a>"
+                            }
+                            tree += "</li>"
+                        }
+                        break
+                    case "dp":
+                        hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
+                        liId = "it_"
+                        ico = ", \"icon\":\"fa fa-info-circle text-warning\""
+                        hijos.each { h ->
+                            clase = Lugar.findByTipoLista(h.tipoLista) ? "jstree-closed hasChildren" : ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + h?.codigo + " " + "</strong>" + h.nombre + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                    case "it":
+                        hijos = Lugar.findAllByTipoLista(Item.get(id).tipoLista, [sort: 'codigo'])
+                        liId = "lg_"
+                        ico = ", \"icon\":\"fa fa-underline text-success\""
+                        hijos.each { h ->
+                            clase = ""
+                            tree += "<li id='" + liId + h.id + "_" + id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"lugar"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                }
+            }
+        }
+        return tree
     }
 
 
@@ -1017,6 +1113,10 @@ class MantenimientoItemsController {
 
     def loadTreePart_nuevo() {
         render(makeTreeNode(params))
+    }
+
+    def loadTreePart_precios() {
+        render(makeTreeNodePrecios(params))
     }
 
     def searchTree_ajax() {
@@ -1807,7 +1907,7 @@ class MantenimientoItemsController {
     }
 
     def calcPrecio(params) {
-//        println ">>" + params
+        println ">>" + params
 //        println params.fecha
 //        println params.fecha.class
 
@@ -1827,7 +1927,6 @@ class MantenimientoItemsController {
         }
 
         if (params.lugarId == "all") {
-//            lugar = Lugar.list([sort: "descripcion"])
             def item = Item.get(params.itemId)
             def tipoLista = item.tipoLista
             lugar = Lugar.findAllByTipoLista(tipoLista, [sort: "descripcion"])
@@ -1835,7 +1934,7 @@ class MantenimientoItemsController {
             lugar.add(Lugar.get(params.lugarId))
         }
 
-//        println ">>> " + fecha + "   " + params.itemId + "    " + params.operador
+        println ">>> " + fecha + "   " + params.itemId + "    " + params.operador + " lugar: " + lugar
         lugar.each {
             def tmp = preciosService.getPrecioRubroItemOperador(fecha, it, params.itemId, params.operador)
             if (tmp.size() > 0)
@@ -1883,22 +1982,26 @@ class MantenimientoItemsController {
 
     def showLg_ajax() {
         println "showLg_ajax... params: $params"
-//        params.operador = "<"
-        if (params.fecha == "all") {
-            params.todasLasFechas = "true"
-        } else {
-            params.todasLasFechas = "false"
-            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        }
-//        println "show lg" + params
 
-        def parts = params.id.split("_")
-        def itemId = parts[0]
-        def lugarId = parts[1]
-        def item = Item.get(itemId)
+//        if (params.fecha == "all") {
+//            params.todasLasFechas = "true"
+//        } else {
+//            params.todasLasFechas = "false"
+//            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+//        }
 
-//        println("-->>" + item + " id:" + item.id)
-        def operador = params.operador
+        params.fecha = new Date().format("dd-MM-yyyy")
+
+//        def parts = params.id.split("_")
+//        def itemId = parts[0]
+//        def lugarId = parts[1]
+
+//        def item = Item.get(itemId)
+        def item = Item.get(params.item)
+        def lugar = Lugar.get(params.id)
+
+//        def operador = params.operador
+        def operador = ""
         def fecha = params.fecha
 
         def lugarNombre
@@ -1906,23 +2009,30 @@ class MantenimientoItemsController {
         if (params.todasLasFechas == "true") {
             fecha = null
         }
-        if (lugarId == "all") {
-            lugarNombre = "todos los lugares"
-        } else {
-            def l = Lugar.get(lugarId)
-            lugarNombre = l.descripcion + " (" + (l.tipoLista ? l.tipoLista?.descripcion : 'sin tipo') + ")"
-        }
+//        if (lugarId == "all") {
+//            lugarNombre = "todos los lugares"
+//        } else {
+//            def l = Lugar.get(lugarId)
+//            lugarNombre = l.descripcion + " (" + (l.tipoLista ? l.tipoLista?.descripcion : 'sin tipo') + ")"
 
-//        println "parametros busqueda " + fecha + " - " + itemId + " - " + operador
+            lugarNombre = lugar.descripcion + " (" + (lugar.tipoLista ? lugar.tipoLista?.descripcion : 'sin tipo') + ")"
+//        }
+
         def r = calcPrecio([
-                lugarId: lugarId,
+//                lugarId: lugarId,
+                lugarId: lugar.id,
                 fecha: params.fecha,
                 operador: operador,
-                todasLasFechas: params.todasLasFechas,
-                itemId: itemId
+//                todasLasFechas: params.todasLasFechas,
+                todasLasFechas: false,
+//                itemId: itemId
+                itemId: item.id
         ])
 
-        return [item: item, lugarNombre: lugarNombre, lugarId: lugarId, precios: r.precios, lgar: lugarId == "all", fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
+//        return [item: item, lugarNombre: lugarNombre, lugarId: lugarId, precios: r.precios, lgar: lugarId == "all", fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
+//                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
+
+        return [item: item, lugarNombre: lugarNombre, lugarId: lugar.id, precios: r.precios, lgar: false, fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
                 params: params, precioRef: r.precioRef, anioRef: r.anioRef]
     }
 
