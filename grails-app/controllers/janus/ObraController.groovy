@@ -1137,7 +1137,7 @@ class ObraController {
 
         println("getSalida:" + params)
 
-        def direccion = Departamento.get(params.direccion).direccion
+        def direccion = Departamento.get(params.direccion?:21).direccion
         def departamentos = Departamento.findAllByDireccion(direccion)
         def obra = Obra.get(params.obra)
 
@@ -1216,19 +1216,12 @@ class ObraController {
         return [obraInstance: obraInstance]
     } //form_ajax
 
-    def save() {
 
+    def save() {
 //        println "save " + params
 
         def usuario = session.usuario.id
-
         def persona = Persona.get(usuario)
-
-//        def dpto = persona.departamento
-//        def numero = null
-
-//        println("usuario" + usuario)
-//        println("dep" + persona.departamento.id)
 
         params.oficioIngreso = params.oficioIngreso.toUpperCase()
         params.memoCantidadObra = params.memoCantidadObra.toUpperCase()
@@ -1268,6 +1261,10 @@ class ObraController {
             params.formulaPolinomica = params.formulaPolinomica.toUpperCase()
         }
 
+        println "params.fechaOficioSalida: ${params.fechaOficioSalida.class}"
+        if (params.fechaCreacionObra) {
+            params.fechaCreacionObra = new Date().parse("dd-MM-yyyy", params.fechaCreacionObra)
+        }
 
         if (params.fechaOficioSalida) {
             params.fechaOficioSalida = new Date().parse("dd-MM-yyyy", params.fechaOficioSalida)
@@ -1277,9 +1274,6 @@ class ObraController {
             params.fechaPreciosRubros = new Date().parse("dd-MM-yyyy", params.fechaPreciosRubros)
         }
 
-        if (params.fechaCreacionObra) {
-            params.fechaCreacionObra = new Date().parse("dd-MM-yyyy", params.fechaCreacionObra)
-        }
 
 
         if (params.id) {
@@ -1292,8 +1286,7 @@ class ObraController {
         }
         params."departamento.id" = params.departamento.id
 
-//        println("depto" + params.departamento.id)
-//        println("depto aaaa " + params."departamento.id")
+        println "obra: ${params.id} depto: ${params.departamento.id}"
 
         def obraInstance
 
@@ -1419,6 +1412,9 @@ class ObraController {
             def str = "<h4>No se pudo guardar Obra " + (obraInstance.id ? obraInstance.id : "") + "</h4>"
 
             str += "<ul>"
+
+            println "errores: ${params.fechaCreacionObra} ${obraInstance.errors} "
+            
             obraInstance.errors.allErrors.each { err ->
                 def msg = err.defaultMessage
                 err.arguments.eachWithIndex { arg, i ->

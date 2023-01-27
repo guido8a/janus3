@@ -3,6 +3,9 @@
 <head>
 
     <meta name="layout" content="main">
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
+    <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
     %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
     %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
@@ -57,7 +60,7 @@
 
 <body>
 <g:if test="${flash.message}">
-    <div class="col-md-6" style="margin-bottom: 10px;">
+    <div class="col-md-12" style="margin-bottom: 10px;">
         <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
             <a class="close" data-dismiss="alert" href="#">×</a>
             ${flash.message}
@@ -257,7 +260,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         <g:if test="${duenoObra == 1}">
                             <g:select name="departamento.id"
                                         from="${Departamento.findAllByRequirente(1, [sort: 'direccion'])}"
-                                        id="departamento" value="${obra?.departamento?.id}"
+                                        id="departamento" value="${obra?.departamento?.id?:21}"
                                         optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
                                         dire="${{ it.direccion.id }}" style="width: 670px; margin-left: 40px"/>
 
@@ -344,18 +347,17 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 %{--</g:if>--}%
             </div>
 
-            <div class="col-md-2 formato" style="width: 220px; margin-left: -10px;">Memorando cantidad de obra</div>
+            <div class="col-md-2 formato" style="width: 200px; margin-left: -10px;">Memorando cantidad de obra</div>
 
             <div class="col-md-2"><g:textField name="memoCantidadObra" class="cantidad allCaps"
                                             value="${obra?.memoCantidadObra}" maxlength="20"
-                                            style="width: 120px; margin-left: 0px"
+                                            style="width: 120px; margin-left: -20px"
                                             title="Memorandum u oficio de cantidad de obra"/></div>
 
-            <div class="col-md-1 formato" style="margin-left: 20px;">Fecha</div>
-            <div class="col-md-1"  style="width: 170px; margin-left: -10px">
-                <elm:datepicker name="fechaCreacionObra" class="col-md-12 datepicker input-small required"
-                                value="${obra?.fechaCreacionObra}" title="Fecha Registro de la Obra"
-                                format="dd-MM-yyyy hh:mm" disabled="true" id="fchaMod"/>
+            <div class="col-md-1 formato" style="margin-left: -20px;">Fecha</div>
+            <div class="col-md-1"  style="width: 170px; margin-left: -40px">
+                <input aria-label="" name="fechaCreacionObra" id='fechaCreacionObra' type='text' class="required input-small"
+                       value="${obra?.fechaCreacionObra?.format('dd-MM-yyyy') ?: fcha.format('dd-MM-yyyy')}"/>
             </div>
             %{--<div class="col-md-1" style="margin-left: 10px">--}%
                 %{--<elm:datepicker name="fechaCreacionObra" class="fechaCreacionObra datepicker input-small required"--}%
@@ -374,7 +376,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         <g:if test="${obra?.tipo == 'D'}">
             <div class="col-md-12" style="margin-top: 15px" align="center">
-                <p class="css-vertical-text">Administración Directa</p>
+                %{--<p class="css-vertical-text">Administración Directa</p>--}%
 
                 <div class="linea" style="height: 90%;"></div>
             </div>
@@ -623,10 +625,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="col-md-1" style="margin-left: 30px">Fecha</div>
 
-            <div class="col-md-2" style="margin-left: -30px;"><elm:datepicker name="fechaPreciosRubros"
-                                                                       class="col-md-12 datepicker input-small required"
-                                                                       value="${obra?.fechaPreciosRubros ?: fcha}"
-                                                                       title="Fecha Precios"/></div>
+            <div class="col-md-2" style="margin-left: -30px;">
+                %{--<elm:datepicker name="fechaPreciosRubros" class="col-md-12 datepicker input-small required"--}%
+                                                                       %{--value="${obra?.fechaPreciosRubros ?: fcha}"--}%
+                                                                       %{--title="Fecha Precios"/>--}%
+                <input aria-label="" name="fechaPreciosRubros" id='fechaPreciosRubros' type='text' class="required input-small"
+                       value="${obra?.fechaPreciosRubros?.format('dd-MM-yyyy') ?: fcha.format('dd-MM-yyyy')}"/>
+
+            </div>
+
 
             <div class="col-md-1" style="margin-left: 40px">Coordenadas:</div>
 
@@ -647,7 +654,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
     <div style="width: 100%; float:left; border-bottom: 1px solid black; margin-top: 5px; position: relative;
         padding-left: 30px; height: 65px">
-        <g:hiddenField name="id" value="${obra?.id}"/>
         <div style="margin-top: 5px" align="center">
 
             <p class="css-vertical-text">Salida</p>
@@ -1070,6 +1076,26 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 
 <script type="text/javascript">
+
+
+
+    $('#fechaCreacionObra').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        // daysOfWeekDisabled: [0, 6],
+        sideBySide: true,
+        icons: {
+        }
+    });
+
+    $('#fechaPreciosRubros').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        // daysOfWeekDisabled: [0, 6],
+        sideBySide: true,
+        icons: {
+        }
+    });
 
 
 //    $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
@@ -2129,7 +2155,7 @@ function buscaObras() {
             modal: true,
             draggable: false,
             width: 800,
-            height: 570,
+            height: 500,
             position: 'center',
             title: 'Datos de Situación Geográfica'
         });
@@ -2145,10 +2171,11 @@ function buscaObras() {
                 },
                 success: function (msg) {
 
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-azul"><i class="icon-ok"></i> Guardar</a>');
                     var btnCancel = $('<a href="#" data-dismiss="modal" class="btn" >Cancelar</a>');
 
                     btnSave.click(function () {
+                        console.log('Guardar...');
                         if ($("#frmSave-var").valid()) {
                             btnSave.replaceWith(spinner);
                         }

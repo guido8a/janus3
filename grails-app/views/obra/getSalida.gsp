@@ -1,10 +1,10 @@
-    <div class="col-md-3 formato" style="width: 240px;">Destino: Dirección
-    <g:select style="width: 240px;" name="direccionDestino.id" from="${dire}" optionKey="id" optionValue="nombre"
+    <div class="col-md-3 formato" style="width: 280px;">Destino: Dirección
+    <g:select style="width: 280px;" name="direccionDestino.id" from="${dire}" optionKey="id" optionValue="nombre"
               value="${obra?.direccionDestino?.id}" title="Destino de documentos" noSelection="['null': 'Seleccione ...']"/>
     </div>
 
-    <div class="col-md-3 formato" style="width: 240px; margin-left: 10px">Destino: Coordinación
-    <g:select style="width: 240px;" name="departamentoDestino.id" from="${depar}" optionKey="id" optionValue="descripcion" value="${obra?.departamentoDestino?.id}" title="Destino de documentos" noSelection="['null': 'Seleccione ...']"/>
+    <div class="col-md-3 formato" style="width: 280px; margin-left: 10px">Destino: Coordinación
+    <g:select style="width: 280px;" name="departamentoDestino.id" from="${depar}" optionKey="id" optionValue="descripcion" value="${obra?.departamentoDestino?.id}" title="Destino de documentos" noSelection="['null': 'Seleccione ...']"/>
     </div>
 
     <div class="col-md-1 formato" style="width: 120px;margin-left: 30px;">Informe
@@ -32,13 +32,22 @@
         </div>
     </g:if>
 
-    <div class="col-md-1 formato" style="width: 180px; margin-left: 10px;">Fecha
-    <elm:datepicker name="fechaOficioSalida" class="col-md-12 datepicker input-small"
-                    value="${obra?.fechaOficioSalida}" />
+    <div class="col-md-1 formato" style="width: 80px; margin-left: 10px;">Fecha
+        <input aria-label="" name="fechaOficioSalida" id='fechaOficioSalida' type='text' class="required input-small"
+               value="${obra?.fechaOficioSalida?.format('dd-MM-yyyy') ?: fcha.format('dd-MM-yyyy')}"
+               style="width: 80px"/>
+
     </div>
 <script type="text/javascript">
 
-
+    $('#fechaOficioSalida').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        // daysOfWeekDisabled: [0, 6],
+        sideBySide: true,
+        icons: {
+        }
+    });
 
 
 

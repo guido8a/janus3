@@ -1,6 +1,6 @@
 <style type="text/css">
 .tab {
-    height     : 410px !important;
+    height     : 320px !important;
     overflow-x : hidden;
     overflow-y : hidden;
 }
@@ -22,7 +22,7 @@
 
 <g:form controller="variables" action="saveVar_ajax" name="frmSave-var">
     <g:hiddenField name="id_lgarMO" value="${obra?.listaManoObra?.id}"/>
-    <div id="tabs" style="height: 465px;">
+    <div id="tabs" style="height: 380px;">
         <ul>
             <li><a href="#tab-transporte">Transporte</a></li>
             <li><a href="#tab-factores">Factores</a></li>
@@ -32,7 +32,7 @@
         </ul>
 
         <div id="tab-transporte" class="tab">
-            <div class="row-fluid">
+            <div class="col-md-12">
                 <div class="col-md-2">
                     Vehículo
                 </div>
@@ -52,11 +52,13 @@
                 </div>
 
                 <div class="col-md-1">
-                    <g:textField name="unidad_volqueta" id="uni_vol" value="${(obra.volquete?.unidad) ? obra?.volquete?.unidad : par?.volquete?.unidad}" readonly="true" style="width: 20px; margin-left: 5px"/>
+                    <g:textField name="unidad_volqueta" id="uni_vol"
+                                 value="${(obra.volquete?.unidad) ? obra?.volquete?.unidad : par?.volquete?.unidad}"
+                                 readonly="true" style="width: 60px; margin-left: 5px"/>
                 </div>
             </div>
 
-            <div class="row-fluid">
+            <div class="col-md-12">
                 <div class="col-md-2">
                     Chofer
                 </div>
@@ -76,23 +78,25 @@
                 </div>
 
                 <div class="col-md-1">
-                    <g:textField name="unidad_chofer" id="uni_chof" value="${(obra.chofer?.unidad) ? obra?.chofer?.unidad : par?.chofer?.unidad}" readonly="true" style="width: 20px; margin-left: 5px"/>
+                    <g:textField name="unidad_chofer" id="uni_chof"
+                                 value="${(obra.chofer?.unidad) ? obra?.chofer?.unidad : par?.chofer?.unidad}"
+                                 readonly="true" style="width: 60px; margin-left: 5px"/>
                 </div>
             </div>
 
 
-            <div class="col-md-6" style="margin-bottom: 20px; margin-top: 5px">
-                <div class="col-md-3" style="font-weight: bold;">
+            <div class="col-md-12" style="margin-bottom: 20px; margin-top: 25px">
+                <div class="col-md-6" style="font-weight: bold;">
                     Distancias al Peso
                 </div>
 
-                <div class="col-md-2" style="font-weight: bold;">
+                <div class="col-md-6" style="font-weight: bold;">
                     Distancias al Volumen
                 </div>
             </div>
 
 
-            <div class="row-fluid">
+            <div class="col-md-12">
                 <div class="col-md-3">
                     Capital de Cantón
                 </div>
@@ -115,7 +119,7 @@
 
             </div>
 
-            <div class="row-fluid">
+            <div class="col-md-12">
 
                 <div class="col-md-3">
                     Especial
@@ -138,7 +142,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid">
+            <div class="col-md-12">
 
                 <div class="col-md-3"></div>
                 <div class="col-md-2"></div>
@@ -154,68 +158,71 @@
 
             </div>
 
-            <div style="margin: 5px; font-weight: bold; text-align: center">
+            <div class="col-md-12" style="margin-top: 15px; font-weight: bold; text-align: center">
                 Listas de Precios para Peso y Volumen
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px; width: 640px">
+            <div class="col-md-12" style="margin-top: 10px; width: 640px">
 
-                <div class="col-md-2" style="width: 70px;">
+                <div class="col-md-2" style="margin-left: -40px">
                     Cantón
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4" style="margin-left: -40px">
                     <g:select name="lugar.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1')}"
-                              optionKey="id" optionValue="descripcion" value="${obra?.lugar?.id}" class="col-md-10"
+                              optionKey="id" optionValue="descripcion" value="${obra?.lugar?.id}" 
                               noSelection="['null': 'Seleccione...']"/>
                 </div>
 
-                <div class="col-md-4" style="margin-left: -20px; width: 150px;">
+                <div class="col-md-2" style="margin-left: 30px; width: 150px;">
                     Petreos Hormigones
                 </div>
 
                 <div class="col-md-4">
-                    <g:select name="listaVolumen0.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=3')}"
+                    <g:select name="listaVolumen0.id" from="${janus.Lugar.findAll('from Lugar where tipoLista=3')}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen0?.id}"
-                              class="col-md-10" noSelection="['null': 'Seleccione...']" style="margin-left: -10px;"/>
+                              noSelection="['null': 'Seleccione...']" style="margin-left: -20px;"/>
                 </div>
 
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px; width: 640px">
+            <div class="col-md-12" style="margin-top: 10px; width: 640px">
 
-                <div class="col-md-2" style="width: 70px;">
+                <div class="col-md-2" style="margin-left: -40px">
                     Especial
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-4" style="margin-left: -40px">
                     <g:select name="listaPeso1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}"
-                              optionKey="id" optionValue="descripcion" value="${obra?.listaPeso1?.id}" class="col-md-10"
+                              optionKey="id" optionValue="descripcion" value="${obra?.listaPeso1?.id}"
                               noSelection="['null': 'Seleccione...']"/>
                 </div>
 
-                <div class="col-md-4" style="margin-left: -20px; width: 150px;">
+                <div class="col-md-2" style="margin-left: 30px; width: 150px;">
                     Mejoramiento
                 </div>
 
                 <div class="col-md-4">
                     <g:select name="listaVolumen1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=4')}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen1?.id}"
-                              class="col-md-10" noSelection="['null': 'Seleccione...']" style="margin-left: -10px;"/>
+                              noSelection="['null': 'Seleccione...']" style="margin-left: -20px;"/>
                 </div>
 
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px; width: 640px">
+            <div class="col-md-12" style="margin-top: 10px; ">
 
-                <div class="col-md-3" style="margin-left: 265px">
+                <div class="col-md-6" style="width: 225px">
+                    &nbsp;
+                </div>
+                <div class="col-md-2" style="margin-left: 30px; width: 150px;">
                     Carpeta Asfáltica
                 </div>
 
                 <div class="col-md-4">
                     <g:select name="listaVolumen2.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=5')}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen2?.id}"
-                              class="col-md-10" noSelection="['null': 'Seleccione...']"/>
+                              noSelection="['null': 'Seleccione...']" style="margin-left: -20px;"/>
                 </div>
 
             </div>
@@ -223,37 +230,43 @@
         </div>
 
         <div id="tab-factores" class="tab">
-            <div class="row-fluid margen" style="margin-top: 20px;">
+            <div class="col-md-12" style="margin-top: 20px;">
                 <div class="col-md-5">
                     Factor de reducción
                 </div>
 
                 <div class="col-md-2">
-                    <g:textField type="text" name="factorReduccion" class="inputVar num" value="${g.formatNumber(number: (obra?.factorReduccion) ?: par.factorReduccion, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
+                    <g:textField type="text" name="factorReduccion" class="inputVar num"
+                                 value="${g.formatNumber(number: (obra?.factorReduccion) ?: par.factorReduccion,
+                                         maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12" style="margin-top:20px">
                 <div class="col-md-5">
                     Velocidad
                 </div>
 
                 <div class="col-md-2">
-                    <g:textField type="text" name="factorVelocidad" class="inputVar num" value="${g.formatNumber(number: (obra?.factorVelocidad) ?: par.factorVelocidad, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
+                    <g:textField type="text" name="factorVelocidad" class="inputVar num" 
+                    value="${g.formatNumber(number: (obra?.factorVelocidad) ?: par.factorVelocidad, 
+                    maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12" style="margin-top:20px">
                 <div class="col-md-5">
                     Capacidad Volquete
                 </div>
 
                 <div class="col-md-2">
-                    <g:textField type="text" name="capacidadVolquete" class="inputVar num" value="${g.formatNumber(number: (obra?.capacidadVolquete) ?: par.capacidadVolquete, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
+                    <g:textField type="text" name="capacidadVolquete" class="inputVar num" 
+                    value="${g.formatNumber(number: (obra?.capacidadVolquete) ?: par.capacidadVolquete, 
+                    maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12" style="margin-top:20px">
 
                 <div class="col-md-5">
                     %{--Reducción/Tiempo--}%
@@ -261,31 +274,37 @@
                 </div>
 
                 <div class="col-md-2">
-                    <g:textField type="text" name="factorReduccionTiempo" class="inputVar num" value="${g.formatNumber(number: (obra?.factorReduccionTiempo) ?: par.factorReduccionTiempo, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
+                    <g:textField type="text" name="factorReduccionTiempo" class="inputVar num" 
+                    value="${g.formatNumber(number: (obra?.factorReduccionTiempo) ?: par.factorReduccionTiempo, 
+                    maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12" style="margin-top:20px">
                 <div class="col-md-5">
                     Factor Volumen
                 </div>
 
                 <div class="col-md-2">
-                    <g:textField type="text" name="factorVolumen" class="inputVar num" value="${g.formatNumber(number: (obra?.factorVolumen) ?: par.factorVolumen, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
+                    <g:textField type="text" name="factorVolumen" class="inputVar num" 
+                    value="${g.formatNumber(number: (obra?.factorVolumen) ?: par.factorVolumen, 
+                    maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12" style="margin-top:20px">
                 <div class="col-md-5">
                     Factor Peso
                 </div>
 
                 <div class="col-md-2">
-                    <g:textField type="text" name="factorPeso" class="inputVar num" value="${g.formatNumber(number: (obra?.factorPeso) ?: par.factorPeso, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
+                    <g:textField type="text" name="factorPeso" class="inputVar num" 
+                    value="${g.formatNumber(number: (obra?.factorPeso) ?: par.factorPeso, 
+                    maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}"/>
                 </div>
             </div>
 
-            %{--<div class="row-fluid">--}%
+            %{--<div class="col-md-12">--}%
 
             %{--<div class="col-md-3">--}%
             %{--Distancia Volumen--}%
@@ -308,7 +327,7 @@
         <div id="tab-indirecto" class="tab">
 
 
-            %{--<div class="row-fluid" style="margin-top: 20px;">--}%
+            %{--<div class="col-md-12" style="margin-top: 20px;">--}%
                 %{--<div class="col-md-4">--}%
                     %{--Dirección de obra--}%
                 %{--</div>--}%
@@ -326,7 +345,7 @@
                 %{--</div>--}%
             %{--</div>--}%
 
-            %{--<div class="row-fluid" style="margin-top: 10px;">--}%
+            %{--<div class="col-md-12" style="margin-top: 10px;">--}%
                 %{--<div class="col-md-4">--}%
                     %{--Mantenimiento y gastos de oficina--}%
                 %{--</div>--}%
@@ -344,7 +363,7 @@
                 %{--</div>--}%
             %{--</div>--}%
 
-            %{--<div class="row-fluid" style="margin-top: 10px;">--}%
+            %{--<div class="col-md-12" style="margin-top: 10px;">--}%
                 %{--<div class="col-md-4">--}%
                     %{--Administrativos--}%
                 %{--</div>--}%
@@ -362,7 +381,7 @@
                 %{--</div>--}%
             %{--</div>--}%
 
-            %{--<div class="row-fluid" style="margin-top: 10px;">--}%
+            %{--<div class="col-md-12" style="margin-top: 10px;">--}%
                 %{--<div class="col-md-4">--}%
                     %{--Garantías--}%
                 %{--</div>--}%
@@ -380,7 +399,7 @@
                 %{--</div>--}%
             %{--</div>--}%
 
-            %{--<div class="row-fluid" style="margin-top: 10px;">--}%
+            %{--<div class="col-md-12" style="margin-top: 10px;">--}%
                 %{--<div class="col-md-4">--}%
                     %{--Costos financieros--}%
                 %{--</div>--}%
@@ -398,7 +417,7 @@
                 %{--</div>--}%
             %{--</div>--}%
 
-            %{--<div class="row-fluid" style="margin-top: 10px;">--}%
+            %{--<div class="col-md-12" style="margin-top: 10px;">--}%
                 %{--<div class="col-md-4">--}%
                     %{--Vehículos--}%
                 %{--</div>--}%
@@ -419,7 +438,7 @@
 
 
 
-            <div class="row-fluid" style="margin-top: 20px;">
+            <div class="col-md-12" style="margin-top: 20px;">
                 <div class="col-md-4">
                     Alquiler y depreciación
                 </div>
@@ -437,7 +456,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px;">
+            <div class="col-md-12" style="margin-top: 10px;">
                 <div class="col-md-4">
                     Cargos Administrativos
                 </div>
@@ -455,7 +474,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px;">
+            <div class="col-md-12" style="margin-top: 10px;">
                 <div class="col-md-4">
                     Cargos Profesionales
                 </div>
@@ -473,7 +492,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px;">
+            <div class="col-md-12" style="margin-top: 10px;">
                 <div class="col-md-4">
                     Materiales de consumo y mantenimiento
                 </div>
@@ -491,7 +510,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px;">
+            <div class="col-md-12" style="margin-top: 10px;">
                 <div class="col-md-4">
                     Seguros
                 </div>
@@ -509,7 +528,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px;">
+            <div class="col-md-12" style="margin-top: 10px;">
                 <div class="col-md-4">
                     Seguridad
                 </div>
@@ -527,7 +546,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid"  style="margin-top: 10px;">
+            <div class="col-md-12"  style="margin-top: 10px;">
                 <div class="col-md-4 bold" style="border-top: solid 1px #D3D3D3;" >
                     Gastos Administración Central
                 </div>
@@ -545,7 +564,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid"  style="margin-top: 10px;">
+            <div class="col-md-12"  style="margin-top: 10px;">
                 <div class="col-md-4">
                 </div>
 
@@ -561,16 +580,20 @@
                 </div>
             </div>
 
-            <div class="row-fluid" style="margin-top: 10px;">
-                <div class="col-md-1" style="margin-left: 0px; width: 120px;"><g:link controller="reportes2" action="reporteCostosIndirectos"  id="${obra.id}" style="margin-left: 0px; margin-top: -60px" class="btn btn-info"><i class="icon-print"></i> Reporte</g:link></div>
-                <div class="col-md-2" style="margin-left: 0px; width: 160px;"><g:link controller="reportes2" action="reporteCostosIndirectosNuevo"  id="${obra.id}" style="margin-left: 0px; margin-top: -60px" class="btn btn-info"><i class="icon-print"></i> Desglose Nuevo</g:link></div>
+            <div class="col-md-12" style="margin-top: 10px;">
+                <div class="col-md-1" style="margin-left: 0px; width: 120px;"><g:link controller="reportes2"
+                    action="reporteCostosIndirectos"  id="${obra.id}" style="margin-left: 0px; margin-top: -60px"
+                    class="btn"><i class="icon-print"></i> Reporte</g:link></div>
+                <div class="col-md-2" style="margin-left: 0px; width: 160px;"><g:link controller="reportes2" 
+                    action="reporteCostosIndirectosNuevo"  id="${obra.id}" style="margin-left: 0px; margin-top: -60px" 
+                    class="btn"><i class="icon-print"></i> Desglose Nuevo</g:link></div>
 
             </div>
         </div>
 
         <div id="tab-desglose" class="tab">
 
-            <div class="row-fluid margen">
+            <div class="col-md-12 margen">
                 <div class="col-md-5">
                     Equipos
                 </div>
@@ -580,7 +603,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12 margen">
                 <div class="col-md-5">
                     Repuestos
                 </div>
@@ -591,7 +614,7 @@
             </div>
 
 
-            <div class="row-fluid margen">
+            <div class="col-md-12 margen">
                 <div class="col-md-5">
                     Combustibles
                 </div>
@@ -601,7 +624,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12 margen">
 
                 <div class="col-md-5">
                     Mecánico
@@ -612,7 +635,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12 margen">
                 <div class="col-md-5">
                     Saldo
                 </div>
@@ -623,12 +646,12 @@
 
             </div>
 
-            <div class="row-fluid margen" style="margin-bottom: 5px">
+            <div class="col-md-12 margen" style="margin-bottom: 5px">
                 ______________________________________
 
             </div>
 
-            <div class="row-fluid margen">
+            <div class="col-md-12 margen">
 
                 <div class="col-md-5">
                     Total Desglose:
@@ -643,7 +666,7 @@
 
         %{--/* TODO: poner en obra los id de los item de tranposte camioneta y transporte acemila */--}%
         <div id="tab-especial" class="tab">
-            <div class="row-fluid">
+            <div class="col-md-12">
                 <div class="col-md-3">
                     Transporte Camioneta
                 </div>
@@ -664,7 +687,7 @@
                 </div>
             </div>
 
-            <div class="row-fluid">
+            <div class="col-md-12">
                 <div class="col-md-3">
                     Transporte Acémila
                 </div>
@@ -683,7 +706,7 @@
                     <g:textField name="unidad_acemila" id="uni_trac" value="${"Km"}" readonly="true" style="width: 30px; margin-left: 5px"/>
                 </div>
             </div>
-            <div class="row-fluid" style="margin-top: 20px">
+            <div class="col-md-12" style="margin-top: 20px">
                 <div class="col-md-9">
                     Distancia de desalojo de materiales
                 </div>
@@ -783,7 +806,8 @@
 
     function costoItem($campo, $update) {
         var id = $campo.val();
-        var fecha = $("#fechaPreciosRubros").val();
+//        var fecha = $("#fechaPreciosRubros").val();
+        var fecha = "${obra?.fechaPreciosRubros}";
         /*var ciudad = $("#lugar\\.id").val();*/
         var ciudad = $("#id_lgarMO").val();
         console.log(id, fecha, ciudad);

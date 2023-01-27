@@ -229,16 +229,16 @@
                     <label class="col-md-1 control-label text-info">
                         Fecha
                     </label>
-                    <span class="col-md-2" style="width: 150px; margin-left: -40px">
-                        <input aria-label="" name="item.fecha" id='fecha_precios' type='text' class="form-control required input-small"
-                               value="${new java.util.Date().format("dd-MM-yyyy")}"/>
+                    <span class="col-md-2" style="width: 120px; margin-left: -40px">
+                        <input aria-label="" name="item.fecha" id='fecha_precios' type='text' class="required input-small"
+                               value="${new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
                     </span>
                 </span>
             </div>
             
             <g:if test="${rubro}">
                 <g:if test="${rubro?.aprobado != 'R'}">
-                    <div class="col-md-2" style="margin-left: 30px">
+                    <div class="col-md-2" style="margin-left: 85px">
                         <a class="btn btn-small btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp">
                             Copiar composición
                         </a>
@@ -1316,7 +1316,8 @@
             data += "&criterios=" + $(this).attr("criterio");
         });
         if (data.length < 2) {
-            data = "tc=" + $("#tipoCampo").val() + "&campos=" + $("#campo :selected").val() + "&operadores=" + $("#operador :selected").val() + "&criterios=" + $("#criterio").val()
+            data = "tc=" + $("#tipoCampo").val() + "&campos=" + $("#campo :selected").val() + "&operadores=" +
+                $("#operador :selected").val() + "&criterios=" + $("#criterio").val()
         }
         data += "&ordenado=" + $("#campoOrdn :selected").val() + "&orden=" + $("#orden :selected").val();
         var tipo = $(".tipo.active").attr("tipo")
@@ -1361,12 +1362,15 @@
         var dsv0 = $("#dist_v1").val()
         var dsv1 = $("#dist_v2").val()
         var dsv2 = $("#dist_v3").val()
-        var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()
+        var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," +
+            $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()
         var volqueta = $("#costo_volqueta").val()
         var chofer = $("#costo_chofer").val()
 
         $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'transporte')}",
-            data     : "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2  + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val() + "&id=${rubro?.id}&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() + "&volq=" + $("#cmb_vol").val(),
+            data     : "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2  +
+            "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val() + "&id=${rubro?.id}&lugar=" +
+            $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() + "&volq=" + $("#cmb_vol").val(),
             success  : function (msg) {
                 $("#tabla_transporte").html(msg)
                 tablaIndirectos();
@@ -1717,11 +1721,15 @@
             var dsv0 = $("#dist_v1").val()
             var dsv1 = $("#dist_v2").val()
             var dsv2 = $("#dist_v3").val()
-            var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()
+            var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," +
+                $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()
             var volqueta = $("#costo_volqueta").val()
             var chofer = $("#costo_chofer").val()
 
-            datos = "?dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val() + "&id=${rubro?.id}&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() + "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi").val()
+            datos = "?dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 + "&prvl="
+                + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val() + "&id=${rubro?.id}&lugar=" +
+                $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() + "&volq=" +
+                $("#cmb_vol").val() + "&indi=" + $("#costo_indi").val()
 
             var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcel')}" + datos
             location.href = url
@@ -1959,9 +1967,11 @@
                         if ($("#V").hasClass("active"))
                             tipo = "V"
                         var listas = ""
-                        listas += $("#lista_1").val() + "#" + $("#lista_2").val() + "#" + $("#lista_3").val() + "#" + $("#lista_4").val() + "#" + $("#lista_5").val() + "#" + $("#ciudad").val()
+                        listas += $("#lista_1").val() + "#" + $("#lista_2").val() + "#" + $("#lista_3").val() + "#" +
+                            $("#lista_4").val() + "#" + $("#lista_5").val() + "#" + $("#ciudad").val()
 
-                        var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&tipo=" + tipo + "&listas=" + listas + "&ids="
+                        var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&tipo=" +
+                            tipo + "&listas=" + listas + "&ids="
                         $.each(items, function () {
                             datos += $(this).attr("id") + "#"
                         });
@@ -2492,13 +2502,16 @@
                     var dsv0 = $("#dist_v1").val();
                     var dsv1 = $("#dist_v2").val();
                     var dsv2 = $("#dist_v3").val();
-                    var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," + $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val();
+                    var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," +
+                        $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val();
                     var volqueta = $("#costo_volqueta").val();
                     var chofer = $("#costo_chofer").val();
                     var fechaSalida = $("#fechaSalidaId").val();
 
-                    datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val()
-                        + "&id=${rubro?.id}&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() + "&volq=" + $("#cmb_vol").val()
+                    datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
+                        "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val()
+                        + "&id=${rubro?.id}&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" +
+                        $("#cmb_chof").val() + "&volq=" + $("#cmb_vol").val()
                         + "&indi=" + $("#costo_indi").val() + "&trans=no" + "&fechaSalida=" + fechaSalida;
                     location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosTransporteV2')}?" + datos;
 

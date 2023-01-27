@@ -38,6 +38,7 @@ class VariablesController {
             obra.save(flush: true)
         }
 
+        println "sale de variables_ajax"
         [choferes: choferes, volquetes: volquetes, obra: obra, par: par, volquetes2: volquetes2, transporteCamioneta: transporteCamioneta, transporteAcemila: transporteAcemila, total1: total1, total2: total2]
     }
 
@@ -46,6 +47,44 @@ class VariablesController {
         //println params
 
         def obra = Obra.get(params.id)
+        params.totales = params.totales.toDouble()
+//        params.precioManoObra = params.precioManoObra.toDouble()
+//        params.precioMateriales = params.precioMateriales.toDouble()
+        params.distanciaPeso     = params.distanciaPeso.toDouble()
+        params.distanciaVolumen  = params.distanciaVolumen.toDouble()
+        params.distanciaPesoEspecial = params.distanciaPesoEspecial.toDouble()
+        params.distanciaVolumenMejoramiento = params.distanciaVolumenMejoramiento.toDouble()
+        params.distanciaVolumenCarpetaAsfaltica = params.distanciaVolumenCarpetaAsfaltica.toDouble()
+        params.factorReduccion   = params.factorReduccion.toDouble()
+        params.factorVelocidad   = params.factorVelocidad.toDouble()
+        params.capacidadVolquete = params.capacidadVolquete.toDouble()
+        params.factorReduccionTiempo = params.factorReduccionTiempo.toDouble()
+        params.factorVolumen     = params.factorVolumen.toDouble()
+        params.factorPeso        = params.factorPeso.toDouble()
+        params.indiceAlquiler    = params.indiceAlquiler.toDouble()
+        params.indiceCampo    = params.indiceCampo.toDouble()
+        params.administracion    = params.administracion.toDouble()
+        params.indiceCostosIndirectosCostosFinancieros    = params.indiceCostosIndirectosCostosFinancieros.toDouble()
+        params.indiceProfesionales    = params.indiceProfesionales.toDouble()
+        params.indiceCostosIndirectosGarantias    = params.indiceCostosIndirectosGarantias.toDouble()
+        params.indiceCostosIndirectosMantenimiento    = params.indiceCostosIndirectosMantenimiento.toDouble()
+        params.indiceCampamento    = params.indiceCampamento.toDouble()
+        params.indiceSeguros    = params.indiceSeguros.toDouble()
+        params.indiceGastoObra    = params.indiceGastoObra.toDouble()
+        params.indiceSeguridad    = params.indiceSeguridad.toDouble()
+        params.impreso    = params.impreso.toDouble()
+        params.indiceGastosGenerales    = params.indiceGastosGenerales.toDouble()
+        params.indiceUtilidad    = params.indiceUtilidad.toDouble()
+        params.totales    = params.totales.toDouble()
+        params.distanciaCamioneta    = params.distanciaCamioneta.toDouble()
+        params.distanciaAcemila    = params.distanciaAcemila.toDouble()
+        params.distanciaDesalojo    = params.distanciaDesalojo.toDouble()
+        params.desgloseEquipo    = params.desgloseEquipo.toDouble()
+        params.desgloseRepuestos = params.desgloseRepuestos.toDouble()
+        params.desgloseCombustible = params.desgloseCombustible.toDouble()
+        params.desgloseMecanico  = params.desgloseMecanico.toDouble()
+        params.desgloseSaldo     = params.desgloseSaldo.toDouble()
+
         obra.properties = params
 //        obra.capacidadVolquete=params.asdas.toDouble()
 //        obra.factorVolumen=params.factorVolumen.toDouble()
