@@ -31,20 +31,16 @@
         font-size: 20px;
     }
 
-    .error {
-        background: #c17474;
-    }
-
     .editable {
         border-bottom: 1px dashed;
     }
 
     .error {
-        /*background  : inherit !important;*/
-        background: #D7D7D7;
-        border: solid 2px #C17474;
+        background  : inherit !important;
+        /*background: #D7D7D7;*/
+        border: solid 1px #c14211;
         font-weight: bold;
-        padding: 10px;
+        /*padding: 10px;*/
     }
 
     .ui-dialog-titlebar-close {
@@ -225,7 +221,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     <g:hiddenField name="crono" value="0"/>
 
     %{--<fieldset class="borde" style="position: relative;float: left">--}%
-    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 20px;position: relative; height: 100px">
+    <div style="width: 100%; float:left; border-bottom: 1px solid black;padding-left: 50px;margin-top: 20px;position: relative; height: 100px">
         <g:hiddenField name="id" value="${obra?.id}"/>
         <div style="margin-top: 15px" align="center">
 
@@ -254,7 +250,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         <div class="col-md-12" style="margin-top: 20px">
             <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
-                <div class="col-md-1 formato">REQUIRENTE</div>
+                <div class="col-md-1 formato">Requirente</div>
 
                 <div class="col-md-3">
                     <g:if test="${obra?.id}">
@@ -263,7 +259,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                         from="${Departamento.findAllByRequirente(1, [sort: 'direccion'])}"
                                         id="departamento" value="${obra?.departamento?.id}"
                                         optionKey="id" optionValue="${{ it.direccion.nombre + ' - ' + it.descripcion }}"
-                                        optionClass="${{ it.direccion.id }}" style="width: 670px; margin-left: 40px"/>
+                                        dire="${{ it.direccion.id }}" style="width: 670px; margin-left: 40px"/>
 
                         </g:if>
                         <g:else>
@@ -335,7 +331,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="col-md-1 formato" style="width: 200px;">DOCUMENTO DE REFERENCIA</div>
+            <div class="col-md-1 formato" style="width: 200px;">Documento de referencia</div>
 
             <div class="col-md-2">
                 <g:textField name="oficioIngreso" class="memo allCaps" value="${obra?.oficioIngreso}" maxlength="20"
@@ -348,14 +344,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 %{--</g:if>--}%
             </div>
 
-            <div class="col-md-2 formato" style="width: 220px; margin-left: -10px;">MEMORANDO CANTIDAD DE OBRA</div>
+            <div class="col-md-2 formato" style="width: 220px; margin-left: -10px;">Memorando cantidad de obra</div>
 
             <div class="col-md-2"><g:textField name="memoCantidadObra" class="cantidad allCaps"
                                             value="${obra?.memoCantidadObra}" maxlength="20"
                                             style="width: 120px; margin-left: 0px"
                                             title="Memorandum u oficio de cantidad de obra"/></div>
 
-            <div class="col-md-1 formato" style="margin-left: 20px;">FECHA</div>
+            <div class="col-md-1 formato" style="margin-left: 20px;">Fecha</div>
             <div class="col-md-1"  style="width: 170px; margin-left: -10px">
                 <elm:datepicker name="fechaCreacionObra" class="col-md-12 datepicker input-small required"
                                 value="${obra?.fechaCreacionObra}" title="Fecha Registro de la Obra"
@@ -372,7 +368,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     %{--</fieldset>--}%
     </div>
 
-    <div style="border-bottom: 1px solid black;padding-left: 0px; margin-top: 0px;position: relative; height: 400px">
+    %{--<div style="border-bottom: 1px solid black;padding-left: 0px; margin-top: 0px;position: relative; height: 360px">--}%
+    <div style="width: 100%; float:left; border-bottom: 1px solid black;padding-left: 0px; margin-top: 0px; height: auto";>
     %{--<fieldset class="borde" style="position: relative;float: left">--}%
 
         <g:if test="${obra?.tipo == 'D'}">
@@ -546,22 +543,16 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="col-md-2">Localidad</div>
 
-            <div class="col-md-4" style="margin-left: -70px; width: 480px;"><g:textField style="width: 440px;"
-                                                                                      name="barrio" class="barrio"
-                                                                                      value="${obra?.barrio}"
-                                                                                      maxlength="127"
-                                                                                      title="Barrio, asentamiento, recinto o localidad"/></div>
+            <div class="col-md-4" style="margin-left: -70px; width: 480px;">
+                <g:textField style="width: 440px;" name="barrio" class="barrio" value="${obra?.barrio}" maxlength="127"
+                   title="Barrio, asentamiento, recinto o localidad"/></div>
 
             <div class="col-md-1" style="margin-left: 40px; width: 50px;">Anticipo</div>
 
-            <div class="col-md-2" style="margin-left: 10px; width: 120px;"><g:textField name="porcentajeAnticipo"
-                                                                                     type="number"
-                                                                                     class="anticipo number required"
-                                                                                     style="width: 40px"
-                                                                                     value="${obra?.porcentajeAnticipo}"
-                                                                                     maxlength="3"
-                                                                                     title="Porcentaje de Anticipo"/> %</div>
-
+            <div class="col-md-2" style="margin-left: 10px; width: 120px;">
+                <g:textField name="porcentajeAnticipo" type="number" class="anticipo number required"
+                    style="width: 40px" value="${obra?.porcentajeAnticipo?:50}" maxlength="3"
+                    title="Porcentaje de Anticipo"/> %</div>
 
             <g:if test="${matrizOk}">
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id &&
@@ -605,43 +596,41 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:else>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-1">Observaciones</div>
 
             <div class="col-md-5" style="width: 400px;"><g:textField name="observaciones" class="observaciones"
-                                                                  style="width: 400px;" value="${obra?.observaciones}"
-                                                                  maxlength="127" title="Observaciones"/></div>
+                style="width: 400px;" value="${obra?.observaciones}" maxlength="127" title="Observaciones"/></div>
             %{--</div>--}%
             %{--<div class="col-md-6">--}%
-            <div class="col-md-1" style="width: 100px;">Anexos y planos:</div>
+            <div class="col-md-1" style="margin-left: 50px; width: 120px">Anexos y planos:</div>
 
             <div class="col-md-5" style="width: 400px;"><g:textField name="anexos" class="referencia"
-                                                                  style="width: 475px; margin-left: -30px;"
-                                                                  value="${obra?.anexos}" maxlength="127"
-                                                                  title="Detalle de anexos y planos ingresados en la biblioteca de la obra"/></div>
+                style="width: 475px; margin-left: -30px;" value="${obra?.anexos}" maxlength="127"
+                title="Detalle de anexos y planos ingresados en la biblioteca de la obra"/></div>
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12" style="margin-top: 10px">
 
             <div class="col-md-2" style="width: 200px;">Lista de precios: MO y Equipos</div>
 
-            <div class="col-md-2" style="margin-right: 20px; margin-left: 0px; width: 300px;"><g:select
-                    style="width: 300px;" name="listaManoObra.id"
+            <div class="col-md-2" style="margin-right: 20px; margin-left: 0px; width: 200px;"><g:select
+                    style="width: 200px;" name="listaManoObra.id"
                     from="${janus.Lugar.findAll('from Lugar  where tipoLista=6')}" optionKey="id"
                     optionValue="descripcion" value="${obra?.listaManoObra?.id}"
                     title="Precios para Mano de Obra y Equipos"/></div>
 
 
-            <div class="col-md-1">Fecha</div>
+            <div class="col-md-1" style="margin-left: 30px">Fecha</div>
 
-            <div class="col-md-2" style="margin-left: 0;"><elm:datepicker name="fechaPreciosRubros"
-                                                                       class="fechaPreciosRubros datepicker input-small required"
+            <div class="col-md-2" style="margin-left: -30px;"><elm:datepicker name="fechaPreciosRubros"
+                                                                       class="col-md-12 datepicker input-small required"
                                                                        value="${obra?.fechaPreciosRubros ?: fcha}"
                                                                        title="Fecha Precios"/></div>
 
-            <div class="col-md-1" style="margin-left: -20px">Coordenadas WGS84</div>
+            <div class="col-md-1" style="margin-left: 40px">Coordenadas:</div>
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <g:set var="coords" value="${obra?.coordenadas}"/>
                 <g:if test="${obra?.id == null || coords == null || coords?.trim() == ''}">
                     <g:set var="coords" value="${'S 0 12.5999999 W 78 31.194'}"/>
@@ -653,26 +642,29 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <g:set var="coordsParts" value="${coords.split(' ')}"/>
             </div>
         </div>
-
-    %{--</fieldset>--}%
     </div>
+    %{--<hr>--}%
 
-    <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;">
-    <fieldset class="borde" style="position: relative;float: left">
+    <div style="width: 100%; float:left; border-bottom: 1px solid black; margin-top: 5px; position: relative;
+        padding-left: 30px; height: 65px">
+        <g:hiddenField name="id" value="${obra?.id}"/>
+        <div style="margin-top: 5px" align="center">
 
-        <div class="col-md-6" style="margin-top: 10px">
             <p class="css-vertical-text">Salida</p>
-            <div class="linea" style="height: 85%;"></div>
+
+            <div class="linea" style="height: 100%;"></div>
+        <div class="row-fluid" style="margin-top: 20px" id="dirSalida">
         </div>
 
-        <div class="col-md-6" style="margin-top: 10px" id="dirSalida">
-        </div>
-        <div class="col-md-6" style="margin-top: 10px">
-
         </div>
 
-    </fieldset>
-    </div>
+    %{--<div class="row-fluid">--}%
+        %{--hola--}%
+        %{--hola--}%
+    %{--</div>--}%
+
+
+</div>
 
 </g:form>
 
@@ -836,69 +828,68 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <g:if test="${obra?.id}">
-    <div class="navbar navbar-inverse" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
+    <div class="btn-group" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
 
-        <div class="navbar-inner">
-            <div class="botones">
+        <a href="#" id="btnVar" class="btn"><i class="fa fa-edit"></i> Variables</a>
+        <a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}" class="btn"><i
+                class="fa fa-list"></i> Vol. Obra
+        </a>
+        <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>
+        
+            <a href="#" id="btnFormula" class="btn"><i class="icon-money"></i>Fórmula Pol.< 
+            
+        <a href="#" id="btnRubros" class="btn"><i class="icon-money"></i>Rubros</a>
+        <a href="#" id="btnDocumentos" class="btn"><i class="icon-file"></i>Documentos</a>
+        <a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}" class="btn"><i
+                class="icon-calendar"></i>Cronograma
+        </a>
+        
+            <g:link controller="variables" action="composicion" id="${obra?.id}" class="btn"><i
+                    class="icon-paste"></i>Composición
+            </g:link>
+        
+        
+            <g:link controller="documentoObra" action="list" id="${obra.id}" class="btn">
+                <i class="fa fa-list"></i>Biblioteca
+            </g:link>
+        
+        
+            <a href="#" id="btnMapa" class="btn"><i class="icon-flag"></i>Mapa</a>
+        
+        
+            <a href="#" id="btnVeri" class="btn"><i class="icon-ok"></i>Precios no Act.</a>
+        
+        <g:if test="${obra?.tipo != 'D'}">
+            
+                <g:link controller="variables" action="composicionVae" id="${obra?.id}" class="btn"><i
+                        class="icon-paste"></i>Fijar VAE
+                </g:link>
+            
+        </g:if>    
+        <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D' && obra?.fechaInicio}">
+            
+                <a href="${g.createLink(controller: 'planillasAdmin', action: 'list', id: obra?.id)}"
+                   id="btnPlanillas" class="btn">
+                    <i class="icon-file-alt"></i>Planillas
+                </a>
+            
+        </g:if>
 
-                <ul class="nav">
-                    <li><a href="#" id="btnVar"><i class="icon-pencil"></i>Variables</a></li>
-                    <li><a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"><i
-                            class="icon-list-alt"></i>Vol. Obra
-                    </a></li>
-                    <li><a href="#" id="matriz"><i class="icon-th"></i>Matriz FP</a></li>
-                    <li>
-                        <a href="#" id="btnFormula"><i class="icon-money"></i>Fórmula Pol.</a>
-
-                    </li>
-                    <li><a href="#" id="btnRubros"><i class="icon-money"></i>Rubros</a></li>
-                    <li><a href="#" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>
-                    <li><a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}"><i
-                            class="icon-calendar"></i>Cronograma
-                    </a></li>
-                    <li>
-                        <g:link controller="variables" action="composicion" id="${obra?.id}"><i
-                                class="icon-paste"></i>Composición
-                        </g:link>
-                    </li>
-                    <li>
-                        <g:link controller="documentoObra" action="list" id="${obra.id}">
-                            <i class="fa fa-list"></i>Biblioteca
-                        </g:link>
-                    </li>
-                    <li>
-                        <a href="#" id="btnMapa"><i class="icon-flag"></i>Mapa</a>
-                    </li>
-                    <li>
-                        <a href="#" id="btnVeri"><i class="icon-ok"></i>Precios no Act.</a>
-                    </li>
-                    <g:if test="${obra?.tipo != 'D'}">
-                        <li>
-                            <g:link controller="variables" action="composicionVae" id="${obra?.id}"><i
-                                    class="icon-paste"></i>Fijar VAE
-                            </g:link>
-                        </li>
-                    </g:if>
-
-                    <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D' && obra?.fechaInicio}">
-                        <li>
-                            <a href="${g.createLink(controller: 'planillasAdmin', action: 'list', id: obra?.id)}"
-                               id="btnPlanillas">
-                                <i class="icon-file-alt"></i>Planillas
-                            </a>
-                        </li>
-                    </g:if>
-
-                </ul>
-
-            </div>
         </div>
 
-    </div>
 </g:if>
 
+<div id="modal-var">
+    <div id="modal_body_var">
 
-<div class="modal hide fade mediumModal tallModal2 " id="modal-var">
+    </div>
+
+    <div class="modal-footer" id="modal_footer_var">
+    </div>
+    </fieldset>
+</div>
+
+<%-- <div id="modal-var" style="overflow: hidden">
     <div class="modal-header btn-primary">
         <button type="button" class="close" data-dismiss="modal">×</button>
 
@@ -912,7 +903,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
     <div class="modal-footer" id="modal_footer_var">
     </div>
-</div>
+</div> --%>
 
 
 <div class="modal hide fade mediumModal" id="modal-TipoObra" style=";overflow: hidden;">
@@ -1881,8 +1872,8 @@ function buscaObras() {
             <g:if test="${persona?.departamento?.codigo?.trim() == 'UTFPU'}">
             <g:if test="${obra}">
             <g:if test="${duenoObra == 1}">
-            direccionEl = $("#departamento option:selected").attr("class");
-//            direccionEl = $("#departamento").val();
+//            direccionEl = $("#departamento option:selected").attr("dire");
+            direccionEl = $("#departamento").val();
             </g:if>
             <g:else>
             direccionEl = $("#departamentoDire").val();
@@ -2129,11 +2120,23 @@ function buscaObras() {
             $("#dlgLoad").dialog("close")
         });
 
-        $("#modal-var").draggable({
+        // $("#modal-var").draggable({
+        // });
+
+        $("#modal-var").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 800,
+            height: 570,
+            position: 'center',
+            title: 'Datos de Situación Geográfica'
         });
 
-        $("#btnVar").click(function () {
 
+        $("#btnVar").click(function () {
+            console.log('lista');
             $.ajax({
                 type: "POST",
                 url: "${createLink(controller: 'variables', action:'variables_ajax')}",
@@ -2157,7 +2160,7 @@ function buscaObras() {
                             url: url,
                             data: data,
                             success: function (msg) {
-                                $("#modal-var").modal("hide");
+                                $("#modal-var").dialog("close");
                             }
                         });
                         return false;
@@ -2172,7 +2175,10 @@ function buscaObras() {
                     <g:else>
                     $("#modal_footer_var").html("").append(btnCancel);
                     </g:else>
-                    $("#modal-var").modal("show");
+                    console.log('abre..')
+                    $("#modal-var").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
+
                 }
             });
             return false;

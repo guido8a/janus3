@@ -1,25 +1,13 @@
 package janus
 
-
-
 class VariablesController {
 
     def dbConnectionService
 
     def variables_ajax() {
-//        println params
+        println "variables_ajax $params"
+
         def obra = Obra.get(params.obra)
-
-
-        def usuario = Persona.get(session.usuario.id)
-        def empresa = usuario.empresa
-
-        def listaCanton = Lugar.findAllByEmpresaAndTipoLista(empresa, TipoLista.get(1))
-        def listaPetreos = Lugar.findAllByEmpresaAndTipoLista(empresa, TipoLista.get(3))
-        def listaEspecial = Lugar.findAllByEmpresaAndTipoLista(empresa, TipoLista.get(2))
-        def listaMejoramiento = Lugar.findAllByEmpresaAndTipoLista(empresa, TipoLista.get(4))
-        def listaCarpeta = Lugar.findAllByEmpresaAndTipoLista(empresa, TipoLista.get(5))
-
         def par = Parametros.list()
         if (par.size() > 0)
             par = par.pop()
@@ -39,88 +27,35 @@ class VariablesController {
 
         def transporteCamioneta =  Item.findAllByCodigoIlike('tc-%');
         def transporteAcemila =  Item.findAllByCodigoIlike('ta-%');
-        def total1 = (obra?.indiceCostosIndirectosObra ?: 0) + (obra?.administracion ?: 0) + (obra?.indiceAlquiler ?: 0) +
-                (obra?.indiceCostosIndirectosVehiculos ?: 0) + (obra?.indiceCostosIndirectosTimbresProvinciales ?: 0)  +
-                (obra?.indiceCostosIndirectosPromocion ?: 0) + (obra?.indiceCostosIndirectosGarantias ?: 0)  +
-                (obra?.indiceSeguros ?: 0) + (obra?.indiceCostosIndirectosCostosFinancieros ?: 0) +
-                (obra?.indiceSeguridad ?: 0)
-//        def total2 = (obra?.indiceCampo ?: 0) + (obra?.indiceCostosIndirectosCostosFinancieros ?: 0) + (obra?.indiceCostosIndirectosGarantias ?: 0) + (obra?.indiceCampamento ?: 0)
-        def total3 = (total1 ?:0 ) + (obra?.indiceUtilidad ?: 0)
-//        println "total indirectos: $total1 + ${obra?.indiceUtilidad}: $total3"
+        def total1 = (obra?.indiceAlquiler ?: 0) + (obra?.administracion ?: 0) + (obra?.indiceCostosIndirectosMantenimiento ?: 0) + (obra?.indiceProfesionales ?: 0) + (obra?.indiceSeguros ?: 0)  + (obra?.indiceSeguridad ?: 0)
+        def total2 = (obra?.indiceCampo ?: 0) + (obra?.indiceCostosIndirectosCostosFinancieros ?: 0) + (obra?.indiceCostosIndirectosGarantias ?: 0) + (obra?.indiceCampamento ?: 0)
+        def total3 = (total1 ?:0 ) + (total2 ?: 0) + (obra?.impreso ?: 0) + (obra?.indiceUtilidad ?: 0)
 
         if(obra.estado != 'R') {
             obra.indiceGastosGenerales = total1
-            obra.indiceGastoObra = 0
-//            println "pone totales: $total3"
+            obra.indiceGastoObra = total2
             obra.totales = total3
-//            println "-- ${obra?.totales}"
             obra.save(flush: true)
         }
 
-        [choferes: choferes, volquetes: volquetes, obra: obra, par: par, volquetes2: volquetes2,
-         transporteCamioneta: transporteCamioneta, transporteAcemila: transporteAcemila, total1: total1, listaCarpeta: listaCarpeta,
-         listaMejoramiento: listaMejoramiento, listaEspecial: listaEspecial, listaPetreos: listaPetreos, listaCanton: listaCanton]
+        [choferes: choferes, volquetes: volquetes, obra: obra, par: par, volquetes2: volquetes2, transporteCamioneta: transporteCamioneta, transporteAcemila: transporteAcemila, total1: total1, total2: total2]
     }
 
     def saveVar_ajax() {
-        println "saveVar_ajax: $params"
-//        println "saveVar_ajax: ${params.replaceAll(',','.')}"
-//        def mapa = params
-        params.eachWithIndex{ m, i->
-            if(m.value.toString().contains(',')) m.value = m.value.toString().replaceAll(',','.')
-        }
-//        println "mapa: $mapa"
+//        println "save vars aqui"
+        //println params
+
         def obra = Obra.get(params.id)
-        params.totales = params.totales.toDouble()
-//        params.precioManoObra = params.precioManoObra.toDouble()
-//        params.precioMateriales = params.precioMateriales.toDouble()
-        params.distanciaPeso     = params.distanciaPeso.toDouble()
-        params.distanciaVolumen  = params.distanciaVolumen.toDouble()
-        params.distanciaPesoEspecial = params.distanciaPesoEspecial.toDouble()
-        params.distanciaVolumenMejoramiento = params.distanciaVolumenMejoramiento.toDouble()
-        params.distanciaVolumenCarpetaAsfaltica = params.distanciaVolumenCarpetaAsfaltica.toDouble()
-        params.distanciaVolumenCarpetaAsfaltica = params.distanciaVolumenCarpetaAsfaltica.toDouble()
-        params.precioManoObra    = params.precioManoObra.toDouble()
-        params.precioMateriales  = params.precioMateriales.toDouble()
-        params.factorReduccion   = params.factorReduccion.toDouble()
-        params.factorVelocidad   = params.factorVelocidad.toDouble()
-        params.capacidadVolquete = params.capacidadVolquete.toDouble()
-        params.factorReduccionTiempo = params.factorReduccionTiempo.toDouble()
-        params.factorVolumen     = params.factorVolumen.toDouble()
-        params.factorPeso        = params.factorPeso.toDouble()
-        params.indiceCostosIndirectosObra = params.indiceCostosIndirectosObra.toDouble()
-        params.indiceGastoObra   = params.indiceGastoObra.toDouble()
-        params.desgloseEquipo    = params.desgloseEquipo.toDouble()
-        params.desgloseRepuestos = params.desgloseRepuestos.toDouble()
-        params.desgloseCombustible = params.desgloseCombustible.toDouble()
-        params.desgloseMecanico  = params.desgloseMecanico.toDouble()
-        params.desgloseSaldo     = params.desgloseSaldo.toDouble()
         obra.properties = params
-//        obra.properties = mapa
+//        obra.capacidadVolquete=params.asdas.toDouble()
+//        obra.factorVolumen=params.factorVolumen.toDouble()
         if (!obra.transporteCamioneta) obra.distanciaCamioneta = 0
         if (!obra.transporteAcemila) obra.distanciaAcemila = 0
-
         if (obra.save(flush: true)) {
             render "OK"
         } else {
             println obra.errors
             render "NO"
-        }
-    }
-
-    def procesaPrecios(){
-        println "procesarPrecios: $params"
-        def cn = dbConnectionService.getConnection()
-        def obra = Obra.get(params.id)
-        def sql = "select * from pone_precios(${params.id})"
-//        println "sql: $sql"
-        /* ejecuta función: pone_precios */
-        cn.eachRow(sql.toString()) { d ->
-            if (d.pone_precios > 0) {
-                render "Precios actualizados con éxito"
-            } else {
-                render "Error al actualizar los precios de la Obra"
-            }
         }
     }
 
@@ -150,6 +85,32 @@ class VariablesController {
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
+/*
+        def sql = "SELECT \n" +
+                "  v.voit__id                            id,\n" +
+                "  i.itemcdgo                            codigo,\n" +
+                "  i.itemnmbr                            item,\n" +
+                "  u.unddcdgo                            unidad,\n" +
+                "  v.voitcntd                            cantidad,\n" +
+                "  v.voitpcun                            punitario,\n" +
+                "  v.voittrnp                            transporte,\n" +
+                "  v.voitpcun + v.voittrnp               costo,\n" +
+                "  (v.voitpcun + v.voittrnp)*v.voitcntd  total,\n" +
+                "  d.dprtdscr                            departamento,\n" +
+                "  s.sbgrdscr                            subgrupo,\n" +
+                "  g.grpodscr                            grupo,\n" +
+                "  g.grpo__id                            grid,\n" +
+                "  v.sbpr__id                            sp\n" +
+                "FROM vlobitem v\n" +
+                "INNER JOIN item i ON v.item__id = i.item__id\n" +
+                "INNER JOIN undd u ON i.undd__id = u.undd__id\n" +
+                "INNER JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
+                "INNER JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
+                "INNER JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo})\n" +
+                "WHERE v.obra__id = ${params.id} \n" +
+                wsp +
+                "  ORDER BY grid ASC"
+*/
         def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
                   "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
                   "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
@@ -163,7 +124,7 @@ class VariablesController {
                              "g.grpo__id, g.grpodscr " +
                   "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
-//        println "composicion" + sql
+        println "composicion :" + sql
         def sqlSP = "SELECT\n" +
                 "  DISTINCT v.sbpr__id      id,\n" +
                 "  s.sbprdscr               dsc,\n" +
@@ -241,31 +202,6 @@ class VariablesController {
         }
         render "ok"
     }
-
-    def actualizaPrecios() {
-        def cn = dbConnectionService.getConnection()
-//        println "actualizaVae: " + params
-//        println("clase " + params?.item?.class)
-        // formato de id:###/new _ prin _ indc _ valor
-        if(params?.item?.class == java.lang.String) {
-            params?.item = [params?.item]
-        }
-
-        def oks = "", nos = ""
-        params.item.each {
-            //println "Procesa: " + it
-            def vlor = it.split("_")
-//            println "vlor: " + vlor
-            if (vlor[0] != "new") {
-//                println "nuevo valor: " + vlor[0].toInteger()
-//                println "update vlobitem set tpbnpcnt = ${vlor[1].toDouble()} where obra__id = ${params.obra} and item__id = ${vlor[0]}"
-                cn.execute("update vlobitem set tpbnpcnt = ${vlor[1].toDouble()} where obra__id = ${params.obra} and item__id = ${vlor[0]}".toString())
-            }
-        }
-        render "ok"
-    }
-
-
 
 
 }

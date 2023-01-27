@@ -1990,7 +1990,8 @@ class MantenimientoItemsController {
 //            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
 //        }
 
-        params.fecha = new Date().format("dd-MM-yyyy")
+//        params.fecha = new Date().format("yyyy-MM-dd")
+        params.fecha = new Date()
 
 //        def parts = params.id.split("_")
 //        def itemId = parts[0]
@@ -2022,7 +2023,7 @@ class MantenimientoItemsController {
 //                lugarId: lugarId,
                 lugarId: lugar.id,
                 fecha: params.fecha,
-                operador: operador,
+                operador: '=',
 //                todasLasFechas: params.todasLasFechas,
                 todasLasFechas: false,
 //                itemId: itemId
