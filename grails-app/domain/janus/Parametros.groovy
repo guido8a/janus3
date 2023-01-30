@@ -1,5 +1,7 @@
 package janus
 
+import seguridad.Persona
+
 class Parametros implements Serializable {
     //int indicador
     String codigo

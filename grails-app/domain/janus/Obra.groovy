@@ -1,6 +1,7 @@
 package janus
 
 import janus.pac.CodigoComprasPublicas
+import seguridad.Persona
 
 //import janus.construye.Empresa
 

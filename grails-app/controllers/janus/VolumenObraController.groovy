@@ -1,6 +1,7 @@
 package janus
 
 import janus.pac.TipoProcedimiento
+import seguridad.Persona
 
 class VolumenObraController {
     def buscadorService
@@ -227,15 +228,19 @@ class VolumenObraController {
 
     /** carga tabla de detalle de volúmenes de obra **/
     def tabla() {
-//        println "params tabla Vlob--->>>> "+params
+        println "params tabla Vlob---> $params"
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
+        println "persona $persona ${persona?.departamento?.direccion?.id}"
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
         def grupo = Grupo.findAllByDireccion(direccion)
-        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+        println "grupo --> $grupo"
+        def subPresupuesto1 = []
+        if(grupo) subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
+        println "sbpr --> $subPresupuesto1"
         def obra = Obra.get(params.obra)
+        println "obra --> $obra"
 
-//        def volumenes = VolumenesObra.findAllByObra(obra);
         def duenoObra = 0
         def valores
         def orden
@@ -246,13 +251,15 @@ class VolumenObraController {
             orden = 'desc'
         }
 
-
+        println "...1"
         // actualiza el rendimiento de rubros transporte TR% si la obra no está registrada y herr. menor
         if(obra.estado != 'R') {
             println "actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
+
+        println "...2"
 
         if (params.sub && params.sub != "-1") {
             valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
@@ -263,21 +270,11 @@ class VolumenObraController {
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
-//        def precios = [:]
-//        def fecha = obra.fechaPreciosRubros
-//        def dsps = obra.distanciaPeso
-//        def dsvl = obra.distanciaVolumen
-//        def lugar = obra.lugar
         def estado = obra.estado
-//        def prch = 0
-//        def prvl = 0
-
-//        def indirecto = obra.totales / 100
 
         duenoObra = esDuenoObra(obra)? 1 : 0
 
 
-//        [subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores,
         [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
          subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]
 
@@ -289,6 +286,7 @@ class VolumenObraController {
         def funcionElab = Funcion.findByCodigo('E')
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
+        def persona = Persona.get(session.usuario.id)
 //
 //        if(responsableRol) {
 ////            println personasUtfpu
@@ -309,9 +307,9 @@ class VolumenObraController {
                 dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
             }
 */
-            if (personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU') {
+            if (personasUtfpu.contains(responsableRol) && persona.departamento.codigo == 'UTFPU') {
                 dueno = true
-            } else if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
+            } else if (obra?.responsableObra?.departamento?.direccion?.id == persona.departamento?.direccion?.id) {
                 dueno = true
             }
         }

@@ -1,5 +1,7 @@
 package janus
 
+import seguridad.Persona
+
 class AdministradorContrato {
 
     Contrato contrato

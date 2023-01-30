@@ -1,6 +1,7 @@
 package janus.pac
 
-import janus.Persona
+import seguridad.Persona
+
 
 class Oferta {
 

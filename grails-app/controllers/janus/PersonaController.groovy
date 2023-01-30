@@ -2,6 +2,7 @@ package janus
 
 import janus.seguridad.Prfl
 import janus.seguridad.Sesn
+import seguridad.Persona
 
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -215,7 +216,9 @@ class PersonaController {
         /* departamento de OFERENTES: id = 13 */
         def departamento = Departamento.get(13)
         def personaList = Persona.findAllByDepartamentoNotEqual(departamento, [sort: 'apellido'])
+//        def personaList = Persona.findAll([sort: 'apellido'])
 
+        println "personas: ${personaList.size()}"
         [personaInstanceList: personaList, personaInstanceTotal: Persona.count(), params: params]
     } //list
 

@@ -1,6 +1,6 @@
 package janus.seguridad
 
-import janus.Persona
+import seguridad.Persona
 
 class ErrorLog {
 

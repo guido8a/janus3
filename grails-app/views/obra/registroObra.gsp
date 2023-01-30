@@ -815,7 +815,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         <div class="col-md-3" style="margin-top: 10px">
             <div class="col-md-3">
-                <g:select name="oferenteCopia" from="${janus.Persona.findAllByDepartamento(Departamento.get(13))}"
+                <g:select name="oferenteCopia" from="${seguridad.Persona.findAllByDepartamento(Departamento.get(13))}"
                           optionKey="id" optionValue="${{
                     it.nombre + ' ' + it.apellido
                 }}"/>

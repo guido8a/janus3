@@ -1,6 +1,6 @@
 package janus.oferentes
 
-import janus.Persona
+import seguridad.Persona
 import janus.VolumenesObra
 
 

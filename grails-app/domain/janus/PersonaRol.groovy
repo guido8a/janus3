@@ -1,5 +1,7 @@
 package janus
 
+import seguridad.Persona
+
 class PersonaRol implements Serializable {
     Persona persona
     Funcion funcion

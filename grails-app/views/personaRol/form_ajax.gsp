@@ -13,7 +13,7 @@
             </div>
 
             <div class="controls">
-                <g:select id="persona" name="persona.id" from="${janus.Persona.list()}" optionKey="id" class="many-to-one  required" value="${personaRolInstance?.persona?.id}"/>
+                <g:select id="persona" name="persona.id" from="${seguridad.Persona.list()}" optionKey="id" class="many-to-one  required" value="${personaRolInstance?.persona?.id}"/>
                 <span class="mandatory">*</span>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
@@ -27,7 +27,7 @@
             </div>
 
             <div class="controls">
-                <g:select id="funcion" name="funcion.id" from="${janus.Funcion.list()}" optionKey="id" class="many-to-one  required" value="${personaRolInstance?.funcion?.id}"/>
+                <g:select id="funcion" name="funcion.id" from="${seguridad.Funcion.list()}" optionKey="id" class="many-to-one  required" value="${personaRolInstance?.funcion?.id}"/>
                 <span class="mandatory">*</span>
                 <p class="help-block ui-helper-hidden"></p>
             </div>

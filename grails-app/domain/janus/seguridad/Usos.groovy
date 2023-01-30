@@ -1,6 +1,7 @@
 package janus.seguridad
 
-import janus.Persona
+import seguridad.Persona
+
 
 class Usos implements Serializable{
 

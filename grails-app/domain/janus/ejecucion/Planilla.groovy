@@ -1,7 +1,7 @@
 package janus.ejecucion
 
 import janus.Contrato
-import janus.Persona
+import seguridad.Persona
 
 class Planilla {
 

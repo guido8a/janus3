@@ -1,7 +1,7 @@
 package janus.pac
 
 import janus.EspecialidadProveedor
-import janus.Persona
+import seguridad.Persona
 
 import org.springframework.dao.DataIntegrityViolationException
 

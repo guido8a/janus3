@@ -3,6 +3,7 @@ package janus
 import janus.pac.DocumentoObra
 import janus.pac.TipoProcedimiento
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class ObraController {
 

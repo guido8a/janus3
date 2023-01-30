@@ -1,9 +1,11 @@
 package seguridad
 
 import audita.Auditable
+import janus.Departamento
 
 class Persona implements Auditable{
 
+    Departamento departamento
     String cedula
     String nombre
     String apellido
@@ -39,7 +41,7 @@ class Persona implements Auditable{
 
         columns {
             id column: 'prsn__id'
-            unidadEjecutora column: 'unej__id'
+            departamento column: 'dpto__id'
             cedula column: 'prsncdla'
             nombre column: 'prsnnmbr'
             apellido column: 'prsnapll'
@@ -63,6 +65,7 @@ class Persona implements Auditable{
         }
     }
     static constraints = {
+        departamento(blank: true, nullable: true, attributes: [title: 'departamento'])
         cedula(blank: false, nullable: false)
         nombre(size: 3..31, blank: false)
         apellido(size: 3..31, blank: false)

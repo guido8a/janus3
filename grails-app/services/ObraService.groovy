@@ -1,4 +1,5 @@
 import janus.*
+import seguridad.Persona
 
 class ObraService {
 

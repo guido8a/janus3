@@ -1,9 +1,11 @@
 package janus.alertas
 
+import seguridad.Persona
+
 class Alerta implements Serializable{
 
-    janus.Persona from
-    janus.Persona usro
+    Persona from
+    Persona usro
     Date fec_envio
     Date fec_recibido
     String mensaje

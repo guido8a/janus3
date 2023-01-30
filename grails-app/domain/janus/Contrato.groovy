@@ -5,6 +5,7 @@ import janus.pac.Oferta
 import janus.pac.Proveedor
 import janus.pac.TipoContrato
 import janus.pac.TipoPlazo
+import seguridad.Persona
 
 class Contrato implements Serializable {
 

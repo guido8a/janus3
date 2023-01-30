@@ -1,5 +1,7 @@
 package janus
 
+import seguridad.Persona
+
 class PersonasTramite implements Serializable{
     Tramite tramite
     RolTramite rolTramite

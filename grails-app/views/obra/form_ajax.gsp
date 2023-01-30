@@ -41,7 +41,7 @@
             </div>
 
             <div class="controls">
-                <g:select id="responsableObra" name="responsableObra.id" from="${janus.Persona.list()}" optionKey="id" class="many-to-one " value="${obraInstance?.responsableObra?.id}" noSelection="['null': '']"/>
+                <g:select id="responsableObra" name="responsableObra.id" from="${seguridad.Persona.list()}" optionKey="id" class="many-to-one " value="${obraInstance?.responsableObra?.id}" noSelection="['null': '']"/>
                 
                 <p class="help-block ui-helper-hidden"></p>
             </div>
@@ -55,7 +55,7 @@
             </div>
 
             <div class="controls">
-                <g:select id="revisor" name="revisor.id" from="${janus.Persona.list()}" optionKey="id" class="many-to-one " value="${obraInstance?.revisor?.id}" noSelection="['null': '']"/>
+                <g:select id="revisor" name="revisor.id" from="${seguridad.Persona.list()}" optionKey="id" class="many-to-one " value="${obraInstance?.revisor?.id}" noSelection="['null': '']"/>
                 
                 <p class="help-block ui-helper-hidden"></p>
             </div>
@@ -1024,7 +1024,7 @@ buttonImageOnly: true
             </div>
 
             <div class="controls">
-                <g:select id="inspector" name="inspector.id" from="${janus.Persona.list()}" optionKey="id" class="many-to-one  required" value="${obraInstance?.inspector?.id}"/>
+                <g:select id="inspector" name="inspector.id" from="${seguridad.Persona.list()}" optionKey="id" class="many-to-one  required" value="${obraInstance?.inspector?.id}"/>
                 <span class="mandatory">*</span>
                 <p class="help-block ui-helper-hidden"></p>
             </div>

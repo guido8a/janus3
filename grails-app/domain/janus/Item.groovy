@@ -2,6 +2,7 @@ package janus
 
 //import janus.construye.Empresa
 import janus.pac.CodigoComprasPublicas
+import seguridad.Persona
 
 class Item implements Serializable {
     Persona responsable
