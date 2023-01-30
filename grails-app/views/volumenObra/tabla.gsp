@@ -12,42 +12,42 @@
                   style="width: 260px;font-size: 10px" id="subPres_desc" value="${subPre}"
                   noSelection="['-1': 'TODOS']" class="selector"/>
 
-        <a href="#" class="btn btn-ajax btn-new" id="ordenarAsc" title="Ordenar Ascendentemente">
-            <i class="icon-arrow-up"></i>
+        <a href="#" class="btn btn-xs btn-ajax btn-new" id="ordenarAsc" title="Ordenar Ascendentemente">
+            <i class="fa fa-arrow-up"></i>
         </a>
-        <a href="#" class="btn btn-ajax btn-new" id="ordenarDesc" title="Ordenar Descendentemente">
-            <i class="icon-arrow-down"></i>
+        <a href="#" class="btn btn-xs btn-ajax btn-new" id="ordenarDesc" title="Ordenar Descendentemente">
+            <i class="fa fa-arrow-down"></i>
         </a>
 
         <g:if test="${obra?.estado != 'R' && duenoObra == 1}">
-            <a href="#" class="btn btn-danger" title="Eliminar subpresupuesto" id="borrarSubpre">
-                <i class="icon-trash"></i>
+            <a href="#" class="btn btn-xs btn-danger" title="Eliminar subpresupuesto" id="borrarSubpre">
+                <i class="fa fa-trash"></i>
             </a>
         </g:if>
 
-%{--        <a href="#" class="btn  " id="copiar_rubros" title="Copiar rubros desde un subpresupuesto">--}%
-%{--            <i class="icon-copy"></i>--}%
-%{--            Copiar Rubros--}%
-%{--        </a>--}%
-        <a href="#" class="btn  " id="imprimir_sub">
-            <i class="icon-print"></i>
+        <a href="#" class="btn btn-sm" style="margin-left:40px" id="copiar_rubros" title="Copiar rubros desde un subpresupuesto">
+            <i class="fa fa-copy"></i>
+            Copiar Rubros
+        </a>
+        <a href="#" class="btn btn-sm  " id="imprimir_sub">
+            <i class="fa fa-print"></i>
             Impr. Subpre.
         </a>
-        <a href="#" class="btn  " id="imprimir_excel" style="margin-left:0px">
-            <i class="fa fa-file-excel-o"></i>
+        <a href="#" class="btn btn-sm  " id="imprimir_excel" style="margin-left:0px">
+            <i class="fa fa-file-excel"></i>
             Excel
         </a>
 
-        <a href="#" class="btn  " id="imprimir_sub_vae">
-            <i class="icon-print"></i>
+        <a href="#" class="btn btn-sm  " id="imprimir_sub_vae">
+            <i class="fa fa-print"></i>
             Subpre. VAE
         </a>
-        <a href="#" class="btn  " id="imprimir_vae_excel">
-            <i class="fa fa-file-excel-o"></i>
+        <a href="#" class="btn btn-sm  " id="imprimir_vae_excel">
+            <i class="fa fa-file-excel"></i>
             VAE Excel
         </a>
-        <a href="#" class="btn  " id="imprimir_desglose_excel">
-            <i class="fa fa-file-excel-o"></i>
+        <a href="#" class="btn btn-sm  " id="imprimir_desglose_excel">
+            <i class="fa fa-file-excel"></i>
             Desglose
         </a>
     </div>
@@ -61,13 +61,13 @@
         <th style="width: 15%;">
             Subpresupuesto
         </th>
-        <th style="width: 7%;">
+        <th style="width: 11%;">
             Código
         </th>
-%{--        <th style="width: 100px;">--}%
-%{--            Especificación--}%
-%{--        </th>--}%
-        <th style="width: 50%;">
+        <th style="width: 6%">
+            Especificación
+        </th>
+        <th style="width: 40%;">
             Rubro
         </th>
         <th style="width: 5%" class="col_unidad">
@@ -86,12 +86,13 @@
     <tbody id="tabla_material">
 
     <g:each in="${valores}" var="val" status="j">
-        <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
+        <tr class="item_row ${val.rbrocdgo[0..1] == 'TR'? 'desalojo':''}" id="${val.vlob__id}"  item="${val}"
+            dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
             <td style="width: 5%" class="orden">${val.vlobordn}</td>
             <td style="width: 15%" class="sub">${val.sbprdscr.trim()}</td>
-            <td class="cdgo" style="width: 7%">${val.rbrocdgo.trim()}</td>
-%{--            <td class="cdes" style="width: 50%">${val.itemcdes?.trim()}</td>--}%
-            <td class="nombre" style="width: 50%">${val.rbronmbr.trim()}</td>
+            <td class="cdgo" style="width: 11%">${val.rbrocdgo.trim()}</td>
+            <td class="cdes" style="width: 6%">${val.itemcdes?.trim()}</td>
+            <td class="nombre" style="width: 40%">${val.rbronmbr.trim()}</td>
             <td style="width: 5%;text-align: center" class="col_unidad" >${val.unddcdgo.trim()}</td>
             <td style="width: 8%; text-align: right" class="cant">
                 <g:formatNumber number="${val.vlobcntd}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
@@ -103,11 +104,11 @@
             </td>
             <g:if test="${obra.estado!='R' && duenoObra == 1}">
                 <td style="width: 10%;text-align: center" class="col_delete">
-                    <a class="btn btn-small btn-primary editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}" data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}" data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
+                    <a class="btn btn-xs btn-primary editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}" data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}" data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
                         <i class="fa fa-edit"></i>
                     </a>
-                    <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${val.vlob__id}">
-                        <i class="icon-trash"></i>
+                    <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${val.vlob__id}">
+                        <i class="fa fa-trash"></i>
                     </a>
                 </td>
             </g:if>

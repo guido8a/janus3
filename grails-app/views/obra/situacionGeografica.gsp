@@ -67,7 +67,7 @@
 
         var canton = $(this).attr("canton");
 
-        $("#busqueda").dialog("close");
+        $("#busqueda-geo").dialog("close");
 
         return false;
 

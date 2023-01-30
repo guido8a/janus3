@@ -1,20 +1,19 @@
 <%@ page import="janus.SubPresupuesto" %>
 
 <div id="create-SubPresupuesto" class="span" role="main">
-<div class="alert " role="status" style="background: rgba(255, 0, 0, 0.42);color: black;font-weight: bold;font-size: 14px">
-<a class="close" data-dismiss="alert" href="#">×</a>
-Antes de crear un subpresupuesto asegúrese de que no exista en ningún grupo. Recuerde que la lista de subpresupuestos depende de la opción seleccionada en "Tipo de obra"
+<div class="col-md-12 alert " role="status" style="background: rgba(255, 0, 0, 0.42);color: black;font-weight:
+  bold;font-size: 12px">
+    Antes de crear un subpresupuesto asegúrese de que no exista en ningún grupo. Recuerde que la lista de
+    subpresupuestos depende de la opción seleccionada en "Tipo de obra"
 </div>
 <g:form class="form-horizontal" name="frmSave-SubPresupuesto" action="save">
     <g:hiddenField name="id" value="${subPresupuestoInstance?.id}"/>
     <g:hiddenField name="volob" value="0"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="col-md-12 row control-group" >
+            <div class="col-md-3 control-label">
                 Grupo
-            </span>
-        </div>
+            </div>
 
         <div class="controls">
 
@@ -25,19 +24,16 @@ Antes de crear un subpresupuesto asegúrese de que no exista en ningún grupo. R
         </div>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="col-md-12 row control-group">
+            <div class="col-md-3 control-label">
                 Descripción
-            </span>
-        </div>
+            </div>
 
-        <div class="controls">
-            <g:textArea name="descripcion" maxlength="127" class=" required allCaps" value="${subPresupuestoInstance?.descripcion}" style="resize: none" />
-            <span class="mandatory">*</span>
+            <g:textArea name="descripcion" maxlength="127" class="required input-small col-md-8 required allCaps"
+                        value="${subPresupuestoInstance?.descripcion}" style="resize: none" />
+            <span class="required">*</span>
 
             <p class="help-block ui-helper-hidden"></p>
-        </div>
     </div>
 
 </g:form>

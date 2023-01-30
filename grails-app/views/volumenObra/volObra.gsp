@@ -6,6 +6,11 @@
         <title>
             Volúmenes de obra
         </title>
+
+        <asset:javascript src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.js"/>
+        %{--<asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>--}%
+        <asset:stylesheet src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.css"/>
+
         %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
         %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
         %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
@@ -29,7 +34,7 @@
     </head>
 
     <body>
-        <div class="span12" id="mensaje">
+        <div class="col-md-12" id="mensaje">
             <g:if test="${flash.message}">
                 <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
                     <a class="close" data-dismiss="alert" href="#">×</a>
@@ -38,14 +43,14 @@
             </g:if>
         </div>
 
-    <div class="span12 hide" style="margin-bottom: 10px;" id="divError">
+    <div class="col-md-12 hide" style="margin-bottom: 10px;" id="divError">
         <div class="alert alert-error" role="status">
             <a class="close" data-dismiss="alert" href="#">×</a>
             <span id="spanError"></span>
         </div>
     </div>
 
-    <div class="span12 hide" style="margin-bottom: 10px;" id="divOk">
+    <div class="col-md-12 hide" style="margin-bottom: 10px;" id="divOk">
         <div class="alert alert-success" role="status">
             <a class="close" data-dismiss="alert" href="#">×</a>
             <span id="spanOk"></span>
@@ -58,26 +63,27 @@
             <input type="hidden" id="override" value="0">
         </div>
         <div style="height: 25px; margin-bottom:10px; border-bottom: 1px solid rgba(148, 148, 148, 1);">
-            <div class="span2" style="margin-left: 150px;">
+            <div class="col-md-2" style="margin-left: 150px;">
                 <b>Memo:</b> ${obra?.memoCantidadObra}
             </div>
-            <div class="span3">
+            <div class="col-md-3">
                 <b>Ubicación:</b> ${obra?.parroquia?.nombre}
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <b style="">Dist. peso:</b> ${obra?.distanciaPeso}
             </div>
 
-            <div class="span2" style="margin-left: -40px;">
+            <div class="col-md-2" style="margin-left: -40px;">
                 <b>Dist. volúmen:</b> ${obra?.distanciaVolumen}
             </div>
 
         </div>
 
         <div class="row">
-            <div class="span12 btn-group" role="navigation" style="margin-left: 35px;">
-                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
+            <div class="col-md-12 btn-group" role="navigation" style="margin-left: 35px;">
+                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" 
+                   class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
                     <i class="icon-arrow-left"></i>
                     Regresar
                 </a>
@@ -93,7 +99,7 @@
         </div>
 
         <g:if test="${obra.valor > vmc}">
-            <div style="margin-top: 10px;">
+            <div style="margin-top: 10px;" id="tx-aviso">
                 <div class="alert alert-warning" style="font-weight: bold; font-size: 13px;">
                     <i class="icon icon-info-sign icon-2x pull-left"></i>
                     <p>
@@ -109,116 +115,90 @@
             </div>
         </g:if>
 
-        <div id="list-grupo" class="span12" role="main" style="margin-top: 10px;margin-left: 0px">
+        <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 20px;margin-left: 0px">
             <div class="borde_abajo" style="padding-left: 5px;position: relative; height: 92px">
                 %{--<div class="linea" style="height: 98%;"></div>--}%
 
                 <div class="row-fluid" style="margin-left: 0px">
-                    <div class="span3" style="width: 135px; ">
+                    <div class="col-md-3" style="width: 135px; ">
                         <b>Tipo de Obra:</b><g:select name="grupos" id="grupos" from="${grupoFiltrado}" optionKey="id" optionValue="descripcion"
                                                 style="margin-left: 0px; width: 130px; font-size: 11px" value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"/>
-
-                    %{--<b>Solicitante:</b><g:select name="grupos" id="grupos" from="${janus.Grupo.findByDireccion(obra.departamento.direccion)}" optionKey="id" optionValue="descripcion"--}%
-                    %{--style="margin-left: 20px;" value="${janus.Grupo.findByDireccion(obra.departamento.direccion)?.id}"></g:select>--}%
 
                 </div>
 
                 <div class="row-fluid" style="margin-left: 0px">
-                    <div class="span4" style="width: 450px">
+                    <div class="col-md-4" style="width: 450px">
                         <b>Crear Subpresupuesto / Ingresar Rubros:</b>
                         <span id="sp">
-                            %{--<g:select name="subpresupuesto" from="${janus.SubPresupuesto.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 300px;;font-size: 10px" id="subPres"/>--}%
-
                             <span id="div_cmb_sub">
                             <g:select name="subpresupuesto" from="${subpreFiltrado}" optionKey="id" optionValue="descripcion"
                                       id="subPres"/>
                             </span>
-
-                            %{--todo descomentar esto--}%
-                            %{--<g:select name="subpresupuesto" from="${subPresupuesto1}" optionKey="id" optionValue="descripcion" style="width: 300px;;font-size: 10px" id="subPres"/>--}%
-
                         </span>
 
                     <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
-                    %{--<g:if test="${duenoObra == 1}">--}%
                         <a href="#" class="btn boton" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">
-                            <i class="icon-plus"></i>
+                            <i class="fa fa-plus"></i>
                         </a>
                         <a href="#" class="btn boton" id="btnBorrarSP" title="Borrar subpresupuesto" style="margin-top: -10px;">
-                            <i class="icon-minus"></i>
+                            <i class="fa fa-minus"></i>
                         </a>
                         <a href="#" class="btn boton" id="btnEditarSP" title="Editar subpresupuesto" style="margin-top: -10px;">
-                            <i class="icon-edit"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
 
                     </g:if>
-                        %{--<g:else>--}%
-                        %{--<g:if test="${persona?.departamento?.id == obra?.departamento?.id}">--}%
-                            %{--<a href="#" class="btn" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">--}%
-                                %{--<i class="icon-plus"></i>--}%
-                            %{--</a>--}%
-                            %{--<a href="#" class="btn" id="btnBorrarSP" title="Borrar subpresupuesto" style="margin-top: -10px;">--}%
-                                %{--<i class="icon-minus"></i>--}%
-                            %{--</a>--}%
-                            %{--<a href="#" class="btn" id="btnEditarSP" title="Editar subpresupuesto" style="margin-top: -10px;">--}%
-                                %{--<i class="icon-edit"></i>--}%
-                            %{--</a>--}%
-                        %{--</g:if>--}%
-                        %{--</g:else>--}%
 
                     </div>
 
-                    %{--<div class="span7" style="height: 38px"></div> --}%
-                    <div class="span1" style="margin-left: 0px; width: 100px;">
+
+                    <div class="col-md-1" style="margin-left: -30px; width: 100px;">
                         <b>Código</b>
                         <input type="text" style="width: 100px;;font-size: 10px" id="item_codigo" class="allCaps">
                         <input type="hidden" style="width: 60px" id="item_id">
                     </div>
 
-                    <div class="span4" style="margin-left: 15px;">
+                    <div class="col-md-4" style="margin-left: 15px;">
                         <b>Rubro</b>
-                        %{--<input type="text" style="width: 420px;font-size: 10px" id="item_nombre" disabled="true">--}%
                         <input type="text" style="width: 420px;font-size: 10px" id="item_nombre" readonly="true">
 
                     </div>
 
-                    <div class="span2" style="margin-left: 0px; width: 780px;">
+                <div class="col-md-12" role="main" style="margin-top: 20px;margin-left: -10px">
+                    <div class="col-md-6" style="margin-left: 0px; width: 720px;">
                         <b>Descripción:</b>
-                        <input type="text" style="width: 680px" id="item_descripcion" value="">
+                        <input type="text" style="width: 620px" id="item_descripcion" value="">
                     </div>
-                    <div class="span2" style="margin-left: 20px; width: 180px;" id="lbl_cntd">
+                    <div class="col-md-3" style="margin-left: 0px; width: 180px;" id="lbl_cntd">
                         <b>Cantidad:</b>
                         <input type="text" style="width: 90px;text-align: right" id="item_cantidad" value="">
                     </div>
 
-                    <div class="span1" style="margin-left: 20px; width: 90px;">
+                    <div class="col-md-1" style="margin-left: -10px; width: 120px;">
                         <b>Orden:</b>
-                        <input type="text" style="width: 30px;text-align: right" id="item_orden" value="${(volumenes?.size() > 0) ? volumenes.size() + 1 : 1}">
+                        <input type="text" style="width: 50px;text-align: right" id="item_orden"
+                               value="${(volumenes?.size() > 0) ? volumenes.size() + 1 : 1}">
                     </div>
 
-                    <div class="span1" style="margin-left: 10px;padding-top:0px; width: 25px;">
+                    <div class="col-md-1" style="margin-left: -20px;margin-top:-5px; width: 85px;">
                         <input type="hidden" value="" id="vol_id">
 
                         <g:if test="${obra?.estado != 'R' && duenoObra == 1}">
-                            <a href="#" class="btn btn-primary" title="agregar" id="item_agregar">
-                                <i class="icon-plus"></i>
-                            </a>
+                            <a href="#" class="btn btn-xs btn-primary" title="Agregar" id="item_agregar">
+                                <i class="fa fa-plus"></i></a>
+                            <a href="#" class="btn btn-xs btn-danger" title="Agregar" id="item_limpiar">
+                                <i class="fa fa-ban"></i></a>
                         </g:if>
-%{--
-                        <g:else>
-                            <g:if test="${obra.estado != 'R' && obra?.departamento?.id == persona?.departamento?.id}">
-                                <a href="#" class="btn btn-primary" title="agregar" id="item_agregar">
-                                    <i class="icon-plus"></i>
-                                </a>
-                            </g:if>
-                        </g:else>
---}%
-
                     </div>
+                </div>
                 </div>
             </div>
 
-            <div class="borde_abajo" style="position: relative;float: left;width: 95%;padding-left: 45px">
+            <div style="margin-bottom:10px; border-bottom: 2px solid rgba(148, 148, 148, 1); height: 100px">
+               &nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div class="borde_abajo" style="position: relative;float: left;width: 100%;padding-left: 45px">
                 <p class="css-vertical-text">Composición</p>
 
                 <div class="linea" style="height: 98%;"></div>
@@ -233,31 +213,21 @@
             </div>
         </div>
 
-        <div class="modal grande hide fade" id="modal-rubro" style="overflow: hidden;">
-            <div class="modal-header btn-info">
-                <button type="button" class="close" data-dismiss="modal">×</button>
 
-                <h3 id="modalTitle"></h3>
-            </div>
+            %{--<div id="modal-rubro" style="overflow: hidden;">--}%
 
-            <div class="modal-body" id="modalBody">
-                <bsc:buscador name="rubro.buscador.id" value="" accion="buscaRubro" controlador="volumenObra" campos="${campos}" label="Rubro" tipo="lista"/>
-            </div>
+            %{--<div class="modal-body" id="modalBody">--}%
+                %{--<bsc:buscador name="rubro.buscador.id" value="" accion="buscaRubro" controlador="volumenObra" campos="${campos}" label="Rubro" tipo="lista"/>--}%
+            %{--</div>--}%
 
-            <div class="modal-footer" id="modalFooter">
-            </div>
-        </div>
+            %{--<div class="modal-footer" id="modalFooter">--}%
+            %{--</div>--}%
+        %{--</div>--}%
 
-        <div class="modal hide fade" id="modal-SubPresupuesto">
-            <div class="modal-header" id="modalHeader">
-                <button type="button" class="close darker" data-dismiss="modal">
-                    <i class="icon-remove-circle"></i>
-                </button>
+        %{--<div class="modal hide fade" id="modal-SubPresupuesto">--}%
 
-                <h3 id="modalTitle-sp"></h3>
-            </div>
-
-            <div class="modal-body" id="modalBody-sp">
+        <div id="modal-SubPresupuesto">
+            <div id="modalBody-sp">
             </div>
 
             <div class="modal-footer" id="modalFooter-sp">
@@ -265,20 +235,52 @@
         </div>
 
         <div id="borrarSPDialog">
-            <fieldset>
-                <div class="span3">
+                <div class="col-md-12">
                     Está seguro que desea borrar el subpresupuesto?
                 </div>
-            </fieldset>
-
         </div>
 
+    <div id="listaRbro" style="overflow: hidden">
+        <fieldset class="borde" style="border-radius: 4px">
+            <div class="row-fluid" style="margin-left: 20px">
+                <div class="col-md-2">
+                    Tipo
+                    <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"
+                              optionValue="value"/>
+                </div>
+                <div class="col-md-2">
+                    Buscar Por
+                    <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
+                              optionValue="value"/>
+                </div>
+                <div class="col-md-2">Criterio
+                <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+                </div>
+                <div class="col-md-2">Ordenado por
+                <g:select name="ordenar" class="ordenar" from="${listaRbro}" style="width: 100%" optionKey="key"
+                          optionValue="value"/>
+                </div>
+                <div class="col-md-2" style="margin-top: 6px">
+                    <button class="btn btn-info" id="cnsl-rubros"><i class="fa fa-search"></i> Consultar
+                    </button>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="borde" style="border-radius: 4px">
+            <div id="divTablaRbro" style="height: 460px; overflow: auto">
+            </div>
+        </fieldset>
+    </div>
 
 
 
-        <script type="text/javascript">
+            <script type="text/javascript">
 
             var aviso = false;  //aviso de TR...
+
+            $("#tx-aviso").click(function () {
+                var $btnOrig = $(this).addClass("hidden");
+            });
 
             function loading(div) {
                 y = 0;
@@ -361,15 +363,47 @@
                     }
                 });
 
-                $("#item_codigo").dblclick(function () {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                    $("#modalTitle").html("Lista de rubros");
-                    $("#modalFooter").html("").append(btnOk);
-                    $("#modal-rubro").modal("show");
-                    $("#buscarDialog").unbind("click")
-                    $("#buscarDialog").bind("click", enviar)
-
+                $("#listaRbro").dialog({
+                    autoOpen: false,
+                    resizable: true,
+                    modal: true,
+                    draggable: false,
+                    width: 1000,
+                    height: 500,
+                    position: 'center',
+                    title: 'Rubros'
                 });
+
+                $("#item_codigo").dblclick(function () {
+                    $("#listaRbro").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
+                });
+
+                $("#cnsl-rubros").click(function () {
+                    buscaRubros();
+                });
+
+                function buscaRubros() {
+                    var buscarPor = $("#buscarPor").val();
+                    var tipo = $("#buscarTipo").val();
+                    var criterio = $("#criterioCriterio").val();
+                    var ordenar = $("#ordenar").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "${createLink(controller: 'volumenObra', action:'listaRubros')}",
+                        data: {
+                            buscarPor: buscarPor,
+                            buscarTipo: tipo,
+                            criterio: criterio,
+                            ordenar: ordenar
+
+                        },
+                        success: function (msg) {
+                            $("#divTablaRbro").html(msg);
+                        }
+                    });
+                }
+
 
                 $("#reporteGrupos").click(function () {
 
@@ -410,6 +444,17 @@
                     }
                 });
 
+                $("#modal-SubPresupuesto").dialog({
+                    autoOpen: false,
+                    resizable: true,
+                    modal: true,
+                    draggable: false,
+                    width: 600,
+                    height: 300,
+                    position: 'center',
+                    title: 'Crear Sub Presupuesto'
+                });
+
                 $("#btnCrearSP").click(function () {
                     var $btnOrig = $(this).clone(true);
 
@@ -440,22 +485,23 @@
                                         var p = msg.split("_");
                                         var alerta;
 
+                                        console.log('retorna', msg);
                                         if (msg != "NO") {
 //                                    $("#sp").html(msg);
 
                                             alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
                                             alerta += p[1];
                                             alerta += '</div>';
-                                            $("#modal-SubPresupuesto").modal("hide");
+                                            $("#modal-SubPresupuesto").dialog("close");
                                             $("#div_cmb_sub").html(p[2])
 
                                         }
                                         else {
 
-                                            alerta = '<div class="alert alert-error" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
+                                            alerta = '<div class="alert alert-error" role="status">' +
+                                                '<a class="close" data-dismiss="alert" href="#">×</a>';
                                             alerta += p[1];
                                             alerta += '</div>';
-
                                         }
 
                                         $("#mensaje").html(alerta);
@@ -467,13 +513,14 @@
 
                             btnOk.click(function () {
                                 spinner.replaceWith($btnOrig);
+                                $("#modal-SubPresupuesto").dialog("close");
                             });
 
                             $("#modalHeader-sp").removeClass("btn-edit btn-show btn-delete");
-                            $("#modalTitle-sp").html("Crear Sub Presupuesto");
+//                            $("#modalTitle-sp").html("Crear Sub Presupuesto");
                             $("#modalFooter-sp").html("").append(btnOk).append(btnSave);
-                            $("#modal-SubPresupuesto").modal("show");
-
+                            $("#modal-SubPresupuesto").dialog("open");
+                            $(".ui-dialog-titlebar-close").html("x")
                             $("#volob").val("1");
                         }
                     });
@@ -523,12 +570,12 @@
 
                                         if (msg != "NO") {
 //                                    $("#sp").html(msg);
-                                            $("#modal-SubPresupuesto").modal("hide");
+                                            $("#modal-SubPresupuesto").dialog("close");
 
                                             alerta = '<div class="alert alert-success" role="status"><a class="close" data-dismiss="alert" href="#">×</a>';
                                             alerta += p[1];
                                             alerta += '</div>';
-                                            $("#modal-SubPresupuesto").modal("hide");
+                                            $("#modal-SubPresupuesto").dialog("close");
                                             $("#div_cmb_sub").html(p[2])
 
                                         } else {
@@ -547,12 +594,13 @@
 
                             btnOk.click(function () {
                                 spinner.replaceWith($btnOrig);
+                                $("#modal-SubPresupuesto").dialog("close");
                             });
 
                             $("#modalHeader-sp").removeClass("btn-edit btn-show btn-delete");
                             $("#modalTitle-sp").html("Editar Sub Presupuesto");
                             $("#modalFooter-sp").html("").append(btnOk).append(btnSave);
-                            $("#modal-SubPresupuesto").modal("show");
+                            $("#modal-SubPresupuesto").dialog("open");
 
                             $("#volob").val("1");
                         }
@@ -612,6 +660,17 @@
                         }
                     }
 
+                });
+
+                $("#item_limpiar").click(function () {
+                    $("#vol_id").val("")
+                    $("#item_codigo").val("")
+                    $("#item_id").val("")
+                    $("#item_nombre").val("")
+                    $("#item_cantidad").val("")
+                    $("#item_descripcion").val("")
+                    $("#item_orden").val($("#item_orden").val() * 1 + 1)
+                    $("#override").val("0")
                 });
 
                 $("#item_agregar").click(function () {

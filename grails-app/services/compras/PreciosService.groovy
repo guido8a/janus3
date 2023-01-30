@@ -1,6 +1,7 @@
 package compras
 
 import grails.gorm.transactions.Transactional
+import janus.VolumenesObra
 
 @Transactional
 
@@ -602,7 +603,8 @@ class PreciosService {
 
     def actualizaOrden(volumen, tipo) {
 
-        def vlob = VolumenesObra.findAll("from VolumenesObra where obra = ${volumen.obra.id} order by orden asc,id desc")
+//        def vlob = VolumenesObra.findAll("from VolumenesObra where obra = ${volumen.obra.id} order by orden asc,id desc")
+        def vlob = VolumenesObra.findAllByObra(volumen.obra, [sort: 'orden'], [sort: 'id', order: 'desc'])
 //        println "actualizar orden !!!!! /n" + vlob
         def dist = 1
         def prev = null

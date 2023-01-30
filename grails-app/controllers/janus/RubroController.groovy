@@ -3,6 +3,7 @@ package janus
 import janus.apus.ArchivoEspecificacion
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class RubroController {
 

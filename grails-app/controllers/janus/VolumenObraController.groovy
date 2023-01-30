@@ -6,12 +6,16 @@ import seguridad.Persona
 class VolumenObraController {
     def buscadorService
     def preciosService
+    def dbConnectionService
 
     def volObra() {
 
         def grupoFiltrado = Grupo.findAllByCodigoNotIlikeAndCodigoNotIlikeAndCodigoNotIlike('1', '2', '3');
         def subpreFiltrado = []
         def var
+        def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
+        def listaItems = [1: 'Nombre', 2: 'Código']
+
 //        println "grupo "+grupoFiltrado.id
 //        def grupos = Grupo.list([sort: "descripcion"])
         subpreFiltrado = SubPresupuesto.findAllByGrupo(grupoFiltrado[0],[sort:"descripcion"])
@@ -51,7 +55,7 @@ class VolumenObraController {
 
         [obra: obra, volumenes: volumenes, campos: campos, subPresupuesto1: subPresupuesto1, grupoFiltrado: grupoFiltrado,
          subpreFiltrado: subpreFiltrado, grupos: grupoFiltrado, persona: persona, vmc: valorMenorCuantia, duenoObra: duenoObra,
-        valorLicitacion: valorLicitacion]
+        valorLicitacion: valorLicitacion, listaRbro: listaRbro, listaItems: listaItems]
     }
 
     def cargarSubpres() {
@@ -122,8 +126,10 @@ class VolumenObraController {
 
             volumen = new VolumenesObra()
 //            def v=VolumenesObra.findByItemAndObra(rubro,obra)
-            def v = VolumenesObra.findAll("from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}")
-//            println "v "+v
+            println "from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}"
+//            def v = VolumenesObra.findAll("from VolumenesObra where obra=${obra.id} and item=${rubro.id} and subPresupuesto=${sbpr.id}")
+            def v = VolumenesObra.findAllByObraAndItemAndSubPresupuesto(obra, rubro, sbpr)
+            println "----v "+v
             if (v.size() > 0) {
                 v = v.pop()
                 if (params.override == "1") {
@@ -266,7 +272,7 @@ class VolumenObraController {
         } else {
             valores = preciosService.rbro_pcun_v4(obra.id, orden)
         }
-//        println("-->>" + valores)
+        println("-->>" + valores)
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
@@ -470,4 +476,31 @@ class VolumenObraController {
 //        println("cronos " + cronogramas)
 
     }
+
+    def listaRubros(){
+        println "listaItems" + params
+        def datos;
+        def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
+        def listaItems = ['itemnmbr', 'itemcdgo']
+
+        def select = "select item__id, itemnmbr, itemcdgo, unddcdgo " +
+                "from item, undd, dprt, sbgr "
+        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id "
+        def sqlTx = ""
+        def item = listaRbro[params.buscarTipo.toInteger()-1]
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def ordn = listaRbro[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by itemnmbr, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos]
+
+    }
+
 }
