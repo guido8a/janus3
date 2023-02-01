@@ -370,19 +370,13 @@ class VolumenObraController {
     }
 
     def tablaCopiarRubro() {
-
-
+        println "params copiar rubro: $params"
         def usuario = session.usuario.id
-
         def persona = Persona.get(usuario)
-
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
-
         def grupo = Grupo.findAllByDireccion(direccion)
-
-
-        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
-
+         println "grupo: $grupo"
+//        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
 
         def obra = Obra.get(params.obra)
 
@@ -409,7 +403,8 @@ class VolumenObraController {
 
         preciosService.ac_rbroObra(obra.id)
 
-        [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100, valores: valores, subPresupuesto1: subPresupuesto1]
+        [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl,
+         indirectos: indirecto * 100, valores: valores]
 
 
     }

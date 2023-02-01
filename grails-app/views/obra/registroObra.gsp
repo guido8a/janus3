@@ -946,13 +946,13 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <g:if test="${obra}">
-    <div class="modal hide fade mediumModal" id="modal-matriz" style=";overflow: hidden;">
-        <div class="modal-header btn-primary">
-            <button type="button" class="close" data-dismiss="modal">×</button>
+    <div id="modal-matriz" style=";overflow: hidden;">
+        %{--<div class="modal-header btn-primary">--}%
+            %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-            <h3 id="modal_title_matriz">
-            </h3>
-        </div>
+            %{--<h3 id="modal_title_matriz">--}%
+            %{--</h3>--}%
+        %{--</div>--}%
 
         <div class="modal-body" id="modal_body_matriz">
             <div id="msg_matriz">
@@ -972,25 +972,28 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                           style="margin-right: 20px; width: 400px"></g:select>
 
                 <p style="margin-top: 20px">Desea volver a generar la matriz? o generar otra matriz</p>
-                <a href="#" class="btn btn-info" id="no">No -> Ver la Matriz existente</a>
+            <div class="btn-group col-md-12">
+                <a href="#" class="btn" id="no">No -> Ver la Matriz existente</a>
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
-                    <a href="#" class="btn btn-danger" id="si">Si -> Generar Matriz</a>
+                    <a href="#" class="btn btn-azul" id="si">Si -> Generar Matriz</a>
                 </g:if>
-                <a href="#" class="btn btn-info" id="cancela" style="margin-left: 200px;">Cancelar</a>
+                <a href="#" class="btn" id="cancela" style="margin-left: 10px;">Cancelar</a>
 
+            </div>
+            </div>
             </div>
 
             <div id="datos_matriz" style="text-align: center">
                 <span>Seleccione el subpresupuesto:</span>
                 <g:select name="matriz_sub" from="${subs}" noSelection="['0': 'Todos los subpresupuestos']"
-                          optionKey="id" optionValue="descripcion" style="margin-right: 20px"></g:select>
+                          optionKey="id" optionValue="descripcion" style="margin-right: 20px; margin-bottom: 10px"></g:select>
             <p>Generar con desglose de Transporte <input type="checkbox" id="si_trans" style="margin-top: -3px"
                                                          checked="true">
                 <g:if test="${FormulaPolinomica.countByObra(janus.Obra.get(obra?.id)) > 0}">
                     <p>Borrar la Fórmula Polinómica<input type="checkbox" id="borra_fp" style="margin-top: -3px" checked="true">
                 </g:if>
             </p>
-                <a href="#" class="btn btn-success" id="ok_matiz">Generar</a>
+                <a href="#" class="btn btn-azul" id="ok_matiz">Generar</a>
             </div>
         </div>
 
@@ -1666,11 +1669,22 @@ function buscaObras() {
             }
         });
 
+        $("#modal-matriz").dialog({
+            autoOpen: false,
+            resizable: true,
+            modal: true,
+            draggable: false,
+            width: 460,
+            height: 240,
+            position: 'center',
+            title: 'Rubros'
+        });
+
         $("#matriz").click(function () {
             $("#modal_title_matriz").html("Generar matriz");
             $("#datos_matriz").hide();
             $("#msg_matriz").show();
-            $("#modal-matriz").modal("show")
+            $("#modal-matriz").dialog("open")
         });
 
         $("#no").click(function () {

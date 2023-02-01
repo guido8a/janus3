@@ -84,15 +84,15 @@
             <div class="col-md-12 btn-group" role="navigation" style="margin-left: 35px;">
                 <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" 
                    class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
-                    <i class="icon-arrow-left"></i>
+                    <i class="fa fa-arrow-left"></i>
                     Regresar
                 </a>
                 <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">
-                    <i class="icon-table"></i>
+                    <i class="fa fa-table"></i>
                     Calcular
                 </a>
                 <a href="#" class="btn btn-ajax btn-new" id="reporteGrupos" title="Reporte Grupos/Subgrupos" style="display: none">
-                    <i class="icon-print"></i>
+                    <i class="fa fa-print"></i>
                     Reporte Grupos/Subgrupos
                 </a>
             </div>

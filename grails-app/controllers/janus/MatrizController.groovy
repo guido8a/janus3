@@ -17,53 +17,185 @@ class MatrizController {
         [obra:obra,fp:fp]
     }
 
-    def pantallaMatriz(){
+//    def pantallaMatriz(){
+//        println "....." + params
+//        def obra = params.id
+//        def cn = dbConnectionService.getConnection()
+//        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra} and sbpr__id = ${params.sbpr} order by  1"
+////        println "sql desc "+sql
+//        def columnas = []
+//        def filas = []
+//        def cont = 0
+//        def indices = ["mano":[],"saldo":[],"total":[]]
+//        cn.eachRow(sql.toString()){r->
+//            def col = ""
+//            if (r[2] != "R") {
+//                def parts = r[1].split("_")
+//                //println "parts "+parts
+//                //def num
+//                try{
+//                    //col = parts[0].toLong()
+//                    col = Item.get(parts[0].toLong()).nombre
+//
+//                }catch (e){
+//                    //println "matriz controller l 37: "+"error: " + e
+//                    col = parts[0]
+//                }
+//
+//                if(col =~ "Mano de Obra"){
+//                    indices["mano"].add(cont)
+//                }
+//                if(col =~ "SALDO"){
+//                    indices["saldo"].add(cont)
+//                }
+//                if(col =~ "TOTAL"){
+//                    indices["total"].add(cont)
+//                }
+//                //println "col "+col
+//                col += " " + parts[1]?.replaceAll("T","<br/>Total")?.replaceAll("U","<br/>Unitario")
+//            }
+//
+//
+//            columnas.add([r[0], col, r[2]])
+//            cont++
+//        }
+//       // println "indices "+indices
+//        session.indices = indices
+//        def titulo = Obra.get(obra).desgloseTransporte == "S" ? 'Matriz con desglose de Transporte' : 'Matriz sin desglose de Transporte'
+//        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr]
+//    }
+
+    def pantallaMatriz() {
         println "....." + params
+        def inicio = new Date()
         def obra = params.id
         def cn = dbConnectionService.getConnection()
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra} and sbpr__id = ${params.sbpr} order by  1"
-//        println "sql desc "+sql
+        println "sql desc "+sql
         def columnas = []
-        def filas = []
+        def nombre = ""
         def cont = 0
-        def indices = ["mano":[],"saldo":[],"total":[]]
-        cn.eachRow(sql.toString()){r->
+        def indices = ["mano": [], "saldo": [], "total": []]
+        def filas = ""
+        def filasF = ""
+        cn.eachRow(sql.toString()) { r ->
             def col = ""
             if (r[2] != "R") {
                 def parts = r[1].split("_")
                 //println "parts "+parts
-                //def num
-                try{
-                    //col = parts[0].toLong()
-                    col = Item.get(parts[0].toLong()).nombre
-
-                }catch (e){
+                try {
+                    nombre = Item.get(parts[0].toLong()).nombre
+                    col = nombre.size() > 60 ? nombre[0..60] + "..." : nombre
+                } catch (e) {
                     //println "matriz controller l 37: "+"error: " + e
                     col = parts[0]
                 }
 
-                if(col =~ "Mano de Obra"){
+                if (col =~ "Mano de Obra") {
                     indices["mano"].add(cont)
                 }
-                if(col =~ "SALDO"){
+                if (col =~ "SALDO") {
                     indices["saldo"].add(cont)
                 }
-                if(col =~ "TOTAL"){
+                if (col =~ "TOTAL") {
                     indices["total"].add(cont)
                 }
                 //println "col "+col
-                col += " " + parts[1]?.replaceAll("T","<br/>Total")?.replaceAll("U","<br/>Unitario")
+                col += " " + parts[1]?.replaceAll("T", "<br/>Total")?.replaceAll("U", "<br/>Unitario")
             }
-
-
             columnas.add([r[0], col, r[2]])
             cont++
         }
-       // println "indices "+indices
-        session.indices = indices
+//        println "columnas $columnas"
+
+
+        def cn2 = dbConnectionService.getConnection()
+        def fin = new Date()
+
+//        println "1---- ${TimeCategory.minus(fin, inicio)}"
+
+        filas = ""
+        filasF = ""
+
+        def estilo
+        def estiloF
+        def offset = params.offset?: 0
+        println("off " + offset)
+        cont = offset.toInteger() + 1
+
+        /** usar el parámetro pagina **/
+        def sq = "select * from valores(${obra}, ${params.sbpr}) order by 1 limit 30 offset $offset"
+        def gris = ""
+        def i = 0
+        println("sq " + sq)
+        cn2.eachRow(sq.toString()) { v ->
+
+            gris = (cont%2==0)? 'gr' : 'bl'
+            estilo = "class=\"rb f_" + cont + " " + gris + "\" color=\"" + gris + "\" f=\"f_" + cont + "\" num=\"" + cont + "\" id='r" + cont + "'"
+            estiloF = "id='rf" + cont + "'"
+//            println "estilo: $estilo"
+            filas += "<tr $estilo>"
+//            filas += "<td class='lb'>${cont}</td><td class='lb'>${v.cdgo}</td><td class='lb'>${v.rbro}</td><td class='lb'>${v.undd?:''}</td><td class='nn'>${v.cntd?:''}</td>"
+            filas += "<td class='lb'>${v.rbro}</td><td class='lb'>${v.undd?:''}</td><td class='nn'>${v.cntd?:''}</td>"
+            filasF += "<tr $estiloF >"
+            filasF += "<td class='lb estaticas c_0'>${cont}</td><td class='lb estaticas c_1'>${v.cdgo}</td><td class='lb hh'>${v.rbro}</td>"
+            def valores = v.vlor.getArray()
+            i = 5
+
+            for(j in (0..valores.size()-1)) {
+                estilo = "class=\"c_" + i + "\" c=\"" + i + "\""
+                filas += "<td " + estilo + ">" + valores[j] + "</td>"
+                i++
+            }
+
+            filas += "</tr>"
+            filasF += "</tr>"
+            cont++
+        }
+        fin = new Date()
+//        println "2---- ${TimeCategory.minus(fin, inicio)}"
+//        }
+
+        fin = new Date()
+//        println "3---- ${TimeCategory.minus(fin, inicio)}"
+
         def titulo = Obra.get(obra).desgloseTransporte == "S" ? 'Matriz con desglose de Transporte' : 'Matriz sin desglose de Transporte'
-        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr]
+
+        def cont2 = 0
+        def sql2 = "select * from valores(${obra}, ${params.sbpr})"
+        cn.eachRow(sql2.toString()){
+            cont2++
+        }
+
+
+        def resultado
+        def listaImp = [:]
+        def sql3 = "SELECT count(*) from mfcl where obra__id = ${obra} order by 1"
+        cn.eachRow(sql3.toString()){ e->
+            resultado = e[0]
+        }
+
+        def dividido = (resultado.toInteger() / 100)
+        def f = Math.round(dividido)
+        def inicio3 = 0
+        def finalImp = 100
+        def texto
+
+        if(resultado.toInteger() != 0){
+            (1..f).eachWithIndex{ n, m->
+//                    println("entro " + n + " " + m)
+                texto = "Desde ${inicio3 + 1} hasta ${finalImp + 1}"
+                listaImp << ["${m}": "${texto}"]
+                inicio3 = finalImp
+                finalImp = (finalImp +100)
+            }
+        }
+
+//        println("cont " + cont2)
+        [obra: obra, cols: columnas, titulo: titulo, sbpr: params.sbpr, cols: columnas, indices: indices, offset: cont, filas: filas,
+         filasF: filasF, cont: offset.toInteger(), cont2: cont2, listaImpresion: listaImp, existeRubros: resultado]
     }
+
 
     def matrizPolinomica(){
         //println "matriz "+params
