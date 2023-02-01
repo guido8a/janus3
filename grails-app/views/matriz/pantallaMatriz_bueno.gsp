@@ -78,7 +78,7 @@
     </g:if>
 </div>
 
-<div class="col-md-12 btn-group" role="navigation" style="margin-left: 0px;">
+<div class="col-md-5 btn-group" role="navigation" style="margin-left: 0px;">
     <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra])}" class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
         <i class="icon-arrow-left"></i>
         Regresar
@@ -96,7 +96,11 @@
         <i class="icon-print"></i>
         Imprimir A4
     </a>
+</div>
+<div class="col-md-2 btn-group" role="navigation" >
     <input type="text" style="width: 100px;margin-left: 20px;margin-top: 9px;" class="ui-corner-all" id="texto_busqueda">
+</div>
+<div class="col-md-5 btn-group" role="navigation" style="margin-left: -80px;">
     <a href="#" class="btn btn-ajax btn-new" id="buscar" title="Buscar">
         <i class="icon-search"></i>
         Buscar
@@ -117,6 +121,7 @@
 
 %{--${params}--}%
 
+%{--<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: 0;width: 100%;max-width: 100%;overflow-x: hidden">--}%
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: 0;width: 100%;max-width: 100%;overflow-x: hidden">
     <div style="width: 1060px;overflow-x: auto;max-width: 1050px;" class="scroll-pane">
         <table class="table table-bordered table-condensed" style="width: ${cols.size() * 120 - 90}px;max-width: ${cols.size() * 120 - 90}px;">

@@ -1014,7 +1014,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </g:if>
                 <g:else>
                     <span style="margin-left: 100px;">Subpresupuesto:</span>
-                    <g:select name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value" style="margin-right: 20px; width: 400px"/>
+                    <g:select name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
+                              style="margin-right: 20px; width: 400px"/>
                     <a href="#" class="btn btn-info" id="irFP">Ir a la Fórmula Polinómica</a>
                     <a href="#" class="btn btn-info" id="cancelaFP" style="margin-left: 360px;">Cancelar</a>
                 </g:else>
