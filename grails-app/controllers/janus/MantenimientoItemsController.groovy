@@ -474,11 +474,12 @@ class MantenimientoItemsController {
     }
 
     def makeTreeNodePrecios(params) {
-//        println "makeTreeNode.. $params"
+        println "makeTreeNode.. $params"
         def id = params.id
         def tipo = ""
         def liId = ""
         def ico = ""
+        def icoTodos = ""
 
         if(id.contains("_")) {
             id = params.id.split("_")[1]
@@ -556,11 +557,18 @@ class MantenimientoItemsController {
                         hijos = Lugar.findAllByTipoLista(Item.get(id).tipoLista, [sort: 'codigo'])
                         liId = "lg_"
                         ico = ", \"icon\":\"fa fa-underline text-success\""
-                        hijos.each { h ->
-                            clase = ""
-                            tree += "<li id='" + liId + h.id + "_" + id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"lugar"}\" ${ico}}'>"
-                            tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
+                        icoTodos = ", \"icon\":\"fa fa-map-marker-alt text-success\""
+                        if(params.todos == 'true'){
+                            tree += "<li id='" + liId + "all" + "_" + id + "' class='" + "" + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"lugar"}\" ${icoTodos}}'>"
+                            tree += "<a href='#' class='label_arbol'>" + "Todos los lugares" + "</a>"
                             tree += "</li>"
+                        }else{
+                            hijos.each { h ->
+                                clase = ""
+                                tree += "<li id='" + liId + h.id + "_" + id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"lugar"}\" ${ico}}'>"
+                                tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
+                                tree += "</li>"
+                            }
                         }
                         break
                 }
@@ -1704,17 +1712,26 @@ class MantenimientoItemsController {
     }
 
     def formPrecio_ajax() {
+        println "formPrecio_ajax" + params
         def item = Item.get(params.item)
         def lugar = null
-//        println "formPrecio_ajax" + params
+
         if (params.lugar != "all") {
             lugar = Lugar.get(params.lugar)
         }
-        def precioRubrosItemsInstance = new PrecioRubrosItems()
-        precioRubrosItemsInstance.item = item
-        if (lugar) {
-            precioRubrosItemsInstance.lugar = lugar
+
+        def precioRubrosItemsInstance
+
+        if(params.id){
+            precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
+        }else{
+            precioRubrosItemsInstance = new PrecioRubrosItems()
+            precioRubrosItemsInstance.item = item
+            if (lugar) {
+                precioRubrosItemsInstance.lugar = lugar
+            }
         }
+
         return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, lugarNombre: params.nombreLugar, fecha: params.fecha, params: params]
     }
 
@@ -1740,76 +1757,34 @@ class MantenimientoItemsController {
 
     def savePrecio_ajax() {
 
-//        println ("gprecio " + params)
+        println ("gprecio " + params)
 
         def item = Item.get(params."item.id")
         def lugar = Lugar.get(params."lugar.id")
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         def precioRubrosItemsInstance
 
-        if(PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)){
-            precioRubrosItemsInstance = PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)
+        if(params.id){
+            precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
         }else{
-            precioRubrosItemsInstance = new PrecioRubrosItems()
-            precioRubrosItemsInstance.lugar = lugar
-            precioRubrosItemsInstance.item = item
-            precioRubrosItemsInstance.fecha = params.fecha
+            if(PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)){
+                precioRubrosItemsInstance = PrecioRubrosItems.findByItemAndFechaAndLugar(item, params.fecha, lugar)
+            }else{
+                precioRubrosItemsInstance = new PrecioRubrosItems()
+                precioRubrosItemsInstance.lugar = lugar
+                precioRubrosItemsInstance.item = item
+                precioRubrosItemsInstance.fecha = params.fecha
+            }
         }
 
         precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
 
         if(!precioRubrosItemsInstance?.save(flush: true)){
             println("error al guardar el precio del rubro " +  precioRubrosItemsInstance.errors)
-            render "NO"
+            render "NO_Error al guardar el precio"
         }else{
-            render "OK"
+            render "OK_Precio guardado correctamente"
         }
-
-
-//        println "savePrecio_ajax" + params
-//        def item = Item.get(params.item.id)
-//        params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-//        if (params.lugar.id != "-1") {
-//            def precioRubrosItemsInstance = new PrecioRubrosItems(params)
-//            precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-//            if (precioRubrosItemsInstance.save(flush: true)) {
-//                render "OK"
-//            } else {
-//                println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
-//                render "NO"
-//            }
-//        } else {
-//            if (params.ignore == "true") {
-//                def error = 0
-//                Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
-//                    def precios = PrecioRubrosItems.withCriteria {
-//                        and {
-//                            eq("lugar", lugar)
-//                            eq("fecha", params.fecha)
-//                            eq("item", item)
-//                        }
-//                    }
-//                    if (precios.size() == 0) {
-//                        def precioRubrosItemsInstance = new PrecioRubrosItems()
-//                        precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-//                        precioRubrosItemsInstance.lugar = lugar
-//                        precioRubrosItemsInstance.item = Item.get(params.item.id)
-//                        precioRubrosItemsInstance.fecha = params.fecha
-//                        if (precioRubrosItemsInstance.save(flush: true)) {
-////                            println "OK"
-//                        } else {
-//                            println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
-//                            error++
-//                        }
-//                    }
-//                }
-//                if (error == 0) {
-//                    render "OK"
-//                } else {
-//                    render "NO"
-//                }
-//            }
-//        }
     }
 
     def deletePrecio_ajax() {
@@ -1983,15 +1958,17 @@ class MantenimientoItemsController {
     def showLg_ajax() {
         println "showLg_ajax... params: $params"
 
-//        if (params.fecha == "all") {
-//            params.todasLasFechas = "true"
-//        } else {
-//            params.todasLasFechas = "false"
-//            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-//        }
+        if (params.fecha == "all") {
+            params.todasLasFechas = "true"
+        } else {
+            params.todasLasFechas = "false"
+//            println(g.formatDate(date: params.fecha, format: 'dd-MM-yyyy'))
+            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+//            params.fecha = new Date()
+        }
 
 //        params.fecha = new Date().format("yyyy-MM-dd")
-        params.fecha = new Date()
+//        params.fecha = new Date()
 
 //        def parts = params.id.split("_")
 //        def itemId = parts[0]
@@ -2001,8 +1978,8 @@ class MantenimientoItemsController {
         def item = Item.get(params.item)
         def lugar = Lugar.get(params.id)
 
-//        def operador = params.operador
-        def operador = ""
+        def operador = params.operador
+//        def operador = "="
         def fecha = params.fecha
 
         def lugarNombre
@@ -2010,31 +1987,34 @@ class MantenimientoItemsController {
         if (params.todasLasFechas == "true") {
             fecha = null
         }
-//        if (lugarId == "all") {
-//            lugarNombre = "todos los lugares"
-//        } else {
-//            def l = Lugar.get(lugarId)
-//            lugarNombre = l.descripcion + " (" + (l.tipoLista ? l.tipoLista?.descripcion : 'sin tipo') + ")"
 
+        if (params.id == "all") {
+            lugarNombre = "todos los lugares"
+        } else {
             lugarNombre = lugar.descripcion + " (" + (lugar.tipoLista ? lugar.tipoLista?.descripcion : 'sin tipo') + ")"
-//        }
+        }
 
         def r = calcPrecio([
 //                lugarId: lugarId,
-                lugarId: lugar.id,
+                lugarId: lugar?.id ?: 'all',
                 fecha: params.fecha,
-                operador: '=',
+//                operador: '=',
+                operador: operador,
 //                todasLasFechas: params.todasLasFechas,
                 todasLasFechas: false,
 //                itemId: itemId
                 itemId: item.id
         ])
 
+
 //        return [item: item, lugarNombre: lugarNombre, lugarId: lugarId, precios: r.precios, lgar: lugarId == "all", fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
 //                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
 
-        return [item: item, lugarNombre: lugarNombre, lugarId: lugar.id, precios: r.precios, lgar: false, fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
+        return [item: item, lugarNombre: lugarNombre, lugarId: lugar?.id ?: 'all', precios: r.precios, lgar: params.id == "all", fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
                 params: params, precioRef: r.precioRef, anioRef: r.anioRef]
+
+//        return [item: item, lugarNombre: lugarNombre, lugarId: lugar.id, precios: r.precios, lgar: false, fecha: operador == "=" ? fecha.format("dd-MM-yyyy") : null,
+//                params: params, precioRef: r.precioRef, anioRef: r.anioRef]
     }
 
     def formLg_ajax() {

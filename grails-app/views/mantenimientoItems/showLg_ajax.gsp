@@ -1,19 +1,19 @@
-<div class="tituloTree">Precios de: ${item.nombre} (${item.unidad?.codigo?.trim()}) <br> Lista: ${lugarNombre}</div>
+<legend>Precios de: ${item.nombre} (${item.unidad?.codigo?.trim()}) <br> Lista: ${lugarNombre}</legend>
 
 <div style="height: 35px; width: 100%;">
     <div class="btn-group pull-left">
         <g:if test="${session.perfil.codigo in ['CSTO', 'RBRO']}">
-            <a href="#" class="btn btn-ajax" id="btnNew">
-                <i class="icon-money"></i>
+            <a href="#" class="btn btn-primary" id="btnNew">
+                <i class="fa fa-money-bill"></i>
                 Nuevo Precio
             </a>
-            <a href="#" class="btn btn-success btn-ajax" id="btnSave">
-                <i class="icon-save"></i>
-                Guardar
-            </a>
+        %{--            <a href="#" class="btn btn-success btn-ajax" id="btnSave">--}%
+        %{--                <i class="fa fa-save"></i>--}%
+        %{--                Guardar--}%
+        %{--            </a>--}%
             <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
-                <a href="#" class="btn btn-ajax" id="btnCalc${item.departamento.subgrupo.grupoId}">
-                    <i class="icon-money"></i>
+                <a href="#" class="btn btn-warning" id="btnCalc${item.departamento.subgrupo.grupoId}">
+                    <i class="fa fa-gear"></i>
                     Calcular precio
                 </a>
             </g:if>
@@ -28,8 +28,8 @@
 
     <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
         <div class="btn-group pull-left">
-            <a href="#" class="btn btn-ajax" id="btnPrint" style="display: none; margin-left: 10px" data-id="${item.id}" data-nombre="${item.nombre}">
-                <i class="icon-print"></i>
+            <a href="#" class="btn btn-primary" id="btnPrint" style="display: none; margin-left: 10px" data-id="${item.id}" data-nombre="${item.nombre}">
+                <i class="fa fa-print"></i>
                 Imprimir
             </a>
         </div>
@@ -39,49 +39,62 @@
 <div id="divTabla" style="height: 630px; width: 100%; overflow-x: hidden; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover table-condensed" id="tablaPrecios">
         <thead>
-        <tr>
+        <tr style="width: 100%">
             <g:if test="${lgar}">
-                <th>Lugar</th>
+                <th style="width: 35%">Lugar</th>
             </g:if>
-            <th>Fecha</th>
-            <th class="precio">Precio</th>
-            <th class="delete"></th>
+            <th style="width: 20%">Fecha</th>
+            <th class="precio" style="width: 19%">Precio</th>
+            <th class="delete" style="width: 25%"></th>
+            <th style="width: 1%"></th>
         </tr>
         </thead>
         <tbody>
         <g:each in="${precios}" var="precio" status="i">
-            <tr>
+            <tr style="width: 100%">
                 <g:if test="${lgar}">
-                    <td>
+                    <td style="width: 35%">
                         ${precio.lugar.descripcion}
                     </td>
                 </g:if>
-                <td>
+                <td style="width: 20%">
                     <g:formatDate date="${precio.fecha}" format="dd-MM-yyyy"/>
                 </td>
 
                 <g:if test="${session.perfil.codigo == 'CSTO'}">
-                    <td class="precio textRight ${precio.registrado != 'R' ? 'editable' : ''}" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">
+                    <td class="precio textRight " style="width: 19%" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
                         <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
                     </td>
-                    <td class="delete">
-                        <g:if test="${precio.registrado != 'R'}">
-                            <a href="#" class="btn btn-danger btn-small btnDelete" rel="tooltip" title="Eliminar" id="${precio.id}">
-                                <i class="icon-trash icon-large"></i>
+                %{--                    <td class="precio textRight ${precio.registrado != 'R' ? 'editable' : ''}" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">--}%
+                %{--                        <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>--}%
+                %{--                    </td>--}%
+
+                    <td class="delete" style="width: 25%">
+                        <g:if test="${precio?.registrado != 'R'}">
+                            <a href="#" class="btn btn-info btn-xs btnEditar" title="Editar valor" data-id="${precio.id}">
+                                <i class="fa fa-edit"></i>
                             </a>
                         </g:if>
-                        <g:else>
-                            <a href="#" class="btn btn-danger btn-small btnDeleteReg" rel="tooltip" title="Eliminar" id="${precio.id}">
-                                <i class="icon-trash icon-large"></i>
-                            </a>
-                        </g:else>
+                        <a href="#" class="btn btn-danger btn-xs ${precio.registrado != 'R' ? 'btnDelete' : 'btnDeleteReg'}" rel="tooltip" title="Eliminar" id="${precio.id}">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                        %{--                        <g:if test="${precio.registrado != 'R'}">--}%
+                        %{--                            <a href="#" class="btn btn-danger btn-xs btnDelete" rel="tooltip" title="Eliminar" id="${precio.id}">--}%
+                        %{--                                <i class="fa fa-trash"></i>--}%
+                        %{--                            </a>--}%
+                        %{--                        </g:if>--}%
+                        %{--                        <g:else>--}%
+                        %{--                            <a href="#" class="btn btn-danger btn-xs btnDeleteReg" rel="tooltip" title="Eliminar" id="${precio.id}">--}%
+                        %{--                                <i class="fa fa-trash"></i>--}%
+                        %{--                            </a>--}%
+                        %{--                        </g:else>--}%
                     </td>
                 </g:if>
                 <g:else>
-                    <td class="precio textRight" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">
+                    <td class="precio textRight" style="width: 19%" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">
                         <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
                     </td>
-                    <td class="delete">
+                    <td class="delete" style="width: 25%">
 
                     </td>
                 </g:else>
@@ -146,6 +159,7 @@
 </div>
 
 <script type="text/javascript">
+
     function validarNum(ev) {
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
             (ev.keyCode >= 96 && ev.keyCode <= 105) ||
@@ -154,80 +168,168 @@
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-    $('[rel=tooltip]').tooltip();
+    // $(".editable").first().addClass("selected");
 
-    $(".editable").first().addClass("selected");
+    $(".btnEditar").click(function () {
+        var id = $(this).data("id");
+        createEditPrecio(id);
+    });
 
     $("#btnNew").click(function () {
+        createEditPrecio();
+        %{--$.ajax({--}%
+        %{--    type    : "POST",--}%
+        %{--    url     : "${createLink(action:'formPrecio_ajax')}",--}%
+        %{--    data    : {--}%
+        %{--        item        : "${item.id}",--}%
+        %{--        lugar       : "${lugarId}",--}%
+        %{--        nombreLugar : "${lugarNombre}",--}%
+        %{--        fecha       : "${fecha}",--}%
+        %{--        all         : "${params.all}",--}%
+        %{--        ignore      : "${params.ignore}"--}%
+        %{--    },--}%
+        %{--    success : function (msg) {--}%
+        %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+        %{--        var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');--}%
+
+        %{--        btnSave.click(function () {--}%
+        %{--            if ($("#frmSave").valid()) {--}%
+        %{--                btnSave.replaceWith(spinner);--}%
+        %{--            }--}%
+
+        %{--            $.ajax({--}%
+        %{--                type    : "POST",--}%
+        %{--                url     : $("#frmSave").attr("action"),--}%
+        %{--                data    : $("#frmSave").serialize(),--}%
+        %{--                success : function (msg) {--}%
+        %{--                    if (msg === "OK") {--}%
+        %{--                        $("#modal-tree").modal("hide");--}%
+        %{--                        var loading = $("<div></div>");--}%
+        %{--                        loading.css({--}%
+        %{--                            textAlign : "center",--}%
+        %{--                            width     : "100%"--}%
+        %{--                        });--}%
+        %{--                        loading.append("Cargando....Por favor espere...<br/>").append(spinnerBg);--}%
+        %{--                        $("#info").html(loading);--}%
+        %{--                        $.ajax({--}%
+        %{--                            type    : "POST",--}%
+        %{--                            url     : "${createLink(action:'showLg_ajax')}",--}%
+        %{--                            data    : {--}%
+        %{--                                id       : "${params.id}",--}%
+        %{--                                all      : "${params.all}",--}%
+        %{--                                ignore   : "${params.ignore}",--}%
+        %{--                                fecha    : "${params.fecha}",--}%
+        %{--                                operador : "${params.operador}"--}%
+        %{--                            },--}%
+        %{--                            success : function (msg) {--}%
+        %{--                                $("#info").html(msg);--}%
+        %{--                            }--}%
+        %{--                        });--}%
+        %{--                    } else {--}%
+        %{--                        var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
+        %{--                        $("#modalTitle").html("Error");--}%
+        %{--                        $("#modalBody").html("Ha ocurrido un error al guardar");--}%
+        %{--                        $("#modalFooter").html("").append(btnClose);--}%
+        %{--                    }--}%
+        %{--                }--}%
+        %{--            });--}%
+
+        %{--            return false;--}%
+        %{--        });--}%
+
+        %{--        $("#modalTitle").html("Crear Precio");--}%
+        %{--        $("#modalBody").html(msg);--}%
+        %{--        $("#modalFooter").html("").append(btnOk).append(btnSave);--}%
+        %{--        $("#modal-tree").modal("show");--}%
+        %{--        $("#fechaPrecio").val($("#fcDefecto").val())--}%
+        %{--    }--}%
+        %{--});--}%
+        %{--return false;--}%
+    });
+
+
+    function createEditPrecio(precio) {
+        var title = precio ? "Editar" : "Nuevo";
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action:'formPrecio_ajax')}",
+            url     : "${createLink( action:'formPrecio_ajax')}",
             data    : {
                 item        : "${item.id}",
                 lugar       : "${lugarId}",
                 nombreLugar : "${lugarNombre}",
                 fecha       : "${fecha}",
                 all         : "${params.all}",
-                ignore      : "${params.ignore}"
+                ignore      : "${params.ignore}",
+                id: precio
             },
             success : function (msg) {
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
-
-                btnSave.click(function () {
-                    if ($("#frmSave").valid()) {
-                        btnSave.replaceWith(spinner);
-                    }
-
-                    $.ajax({
-                        type    : "POST",
-                        url     : $("#frmSave").attr("action"),
-                        data    : $("#frmSave").serialize(),
-                        success : function (msg) {
-                            if (msg === "OK") {
-                                $("#modal-tree").modal("hide");
-                                var loading = $("<div></div>");
-                                loading.css({
-                                    textAlign : "center",
-                                    width     : "100%"
-                                });
-                                loading.append("Cargando....Por favor espere...<br/>").append(spinnerBg);
-                                $("#info").html(loading);
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action:'showLg_ajax')}",
-                                    data    : {
-                                        id       : "${params.id}",
-                                        all      : "${params.all}",
-                                        ignore   : "${params.ignore}",
-                                        fecha    : "${params.fecha}",
-                                        operador : "${params.operador}"
-                                    },
-                                    success : function (msg) {
-                                        $("#info").html(msg);
-                                    }
-                                });
-                            } else {
-                                var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                                $("#modalTitle").html("Error");
-                                $("#modalBody").html("Ha ocurrido un error al guardar");
-                                $("#modalFooter").html("").append(btnClose);
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditP",
+                    title : title + " precio",
+                    // class : "modal-sm",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-                        }
-                    });
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormPrecio();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
-                    return false;
-                });
+    function submitFormPrecio() {
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'OK'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(tipoSeleccionado === 1){
+                                cargarMateriales();
+                                recargarMateriales();
+                            }else if(tipoSeleccionado === 2){
+                                cargarMano();
+                                recargaMano();
+                            }else{
+                                cargarEquipo();
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
-                $("#modalTitle").html("Crear Precio");
-                $("#modalBody").html(msg);
-                $("#modalFooter").html("").append(btnOk).append(btnSave);
-                $("#modal-tree").modal("show");
-                $("#fechaPrecio").val($("#fcDefecto").val())
-            }
-        });
-        return false;
-    });
+
 
     $("#btnSave").click(function () {
         $("#dlgLoad").dialog("open");
@@ -501,4 +603,3 @@
     })
 
 </script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandler.js')}"></script>
