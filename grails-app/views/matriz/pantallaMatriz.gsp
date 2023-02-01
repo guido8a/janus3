@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-    <meta name="layout" content="main">
+    <meta name="layout" content="mainMatriz">
     <title>
         ${titulo}
     </title>
@@ -80,20 +80,20 @@
 
 <div class="col-md-5 btn-group" role="navigation" style="margin-left: 0px;">
     <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra])}" class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
-        <i class="icon-arrow-left"></i>
+        <i class="fa fa-arrow-left"></i>
         Regresar
     </a>
     <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btn btn-ajax btn-new btnFormula"
             params="[obra: obra, sbpr: params.sbpr]" title="Coeficientes">
-        <i class="icon-table"></i>
+        <i class="fa fa-table"></i>
         Fórmula polinómica
     </g:link>
     <a href="${g.createLink(controller: 'reportes', action: 'imprimeMatriz', id: "${obra}")}" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">
-        <i class="icon-print"></i>
+        <i class="fa fa-print"></i>
         Imprimir A3
     </a>
     <a href="${g.createLink(controller: 'reportes4', action: 'imprimeMatrizA4', id: "${obra}")}" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">
-        <i class="icon-print"></i>
+        <i class="fa fa-print"></i>
         Imprimir A4
     </a>
 </div>
@@ -102,19 +102,19 @@
 </div>
 <div class="col-md-5 btn-group" role="navigation" style="margin-left: -80px;">
     <a href="#" class="btn btn-ajax btn-new" id="buscar" title="Buscar">
-        <i class="icon-search"></i>
+        <i class="fa fa-search"></i>
         Buscar
     </a>
     <a href="#" class="btn btn-ajax btn-new" id="reset" title="Resetear">
-        <i class="icon-refresh"></i>
+        <i class="fa fa-refresh"></i>
         Limpiar selección
     </a>
     <a href="${g.createLink(controller: 'reportes', action: 'matrizExcel', id: "${obra}")}" class="btn btn-ajax btn-new" id="reset" title="Exportar matriz a Excel">
-        <i class="icon-print"></i>
+        <i class="fa fa-print"></i>
         a Excel
     </a>
     <a href="${g.createLink(controller: 'reportes2', action: 'reporteDesgloseEquipos', id: "${obra}")}" class="btn btn-ajax btn-new" id="desglose" title="Desglose Equipos">
-        <i class="icon-print"></i>
+        <i class="fa fa-print"></i>
         Imprimir Desglose
     </a>
 </div>
