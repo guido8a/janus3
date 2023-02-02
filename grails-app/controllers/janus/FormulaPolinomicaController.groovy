@@ -3,6 +3,7 @@ package janus
 import groovy.json.JsonBuilder
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class FormulaPolinomicaController {
 

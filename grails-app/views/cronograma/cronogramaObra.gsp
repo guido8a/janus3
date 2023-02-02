@@ -3,8 +3,12 @@
 <head>
     <meta name="layout" content="main">
 
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
+    <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
+    <asset:javascript src="/jquery/plugins/box/css/jquery.luz.box.css"/>
+    <asset:stylesheet src="/apli/cronograma.css"/>
+
+    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
     <link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">
 
     <title>Cronograma</title>
@@ -13,8 +17,8 @@
 
 <body>
 <g:set var="meses" value="${obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)}"/>
-%{--<g:set var="plazoOk" value="${detalle.findAll { it.dias > 0 }.size() > 0}"/>--}%
-<g:set var="plazoOk" value="${(obra.plazoEjecucionMeses + obra.plazoEjecucionDias) > 0}"/>
+<g:set var="plazoOk" value="${detalle.findAll { it.dias > 0 }.size() > 0}"/>
+%{--<g:set var="plazoOk" value="${(obra.plazoEjecucionMeses + obra.plazoEjecucionDias) > 0}"/>--}%
 <g:set var="matrizOk" value="${tieneMatriz}"/>
 <g:set var="sum" value="${0}"/>
 
@@ -272,7 +276,7 @@
             </div>
         </g:if>
         <g:elseif test="${!plazoOk}">
-            <div class="alert alert-error">
+            <div class="alert alert-error" style="border-style: solid; border-width: 1px; border-color: #0A246A">
                 <i class="icon-warning-sign icon-2x pull-left"></i>
                 <h4>Error</h4>
                 <p>

@@ -6,6 +6,7 @@
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
     <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
+    <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
     %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
     %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
@@ -842,7 +843,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </a>
         <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>
         
-            <a href="#" id="btnFormula" class="btn"><i class="icon-money"></i>Fórmula Pol.< 
+            <a href="#" id="btnFormula" class="btn"><i class="fa fa-money-bill"></i> Fórmula Pol.
             
         <a href="#" id="btnRubros" class="btn"><i class="icon-money"></i>Rubros</a>
         <a href="#" id="btnDocumentos" class="btn"><i class="icon-file"></i>Documentos</a>
@@ -999,13 +1000,13 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
     </div>
 
-    <div class="modal hide fade mediumModal" id="modal-formula" style=";overflow: hidden;">
-        <div class="modal-header btn-primary">
-            <button type="button" class="close" data-dismiss="modal">×</button>
+    <div id="modal-formula">
+        %{--<div class="modal-header btn-primary">--}%
+            %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-            <h3 id="modal_title_formula">
-            </h3>
-        </div>
+            %{--<h3 id="modal_title_formula">--}%
+            %{--</h3>--}%
+        %{--</div>--}%
 
         <div class="modal-body" id="modal_body_formula">
             <div id="msg_formula">
@@ -1014,10 +1015,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </g:if>
                 <g:else>
                     <span style="margin-left: 100px;">Subpresupuesto:</span>
-                    <g:select name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
-                              style="margin-right: 20px; width: 400px"/>
-                    <a href="#" class="btn btn-info" id="irFP">Ir a la Fórmula Polinómica</a>
-                    <a href="#" class="btn btn-info" id="cancelaFP" style="margin-left: 360px;">Cancelar</a>
+                    <g:select class="col-md-12" name="matriz_genFP" from="${sbprMF}" optionKey="key" optionValue="value"
+                              style="margin-right: 20px;"/>
+                    <div class="col-md-12" style="margin-top: 30px">
+                    <a href="#" class="btn btn" id="irFP">Ir a la Fórmula Polinómica</a>
+                    <a href="#" class="btn btn" id="cancelaFP" style="margin-left: 60px;">Cancelar</a>
+                    </div>
                 </g:else>
             </div>
         </div>
@@ -1686,6 +1689,7 @@ function buscaObras() {
             $("#datos_matriz").hide();
             $("#msg_matriz").show();
             $("#modal-matriz").dialog("open")
+            $(".ui-dialog-titlebar-close").html("x")
         });
 
         $("#no").click(function () {
@@ -1760,6 +1764,7 @@ function buscaObras() {
 //                    if (sp != "-1")
 
             $("#dlgLoad").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
 
             $.ajax({
                 type: "POST",
@@ -1855,12 +1860,14 @@ function buscaObras() {
         $("#eliminarObra").click(function () {
             if (${obra?.id != null}) {
                 $("#eliminarObraDialog").dialog("open");
+                $(".ui-dialog-titlebar-close").html("x")
             }
         });
 
         $("#cambiarEstado").click(function () {
             if (${obra?.id != null}) {
                 $("#estadoDialog").dialog("open")
+                $(".ui-dialog-titlebar-close").html("x")
             }
         });
 
@@ -1878,6 +1885,7 @@ function buscaObras() {
             }
             else {
                 $("#dlgVerificacion").dialog("open");
+                $(".ui-dialog-titlebar-close").html("x")
             }
         });
 
@@ -1952,9 +1960,11 @@ function buscaObras() {
 
         $("#copiarObra").click(function () {
             $("#copiarDialog").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
         });
         $("#copiarObraOfe").click(function () {
             $("#copiarDialogOfe").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
         });
 
         $("#btnRubros").click(function () {
@@ -2151,12 +2161,14 @@ function buscaObras() {
 
         $("#btn-consultar_CPC").click(function () {
             $("#dlgLoad").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
             busqueda_CPC();
         });
 
 
         $("#btnImprimir").click(function () {
             $("#dlgLoad").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
             location.href = "${g.createLink(controller: 'reportes', action: 'reporteRegistro', id: obra?.id)}"
             $("#dlgLoad").dialog("close")
         });
@@ -2279,6 +2291,7 @@ function buscaObras() {
             buttons: {
                 "Aceptar": function () {
                     $("#dlgLoad").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
                     $("#divOk").hide();
                     $("#divError").hide();
                     var originalId = "${obra?.id}";
@@ -2347,6 +2360,7 @@ function buscaObras() {
             buttons: {
                 "Aceptar": function () {
                     $("#dlgLoad").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
                     var estadoCambiado = $("#estado").val();
 
                     if (estadoCambiado == 'N') {
@@ -2441,6 +2455,7 @@ function buscaObras() {
 
         function fp(url) {
             $("#dlgLoad").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
             $.ajax({
                 async: false,
                 type: "POST",
@@ -2453,11 +2468,23 @@ function buscaObras() {
             });
         }
 
+        $("#modal-formula").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 400,
+            height: 180,
+            position: 'center',
+            title: 'Fórmula Polinómica'
+        });
+
         $("#btnFormula").click(function () {
-            $("#modal_title_formula").html("Fórmula Polinómica");
+//            $("#modal_title_formula").html("Fórmula Polinómica");
             $("#datos_formula").hide();
             $("#msg_formula").show();
-            $("#modal-formula").modal("show")
+            $("#modal-formula").dialog("open")
+            $(".ui-dialog-titlebar-close").html("x")
         });
 
         $("#irFP").click(function () {
@@ -2649,6 +2676,7 @@ function buscaObras() {
                 "Aceptar": function () {
                     if (${volumen?.id != null || formula?.id != null}) {
                         $("#noEliminarDialog").dialog("open")
+                        $(".ui-dialog-titlebar-close").html("x")
                     }
                     else {
                         $.ajax({
@@ -2709,6 +2737,7 @@ function buscaObras() {
             }
             else {
                 $("#dlgVerificacion").dialog("open");
+                $(".ui-dialog-titlebar-close").html("x")
             }
         });
 

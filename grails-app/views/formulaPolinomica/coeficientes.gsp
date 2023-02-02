@@ -7,23 +7,24 @@
         AJUSTE DE LA F.P. Y C. TIPO
     </title>
     %{--gdo--}%
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
 
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
+    <asset:javascript src="/jquery/plugins/jstree/jquery.jstree.js"/>
+    <asset:javascript src="/jquery/plugins/jstree/_lib/jquery.cookie.js"/>
+    <asset:stylesheet src="apli/tree.css"/>
 
-
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
-
-    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jstreegrid.js')}"></script>
-    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>
-
-    <script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">
-
-    <link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+    %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>--}%
+    %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jstreegrid.js')}"></script>--}%
+    %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">--}%
+    %{--<link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>--}%
 
 
     <style type="text/css">
@@ -124,7 +125,7 @@
 
 <body>
 <g:if test="${flash.message}">
-    <div class="span12">
+    <div class="col-md-12">
         <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
             <a class="close" data-dismiss="alert" href="#">×</a>
             ${flash.message}
@@ -132,14 +133,14 @@
     </div>
 </g:if>
 
-<div class="span12 hide" style="margin-bottom: 10px;" id="divError">
+<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divError">
     <div class="alert alert-error" role="status">
         <a class="close" data-dismiss="alert" href="#">×</a>
         <span id="spanError"></span>
     </div>
 </div>
 
-<div class="span12 hide" style="margin-bottom: 10px;" id="divOk">
+<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divOk">
     <div class="alert alert-info" role="status">
         <a class="close" data-dismiss="alert" href="#">×</a>
         <span id="spanOk"></span>
@@ -152,19 +153,22 @@
 
 <div class="btn-toolbar" style="margin-top: 15px;">
     <div class="btn-group">
-        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" id="btnRegresar" class="btn " title="Regresar a la obra">
-            <i class="icon-arrow-left"></i>
+        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
+           id="btnRegresar" class="btn " title="Regresar a la obra">
+            <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
     </div>
 
     <div class="btn-group" data-toggle="buttons-radio">
-        <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'p', sbpr: params.sbpr]" class="btn btn-info ${tipo == 'p' ? 'active' : ''} btn-tab">
-            <i class="icon-cogs"></i>
+        <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'p', sbpr: params.sbpr]"
+                class="btn btn-info ${tipo == 'p' ? 'active' : ''} btn-tab">
+            <i class="fa fa-cogs"></i>
             Fórmula polinómica
         </g:link>
-        <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'c', sbpr: params.sbpr]" class="btn btn-info  ${tipo == 'c' ? 'active' : ''} btn-tab">
-            <i class="icon-group"></i>
+        <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'c', sbpr: params.sbpr]"
+                class="btn btn-info  ${tipo == 'c' ? 'active' : ''} btn-tab">
+            <i class="fa-solid fa-users"></i>
             Cuadrilla Tipo
         </g:link>
     </div>
@@ -172,12 +176,13 @@
     <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
         <a href="#" class="btn " title="Reiniciar la Fórmula Polinómica"
            style="margin-top: -10px;" id="btnReiniciarFP">
-            <i class="icon-refresh"></i>
+            <i class="fa fa-eraser"></i>
             Reiniciar la Fórmula Polinomica
         </a>
     </g:if>
-    <g:link controller="reportes5" action="imprimirCoeficientes" id="${obra?.id}" class="btn btnImprimir" title="Imprimir la Fórmula Polinómica" style="margin-top: -10px;">
-        <i class="icon-print"></i>
+    <g:link controller="reportes5" action="imprimirCoeficientes" id="${obra?.id}" class="btn btnImprimir"
+            title="Imprimir la Fórmula Polinómica" style="margin-top: -10px;">
+        <i class="fa fa-print"></i>
         Imprimir coeficientes
     </g:link>
 
@@ -189,30 +194,30 @@
 --}%
         <a href="#" class="btn " title="Borrar la Fórmula Polinómica"
            style="margin-top: -10px;" id="btnEliminarFP">
-            <i class="icon-trash"></i>
+            <i class="fa fa-trash"></i>
             Eliminar Fórmula
         </a>
     </g:if>
 </div>
 
 <div class="row">
-    <div class="span1" style="font-weight: bold;">Total</div>
+    <div class="col-md-1" style="font-weight: bold;">Total</div>
 
-    <div class="span2" id="spanTotal" data-valor='${total}'>
+    <div class="col-md-2" id="spanTotal" data-valor='${total}'>
         <g:formatNumber number="${total}" maxFractionDigits="3" minFractionDigits="3" locale="ec"/>
     </div>
 </div>
 
-<div id="list-grupo" class="span12" role="main" style="margin-top: 5px;margin-left: 0;">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 5px;margin-left: 0;">
 
     <div class="area ui-corner-all" id="formula">
 
-        <div id="formulaLeft" class="left ui-corner-left">
-            <div id="tree"></div>
+        <div id="formulaLeft" class="col-md-5 left ui-corner-left">
+            <div id="tree">asdada</div>
         </div>
 
-        <div id="formulaRight" class="right ui-corner-right">
-            <div id="rightContents" class="hide">
+        <div id="formulaRight" class="col-md-6">
+            <div id="rightContents">
                 %{--<div id="divError" class="alert alert-error hide"></div>--}%
 
                 <div class="btn-toolbar" style="margin-left: 10px; margin-bottom:0;">
@@ -281,7 +286,7 @@
 
 <div id="reiniciarDialog">
     <fieldset>
-        <div class="span3">
+        <div class="col-md-3">
             Esta seguro que desea reiniciar la fórmula polinómica?
         </div>
     </fieldset>
@@ -289,7 +294,7 @@
 
 <div id="borrarDialog">
     <fieldset>
-        <div class="span3">
+        <div class="col-md-3">
             Esta seguro que desea borrar la fórmula polinómica?
         </div>
     </fieldset>

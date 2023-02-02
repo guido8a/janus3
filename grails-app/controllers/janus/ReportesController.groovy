@@ -12,6 +12,7 @@ import jxl.write.*
 
 import java.awt.*
 
+import seguridad.Persona
 //import java.awt.Label
 
 
@@ -2171,7 +2172,7 @@ class ReportesController {
         txtIzq.setAlignment(Element.ALIGN_LEFT);
 
         if (params.encabezado == "1" || params.encabezado == 1) {
-            if (Persona.get(session.usuario.id).departamento?.codigo == 'PRSP') {
+            if (Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU') {
                 if (obra?.departamentoDestino) {
                     def departamentoDestino = Departamento.get(obra?.departamentoDestino?.id)
                     def direccionDestino = departamentoDestino?.direccion
@@ -2976,7 +2977,7 @@ class ReportesController {
         txtIzq.setAlignment(Element.ALIGN_LEFT);
 
         if (params.encabezado == "1" || params.encabezado == 1) {
-            if (Persona.get(session.usuario.id).departamento?.codigo == 'PRSP') {
+            if (Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU') {
                 if (obra?.departamentoDestino) {
                     def departamentoDestino = Departamento.get(obra?.departamentoDestino?.id)
                     def direccionDestino = departamentoDestino?.direccion
@@ -3778,7 +3779,7 @@ class ReportesController {
         txtIzq.setAlignment(Element.ALIGN_LEFT);
 
         if (params.encabezado == "1" || params.encabezado == 1) {
-            if (Persona.get(session.usuario.id).departamento?.codigo == 'PRSP') {
+            if (Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU') {
                 if (obra?.departamentoDestino) {
                     def departamentoDestino = Departamento.get(obra?.departamentoDestino?.id)
                     def direccionDestino = departamentoDestino?.direccion
@@ -4882,9 +4883,9 @@ class ReportesController {
         document.add(tablaFirmas);
 
         /** todo: poner responsable y revisado por ... usar obrasService.esDuenoObra**/
-        if(obraService.esDuenoObra(obra, session.usuario.id) && (tipo == '1') && (session.usuario.departamento.codigo == 'PRSP')){
+        if(obraService.esDuenoObra(obra, persona.id) && (tipo == '1') && (persona.departamento.codigo == 'UTFPU')){
             def funcionCoord = Funcion.findByCodigo('O')
-            def coordinador = PersonaRol.findByFuncionAndPersonaInList(funcionCoord, Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP')))?.persona
+            def coordinador = PersonaRol.findByFuncionAndPersonaInList(funcionCoord, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))?.persona
             PdfPTable tablaPie = new PdfPTable(2);
             tablaPie.setWidthPercentage(100);
             tablaPie.setWidths(arregloEnteros([3, 60]))
@@ -7578,13 +7579,14 @@ class ReportesController {
         def trans= 0
         def tra = 0
 
-        def resMat = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${1})")
+//        def resMat = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${1})")
+        def resMat = Composicion.findAllByObraAndGrupo(obra, Grupo.get(1))
         resMat.sort { it.item.codigo }
 
-        def resMano = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${2})")
+        def resMano = Composicion.findAllByObraAndGrupo(obra, Grupo.get(2))
         resMano.sort { it.item.codigo }
 
-        def resEq = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${3})")
+        def resEq = Composicion.findAllByObraAndGrupo(obra, Grupo.get(3))
         resEq.sort { it.item.codigo }
 
 
