@@ -131,7 +131,7 @@
                         </span>
                     </span>
 
-                    <g:if test="${persona?.departamento?.codigo == 'PRSP'}">
+                    <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
                         <a href="#" class="btn boton btn-primary" id="btnCrearSP" title="Crear subpresupuesto" style="margin-top: -10px;">
                             <i class="icon-plus"></i>
                         </a>

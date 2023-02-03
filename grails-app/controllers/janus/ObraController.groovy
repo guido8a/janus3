@@ -1053,11 +1053,19 @@ class ObraController {
 
         def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
 
+        if(!personas) {
+            println ".. no hay personas"
+            departamentos = Departamento.findAllByDireccion(departamentos.first().direccion)
+            personas =  Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }
+
 //        def personas = Persona.findAllByDepartamento(departamentos)
 
 //        def personas = Persona.findAllByDepartamento(Departamento.get(params.idDep))
 
-//        println("personas " + personas)
+        println("personas " + personas)
+
+        /* si no hay personas del dpto, se carga de la dirección*/
 
         def funcionInsp = Funcion.findByCodigo('I')
         def funcionRevi = Funcion.findByCodigo('R')

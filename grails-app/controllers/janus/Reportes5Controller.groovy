@@ -160,13 +160,13 @@ class Reportes5Controller{
 
         def res = filasAvance(params)
 
-        def personasPRSP = Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP'))
+        def personasPRSP = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
         def responsableObra
 
         def obrasFiltradas = []
 
 
-        if(Persona.get(session.usuario.id).departamento?.codigo == 'PRSP'){
+        if(Persona.get(session.usuario.id).departamento?.codigo == 'UTFPU'){
             res.each{
                 responsableObra = it.responsable
                 if((personasPRSP.contains(Persona.get(responsableObra))) || it.tipo == 'D'){
@@ -1585,7 +1585,7 @@ class Reportes5Controller{
         def funcionElab = Funcion.findByCodigo('E')
 
         def personasDep = Persona.findAllByDepartamento(deptoUsu)
-        def personasPRSP = Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP'))
+        def personasPRSP = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
 
         def coordinador = PersonaRol.findByPersonaInListAndFuncion(personasDep,funcionCoor)
         def coordinadorPRSP = PersonaRol.findByPersonaInListAndFuncion(personasPRSP,funcionCoor)

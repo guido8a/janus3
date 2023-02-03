@@ -9,18 +9,24 @@
 
         <div class="col-md-1">Responsable Técnico1</div>
 
-        <div class="col-md-3"><g:select name="revisor.id" class="revisor required" from="${personasRolRevi}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + ' ' + it.apellido }}"
-                                     value="${obra?.revisor?.id}" title="Persona para la revisión de la Obra"/></div>
+        <div class="col-md-3">
+            <g:select name="revisor.id" class="revisor required" from="${personasRolRevi}" optionKey="id"
+                      optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + ' ' + it.apellido }}"
+                      value="${obra?.revisor?.id}" title="Persona para la revisión de la Obra"/></div>
 
         <div class="col-md-1" style="margin-left: -10px">Elaboró presupuesto</div>
 
         <g:if test="${personasUtfpu}">
             <div class="col-md-3"><g:select name="responsableObra.id" class="responsable required" from="${personasUtfpu}"
-                                            optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it?.nombre + ' ' + it?.apellido }}" value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"/></div>
+                 optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it?.nombre + ' ' + it?.apellido }}"
+                 value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"/></div>
 
         </g:if>
         <g:else>
-            <div class="col-md-3"><g:select name="responsableObra.id" class="responsable required" from="" optionKey="id" title="No existen personas responsable de la Obra asignadas!"/></div>
+            <div class="col-md-3">
+                <g:select name="responsableObra.id" class="responsable required" from="" optionKey="id"
+                          title="No existen personas responsable de la Obra asignadas!"/>
+            </div>
         </g:else>
 
 
@@ -28,23 +34,37 @@
     <g:else>
 
         <g:if test="${duenoObra == 1}">
-            <div class="col-md-1">Resp. de las Cantidades2</div>
+            <div class="col-md-1">Resp. de las Cantidades</div>
 
-            <div class="col-md-3"><g:select name="inspector.id" class="inspector required" from="${personasRolInsp}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + " " + it.apellido }}" value="${obra?.inspector?.id}" title="Persona para Inspección de la Obra"/></div>
+            <div class="col-md-3">
+                <g:select name="inspector.id" class="inspector required" from="${personasRolInsp}"
+                optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + " " + it.apellido }}"
+                value="${obra?.inspector?.id}" title="Persona para Inspección de la Obra"
+                style="width: 250px"/></div>
 
 
             <div class="col-md-1">Responsable Técnico</div>
 
-            <div class="col-md-3"><g:select name="revisor.id" class="revisor required" from="${personasRolRevi}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + ' ' + it.apellido }}"
-                                         value="${obra?.revisor?.id}" title="Persona para la revisión de la Obra"/></div>
+            <div class="col-md-3">
+                <g:select name="revisor.id" class="revisor required" from="${personasRolRevi}"
+                 optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it.nombre + ' ' + it.apellido }}"
+                 value="${obra?.revisor?.id}" title="Persona para la revisión de la Obra"
+                 style="width: 250px"/></div>
 
             <div class="col-md-1" style="margin-left: -10px">Elaboró presupuesto</div>
 
             <g:if test="${personasUtfpu}">
-                <div class="col-md-3"><g:select name="responsableObra.id" class="responsable required" from="${personasUtfpu}" optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it?.nombre + ' ' + it?.apellido }}" value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"/></div>
+                <div class="col-md-3">
+                    <g:select name="responsableObra.id" class="responsable required" from="${personasUtfpu}"
+                        optionKey="id" optionValue="${{ (it?.titulo ?: '') + ' ' + it?.nombre + ' ' + it?.apellido }}"
+                        value="${obra?.responsableObra?.id}" title="Persona responsable de la Obra"
+                        style="width: 250px"/></div>
             </g:if>
             <g:else>
-                <div class="col-md-3"><g:select name="responsableObra.id" class="responsable required" from="" optionKey="id" title="No existen personas responsable de la Obra asignadas!"/></div>
+                <div class="col-md-3">
+                    <g:select name="responsableObra.id" class="responsable required" from="" optionKey="id"
+                        title="No existen personas responsable de la Obra asignadas!"/>
+                </div>
             </g:else>
 
 

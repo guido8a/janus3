@@ -16,6 +16,7 @@ import jxl.write.WritableCellFormat
 import jxl.write.WritableFont
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
+import seguridad.Persona
 
 import java.awt.*
 
@@ -2583,7 +2584,7 @@ class Reportes2Controller {
         def funcionElab = Funcion.findByCodigo('E')
 
         def personasDep = Persona.findAllByDepartamento(deptoUsu)
-        def personasPRSP = Persona.findAllByDepartamento(Departamento.findByCodigo('PRSP'))
+        def personasPRSP = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
 
         def coordinador = PersonaRol.findByPersonaInListAndFuncion(personasDep,funcionCoor)
         def coordinadorPRSP = PersonaRol.findByPersonaInListAndFuncion(personasPRSP,funcionCoor)

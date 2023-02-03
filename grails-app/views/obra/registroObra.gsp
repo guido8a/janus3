@@ -1347,7 +1347,7 @@ function buscaObras() {
     });
 
     function loadPersonas() {
-
+        console.log('ejecuta loadPersonas')
         var idP
         var idDep1
         <g:if test="${persona?.departamento?.codigo == 'UTFPU'}">
@@ -1367,16 +1367,15 @@ function buscaObras() {
         </g:else>
         </g:if>
         <g:else>
-        <g:if test="${obra}">
+            <g:if test="${obra}">
 //               idP = $("#departamentoDire").val();
-        idP = ${persona?.departamento?.direccion?.id}
-            idDep1 = ${persona?.departamento?.id}
-                </g:if>
-                <g:else>
                 idP = ${persona?.departamento?.direccion?.id}
-                    idDep1 =
-        ${persona?.departamento?.id}
-        </g:else>
+                idDep1 = ${persona?.departamento?.id}
+            </g:if>
+            <g:else>
+                idP = ${persona?.departamento?.direccion?.id}
+                idDep1 = ${persona?.departamento?.id}
+            </g:else>
         </g:else>
 
         var idObra = ${obra?.id}
@@ -1581,48 +1580,6 @@ function buscaObras() {
                 }
             }
         });
-
-        %{--$('#coords').editable({--}%
-            %{--type: 'coords',--}%
-            %{--emptytext: 'Ingrese las coordenadas',--}%
-            %{--title: 'Registre las coordenadas de la obra',--}%
-            %{--value: {--}%
-                %{--NS: "${coordsParts[0]}",--}%
-                %{--NG: "${coordsParts[1]}",--}%
-                %{--NM: "${coordsParts[2]}",--}%
-                %{--EW: "${coordsParts[3]}",--}%
-                %{--EG: "${coordsParts[4]}",--}%
-                %{--EM: "${coordsParts[5]}"--}%
-            %{--},--}%
-            %{--validate: function (value) {--}%
-                %{--var ns = $.trim(value.NS);--}%
-                %{--var ng = $.trim(value.NG);--}%
-                %{--var nm = $.trim(value.NM);--}%
-                %{--var ew = $.trim(value.EW);--}%
-                %{--var eg = $.trim(value.EG);--}%
-                %{--var em = $.trim(value.EM);--}%
-                %{--if (ns == '' || ng == '' || nm == '' || ew == '' || eg == '' || em == '') {--}%
-                    %{--return 'Por favor complete todos los campos';--}%
-                %{--}--}%
-                %{--if (isNaN(ng) || isNaN(nm) || isNaN(eg) || isNaN(em)) {--}%
-                    %{--return 'Por favor ingrese números válidos';--}%
-                %{--}--}%
-                %{--ng = parseInt(ng);--}%
-                %{--eg = parseInt(eg);--}%
-                %{--nm = parseFloat(nm);--}%
-                %{--em = parseFloat(em);--}%
-                %{--if (ng >= 90 || eg >= 90) {--}%
-                    %{--return "El valor de los grados debe ser inferior a 90";--}%
-                %{--}--}%
-                %{--if (nm >= 60 || em >= 60) {--}%
-                    %{--return "El valor de los minutos debe ser inferior a 60";--}%
-                %{--}--}%
-            %{--},--}%
-            %{--success: function (response, newValue) {--}%
-                %{--var val = newValue.NS + ' ' + newValue.NG + ' ' + newValue.NM + ' ' + newValue.EW + ' ' + newValue.EG + ' ' + newValue.EM;--}%
-                %{--$("#coordenadas").val(val);--}%
-            %{--}--}%
-        %{--});--}%
 
         loadPersonas();
 
@@ -1921,11 +1878,12 @@ function buscaObras() {
             <g:if test="${persona?.departamento?.codigo?.trim() == 'UTFPU'}">
             <g:if test="${obra}">
             <g:if test="${duenoObra == 1}">
-//            direccionEl = $("#departamento option:selected").attr("dire");
-            direccionEl = $("#departamento").val();
+//              direccionEl = $("#departamento option:selected").attr("dire");
+                direccionEl = $("#departamento").val();
             </g:if>
             <g:else>
-            direccionEl = $("#departamentoDire").val();
+//                direccionEl = $("#departamentoDire").val();
+                direccionEl = $("#departamento").val();
             </g:else>
             </g:if>
             <g:else>
@@ -1934,10 +1892,12 @@ function buscaObras() {
             </g:if>
             <g:else>
             <g:if test="${obra}">
-            direccionEl = $("#departamentoDire").val();
+//            direccionEl = $("#departamentoDire").val();
+            direccionEl = $("#departamento").val();
             </g:if>
             <g:else>
-            direccionEl = ${persona?.departamento?.direccion?.id}
+            %{--direccionEl = ${persona?.departamento?/.direccion?.id}--}%
+            direccionEl = ${persona?.departamento?.id}
                 </g:else>
                 </g:else>
 

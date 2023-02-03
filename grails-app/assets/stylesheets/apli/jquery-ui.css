@@ -806,7 +806,7 @@ button.ui-button::-moz-focus-inner {
 	margin-right: 2em;
 }
 .ui-spinner-button {
-	width: 1.6em;
+	/*width: 1.em;*/
 	height: 50%;
 	font-size: .5em;
 	padding: 0;
@@ -899,7 +899,7 @@ body .ui-tooltip {
 }
 .ui-widget.ui-widget-content {
 	/*border: 3px solid #c5c5c5;*/
-	border: 3px solid #4D6897;
+	border: 1px solid #4D6897;
 }
 .ui-widget-content {
 	border: 1px solid #dddddd;

@@ -13,6 +13,16 @@
 
     <title>Cronograma</title>
 
+    <style type="text/css">
+
+    .fila {
+        margin-top: 5px;
+    }
+    .espacio {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    </style>
 </head>
 
 <body>
@@ -22,24 +32,23 @@
 <g:set var="matrizOk" value="${tieneMatriz}"/>
 <g:set var="sum" value="${0}"/>
 
-<div class="tituloTree">
-    CRONOGRAMA DE LA OBRA: ${obra.nombre?.toUpperCase()} (${meses} mes${meses == 1 ? "" : "es"})
-</div>
+<legend>CRONOGRAMA DE LA OBRA: ${obra.nombre?.toUpperCase()} (${meses} mes${meses == 1 ? "" : "es"})</legend>
 
 <div class="btn-toolbar">
     <div class="btn-group">
-        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
-            <i class="icon-arrow-left"></i>
+        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
+           class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
+            <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
         <g:if test="${meses > 0 && plazoOk && matrizOk && obra.estado != 'R'}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">
                 <a href="#" class="btn disabled" id="btnDeleteRubro">
-                    <i class="icon-minus"></i>
+                    <i class="fa fa-minus"></i>
                     Eliminar Rubro
                 </a>
                 <a href="#" class="btn" id="btnDeleteCronograma">
-                    <i class="icon-trash"></i>
+                    <i class="fa fa-trash"></i>
                     Eliminar Cronograma
                 </a>
 
@@ -50,12 +59,12 @@
     <g:if test="${meses > 0 && plazoOk && matrizOk}">
         <div class="btn-group">
             <a href="#" class="btn" id="btnGrafico">
-                <i class="icon-bar-chart"></i>
+                <i class="fas fa-chart-line"></i>
                 Gráficos de avance
             </a>
-            <a href="#" id="btnReporte" class="btn"><i class="icon-print"></i>Imprimir</a>
+            <a href="#" id="btnReporte" class="btn"><i class="fa fa-print"></i> Imprimir</a>
             <a href="#" class="btn btn-print btnExcel" data-id="${obra?.id}">
-                <i class="icon-table"></i> Excel
+                <i class="fa fa-table"></i> Excel
             </a>
         </div>
     </g:if>
@@ -65,16 +74,16 @@
 
     <g:if test="${meses > 0 && plazoOk}">
 
-        <div style="margin-bottom: 5px;">
+        <div style="margin-bottom: 5px; margin-top: 15px">
             Subpresupuesto: <g:select name="subpresupuesto" from="${subpres}" optionKey="id" optionValue="descripcion"
-                                      style="width: 300px;font-size: 10px" id="subpres" value="${subpre}"
+                                      style="width: 400px;font-size: 10px" id="subpres" value="${subpre}"
                                       noSelection="['-1': 'TODOS']"/>
             <a href="#" class="btn" style="margin-top: -10px;" id="btnSubpre">Cambiar</a>
             <g:if test="${obra.estado != 'R'}">
                 <a href="#" class="btn" style="margin-top: -10px;" id="btnDesmarcar">Desmarcar todo</a>
-                <a href="#" class="btn" style="margin-top: -10px;" id="btnRutaOn"><i class="icon icon-check"></i> Marcar ruta crítica
+                <a href="#" class="btn" style="margin-top: -10px;" id="btnRutaOn"><i class="fa fa-check"></i> Marcar ruta crítica
                 </a>
-                <a href="#" class="btn" style="margin-top: -10px;" id="btnRutaOff"><i class="icon icon-check-empty"></i> Desmarcar ruta crítica
+                <a href="#" class="btn" style="margin-top: -10px;" id="btnRutaOff"><i class="fa fa-check"></i> Desmarcar ruta crítica
                 </a>
             </g:if>
         </div>
@@ -309,113 +318,101 @@
 
     <div class="modal-body" id="modalBody">
         <form class="form-horizontal" id="frmRubro">
-            <div class="control-group sm">
-                <div>
-                    <span id="num-label" class="control-label label label-inverse">
+            <div class="row" style="padding: 5px; background-color: #e0e0e0; margin-bottom: 10px; margin-top: -10px; border-radius: 10px">
+            <div class="fila col-md-12">
+                <div class="col-md-2">
                         Rubro N.
-                    </span>
                 </div>
-
-                <div class="controls">
-                    <span aria-labelledby="num-label" id="spanCodigo">
-
-                    </span>
+                <div class="col-md-8">
+                    <span aria-labelledby="num-label" id="spanCodigo"></span>
                 </div>
             </div>
 
-            <div class="control-group sm">
-                <div>
-                    <span id="desc-label" class="control-label label label-inverse">
-                        Descripción
-                    </span>
+            <div class="fila col-md-12">
+                <div class="col-md-2">
+                    Descripción
                 </div>
-
-                <div class="controls">
-                    <span aria-labelledby="desc-label" id="spanDesc">
-                    </span>
+                <div class="col-md-8">
+                    <span aria-labelledby="desc-label" id="spanDesc"></span>
                 </div>
             </div>
 
-            <div class="control-group sm">
-                <div>
-                    <span id="cant-label" class="control-label label label-inverse">
+            <div class="fila col-md-12">
+                <div class="col-md-2">
                         Cantidad
-                    </span>
                 </div>
 
-                <div class="controls">
-                    <span aria-labelledby="cant-label" id="spanCant">
-                    </span>
+                <div class="col-md-8">
+                    <span aria-labelledby="cant-label" id="spanCant"></span>
                 </div>
             </div>
 
-            <div class="control-group sm">
-                <div>
-                    <span id="precio-label" class="control-label label label-inverse">
+            <div class="fila col-md-12">
+                <div class="col-md-2">
                         Precio
-                    </span>
                 </div>
 
-                <div class="controls">
-                    <span aria-labelledby="precio-label" id="spanPrecio">
-
-                    </span>
+                <div class="col-md-8">
+                    <span aria-labelledby="precio-label" id="spanPrecio"></span>
                 </div>
             </div>
 
-            <div class="control-group sm">
-                <div>
-                    <span id="st-label" class="control-label label label-inverse">
+            <div class="fila col-md-12">
+                <div class="col-md-2">
                         Subtotal
-                    </span>
                 </div>
 
-                <div class="controls">
-                    <span aria-labelledby="st-label" id="spanSubtotal">
-
-                    </span>
+                <div class="col-md-8">
+                    <span aria-labelledby="st-label" id="spanSubtotal"></span>
                 </div>
+            </div>
             </div>
         </form>
 
-        <div id="divRubro">
+        <div id="divRubro" class="well" style="font-size: 16px">
             Múltiples rubros
         </div>
 
-
-        <div class="well">
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="span5">
-                    Periodos   <input id="periodosDesde" class="spinner"/> al <input id="periodosHasta" class="spinner" value="${meses}"/>
+        <table class="form-check form-check-inline" style="padding: 5px; background-color: #e0e0e0; margin-bottom: 10px; margin-top: -10px; border-radius: 8px">
+            <div class="fila" style="margin-bottom: 10px;">
+                <div class="col-md-3">
+                    Periodos
+                </div>
+                <div class="col-md-8">
+                    <input id="periodosDesde" class="spinner"/><span class="espacio">al</span>
+                    <input id="periodosHasta" class="spinner" value="${meses}"/>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="span5">
-                    <input type="radio" class="radio cant" name="tipo" id="rd_cant" value="cant" checked=""/>
-                    Cantidad <input type="text" class="input-mini tf" id="tf_cant"/><span class="spUnidad"></span>
-                    de <span id="spCant"></span> <span class="spUnidad"></span>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span5">
-                    <input type="radio" class="radio prct" name="tipo" id="rd_prct" value="prct"/>
-                    Porcentaje <input type="text" class="input-mini tf" id="tf_prct"/>%
-                de <span id="spPrct"></span>%
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="span5">
-                    <input type="radio" class="radio precio" name="tipo" id="rd_precio" value="prct"/>
-                    Precio <input type="text" class="input-mini tf" id="tf_precio"/>$
-                de <span id="spPrecio"></span>$
-                </div>
-            </div>
+            <table class="col-md-12 fila" style="margin-top: 10px">
+                <table>
+                    <tr>
+                        <td style="width: 30px; padding: 10px"><input type="radio" class="radio cant" name="tipo" id="rd_cant" value="cant" checked=""/></td>
+                        <td style="width: 80px"><label for="rd_cant">Cantidad</label></td>
+                        <td style="width: 250px"><input type="text" class="input-mini tf" id="tf_cant"/>
+                            <span class="spUnidad"></span>
+                            de
+                            <span id="spCant"></span>
+                        <span class="spUnidad"></span></td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                    <td style="width: 30px; padding: 10px"><input type="radio" class="radio prct" name="tipo" id="rd_prct" value="prct"/></td>
+                    <td style="width: 80px"><label for="rd_precio">Porcentaje</label></td>
+                    <td style="width: 250px"><input type="text" class="input-mini tf" id="tf_prct"/>% de<span id="spPrct"></span>%</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td style="width: 30px; padding: 10px"><input type="radio" class="radio precio" name="tipo" id="rd_precio" value="prct"/></td>
+                        <td style="width: 80px"><label for="rd_precio">Precio</label></td>
+                        <td style="width: 250px"><input type="text" class="input-mini tf" id="tf_precio"/>$
+                    de <span id="spPrecio"></span>$</td>
+                    </tr>
+                </table>
+            %{--</div>--}%
         </div>
-
-    </div>
 
     <div class="modal-footer" id="modalFooter">
     </div>
@@ -841,8 +838,8 @@
             resizable: true,
             modal: true,
             draggable: false,
-            width: 1000,
-            height: 500,
+            width: 600,
+            height: 400,
             position: 'center',
             title: 'Registro del Cronograma'
         });
@@ -899,7 +896,7 @@
             cantRestante = parseFloat(number_format(cantRestante, 2, ".", ""));
 
             $("#spCant").text(cantRestante);
-            $("#spPrct").text(prctRestante);
+            $("#spPrct").html(prctRestante);
             $("#spPrecio").text(number_format(dolRestante, 2, ".", ","));
 
             $("#tf_cant").data({
@@ -922,12 +919,15 @@
             $("#spanSubtotal").text(number_format(subtotal, 2, ".", ",") + " $");
             $(".spUnidad").text(unidad);
 
-            var $btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+            var $btnCancel = $('<a href="#" class="btn">Cerrar</a>');
 
 
             var $btnOk = $('<a href="#" class="btn btn-success">Aceptar</a>');
 
-
+            $btnCancel.click(function () {
+                $("#modal-cronograma").dialog("close");
+            });
+            
             $btnOk.click(function () {
                 if (validar()) {
                     $btnOk.replaceWith(spinner);
