@@ -9,7 +9,7 @@
 
     %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
     %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    <link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">
+    %{--<link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
 
     <title>Cronograma</title>
 
@@ -301,11 +301,11 @@
     </div>
 </g:else>
 
-<div class="modal hide fade" id="modal-cronograma">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-        <h3 id="modalTitle"></h3>
-    </div>
+<div id="modal-cronograma">
+    %{--<div class="modal-header">--}%
+        %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
+        %{--<h3 id="modalTitle"></h3>--}%
+    %{--</div>--}%
 
     <div class="modal-body" id="modalBody">
         <form class="form-horizontal" id="frmRubro">
@@ -836,6 +836,18 @@
             }
         });
 
+        $("#modal-cronograma").dialog({
+            autoOpen: false,
+            resizable: true,
+            modal: true,
+            draggable: false,
+            width: 1000,
+            height: 500,
+            position: 'center',
+            title: 'Registro del Cronograma'
+        });
+
+
         function clickOne($celda) {
             var $tr = $celda.parents("tr");
             if ($tr.hasClass("item_prc")) {
@@ -979,7 +991,7 @@
                                     $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
                                 }
                                 updateTotales();
-                                $("#modal-cronograma").modal("hide");
+                                $("#modal-cronograma").dialog("close");
                             } else {
                                 ////console.log("ERROR");
                             }
@@ -997,7 +1009,8 @@
             <g:else>
             $("#modalFooter").html("").append($btnCancel);
             </g:else>
-            $("#modal-cronograma").modal("show");
+            $("#modal-cronograma").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
         }
 
         function modificarRuta(tipo) {
@@ -1169,7 +1182,7 @@
                                             $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
                                         }
                                         updateTotales();
-                                        $("#modal-cronograma").modal("hide");
+                                        $("#modal-cronograma").dialog("close");
 
                                         $(".rowSelected").removeClass("rowSelected");
 
@@ -1190,7 +1203,8 @@
                     <g:else>
                     $("#modalFooter").html("").append($btnCancel);
                     </g:else>
-                    $("#modal-cronograma").modal("show");
+                    $("#modal-cronograma").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
                 }
             }
 

@@ -132,7 +132,7 @@
 <div id="tree3" class="col-md-8 ui-corner-all hide"></div>
 <div id="info" class="col-md-4 ui-corner-all hide" style="border-style: groove; border-color: #0d7bdc"></div>
 
-<div class="modal hide fade" id="modal-tree">
+<div id="modal-tree">
 %{--    <div class="modal-header" id="modalHeader">--}%
 %{--        <button type="button" class="close simplemodal-close" data-dismiss="modal">×</button>--}%
 
@@ -870,6 +870,16 @@
         }
     }
 
+    $("#modal-tree").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 500,
+        position: 'center',
+        title: 'Cambiar título'
+    });
 
     $("#btnReporte").click(function () {
         // var tipo = $.trim($("#" + current).data("reporte")).toLowerCase();

@@ -1143,7 +1143,7 @@ class ObraController {
         def obra = Obra.get(params.obra)
 
         println "direccion: $direccion, dept: $departamentos"
-        return [dire: direccion, depar: departamentos, obra: obra]
+        return [dire: direccion, depar: departamentos, obra: obra, fcha: new Date()]
     }
 
     def situacionGeografica() {
