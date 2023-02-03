@@ -85,35 +85,11 @@
             <i class="fa fa-map"></i> Todos los lugares
         </a>
         <div class="btn-group">
-            %{--            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">--}%
-            %{--                <span id="spFecha">--}%
-            %{--                    <i class="fa fa-calendar"></i>  Todas las fechas--}%
-            %{--                </span>--}%
-            %{--                <span class="caret"></span>--}%
-            %{--            </a>--}%
-            %{--            <ul class="dropdown-menu">--}%
-            %{--                <li>--}%
-            %{--                    <a href="#" class="fecha" data-operador="all" data-fecha='false'>--}%
-            %{--                        Todas las fechas--}%
-            %{--                    </a>--}%
-            %{--                </li>--}%
-            %{--                <li>--}%
-            %{--                    <a href="#" class="fecha" data-operador="=" data-fecha='true'>--}%
-            %{--                        Fecha igual--}%
-            %{--                    </a>--}%
-            %{--                </li>--}%
-            %{--                <li>--}%
-            %{--                    <a href="#" class="fecha" data-operador="<=" data-fecha='true'>--}%
-            %{--                        Hasta la fecha--}%
-            %{--                    </a>--}%
-            %{--                </li>--}%
-            %{--            </ul>--}%
-            <g:select name="spFecha" from="${["all" : 'Todas las fechas', "=" : 'Fecha igual', "<=" : 'Hasta la fecha']}" optionKey="key" optionValue="value" class="form-control"/>
+              <g:select name="spFecha" from="${["all" : 'Todas las fechas', "=" : 'Fecha igual', "<=" : 'Hasta la fecha']}" optionKey="key" optionValue="value" class="form-control"/>
         </div>
 
         <span class="col-md-2 hide" id="divFecha">
             <input aria-label="" name="fecha" id='datetimepicker1' type='text' class="form-control" value="${new Date().format("dd-MM-yyyy")}"/>
-            %{--            <elm:datepicker name="fecha" class="input-small" onClose="cambiaFecha" yearRange="${(new Date().format('yyyy').toInteger() - 40).toString() + ':' + new Date().format('yyyy')}"/>--}%
         </span>
 
         <div class="btn-group">
@@ -136,7 +112,6 @@
                 </g:link>
             </g:if>
         </div>
-
     </div>
 
 </div>
@@ -156,6 +131,21 @@
 <div id="tree2" class="col-md-8 ui-corner-all hide"></div>
 <div id="tree3" class="col-md-8 ui-corner-all hide"></div>
 <div id="info" class="col-md-4 ui-corner-all hide" style="border-style: groove; border-color: #0d7bdc"></div>
+
+<div class="modal hide fade" id="modal-tree">
+%{--    <div class="modal-header" id="modalHeader">--}%
+%{--        <button type="button" class="close simplemodal-close" data-dismiss="modal">×</button>--}%
+
+%{--        <h3 id="modalTitle"></h3>--}%
+%{--    </div>--}%
+
+    <div class="modal-body" id="modalBody">
+
+    </div>
+
+    <div class="modal-footer" id="modalFooter">
+    </div>
+</div>
 
 <script type="text/javascript">
 
@@ -217,28 +207,13 @@
             cargarEquipo();
             recargaEquipo();
         }
-
-        // var tipo = $(this).attr("id");
-        // if(!$(this).hasClass("active")) {
-        //     showLugar.tipo = true;
-        // } else {
-        //     showLugar.tipo = false;
-        // }
-        // initTree(current);
         $("#info").html("");
     });
-
-
 
     $("#spFecha").change(function () {
         var op = $(this).val();
         if(op === '=' || op === '<='){
             $("#divFecha").removeClass('hide');
-            // var hoy = $("#datetimepicker1").val();
-            // if(!hoy){
-            //     hoy = new Date()
-            // }
-            // showLugar.fecha = hoy
             showLugar.fecha = fechaSeleccionada
         }else{
             showLugar.fecha = "all";
@@ -246,38 +221,6 @@
         }
         showLugar.operador = op;
     });
-
-    // $(".fecha").click(function () {
-    //     var op = $(this).data("operador");
-    //     var text = $.trim($(this).text());
-    //     var fecha = $(this).data("fecha");
-    //
-    //     $("#spFecha").text(text);
-    //
-    //     if (fecha) {
-    //         $("#divFecha").removeClass('hide');
-    //         var hoy = $("#fecha").val();
-    //         if(!hoy){
-    //             hoy = new Date().format("dd-MM-yyyy")
-    //         }
-    //         showLugar.fecha = hoy
-    //         // var hoy = $("#fecha").datepicker("getDate");
-    //         // if (!hoy) {
-    //         //     hoy = new Date();
-    //         //     $("#fecha").datepicker("setDate", hoy);
-    //         // }
-    //         // showLugar.fecha = hoy.getDate() + "-" + (hoy.getMonth() + 1) + "-" + hoy.getFullYear();
-    //     } else {
-    //         showLugar.fecha = "all";
-    //         $("#divFecha").addClass('hide');
-    //     }
-    //     showLugar.operador = op;
-    // });
-
-    // function cambiaFecha(dateText, inst) {
-    //     console.log("Fecha " + dateText + inst)
-    //     showLugar.fecha = dateText;
-    // }
 
     $("#btnRefresh").click(function (){
         if(tipoSeleccionado === 1){
@@ -291,9 +234,11 @@
 
     $("#btnCollapseAll").click(function () {
 
+        var $scrollTo = $("#root");
+
         if(tipoSeleccionado === 1){
             $("#tree").jstree("close_all");
-            var $scrollTo = $("#root");
+
             $("#tree").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
                 scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
             });
@@ -301,7 +246,7 @@
             recargarMateriales();
         }else if(tipoSeleccionado === 2){
             $("#tree2").jstree("close_all");
-            var $scrollTo = $("#root");
+            // var $scrollTo = $("#root");
             $("#tree2").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
                 scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
             });
@@ -309,7 +254,7 @@
             recargaMano();
         }else{
             $("#tree3").jstree("close_all");
-            var $scrollTo = $("#root");
+            // var $scrollTo = $("#root");
             $("#tree3").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
                 scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
             });
@@ -924,6 +869,72 @@
             return false;
         }
     }
+
+
+    $("#btnReporte").click(function () {
+        // var tipo = $.trim($("#" + current).data("reporte")).toLowerCase();
+        var tipo = tipoSeleccionado == 1 ? 'materiales' : (tipoSeleccionado == 2 ? 'mano_obra' : 'equipos')
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'reportePreciosUI')}",
+            data    : {
+                grupo : tipoSeleccionado
+            },
+            success : function (msg) {
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                var btnSave = $('<a href="#"  class="btn btn-success" data-dismiss="modal"><i class="icon-print"></i> Ver</a>');
+                var btnExcel = $('<a href="#" class="btn btnExcel" data-dismiss="modal"><i class="icon-table"></i> Excel</a>');
+
+                btnSave.click(function () {
+                    var data = "";
+                    data += "orden=" + $(".orden.active").attr("id");
+                    data += "Wtipo=" + $(".tipo.active").attr("id");
+                    data += "Wlugar=" + $("#lugarRep").val();
+                    data += "Wfecha=" + $("#fechaRep").val();
+                    data += "Wgrupo=" + tipoSeleccionado;
+
+                    $(".col.active").each(function () {
+                        data += "Wcol=" + $(this).attr("id");
+                    });
+
+                    var actionUrl = "${createLink(controller:'pdf',action:'pdfLink')}?filename=Reporte_costos_" +
+                        tipo + ".pdf&url=${createLink(controller: 'reportes2', action: 'reportePrecios')}";
+                    location.href = actionUrl + "?" + data;
+
+                    var wait = $("<div style='text-align: center;'> Estamos procesando su reporte......Por favor espere......</div>");
+                    wait.prepend(spinnerBg);
+
+                    var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+
+                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+                    $("#modalTitle").html("Procesando");
+                    $("#modalBody").html(wait);
+                    $("#modalBody").close();
+                    $("#modalFooter").html("").append(btnClose);
+
+                    $.modal.close();
+
+                    return false;
+                });
+
+                btnExcel.click(function () {
+
+                    var fecha = $("#fechaRep").val();
+                    var lugar = $("#lugarRep").val();
+                    var grupo = tipoSeleccionado;
+
+                    location.href = "${g.createLink(controller: 'reportes2', action: 'reportePreciosExcel')}?fecha=" +
+                        fecha + "&lugar=" + lugar + "&grupo=" + grupo;
+                });
+
+                $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+                $("#modalTitle").html("Formato de impresión");
+                $("#modalBody").html(msg);
+                $("#modalFooter").html("").append(btnOk).append(btnSave).append(btnExcel);
+                $("#modal-tree").dialog("open");
+            }
+        });
+    });
 
 </script>
 

@@ -4,6 +4,7 @@ import com.lowagie.text.Document
 import com.lowagie.text.Element
 import com.lowagie.text.PageSize
 import com.lowagie.text.Paragraph
+import com.lowagie.text.Font
 import com.lowagie.text.pdf.PdfPCell
 import com.lowagie.text.pdf.PdfPTable
 import com.lowagie.text.pdf.PdfWriter
@@ -2298,29 +2299,15 @@ class Reportes3Controller {
 
     def imprimirValorHoraEquipos () {
 
-
 //        println("params" + params)
 
-        //
-
         def item = Item.get(params.id)
-
         def obra = Obra.get(params.id)
-
         def auxiliar = Auxiliar.get(1)
-
-
         def prmsHeaderHoja = [border: Color.WHITE]
-
-
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
-
-
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-
-
-
         def prmsHeader2 = [border: Color.WHITE, colspan: 3, bg: new Color(73, 175, 205),
                            align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsCellHead = [border: Color.WHITE, bg: new Color(73, 175, 205),
@@ -2339,8 +2326,6 @@ class Reportes3Controller {
                 prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum, prmsHeaderHoja2: prmsHeaderHoja2,
                 prmsCellRight: prmsCellRight, prmsCellHead2: prmsCellHead2, prmsCellLeft2: prmsCellLeft2]
 
-
-
         def baos = new ByteArrayOutputStream()
         def name = "calculoValorHoraEquipos_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -2352,8 +2337,9 @@ class Reportes3Controller {
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
         Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
-        times8boldWhite.setColor(Color.WHITE)
-        times10boldWhite.setColor(Color.WHITE)
+
+//        times8boldWhite.setColour(Color.WHITE)
+//        times10boldWhite.setColour(Color.WHITE)
         def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
                 times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times10normal: times10normal]
 
@@ -2379,7 +2365,6 @@ class Reportes3Controller {
         headers.add(new Paragraph(" ", times10bold));
         headers.add(new Paragraph("Equipo:" + item.nombre, times12bold));
         headers.add(new Paragraph(" ", times10bold));
-
 
         document.add(headers)
 
@@ -2523,7 +2508,6 @@ class Reportes3Controller {
         addCellTabla(table, new Paragraph("Valor Anual", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
 
-
         addCellTabla(table, new Paragraph("Costo de Repuestos", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph("(R)", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" : ", times10normal), prmsCellLeft2)
@@ -2531,7 +2515,6 @@ class Reportes3Controller {
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph("0.7425*D*k", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
-
 
         addCellTabla(table, new Paragraph("Costo M.O. Reparaciones", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph("(MOR)", times10normal), prmsCellLeft2)
@@ -2629,7 +2612,6 @@ class Reportes3Controller {
         addCellTabla(table, new Paragraph("", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
 
-//        addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph("Horas de Vida útil de las llantas", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph("(Hll)", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" : ", times10normal), prmsCellLeft2)
@@ -2638,7 +2620,6 @@ class Reportes3Controller {
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
 
-//        addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph("Costo Horario por llantas", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph("(LL)", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" : ", times10normal), prmsCellLeft2)
@@ -2647,7 +2628,6 @@ class Reportes3Controller {
         addCellTabla(table, new Paragraph("VLL/HLL", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
 
-
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
@@ -2655,7 +2635,6 @@ class Reportes3Controller {
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
         addCellTabla(table, new Paragraph(" ", times10normal), prmsCellLeft2)
-
 
         addCellTabla(table, new Paragraph("Costo Total de la hora", times10bold), prmsCellLeft2)
         addCellTabla(table, new Paragraph("(Ch)", times10bold), prmsCellLeft2)
@@ -2673,7 +2652,6 @@ class Reportes3Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
     def reporteGarantias () {

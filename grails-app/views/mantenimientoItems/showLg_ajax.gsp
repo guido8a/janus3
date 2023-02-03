@@ -7,13 +7,9 @@
                 <i class="fa fa-money-bill"></i>
                 Nuevo Precio
             </a>
-        %{--            <a href="#" class="btn btn-success btn-ajax" id="btnSave">--}%
-        %{--                <i class="fa fa-save"></i>--}%
-        %{--                Guardar--}%
-        %{--            </a>--}%
             <g:if test="${item.departamento.subgrupo.grupoId == 2 || item.departamento.subgrupo.grupoId == 3}">
                 <a href="#" class="btn btn-warning" id="btnCalc${item.departamento.subgrupo.grupoId}">
-                    <i class="fa fa-gear"></i>
+                    <i class="fa fa-cog"></i>
                     Calcular precio
                 </a>
             </g:if>
@@ -60,34 +56,19 @@
                 <td style="width: 20%">
                     <g:formatDate date="${precio.fecha}" format="dd-MM-yyyy"/>
                 </td>
-
                 <g:if test="${session.perfil.codigo == 'CSTO'}">
                     <td class="precio textRight " style="width: 19%" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
                         <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
                     </td>
-                %{--                    <td class="precio textRight ${precio.registrado != 'R' ? 'editable' : ''}" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}">--}%
-                %{--                        <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>--}%
-                %{--                    </td>--}%
-
                     <td class="delete" style="width: 25%">
                         <g:if test="${precio?.registrado != 'R'}">
                             <a href="#" class="btn btn-info btn-xs btnEditar" title="Editar valor" data-id="${precio.id}">
                                 <i class="fa fa-edit"></i>
                             </a>
                         </g:if>
-                        <a href="#" class="btn btn-danger btn-xs ${precio.registrado != 'R' ? 'btnDelete' : 'btnDeleteReg'}" rel="tooltip" title="Eliminar" id="${precio.id}">
+                        <a href="#" class="btn btn-danger btn-xs ${precio.registrado != 'R' ? 'btnDelete' : 'btnDeleteReg'}" rel="tooltip" title="Borrar precio" id="${precio.id}">
                             <i class="fa fa-trash"></i>
                         </a>
-                        %{--                        <g:if test="${precio.registrado != 'R'}">--}%
-                        %{--                            <a href="#" class="btn btn-danger btn-xs btnDelete" rel="tooltip" title="Eliminar" id="${precio.id}">--}%
-                        %{--                                <i class="fa fa-trash"></i>--}%
-                        %{--                            </a>--}%
-                        %{--                        </g:if>--}%
-                        %{--                        <g:else>--}%
-                        %{--                            <a href="#" class="btn btn-danger btn-xs btnDeleteReg" rel="tooltip" title="Eliminar" id="${precio.id}">--}%
-                        %{--                                <i class="fa fa-trash"></i>--}%
-                        %{--                            </a>--}%
-                        %{--                        </g:else>--}%
                     </td>
                 </g:if>
                 <g:else>
@@ -119,11 +100,11 @@
 </div>
 
 <div class="modal hide fade" id="modal-tree1">
-    <div class="modal-header" id="modal-header-tree1">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+    %{--    <div class="modal-header" id="modal-header-tree1">--}%
+    %{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modalTitle-tree1"></h3>
-    </div>
+    %{--        <h3 id="modalTitle-tree1"></h3>--}%
+    %{--    </div>--}%
 
     <div class="modal-body" id="modalBody-tree1">
     </div>
@@ -132,12 +113,12 @@
     </div>
 </div>
 
-<div class="modal big hide fade" id="modal-tree2">
-    <div class="modal-header" id="modal-header-tree2">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+<div id="modal-tree2">
+    %{--    <div class="modal-header" id="modal-header-tree2">--}%
+    %{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modalTitle-tree2"></h3>
-    </div>
+    %{--        <h3 id="modalTitle-tree2"></h3>--}%
+    %{--    </div>--}%
 
     <div class="modal-body" id="modalBody-tree2" style="width: 970px;">
     </div>
@@ -168,8 +149,6 @@
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-    // $(".editable").first().addClass("selected");
-
     $(".btnEditar").click(function () {
         var id = $(this).data("id");
         createEditPrecio(id);
@@ -177,76 +156,7 @@
 
     $("#btnNew").click(function () {
         createEditPrecio();
-        %{--$.ajax({--}%
-        %{--    type    : "POST",--}%
-        %{--    url     : "${createLink(action:'formPrecio_ajax')}",--}%
-        %{--    data    : {--}%
-        %{--        item        : "${item.id}",--}%
-        %{--        lugar       : "${lugarId}",--}%
-        %{--        nombreLugar : "${lugarNombre}",--}%
-        %{--        fecha       : "${fecha}",--}%
-        %{--        all         : "${params.all}",--}%
-        %{--        ignore      : "${params.ignore}"--}%
-        %{--    },--}%
-        %{--    success : function (msg) {--}%
-        %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-        %{--        var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');--}%
-
-        %{--        btnSave.click(function () {--}%
-        %{--            if ($("#frmSave").valid()) {--}%
-        %{--                btnSave.replaceWith(spinner);--}%
-        %{--            }--}%
-
-        %{--            $.ajax({--}%
-        %{--                type    : "POST",--}%
-        %{--                url     : $("#frmSave").attr("action"),--}%
-        %{--                data    : $("#frmSave").serialize(),--}%
-        %{--                success : function (msg) {--}%
-        %{--                    if (msg === "OK") {--}%
-        %{--                        $("#modal-tree").modal("hide");--}%
-        %{--                        var loading = $("<div></div>");--}%
-        %{--                        loading.css({--}%
-        %{--                            textAlign : "center",--}%
-        %{--                            width     : "100%"--}%
-        %{--                        });--}%
-        %{--                        loading.append("Cargando....Por favor espere...<br/>").append(spinnerBg);--}%
-        %{--                        $("#info").html(loading);--}%
-        %{--                        $.ajax({--}%
-        %{--                            type    : "POST",--}%
-        %{--                            url     : "${createLink(action:'showLg_ajax')}",--}%
-        %{--                            data    : {--}%
-        %{--                                id       : "${params.id}",--}%
-        %{--                                all      : "${params.all}",--}%
-        %{--                                ignore   : "${params.ignore}",--}%
-        %{--                                fecha    : "${params.fecha}",--}%
-        %{--                                operador : "${params.operador}"--}%
-        %{--                            },--}%
-        %{--                            success : function (msg) {--}%
-        %{--                                $("#info").html(msg);--}%
-        %{--                            }--}%
-        %{--                        });--}%
-        %{--                    } else {--}%
-        %{--                        var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
-        %{--                        $("#modalTitle").html("Error");--}%
-        %{--                        $("#modalBody").html("Ha ocurrido un error al guardar");--}%
-        %{--                        $("#modalFooter").html("").append(btnClose);--}%
-        %{--                    }--}%
-        %{--                }--}%
-        %{--            });--}%
-
-        %{--            return false;--}%
-        %{--        });--}%
-
-        %{--        $("#modalTitle").html("Crear Precio");--}%
-        %{--        $("#modalBody").html(msg);--}%
-        %{--        $("#modalFooter").html("").append(btnOk).append(btnSave);--}%
-        %{--        $("#modal-tree").modal("show");--}%
-        %{--        $("#fechaPrecio").val($("#fcDefecto").val())--}%
-        %{--    }--}%
-        %{--});--}%
-        %{--return false;--}%
     });
-
 
     function createEditPrecio(precio) {
         var title = precio ? "Editar" : "Nuevo";
@@ -329,83 +239,9 @@
         }
     }
 
-
-
-    $("#btnSave").click(function () {
-        $("#dlgLoad").dialog("open");
-        var data = "";
-        $(".editable").each(function () {
-            var id = $(this).attr("id");
-            var valor = $(this).data("valor");
-
-            if (parseFloat(valor) > 0 && parseFloat($(this).data("original")) !== parseFloat(valor)) {
-                if (data !== "") {
-                    data += "&";
-                }
-                data += "item=" + id + "_" + valor;
-            }
-        });
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(action: 'actualizarPrecios_ajax')}",
-            data    : data,
-            success : function (msg) {
-                $("#dlgLoad").dialog("close");
-                var parts = msg.split("_");
-                var ok = parts[0];
-                var no = parts[1];
-                doHighlight({elem : $(ok), clase : "ok"});
-                doHighlight({elem : $(no), clase : "no"});
-            }
-        });
-        return false;
-    }); //btnSave
-
     $(".btnDelete").click(function () {
-        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-        var btnSave = $('<a href="#"  class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
         var id = $(this).attr("id");
-        btnSave.click(function () {
-            btnSave.replaceWith(spinner);
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action: 'deletePrecio_ajax')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    if (msg === "OK") {
-                        $("#modal-tree1").modal("hide");
-                        log("Precio eliminado correctamente", false);
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(action:'showLg_ajax')}",
-                            data    : {
-                                id       : "${params.id}",
-                                all      : "${params.all}",
-                                ignore   : "${params.ignore}",
-                                fecha    : "${params.fecha}",
-                                operador : "${params.operador}"
-                            },
-                            success : function (msg) {
-                                $("#info").html(msg);
-                            }
-                        });
-                    } else {
-                        $("#modal-tree1").modal("hide");
-                        log(msg, true);
-                    }
-                }
-            });
-            return false;
-        });
-
-        $("#modalTitle-tree1").html("Confirmación");
-        $("#modalBody-tree1").html("Está seguro de querer eliminar este precio?");
-        $("#modalFooter-tree1").html("").append(btnOk).append(btnSave);
-        $("#modal-tree1").modal("show");
-        return false;
+        borrarPrecio(id)
     });
 
     var valorSueldo;
@@ -413,164 +249,195 @@
 
     $("#btnCalc2").click(function () {
 
-        var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-        var btnCalc = $('<a href="#"  class="btn btn-success"><i class="icon-check"></i> Calcular</a>');
-        var a = "${anioRef}";
-
-        var $valor = $("<input type='number' placeholder='Sueldo " + (new Date().getFullYear()) + "'/> ");
-
-        $valor.bind({
-            keydown : function (ev) {
-                var dec = 5;
-                var val = $(this).val();
-                if (ev.keyCode == 188 || ev.keyCode == 190 || ev.keyCode == 110) {
-                    if (!dec) {
-                        return false;
-                    } else {
-                        if (val.length == 0) {
-                            $(this).val("0");
-                        }
-                        if (val.indexOf(".") > -1 || val.indexOf(",") > -1) {
-                            return false;
-                        }
-                    }
-                } else {
-                    if (val.indexOf(".") > -1 || val.indexOf(",") > -1) {
-                        if (dec) {
-                            var parts = val.split(".");
-                            var l = parts[1].length;
-                            if (l >= dec) {
-                                return false;
+        bootbox.prompt({
+            class: 'modal-sm',
+            title: 'Por favor ingrese el sueldo básico para el Obrero del año:  ${new Date().getYear()}.',
+            callback: function(result) {
+                if(result){
+                    if(result == ''){
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese un valor numérico" + '</strong>');
+                        return false
+                    }else{
+                        var v = cargarLoader("Calculando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(action:'calcPrecioRef_ajax')}',
+                            data    : {
+                                precio: result
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                if(msg == 'error'){
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese un valor numérico" + '</strong>');
+                                }else{
+                                    $("#spanRef").text("Precio ref: " + msg)
+                                }
                             }
-                        }
+                        });
                     }
                 }
-                return validarNum(ev);
+
             }
         });
-
-        btnCalc.click(function () {
-            valorSueldo = $valor.val();
-
-            $(this).replaceWith(spinner);
-
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action: 'calcPrecioRef_ajax')}",
-                data    : {
-                    precio : $valor.val()
-                },
-                success : function (msg) {
-                    $("#modal-tree1").modal("hide");
-                    $("#btnCalc").hide();
-                    $("#spanRef").text("Precio ref: " + msg);
-                    $("#btnPrint").show();
-
-                }
-            });
-
-            return valorSueldo
-
-        });
-
-        var $p1 = $("<p>").html("Por favor ingrese el sueldo básico para el Obrero del año " + (new Date().getFullYear()));
-        var $p2 = $("<p>").html($valor);
-        var $div = $("<div>").append($p1).append($p2);
-
-        $("#modalTitle-tree1").html("Cálculo del valor por Hora");
-        $("#modalBody-tree1").html($div);
-        $valor.focus();
-        $("#modalFooter-tree1").html("").append(btnCancel).append(btnCalc);
-        $("#modal-tree1").modal("show");
-
-        return false;
     });
 
     $("#btnCalc3").click(function () {
-        var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-        var btnCalc = $('<a href="#"  class="btn btn-success"><i class="icon-check"></i> Aceptar</a>');
-        var a = "${anioRef}";
-
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action: 'calcPrecEq')}",
+            url: "${createLink(action:'calcPrecEq')}",
             data    : {
                 item : ${item.id}
             },
             success : function (msg) {
-                $("#modalTitle-tree2").html("Cálculo del valor por Hora de Equipos");
-                $("#modalBody-tree2").html(msg);
-                $("#modalFooter-tree2").html("").append(btnCancel).append(btnCalc);
-                $("#modal-tree2").modal("show");
-            }
-        });
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Cálculo del valor por Hora de Equipos",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
 
-        btnCalc.click(function () {
-            $("#modal-tree2").modal("hide");
-            $("#btnCalc").hide();
-            $("#spanRef").text("Precio ref: " + number_format(data.ch, 2, ".", ""));
-        });
-
-        return false;
     });
 
-    $(".btnDeleteReg").click(function () {
-        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-        var btnSave = $('<a href="#"  class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
+    $("#modal-tree1").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        draggable: false,
+        width: 950,
+        height: 700,
+        position: 'center',
+        title: 'Datos de Situación Geográfica'
+    });
 
-        var $auto = $("<input type='password' placeholder='Autorización'/> ");
 
-        var id = $(this).attr("id");
-        btnSave.click(function () {
-            var auto = $.trim($auto.val());
-            if (auto !== "") {
-                btnSave.replaceWith(spinner);
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(action: 'deletePrecio_ajax')}",
-                    data    : {
-                        id   : id,
-                        auto : $auto.val()
-                    },
-                    success : function (msg) {
-                        if (msg === "OK") {
-                            $("#modal-tree1").modal("hide");
-                            log("Precio eliminado correctamente", false);
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'showLg_ajax')}",
-                                data    : {
-                                    id       : "${params.id}",
-                                    all      : "${params.all}",
-                                    ignore   : "${params.ignore}",
-                                    fecha    : "${params.fecha}",
-                                    operador : "${params.operador}"
-                                },
-                                success : function (msg) {
-                                    $("#info").html(msg);
-                                }
-                            });
-                        } else {
-                            $("#modal-tree1").modal("hide");
-                            log(msg, true);
-                        }
+    function borrarPrecio(id) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este precio? Esta acción no se puede deshacer.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
                     }
-                });
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash'></i> Eliminar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        var v = cargarLoader("Eliminando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(action:'deletePrecio_ajax')}',
+                            data    : {
+                                id : id
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'OK'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        if(tipoSeleccionado === 1){
+                                            cargarMateriales();
+                                            recargarMateriales();
+                                        }else if(tipoSeleccionado === 2){
+                                            cargarMano();
+                                            recargaMano();
+                                        }else{
+                                            cargarEquipo();
+                                            recargaEquipo();
+                                        }
+                                    }, 1000);
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
             }
-            return false;
         });
+    }
 
-        var $p1 = $("<p>").html("Está seguro de querer eliminar este precio?");
-        var $p2 = $("<p>").html("Este precio está registrado. Para eliminarlo necesita ingresar su clave de autorización.");
-        var $p3 = $("<p>").html($auto);
+    function borrarPrecioRegistrado(id) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este precio? Esta acción no se puede deshacer.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                aceptar : {
+                    label     : "<i class='fa fa-trash'></i> Aceptar",
+                    className : "btn-danger",
+                    callback  : function () {
 
-        var $div = $("<div>").append($p1).append($p2).append($p3);
+                        bootbox.prompt({
+                            class: 'modal-sm',
+                            title: 'Este precio está registrado. Para eliminarlo necesita ingresar su clave de autorización.',
+                            callback: function(result) {
+                                if(result){
+                                    if(result == ''){
+                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese su código de autorización" + '</strong>');
+                                        return false
+                                    }else{
+                                        var v = cargarLoader("Eliminando...");
+                                        $.ajax({
+                                            type    : "POST",
+                                            url     : '${createLink(action:'deletePrecio_ajax')}',
+                                            data    : {
+                                                id : id,
+                                                auto: result
+                                            },
+                                            success : function (msg) {
+                                                v.modal("hide");
+                                                var parts = msg.split("_");
+                                                if(parts[0] === 'ok'){
+                                                    log(parts[1],"success");
+                                                    setTimeout(function () {
+                                                        if(tipoSeleccionado === 1){
+                                                            cargarMateriales();
+                                                            recargarMateriales();
+                                                        }else if(tipoSeleccionado === 2){
+                                                            cargarMano();
+                                                            recargaMano();
+                                                        }else{
+                                                            cargarEquipo();
+                                                            recargaEquipo();
+                                                        }
+                                                    }, 1000);
+                                                }else{
+                                                    log(parts[1],"error")
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
 
-        $("#modalTitle-tree1").html("Confirmación");
-        $("#modalBody-tree1").html($div);
-        $("#modalFooter-tree1").html("").append(btnOk).append(btnSave);
-        $("#modal-tree1").modal("show");
-        return false;
+    $(".btnDeleteReg").click(function () {
+        var id = $(this).attr("id");
+        borrarPrecioRegistrado(id);
     });
 
     $("#btnPrint").click(function () {

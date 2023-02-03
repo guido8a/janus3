@@ -3,6 +3,7 @@ package janus
 import janus.pac.CodigoComprasPublicas
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class MantenimientoItemsController {
 
@@ -1756,23 +1757,30 @@ class MantenimientoItemsController {
     }
 
     def savePrecio_ajax() {
-        println "savePrecio_ajax $params"
+//        println "savePrecio_ajax $params"
         def item = Item.get(params.item.id)
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        if (params.lugar.id != "-1") {
-            def precioRubrosItemsInstance = new PrecioRubrosItems(params)
-            if (precioRubrosItemsInstance.save(flush: true)) {
-                render "OK"
-            } else {
-                println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
-                render "NO"
+
+        if(params.id){
+            def precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
+            precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
+
+            if(!precioRubrosItemsInstance.save(flush:true)){
+                println("error al guardar el precio " + precioRubrosItemsInstance)
+                render "NO_Error al guardar el precio"
+            }else{
+                render "OK_Precio guardado correctamente"
             }
-        } else {
-//            def tipo = ["C"]
-//            if (params.ignore == "true") {
-//                if (params.all == "true") {
-//                    tipo.add("V")
-//                }
+        }else{
+            if (params.lugar.id != "-1") {
+                def precioRubrosItemsInstance = new PrecioRubrosItems(params)
+                if (precioRubrosItemsInstance.save(flush: true)) {
+                    render "OK"
+                } else {
+                    println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
+                    render "NO"
+                }
+            } else {
                 def error = 0
                 Lugar.findAllByTipoLista(item.tipoLista).each { lugar ->
                     def precios = PrecioRubrosItems.withCriteria {
@@ -1789,7 +1797,6 @@ class MantenimientoItemsController {
                         precioRubrosItemsInstance.item = Item.get(params.item.id)
                         precioRubrosItemsInstance.fecha = params.fecha
                         if (precioRubrosItemsInstance.save(flush: true)) {
-//                            println "OK"
                         } else {
                             println "mantenimiento items controller l 873: " + precioRubrosItemsInstance.errors
                             error++
@@ -1797,69 +1804,39 @@ class MantenimientoItemsController {
                     }
                 }
                 if (error == 0) {
-                    render "OK"
+                    render "OK_Precio guardado correctamente"
                 } else {
-                    render "NO"
+                    render "NO_Error al guardar el precio"
                 }
-//            }
+            }
         }
     }
 
     def deletePrecio_ajax() {
+//        println("params borrar " + params)
         def rubroPrecioInstance = PrecioRubrosItems.get(params.id);
-        def ok = true
+        def errores = false
         if (params.auto) {
             def usu = Persona.get(session.usuario.id)
             if (params.auto.toString().encodeAsMD5() != usu.autorizacion) {
-                ok = false
-                render "Ha ocurrido un error en la autorización."
+                errores = true
+            }else{
+                errores = false
             }
         }
-        if (ok) {
+
+        if(errores){
+            render "no_Error con con el ingreso de la autorización"
+        }else{
             try {
                 rubroPrecioInstance.delete(flush: true)
-                render "OK"
+                render "OK_Precio borrado correctamente"
             }
             catch (DataIntegrityViolationException e) {
                 println "mantenimiento items controller l 903: " + e
-                render "No se pudo eliminar el precio."
+                render "Error al eliminar el precio."
             }
         }
-    }
-
-    def actualizarPrecios_ajax() {
-        if (params.item instanceof java.lang.String) {
-            params.item = [params.item]
-        }
-
-        def oks = "", nos = ""
-
-        params.item.each {
-            def parts = it.split("_")
-
-//            println parts
-
-            def rubroId = parts[0]
-            def nuevoPrecio = parts[1]
-
-            def rubroPrecioInstance = PrecioRubrosItems.get(rubroId);
-            rubroPrecioInstance.precioUnitario = nuevoPrecio.toDouble();
-//            println rubroPrecioInstance.precioUnitario
-            if (!rubroPrecioInstance.save(flush: true)) {
-                println "mantenimiento items controller l 928: " + "error " + parts
-                if (nos != "") {
-                    nos += ","
-                }
-                nos += "#" + rubroId
-            } else {
-                if (oks != "") {
-                    oks += ","
-                }
-                oks += "#" + rubroId
-            }
-
-        }
-        render oks + "_" + nos
     }
 
     def calcPrecEq() {
@@ -1870,7 +1847,14 @@ class MantenimientoItemsController {
     }
 
     def calcPrecioRef_ajax() {
-        render formatNumber(number: calcPrecioRef(params.precio.toDouble()), maxFractionDigits: 5, minFractionDigits: 5)
+        def precioRef = 0
+        try{
+            precioRef = formatNumber(number: calcPrecioRef(params.precio.toDouble()), maxFractionDigits: 5, minFractionDigits: 5)
+        }catch(e){
+            println("error " + e)
+            precioRef = "error"
+        }
+        render precioRef
     }
 
     def calcPrecioRef(precioAnt) {
