@@ -70,6 +70,8 @@ dependencies {
             "hrome-driver:2.47.1"
     compile 'org.grails.plugins:audita:1.0'
     compile files('PDFOne.jar')
+    compile 'org.grails.plugins:rendering:2.0.3'
+    runtime "org.springframework:spring-test:4.2.1.RELEASE"
 //    compile "org.grails.plugins:rendering:1.0.0"
 }
 

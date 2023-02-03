@@ -1494,8 +1494,8 @@ class Reportes2Controller {
     } //tablasPlanilla()
 
 
-    def reportePrecios() {
-//        println "reportePrecios params" + params
+    def _reportePrecios() {
+        println "reportePrecios params" + params
         def grupo = Grupo.get(params.grupo.toLong())
 
         def orden = "itemnmbr"
@@ -1566,7 +1566,11 @@ class Reportes2Controller {
 
 //        println("res" + res + "grupo" + grupo)
 
-        return [lugar: lugar, cols: params.col, precios: res, grupo: grupo]
+//        return [lugar: lugar, cols: params.col, precios: res, grupo: grupo]
+
+
+        renderPdf(template:'/reportes2/reportePrecios', model: [lugar: lugar, cols: params.cols, precios: res, grupo: grupo], filename: 'reportePrecios.pdf')
+
     }
 
     def reporteExcelComposicionTotales() {

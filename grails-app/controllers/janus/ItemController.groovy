@@ -319,7 +319,7 @@ class ItemController {
     def tabla() {
         println "tabla " + params
         if (!params.max || params.max == 0) {
-            params.max = 100
+            params.max = 20
         } else {
             params.max = params.max.toInteger()
         }
@@ -338,10 +338,6 @@ class ItemController {
         def rubroPrecio;
 
         def tipo;
-
-        if (t == "1") {
-
-        }
 
         if (t == "2") {
             lugar = Lugar.get(params.lgar)
@@ -381,38 +377,29 @@ class ItemController {
             def cn = dbConnectionService.getConnection()
 
             cn.eachRow(sql.toString()) { row ->
-//                println "\t" + row[0]
                 if (itemsIds != "") {
                     itemsIds += ","
                 }
                 itemsIds += row[0]
             }
 
-//          println itemsIds
             if (itemsIds == ""){
                 itemsIds = '-1'
             }
 
             def precios = preciosService.getPrecioRubroItemEstado(f, lugar, itemsIds, estado)
 
-
             rubroPrecio = []
-
-//            println ">>" + precios
 
             def totalPrueba
 
             precios.each {
                 def pri = PrecioRubrosItems.get(it)
-//                println "\t" + it + "   " + pri.registrado + "    " + pri.itemId
                 rubroPrecio.add(pri)
 
             }
 
-//            println("precios2" + precios);
-
             if (params.tipo == '-1') {
-//                println("entro 1")
 
                 if (!params.totalRows) {
                     def sql3
@@ -426,17 +413,13 @@ class ItemController {
                         sql3 += " and rbpcrgst != 'R'"
                     }
 
-//                    println "^^" + sql
-
                     cn.eachRow(sql3.toString()) { row ->
-//                println "\t" + row[0]
                         if (itemsIds != "") {
                             itemsIds += ","
                         }
                         itemsIds += row[0]
                     }
 
-//          println itemsIds
                     if (itemsIds == ""){
                         itemsIds = '-1'
                     }
@@ -451,14 +434,11 @@ class ItemController {
                         rubroPrecio.add(pri)
                     }
 
-//                    println("RP" + rubroPrecio)
-//                    println("max" + params.max)
 
                     if(rubroPrecio == []){
                         totalCount = 0
                     }else {
                         cn.eachRow(sql3.toString()) { row ->
-//                            println("row" + (row))
                             totalCount= row[0]
                         }
                     }
@@ -470,7 +450,7 @@ class ItemController {
                     }else {
                         params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
                     }
-
+//
                     if (params.totalPags <= 10) {
                         params.first = 1
                         params.last = params.last = params.totalPags
@@ -515,7 +495,6 @@ class ItemController {
                         itemsIds += row[0]
                     }
 
-//          println itemsIds
                     if (itemsIds == ""){
                         itemsIds = '-1'
                     }
@@ -528,12 +507,8 @@ class ItemController {
                     def totalCount1 = 0
                     precios2.each {
                         def pri = PrecioRubrosItems.get(it)
-//                println "\t" + it + "   " + pri.registrado + "    " + pri.itemId
                         rubroPrecio.add(pri)
                     }
-
-//                    println("RP" + rubroPrecio)
-//                    println("max" + params.max)
 
                     if(rubroPrecio == []){
                        totalCount = 0
@@ -544,18 +519,14 @@ class ItemController {
                         }
                     }
 
-//                    println("totalCount"  + (totalCount))
-
                     params.totalRows = totalCount
-
+//
                     if(params.totalRows == 0){
                         params.totalPags = 0
                     }else {
                         params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
                     }
-
-//                    println("paginas" + params.totalPags)
-
+//
                     if (params.totalPags <= 10) {
                         params.first = 1
                         params.last = params.last = params.totalPags
@@ -674,38 +645,28 @@ class ItemController {
 
     def actualizar() {
 
-//        println params
+//        println("parmas actualizar precios" + params)
         if (params.item instanceof java.lang.String) {
             params.item = [params.item]
         }
 
         def oks = "", nos = ""
 
-
-
         params.item.each {
             def parts = it.split("_")
-//            println ">>" + parts
-
             def rubroId = parts[0]
             def nuevoPrecio = parts[1]
             def nuevaFecha = parts[2]
-//
-////            def reg = parts[3]
-//
+
             nuevaFecha = new Date().parse("dd-MM-yyyy", nuevaFecha);
-//
+
             def rubroPrecioInstanceOld = PrecioRubrosItems.get(rubroId);
-//            def precios = PrecioRubrosItems.countByFechaAndLugar(nuevaFecha, rubroPrecioInstanceOld.lugar)
             def precios = PrecioRubrosItems.withCriteria {
                   eq("fecha", nuevaFecha)
                   eq("lugar", rubroPrecioInstanceOld.lugar)
                   eq("item", rubroPrecioInstanceOld.item)
             }.size()
 
-//            println "el rubro precioOld: $rubroPrecioInstanceOld "
-//            println "precios: $precios "
-//            println "neva fecha: $nuevaFecha"
             def rubroPrecioInstance
             if (precios == 0) {
                 rubroPrecioInstance = new PrecioRubrosItems();
@@ -730,11 +691,8 @@ class ItemController {
                 }
                 oks += "#" + rubroId
             }
-
         }
-
         render oks + "_" + nos
-
     }
 
 
