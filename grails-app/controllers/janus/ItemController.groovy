@@ -47,7 +47,6 @@ class ItemController {
         def lugar = Lugar.get(params.lgar)
         def sql
         def tipo = Grupo.get(params.tipo)
-//           println(tipo);
 
         sql = "select distinct rbpc.item__id, item.itemcdgo "
         sql += "from rbpc, item"
@@ -66,45 +65,34 @@ class ItemController {
 
         def estado = "and r1.rbpcrgst!='R'"
 
-            println ">>" + sql
+//            println ">>" + sql
 
         def itemsIds = ""
 
         def cn = dbConnectionService.getConnection()
         cn.eachRow(sql.toString()) { row ->
-//                println "\t" + row[0]
             if (itemsIds != "") {
                 itemsIds += ","
             }
             itemsIds += row[0]
         }
-//
-          println "itemsIds.size(): ${itemsIds.size()}"
+
         if (itemsIds == "") itemsIds = '-1'
-
-
 
         def precios = preciosService.getPrecioRubroItemEstadoNoFecha(lugar, itemsIds, estado)
         def rubroPrecio = []
-            println ">>" + precios.size()
         precios.each {
             def pri = PrecioRubrosItems.get(it)
-//                println "\t" + it + "   " + pri.registrado + "    " + pri.itemId
             rubroPrecio.add(pri)
         }
 
-//            println("precios2" + precios);
 
         if (params.tipo == '-1') {
-//                println("entro 1")
-
             if (!params.totalRows) {
                 sql = "select count(distinct rbpc.item__id) "
                 sql += "from rbpc "
                 sql += "where lgar__id=${lugar.id} "
                 sql += " and rbpcrgst != 'R'"
-
-//                    println "^^" + sql
 
                 def totalCount
                 cn.eachRow(sql.toString()) { row ->
@@ -112,7 +100,6 @@ class ItemController {
                 }
 
                 params.totalRows = totalCount
-
                 params.totalPags = Math.ceil(params.totalRows / params.max).toInteger()
 
                 if (params.totalPags <= 10) {
@@ -131,7 +118,6 @@ class ItemController {
             }
             cn.close()
         } else {
-//            println("entro2")
             if (!params.totalRows) {
                 sql = "select count(distinct rbpc.item__id) "
                 sql += "from rbpc, item "
@@ -143,7 +129,6 @@ class ItemController {
                 sql += "and sbgr.grpo__id = grpo.grpo__id "
                 sql += "and grpo.grpo__id =${tipo.id}"
                 sql += " and rbpcrgst != 'R'"
-//                    println("**" + sql)
 
                 def totalCount
                 cn.eachRow(sql.toString()) { row ->
@@ -227,8 +212,6 @@ class ItemController {
                 "WHERE i.tpls__id ${tipoLugar}\n" +
                 "ORDER BY i.itemcdgo,l.lgardscr,r.rbpcfcha desc, i.item__id"
 
-//        println sqlPrecios
-
         def lugares = []
 
         def html = "<table class=\"table table-bordered table-striped table-hover table-condensed\" id=\"tablaPrecios\">"
@@ -260,11 +243,6 @@ class ItemController {
             r2 += "<th>${row.des}</th>"
         }
         r2 += "</tr>"
-
-//        println sqlPrecios
-//
-//        println lugares
-//        println precios
 
         html += r1
         html += r2
@@ -594,12 +572,9 @@ class ItemController {
         }
 
         def oks = "", nos = ""
-        //data += "item=" + id + "_" + item + "_" + lugar + "_" + valor + "_" + fcha;
 
         params.item.each {
             def parts = it.split("_")
-//            println ">>" + parts
-
             def rubroId = parts[0]
             def itemId = parts[1]
             def lugarId = parts[2]
@@ -639,7 +614,6 @@ class ItemController {
 
         }
         render oks + "_" + nos
-
     }
 
 

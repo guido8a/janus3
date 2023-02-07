@@ -34,16 +34,16 @@
         Equipos
     </a>
 
-    <div class="col-md-4">
-        <div class="input-group input-group-sm">
-            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
-            <span class="input-group-btn">
-                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">
-                    <i class="fa fa-search"></i>&nbsp;
-                </a>
-            </span>
-        </div><!-- /input-group -->
-    </div>
+%{--    <div class="col-md-4">--}%
+%{--        <div class="input-group input-group-sm">--}%
+%{--            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>--}%
+%{--            <span class="input-group-btn">--}%
+%{--                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">--}%
+%{--                    <i class="fa fa-search"></i>&nbsp;--}%
+%{--                </a>--}%
+%{--            </span>--}%
+%{--        </div><!-- /input-group -->--}%
+%{--    </div>--}%
 
     <div class="col-md-1" style="margin-right: 10px">
         <div class="btn-group">
@@ -58,7 +58,6 @@
     </span>
 
     <span class="col-md-2">
-%{--        <input aria-label="" name="fecha" id='datetimepicker2' type='text' class="form-control" value="${ new Date().format("dd-MM-yyyy")}"/>--}%
         <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control" value="${ new Date().format("dd-MM-yyyy")}"/>
     </span>
 
@@ -104,12 +103,12 @@
                 <a href="#" id="btnMantenimientoPrecios" class="btn">
                     <i class="fa fa-money-bill"></i> Mantenimiento de precios
                 </a>
-                <g:link controller="item" action="precioVolumen" class="btn">
+                <a href="#" id="btnPreciosVolumen" class="btn">
                     <i class="fa fa-money-bill"></i> Precios por Volumen
-                </g:link>
-                <g:link controller="item" action="registrarPrecios" class="btn">
+                </a>
+                <a href="#" id="btnRegistrar" class="btn">
                     <i class="fa fa-check"></i> Registrar
-                </g:link>
+                </a>
             </g:if>
         </div>
     </div>
@@ -133,12 +132,6 @@
 <div id="info" class="col-md-4 ui-corner-all hide" style="border-style: groove; border-color: #0d7bdc"></div>
 
 <div id="modal-tree">
-%{--    <div class="modal-header" id="modalHeader">--}%
-%{--        <button type="button" class="close simplemodal-close" data-dismiss="modal">×</button>--}%
-
-%{--        <h3 id="modalTitle"></h3>--}%
-%{--    </div>--}%
-
     <div class="modal-body" id="modalBody">
 
     </div>
@@ -148,7 +141,6 @@
 </div>
 
 <script type="text/javascript">
-
 
     var searchRes = [];
     var posSearchShow = 0;
@@ -191,6 +183,14 @@
     $("#btnMantenimientoPrecios").click(function () {
         location.href="${createLink(controller: 'item', action: 'mantenimientoPrecios')}"
     })
+
+    $("#btnPreciosVolumen").click(function () {
+        location.href="${createLink(controller: 'item', action: 'precioVolumen')}"
+    })
+
+    $("#btnRegistrar").click(function () {
+        location.href="${createLink(controller: 'item', action: 'registrarPrecios')}"
+    });
 
     $(".btnTodosLugares").click(function () {
 
@@ -531,7 +531,6 @@
                             $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
                             scrollToSearchRes();
                         }, 300);
-
                     }
                 }
             },
@@ -613,7 +612,6 @@
                             $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
                             scrollToSearchRes();
                         }, 300);
-
                     }
                 }
             },

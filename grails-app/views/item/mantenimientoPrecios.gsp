@@ -70,6 +70,7 @@
     });
 
     function consultar() {
+        var dialog = cargarLoader("Cargando...");
         var lgar = $("#listaPrecio").val();
         var fcha = $("#fecha").val();
 
@@ -104,6 +105,7 @@
                 pag   : 1
             },
             success : function (msg) {
+                dialog.modal("hide");
                 $("#divTabla").html(msg).removeClass("hidden");
                 $("#dlgLoad").dialog("close");
             }
@@ -161,7 +163,7 @@
                         var $tdChk = $(this).siblings(".chk");
                         var chk = $tdChk.children("input").is(":checked");
                         if (chk) {
-                            $tdChk.html('<i class="icon-ok"></i>');
+                            $tdChk.html('<i class="fa fa-check"></i>');
                         }
                     });
                     doHighlight({elem : $(ok), clase : "ok"});
