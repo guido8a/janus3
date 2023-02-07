@@ -1317,6 +1317,8 @@
 
             ticksYEco += "]";
 
+            console.log('...1');
+
             var dataFis = "[[";
             dataFis += "[0,0],";
             var ticksXFis = "[0,";
@@ -1350,293 +1352,27 @@
             maxFis = 100;
             maxEco = ${sum};
 
-            var d = "datae=" + dataEco + "&txe=" + ticksXEco + "&tye=" + ticksYEco + "&me=" + maxEco + "&tituloe=" + tituloe + "&colore=" + colore;
-            d += "&dataf=" + dataFis + "&txf=" + ticksXFis + "&tyf=" + ticksYFis + "&mf=" + maxFis + "&titulof=" + titulof + "&colorf=" + colorf;
-            d += "&obra=${obra.id}";
+            console.log('antes de invocar al gráfico');
+            %{--var d = "datae=" + dataEco + "&txe=" + ticksXEco + "&tye=" + ticksYEco + "&me=" + maxEco + "&tituloe=" + tituloe + "&colore=" + colore;--}%
+            %{--d += "&dataf=" + dataFis + "&txf=" + ticksXFis + "&tyf=" + ticksYFis + "&mf=" + maxFis + "&titulof=" + titulof + "&colorf=" + colorf;--}%
+            %{--d += "&obra=${obra.id}";--}%
+            %{--d += "&subpre=${subpre}";--}%
+
+            var d = "obra=${obra.id}";
             d += "&subpre=${subpre}";
 
             var url = "${createLink(action: 'graficos2')}?" + d;
-//                    ////console.log(url);
+            console.log('data d:', url);
+            console.log(url);
             location.href = url;
 
             return false;
         });
 
-        %{--$("#btnGraficoEco").click(function () {--}%
-        %{--var data = "[[";--}%
-        %{--var ticksX = "[";--}%
-        %{--var ticksY = "[";--}%
-        %{--var max = 0;--}%
-
-        %{--$(".totalAcumulado.total").each(function () {--}%
-        %{--var mes = $(this).data("mes");--}%
-        %{--ticksX += mes + ",";--}%
-        %{--var val = $(this).data("val");--}%
-        %{--ticksY += val + ",";--}%
-        %{--if (val > max) {--}%
-        %{--max = val;--}%
-        %{--}--}%
-        %{--data += "[" + mes + "," + val + "],";--}%
-        %{--});--}%
-        %{--data = data.substr(0, data.length - 1);--}%
-        %{--data += "]]";--}%
-        %{--ticksX = ticksX.substr(0, ticksX.length - 1);--}%
-        %{--ticksX += "]";--}%
-        %{--ticksY = ticksY.substr(0, ticksY.length - 1);--}%
-        %{--ticksY += "]";--}%
-
-        %{--var d = "data=" + data + "&tx=" + ticksX + "&ty=" + ticksY + "&m=" + max + "&obra=${obra.id}";--}%
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${createLink(action:'graficos')}",--}%
-        %{--data    : {--}%
-        %{--data   : data,--}%
-        %{--tx     : ticksX,--}%
-        %{--ty     : ticksY,--}%
-        %{--m      : max,--}%
-        %{--obra   :${obra.id},--}%
-        %{--titulo : "Avance económico de la obra",--}%
-        %{--color  : "#5FAB78"--}%
-        %{--},--}%
-        %{--success : function (msg) {--}%
-        %{--////console.log("Data Saved: " + msg);--}%
-        %{--$("#modalTitle-graf").html("Gráfico del Cronograma");--}%
-        %{--$("#modalBody-graf").html(msg);--}%
-        %{--$("#modal-graf").modal("show");--}%
-        %{--}--}%
-        %{--});--}%
-
-        %{--return false;--}%
-        %{--});--}%
-
-        %{--$("#btnGraficoFis").click(function () {--}%
-        %{--var data = "[[";--}%
-        %{--var ticksX = "[";--}%
-        %{--var ticksY = "[";--}%
-        %{--var max = 0;--}%
-
-        %{--$(".prctAcumulado.total").each(function () {--}%
-        %{--var mes = $(this).data("mes");--}%
-        %{--ticksX += mes + ",";--}%
-        %{--var val = $(this).data("val");--}%
-        %{--ticksY += val + ",";--}%
-        %{--if (val > max) {--}%
-        %{--max = val;--}%
-        %{--}--}%
-        %{--data += "[" + mes + "," + val + "],";--}%
-        %{--});--}%
-        %{--data = data.substr(0, data.length - 1);--}%
-        %{--data += "]]";--}%
-        %{--ticksX = ticksX.substr(0, ticksX.length - 1);--}%
-        %{--ticksX += "]";--}%
-        %{--ticksY = ticksY.substr(0, ticksY.length - 1);--}%
-        %{--ticksY += "]";--}%
-
-        %{--var d = "data=" + data + "&tx=" + ticksX + "&ty=" + ticksY + "&m=" + max + "&obra=${obra.id}";--}%
-
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${createLink(action:'graficos')}",--}%
-        %{--data    : {--}%
-        %{--data   : data,--}%
-        %{--tx--}%
-        %{--:--}%
-        %{--ticksX,--}%
-        %{--ty--}%
-        %{--:--}%
-        %{--ticksY,--}%
-        %{--m--}%
-        %{--:--}%
-        %{--max,--}%
-        %{--obra--}%
-        %{--:${obra.id},--}%
-        %{--titulo : "Avance físico de la obra",--}%
-        %{--color--}%
-        %{--:--}%
-        %{--"#5F81AA"--}%
-        %{--}--}%
-        %{--,--}%
-        %{--success : function (msg) {--}%
-        %{--////console.log("Data Saved: " + msg);--}%
-        %{--$("#modalTitle-graf").html("Gráfico del Cronograma");--}%
-        %{--$("#modalBody-graf").html(msg);--}%
-        %{--$("#modal-graf").modal("show");--}%
-        %{--}--}%
-        %{--});--}%
-        %{--return false;--}%
-        %{--})--}%
-        %{--;--}%
-
-        //                /****************************************************************************************************************************************************/
-        //                var data = [];
-        //                var serie = [];
-        //                var max = 0;
-        //                var ticksx = [];
-        //                var ticksy = [];
-        //
-        //                $(".totalAcumulado.total").each(function () {
-        //                    var mes = $(this).data("mes");
-        //                    ticksx.push(mes);
-        //                    var val = $(this).data("val");
-        //                    ticksy.push(val);
-        //                    if (val > max) {
-        //                        max = val;
-        //                    }
-        //                    var dato = [mes, val];
-        //                    serie.push(dato);
-        ////                        ////console.log(mes, val);
-        //                });
-        //                data.push(serie);
-        //
-        //                grafico({
-        //                    target : "grafEco",
-        //                    titulo : 'Avance económico de la obra',
-        //                    data   : data,
-        //                    axes   : {
-        //                        xaxis : {
-        //                            min   : 1,
-        //                            ticks : ticksx,
-        //                            pad   : 5.5
-        //                        },
-        //                        yaxis : {
-        //                            min   : 0,
-        //                            max   : max,
-        //                            ticks : ticksy,
-        //                            pad   : 5.5
-        //                        }
-        //                    }
-        //                });
-        //
-        //                data = [];
-        //                serie = [];
-        //                max = 0;
-        //                ticksy = [];
-        //
-        //                $(".prctAcumulado.total").each(function () {
-        //                    var mes = $(this).data("mes");
-        //                    var val = $(this).data("val") * 100;
-        //                    ticksy.push(val);
-        //                    if (val > max) {
-        //                        max = val;
-        //                    }
-        //                    var dato = [mes, val];
-        //                    serie.push(dato);
-        ////                        ////console.log(mes, val);
-        //                });
-        //                data.push(serie);
-        //                ////console.log(serie, max);
-        //                grafico({
-        //                    target : "grafFis",
-        //                    titulo : 'Avance físico de la obra',
-        //                    data   : data,
-        //                    axes   : {
-        //                        xaxis : {
-        //                            min   : 1,
-        //                            ticks : ticksx,
-        //                            pad   : 5.5
-        //                        },
-        //                        yaxis : {
-        //                            min   : 0,
-        //                            max   : max,
-        //                            ticks : ticksy,
-        //                            pad   : 5.5
-        //                        }
-        //                    }
-        //                });
-        //                /****************************************************************************************************************************************************/
-
-        //                $("#btnGraficoEco").click(function () {
-        //                    graph("eco");
-        //                    $("#modalTitle-graf").html("Gráfico del Cronograma");
-        //                    $("#modal-graf").modal("show");
-        //                });
-        //
-        //                $("#btnGraficoFis").click(function () {
-        //                    graph("fis");
-        //                    $("#modalTitle-graf").html("Gráfico del Cronograma");
-        //                    $("#modal-graf").modal("show");
-        //                });
 
     })
     ;
 
-    //            function graph(tipo) {
-    //                var target = "graf";
-    //                if (redraw) {
-    ////                    plot.destroy();
-    ////                    $("#graf").empty();
-    //                } else {
-    //                    redraw = true;
-    //                }
-    //                var data;
-    //                var ticksx;
-    //                var ticksy;
-    //                var maxy = 230;
-    //
-    //                var title;
-    //
-    //                switch (tipo) {
-    //                    case "eco":
-    //                        title = "Avance económico de la obra";
-    //                        data = [
-    //                            [
-    //                                [1, 2],
-    //                                [3, 5.12],
-    //                                [5, 13.1],
-    //                                [7, 33.6],
-    //                                [9, 85.9],
-    //                                [11, 219.9]
-    //                            ]
-    //                        ];
-    //                        ticksx = [1, 3, 5, 7, 9];
-    //                        ticksy = [2, 5, 13, 33, 85, 220];
-    //                        break;
-    //                    case "fis":
-    //                        title = "Avance físico de la obra";
-    //                        data = [
-    //                            [
-    //                                [2, 2],
-    //                                [4, 5.12],
-    //                                [6, 13.1],
-    //                                [8, 33.6],
-    //                                [10, 85.9],
-    //                                [12, 219.9]
-    //                            ]
-    //                        ];
-    //                        ticksx = [2, 4, 6, 8, 10, 12];
-    //                        ticksy = [2, 5, 13, 33, 85, 220];
-    //                        break;
-    //                }
-    //
-    //                plot = $.jqplot("graf", data,
-    //                        {
-    //                            title  : title,
-    //                            axes   : {
-    //                                xaxis : {
-    //                                    min   : 1,
-    //                                    ticks : ticksx,
-    //                                    pad   : 5.5
-    //                                },
-    //                                yaxis : {
-    //                                    min   : 0,
-    //                                    max   : maxy,
-    //                                    ticks : ticksy,
-    //                                    pad   : 5.5
-    //                                }
-    //                            },
-    //                            series : [
-    //                                {
-    //                                    color : '#5FAB78'
-    //                                }
-    //                            ]
-    //                        });
-    //                if (redraw) {
-    ////                    plot.replot({resetAxes : true});
-    ////                    plot.resetAxesScale();
-    //                    plot.redraw();
-    //                }
-    //
-    //            }
 </script>
 
 </body>
