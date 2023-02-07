@@ -1291,79 +1291,10 @@
         });
 
         $("#btnGrafico").click(function () {
-            var dataEco = "[[";
-            dataEco += "[0,0],";
-            var ticksXEco = "[0,";
-            var ticksYEco = "[0,";
-            var maxEco = 0;
-
-            $(".totalAcumulado.total").each(function () {
-                var mes = $(this).data("mes");
-                ticksXEco += mes + ",";
-                var val = $(this).data("val");
-                ticksYEco += number_format(val, 2, ".", "") + ",";
-                if (val > maxEco) {
-                    maxEco = val;
-                }
-                dataEco += "[" + mes + "," + val + "],";
-            });
-            dataEco = dataEco.substr(0, dataEco.length - 1);
-            dataEco += "]]";
-            ticksXEco = ticksXEco.substr(0, ticksXEco.length - 1);
-            ticksXEco += "]";
-//                    ticksYEco = ticksYEco.substr(0, ticksYEco.length - 1);
-
-            ticksYEco += number_format(${sum}, 2, ".", "");
-
-            ticksYEco += "]";
-
-            console.log('...1');
-
-            var dataFis = "[[";
-            dataFis += "[0,0],";
-            var ticksXFis = "[0,";
-            var ticksYFis = "[0,";
-            var maxFis = 0;
-            $(".prctAcumulado.total").each(function () {
-                var mes = $(this).data("mes");
-                ticksXFis += mes + ",";
-                var val = $(this).data("val");
-                ticksYFis += number_format(val, 2, ".", "") + ",";
-                if (val > maxFis) {
-                    maxFis = val;
-                }
-                dataFis += "[" + mes + "," + val + "],";
-            });
-            dataFis = dataFis.substr(0, dataFis.length - 1);
-            dataFis += "]]";
-            ticksXFis = ticksXFis.substr(0, ticksXFis.length - 1);
-            ticksXFis += "]";
-//                    ticksYFis = ticksYFis.substr(0, ticksYFis.length - 1);
-
-            ticksYFis += number_format(100, 2, ".", "");
-
-            ticksYFis += "]";
-
-            var tituloe = "Avance económico de la obra";
-            var colore = "5FAB78";
-            var titulof = "Avance físico de la obra";
-            var colorf = "5F81AA";
-
-            maxFis = 100;
-            maxEco = ${sum};
-
-            console.log('antes de invocar al gráfico');
-            %{--var d = "datae=" + dataEco + "&txe=" + ticksXEco + "&tye=" + ticksYEco + "&me=" + maxEco + "&tituloe=" + tituloe + "&colore=" + colore;--}%
-            %{--d += "&dataf=" + dataFis + "&txf=" + ticksXFis + "&tyf=" + ticksYFis + "&mf=" + maxFis + "&titulof=" + titulof + "&colorf=" + colorf;--}%
-            %{--d += "&obra=${obra.id}";--}%
-            %{--d += "&subpre=${subpre}";--}%
-
             var d = "obra=${obra.id}";
-            d += "&subpre=${subpre}";
+            d += "&sbpr=${subpre}";
 
-            var url = "${createLink(action: 'graficos2')}?" + d;
-            console.log('data d:', url);
-            console.log(url);
+            var url = "${createLink(action: 'grafico')}?" + d;
             location.href = url;
 
             return false;

@@ -4,6 +4,7 @@ package janus
 import jxl.Cell
 import jxl.Sheet
 import jxl.Workbook
+import seguridad.Persona
 
 class ComposicionController {
 

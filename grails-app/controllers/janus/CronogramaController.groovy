@@ -105,67 +105,60 @@ class CronogramaController {
 
     def graficos2() {
         println "graficos2: $params"
-//        params.each {
-//            println it
-//        }
-//        def obra = Obra.get(params.obra)
-        def obra = Obra.get(3775)
+        def obra = Obra.get(params.obra)
+        def sbpr = SubPresupuesto.get(params.sbpr)
 
-//        def titulo = obra.descripcion.replaceAll('"',"")
-
-//        return [params: params, obra: obra, titulo:titulo]
-        return [subpre:141, tituloe:"Avance económico de la obra", titulof:"Avance físico de la obra",
-                tye:[0,8262.65,16525.29,16525.29], tyf:[0,50.00,100.00,100.00], colorf:"5F81AA", colore:"5FAB78",
-                obra:"3775", datae:[[[0,0],[1,8262.65],[2,16525.29]]], me:16525.2919, mf:100,
-                dataf:[[[0,0],[1,50.000024507887815],[2,99.99998850247238]]],
-                txf:[0,1,2], txe:[0,1,2],  obra: obra, titulo: "nombre obra"]
+        return [obra: obra, sbpr: sbpr]
     }
 
     
-    def clasificar() {
-        println "clasificar $params"
+    def grafico() {
+        println "grafico $params"
         def cn = dbConnectionService.getConnection()
-
-//        def periodo = Periodo.get(params.prdo)
-//        def facultad
-//        def facultadId
-//        if (params.facl) {
-//            facultad = Facultad.get(params.facl).nombre
-//            facultadId = "${params.facl}"
-//        } else {
-//            facultad = "Todas las Facultades"
-//            facultadId = "%"
-//        }
+        println "grafico: $params"
+        def obra = Obra.get(params.obra)
+        def sbpr = SubPresupuesto.get(params.sbpr)
 
         def sql
-        def data = [:]
-        def rcmn = 0
-        def totl = 0
+        def data = "0"
+        def prdo = "Inicio"
+        def suma = 0, i = 0, sumapcnt = 0, datapcnt = ""
 
         def subtitulo = ''
         def pattern1 = "###.##%"
 
-//        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta, clase from rpec, prof, escl " +
-//                "where prof.prof__id = rpec.prof__id and " +
-//                "escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and tpen__id = 2 and " +
-//                "rpec.univ__id = ${params.univ} and escl.escl__id = ${params.escl} " +
-//                "group by clase order by clase"
-//        println "sql: $sql"
-//        cn.eachRow(sql.toString()) { d ->
-//            data[d.clase] = d.cnta
-//            totl += d.cnta
-//        }
+        sql = "select sum(crnoprct) pcnt from crno, vlob where obra__id = ${params.obra} and " +
+                "crno.vlob__id = vlob.vlob__id"
+        println "sql: $sql"
+        def total = cn.rows(sql.toString())[0].pcnt
+
+        sql = "select sum(crnoprco) suma, sum(crnoprct) pcnt, crnoprdo from crno, vlob where obra__id = ${params.obra} and " +
+                "crno.vlob__id = vlob.vlob__id group by crnoprdo"
+        println "sql: $sql"
+        cn.eachRow(sql.toString()) { d ->
+            println "valor de suma: $suma"
+            i++
+            suma += d.suma
+            sumapcnt += Math.round(d.pcnt/total * 10000) / 100
+            data += "_$suma"
+            datapcnt += "_$sumapcnt"
+            prdo += "_Mes ${i}"
+//            data[d.crnoprdo] = d.suma
+        }
 
 //        sql = "select count(distinct (rpec.prof__id, dcta__id)) cnta from rpec, prof, escl where prof.prof__id = rpec.prof__id and " +
 //                "escl.escl__id = rpec.escl__id and rpec.facl__id::varchar ilike '${facultadId}' and con_rcmn > 0 and tpen__id = 2 and " +
 //                "rpec.univ__id = ${params.univ} and escl.escl__id = ${params.escl}"
 //        println "sql: $sql"
 //        rcmn = cn.rows(sql.toString())[0].cnta
-//        println "data: $data, rc: $rcmn, totl: $totl"
+        println "data: $data, prdo, datapcnt: $datapcnt"
         subtitulo = "PROFESORES POR DESEMPEÑO"
 
         /* para demostración */
-        render "60_71_100_Avance económico de la Obra"
+//        render "60_71_100_Avance económico de la Obra"
+//        return [data: "60_71_100_Avance económico de la Obra", obra: obra, sbpr: sbpr]
+        return [data: data, datapcnt: datapcnt, mes: prdo, obra: obra, sbpr: sbpr]
+//        return [data: data as JSON, obra: obra, sbpr: sbpr]
 //        render "${data.A?:0}_${data.B?:0}_${data.C?:0}_${facultad}_${rcmn}_${totl-rcmn}_RECOMENDACIONES"
     }
 
