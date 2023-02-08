@@ -6,9 +6,6 @@
     <title>
         AJUSTE DE LA F.P. Y C. TIPO
     </title>
-    %{--gdo--}%
-    %{--<asset:javascript src="/jquery/jquery-1.9.1.js"/>--}%
-    %{--<asset:javascript src="/jquery/jquery-ui-1.10.2.custom.js"/>--}%
 
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
@@ -51,10 +48,7 @@
     }
 
     .area {
-        /*width      : 400px;*/
         height : 750px;
-        /*background : #fffaf0;*/
-        /*display    : none;*/
     }
 
     .left, .right {
@@ -68,13 +62,11 @@
 
     .left {
         width : 465px;
-        /*background : #8a2be2;*/
     }
 
     .right {
         width       : 685px;
         margin-left : 15px;
-        /*background  : #6a5acd;*/
     }
 
     .jstree-grid-cell {
@@ -170,18 +162,13 @@
 <div class="btn-toolbar" style="margin-top: 15px;">
 
     <div class="btn-group">
-%{--        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"--}%
-%{--           id="btnRegresar" class="btn " title="Regresar a la obra">--}%
-%{--            <i class="fa fa-arrow-left"></i>--}%
-%{--            Regresar--}%
-%{--        </a>--}%
-        <a href="#" id="btnRegresar" class="btn " title="Regresar a la obra">
+        <a href="#" id="btnRegresarObras" class="btn " title="Regresar a la obra">
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
     </div>
 
-    <div class="btn-group" data-toggle="buttons-radio">
+    <div class="btn-group">
         <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'p', sbpr: params.sbpr]"
                 class="btn btn-info ${tipo == 'p' ? 'active' : ''} btn-tab">
             <i class="fa fa-cogs"></i>
@@ -259,12 +246,6 @@
 </div>
 
 <div id="modal-formula">
-    %{--<div class="modal-header" id="modalHeader-formula">--}%
-        %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-        %{--<h3 id="modalTitle-formula"></h3>--}%
-    %{--</div>--}%
-
     <div class="modal-body" id="modalBody-formula">
     </div>
 
@@ -285,8 +266,6 @@
     </div>
 </div>
 
-
-
 <div class="modal hide fade" id="modalMover" style="width: 640px;">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -299,22 +278,6 @@
         <a href="#" class="btn btn-danger" id="btnMoverCancelar">Cancelar</a>
         <a href="#" class="btn btn-success" id="btnMoverAceptar">Aceptar</a>
     </div>
-</div>
-
-<div id="reiniciarDialog">
-    <fieldset>
-        <div class="col-md-3">
-            Esta seguro que desea reiniciar la fórmula polinómica?
-        </div>
-    </fieldset>
-</div>
-
-<div id="borrarDialog">
-    <fieldset>
-        <div class="col-md-3">
-            Esta seguro que desea borrar la fórmula polinómica?
-        </div>
-    </fieldset>
 </div>
 
 <script type="text/javascript">
@@ -348,15 +311,12 @@
     var $tabla = $("#tblDisponibles");
 
     var icons = {
-        %{--edit   : "${resource(dir: 'images/tree', file: 'edit.png')}",--}%
-        edit   : '<i class="fa fa-edit"></i>',
         mover : "${resource(dir: 'images/tree', file: 'lugar_all.png')}",
-        delete : "${resource(dir: 'images/tree', file: 'delete.gif')}",
-
-
+        %{--it: "${resource(dir: 'images/tree', file: 'boxes.png')}",--}%
+        it:  "${assetPath(src:"tree/box.png")}",
+        fp:  "${assetPath(src:"tree/boxes.png")}"
         %{--fp : "${resource(dir: 'images/tree', file: 'boxes.png')}",--}%
-        fp : '<i class="fa fa-user"></i>',
-        it : "${resource(dir: 'images/tree', file: 'box.png')}"
+        %{--it : "${resource(dir: 'images/tree', file: 'box.png')}"--}%
     };
 
     function updateCoef($row) {
@@ -540,10 +500,9 @@
                     });
 
                     menuItems.editar = {
-                        label            : "Editar",
+                        label            : "<i class='fa fa-edit'></i> Editar",
                         separator_before : false,
                         separator_after  : false,
-                        icon             : "<i class='fa fa-edit'></i>",
                         action           : function (obj) {
                             <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
                             $.ajax({
@@ -586,10 +545,9 @@
                 /*** Fin Selecciona el nodo y su padre ***/
 
                 menuItems.delete = {
-                    label            : "Eliminar",
+                    label            : "<i class='fa fa-trash'></i> Eliminar",
                     separator_before : false,
                     separator_after  : false,
-                    icon             : icons.delete,
                     action           : function (obj) {
                         <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
                         $.box({
@@ -659,21 +617,21 @@
 
                         </g:if>
                         <g:else>
-                        // $.box({
-                        //     imageClass : "box_info",
-                        //     text       : "No puede modificar los coeficientes de una obra ya registrada",
-                        //     title      : "Alerta",
-                        //     iconClose  : false,
-                        //     dialog     : {
-                        //         resizable     : false,
-                        //         draggable     : false,
-                        //         closeOnEscape : false,
-                        //         buttons       : {
-                        //             "Aceptar" : function () {
-                        //             }
-                        //         }
-                        //     }
-                        // });
+                        $.box({
+                            imageClass : "box_info",
+                            text       : "No puede modificar los coeficientes de una obra ya registrada",
+                            title      : "Alerta",
+                            iconClose  : false,
+                            dialog     : {
+                                resizable     : false,
+                                draggable     : false,
+                                closeOnEscape : false,
+                                buttons       : {
+                                    "Aceptar" : function () {
+                                    }
+                                }
+                            }
+                        });
                         </g:else>
 
                     }
@@ -683,10 +641,9 @@
         return menuItems;
     }
 
-
     $("#btnMoverAceptar").click(function () {
         var $seleccionado = $(".idCoefi option:selected").val();
-        var nd = $(".idNodo").val()
+        var nd = $(".idNodo").val();
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'formulaPolinomica', action: 'moverSave')}",
@@ -696,7 +653,7 @@
                 nodo : nd
             },
             success : function (msg) {
-                if(msg == 'OK'){
+                if(msg === 'OK'){
                     $("#modalMover").modal("hide");
                     $("#divError").hide();
                     $("#spanOk").html("Item reasignado correctamente");
@@ -741,8 +698,8 @@
 
     $(function () {
 
-        $("#btnRegresar").click(function () {
-            // var url = $(this).attr("href");
+        $("#btnRegresarObras").click(function () {
+
             var total = parseFloat($("#spanTotal").data("valor"));
             var liCont = 0;
             var liEq = 0;
@@ -759,39 +716,11 @@
                 }
             });
             if (liCont > 0) {
-                // $.box({
-                //     imageClass : "box_info",
-                //     text       : "Seleccione un nombre para todos los coeficientes con items.",
-                //     title      : "Alerta",
-                //     iconClose  : false,
-                //     dialog     : {
-                //         resizable     : false,
-                //         draggable     : false,
-                //         closeOnEscape : false,
-                //         buttons       : {
-                //             "Aceptar" : function () {
-                //             }
-                //         }
-                //     }
-                // });
+                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un nombre para todos los coeficientes con items." + '</strong>');
                 return false;
             }
             if (liEq > 0) {
-                // $.box({
-                //     imageClass : "box_info",
-                //     text       : "Seleccione un nombre único para cada coeficiente con items.",
-                //     title      : "Alerta",
-                //     iconClose  : false,
-                //     dialog     : {
-                //         resizable     : false,
-                //         draggable     : false,
-                //         closeOnEscape : false,
-                //         buttons       : {
-                //             "Aceptar" : function () {
-                //             }
-                //         }
-                //     }
-                // });
+                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un nombre único para cada coeficiente con items." + '</strong>');
                 return false;
             }
 
@@ -800,54 +729,27 @@
                 return true;
             }
 
-            if (tipo === "c") {
-                bootbox.confirm({
-                    title: "Alerta",
-                    message: "La fórmula polinómica no suma 1. ¿Está seguro de querer salir de esta página?",
-                    buttons: {
-                        confirm: {
-                            label: '<i class="fa fa-times"></i> Salir',
-                            className: 'btn-primary'
-                        },
-                        cancel: {
-                            label: '<i class="fa fa-check"></i> Continuar en la página',
-                            className: 'btn-success'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            location.href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
-                        }
-                    }
-                });
-            }
-
-
-            // var msg = "La fórmula polinómica no suma 1. ¿Está seguro de querer salir de esta página?";
             // if (tipo === "c") {
-            //     msg = "La cuadrilla tipo no suma 1. ¿Está seguro de querer salir de esta página?";
+            bootbox.confirm({
+                title: "Alerta",
+                message: "La fórmula polinómica no suma 1. ¿Está seguro de querer salir de esta página?",
+                buttons: {
+                    confirm: {
+                        label: '<i class="fa fa-times"></i> Salir',
+                        className: 'btn-primary'
+                    },
+                    cancel: {
+                        label: '<i class="fa fa-check"></i> Continuar en la página',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        location.href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
+                    }
+                }
+            });
             // }
-            //
-            // $.box({
-            //     imageClass : "box_info",
-            //     text       : msg,
-            //     title      : "Confirme",
-            //     iconClose  : false,
-            //     dialog     : {
-            //         resizable     : false,
-            //         draggable     : false,
-            //         closeOnEscape : false,
-            //         buttons       : {
-            //             "Salir"                  : function () {
-            //                 location.href = url;
-            //                 return false;
-            //             },
-            //             "Continuar en la página" : function () {
-            //                 return false;
-            //             }
-            //         }
-            //     }
-            // });
             return false;
         });
 
@@ -862,92 +764,82 @@
         });
 
         $("#btnReiniciarFP").click(function () {
-            $("#reiniciarDialog").dialog("open");
-        });
-
-        $("#reiniciarDialog").dialog({
-
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            draggable: false,
-            width: 370,
-            height: 150,
-            position: 'center',
-            title: 'Reiniciar Fórmula Polinómica',
-            buttons: {
-                "Aceptar": function () {
-
-                    $(this).replaceWith(spinner);
-                    $.ajax({
-                        async   : false,
-                        type    : "POST",
-                        url     : "${createLink(action:'borrarFP')}",
-                        data    : {
-                            obra : ${obra.id}
-                        },
-                        success : function (msg) {
-                            $.ajax({
-                                async   : false,
-                                type    : "POST",
-                                url     : "${createLink(action:'insertarVolumenesItem')}",
-                                data    : {
-                                    obra : ${obra.id},
-                                    sbpr: ${subpre}
-                                },
-                                success : function (msg1) {
-                                    location.reload(true);
-                                }
-                            });
-                        }
-                    });
-                    return false;
-
+            bootbox.confirm({
+                title: "Reiniciar Fórmula Polinómica",
+                message: "Está seguro que desea reiniciar la fórmula polinómica?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Aceptar',
+                        className: 'btn-success'
+                    }
                 },
-                "Cancelar": function () {
+                callback: function (result) {
+                    if (result) {
 
-                    $("#reiniciarDialog").dialog("close")
+                        $.ajax({
+                            async   : false,
+                            type    : "POST",
+                            url     : "${createLink(action:'borrarFP')}",
+                            data    : {
+                                obra : ${obra.id}
+                            },
+                            success : function (msg) {
+                                $.ajax({
+                                    async   : false,
+                                    type    : "POST",
+                                    url     : "${createLink(action:'insertarVolumenesItem')}",
+                                    data    : {
+                                        obra : ${obra.id},
+                                        sbpr: ${subpre}
+                                    },
+                                    success : function (msg1) {
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
 
+                    }
                 }
-
-            }
-
+            })
         });
+
 
         $("#btnEliminarFP").click(function () {
-            $("#borrarDialog").dialog("open");
-        });
-
-        $("#borrarDialog").dialog({
-
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            draggable: false,
-            width: 370,
-            height: 150,
-            position: 'center',
-            title: 'Borrar Fórmula Polinómica',
-            buttons: {
-                "Aceptar": function () {
-                    $(this).replaceWith(spinner);
-                    $.ajax({
-                        async   : false,
-                        type    : "POST",
-                        url     : "${createLink(action:'borrarFP')}",
-                        data    : {
-                            obra : ${obra.id}
-                        },
-                        success : function (msg) {
-                            location.reload(true);
-                        }
-                    });
-                    return false;
+            bootbox.confirm({
+                title: "Eliminar item",
+                message: "Está seguro de borrar esta fórmula polinómica? Esta acción no puede deshacerse.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-trash"></i> Borrar',
+                        className: 'btn-danger'
+                    }
                 },
-                "Cancelar": function () {
-                    $("#borrarDialog").dialog("close")
+                callback: function (result) {
+                    if(result){
+                        var dialog = cargarLoader("Borrando...");
+                        $.ajax({
+                            async   : false,
+                            type    : "POST",
+                            url     : "${createLink(action:'borrarFP')}",
+                            data    : {
+                                obra : ${obra.id}
+                            },
+                            success : function (msg) {
+                                location.reload();
+                            }
+                        });
+                    }
                 }
-            }
+            });
         });
 
         $("#btnAgregarItems").click(function () {
@@ -970,9 +862,6 @@
 
                     $tabla.children("tbody").children("tr.selected").each(function () {
                         var data = $(this).data();
-                        //                            console.log($.trim(numero.toLowerCase()), total, parseFloat(data.valor));
-                        //                            console.log($.trim(numero.toLowerCase()) == "px");
-                        //                            console.log(total + parseFloat(data.valor), total + parseFloat(data.valor) > 0.2);
                         if ($.trim(numero.toLowerCase()) === "px" && total + parseFloat(data.valor) > 0.2) {
                             msg += "<li>No se puede agregar " + data.nombre + " pues el valor de px no puede superar 0.20</li>";
                         } else {
@@ -1038,21 +927,21 @@
                         spinner.remove();
                     }
                 } else {
-                    // $.box({
-                    //     imageClass : "box_info",
-                    //     title      : "Alerta",
-                    //     text       : "Por favor seleccione el nombre del índice antes de agregar ítems.",
-                    //     iconClose  : false,
-                    //     dialog     : {
-                    //         resizable     : false,
-                    //         draggable     : false,
-                    //         closeOnEscape : false,
-                    //         buttons       : {
-                    //             "Aceptar" : function () {
-                    //             }
-                    //         }
-                    //     }
-                    // });
+                    $.box({
+                        imageClass : "box_info",
+                        title      : "Alerta",
+                        text       : "Por favor seleccione el nombre del índice antes de agregar ítems.",
+                        iconClose  : false,
+                        dialog     : {
+                            resizable     : false,
+                            draggable     : false,
+                            closeOnEscape : false,
+                            buttons       : {
+                                "Aceptar" : function () {
+                                }
+                            }
+                        }
+                    });
                 }
             }
             return false;
@@ -1090,18 +979,14 @@
             contextmenu : {
                 items : createContextmenu
             },
-
             types : {
                 valid_children : [ "fp", "it"],
                 types          : {
-                    fp : {
-                        icon           : {
-                            image : icons.fp
-                        },
-                        valid_children : ["it"]
+                    fp                : {
+                        icon : {image: icons.fp}
                     },
                     it : {
-                        icon           : {
+                        icon       : {
                             image : icons.it
                         },
                         valid_children : [""]
@@ -1120,7 +1005,7 @@
                         header : "Nombre del Indice",
                         value  : "nombre",
                         title  : "nombre",
-                        width  : 300
+                        width  : 270
                     },
                     {
                         header : "Valor",
