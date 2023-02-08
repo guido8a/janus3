@@ -63,10 +63,10 @@
             this.data.grid.treeWidthDiff = 0;
             this.data.grid.resizable = s.resizable;
 
-            if ($.browser.msie && parseInt($.browser.version.substr(0,1),10) < 8) {
-                this.data.grid.defaultConf.display = "inline";
-                this.data.grid.defaultConf.zoom = "1";
-            }
+            // if ($.browser.msie && parseInt($.browser.version.substr(0,1),10) < 8) {
+            //     this.data.grid.defaultConf.display = "inline";
+            //     this.data.grid.defaultConf.zoom = "1";
+            // }
 
 // set up the classes we need
             if (!styled) {

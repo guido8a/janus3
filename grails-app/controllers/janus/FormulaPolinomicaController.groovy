@@ -101,6 +101,7 @@ class FormulaPolinomicaController {
         if (formula.save(flush: true)) {
             render "OK"
         } else {
+            println "errorres: ${formula.errors}"
             render "NO"
         }
     }

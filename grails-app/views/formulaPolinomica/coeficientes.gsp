@@ -7,17 +7,28 @@
         AJUSTE DE LA F.P. Y C. TIPO
     </title>
     %{--gdo--}%
+    %{--<asset:javascript src="/jquery/jquery-1.9.1.js"/>--}%
+    %{--<asset:javascript src="/jquery/jquery-ui-1.10.2.custom.js"/>--}%
 
-%{--    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>--}%
-%{--    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>--}%
-%{--    <asset:javascript src="/jquery/plugins/jstree/jquery.jstree.js"/>--}%
-%{--    <asset:javascript src="/jquery/plugins/jstree/_lib/jquery.cookie.js"/>--}%
-%{--    <asset:stylesheet src="apli/tree.css"/>--}%
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
+    <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
+    <asset:javascript src="/jquery/plugins/jstree/jquery.jstree.js"/>
+    <asset:javascript src="/jquery/plugins/jstree/_lib/jquery.cookie.js"/>
 
+    <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
+    <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
+    <asset:javascript src="/jquery/plugins/editable/bootstrap-editable/js/bootstrap-editable.js"/>
+    <asset:javascript src="/jquery/plugins/editable/inputs-ext/coords/coords.js"/>
+    <asset:javascript src="/jquery/plugins/jgrowl/jquery.jgrowl.js"/>
 
-    <asset:javascript src="/jstree-3.0.8/dist/jstree.min.js"/>
-    <asset:stylesheet src="/jstree-3.0.8/dist/themes/default/style.min.css"/>
+    <asset:javascript src="/jquery/plugins/jstree/jstreegrid.js"/>
 
+    <asset:stylesheet src="/jquery/plugins/box/css/jquery.luz.box.css"/>
+    <asset:stylesheet src="/jquery/plugins/editable/bootstrap-editable/css/bootstrap-editable.css"/>
+    <asset:stylesheet src="/jquery/plugins/editable/inputs-ext/coords/coords.css"/>
+    <asset:stylesheet src="/jquery/plugins/jgrowl/jquery.jgrowl.css"/>
+    <asset:stylesheet src="/jquery/plugins/jgrowl/jquery.jgrowl.customThemes.css"/>
+    <asset:stylesheet src="apli/tree.css"/>
 
     %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
     %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
@@ -129,7 +140,28 @@
 </head>
 
 <body>
+<g:if test="${flash.message}">
+    <div class="col-md-12">
+        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
+            <a class="close" data-dismiss="alert" href="#">×</a>
+            ${flash.message}
+        </div>
+    </div>
+</g:if>
 
+<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divError">
+    <div class="alert alert-error" role="status">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        <span id="spanError"></span>
+    </div>
+</div>
+
+<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divOk">
+    <div class="alert alert-info" role="status">
+        <a class="close" data-dismiss="alert" href="#">×</a>
+        <span id="spanOk"></span>
+    </div>
+</div>
 
 <div class="tituloTree">
     <div class="alert alert-info " style="margin-top: 5px">Coeficientes de la fórmula polinómica de la obra: ${obra.descripcion + " (" + obra.codigo + ")"}</div>
@@ -138,13 +170,18 @@
 <div class="btn-toolbar" style="margin-top: 15px;">
 
     <div class="btn-group">
+%{--        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"--}%
+%{--           id="btnRegresar" class="btn " title="Regresar a la obra">--}%
+%{--            <i class="fa fa-arrow-left"></i>--}%
+%{--            Regresar--}%
+%{--        </a>--}%
         <a href="#" id="btnRegresar" class="btn " title="Regresar a la obra">
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
     </div>
 
-    <div class="btn-group">
+    <div class="btn-group" data-toggle="buttons-radio">
         <g:link action="coeficientes" id="${obra.id}" params="[tipo: 'p', sbpr: params.sbpr]"
                 class="btn btn-info ${tipo == 'p' ? 'active' : ''} btn-tab">
             <i class="fa fa-cogs"></i>
@@ -194,8 +231,7 @@
     <div class="area ui-corner-all" id="formula">
 
         <div id="formulaLeft" class="col-md-5 left ui-corner-left">
-            <div id="tree" class="col-md-8 ui-corner-all" style="overflow: auto"></div>
-            <div id="tree2" class="col-md-8 ui-corner-all hide"></div>
+            <div id="tree">asdada</div>
         </div>
 
         <div id="formulaRight" class="col-md-6">
@@ -222,12 +258,12 @@
     </div>
 </div>
 
-<div class="modal hide fade" id="modal-formula">
-    <div class="modal-header" id="modalHeader-formula">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+<div id="modal-formula">
+    %{--<div class="modal-header" id="modalHeader-formula">--}%
+        %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modalTitle-formula"></h3>
-    </div>
+        %{--<h3 id="modalTitle-formula"></h3>--}%
+    %{--</div>--}%
 
     <div class="modal-body" id="modalBody-formula">
     </div>
@@ -248,6 +284,8 @@
     <div class="modal-footer" id="modalFooter-Indc">
     </div>
 </div>
+
+
 
 <div class="modal hide fade" id="modalMover" style="width: 640px;">
     <div class="modal-header">
@@ -281,108 +319,6 @@
 
 <script type="text/javascript">
 
-    var $treeContainer = $("#tree");
-
-    cargarFP();
-
-    function cargarFP (){
-        $("#tree").removeClass("hide");
-
-        var $treeContainer = $("#tree");
-
-        $treeContainer.on("loaded.jstree", function () {
-            $("#tree").removeClass("hidden");
-
-        }).on("select_node.jstree", function (node, selected, event) {
-        }).jstree({
-            plugins     : ["types", "state", "contextmenu", "search"],
-            core        : {
-                multiple       : false,
-                check_callback : true,
-                themes         : {
-                    variant : "small",
-                    dots    : true,
-                    stripes : true
-                },
-                data           : {
-                    url   : '${createLink(action:"loadTreePart_FP")}',
-                    data  : function (node) {
-                        return {
-                            id    : node.id,
-                            tipo  : '${tipo}',
-                            subpre: '${subpre}',
-                            obra: '${obra?.id}'
-                        };
-                    }
-                }
-            },
-            grid  : {
-                columns : [
-                    {
-                        header : "Coef.",
-                        value  : "numero",
-                        title  : "numero",
-                        width  : 80
-                    },
-                    {
-                        header : "Nombre del Indice",
-                        value  : "nombre",
-                        title  : "nombre",
-                        width  : 300
-                    },
-                    {
-                        header : "Valor",
-                        value  : "valor",
-                        title  : "valor",
-                        width  : 70
-                    }
-                ]
-            },
-            // contextmenu : {
-            //     show_at_node : false,
-            //     items        : createContextMenu
-            // },
-            state       : {
-                key : "unidades",
-                opened: false
-            },
-            %{--search      : {--}%
-            %{--    fuzzy             : false,--}%
-            %{--    show_only_matches : false,--}%
-            %{--    ajax              : {--}%
-            %{--        url     : "${createLink(action:'arbolSearch_ajax')}",--}%
-            %{--        success : function (msg) {--}%
-            %{--            var json = $.parseJSON(msg);--}%
-            %{--            $.each(json, function (i, obj) {--}%
-            %{--                $('#tree').jstree("open_node", obj);--}%
-            %{--            });--}%
-            %{--            setTimeout(function () {--}%
-            %{--                searchRes = $(".jstree-search");--}%
-            %{--                var cantRes = searchRes.length;--}%
-            %{--                posSearchShow = 0;--}%
-            %{--                $("#divSearchRes").removeClass("hidden");--}%
-            %{--                $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);--}%
-            %{--                scrollToSearchRes();--}%
-            %{--            }, 300);--}%
-            %{--        }--}%
-            %{--    }--}%
-            %{--},--}%
-            types       : {
-                root                : {
-                    icon : "fa fa-sitemap text-info"
-                }
-            }
-        }).bind("select_node.jstree", function (node, selected) {
-            // showInfo();
-        });
-    }
-
-
-
-
-
-
-
     $("#btnBuscarItem").click(function () {
         var codigo = $("#buscaCodigo").val();
         var descripcion = $("#buscaDescrip").val();
@@ -411,6 +347,18 @@
     var $tree = $("#tree");
     var $tabla = $("#tblDisponibles");
 
+    var icons = {
+        %{--edit   : "${resource(dir: 'images/tree', file: 'edit.png')}",--}%
+        edit   : '<i class="fa fa-edit"></i>',
+        mover : "${resource(dir: 'images/tree', file: 'lugar_all.png')}",
+        delete : "${resource(dir: 'images/tree', file: 'delete.gif')}",
+
+
+        %{--fp : "${resource(dir: 'images/tree', file: 'boxes.png')}",--}%
+        fp : '<i class="fa fa-user"></i>',
+        it : "${resource(dir: 'images/tree', file: 'box.png')}"
+    };
+
     function updateCoef($row) {
         var nombreOk = true;
         if ($.trim($row.attr("nombre")) === "") {
@@ -436,16 +384,21 @@
         var $seleccionados = $("a.selected, div.selected, a.editable, div.editable");
 
         if (tipo === 'fp') {
-            if ("${tipo}" === 'p' && index === 0) {
+            //padres
+
+            if ("${tipo}" === 'p' && index === 0) { //el primero (p01) de la formula no es seleccionable (el de cuadrilla tipo si es)
                 console.log("true");
                 $seleccionados.removeClass("selected editable");
                 $parent.children("a, .jstree-grid-cell").addClass("editable parent");
             } else {
+//                        ////console.log("false");
                 $seleccionados.removeClass("selected editable");
                 $parent.children("a, .jstree-grid-cell").addClass("selected editable parent");
                 updateCoef($item.parents("li"));
             }
         } else if (tipo === 'it') {
+
+            //hijos AQUI
             $seleccionados.removeClass("selected editable");
             $parent.children("a, .jstree-grid-cell").addClass("editable child");
             var $upper = $parent.parent().parent();
@@ -486,6 +439,17 @@
         });
         $("#spanTotal").text(number_format(total, 3, ".", "")).data("valor", total);
     }
+
+    $("#modal-formula").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 400,
+        height: 300,
+        position: 'center',
+        title: 'Rubros'
+    });
 
     function createContextmenu(node) {
 
@@ -548,7 +512,7 @@
                                         if (msg === "OK") {
                                             node.attr("nombre", indiceNombre).trigger("change_node.jstree");
                                             node.attr("valor", valor).trigger("change_node.jstree");
-                                            $("#modal-formula").modal("hide");
+                                            $("#modal-formula").dialog("close");
                                             updateSumaTotal();
                                         }
                                     }
@@ -592,7 +556,7 @@
                                     $("#modalTitle-formula").html("Editar grupo");
                                     $("#modalBody-formula").html(msg);
                                     $("#modalFooter-formula").html("").append(btnCancel).append(btnSave);
-                                    $("#modal-formula").modal("show");
+                                    $("#modal-formula").dialog("open");
                                 }
                             });
                             </g:if>
@@ -613,11 +577,13 @@
                 var nodePrecio = node.attr("precio");
                 var nodeGrupo = node.attr("grupo");
 
+                /*** Selecciona el nodo y su padre ***/
                 var $seleccionados = $("a.selected, div.selected, a.editable, div.editable");
                 $seleccionados.removeClass("selected editable");
                 node.children("a, .jstree-grid-cell").addClass("editable child");
                 $seleccionados.removeClass("selected");
                 node.parent().parent().children("a, .jstree-grid-cell").addClass("selected editable parent");
+                /*** Fin Selecciona el nodo y su padre ***/
 
                 menuItems.delete = {
                     label            : "Eliminar",
@@ -730,7 +696,7 @@
                 nodo : nd
             },
             success : function (msg) {
-                if(msg === 'OK'){
+                if(msg == 'OK'){
                     $("#modalMover").modal("hide");
                     $("#divError").hide();
                     $("#spanOk").html("Item reasignado correctamente");
@@ -896,97 +862,57 @@
         });
 
         $("#btnReiniciarFP").click(function () {
-            // $("#reiniciarDialog").dialog("open");
-
-            bootbox.confirm({
-                title: "Alerta",
-                message: "Está seguro que desea reiniciar la fórmula polinómica?",
-                buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> Cancelar',
-                        className: 'btn-primary'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Aceptar',
-                        className: 'btn-success'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-
-                        $.ajax({
-                            async   : false,
-                            type    : "POST",
-                            url     : "${createLink(action:'borrarFP')}",
-                            data    : {
-                                obra : ${obra.id}
-                            },
-                            success : function (msg) {
-                                $.ajax({
-                                    async   : false,
-                                    type    : "POST",
-                                    url     : "${createLink(action:'insertarVolumenesItem')}",
-                                    data    : {
-                                        obra : ${obra.id},
-                                        sbpr: ${subpre}
-                                    },
-                                    success : function (msg1) {
-                                        location.reload();
-                                    }
-                                });
-                            }
-                        });
-
-                    }
-                }
-            })
+            $("#reiniciarDialog").dialog("open");
         });
 
-        %{--$("#reiniciarDialog").dialog({--}%
+        $("#reiniciarDialog").dialog({
 
-        %{--    autoOpen: false,--}%
-        %{--    resizable: false,--}%
-        %{--    modal: true,--}%
-        %{--    draggable: false,--}%
-        %{--    width: 370,--}%
-        %{--    height: 150,--}%
-        %{--    position: 'center',--}%
-        %{--    title: 'Reiniciar Fórmula Polinómica',--}%
-        %{--    buttons: {--}%
-        %{--        "Aceptar": function () {--}%
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 370,
+            height: 150,
+            position: 'center',
+            title: 'Reiniciar Fórmula Polinómica',
+            buttons: {
+                "Aceptar": function () {
 
-        %{--            $(this).replaceWith(spinner);--}%
-        %{--            $.ajax({--}%
-        %{--                async   : false,--}%
-        %{--                type    : "POST",--}%
-        %{--                url     : "${createLink(action:'borrarFP')}",--}%
-        %{--                data    : {--}%
-        %{--                    obra : ${obra.id}--}%
-        %{--                },--}%
-        %{--                success : function (msg) {--}%
-        %{--                    $.ajax({--}%
-        %{--                        async   : false,--}%
-        %{--                        type    : "POST",--}%
-        %{--                        url     : "${createLink(action:'insertarVolumenesItem')}",--}%
-        %{--                        data    : {--}%
-        %{--                            obra : ${obra.id},--}%
-        %{--                            sbpr: ${subpre}--}%
-        %{--                        },--}%
-        %{--                        success : function (msg1) {--}%
-        %{--                            location.reload(true);--}%
-        %{--                        }--}%
-        %{--                    });--}%
-        %{--                }--}%
-        %{--            });--}%
-        %{--            return false;--}%
-        %{--        },--}%
-        %{--        "Cancelar": function () {--}%
-        %{--            $("#reiniciarDialog").dialog("close")--}%
-        %{--        }--}%
+                    $(this).replaceWith(spinner);
+                    $.ajax({
+                        async   : false,
+                        type    : "POST",
+                        url     : "${createLink(action:'borrarFP')}",
+                        data    : {
+                            obra : ${obra.id}
+                        },
+                        success : function (msg) {
+                            $.ajax({
+                                async   : false,
+                                type    : "POST",
+                                url     : "${createLink(action:'insertarVolumenesItem')}",
+                                data    : {
+                                    obra : ${obra.id},
+                                    sbpr: ${subpre}
+                                },
+                                success : function (msg1) {
+                                    location.reload(true);
+                                }
+                            });
+                        }
+                    });
+                    return false;
 
-        %{--    }--}%
+                },
+                "Cancelar": function () {
 
-        %{--});--}%
+                    $("#reiniciarDialog").dialog("close")
+
+                }
+
+            }
+
+        });
 
         $("#btnEliminarFP").click(function () {
             $("#borrarDialog").dialog("open");
@@ -1044,6 +970,9 @@
 
                     $tabla.children("tbody").children("tr.selected").each(function () {
                         var data = $(this).data();
+                        //                            console.log($.trim(numero.toLowerCase()), total, parseFloat(data.valor));
+                        //                            console.log($.trim(numero.toLowerCase()) == "px");
+                        //                            console.log(total + parseFloat(data.valor), total + parseFloat(data.valor) > 0.2);
                         if ($.trim(numero.toLowerCase()) === "px" && total + parseFloat(data.valor) > 0.2) {
                             msg += "<li>No se puede agregar " + data.nombre + " pues el valor de px no puede superar 0.20</li>";
                         } else {
@@ -1138,6 +1067,70 @@
             handle : ".modal-header"
         });
 
+        $tree.bind("loaded.jstree",
+            function (event, data) {
+                var $first = $tree.children("ul").first().children("li").eq(1);
+                $first.children("a, .jstree-grid-cell").addClass("selected");
+                updateCoef($first);
+                updateTotal(0);
+
+                treeNodeEvents($("#tree").find("a"));
+                treeNodeEvents($(".jstree-grid-cell"));
+
+                $("#rightContents").show();
+
+                updateSumaTotal();
+            }).jstree({
+            plugins   : ["themes", "json_data", "grid", "types", "contextmenu", "search", "crrm", "cookies", "types" ],
+            json_data : {data : <elm:poneHtml textoHtml="${json.toString()}"/>},
+            themes    : {
+                theme : "apple"
+            },
+
+            contextmenu : {
+                items : createContextmenu
+            },
+
+            types : {
+                valid_children : [ "fp", "it"],
+                types          : {
+                    fp : {
+                        icon           : {
+                            image : icons.fp
+                        },
+                        valid_children : ["it"]
+                    },
+                    it : {
+                        icon           : {
+                            image : icons.it
+                        },
+                        valid_children : [""]
+                    }
+                }
+            },
+            grid  : {
+                columns : [
+                    {
+                        header : "Coef.",
+                        value  : "numero",
+                        title  : "numero",
+                        width  : 80
+                    },
+                    {
+                        header : "Nombre del Indice",
+                        value  : "nombre",
+                        title  : "nombre",
+                        width  : 300
+                    },
+                    {
+                        header : "Valor",
+                        value  : "valor",
+                        title  : "valor",
+                        width  : 70
+                    }
+                ]
+            }
+        });
 
         $("#creaIndice").click(function () {
             if (confirm("¿Crear un nuevo Indice INEC?. \nSe deberá luego solicitar al INEC su calificación.\n" +
@@ -1173,10 +1166,15 @@
                         $("#modal-indice").modal("show");
                     }
                 });
+//                        location.reload(true);
                 return false;
             }
         });
-    });
+
+
+
+    })
+    ;
 </script>
 
 </body>

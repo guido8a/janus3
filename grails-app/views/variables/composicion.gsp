@@ -11,6 +11,8 @@
     <head>
         <g:if test="${rend == 'screen'}">
             <meta name="layout" content="main">
+            <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/js/jquery.dataTables.min.js"/>
+            <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/css/jquery.dataTables.css"/>
             %{--<script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
             %{--<link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">--}%
         </g:if>
@@ -142,23 +144,27 @@
             <g:if test="${rend == 'screen'}">
                 <div class="btn-toolbar" style="margin-top: 15px;">
                     <div class="btn-group">
-                        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn " title="Regresar a la obra">
-                            <i class="icon-arrow-left"></i>
+                        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
+                           class="btn " title="Regresar a la obra">
+                            <i class="fa fa-arrow-left"></i>
                             Regresar
                         </a>
-                        <g:link action="validacion" id="${obra?.id}" controller="composicion" class="btn" title="Cantidades reales de Materiales, M.O. y Equipos">
-                            <i class="icon-list"></i>
+                        <g:link action="validacion" id="${obra?.id}" controller="composicion" class="btn"
+                                title="Cantidades reales de Materiales, M.O. y Equipos">
+                            <i class="fa fa-list"></i>
                             Adm. Directa
                         </g:link>
                     </div>
 
 
                     <div class="btn-group" data-toggle="buttons-radio">
-                        <g:link action="composicion" id="${obra?.id}" params="[tipo: -1, sp: spsel]" class="btn btn-info toggle pdf ${tipo.contains(',') ? 'active' : ''} -1">
+                        <g:link action="composicion" id="${obra?.id}" params="[tipo: -1, sp: spsel]"
+                                class="btn btn-info toggle pdf ${tipo.contains(',') ? 'active' : ''} -1">
                             <i class="icon-cogs"></i>
                             Todos
                         </g:link>
-                        <g:link action="composicion" id="${obra?.id}" params="[tipo: 1, sp: spsel]" class="btn btn-info toggle pdf ${tipo == '1' ? 'active' : ''} 1">
+                        <g:link controller="variables" action="composicion" id="${obra?.id}" params="[tipo: 1, sp: spsel]"
+                                class="btn btn-info toggle pdf ${tipo == '1' ? 'active' : ''} 1">
                             <i class="icon-briefcase"></i>
                             Materiales
                         </g:link>

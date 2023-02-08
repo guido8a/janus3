@@ -39,13 +39,15 @@ class ComposicionController {
     }
 
     def cargarDatos() {
+        println "cargarDatos $params"
         def sql = "select item__id,voitpcun,voitcntd, voitcoef, voittrnp from vlobitem where obra__id=${params.id} and voitpcun is not null and voitcntd is not null order by 1"
         def obra = Obra.get(params.id)
         def cn = dbConnectionService.getConnection()
         cn.eachRow(sql.toString()) { r ->
-//            println "r " +r
-            def comp = Composicion.findAll("from Composicion  where obra=${params.id} and item=${r[0]}")
-//            println "comp "+comp
+            println "r " +r
+//            def comp = Composicion.findAll("from Composicion  where obra=${params.id} and item=${r[0]}")
+            def comp = Composicion.findAllByObraAndItem(obra, Item.get(r.item__id))
+            println "comp "+comp
             if (comp.size() == 0) {
                 def item = Item.get(r[0])
                 comp = new Composicion([obra: obra, item: item, grupo: item.departamento.subgrupo.grupo, cantidad: r[2], precio: r[1], transporte: r[4]])
@@ -243,11 +245,18 @@ class ComposicionController {
 
         def obra = Obra.get(params.id)
         if (params.tipo == "-1") {
-            params.tipo = "1,2,3"
+            params.tipo = [1,2,3]
+        } else {
+            params.tipo = [ params.tipo.toInteger()]
         }
 
+//        def lista = params.tipo.split(',')
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
-        def res = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${params.tipo})")
+//        println "tipo: ${lista[0].class}"
+        def grupos = Grupo.findAllByIdInList(params.tipo)
+        println "grupos: ${grupos}"
+//        def res = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${params.tipo})")
+        def res = Composicion.findAllByObraAndGrupoInList(obra, grupos)
         res.sort { it.item.codigo }
 
         duenoObra = esDuenoObra(obra) ? 1 : 0

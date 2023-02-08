@@ -31,6 +31,7 @@
     <asset:stylesheet src="/apli/bootstrap-datetimepicker.min.css"/>
 
     <asset:javascript src="/jquery/jquery-2.2.4.js"/>
+    %{--<asset:javascript src="/jquery/jquery-1.9.1.js"/>--}%
     <asset:javascript src="/jquery/jquery-ui-1.10.2.custom.js"/>
     %{--<asset:javascript src="/jquery/ui.js"/>--}%
 

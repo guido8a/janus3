@@ -7,10 +7,9 @@
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
     <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
     <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
-    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+
+
     %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
     %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 

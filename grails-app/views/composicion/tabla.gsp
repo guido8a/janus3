@@ -2,21 +2,20 @@
 <html>
 <head>
     <meta name="layout" content="main">
-    <script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+    <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/js/jquery.dataTables.min.js"/>
+    <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
+    <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
+    <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/css/jquery.dataTables.css"/>
+    <asset:javascript src="/jquery/plugins/box/css/jquery.luz.box.css"/>
+
+    %{--<script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
     <title>Composición de la obra</title>
 
     <style>
-    /*.bordes{*/
-    /*    border-bottom: 1px solid black;*/
-    /*    border-left: 1px solid black;*/
-    /*    border-top: 1px solid black;*/
-    /*    border-right: 1px solid black;*/
-    /*}*/
-
     .bordes2{
         border: 1px solid black;
         border-top: 1px solid black;
@@ -42,15 +41,16 @@
 
     <div class="btn-toolbar" style="margin-top: 15px;">
         <div class="btn-group">
-            <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn " title="Regresar a la obra">
-                <i class="icon-arrow-left"></i>
+            <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn "
+               title="Regresar a la obra">
+                <i class="fa fa-arrow-left"></i>
                 Regresar Obra
             </a>
-            <g:if test="${tieneMatriz}">
-                <button class="btn" id="btn-comp" title="Regresar a composición"><i class="icon-arrow-left"></i>
-                    Regresar Composición
-                </button>
-            </g:if>
+            <a href="${g.createLink(controller: 'variables', action: 'composicion', params: [id: obra?.id])}" class="btn "
+               title="Regresar a la obra">
+                <i class="fa fa-arrow-left"></i>
+                Regresar Composición
+            </a>
         </div>
 
         <div class="btn-group">
@@ -651,7 +651,7 @@
         });
 
         $("#btn-comp").click(function () {
-
+            console.log('regresar')
             location.href = "${createLink(controller: 'variables', action: 'composicion', id: obra?.id)}"
 
         });
