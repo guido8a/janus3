@@ -511,35 +511,6 @@ class FormulaPolinomicaController {
     } //delete
 
     def borrarFP() {
-
-/*
-        def obra = Obra.get(params.obra)
-        def fp = FormulaPolinomica.findAllByObra(obra, [sort: "numero"])
-
-        def ok = true
-
-        fp.each { f ->
-//            println f.indice.descripcion + '    ' + f.valor
-            def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(f)
-            children.each { ch ->
-//                println "\t" + ch.item.nombre + '     ' + ch.valor
-                try {
-                    ch.delete(flush: true)
-                } catch (e) {
-                    ok = false
-                    println "formula polinomica controller l 416 " + "error al borrar hijo ${ch.id}"
-                    println e.printStackTrace()
-                }
-            }
-            try {
-                f.delete(flush: true)
-            } catch (e) {
-                ok = false
-                println "formula polinomica controller l 424 " + "error al borrar ${f.id}"
-                println e.printStackTrace()
-            }
-        }
-*/
         render obraService.borrarFP(params.obra)
     }
 

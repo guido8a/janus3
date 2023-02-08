@@ -33,6 +33,8 @@ class ObraService {
 
     def borrarFP(obra) {
 
+        println("obra " + obra)
+
         def ob = Obra.get(obra)
         def fp = FormulaPolinomica.findAllByObra(ob, [sort: "numero"])    // incluir subpresupuesto
         def ok = true

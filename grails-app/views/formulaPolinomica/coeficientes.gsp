@@ -896,53 +896,97 @@
         });
 
         $("#btnReiniciarFP").click(function () {
-            $("#reiniciarDialog").dialog("open");
-        });
+            // $("#reiniciarDialog").dialog("open");
 
-        $("#reiniciarDialog").dialog({
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            draggable: false,
-            width: 370,
-            height: 150,
-            position: 'center',
-            title: 'Reiniciar Fórmula Polinómica',
-            buttons: {
-                "Aceptar": function () {
-
-                    $(this).replaceWith(spinner);
-                    $.ajax({
-                        async   : false,
-                        type    : "POST",
-                        url     : "${createLink(action:'borrarFP')}",
-                        data    : {
-                            obra : ${obra.id}
-                        },
-                        success : function (msg) {
-                            $.ajax({
-                                async   : false,
-                                type    : "POST",
-                                url     : "${createLink(action:'insertarVolumenesItem')}",
-                                data    : {
-                                    obra : ${obra.id},
-                                    sbpr: ${subpre}
-                                },
-                                success : function (msg1) {
-                                    location.reload(true);
-                                }
-                            });
-                        }
-                    });
-                    return false;
+            bootbox.confirm({
+                title: "Alerta",
+                message: "Está seguro que desea reiniciar la fórmula polinómica?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Aceptar',
+                        className: 'btn-success'
+                    }
                 },
-                "Cancelar": function () {
-                    $("#reiniciarDialog").dialog("close")
+                callback: function (result) {
+                    if (result) {
+
+                        $.ajax({
+                            async   : false,
+                            type    : "POST",
+                            url     : "${createLink(action:'borrarFP')}",
+                            data    : {
+                                obra : ${obra.id}
+                            },
+                            success : function (msg) {
+                                $.ajax({
+                                    async   : false,
+                                    type    : "POST",
+                                    url     : "${createLink(action:'insertarVolumenesItem')}",
+                                    data    : {
+                                        obra : ${obra.id},
+                                        sbpr: ${subpre}
+                                    },
+                                    success : function (msg1) {
+                                        location.reload();
+                                    }
+                                });
+                            }
+                        });
+
+                    }
                 }
-
-            }
-
+            })
         });
+
+        %{--$("#reiniciarDialog").dialog({--}%
+
+        %{--    autoOpen: false,--}%
+        %{--    resizable: false,--}%
+        %{--    modal: true,--}%
+        %{--    draggable: false,--}%
+        %{--    width: 370,--}%
+        %{--    height: 150,--}%
+        %{--    position: 'center',--}%
+        %{--    title: 'Reiniciar Fórmula Polinómica',--}%
+        %{--    buttons: {--}%
+        %{--        "Aceptar": function () {--}%
+
+        %{--            $(this).replaceWith(spinner);--}%
+        %{--            $.ajax({--}%
+        %{--                async   : false,--}%
+        %{--                type    : "POST",--}%
+        %{--                url     : "${createLink(action:'borrarFP')}",--}%
+        %{--                data    : {--}%
+        %{--                    obra : ${obra.id}--}%
+        %{--                },--}%
+        %{--                success : function (msg) {--}%
+        %{--                    $.ajax({--}%
+        %{--                        async   : false,--}%
+        %{--                        type    : "POST",--}%
+        %{--                        url     : "${createLink(action:'insertarVolumenesItem')}",--}%
+        %{--                        data    : {--}%
+        %{--                            obra : ${obra.id},--}%
+        %{--                            sbpr: ${subpre}--}%
+        %{--                        },--}%
+        %{--                        success : function (msg1) {--}%
+        %{--                            location.reload(true);--}%
+        %{--                        }--}%
+        %{--                    });--}%
+        %{--                }--}%
+        %{--            });--}%
+        %{--            return false;--}%
+        %{--        },--}%
+        %{--        "Cancelar": function () {--}%
+        %{--            $("#reiniciarDialog").dialog("close")--}%
+        %{--        }--}%
+
+        %{--    }--}%
+
+        %{--});--}%
 
         $("#btnEliminarFP").click(function () {
             $("#borrarDialog").dialog("open");
