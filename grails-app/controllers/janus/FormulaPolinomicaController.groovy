@@ -155,26 +155,22 @@ class FormulaPolinomicaController {
             def obra = Obra.get(params.id)
             def sbpr = SubPresupuesto.get(params.sbpr)
             def fp = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
-//            println "fp: " + fp
             def total = 0
             def cof = []
 
             fp.each { f ->
                 if (f.numero =~ params.tipo) {
-//                    println("numero " + f.numero)
                     cof += f
                     def children = ItemsFormulaPolinomica.findAllByFormulaPolinomica(f)
-//                    println("---------------------- " + children)
                     def mapFormula = [
                             data: f.numero,
                             attr: [
                                     id: "fp_" + f.id,
                                     numero: f.numero,
-//                                    nombre: (f.valor > 0 || children.size() > 0) ? f.indice?.descripcion : "",
                                     nombre: (f.valor > 0 || children.size() > 0 || f.numero == "p01") ? f.indice?.descripcion : "",
                                     valor: g.formatNumber(number: f.valor, maxFractionDigits: 3, minFractionDigits: 3),
-//                                    valor: f.valor,
-                                    rel: "fp"
+                                    rel: "fp",
+                                    icon: 'fa fa-user'
                             ]
                     ]
                     total += f.valor
@@ -202,7 +198,8 @@ class FormulaPolinomicaController {
                                             grupo: grupo,
                                             valor: g.formatNumber(number: ch.valor, maxFractionDigits: 5, minFractionDigits: 5),
 //                                            valor: ch.valor,
-                                            rel: "it"
+                                            rel: "it",
+                                            icon: 'fa fa-user'
                                     ]
                             ]
                             mapFormula.children.add(mapItem)
@@ -212,25 +209,9 @@ class FormulaPolinomicaController {
                     data.add(mapFormula)
                 }
             }
-//            println "data: " + data
-//            println "sbpr: " + sbpr
+
             def json = new JsonBuilder(data)
-//            println json.toPrettyString()
-/*
-            def sql = "SELECT distinct\n" +
-//                    "  v.voit__id      id,\n" +
-                    "  i.item__id        iid,\n" +
-                    "  i.itemcdgo        codigo,\n" +
-                    "  i.itemnmbr        item,\n" +
-                    "  v.voitpcun        precio,\n" +
-                    "  v.voitgrpo        grupo,\n" +
-                    "  v.voitcoef        aporte\n" +
-                    "FROM vlobitem v\n" +
-                    "  INNER JOIN item i ON v.item__id = i.item__id\n" +
-                    "WHERE v.obra__id = ${obra.id} AND voitgrpo IN (${params.filtro})\n and v.item__id NOT IN (SELECT\n" +
-                    "      t.item__id FROM itfp t\n" +
-                    "      INNER JOIN fpob f ON t.fpob__id = f.fpob__id AND f.obra__id = ${obra.id}) order by v.voitcoef desc;"
-*/
+
             def sql = ""
             if (params.tipo == 'p') {
                 sql = "SELECT item.item__id iid, itemcdgo codigo, item.itemnmbr item, grpo__id grupo, valor aporte, 0 precio " +
@@ -265,6 +246,94 @@ class FormulaPolinomicaController {
             [obra: obra, json: json, tipo: params.tipo, rows: rows, total: total, subpre: sbpr.id, cof: cof?.numero, duenoObra: duenoObra, persona: persona]
         }
     }
+
+    def loadTreePart_FP() {
+        render(makeTreeNodeFP(params))
+    }
+
+    def makeTreeNodeFP(params) {
+        println "makeTreeNode.. $params"
+        def cn = dbConnectionService.getConnection()
+        def id = params.id
+        def tipo = ""
+        def liId = ""
+        def ico = ""
+        def icoTodos = ""
+
+        if(id.contains("_")) {
+            id = params.id.split("_")[1]
+            tipo = params.id.split("_")[0]
+        }
+
+        if (!params.order) {
+            params.order = "asc"
+        }
+
+        def obra = Obra.get(params.obra)
+        def sbpr = SubPresupuesto.get(params.subpre)
+
+        def select = "select clmncdgo from mfcl where clmndscr = (select item__id||'_T' " +
+                "from item where itemcdgo = 'MO') and obra__id = ${obra?.id} and sbpr__id = ${sbpr.id}"
+        def columna
+        def valorMO = 0
+        cn.eachRow(select.toString()) { r ->
+            columna = r[0]
+        }
+        select = "select valor from mfvl where clmncdgo=${columna} and codigo='sS3' and obra__id =${params.obra} " +
+                "and sbpr__id = ${sbpr.id}"
+        cn.eachRow(select.toString()) { r ->
+            valorMO = r[0]
+        }
+
+        String tree = "", clase = "", rel = ""
+        def padre
+        def hijos = []
+
+        if (id == "#") {
+            //root
+            def hh = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
+            if (hh) {
+                clase = "hasChildren jstree-closed"
+            }
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
+                    "<a href='#' class='label_arbol'></a>" +
+                    "</li>"
+        } else {
+            if(id == 'root'){
+
+                hijos = FormulaPolinomica.findAllByObraAndSubPresupuesto(obra, sbpr, [sort: "numero"])
+                def data = ""
+                ico =  params.tipo == 'c'  ?  ", \"icon\":\"fa fa-copyright text-info\""  :  ", \"icon\":\"fa fa-parking text-success\""
+
+                hijos.each { hijo ->
+                    if (hijo.numero =~ params.tipo) {
+                        clase = ItemsFormulaPolinomica.findAllByFormulaPolinomica(hijo) ? "jstree-closed hasChildren" : ""
+                        def totalFP = 0
+                        totalFP = ItemsFormulaPolinomica.findAllByFormulaPolinomica(hijo) ? ItemsFormulaPolinomica.findAllByFormulaPolinomica(hijo).valor.sum() : 0
+                        tree += "<li id='fp_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='${params.tipo}' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                        tree += "<a href='#' class='label_arbol'>" + hijo?.numero +  " " + ((hijo.valor > 0 || hijo.numero == "p01") ? hijo.indice?.descripcion : "") +  " " + "<strong style='color: blue;'>" +  (hijo.numero == "p01" ? g.formatNumber(number: valorMO, maxFractionDigits: 3, minFractionDigits: 3) : g.formatNumber(number: totalFP, maxFractionDigits: 3, minFractionDigits: 3)) + "</strong>"  + "</a>"
+                        tree += "</li>"
+                    }
+                }
+            }else{
+                switch(tipo) {
+                    case "fp":
+                        hijos = ItemsFormulaPolinomica.findAllByFormulaPolinomica(FormulaPolinomica.get(id))
+                        liId = "it_"
+                        ico = ", \"icon\":\"fa fa-info-circle text-warning\""
+                        hijos.each { h ->
+                            clase = ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${params.tipo}' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>"  +  "<strong>"  +  h.item.nombre +  "</strong>"  + " " + "<strong style='color: green'>" +  (h?.valor ?: 0) + " </strong>" + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                }
+            }
+        }
+        return tree
+    }
+
 
     def esDuenoObra(obra) {
         return obraService.esDuenoObra(obra, session.usuario.id)
