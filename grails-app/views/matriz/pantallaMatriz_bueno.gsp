@@ -79,7 +79,8 @@
 </div>
 
 <div class="col-md-5 btn-group" role="navigation" style="margin-left: 0px;">
-    <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra])}" class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
+    <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra])}" class="btn btn-ajax btn-new"
+       id="atras" title="Regresar a la obra">
         <i class="icon-arrow-left"></i>
         Regresar
     </a>
@@ -88,11 +89,13 @@
         <i class="icon-table"></i>
         Fórmula polinómica
     </g:link>
-    <a href="${g.createLink(controller: 'reportes', action: 'imprimeMatriz', id: "${obra}")}" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">
+    <a href="${g.createLink(controller: 'reportes', action: 'imprimeMatriz', id: "${obra}")}" class="btn btn-ajax btn-new"
+       id="imprimir" title="Imprimir">
         <i class="icon-print"></i>
         Imprimir A3
     </a>
-    <a href="${g.createLink(controller: 'reportes4', action: 'imprimeMatrizA4', id: "${obra}")}" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">
+    <a href="${g.createLink(controller: 'reportes4', action: 'imprimeMatrizA4', id: "${obra}")}" class="btn btn-ajax btn-new"
+       id="imprimir" title="Imprimir">
         <i class="icon-print"></i>
         Imprimir A4
     </a>
@@ -109,11 +112,13 @@
         <i class="icon-refresh"></i>
         Limpiar selección
     </a>
-    <a href="${g.createLink(controller: 'reportes', action: 'matrizExcel', id: "${obra}")}" class="btn btn-ajax btn-new" id="reset" title="Exportar matriz a Excel">
+    <a href="${g.createLink(controller: 'reportes', action: 'matrizExcel', id: "${obra}")}" class="btn btn-ajax btn-new"
+       title="Exportar matriz a Excel">
         <i class="icon-print"></i>
         a Excel
     </a>
-    <a href="${g.createLink(controller: 'reportes2', action: 'reporteDesgloseEquipos', id: "${obra}")}" class="btn btn-ajax btn-new" id="desglose" title="Desglose Equipos">
+    <a href="${g.createLink(controller: 'reportes2', action: 'reporteDesgloseEquipos', id: "${obra}")}"
+       class="btn btn-ajax btn-new" id="desglose" title="Desglose Equipos">
         <i class="icon-print"></i>
         Imprimir Desglose
     </a>
