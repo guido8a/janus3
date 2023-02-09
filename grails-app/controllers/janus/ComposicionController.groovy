@@ -266,7 +266,9 @@ class ComposicionController {
             tieneMatriz = d.cuenta > 0
         }
 
-        return [res: res, obra: obra, tipo: params.tipo, rend: params.rend, campos: campos, duenoObra: duenoObra, persona: persona, tieneMatriz: tieneMatriz]
+        println "--> $params"
+        return [res: res, obra: obra, tipo: params.tipo, rend: params.rend, campos: campos, duenoObra: duenoObra,
+                persona: persona, tieneMatriz: tieneMatriz]
 
     }
 
@@ -486,18 +488,20 @@ class ComposicionController {
         def listaItems = ['itemnmbr', 'itemcdgo']
         def datos
         def persona = Persona.get(session.usuario.id)
-        def empresa = persona.empresa
 
-        def select = "select item__id, itemcdgo, itemnmbr, unddcdgo, rbpcpcun, grpo__id " +
-                "from kardex_inicial(${empresa.id}) "
-        def txwh = "where rbpcpcun >= 0 "
+        /* salen repetidos debido a las varios lgar__id en rbpc*/
+        def select = "select distinct r1.item__id, r1.rbpcpcun, itemcdgo, itemnmbr, unddcdgo, grpo__id " +
+                "from item, rbpc r1, dprt, sbgr, undd, lgar "
+        def txwh = "where undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and r1.item__id = item.item__id and " +
+                "rbpcfcha = (select max(rbpcfcha) from rbpc where item__id = r1.item__id)"
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger()-1]
         def ordn = listaItems[params.ordenar.toInteger()-1]
         txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
 
         sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
-//        println "sql: $sqlTx"
+        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)

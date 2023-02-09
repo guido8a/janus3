@@ -186,7 +186,7 @@
                         <g:if test="${obra?.estado != 'R' && duenoObra == 1}">
                             <a href="#" class="btn btn-xs btn-primary" title="Agregar" id="item_agregar">
                                 <i class="fa fa-plus"></i></a>
-                            <a href="#" class="btn btn-xs btn-danger" title="Agregar" id="item_limpiar">
+                            <a href="#" class="btn btn-xs btn-danger" title="Limpiar" id="item_limpiar">
                                 <i class="fa fa-ban"></i></a>
                         </g:if>
                     </div>

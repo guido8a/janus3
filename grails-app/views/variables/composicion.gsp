@@ -1,129 +1,24 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 12/19/12
-  Time: 3:31 PM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <g:if test="${rend == 'screen'}">
             <meta name="layout" content="main">
             <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/js/jquery.dataTables.min.js"/>
-            <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/css/jquery.dataTables.css"/>
+            %{--<asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/css/jquery.dataTables.css"/>--}%
             %{--<script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
             %{--<link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">--}%
         </g:if>
         <title>Composición de la obra</title>
 
-        <g:if test="${rend == 'pdf'}">
             <style type="text/css">
-            @page {
-                size   : 21cm 29.7cm ;  /*width height */
-                margin : 1.5cm;
-            }
 
-            html {
-                font-family : Verdana, Arial, sans-serif;
-                font-size   : 8px;
-            }
-
-            .tituloPdf {
-                height        : 100px;
-                font-size     : 11px;
-                /*font-weight   : bold;*/
-                text-align    : center;
-                margin-bottom : 5px;
-                width         : 95%;
-                /*font-family       : 'Tulpen One', cursive !important;*/
-                /*font-family : "Open Sans Condensed" !important;*/
-            }
-
-            .totales {
-                font-weight : bold;
-            }
-
-            .num {
-                text-align : right;
-            }
-
-            .header {
-                background : #333333 !important;
-                color      : #AAAAAA;
-            }
-
-            .total {
-                background : #000000 !important;
-                color      : #FFFFFF !important;
-            }
-
-                /*th {*/
-                /*background : #cccccc;*/
-                /*}*/
-
-                /*tbody tr:nth-child(2n+1) {*/
-                /*background : none repeat scroll 0 0 #E1F1F7;*/
-                /*}*/
-
-                /*tbody tr:nth-child(2n) {*/
-                /*background : none repeat scroll 0 0 #F5F5F5;*/
-                /*}*/
-            thead tr {
-                margin : 0px
-            }
-
-            th, td {
-                font-size : 10px !important;
-
-            }
-
-            .sorting_desc {
-
-                class : sorting !important;
-
-            }
-
-            .row-fluid {
-                width  : 100%;
-                height : 20px;
-            }
-
-            .span3 {
-                width  : 29%;
-                float  : left;
-                height : 100%;
-            }
-
-            .span8 {
-                width  : 79%;
-                float  : left;
-                height : 100%;
-            }
-
-            .span7 {
-                width  : 69%;
-                float  : left;
-                height : 100%;
-            }
-
-            .tituloChevere {
-                color       : #0088CC;
-                border      : 0px solid red;
-                white-space : nowrap;
-                display     : block;
-                width       : 98%;
-                height      : 30px;
-                font-weight : bold;
-                font-size   : 14px;
-                text-shadow : -2px 2px 1px rgba(0, 0, 0, 0.25);
-                margin-top  : 10px;
-                line-height : 25px;
+            .activo{
+                color: #ffffaf !important;
+                background-color: #5a81c6 !important;
+                font-weight: bold;
             }
 
             </style>
-        </g:if>
 
     </head>
 
@@ -156,27 +51,25 @@
                         </g:link>
                     </div>
 
-
-                    <div class="btn-group" data-toggle="buttons-radio">
-                        <g:link action="composicion" id="${obra?.id}" params="[tipo: -1, sp: spsel]"
-                                class="btn btn-info toggle pdf ${tipo.contains(',') ? 'active' : ''} -1">
-                            <i class="icon-cogs"></i>
+                    <div class="btn-group" data-toggle="buttons-radio" style="margin-left: 80px">
+                        <a href="#" id="btnTodos" class="btn btn-info ${tipo.toString().contains(",") ? 'activo' : ''} -1">
+                            <i class="fa fa-cogs"></i>
                             Todos
-                        </g:link>
-                        <g:link controller="variables" action="composicion" id="${obra?.id}" params="[tipo: 1, sp: spsel]"
-                                class="btn btn-info toggle pdf ${tipo == '1' ? 'active' : ''} 1">
-                            <i class="icon-briefcase"></i>
+                        </a>
+                        <a href="#" id="btnMateriales" class="btn btn-info ${tipo.toString() == '1' ? 'activo' : ''} 1">
+                            <i class="fa fa-briefcase"></i>
                             Materiales
-                        </g:link>
-                        <g:link action="composicion" id="${obra?.id}" params="[tipo: 2, sp: spsel]" class="btn btn-info toggle pdf ${tipo == '2' ? 'active' : ''} 2">
-                            <i class="icon-group"></i>
+                        </a>
+                        <a href="#" id="btnManoObra" class="btn btn-info ${tipo.toString() == '2' ? 'activo' : ''} 2">
+                            <i class="fa fa-users"></i>
                             Mano de obra
-                        </g:link>
-                        <g:link action="composicion" id="${obra?.id}" params="[tipo: 3, sp: spsel]" class="btn btn-info toggle pdf ${tipo == '3' ? 'active' : ''} 3">
-                            <i class="icon-truck"></i>
+                        </a>
+                        <a href="#" id="btnEquipos" class="btn btn-info ${tipo.toString() == '3' ? 'activo' : ''} 3">
+                            <i class="fa fa-truck"></i>
                             Equipos
-                        </g:link>
+                        </a>
                     </div>
+
 
                     <div class="btn-group">
                         <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
@@ -189,19 +82,19 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="sp ${spsel.toString() == '-1' ? 'active' : ''}">
+                            <li class="sp ${spsel.toString() == '-1' ? 'activo' : ''}">
                                 <g:link action="composicion" id="${obra?.id}" params="[tipo: tipo, sp: -1]">
                                     <g:if test="${spsel.toString() == '-1'}">
-                                        <i class="icon-chevron-right"></i>
+                                        <i class="fa fa-chevron-right"></i>
                                     </g:if>
                                     Todos los subpresupuestos
                                 </g:link>
                             </li>
                             <g:each in="${sp}" var="s">
-                                <li class="sp ${spsel.toString() == s.id.toString() ? 'active' : ''}">
+                                <li class="sp ${spsel.toString() == s.id.toString() ? 'activo' : ''}">
                                     <g:link action="composicion" id="${obra?.id}" params="[tipo: tipo, sp: s.id]">
                                         <g:if test="${spsel.toString() == s.id.toString()}">
-                                            <i class="icon-chevron-right"></i>
+                                            <i class="fa fa-chevron-right"></i>
                                         </g:if>
                                         ${s.dsc}
                                     </g:link>
@@ -339,6 +232,7 @@
 
                 <div style="width:100%;">
                     <table class="table table-bordered table-condensed pull-right" style="width: 20%;">
+                        <thead style="text-align: right">
                         <tr>
                             <th>Equipos</th>
                             <td class="numero"><g:formatNumber number="${totalEquipo}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
@@ -355,6 +249,7 @@
                             <th>TOTAL DIRECTO</th>
                             <td class="numero"><g:formatNumber number="${totalEquipo + totalMano + totalMaterial}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/></td>
                         </tr>
+                        </thead>
                     </table>
                 </div>
             </div>
@@ -377,41 +272,61 @@
                     });
 
                     $(".btn, .sp").click(function () {
-                        if ($(this).hasClass("active")) {
+                        if ($(this).hasClass("activo")) {
                             return false;
                         }
                     });
 
                     $("#imprimirPdf").click(function () {
 
-//                       console.log("-->" + $(".pdf.active").attr("class"))
-//                       console.log("-->" + $(".pdf.active").hasClass('2'))
+//                       console.log("-->" + $(".pdf.activo").attr("class"))
+//                       console.log("-->" + $(".pdf.activo").hasClass('2'))
 
-                        if ($(".pdf.active").hasClass("1") == true) {
+                        if ($(".pdf.activo").hasClass("1") == true) {
 
                             location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"
                         } else {
                         }
-                        if ($(".pdf.active").hasClass("2") == true) {
+                        if ($(".pdf.activo").hasClass("2") == true) {
                             location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"
                         } else {
 
                         }
-                        if ($(".pdf.active").hasClass("3") == true) {
+                        if ($(".pdf.activo").hasClass("3") == true) {
                             location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"
 
                         } else {
 
                         }
-                        if ($(".pdf.active").hasClass("-1") == true) {
+                        if ($(".pdf.activo").hasClass("-1") == true) {
 
                             location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicion',id: obra?.id)}?sp=${sub}"
                         }
                     });
 
                 });
+
+                $("#btnTodos").click(function () {
+                    location.href = "${g.createLink(controller: 'variables', action: 'composicion', params: [id: obra?.id, tipo: -1, sp: spsel])}"
+                });
+
+                $("#btnMateriales").click(function () {
+                    location.href = "${g.createLink(controller: 'variables', action: 'composicion', params: [id: obra?.id, tipo: 1, sp: spsel])}"
+                });
+
+                $("#btnManoObra").click(function () {
+                    location.href = "${g.createLink(controller: 'variables', action: 'composicion', params: [id: obra?.id, tipo: 2, sp: spsel])}"
+                });
+
+                $("#btnEquipos").click(function () {
+                    location.href = "${g.createLink(controller: 'variables', action: 'composicion', params: [id: obra?.id, tipo: 3, sp: spsel])}"
+                });
+
             </script>
         </g:if>
+
+
+
 
     </body>
 </html>
