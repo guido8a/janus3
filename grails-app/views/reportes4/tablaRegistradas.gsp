@@ -47,9 +47,9 @@ th, td {
 
 
 
-%{--<%@ page import="janus.utilitarios.reportesService" %>--}%
+%{--<%@ page import="utilitarios.reportesService" %>--}%
 %{--<%--}%
-%{--    def reportesServ = grailsApplication.classLoader.loadClass('janus.utilitarios.reportesService').newInstance()--}%
+%{--    def reportesServ = grailsApplication.classLoader.loadClass('utilitarios.reportesService').newInstance()--}%
 %{--%>--}%
 
 %{--<g:if test="${flash.message}">--}%

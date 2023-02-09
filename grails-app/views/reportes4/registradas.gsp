@@ -1,7 +1,7 @@
 <%@ page import="janus.Grupo" %>
 
 <%
-    def reportesServ = grailsApplication.classLoader.loadClass('janus.utilitarios.reportesService').newInstance()
+    def reportesServ = grailsApplication.classLoader.loadClass('utilitarios.reportesService').newInstance()
 %>
 
 <!doctype html>
