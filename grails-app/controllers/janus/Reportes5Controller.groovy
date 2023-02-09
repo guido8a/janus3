@@ -1053,12 +1053,11 @@ class Reportes5Controller{
 
         def baos = new ByteArrayOutputStream()
         def name = "coeficientes_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-//            println "name "+name
+
         Font titleFont = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font titleFont3 = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font titleFont2 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
-
         Font fontTh = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font fontTd = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
 
@@ -1067,9 +1066,7 @@ class Reportes5Controller{
         def pdfw = PdfWriter.getInstance(document, baos);
 
         HeaderFooter footer1 = new HeaderFooter(new Phrase(" ", times8normal), true);
-        // true aqui pone numero de pagina
         footer1.setBorder(Rectangle.NO_BORDER);
-//        footer1.setBorder(Rectangle.TOP);
         footer1.setAlignment(Element.ALIGN_CENTER);
 
         document.setFooter(footer1);
@@ -1081,14 +1078,12 @@ class Reportes5Controller{
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
 
-//        println titulo
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1)
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
         headersTitulo.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), titleFont2));
         addEmptyLine(headersTitulo, 1);
         headersTitulo.add(new Paragraph("COEFICIENTES DE LA FÓRMULA POLINÓMICA DE LA OBRA ${obra.nombre}", titleFont));
-//        headersTitulo.add(new Paragraph("Quito, " + fechaConFormato(new Date(), "dd MMMM yyyy").toUpperCase(), titleFont3));
         addEmptyLine(headersTitulo, 1);
         addEmptyLine(headersTitulo, 1);
 
