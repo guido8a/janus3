@@ -27,19 +27,6 @@
     <asset:stylesheet src="/jquery/plugins/jgrowl/jquery.jgrowl.customThemes.css"/>
     <asset:stylesheet src="apli/tree.css"/>
 
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-    %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>--}%
-    %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jstreegrid.js')}"></script>--}%
-    %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">--}%
-    %{--<link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>--}%
-
-
     <style type="text/css">
     #tree {
         width      : 100%;
@@ -290,7 +277,7 @@
 
     var icons = {
         %{--mover:  "${assetPath(src:"tree/box.lugar_all.png")}",--}%
-        mover:  "${assetPath(src:"tree/box.box.png")}",
+        mover:  "${assetPath(src:"tree/box.png")}",
         it:  "${assetPath(src:"tree/box.png")}",
         fp:  "${assetPath(src:"tree/boxes.png")}"
     };
@@ -376,10 +363,10 @@
         resizable: true,
         modal: true,
         draggable: false,
-        width: 400,
-        height: 300,
+        width: 500,
+        height: 280,
         position: 'center',
-        title: 'Rubros'
+        title: 'Nombre del Indice'
     });
 
     function createContextmenu(node) {
@@ -406,8 +393,12 @@
             case "fp":
 
                 if(num !== 'p01'){
-                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                    var btnCancel = $('<a href="#" class="btn">Cancelar</a>');
                     var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
+
+                    btnCancel.click(function () {
+                        $("#modal-formula").dialog("close");
+                    });
 
                     btnSave.click(function () {
                         var indice = $("#indice").val();
@@ -451,22 +442,8 @@
                             } else {
                             }
                         } else {
-                            $("#modal-formula").modal("hide");
-                            $.box({
-                                imageClass : "box_info",
-                                text       : "No puede ingresar dos coeficientes con el mismo nombre",
-                                title      : "Alerta",
-                                iconClose  : false,
-                                dialog     : {
-                                    resizable     : false,
-                                    draggable     : false,
-                                    closeOnEscape : false,
-                                    buttons       : {
-                                        "Aceptar" : function () {
-                                        }
-                                    }
-                                }
-                            });
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede ingresar dos coeficientes con el mismo nombre" + '</strong>');
+                            return false;
                         }
                     });
 
@@ -491,12 +468,11 @@
                             });
                             </g:if>
                             <g:else>
-                            alert("No puede modificar los coeficientes de una obra ya registrada");
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede modificar los coeficientes de una obra ya registrada" + '</strong>');
                             </g:else>
                         }
                     };
                 }
-
                 break;
 
             case "it":
@@ -519,89 +495,74 @@
                     separator_after  : false,
                     action           : function (obj) {
                         <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
-                        $.box({
-                            imageClass : "box_info",
-                            text       : "Está seguro de eliminar " + nodeText + " del grupo " + parentText + "?",
-                            title      : "Confirmación",
-                            iconClose  : false,
-                            dialog     : {
-                                resizable     : false,
-                                draggable     : false,
-                                closeOnEscape : false,
-                                buttons       : {
-                                    "Aceptar"  : function () {
-                                        $.ajax({
-                                            type    : "POST",
-                                            url     : "${createLink(action:'delItemFormula')}",
-                                            data    : {
-                                                tipo : nodeTipo,
-                                                id   : nodeId
-                                            },
-                                            success : function (msg) {
-                                                var msgParts = msg.split("_");
-                                                if (msgParts[0] === "OK") {
-                                                    var totalInit = parseFloat($("#spanTotal").data("valor"));
-                                                    $("#tree").jstree('delete_node', $("#" + nodeStrId));
-                                                    var tr = $("<tr>");
-                                                    var tdItem = $("<td>").append(nodeCod);
-                                                    var tdDesc = $("<td>").append(nodeDes);
-                                                    var tdApor = $("<td class='numero'>").append(number_format(nodeValor, 5, '.', ''));
-                                                    var tdPrec = $("<td class='numero'>").append(number_format(nodePrecio, 5, '.', ''));
+                        bootbox.confirm({
+                            title: "Alerta",
+                            message: "Está seguro de eliminar " + nodeText + " del grupo " + parentText + "?",
+                            buttons: {
+                                cancel: {
+                                    label: '<i class="fa fa-times"></i> Cancelar',
+                                    className: 'btn-primary'
+                                },
+                                confirm: {
+                                    label: '<i class="fa fa-check"></i> Aceptar',
+                                    className: 'btn-success'
+                                }
+                            },
+                            callback: function (result) {
+                                if (result) {
+                                    $.ajax({
+                                        type    : "POST",
+                                        url     : "${createLink(action:'delItemFormula')}",
+                                        data    : {
+                                            tipo : nodeTipo,
+                                            id   : nodeId
+                                        },
+                                        success : function (msg) {
+                                            var msgParts = msg.split("_");
+                                            if (msgParts[0] === "OK") {
+                                                var totalInit = parseFloat($("#spanTotal").data("valor"));
+                                                $("#tree").jstree('delete_node', $("#" + nodeStrId));
+                                                var tr = $("<tr>");
+                                                var tdItem = $("<td>").append(nodeCod);
+                                                var tdDesc = $("<td>").append(nodeDes);
+                                                var tdApor = $("<td class='numero'>").append(number_format(nodeValor, 5, '.', ''));
+                                                var tdPrec = $("<td class='numero'>").append(number_format(nodePrecio, 5, '.', ''));
 
-                                                    tr.append(tdItem).append(tdDesc);
+                                                tr.append(tdItem).append(tdDesc);
 //                                                            if (nodeGrupo.toString() == "2") {
-                                                    if ("${params.tipo}" === "c") {
-                                                        tr.append(tdPrec);
-                                                    }
-                                                    tr.append(tdApor);
-                                                    tr.data({
-                                                        valor  : nodeValor,
-                                                        nombre : nodeDes,
-                                                        codigo : nodeCod,
-                                                        item   : nodeItem,
-                                                        precio : nodePrecio,
-                                                        grupo  : nodeGrupo
-                                                    });
-                                                    tr.click(function () {
-                                                        clickTr(tr);
-                                                    });
-                                                    $("#tblDisponibles").children("tbody").prepend(tr);
-                                                    tr.show("pulsate");
-                                                    parent.attr("valor", number_format(msgParts[1], 3, '.', '')).trigger("change_node.jstree");
-                                                    totalInit -= parseFloat(nodeValor);
-                                                    $("#spanTotal").text(number_format(totalInit, 3, ".", "")).data("valor", totalInit);
-                                                    if (parent.children("ul").length === 0) {
-                                                        parent.attr("nombre", "").trigger("change_node.jstree");
-                                                    }
+                                                if ("${params.tipo}" === "c") {
+                                                    tr.append(tdPrec);
+                                                }
+                                                tr.append(tdApor);
+                                                tr.data({
+                                                    valor  : nodeValor,
+                                                    nombre : nodeDes,
+                                                    codigo : nodeCod,
+                                                    item   : nodeItem,
+                                                    precio : nodePrecio,
+                                                    grupo  : nodeGrupo
+                                                });
+                                                tr.click(function () {
+                                                    clickTr(tr);
+                                                });
+                                                $("#tblDisponibles").children("tbody").prepend(tr);
+                                                tr.show("pulsate");
+                                                parent.attr("valor", number_format(msgParts[1], 3, '.', '')).trigger("change_node.jstree");
+                                                totalInit -= parseFloat(nodeValor);
+                                                $("#spanTotal").text(number_format(totalInit, 3, ".", "")).data("valor", totalInit);
+                                                if (parent.children("ul").length === 0) {
+                                                    parent.attr("nombre", "").trigger("change_node.jstree");
                                                 }
                                             }
-                                        });
-                                    },
-                                    "Cancelar" : function () {
-                                    }
+                                        }
+                                    });
                                 }
                             }
                         });
-
                         </g:if>
                         <g:else>
-                        $.box({
-                            imageClass : "box_info",
-                            text       : "No puede modificar los coeficientes de una obra ya registrada",
-                            title      : "Alerta",
-                            iconClose  : false,
-                            dialog     : {
-                                resizable     : false,
-                                draggable     : false,
-                                closeOnEscape : false,
-                                buttons       : {
-                                    "Aceptar" : function () {
-                                    }
-                                }
-                            }
-                        });
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede modificar los coeficientes de una obra ya registrada" + '</strong>');
                         </g:else>
-
                     }
                 };
                 break;
@@ -627,7 +588,7 @@
                     $("#spanOk").html("Item reasignado correctamente");
                     $("#divOk").show();
                     setTimeout(function() {
-                        location.reload(true);
+                        location.reload();
                     }, 1000);
 
                 }else{
@@ -770,12 +731,10 @@
                                 });
                             }
                         });
-
                     }
                 }
             })
         });
-
 
         $("#btnEliminarFP").click(function () {
             bootbox.confirm({
@@ -893,9 +852,11 @@
                         updateTotal(0);
                         $btn.show();
                         spinner.remove();
+                        setTimeout(function() {
+                            var t = cargarLoader("Cargando...");
+                            location.reload();
+                        }, 1000);
                     }
-
-                    $tree.jstree("refresh");
 
                 } else {
                     bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Por favor seleccione el nombre del índice antes de agregar ítems." + '</strong>');
