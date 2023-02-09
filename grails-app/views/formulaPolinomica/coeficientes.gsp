@@ -132,28 +132,6 @@
 </head>
 
 <body>
-<g:if test="${flash.message}">
-    <div class="col-md-12">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            ${flash.message}
-        </div>
-    </div>
-</g:if>
-
-<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divError">
-    <div class="alert alert-error" role="status">
-        <a class="close" data-dismiss="alert" href="#">×</a>
-        <span id="spanError"></span>
-    </div>
-</div>
-
-<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divOk">
-    <div class="alert alert-info" role="status">
-        <a class="close" data-dismiss="alert" href="#">×</a>
-        <span id="spanOk"></span>
-    </div>
-</div>
 
 <div class="tituloTree">
     <div class="alert alert-info " style="margin-top: 5px">Coeficientes de la fórmula polinómica de la obra: ${obra.descripcion + " (" + obra.codigo + ")"}</div>
@@ -311,12 +289,10 @@
     var $tabla = $("#tblDisponibles");
 
     var icons = {
-        mover : "${resource(dir: 'images/tree', file: 'lugar_all.png')}",
-        %{--it: "${resource(dir: 'images/tree', file: 'boxes.png')}",--}%
+        %{--mover:  "${assetPath(src:"tree/box.lugar_all.png")}",--}%
+        mover:  "${assetPath(src:"tree/box.box.png")}",
         it:  "${assetPath(src:"tree/box.png")}",
         fp:  "${assetPath(src:"tree/boxes.png")}"
-        %{--fp : "${resource(dir: 'images/tree', file: 'boxes.png')}",--}%
-        %{--it : "${resource(dir: 'images/tree', file: 'box.png')}"--}%
     };
 
     function updateCoef($row) {
@@ -344,21 +320,16 @@
         var $seleccionados = $("a.selected, div.selected, a.editable, div.editable");
 
         if (tipo === 'fp') {
-            //padres
-
             if ("${tipo}" === 'p' && index === 0) { //el primero (p01) de la formula no es seleccionable (el de cuadrilla tipo si es)
                 console.log("true");
                 $seleccionados.removeClass("selected editable");
                 $parent.children("a, .jstree-grid-cell").addClass("editable parent");
             } else {
-//                        ////console.log("false");
                 $seleccionados.removeClass("selected editable");
                 $parent.children("a, .jstree-grid-cell").addClass("selected editable parent");
                 updateCoef($item.parents("li"));
             }
         } else if (tipo === 'it') {
-
-            //hijos AQUI
             $seleccionados.removeClass("selected editable");
             $parent.children("a, .jstree-grid-cell").addClass("editable child");
             var $upper = $parent.parent().parent();
@@ -536,13 +507,11 @@
                 var nodePrecio = node.attr("precio");
                 var nodeGrupo = node.attr("grupo");
 
-                /*** Selecciona el nodo y su padre ***/
                 var $seleccionados = $("a.selected, div.selected, a.editable, div.editable");
                 $seleccionados.removeClass("selected editable");
                 node.children("a, .jstree-grid-cell").addClass("editable child");
                 $seleccionados.removeClass("selected");
                 node.parent().parent().children("a, .jstree-grid-cell").addClass("selected editable parent");
-                /*** Fin Selecciona el nodo y su padre ***/
 
                 menuItems.delete = {
                     label            : "<i class='fa fa-trash'></i> Eliminar",
@@ -599,7 +568,6 @@
                                                     $("#tblDisponibles").children("tbody").prepend(tr);
                                                     tr.show("pulsate");
                                                     parent.attr("valor", number_format(msgParts[1], 3, '.', '')).trigger("change_node.jstree");
-//                                                    console.log( $("#spanTotal"),nodeValor,msg)
                                                     totalInit -= parseFloat(nodeValor);
                                                     $("#spanTotal").text(number_format(totalInit, 3, ".", "")).data("valor", totalInit);
                                                     if (parent.children("ul").length === 0) {
@@ -926,22 +894,12 @@
                         $btn.show();
                         spinner.remove();
                     }
+
+                    $tree.jstree("refresh");
+
                 } else {
-                    $.box({
-                        imageClass : "box_info",
-                        title      : "Alerta",
-                        text       : "Por favor seleccione el nombre del índice antes de agregar ítems.",
-                        iconClose  : false,
-                        dialog     : {
-                            resizable     : false,
-                            draggable     : false,
-                            closeOnEscape : false,
-                            buttons       : {
-                                "Aceptar" : function () {
-                                }
-                            }
-                        }
-                    });
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Por favor seleccione el nombre del índice antes de agregar ítems." + '</strong>');
+                    return false;
                 }
             }
             return false;
@@ -949,7 +907,6 @@
 
         $tabla.children("tbody").children("tr").click(function () {
             clickTr($(this));
-
         });
 
         $(".modal").draggable({
@@ -975,7 +932,6 @@
             themes    : {
                 theme : "apple"
             },
-
             contextmenu : {
                 items : createContextmenu
             },
@@ -1040,26 +996,19 @@
                                         }
                                     }
                                 });
-                                // return false;
                                 location.reload();
                             }
                         });
-
                         $("#modalTitle-Indc").html("Crear Índices   INEC");
                         $("#modalBody-Indc").html(msg);
                         $("#modalFooter-Indc").html("").append(btnOk).append(btnSave);
                         $("#modal-indice").modal("show");
                     }
                 });
-//                        location.reload(true);
                 return false;
             }
         });
-
-
-
-    })
-    ;
+    });
 </script>
 
 </body>
