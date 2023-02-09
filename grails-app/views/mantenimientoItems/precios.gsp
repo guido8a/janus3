@@ -20,7 +20,7 @@
 
 <body>
 
-<div class="span12 btn-group" data-toggle="buttons-radio">
+<div class="span12 btn-group" >
     <a href="#" id="btnMateriales" class="btn btn-info">
         <i class="fa fa-box"></i>
         Materiales
