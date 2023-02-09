@@ -785,7 +785,7 @@ class RubroController {
         def ext = filePath.split("\\.")
         ext = ext[ext.size() - 1]
         def folder = "rubros"
-        def path = servletContext.getRealPath("/") + folder + File.separatorChar + filePath
+        def path = "/var/janus" + folder + File.separatorChar + filePath
         println "path "+path
         def file = new File(path)
         if(file.exists()){
@@ -810,7 +810,7 @@ class RubroController {
         def ext = filePath.split("\\.")
         ext = ext[ext.size() - 1]
         def folder = "rubros"
-        def path = servletContext.getRealPath("/") + folder + File.separatorChar + filePath
+        def path = "/var/janus" + folder + File.separatorChar + filePath
 //        println "path "+path
         def file = new File(path)
         if(file.exists()){
@@ -832,7 +832,7 @@ class RubroController {
 
         def tipo = params.tipo
 
-        def path = servletContext.getRealPath("/") + "rubros/"   //web-app/rubros
+        def path = "/var/janus" + "rubros/"   //web-app/rubros
         new File(path).mkdirs()
         def rubro = Item.get(params.rubro)
         def archivEsp

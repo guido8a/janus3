@@ -796,7 +796,7 @@ class Reportes2Controller {
 //            addCellTabla(tablaRubro, new Paragraph(rubro?.especificaciones, fontTd), prmsEs)
 
             if (extIlustracion && extIlustracion != "") {
-                def path = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro.foto
+                def path = "/var/janus" + "rubros" + File.separatorChar + rubro.foto
                 if (extIlustracion.toLowerCase() != 'pdf') {
                     def maxImageSize = 400
                     addCellTabla(tablaRubro, new Paragraph("Ilustración", fontTh), prmsTh)

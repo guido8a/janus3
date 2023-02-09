@@ -883,7 +883,7 @@ class CronogramaContratoController {
 
     def uploadFile() {
         def obra = Obra.get(params.id)
-        def path = servletContext.getRealPath("/") + "xlsContratos/"   //web-app/archivos
+        def path = "/var/janus/" + "xlsContratos/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file
@@ -1030,7 +1030,7 @@ class CronogramaContratoController {
 
     def subeArchivo() {
         def obra = Obra.get(params.id)
-        def path = servletContext.getRealPath("/") + "xlsContratos/"   //web-app/archivos
+        def path = "/var/janus/" + "xlsContratos/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file
@@ -1275,7 +1275,7 @@ class CronogramaContratoController {
         def obra = Obra.get(params.id)
         def periodos = CronogramaContratado.findAllByIdIsNotNull().periodo.max()
 
-        def path = servletContext.getRealPath("/") + "xlsCronograma/"   //web-app/archivos
+        def path = "/var/janus/" + "xlsCronograma/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file

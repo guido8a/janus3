@@ -22,10 +22,10 @@ class DocumentoProcesoController {
     def downloadFile() {
         def doc = DocumentoProceso.get(params.id)
         def folder = pathBiblioteca
-        def path = servletContext.getRealPath("/") + folder + File.separatorChar + doc.path
+        def path = "/var/janus/" + folder + File.separatorChar + doc.path
 
 //        println servletContext.getRealPath("/")
-//        println path
+        println "path: $path"
 
         def file = new File(path)
         if (file.exists()) {
@@ -238,7 +238,7 @@ class DocumentoProcesoController {
 //        println "upload....."
 //        println params
         def folder = pathBiblioteca
-        def path = servletContext.getRealPath("/") + folder   //web-app/archivos
+        def path = "/var/janus/" + folder   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('archivo')  //archivo = name del input type file

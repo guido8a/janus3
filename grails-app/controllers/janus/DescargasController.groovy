@@ -5,123 +5,123 @@ package janus
 class DescargasController {
 
     def especificaciones() {
-        def filePath = "especificaciones generales.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "especificaciones generales.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualOferentes() {
-        def filePath = "Manual oferentes.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual oferentes.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualAdmnOfrt() {
-        def filePath = "Manual oferentes gadlr.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual oferentes gadlr.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualContratos() {
-        def filePath = "Manual contrataciones.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual contrataciones.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualObras() {
-        def filePath = "Manual obras.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual obras.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualFinanciero() {
-        def filePath = "Manual financiero.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual financiero.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualEjec() {
-        def filePath = "Manual de ejecución.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual de ejecución.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualAPU() {
-        def filePath = "Manual APU.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual APU.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualRprt() {
-        def filePath = "Manual de reportes.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual de reportes.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
     def manualAdmnDire() {
-        def filePath = "Manual administracion directa.pdf"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "Manual administracion directa.pdf"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType('pdf')
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
 
 /*
     def materiales() {
-        def filePath = "materiales.xlsx"
-        def path = servletContext.getRealPath("/") + File.separatorChar + filePath
+        def nombre = "materiales.xlsx"
+        def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
         response.setContentType("application/excel")
-        response.setHeader("Content-disposition", "attachment; filename=" + filePath)
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }

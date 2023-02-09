@@ -131,7 +131,7 @@ class CodigoComprasPublicasController {
         }
 
 
-        def path = servletContext.getRealPath("/") + "xls/"   //web-app/archivos
+        def path = "/var/janus/" + "xls/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file

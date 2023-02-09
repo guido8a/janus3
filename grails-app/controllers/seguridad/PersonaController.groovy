@@ -105,7 +105,7 @@ class PersonaController {
 
     def uploadFile() {
         def usuario = Persona.get(session.usuario.id)
-        def path = servletContext.getRealPath("/") + "images/perfiles/"    //web-app/archivos
+        def path = "/var/janus/" + "images/perfiles/"    //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file
@@ -257,7 +257,7 @@ class PersonaController {
 
     def resizeCropImage() {
         def usuario = Persona.get(session.usuario.id)
-        def path = servletContext.getRealPath("/") + "images/perfiles/"    //web-app/archivos
+        def path = "/var/janus/" + "images/perfiles/"    //web-app/archivos
         def fileName = usuario.foto
         def ext = fileName.split("\\.").last()
         def pathFile = path + fileName
@@ -337,7 +337,7 @@ class PersonaController {
 
     def loadFoto() {
         def usuario = Persona.get(session.usuario.id)
-        def path = servletContext.getRealPath("/") + "images/perfiles/" //web-app/archivos
+        def path = "/var/janus/" + "images/perfiles/" //web-app/archivos
         def img
         def w
         def h

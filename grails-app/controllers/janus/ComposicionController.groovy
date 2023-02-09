@@ -278,7 +278,7 @@ class ComposicionController {
 
     def uploadFile() {
         def obra = Obra.get(params.id)
-        def path = servletContext.getRealPath("/") + "xlsComposicion/"   //web-app/archivos
+        def path = "/var/janus" + "xlsComposicion/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file

@@ -32,7 +32,7 @@ class PacController {
         }
         def departamento = Departamento.get(coordinacion.toLong())
 
-        def path = servletContext.getRealPath("/") + "xlsPac/"   //web-app/archivos
+        def path = "/var/janus/" + "xlsPac/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file

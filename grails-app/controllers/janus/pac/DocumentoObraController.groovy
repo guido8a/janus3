@@ -17,7 +17,7 @@ class DocumentoObraController {
     def downloadFile() {
         def doc = DocumentoObra.get(params.id)
         def folder = pathBiblioteca
-        def path = servletContext.getRealPath("/") + folder + File.separatorChar + doc.path
+        def path = "/var/janus/" + folder + File.separatorChar + doc.path
 
 //        println servletContext.getRealPath("/")
         println path
@@ -97,7 +97,8 @@ class DocumentoObraController {
 //        println "upload....."
 //        println params
         def folder = pathBiblioteca
-        def path = servletContext.getRealPath("/") + folder   //web-app/archivos
+//        def path = "/var/janus" + folder   //web-app/archivos
+        def path = "/var/janus/" + folder   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('archivo')  //archivo = name del input type file
