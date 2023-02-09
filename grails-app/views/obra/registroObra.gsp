@@ -746,7 +746,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 <div id="estadoDialog">
 
     <fieldset>
-        <div class="col-md-3">
+        <div class="col-md-12">
             Está seguro de querer cambiar el estado de la obra:<div style="font-weight: bold;">${obra?.nombre} ?
 
         </div>
@@ -772,7 +772,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 <div id="eliminarObraDialog">
 
     <fieldset>
-        <div class="col-md-3">
+        <div class="col-md-12">
             Esta seguro que desea eliminar la Obra:<div style="font-weight: bold">${obra?.nombre}</div>
 
         </div>
@@ -793,15 +793,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 <div id="copiarDialog">
 
     <fieldset>
-        <div class="col-md-3">
+        <div class="col-md-12">
             Por favor ingrese un nuevo código para la copia de la obra: <div
                 style="font-weight: bold">${obra?.nombre}</div>
         </div>
 
-        <div class="col-md-3" style="margin-top: 10px">
-            <div class="col-md-2">Nuevo Código:</div>
+        <div class="col-md-12" style="margin-top: 30px">
+            <div class="col-md-5">Nuevo Código:</div>
 
-            <div class="col-md-3"><g:textField name="nuevoCodigo" value="${obra?.codigo}" maxlength="20" class="allCaps" /></div>
+            <div class="col-md-6"><g:textField name="nuevoCodigo" value="${obra?.codigo}" maxlength="20" class="allCaps" /></div>
         </div>
     </fieldset>
 
@@ -1452,7 +1452,9 @@ function buscaObras() {
             $.box({
                 imageClass: "box_info",
                 title: "Confirmación",
-                text: "<span style='font-size:larger; font-weight: bold;'>¿Está seguro de querer cambiar el tipo de la obra a administración directa?<br/>Recuerde que una vez cambiado el tipo no podrá revertir el cambio.</span>",
+                text: "<span style='font-size:larger; font-weight: bold;'>¿Está seguro de querer cambiar el tipo de " +
+                            "la obra a administración directa?<br/>Recuerde que una vez cambiado el tipo no podrá " +
+                            "revertir el cambio.</span>",
                 iconClose: false,
                 dialog: {
                     resizable: false,
@@ -1666,7 +1668,8 @@ function buscaObras() {
             var $btn = btn.clone(true);
             $.box({
                 imageClass: "box_info",
-                text: "Una vez generado el número de fórmula polinómica no se puede revertir y se utlizará el siguiente de la secuencia. ¿Está seguro de querer continuar?",
+                text: "Una vez generado el número de fórmula polinómica no se puede revertir y se utlizará el " +
+                    "siguiente de la secuencia. ¿Está seguro de querer continuar?",
                 title: "Alerta",
                 iconClose: false,
                 dialog: {

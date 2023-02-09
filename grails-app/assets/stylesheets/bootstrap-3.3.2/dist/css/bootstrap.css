@@ -4969,6 +4969,11 @@ a.thumbnail.active {
 .alert-warning .alert-link {
   color: #635217;
 }
+.alert-error {
+  color: #9e3926;
+  background-color: #fce0e0;
+  border-color: #d08080;
+}
 .alert-danger {
   color: #9e3926;
   background-color: #e59f92;

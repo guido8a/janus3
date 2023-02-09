@@ -1,74 +1,64 @@
 <%@ page import="janus.pac.DocumentoObra" %>
 
-<div id="create-DocumentoObra" class="span" role="main" xmlns="http://www.w3.org/1999/html">
-    <g:uploadForm class="form-horizontal" name="frmSave-DocumentoObra" action="save">
+<div id="create-DocumentoObra">
+    <g:uploadForm name="frmSave-DocumentoObra" action="save">
         <g:hiddenField name="id" value="${documentoObraInstance?.id}"/>
         <g:hiddenField name="obra.id" value="${obra.id}"/>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="row" style="width: 100%">
+            <div class="col-md-3">
                     Archivo
-                </span>
             </div>
 
-            <div class="controls" >
+            <div class="col-md-9 controls" >
                 <input type="file" id="archivo" name="archivo" style="height: 32px; margin-top: -5px"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="row">
+                <div class="col-md-3">
                     Nombre
-                </span>
-            </div>
+                </div>
 
-            <div class="controls">
+            <div class="col-md-9 controls">
                 <g:textArea name="nombre" cols="60" rows="1" maxlength="255" class="" value="${documentoObraInstance?.nombre}"
                 style="height:25px; width: 300px;"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="row">
+                <div class="col-md-3">
                     Resumen del contenido
-                </span>
-            </div>
+                </div>
 
-            <div class="controls">
+            <div class="col-md-9 controls">
                 <g:textArea name="resumen" cols="40" rows="3" maxlength="1024" class="" value="${documentoObraInstance?.resumen}"
                             style="height:60px; width: 300px;"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="row">
+                <div class="col-md-3">
                     Descripción del documento
-                </span>
-            </div>
+                </div>
 
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="63" class="" value="${documentoObraInstance?.descripcion}"/>
+            <div class="col-md-9 controls">
+                <g:textField name="descripcion" maxlength="63" style="width: 300px" value="${documentoObraInstance?.descripcion}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="row">
+                <div class="col-md-3">
                     Palabras Clave
-                </span>
-            </div>
+                </div>
 
-            <div class="controls">
-                <g:textField name="palabrasClave" maxlength="63" class="" value="${documentoObraInstance?.palabrasClave}"
-                             style="height:25px; width: 300px;"/>
+            <div class="col-md-9 controls">
+                <g:textField name="palabrasClave" maxlength="63" value="${documentoObraInstance?.palabrasClave}"
+                style="width: 300px"/>
                 <p class="help-block ui-helper-hidden"></p>
             </div>
         </div>

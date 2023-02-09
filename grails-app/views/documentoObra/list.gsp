@@ -6,8 +6,8 @@
     <title>
         Biblioteca de la Obra
     </title>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 </head>
 
 <body>
@@ -18,7 +18,7 @@
 
 <g:if test="${flash.message}">
     <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
             <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
                 <a class="close" data-dismiss="alert" href="#">×</a>
                  <elm:poneHtml textoHtml="${flash.message}"/>
@@ -28,18 +28,19 @@
 </g:if>
 
 <div class="row">
-    <div class="span9 btn-group" role="navigation">
-        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn" id="atras" title="Regresar a la obra">
-            <i class="icon-arrow-left"></i>
+    <div class="col-md-9 btn-group" role="navigation">
+        <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
+           class="btn" id="atras" title="Regresar a la obra">
+            <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
         <a href="#" class="btn btn-ajax btn-new">
-            <i class="icon-file"></i>
+            <i class="fa fa-file"></i>
             Nuevo Documento
         </a>
     </div>
 
-    <div class="span3" id="busca">
+    <div class="col-md-3" id="busca">
     </div>
 </div>
 
@@ -83,17 +84,17 @@
                     </g:if>
                 </td>
                 <td>
-                    <a class="btn btn-small btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${documentoObraInstance.id}">
-                        <i class="icon-zoom-in icon-large"></i>
+                    <a class="btn btn-xs btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${documentoObraInstance.id}">
+                        <i class="fa fa-search"></i>
                     </a>
-                    <a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${documentoObraInstance.id}">
-                        <i class="icon-pencil icon-large"></i>
+                    <a class="btn btn-xs btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${documentoObraInstance.id}">
+                        <i class="fa fa-edit"></i>
                     </a>
-                    <g:link action="downloadFile" class="btn btn-small btn-docs" rel="tooltip" title="Descargar" id="${documentoObraInstance.id}">
-                        <i class="icon-download-alt icon-large"></i>
+                    <g:link action="downloadFile" class="btn btn-xs btn-docs" rel="tooltip" title="Descargar" id="${documentoObraInstance.id}">
+                        <i class="fa fa-download"></i>
                     </g:link>
-                    <a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${documentoObraInstance.id}">
-                        <i class="icon-trash icon-large"></i>
+                    <a class="btn btn-xs btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${documentoObraInstance.id}">
+                        <i class="fa fa-trash"></i>
                     </a>
                 </td>
             </tr>
@@ -103,19 +104,11 @@
 
 </div>
 
-<div class="modal hide fade" id="modal-DocumentoProceso">
-    <div class="modal-header" id="modalHeader">
-        <button type="button" class="close darker" data-dismiss="modal">
-            <i class="icon-remove-circle"></i>
-        </button>
-
-        <h3 id="modalTitle"></h3>
+<div id="modal-DocumentoProceso">
+    <div id="modalBody">
     </div>
 
-    <div class="modal-body" id="modalBody">
-    </div>
-
-    <div class="modal-footer" id="modalFooter">
+    <div id="modalFooter" style="margin-top: 20px; text-align: right; width: 340px">
     </div>
 </div>
 
@@ -133,10 +126,21 @@
     $(function () {
         $('[rel=tooltip]').tooltip();
 
-        $(".paginate").paginate({
-            maxRows        : 10,
-            searchPosition : $("#busca"),
-            float          : "right"
+//        $(".paginate").paginate({
+//            maxRows        : 10,
+//            searchPosition : $("#busca"),
+//            float          : "right"
+//        });
+
+        $("#modal-DocumentoProceso").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 460,
+            height: 360,
+            position: 'center',
+            title: 'Documentos'
         });
 
         $(".btn-new").click(function () {
@@ -147,9 +151,12 @@
                     obra : ${obra.id}
                 },
                 success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                    var btnCancel = $('<a href="#" class="btn">Cancelar</a>');
                     var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
 
+                    btnCancel.click(function () {
+                        $("#modal-DocumentoProceso").dialog("close");
+                    });
                     btnSave.click(function () {
                         submitForm(btnSave);
                         return false;
@@ -158,8 +165,9 @@
                     $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
                     $("#modalTitle").html("Crear Documento");
                     $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-DocumentoProceso").modal("show");
+                    $("#modalFooter").html("").append(btnCancel).append(btnSave);
+                    $("#modal-DocumentoProceso").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
                 }
             });
             return false;
@@ -187,7 +195,8 @@
                     $("#modalTitle").html("Editar Documento");
                     $("#modalBody").html(msg);
                     $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-DocumentoProceso").modal("show");
+                    $("#modal-DocumentoProceso").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
                 }
             });
             return false;
@@ -207,7 +216,8 @@
                     $("#modalTitle").html("Ver Documento");
                     $("#modalBody").html(msg);
                     $("#modalFooter").html("").append(btnOk);
-                    $("#modal-DocumentoProceso").modal("show");
+                    $("#modal-DocumentoProceso").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
                 }
             });
             return false;
@@ -231,7 +241,8 @@
             $("#modalTitle").html("Eliminar Documento Obra");
             $("#modalBody").html("<p>¿Está seguro de querer eliminar este Documento Obra?</p>");
             $("#modalFooter").html("").append(btnOk).append(btnDelete);
-            $("#modal-DocumentoProceso").modal("show");
+            $("#modal-DocumentoProceso").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
             return false;
         });
 
