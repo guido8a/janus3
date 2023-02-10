@@ -116,72 +116,37 @@ class TipoObraController {
 
     def saveTipoObra () {
 
-        println("params" + params)
-
         def tipoObraInstance
 
         def grupo = Grupo.get(params."grupo.id")
-
         params.grupo = grupo
-
         params.codigo = params.codigo.toUpperCase();
+        params.descripcion = params.descripcion.toUpperCase();
 
         def existe = TipoObra.findByCodigo(params.codigo)
-
 
         if(params.id) {
             tipoObraInstance = TipoObra.get(params.id)
             if(!tipoObraInstance) {
-//                flash.clase = "alert-error"
-//                flash.message = "No se encontró Tipo Obra con id " + params.id
-//                redirect(action: 'list')
-                render "error"
-                return
+                render "no_No se encontró el tipo de obra"
             }//no existe el objeto
-            tipoObraInstance.properties = params
-        }//es edit
-        else {
+        }else {
             if(!existe){
                 tipoObraInstance = new TipoObra(params)
             }else{
-                render 'error'
+                render 'No_Ya existe un tipo de obra con ese código'
                 return
             }
-
         } //es create
-        if (!tipoObraInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Tipo Obra " + (tipoObraInstance.id ? tipoObraInstance.id : "") + "</h4>"
 
-            str += "<ul>"
-            tipoObraInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
+        tipoObraInstance.properties = params
 
-            flash.message = str
-//            redirect(action: 'list')
-            render "error"
-            return
+        if(!tipoObraInstance.save(flush: true)) {
+                println("error al guardar el tipo de obra" + tipoObraInstance.errors)
+            render "no_Error al guardar el tipo de obra"
+        }else{
+            render "ok_Tipo de obra guardada correctamente"
         }
-
-//        if(params.id) {
-//            flash.clase = "alert-success"
-//            flash.message = "Se ha actualizado correctamente Tipo Obra " + tipoObraInstance.id
-//        } else {
-//            flash.clase = "alert-success"
-//            flash.message = "Se ha creado correctamente el Tipo de Obra: " + tipoObraInstance.descripcion
-//        }
-
-//        def sel = g.select(name:"tipoObjetivo.id", class:"tipoObjetivo required", from:janus.TipoObra?.list(), value:tipoObraInstance?.id, optionValue:"descripcion", optionKey:"id", style:"margin-left: -60px; width: 290px")
-        def sel = g.select(name:"tipoObjetivo.id", class:"tipoObjetivo required", from:TipoObra.list(), value:tipoObraInstance?.id, optionValue:"descripcion", optionKey:"id", style:"margin-left: -60px; width: 290px")
-
-         render sel
-//        redirect(controller: 'obra', action: 'registroObra')
     } //save
 
 

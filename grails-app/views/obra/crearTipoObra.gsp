@@ -5,90 +5,71 @@
     <g:hiddenField name="id" value="${tipoObraInstance?.id}"/>
     <g:hiddenField name="grupo" value="${grupo}"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group">
+        <span class="grupo">
+            <label for="codigo" class="col-md-3 control-label text-info">
                 Código
-            </span>
-        </div>
-
-            <div class="controls">
-                <g:textField name="codigo" maxlength="4" class=" required allCaps" value="${tipoObraInstance?.codigo}"/>
-                <span class="mandatory">*</span>
-
+            </label>
+            <span class="col-md-6">
+                <g:textField name="codigo" maxlength="4" class="form-control allCaps required" value="${tipoObraInstance?.codigo}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-
+            </span>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
                 Descripción
+            </label>
+            <span class="col-md-6">
+                <g:textField name="descripcion" maxlength="63" class="form-control allCaps required" value="${tipoObraInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="descripcion" maxlength="63" class=" required" value="${tipoObraInstance?.descripcion}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group">
+        <span class="grupo">
+            <label for="grupo" class="col-md-3 control-label text-info">
                 Grupo
+            </label>
+            <span class="col-md-6">
+                <g:select id="grupo" name="grupo.id" class="form-control" from="${janus.Grupo.list()}" optionKey="id" optionValue="descripcion" value="${tipoObraInstance?.grupo?.id}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:select id="grupo" name="grupo.id" from="${janus.Grupo.list()}" optionKey="id" class="many-to-one "
-                      value="${tipoObraInstance?.grupo?.id}" />
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
 </g:form>
 
 <script type="text/javascript">
     $("#frmSave-TipoObra").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
+            label.parents(".grupo").removeClass('has-error');
         },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
-        },
-
         rules: {
-
             codigo: {
 
                 remote : {
                     url  : "${createLink(controller: 'tipoObra' ,action:'checkCodigo')}",
                     type : "post"
-
                 }
             },
-
             descripcion: {
 
                 remote : {
                     url  : "${createLink(controller: 'tipoObra' ,action:'checkDesc')}",
                     type : "post"
-
                 }
             }
-
         },
-
         messages       : {
             codigo      : {
                 remote : "El código ya se ha ingresado para otro item"
@@ -97,13 +78,13 @@
                 remote : "La descripción ya se ha ingresado para otro item"
             }
         }
-
-
     });
 
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormTipoObra();
+            return false;
         }
+        return true;
     });
 </script>

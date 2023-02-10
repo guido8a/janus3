@@ -35,14 +35,10 @@ class ClaseObraController {
 
     def save_ext() {
 
-//println("params" + params)
-//        params.codigo = params.codigo.toUpperCase();
-//        def  existe = ClaseObra.findByCodigo(params.codigo)
-
-        def grupo = Grupo.get(params."grupo.id")
+        def grupo = Grupo.get(params.grupo)
         params.grupo = grupo
 
-//        println("rupo" + params.grupo)
+        params.descripcion = params.descripcion.toUpperCase()
 
         def clases = ClaseObra.list()
         def clasesOrdenadas = ClaseObra.list(sort: 'codigo' )
@@ -55,55 +51,25 @@ class ClaseObraController {
         if (params.id) {
             claseObraInstance = ClaseObra.get(params.id)
             if (!claseObraInstance) {
-                message = "No se encontró ClaseObra con id " + params.id
-                println message
-                render "error"
-                return
+                    render "no_No existe la clase de obra"
             }//no existe el objeto
-            claseObraInstance.properties = params
+
         }//es edit
         else {
-//            if(!existe){
-//                claseObraInstance = new ClaseObra(params)
-//            }else{
-//                render "No se pudo guardar la clase de obra, el código ya existe!!"
-//                return
-//
-//            }
             claseObraInstance = new ClaseObra(params)
-            claseObraInstance.codigo =  (codigos.last() + 1)
-
+            claseObraInstance.codigo = (codigos?.last() ? (codigos?.last()  + 1) : 1)
         } //es create
-        if (!claseObraInstance.save(flush: true)) {
-            def str = "<h4>No se pudo guardar ClaseObra " + (claseObraInstance.id ? claseObraInstance.id : "") + "</h4>"
 
-            str += "<ul>"
-            claseObraInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-            println message
-            render "No se pudo guardar la clase de obra!"
-            return
+        claseObraInstance.properties = params
+
+
+        if(!claseObraInstance.save(flush: true)) {
+            println("error al guardar la clase de obra " + claseObraInstance.errors)
+            render "no_Error al guardar la clase de obra"
+        }else{
+            render "ok_Clase de obra guardada correctamente"
         }
 
-        if (params.id) {
-            message = "Se ha actualizado correctamente ClaseObra " + claseObraInstance.id
-        } else {
-            message = "Se ha creado correctamente ClaseObra " + claseObraInstance.id
-        }
-
-        println message
-
-        def sel = g.select(id: "claseObra", name: "claseObra.id", "class": "claseObra required", from: ClaseObra.list(), value: claseObraInstance.id,
-                optionValue: "descripcion", optionKey: "id", style: "margin-left: -35px; width: 230px", title: "Clase de Obra")
-
-
-        render sel
     } //save
 
     def form_ajax() {

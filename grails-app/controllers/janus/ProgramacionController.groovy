@@ -50,12 +50,10 @@ class ProgramacionController {
 
     def save() {
 
-//        println("params " + params )
-
         params.descripcion = params.descripcion.toUpperCase();
 
-        def fechaI
-        def fechaF
+        def fechaI;
+        def fechaF;
 
         if(params.fechaInicio){
             fechaI = new Date().parse("dd-MM-yyyy", params.fechaInicio)
@@ -65,60 +63,33 @@ class ProgramacionController {
             fechaF = new Date().parse("dd-MM-yyyy", params.fechaFin)
         }
 
-
         params.fechaInicio = fechaI
         params.fechaFin = fechaF
 
-
         if(fechaI >= fechaF){
-            flash.clase = "alert-error"
-            flash.message = "No se puede crear la Programación la Fecha Fin debe ser mayor a la Fecha Inicio"
-            redirect(action: 'list')
-        }else{
-        def programacionInstance
-        if (params.id) {
-            programacionInstance = Programacion.get(params.id)
-            if (!programacionInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Programacion con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
+            render "no_No se puede crear la Programación la Fecha Fin debe ser mayor a la Fecha Inicio"
+        }else {
+            def programacionInstance
+
+            if (params.id) {
+                programacionInstance = Programacion.get(params.id)
+                if (!programacionInstance) {
+                    render "no_No se encontró la programación"
+                }//no existe el objeto
+            }//es edit
+            else {
+                programacionInstance = new Programacion(params)
+            } //es create
+
             programacionInstance.properties = params
-        }//es edit
-        else {
-            programacionInstance = new Programacion(params)
-        } //es create
-        if (!programacionInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Programacion " + (programacionInstance.id ? programacionInstance.id : "") + "</h4>"
 
-            str += "<ul>"
-            programacionInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
+            if (!programacionInstance.save(flush: true)) {
+                println("error al guardar la programación " + programacionInstance.errors)
+                render "no_Error al guardar la programación"
+            } else {
+                render "ok_Programación guardada correctamente"
             }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Programación " + programacionInstance?.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Programación " + programacionInstance?.descripcion
-        }
-        redirect(action: 'list')
-
-        }
-
     } //save
 
     def save_ext() {

@@ -449,7 +449,7 @@ class ObraController {
         if (obra.save(flush: true)) {
             render "OK_${memo}"
         } else {
-            render "NO_" + renderErrors(bean: obra)
+            render "NO_" + obra.errors
         }
     }
 
@@ -487,12 +487,11 @@ class ObraController {
         }
 
         def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Inrgeso', 4: 'Mem. Salida', 5: 'Estado']
-
         def sbprMF = [:]
 
-        programa = Programacion.list();
-        tipoObra = TipoObra.list();
-        claseObra = ClaseObra.list();
+        programa = Programacion.list([sort: 'descripcion']);
+        tipoObra = TipoObra.list([sort: 'descripcion']);
+        claseObra = ClaseObra.list([sort: 'descripcion']);
 
         def matrizOk = false
         println "...1"
@@ -508,7 +507,6 @@ class ObraController {
                     sbprMF << ["${d.sbpr__id}" : SubPresupuesto.get(d.sbpr__id).descripcion]
             }
 
-//            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
             def subs = VolumenesObra.findAllByObra(obra).subPresupuesto.unique().sort{it.id}
             def volumen = VolumenesObra.findByObra(obra)
             def formula = FormulaPolinomica.findByObra(obra)
@@ -1560,18 +1558,13 @@ class ObraController {
 
     def crearTipoObra() {
 
-//        println(params)
-
         def grupo = params.grupo
 
         def tipoObraInstance = new TipoObra(params)
         if (params.id) {
             tipoObraInstance = TipoObra.get(params.id)
             if (!tipoObraInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Tipo Obra con id " + params.id
-                redirect(action: "list")
-                return
+                render "no_Tipo de obra no encontrada"
             }
         }
         return [tipoObraInstance: tipoObraInstance, grupo: grupo]

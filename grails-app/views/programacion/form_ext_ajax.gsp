@@ -4,87 +4,83 @@
 <g:form class="form-horizontal" name="frmSave-Programacion" action="save">
     <g:hiddenField name="id" value="${programacionInstance?.id}"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-3 control-label text-info">
                 Descripción
+            </label>
+            <span class="col-md-6">
+                <g:textField name="descripcion" maxlength="40" class="form-control allCaps required" value="${programacionInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="descripcion" maxlength="40" class=" required"
-                         value="${programacionInstance?.descripcion}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Fecha Inicio
+    <div class="form-group">
+        <span class="grupo">
+            <label for="fechaInicio" class="col-md-3 control-label text-info">
+                Fecha inicio
+            </label>
+            <span class="col-md-6">
+                <input aria-label="" name="fechaInicio" id='fechaInicio' type='text' class="required input-small form-control"
+                       value="${programacionInstance?.fechaInicio?.format('dd-MM-yyyy') ?:  new Date().format("dd-MM-yyyy")}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <elm:datepicker name="fechaInicio" class="" value="${programacionInstance?.fechaInicio}"/>
-
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Fecha Fin
+    <div class="form-group">
+        <span class="grupo">
+            <label for="fechaFin" class="col-md-3 control-label text-info">
+                Fecha fin
+            </label>
+            <span class="col-md-6">
+                <input aria-label="" name="fechaFin" id='fechaFin' type='text' class="required input-small form-control"
+                       value="${programacionInstance?.fechaFin?.format('dd-MM-yyyy') ?:  new Date().format("dd-MM-yyyy")}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <elm:datepicker name="fechaFin" class="" value="${programacionInstance?.fechaFin}"/>
-
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group">
+        <span class="grupo">
+            <label for="grupo" class="col-md-3 control-label text-info">
                 Grupo
+            </label>
+            <span class="col-md-6">
+                <g:select id="grupo" name="grupo" class="form-control" from="${janus.Grupo.list()}" optionKey="id" optionValue="descripcion" value="${programacionInstance?.grupo?.id}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:select id="grupo" name="grupo.id" from="${janus.Grupo.list()}" optionKey="id" class="many-to-one "
-                      value="${programacionInstance?.grupo?.id}"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
 </g:form>
 
 <script type="text/javascript">
-    $("#frmSave-Programacion").validate({
-        errorPlacement: function (error, element) {
-            element.parent().find(".help-block").html(error).show();
-        },
-        success: function (label) {
-            label.parent().hide();
-        },
-        errorClass: "label label-important",
-        submitHandler: function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+
+    $('#fechaInicio, #fechaFin').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
         }
     });
 
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    var validator = $("#frmSave-Programacion").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormPrograma();
+            return false;
+        }
+        return true;
     });
 </script>

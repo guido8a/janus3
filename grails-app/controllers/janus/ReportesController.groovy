@@ -1215,11 +1215,7 @@ class ReportesController {
                     "                        <b>Descripción:</b> ${nombre}\n" +
                     "                    </div>\n" +
                     "                </div>\n" +
-
-
                     "            </div>"
-
-
 
             preciosService.ac_rbroObra(obra.id)
             def res = preciosService.precioUnitarioVolumenObraAsc("*", obra.id, rubro.id)
