@@ -464,7 +464,7 @@ class ObraController {
     def registroObra() {
 
         def cn = dbConnectionService.getConnection()
-        println "---" + params
+//        println "---" + params
         def obra
         def perfil = session.perfil
         def persona = Persona.get(session.usuario.id)
@@ -494,7 +494,7 @@ class ObraController {
         claseObra = ClaseObra.list([sort: 'descripcion']);
 
         def matrizOk = false
-        println "...1"
+//        println "...1"
         def prov = Provincia.list();
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazoEjecucionMeses": ["Plazo", "number"], "canton": ["Canton", "string"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"], "fechaCreacionObra": ["Fecha", "date"], "estado": ["Estado", "string"], "valor": ["Monto", "number"]]
         def camposCPC = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
@@ -526,7 +526,7 @@ class ObraController {
                 matrizOk = true
             }
             def concurso = janus.pac.Concurso.findByObra(obra)
-            println "concursos: ${concurso?.fechaLimiteEntregaOfertas}"
+//            println "concursos: ${concurso?.fechaLimiteEntregaOfertas}"
             if (concurso) {
                 if (!concurso.fechaLimiteEntregaOfertas)
                     concurso = null
@@ -535,7 +535,7 @@ class ObraController {
             cn.close()
 
             duenoObra = esDuenoObra(obra) ? 1 : 0
-            println "dueño: $duenoObra, concurso: $concurso, obra: $obra"
+//            println "dueño: $duenoObra, concurso: $concurso, obra: $obra"
 
             [campos: campos, camposCPC: camposCPC, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
@@ -544,7 +544,7 @@ class ObraController {
         } else {
 
             duenoObra = 0
-            println "...ok"
+//            println "...ok"
             [campos: campos, camposCPC: camposCPC, prov: prov, persona: persona, matrizOk: matrizOk, perfil: perfil, programa: programa,
              tipoObra: tipoObra, claseObra: claseObra, grupoDir: grupo, dire: direccion, depar: departamentos,
              fcha: fechaPrecio, personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF:sbprMF, listaObra: listaObra]
@@ -1027,7 +1027,7 @@ class ObraController {
 
     def getPersonas2() {
 
-        println("getPersonas2 --->" + params)
+//        println("getPersonas2 --->" + params)
 
         def obra = Obra.get(params.obra)
         def usuario = session.usuario.id
@@ -1042,12 +1042,12 @@ class ObraController {
             direccion = Direccion.get(params.id)
             departamentos = Departamento.findAllByDireccion(direccion)
         } else {
-            println "dueño--> departamento: ${params.idDep}"
+//            println "dueño--> departamento: ${params.idDep}"
             departamentos = [Departamento.get(params.idDep)]
 
         }
 
-        println("depar " + departamentos)
+//        println("depar " + departamentos)
 
         def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
 
@@ -1061,7 +1061,7 @@ class ObraController {
 
 //        def personas = Persona.findAllByDepartamento(Departamento.get(params.idDep))
 
-        println("personas " + personas)
+//        println("personas " + personas)
 
         /* si no hay personas del dpto, se carga de la dirección*/
 
@@ -1133,7 +1133,7 @@ class ObraController {
 
         }
         
-        println "presonas utfpu: ${personasUtfpu.persona}"
+//        println "presonas utfpu: ${personasUtfpu.persona}"
 
         return [personas       : personas, personasRolInsp: personasRolInsp.persona, personasRolRevi: personasRolRevi.persona,
                 personasRolResp: personasRolResp.persona, personasRolElab: personasRolElab.persona, obra: obra,

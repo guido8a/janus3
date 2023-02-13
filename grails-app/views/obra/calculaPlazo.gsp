@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 3/11/13
-  Time: 11:43 AM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -42,19 +34,19 @@
     </head>
 
     <body>
-        <div class="tituloChevere">Plazo de la obra: ${obra.nombre}</div>
+        <div class="alert alert-info">Plazo de la obra: ${obra.nombre}</div>
 
         <div class="btn-toolbar" style="margin-top: 15px;">
             <div class="btn-group">
-                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn " title="Regresar a la obra">
-                    <i class="icon-arrow-left"></i>
+                <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-primary" title="Regresar a la obra">
+                    <i class="fa fa-arrow-left"></i>
                     Obra
                 </a>
             </div>
 
             <div class="btn-group">
                 <a href="#" class="btn btn-success" id="btn-saveParams">
-                    <i class="icon-save"></i>
+                    <i class="fa fa-save"></i>
                     Guardar
                 </a>
             </div>
@@ -106,7 +98,7 @@
 
                     <div class="btn-group" style="margin-left: 10px;">
                         <a href="#" class="btn btn-info" id="btn-preview">
-                            <i class="icon-eye-open"></i>
+                            <i class="fa fa-search"></i>
                             Vista Previa
                         </a>
                     </div>
@@ -188,7 +180,7 @@
                 <b>Plazo recomendado: <g:formatNumber locale="ec" number="${sum}" maxFractionDigits="1"/> días,
                 es decir, ${meses} meses y ${dias} días</b>
                 <a href="#" class="btn btn-info apply" data-meses="${meses}" data-dias="${dias}">
-                    <i class="icon-ok"></i> Utilizar
+                    <i class="fa fa-check"></i> Utilizar
                 </a>
             </div>
         </div>

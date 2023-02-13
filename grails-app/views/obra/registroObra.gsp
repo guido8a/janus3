@@ -206,7 +206,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 <g:form class="registroObra" name="frm-registroObra" action="save">
     <g:hiddenField name="crono" value="0"/>
 
-    <div style="width: 100%; float:left; border-bottom: 1px solid black;padding-left: 50px;margin-top: 20px;position: relative; height: 100px">
+    <div style="width: 100%; float:left; border: 1px solid black;padding-left: 50px;margin-top: 20px;position: relative; height: 100px">
         <g:hiddenField name="id" value="${obra?.id}"/>
         <div style="margin-top: 15px" align="center">
 
@@ -334,7 +334,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         %{--</fieldset>--}%
     </div>
 
-    <div style="width: 100%; float:left; border-bottom: 1px solid black;padding-left: 0px; margin-top: 0px; height: auto";>
+    <div style="width: 100%; float:left; border: 1px solid black;padding-left: 0px; margin-top: 0px; height: auto";>
 
         <g:if test="${obra?.tipo == 'D'}">
             <div class="col-md-12" style="margin-top: 15px" align="center">
@@ -358,7 +358,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="col-md-7">
                 <g:textField name="nombre" class="nombre required"
-                             style="margin-left: -30px; width: 760px" value="${obra?.nombre}"
+                             style="margin-left: -30px; width: 750px" value="${obra?.nombre}"
                              maxlength="127" title="Nombre de la Obra"/></div>
         </div>
 
@@ -425,15 +425,23 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <div class="row-fluid col-md-12" style="margin-top: 10px">
             <div class="col-md-1">Descripción de la Obra</div>
 
-            <div class="col-md-9"><g:textArea name="descripcion" rows="5" cols="5" class="required"
+            <div class="col-md-8"><g:textArea name="descripcion" rows="5" cols="5" class="required"
                                               style="width:100%; height: 40px; resize: none" maxlength="511"
                                               value="${obra?.descripcion}" title="Descripción"/></div>
             <div class="col-md-1">Código CPC</div>
             <div class="col-md-1">
                 <g:hiddenField name="codigoComprasPublicas" value="${obra?.codigoComprasPublicas?.id}"/>
-                <g:textField style="margin-left: -30px; width: 125px;" name="codigoCPCNombre" id="item_codigo" class=""
-                             value="${obra?.codigoComprasPublicas?.numero}" />
+                <g:textField style="margin-left: -30px; width: 120px;" name="codigoCPCNombre" id="item_codigo" class=""
+                             value="${obra?.codigoComprasPublicas?.numero}" readonly=""/>
+
             </div>
+            <div class="col-md-1">
+                <a href="#" class="btn btn-xs btn-info" id="btnCodigoCPC" title="Seleccionar código CPC"
+                   style="margin-top: 0px;">
+                    <i class="fa fa-plus-square"></i>
+                </a>
+            </div>
+
         </div>
 
         <div class="row-fluid col-md-12" style="margin-top: 10px">
@@ -508,8 +516,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <g:if test="${matrizOk}">
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id &&
                         duenoObra == 1) || obra?.id == null}">
-                    <div class="col-md-1" style="margin-left: -40px; width: 100px;"><g:link action="calculaPlazo"
-                                                                                            id="${obra.id}" style="margin-left: 0px;" class="btn btn-info btn-xs">Calcular</g:link></div>
+                    <div class="col-md-1" style="margin-left: -40px; width: 100px;">
+                        <g:link action="calculaPlazo" id="${obra.id}" style="margin-left: 0px;" class="btn btn-info btn-xs"><i class="fa fa-cog"></i> Calcular</g:link>
+                    </div>
                 </g:if>
             </g:if>
 
@@ -566,7 +575,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     optionValue="descripcion" value="${obra?.listaManoObra?.id}"
                     title="Precios para Mano de Obra y Equipos"/></div>
 
-
             <div class="col-md-1" style="margin-left: 30px">Fecha</div>
 
             <div class="col-md-2" style="margin-left: -30px;">
@@ -574,8 +582,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                        value="${obra?.fechaPreciosRubros?.format('dd-MM-yyyy') ?: fcha.format('dd-MM-yyyy')}"/>
             </div>
 
-
-            <div class="col-md-1" style="margin-left: 40px">Coordenadas:</div>
+            <div class="col-md-1" style="margin-left: 30px">Coordenadas:</div>
 
             <div class="col-md-3">
                 <g:set var="coords" value="${obra?.coordenadas}"/>
@@ -583,7 +590,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     <g:set var="coords" value="${'S 0 12.5999999 W 78 31.194'}"/>
                 </g:if>
                 <g:hiddenField name="coordenadas" value="${coords}"/>
-                <a href="#" id="coords" class="editable">
+                <a href="#" id="coords" >
                     ${coords}
                 </a>
                 <g:set var="coordsParts" value="${coords.split(' ')}"/>
@@ -591,7 +598,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </div>
     </div>
 
-    <div style="width: 100%; float:left; border-bottom: 1px solid black; margin-top: 5px; position: relative;
+    <div style="width: 100%; float:left; border: 1px solid black; position: relative;
     padding-left: 30px; height: 65px">
         <div style="margin-top: 5px" align="center">
             <p class="css-vertical-text">Salida</p>
@@ -600,7 +607,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </div>
         </div>
     </div>
-
 </g:form>
 
 <div id="busqueda-geo">
@@ -633,28 +639,33 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <div id="busqueda_CPC">
-
     <fieldset class="borde">
-        <div class="col-md-7">
-            <div class="col-md-2">Buscar Por</div>
-            <div class="col-md-2"><g:select name="buscarPor_CPC" class="buscarPor_CPC"
-                                            from="['1': 'Código', '2': 'Descripción']"
-                                            style="width: 120px" optionKey="key"
-                                            optionValue="value"/></div>
+        <div class="col-md-8">
+            <div class="col-md-3">
+                <label>Buscar Por</label>
+                <g:select name="buscarPor_CPC" class="buscarPor_CPC"
+                          from="['1': 'Código', '2': 'Descripción']"
+                          optionKey="key"
+                          optionValue="value"/>
+            </div>
 
-            <div class="col-md-2">Criterio</div>
-            <div class="col-md-2" style="margin-left: -20px"><g:textField name="criterio_CPC" class="criterio_CPC"/></div>
+            <div class="col-md-5" >
+                <label>Criterio</label>
+                <g:textField name="criterio_CPC" class="criterio_CPC" />
+            </div>
 
-            <div class="col-md-1">Ordenar</div>
-            <div class="col-md-1"><g:select name="ordenar_CPC" class="ordenar_CPC" from="['1': 'Ascendente', '2': 'Descendente']"
-                                            style="width: 120px; margin-left: 60px;" optionKey="key"
-                                            optionValue="value"/></div>
+            <div class="col-md-3">
+                <label>Ordenar</label>
+                <g:select name="ordenar_CPC" class="ordenar_CPC" from="['1': 'Ascendente', '2': 'Descendente']"
+                          optionKey="key" optionValue="value" />
+            </div>
+
         </div>
 
-        <div>
-            <div class="col-md-2" style="margin-left: 140px"><button class="btn btn-info" id="btn-consultar_CPC"><i
+        <div class="col-md-2" style="margin-left: 10px; margin-top: 10px">
+            <button class="btn btn-info" id="btn-consultar_CPC"><i
                     class="icon-check"></i> Consultar
-            </button></div>
+            </button>
         </div>
     </fieldset>
 
@@ -940,6 +951,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <script type="text/javascript">
 
+
+    $("#btnCodigoCPC").click(function () {
+        $("#dlgLoad").dialog("close");
+        $("#busqueda_CPC").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x");
+        return false;
+    });
+
     $('#fechaCreacionObra').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
@@ -1016,21 +1035,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         });
     }
 
-    // function log(msg, error) {
-    //     var sticky = false;
-    //     var theme = "success";
-    //     if (error) {
-    //         sticky = true;
-    //         theme = "error";
-    //     }
-    //     $.jGrowl(msg, {
-    //         speed: 'slow',
-    //         sticky: sticky,
-    //         theme: theme,
-    //         themeState: ''
-    //     });
-    // }
-
     function enviarLq() {
         var data = "";
         $("#buscarDialog").hide();
@@ -1053,7 +1057,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 $(".contenidoBuscador").html(msg).show("slide");
             }
         });
-
     }
 
     $("#frm-registroObra").validate();
@@ -1120,88 +1123,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         var enteros = $(this).val();
     });
 
-    // $("#anchoVia").bind({
-    //     keydown: function (ev) {
-    //         if (ev.keyCode === 190 || ev.keyCode === 110) {
-    //             var val = $(this).val();
-    //             if (val.length == 0) {
-    //                 $(this).val("0");
-    //             }
-    //             return val.indexOf(".") === -1;
-    //         } else {
-    //             return validarNum(ev);
-    //         }
-    //     }, //keydown
-    //     keyup: function () {
-    //         var val = $(this).val();
-    //         var parts = val.split(".");
-    //         if (parts.length > 1) {
-    //             if (parts[1].length > 5) {
-    //                 parts[1] = parts[1].substring(0, 5);
-    //                 val = parts[0] + "." + parts[1];
-    //                 $(this).val(val);
-    //             }
-    //         }
-    //     }
-    // });
-
-    // $("#latitud").bind({
-    //     keydown: function (ev) {
-    //         // esta parte valida el punto: si empieza con punto le pone un 0 delante, si ya hay un punto lo ignora
-    //         if (ev.keyCode == 190 || ev.keyCode == 110) {
-    //             var val = $(this).val();
-    //             if (val.length == 0) {
-    //                 $(this).val("0");
-    //             }
-    //             return val.indexOf(".") == -1;
-    //         } else {
-    //             // esta parte valida q sean solo numeros, punto, tab, backspace, delete o flechas izq/der
-    //             return validarNum(ev);
-    //         }
-    //     }, //keydown
-    //     keyup: function () {
-    //         var val = $(this).val();
-    //         // esta parte valida q no ingrese mas de 2 decimales
-    //         var parts = val.split(".");
-    //         if (parts.length > 1) {
-    //             if (parts[1].length > 5) {
-    //                 parts[1] = parts[1].substring(0, 5);
-    //                 val = parts[0] + "." + parts[1];
-    //                 $(this).val(val);
-    //             }
-    //         }
-    //     }
-    // });
-
-    // $("#longitud").bind({
-    //     keydown: function (ev) {
-    //         // esta parte valida el punto: si empieza con punto le pone un 0 delante, si ya hay un punto lo ignora
-    //         if (ev.keyCode == 190 || ev.keyCode == 110) {
-    //             var val = $(this).val();
-    //             if (val.length == 0) {
-    //                 $(this).val("0");
-    //             }
-    //             return val.indexOf(".") == -1;
-    //         } else {
-    //             // esta parte valida q sean solo numeros, punto, tab, backspace, delete o flechas izq/der
-    //             return validarNum(ev);
-    //         }
-    //     }, //keydown
-    //     keyup: function () {
-    //         var val = $(this).val();
-    //         // esta parte valida q no ingrese mas de 2 decimales
-    //         var parts = val.split(".");
-    //         if (parts.length > 1) {
-    //             if (parts[1].length > 5) {
-    //                 parts[1] = parts[1].substring(0, 5);
-    //                 val = parts[0] + "." + parts[1];
-    //                 $(this).val(val);
-    //             }
-    //         }
-    //
-    //     }
-    // });
-
     function loadPersonas() {
         var idP;
         var idDep1;
@@ -1266,7 +1187,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 }
             });
     });
-
 
     $(function () {
         var memoSIF = "${obra?.memoSif?:''}";
@@ -1702,12 +1622,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             return false;
         });
 
-        $("#item_codigo").dblclick(function () {
-            $("#dlgLoad").dialog("close");
-            $("#busqueda_CPC").dialog("open");
-            $(".ui-dialog-titlebar-close").html("x");
-            return false;
-        });
+        // $("#item_codigo").dblclick(function () {
+        //     $("#dlgLoad").dialog("close");
+        //     $("#busqueda_CPC").dialog("open");
+        //     $(".ui-dialog-titlebar-close").html("x");
+        //     return false;
+        // });
 
         $("#departamento").change(function () {
             loadSalida();
@@ -2629,7 +2549,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     buscarPor: buscarPor,
                     criterio: criterio,
                     ordenar: ordenar
-
                 },
                 success: function (msg) {
                     $("#divTabla_CPC").html(msg);
