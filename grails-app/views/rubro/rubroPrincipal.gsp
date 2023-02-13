@@ -9,7 +9,6 @@
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
     <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
-
 </head>
 
 <body>
@@ -32,45 +31,45 @@
 
 <div class="col-md-12 btn-group" role="navigation">
     <a href="#" class="btn" id="btn_lista">
-        <i class="icon-list-ul"></i>
+        <i class="fa fa-list"></i>
         Lista
     </a>
     <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
-        <i class="icon-file-alt"></i>
+        <i class="fa fa-file"></i>
         Nuevo
     </a>
     <g:if test="${rubro?.aprobado != 'R'}">
         <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
-            <i class="icon-save"></i>
+            <i class="fa fa-save"></i>
             Guardar
         </a>
         <a href="#" class="btn btn-ajax btn-new" id="borrar">
-            <i class="icon-trash"></i>
+            <i class="fa fa-trash"></i>
             Borrar
         </a>
     </g:if>
     <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
-        <i class="icon-remove"></i>
+        <i class="fa fa-times"></i>
         Cancelar
     </a>
 
     <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">
-        <i class="icon-table"></i>
+        <i class="fa fa-table"></i>
         Calcular
     </a>
     <a href="#" class="btn btn-ajax btn-new" id="transporte" title="Transporte">
-        <i class="icon-truck"></i>
+        <i class="fa fa-truck"></i>
         Transporte
     </a>
     <g:if test="${rubro}">
         <a href="#" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">
-            <i class="icon-print"></i>
+            <i class="fa fa-print"></i>
             Imprimir
         </a>
     </g:if>
     <g:if test="${rubro}">
         <a href="#" class="btn btn-ajax btn-new" id="excel" title="Imprimir">
-            <i class="icon-print"></i>
+            <i class="fa fa-file-excel"></i>
             Excel
         </a>
     </g:if>
@@ -78,14 +77,14 @@
     <g:if test="${rubro}">
         <g:if test="${rubro?.codigoEspecificacion}">
             <a href="#" id="detalle" class="btn btn-ajax btn-new">
-                <i class="icon-list"></i>
+                <i class="fa fa-book"></i>
                 Especifi.
             </a>
         </g:if>
     </g:if>
     <g:if test="${rubro}">
         <a href="#" id="foto" class="btn btn-ajax btn-new">
-            <i class="icon-picture"></i>
+            <i class="fa fa-image"></i>
             Ilust.
         </a>
     </g:if>
@@ -120,10 +119,6 @@
                 <g:textField name="rubro.codigo" id="input_codigo" class="col-md-12 allCaps required input-small"
                        value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"
                              maxlength="30" minlength="2"/>
-                                    %{--<g:textField name="rubro.codigo" class="col-md-20 allCaps required input-small"--}%
-                                           %{--value="${rubro?.codigo}"--}%
-                                           %{--id="input_codigo" maxlength="30" minlength="2">--}%
-
                                     <p class="help-block ui-helper-hidden"></p>
 
                 </div>
@@ -156,31 +151,33 @@
 
             <div class="row-fluid">
                 <div class="col-md-3" style="width: 150px;">
-                    Dirección responsable
+                    <label>Dirección responsable</label>
                     <g:select name="rubro.grupo.id" id="selClase" from="${grupos}" class="col-md-12" optionKey="id" optionValue="descripcion"
                               value="${rubro?.departamento?.subgrupo?.grupo?.id}" noSelection="${['': '--Seleccione--']}"/>
                 </div>
 
-                <div class="col-md-2" style="width: 310px; margin-left: 10px">
-                    Grupo
-                    <g:if test="${rubro?.departamento?.subgrupo?.id}">
-                        <g:select id="selGrupo" name="rubro.suggrupoItem.id" from="${janus.SubgrupoItems.findAllByGrupo(rubro?.departamento?.subgrupo?.grupo)}"
-                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.subgrupo?.id}" noSelection="['': '--Seleccione--']"/>
-                    </g:if>
-                    <g:else>
-                        <select id="selGrupo" class="col-md-12"></select>
-                    </g:else>
+                <div id="seleccionarGrupo" class="col-md-2" style="width: 310px; margin-left: 10px">
+%{--                    Grupo--}%
+%{--                    <g:if test="${rubro?.departamento?.subgrupo?.id}">--}%
+
+%{--                        <g:select id="selGrupo" name="rubro.suggrupoItem.id" from="${janus.SubgrupoItems.findAllByGrupo(rubro?.departamento?.subgrupo?.grupo)}"--}%
+%{--                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.subgrupo?.id}" noSelection="['': '--Seleccione--']"/>--}%
+
+                    %{--                    </g:if>--}%
+%{--                    <g:else>--}%
+%{--                        <select id="selGrupo" class="col-md-12"></select>--}%
+%{--                    </g:else>--}%
                 </div>
 
-                <div class="col-md-3" style="width: 200px; margin-left: 10px">
-                    Sub grupo
-                    <g:if test="${rubro?.departamento?.id}">
-                        <g:select name="rubro.departamento.id" id="selSubgrupo" from="${janus.DepartamentoItem.findAllBySubgrupo(rubro?.departamento?.subgrupo)}"
-                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.id}"/>
-                    </g:if>
-                    <g:else>
-                        <select id="selSubgrupo" class="col-md-12"></select>
-                    </g:else>
+                <div class="col-md-3" id="seleccionarSubgrupo" style="width: 200px; margin-left: 10px">
+%{--                    Sub grupo--}%
+%{--                    <g:if test="${rubro?.departamento?.id}">--}%
+%{--                        <g:select name="rubro.departamento.id" id="selSubgrupo" from="${janus.DepartamentoItem.findAllBySubgrupo(rubro?.departamento?.subgrupo)}"--}%
+%{--                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.id}"/>--}%
+%{--                    </g:if>--}%
+%{--                    <g:else>--}%
+%{--                        <select id="selSubgrupo" class="col-md-12"></select>--}%
+%{--                    </g:else>--}%
                 </div>
 
                 <div class="col-md-1" style="width: 100px; margin-left: 10px">
@@ -1690,11 +1687,8 @@
             </g:if>
         });
 
-        %{--<g:if test="${!rubro?.departamento?.subgrupo?.grupo?.id}">--}%
-        %{--$("#selClase").val("");--}%
-        %{--</g:if>--}%
         $("#costo_indi").blur(function () {
-            var indi = $(this).val()
+            var indi = $(this).val();
             if (isNaN(indi) || indi * 1 < 0) {
                 $.box({
                     imageClass : "box_info",
@@ -1716,15 +1710,15 @@
         });
 
         $("#excel").click(function () {
-            var dsp0 = $("#dist_p1").val()
-            var dsp1 = $("#dist_p2").val()
-            var dsv0 = $("#dist_v1").val()
-            var dsv1 = $("#dist_v2").val()
-            var dsv2 = $("#dist_v3").val()
+            var dsp0 = $("#dist_p1").val();
+            var dsp1 = $("#dist_p2").val();
+            var dsv0 = $("#dist_v1").val();
+            var dsv1 = $("#dist_v2").val();
+            var dsv2 = $("#dist_v3").val();
             var listas = $("#lista_1").val() + "," + $("#lista_2").val() + "," + $("#lista_3").val() + "," +
-                $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val()
-            var volqueta = $("#costo_volqueta").val()
-            var chofer = $("#costo_chofer").val()
+                $("#lista_4").val() + "," + $("#lista_5").val() + "," + $("#ciudad").val();
+            var volqueta = $("#costo_volqueta").val();
+            var chofer = $("#costo_chofer").val();
 
             datos = "?dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 + "&prvl="
                 + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val() + "&id=${rubro?.id}&lugar=" +
@@ -1751,8 +1745,8 @@
             buttons   : {
                 "Cerrar": function () {
                     $("#dialTransporte").dialog("close");
-                },
-            },
+                }
+            }
         });
 
         $("#transporte").click(function () {
@@ -1851,45 +1845,69 @@
                     item = $(hijos[i]).attr("id")
 
             }
-            item = item.replace("i_", "")
-            $("#item_cantidad").val(cant.toString().trim())
+            item = item.replace("i_", "");
+            $("#item_cantidad").val(cant.toString().trim());
             if (rendimiento)
-                $("#item_rendimiento").val(rendimiento.toString().trim())
-            $("#item_id").val(item)
-            $("#item_id").attr("tipo",tipo)
-            $("#cdgo_buscar").val(codigo)
-            $("#item_desc").val(desc)
+                $("#item_rendimiento").val(rendimiento.toString().trim());
+            $("#item_id").val(item).attr("tipo",tipo);
+            // $("#item_id").attr("tipo",tipo)
+            $("#cdgo_buscar").val(codigo);
+            $("#item_desc").val(desc);
             $("#item_unidad").val(unidad)
         });
 
-        $("#selClase").change(function () {
-            var clase = $(this).val();
-            var $subgrupo = $("<select id='selSubgrupo' class='col-md-12'></select>");
-            $("#selSubgrupo").replaceWith($subgrupo);
+        cargarGrupo($("#selClase option:selected").val());
+
+
+        function cargarGrupo(clase){
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'gruposPorClase')}",
                 data    : {
-                    id : clase
+                    id : clase,
+                    rubro: '${rubro?.id}'
                 },
                 success : function (msg) {
-                    $("#selGrupo").replaceWith(msg);
+                    $("#seleccionarGrupo").html(msg)
                 }
             });
+        }
+
+
+        $("#selClase").change(function () {
+            var clase = $("#selClase option:selected").val();
+            cargarGrupo(clase);
+            // var $subgrupo = $("<select id='selSubgrupo' class='col-md-12'></select>");
+            // $("#selSubgrupo").replaceWith($subgrupo);
+            %{--$.ajax({--}%
+            %{--    type    : "POST",--}%
+            %{--    url     : "${createLink(action:'gruposPorClase')}",--}%
+            %{--    data    : {--}%
+            %{--        id : clase--}%
+            %{--    },--}%
+            %{--    success : function (msg) {--}%
+            %{--        $("#selGrupo").replaceWith(msg);--}%
+            %{--    }--}%
+            %{--});--}%
         });
-        $("#selGrupo").change(function () {
-            var grupo = $(this).val();
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'subgruposPorGrupo')}",
-                data    : {
-                    id : grupo
-                },
-                success : function (msg) {
-                    $("#selSubgrupo").replaceWith(msg);
-                }
-            });
-        });
+
+
+
+        %{--$("#selGrupo").change(function () {--}%
+        %{--    var grupo = $("#selGrupo option:selected").val();--}%
+        %{--    cargarSubgrupo(grupo);--}%
+        %{--    --}%%{--var grupo = $(this).val();--}%
+        %{--    --}%%{--$.ajax({--}%
+        %{--    --}%%{--    type    : "POST",--}%
+        %{--    --}%%{--    url     : "${createLink(action:'subgruposPorGrupo')}",--}%
+        %{--    --}%%{--    data    : {--}%
+        %{--    --}%%{--        id : grupo--}%
+        %{--    --}%%{--    },--}%
+        %{--    --}%%{--    success : function (msg) {--}%
+        %{--    --}%%{--        $("#selSubgrupo").replaceWith(msg);--}%
+        %{--    --}%%{--    }--}%
+        %{--    --}%%{--});--}%
+        %{--});--}%
 
         $(".tipoPrecio").click(function () {
             if (!$(this).hasClass("active")) {

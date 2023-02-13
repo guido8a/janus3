@@ -20,30 +20,34 @@ class RubroController {
     def gruposPorClase() {
         def clase = Grupo.get(params.id)
         def grupos = SubgrupoItems.findAllByGrupo(clase)
-        def sel = g.select(id: "selGrupo", name: "rubro.suggrupoItem.id", from: grupos, "class": "span12", optionKey: "id", optionValue: "descripcion", noSelection: ["": "--Seleccione--"])
-        def js = "<script type='text/javascript'>"
-        js += '$("#selGrupo").change(function () {'
-        js += 'var grupo = $(this).val();'
-        js += '$.ajax({'
-        js += 'type    : "POST",'
-        js += 'url     : "' + createLink(action: 'subgruposPorGrupo') + '",'
-        js += 'data    : {'
-        js += 'id : grupo'
-        js += '},'
-        js += 'success : function (msg) {'
-        js += '$("#selSubgrupo").replaceWith(msg);'
-        js += '}'
-        js += '});'
-        js += '});'
-        js += "</script>"
-        render sel + js
+        def rubro = Item.get(params.rubro)
+        return[grupos:grupos, rubro: rubro]
+//        def sel = g.select(id: "selGrupo", name: "rubro.suggrupoItem.id", from: grupos, "class": "span12", optionKey: "id", optionValue: "descripcion", noSelection: ["": "--Seleccione--"])
+//        def js = "<script type='text/javascript'>"
+//        js += '$("#selGrupo").change(function () {'
+//        js += 'var grupo = $(this).val();'
+//        js += '$.ajax({'
+//        js += 'type    : "POST",'
+//        js += 'url     : "' + createLink(action: 'subgruposPorGrupo') + '",'
+//        js += 'data    : {'
+//        js += 'id : grupo'
+//        js += '},'
+//        js += 'success : function (msg) {'
+//        js += '$("#selSubgrupo").replaceWith(msg);'
+//        js += '}'
+//        js += '});'
+//        js += '});'
+//        js += "</script>"
+//        render sel + js
     }
 
     def subgruposPorGrupo() {
         def grupo = SubgrupoItems.get(params.id)
         def subgrupos = DepartamentoItem.findAllBySubgrupo(grupo)
-        def sel = g.select(id: "selSubgrupo", name: "rubro.departamento.id", from: subgrupos, "class": "span12", optionKey: "id", optionValue: "descripcion", noSelection: ["": "--Seleccione--"])
-        render sel
+        def rubro = Item.get(params.rubro)
+//        def sel = g.select(id: "selSubgrupo", name: "rubro.departamento.id", from: subgrupos, "class": "span2", optionKey: "id", optionValue: "descripcion", noSelection: ["": "--Seleccione--"])
+//        render sel
+        return[subgrupos: subgrupos, rubro: rubro]
     }
 
     def ciudadesPorTipo() {
