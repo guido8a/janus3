@@ -7,17 +7,17 @@
     <title>
         Asignaciones
     </title>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
-    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}"
-            type="text/javascript"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}"
-            type="text/javascript"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}"
-          rel="stylesheet" type="text/css"/>
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}"--}%
+    %{--            type="text/javascript"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}"--}%
+    %{--            type="text/javascript"></script>--}%
+    %{--    <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}"--}%
+    %{--          rel="stylesheet" type="text/css"/>--}%
     <style type="text/css">
     td {
         font-size: 10px !important;
@@ -43,105 +43,90 @@
     </g:if>
 </div>
 
-<div class="tituloTree" style="width: 800px;">
+<div class="alert alert-info col-md-12" style="font-size: 18px">
     Asignación de techos anuales a partidas presupuestarias
 </div>
 
-<div id="list-grupo" class="span12" role="main" style="margin-top: 10px;margin-left: 0px">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;">
 
-    <div id="create-Asignacion" style="border-bottom: 1px solid black;width: 900px;margin-bottom: 10px">
+    <div id="create-Asignacion" style="border-bottom: 1px solid black;margin-bottom: 10px">
         <g:form class="form-horizontal frm_asgn" name="frmSave-Asignacion" action="save">
             <g:hiddenField name="id" value="${asignacionInstance?.id}"/>
 
-            <div class="control-group">
-                <div>
-                    <span class="control-label label label-inverse" style="width: 110px;">
-                        Partida
-                    </span>
-                </div>
+            <div class="col-md-12 control-group">
 
-                <div class="controls" style="width: 1000px; margin-left: 140px;">
+                <h3> <span class="col-md-2 badge badge-secondary">Partida</span></h3>
 
-                    <input class="span3" type="text" style="width: 300px;;font-size: 12px" id="item_presupuesto">
+                <div style="width: 1000px; margin-left: 190px;">
+
+                    <input class="col-md-3 form-control" type="text" style="width: 300px;font-size: 12px" id="item_presupuesto">
 
                     <input type="hidden" id="item_prsp" name="prespuesto.id">
-                    %{--<br>--}%
-                    <input class="span4" type="text" style="width: 400px; font-size: 12px;margin-top: 0px;"
-                           id="item_desc" disabled="true">
-                    <a href="#" class="btn btn-warning" title="Crear nueva partida" id="item_agregar_prsp">
-                        <i class="icon-edit"></i>
+
+                    <input class="col-md-4 form-control" type="text" style="width: 400px; font-size: 12px; margin-right: 5px" id="item_desc" disabled>
+
+                    <a href="#" class="btn btn-success" title="Crear nueva partida" id="item_agregar_prsp">
+                        <i class="fa fa-file"></i>
                         Nueva partida
                     </a>
                     <a href="#" class="btn btn-warning" title="Crear nueva partida" id="prsp_editar">
-                        <i class="icon-edit"></i>
+                        <i class="fa fa-edit"></i>
                         Editar
                     </a>
 
-                    <div class="span2 dato" style="width: 100px;">Fuente:</div> <input class="span4 dato" type="text"
-                          style="width: 360px;;font-size: 12px;margin-top: 0px;" id="item_fuente" disabled="true"> <br>
+                    <div class="span2 dato" style="width: 100px;">Fuente:</div>
+                    <input class="form-control col-md-4 dato" type="text" style="width: 360px;font-size: 12px;" id="item_fuente" disabled> <br>
 
-                    <div class="span2 dato" style="width: 100px;">Programa:</div> <input class="span4 dato" type="text"
-                                                                                         style="width: 510px;;font-size: 12px;margin-top: 0px;"
-                                                                                         id="item_prog"
-                                                                                         disabled="true">  <br>
+                    <div class="span2 dato" style="width: 100px;">Programa:</div>
+                    <input class="form-control col-md-4" type="text" style="width: 510px;font-size: 12px;" id="item_prog" disabled> <br>
 
-                    <div class="span2 dato" style="width: 100px;">Subprograma:</div><input class="span4 dato"
-                                                                                           type="text"
-                                                                                           style="width: 510px;;font-size: 12px;margin-top: 0px;"
-                                                                                           id="item_spro"
-                                                                                           disabled="true">   <br>
+                    <div class="span2 dato" style="width: 100px;">Subprograma:</div>
+                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_spro" disabled> <br>
 
-                    <div class="span2 dato" style="width: 100px;">Proyecto:</div><input class="span4 dato" type="text"
-                                                                                        style="width: 510px;;font-size: 12px;margin-top: 0px;"
-                                                                                        id="item_proy"
-                                                                                        disabled="true">   <br>
+                    <div class="span2 dato" style="width: 100px;">Proyecto:</div>
+                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_proy" disabled>  <br>
 
                 </div>
             </div>
 
-            <div class="control-group">
-                <div>
-                    <span class="control-label label label-inverse" style="width: 120px;">
-                        Año
-                    </span>
-                </div>
+            <div class="col-md-12 control-group">
+                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>
 
-                <div class="controls" style="width: 120px;">
+                <div class="col-md-3 controls" style="width: 120px;">
                     <g:select id="anio" name="anio.id" from="${janus.pac.Anio.list()}" optionKey="id" optionValue="anio"
-                              class="many-to-one required" value="${actual.id}" style="width: 100px;"/>
-                    <span class="mandatory">*</span>
-
+                              class="form-control required" value="${actual.id}" style="width: 100px;"/>
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
-
             </div>
 
-            <div class="control-group">
-                <div>
-                    <span class="control-label label label-inverse" style="width: 120px;">
-                        Valor
-                    </span>
+            <div class="col-md-12 control-group">
+                <h3> <span class="col-md-2 badge badge-secondary">Valor</span></h3>
+
+                <div class="col-md-2 controls">
+                    <g:field type="number" name="valor" id="valor" class="form-control required" value="0.00" style="width: 150px;"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </div>
 
-                <div class="controls">
-                    <g:field type="number" name="valor" id="valor" class=" required" value="0.00"
-                             style="width: 150px;"/>
-                    <span class="mandatory">*</span>
+                <div class="col-md-6"></div>
 
-                    <p class="help-block ui-helper-hidden"></p>
-
-                    <span style="margin-left: 400px;">
-                        <a href="#" id="guardar" class="btn btn-primary">Guardar</a>
+                <div class="col-md-2" >
+                    <span>
+                        <a href="#" id="guardar" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>
                     </span>
                 </div>
             </div>
 
         </g:form>
-    </div>
-
-    <div id="list-Asignacion" style="width: 1100px;">
 
     </div>
+
+
+    <div id="list-Asignacion" class="col-md-12" style="border-top: 1px solid black; margin-top: 15px">
+
+    </div>
+
+
+
 </div>
 
 
@@ -331,18 +316,22 @@
         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
         $("#modalTitle").html("Partidas presupuestarias");
         $("#modalFooter").html("").append(btnOk);
-        $(".contenidoBuscador").html("")
+        $(".contenidoBuscador").html("");
         $("#modal-ccp").modal("show");
     });
 
-    %{--list-Asignacion--}%
-    $.ajax({
-        type: "POST", url: "${g.createLink(controller: 'asignacion', action:'tabla')}",
-        data: "",
-        success: function (msg) {
-            $("#list-Asignacion").html(msg)
-        }
-    });
+    cargarListaAsinacion();
+
+    function cargarListaAsinacion () {
+        $.ajax({
+            type: "POST",
+            url: "${g.createLink(controller: 'asignacion', action:'tabla')}",
+            data: "",
+            success: function (msg) {
+                $("#list-Asignacion").html(msg)
+            }
+        });
+    }
 
 
 </script>

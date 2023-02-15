@@ -1,6 +1,10 @@
-<div class="tituloTree" style="width: 1200px;">
-    Asignaciones del año   <g:select name="anios" id="tabla_anio" from="${janus.pac.Anio.list(sort: 'anio')}" value="${actual.anio}" optionKey="anio" optionValue="anio" style="width: 80px;"></g:select>
+<div class="col-md-12" style="margin-bottom: 8px" >
+    <h3> <span class="col-md-2 badge badge-info">Asignaciones del año</span></h3>
+    <div class="col-md-3">
+        <g:select class="form-control" name="anios" id="tabla_anio" from="${janus.pac.Anio.list(sort: 'anio')}" value="${actual.anio}" optionKey="anio" optionValue="anio" style="width: 100px;"/>
+    </div>
 </div>
+
 <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
     <tr>
@@ -32,7 +36,9 @@
 
 <script type="text/javascript">
     $("#tabla_anio").change(function(){
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'asignacion',action:'tabla')}",
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'asignacion',action:'tabla')}",
             data     :   "anio="+$("#tabla_anio").val(),
             success  : function (msg) {
                 $("#list-Asignacion").html(msg)
