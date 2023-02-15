@@ -100,7 +100,8 @@
         </p>
 
         <div class="linea" style="height: 98%;"></div>
-        <img src="${resource(dir: 'rubros', file: filePath)}" alt="" style="margin-bottom: 10px;max-width: 600px"/>
+        %{--<img src="${resource(dir: 'rubros', file: filePath)}" alt="" style="margin-bottom: 10px;max-width: 600px"/>--}%
+        <img src="${request.contextPath}/rubro/getFoto?ruta=${filePath}"/>
     </fieldset>
 </g:elseif>
 <script type="text/javascript">

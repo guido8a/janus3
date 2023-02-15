@@ -100,11 +100,14 @@
             <td class="col_precio" style="display: none;text-align: right" id="i_${val.item__id}"><g:formatNumber
                     number="${val.pcun}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
             <td class="col_total total" style="display: none;text-align: right">
-                <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="2"  maxFractionDigits="2" locale="ec"/>
+                <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4" locale="ec"/>
             </td>
             <g:if test="${obra.estado!='R' && duenoObra == 1}">
                 <td style="width: 10%;text-align: center" class="col_delete">
-                    <a class="btn btn-xs btn-primary editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}" data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}" data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}" cdgo="${val.item__id}" title="${val.vlobdscr}">
+                    <a class="btn btn-xs btn-primary editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
+                       data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}"
+                       data-cod="${val.rbrocdgo}" item="${val}"  dscr="${val.vlobdscr}" sub="${val.sbpr__id}"
+                       cdgo="${val.item__id}" title="${val.vlobdscr}">
                         <i class="fa fa-edit"></i>
                     </a>
                     <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${val.vlob__id}">

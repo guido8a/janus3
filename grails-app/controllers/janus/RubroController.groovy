@@ -5,6 +5,9 @@ import janus.apus.ArchivoEspecificacion
 import org.springframework.dao.DataIntegrityViolationException
 import seguridad.Persona
 
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
+
 class RubroController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
@@ -738,13 +741,10 @@ class RubroController {
     }
 
     def showFoto() {
-        // para habilitar el ares, quitar los comentarios sangrados y cambiar el return //
-
         def rubro = Item.get(params.id)
         def tipo = params.tipo
         def ares = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
-//        println("rubro " + rubro)
-//        println("ares111 " + ares?.id)
+        println "show foto params: $params"
         def ret
 
         if(ares){
@@ -763,7 +763,6 @@ class RubroController {
             case "dt":
                 titulo = "Especificaciones"
                 filePath = ares?.ruta
-//                filePath = rubro.especificaciones
                 break;
         }
 
@@ -773,8 +772,30 @@ class RubroController {
             ext = filePath.split("\\.")
             ext = ext[ext.size() - 1]
         }
+        println "ruta: $filePath"
         return [rubro: rubro, ext: ext, tipo: tipo, titulo: titulo, filePath: filePath, ares: ares?.id]
+//        return [rubro: rubro, ext: ext, tipo: tipo, titulo: "Ilustración", ares: ares?.id]
     }
+
+    def getFoto(){
+        println "getFoto: $params"
+        def path = "/var/janus/rubros/${params.ruta}"
+        def fileext = path.substring(path.indexOf(".")+1, path.length())
+
+        println "ruta: $path"
+
+        BufferedImage imagen = ImageIO.read(new File(path));
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write( imagen, fileext, baos );
+        baos.flush();
+        byte[] img = baos.toByteArray();
+        baos.close();
+        response.setHeader('Content-length', img.length.toString())
+        response.contentType = "image/"+fileext // or the appropriate image content type
+        response.outputStream << img
+        response.outputStream.flush()
+    }
+
 
     def downloadFile() {
         def rubro = Item.get(params.id)
@@ -794,7 +815,7 @@ class RubroController {
         def ext = filePath.split("\\.")
         ext = ext[ext.size() - 1]
         def folder = "rubros"
-        def path = "/var/janus" + folder + File.separatorChar + filePath
+        def path = "/var/janus/" + folder + File.separatorChar + filePath
         println "path "+path
         def file = new File(path)
         if(file.exists()){
@@ -819,7 +840,7 @@ class RubroController {
         def ext = filePath.split("\\.")
         ext = ext[ext.size() - 1]
         def folder = "rubros"
-        def path = "/var/janus" + folder + File.separatorChar + filePath
+        def path = "/var/janus/" + folder + File.separatorChar + filePath
 //        println "path "+path
         def file = new File(path)
         if(file.exists()){
@@ -841,7 +862,7 @@ class RubroController {
 
         def tipo = params.tipo
 
-        def path = "/var/janus" + "rubros/"   //web-app/rubros
+        def path = "/var/janus/" + "rubros/"   //web-app/rubros
         new File(path).mkdirs()
         def rubro = Item.get(params.rubro)
         def archivEsp
