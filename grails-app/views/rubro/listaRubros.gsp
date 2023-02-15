@@ -57,7 +57,7 @@
             });
         }else{
             $("#listaRbro").dialog("close");
-            $("#spinner").removeClass("hide");
+            var cd = cargarLoader("Cargando...");
             location.href = "${g.createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + ad
         }
     });
