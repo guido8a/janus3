@@ -75,8 +75,8 @@ class reportesRubrosController {
         }
 
         if(params.fechaSalida){
-//            fecha1 = new Date().parse("dd-MM-yyyy", params.fechaSalida)
-            fecha1 = new Date().parse("MM/dd/yyyy", params.fechaSalida)
+            fecha1 = new Date().parse("dd-MM-yyyy", params.fechaSalida)
+//            fecha1 = new Date().parse("MM/dd/yyyy", params.fechaSalida)
         }
 
         def bandMat = 0

@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 27/09/21
-  Time: 11:32
---%>
-
-
 <table class="table table-bordered table-striped table-hover table-condensed" id="tabla">
     <thead>
     <tr>
@@ -41,16 +33,90 @@
 <script type="text/javascript">
     $(".selecciona").click(function () {
         var ad = $(this).data("id");
-        $("#listaRbro").dialog("close");
-        $("#spinner").removeClass("hide");
-        location.href = "${g.createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + ad
+        $("#modal-rubro").dialog("close");
+
+        if(${tipo == 'composicion'}){
+            bootbox.confirm({
+                title: "Copiar Composición",
+                message: "Está seguro de copiar la composición de este rubro?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Copiar',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        copiarRubroComposicion(ad);
+                    }
+                }
+            });
+        }else{
+            $("#listaRbro").dialog("close");
+            $("#spinner").removeClass("hide");
+            location.href = "${g.createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + ad
+        }
     });
-//    $(".selecciona").click(function () {
-//        $("#item_id").val($(this).data("id"));
-//        $("#cdgo_buscar").val($(this).attr("regCdgo"));
-//        $("#item_desc").val($(this).attr("regNmbr"));
-//        $("#item_unidad").val($(this).attr("regUn"));
-//        $("#item_cantidad").val(1);
-//        $("#listaAdq").dialog("close");
-//    });
+
+
+    function copiarRubroComposicion(id){
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'factor_ajax')}",
+            data    : {
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditCC",
+                    title : "Copiar",
+                    class : "modal-sm",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Aceptar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var factor = $("#factorId").val();
+                                if (isNaN(factor))
+                                    factor = 0;
+                                else
+                                    factor = factor * 1;
+
+                                if (factor > 0) {
+                                    var cp = cargarLoader("Copiando...");
+                                    var datos = "rubro=" + ${rubro} + "&copiar=" + id + "&factor=" + factor;
+                                    $.ajax({
+                                        type : "POST",
+                                        url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",
+                                        data     : datos,
+                                        success  : function (msg) {
+                                            location.reload()
+                                        }
+                                    });
+                                } else {
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "El factor debe ser un número positivo" + '</strong>');
+                                    return false;
+                                }
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    }
+
 </script>

@@ -17,6 +17,10 @@ class RubroController {
         redirect(action: "rubroPrincipal", params: params)
     } //index
 
+    def factor_ajax(){
+
+    }
+
     def gruposPorClase() {
         def clase = Grupo.get(params.id)
         def grupos = SubgrupoItems.findAllByGrupo(clase)
@@ -124,7 +128,7 @@ class RubroController {
     }
 
     def listaRubros(){
-        println "listaItems" + params
+//        println "listaItems" + params
         def datos;
         def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
         def listaItems = ['itemnmbr', 'itemcdgo']
@@ -140,12 +144,12 @@ class RubroController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by itemnmbr, ${ordn} limit 100 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
-        [data: datos]
+        [data: datos, tipo: params.band, rubro: params.rubro]
 
     }
 
@@ -324,7 +328,8 @@ class RubroController {
         funcionJs += '}'
         funcionJs += '}'
         def numRegistros = 20
-        def extras = " and tipoItem = 2 and empresa = ${empresa.id}"
+//        def extras = " and tipoItem = 2 and empresa = ${empresa.id}"
+        def extras = " and tipoItem = 2 "
         if (!params.reporte) {
             def lista = buscadorService.buscar(Item, "Item", "excluyente", params, true, extras) /* Dominio, nombre del dominio , excluyente o incluyente ,params tal cual llegan de la interfaz del buscador, ignore case */
             lista.pop()
@@ -340,8 +345,8 @@ class RubroController {
     }
 
     def copiarComposicion() {
-        //println "copiar!!! " + params + "  " + request.method
-        if (request.method == "POST") {
+//        println "copiar!!! " + params + "  " + request.method
+//        if (request.method == "POST") {
             def rubro = Item.get(params.rubro)
             def copiar = Item.get(params.copiar)
             def detalles = Rubro.findAllByRubro(copiar)
@@ -413,9 +418,9 @@ class RubroController {
                 }
             }
             render "ok"
-        } else {
-            response.sendError(403)
-        }
+//        } else {
+//            response.sendError(403)
+//        }
     }
 
     def list() {
