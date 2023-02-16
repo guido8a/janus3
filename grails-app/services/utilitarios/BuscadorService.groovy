@@ -343,6 +343,14 @@ class BuscadorService {
 
     }
 
+    def parmProcesos () {
+        [[campo: 'obranmbr', nombre: 'Obra'],
+         [campo: 'pacpdscr', nombre: 'Pac'],
+         [campo: 'cncrobjt', nombre: 'Objeto'],
+         [campo: 'cncretdo', nombre: 'Estado'],
+        ]
+    }
+
 
     def parametros () {
             [[campo: 'prsnnmbr', nombre: 'Nombre',         operador: "contiene:contiene, inicia:inicia con"],
@@ -394,6 +402,7 @@ class BuscadorService {
 //        println "sale: "+criterio
         return criterio
     }
+
 
 
 }

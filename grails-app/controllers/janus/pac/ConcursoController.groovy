@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class ConcursoController {
 
+    def dbConnectionService
     def buscadorService
     def obraService
 
@@ -156,13 +157,58 @@ class ConcursoController {
     } //index
 
     def list() {
-        def campos = ["descripcion": ["Descripción", "string"]]
-        if (!params.sort) {
-            params.sort = "id"
-            params.order = "desc"
-        }
-        return [concursoInstanceList: Concurso.list(params), params: params, campos: campos]
+//        println "list: $params"
+//        def campos = ["descripcion": ["Descripción", "string"]]
+//        if (!params.sort) {
+//            params.sort = "id"
+//            params.order = "desc"
+//        }
+//        return [concursoInstanceList: Concurso.list(params), params: params, campos: campos]
     } //list
+
+    def tablaConcursos() {
+        println "buscar concursos .... $params"
+        def cn = dbConnectionService.getConnection()
+        params.old = params.criterio
+        params.criterio = buscadorService.limpiaCriterio(params.criterio)
+
+        def sql = armaSql(params)
+        params.criterio = params.old
+        println "sql: $sql"
+        def data = cn.rows(sql.toString())
+
+        def msg = ""
+        if(data?.size() > 20){
+            data.pop()   //descarta el último puesto que son 21
+            msg = "<div class='alert-danger' style='margin-top:10px; diplay:block; height:25px;margin-bottom: 20px; font-size:18px !important'>" +
+                    " <i class='fa fa-exclamation-triangle pull-left'></i> Su búsqueda ha generado más de 20 resultados. " +
+                    "<strong>Use más letras para especificar mejor la búsqueda</strong>.</div>"
+        }
+        cn.close()
+
+        return [data: data, msg: msg]
+    }
+
+    def armaSql(params){
+        println "armaSql: $params"
+        def campos = buscadorService.parmProcesos()
+
+        def sqlSelect = "select cncr__id, obranmbr, pacpdscr, cncrcdgo, cncrobjt, cncrbase, cncrpmbs, cncretdo " +
+                "from cncr left join obra on obra.obra__id = cncr.obra__id, pacp "
+
+        def sqlWhere = "where pacp.pacp__id = cncr.pacp__id "
+
+        def sqlOrder = "order by cncr__id desc limit 21"
+
+        if(params.criterio) {
+            if(campos.find {it.campo == params.buscador}?.size() > 0) {
+                sqlWhere += " and ${params.buscador} ilike '%${params.criterio}%' ";
+            }
+        }
+        println "sql: $sqlSelect $sqlWhere $sqlOrder"
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
 
     def nuevoProceso() {
         def pac = Pac.get(params.id)
@@ -287,7 +333,7 @@ class ConcursoController {
 
 
     def form_ajax() {
-//        println "aqui "
+        println "aqui $params"
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazo": ["Plazo", "int"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "canton": ["Canton", "string"]]
         def duracionPrep = 0
         def duracionPre = 0
@@ -301,17 +347,18 @@ class ConcursoController {
 //        def prf = Administracion.findByDescripcion('Prefecto Provincial')
 //        concursoInstance.administracion = prf
 
-//        println("--->"  + concursoInstance?.administracion?.nombrePrefecto)
+
 
         if (params.id) {
             concursoInstance = Concurso.get(params.id.toLong())
+            println("--->"  + concursoInstance?.administracion?.nombrePrefecto)
             if (!concursoInstance) {
                 flash.clase = "alert-error"
                 flash.message = "No se encontró Concurso con id " + params.id
                 redirect(action: "list")
                 return
             }
-            session.concurso=concursoInstance
+            session.concurso = concursoInstance
             def ahora = new Date()
             maxPrep = concursoInstance.pac.tipoProcedimiento?.preparatorio
             maxPre = concursoInstance.pac.tipoProcedimiento?.precontractual
@@ -349,7 +396,8 @@ class ConcursoController {
             }
             //no existe el objeto
         } //es edit
-        return [concursoInstance: concursoInstance, campos: campos, duracionPrep: duracionPrep, duracionPre: duracionPre, duracionCon: duracionCon, maxPrep: maxPrep, maxPre: maxPre, maxCon: maxCon]
+        return [concursoInstance: concursoInstance, campos: campos, duracionPrep: duracionPrep, duracionPre: duracionPre,
+                duracionCon: duracionCon, maxPrep: maxPrep, maxPre: maxPre, maxCon: maxCon]
     } //form_ajax
 
 

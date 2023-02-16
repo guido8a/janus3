@@ -13,7 +13,7 @@ class Presupuesto implements Serializable {
     int nivel=0;
     static auditable = true
     static mapping = {
-        table 'UTFPU'
+        table 'prsp'
         cache usage: 'read-write', include: 'non-lazy'
         id column: 'prsp__id'
         id generator: 'identity'

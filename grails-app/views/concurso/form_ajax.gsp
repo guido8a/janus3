@@ -6,18 +6,18 @@
         <title>
             Lista de Procesos
         </title>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>
-        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>--}%
+        %{--<link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+        %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-timepicker/js', file: 'jquery-ui-timepicker-addon.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-timepicker/i18n', file: 'jquery.ui.datetimepicker-es.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/jquery-timepicker/css', file: 'jquery-ui-timepicker-addon.css')}" rel="stylesheet">
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-timepicker/js', file: 'jquery-ui-timepicker-addon.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-timepicker/i18n', file: 'jquery.ui.datetimepicker-es.js')}"></script>--}%
+        %{--<link href="${resource(dir: 'js/jquery/plugins/jquery-timepicker/css', file: 'jquery-ui-timepicker-addon.css')}" rel="stylesheet">--}%
 
         <style>
         td {
@@ -76,7 +76,9 @@
 
 
         <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;height: 150px;margin-bottom: 10px;">
-            <p class="css-vertical-text" style="font-size: 30px;margin-left: -7px"><i class="icon-arrow-left active" id="min" style="cursor: pointer" title="Ocultar"></i> <span id="msg" title="Ocultar" style="cursor: pointer">P.A.C.</span>
+            <p class="css-vertical-text" style="font-size: 30px;margin-left: -7px">
+                <i class="icon-arrow-left active" id="min" style="cursor: pointer" title="Ocultar"></i>
+                <span id="msg" title="Ocultar" style="cursor: pointer">P.A.C.</span>
             </p>
 
             <div class="linea" style="height: 100%"></div>
