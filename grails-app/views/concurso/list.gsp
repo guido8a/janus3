@@ -45,7 +45,7 @@
             <div style="margin-left: 20px;">
                 <div class="col-md-4 btn-group" role="navigation">
                     <a href="#" class="btn btn-ajax " id="btnPac">
-                        <i class="icon-file"></i>
+                        <i class="fa fa-file"></i>
                         Nuevo Proceso
                     </a>
                 </div>
@@ -56,20 +56,20 @@
                     <div class="row-fluid col-md-2">
                         <elm:select name="buscador" from = "${buscadorServ.parmProcesos()}" value="${params.buscador}"
                                     optionKey="campo" optionValue="nombre" optionClass="operador" id="buscador_con"
-                                    style="width: 120px" class="form-control"/>
+                                    style="margin-left: -50px; width: 130px" class="form-control"/>
                     </div>
                     <div class="col-md-1">
-                        <b style="margin-left: 20px">Criterio: </b>
+                        <b style="margin-left: 10px">Criterio: </b>
                     </div>
                     <div class="col-md-2">
-                        <g:textField name="criterio" style="margin-right: 10px; width: 100%" value="${params.criterio}"
+                        <g:textField name="criterio" style="margin-right: 0px; width: 120px" value="${params.criterio}"
                                      id="criterio_con" class="form-control"/>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-3">
 
                         <a href="#" name="busqueda" class="btn btn-info" id="btnBusqueda" title="Buscar"
-                       style="height: 34px; padding: 9px; width: 46px">
+                       style="height: 34px; padding: 9px; width: 46px; margin-left: 10px">
                         <i class="fa fa-search"></i></a>
 
                     <a href="#" name="limpiarBus" class="btn btn-warning" id="btnLimpiarBusqueda"
@@ -157,19 +157,33 @@
             </div>
         </div>
 
-        <div class="modal grande hide fade" id="modal-pac" style="overflow: hidden;">
-            <div class="modal-header btn-primary">
-                <button type="button" class="close" data-dismiss="modal">×</button>
+        <div id="modal-pac" style="overflow: hidden;">
+            <fieldset class="borde" style="border-radius: 4px">
+                <div class="row-fluid" style="margin-left: 20px">
+                    <div class="col-md-3">
+                        Buscar por
+                        <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaBuscar}" optionKey="key"
+                                  optionValue="value"/>
+                    </div>
 
-                <h3 id="modalTitle-obra">Buscar PAC</h3>
-            </div>
+                    <div class="col-md-3">Criterio
+                    <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+                    </div>
 
-            <div class="modal-body" id="modalBody-obra">
-                <bsc:buscador name="pac" value="" accion="buscaPac" controlador="concurso" campos="${campos}" label="PAC" tipo="lista"/>
-            </div>
+                    <div class="col-md-3">Ordenado por
+                    <g:select name="ordenar" class="ordenar" from="${listaBuscar}" style="width: 100%" optionKey="key"
+                              optionValue="value"/>
+                    </div>
+                    <div class="col-md-2" style="margin-top: 6px">
+                        <button class="btn btn-info" id="cnsl-pac"><i class="fa fa-search"></i> Consultar</button>
+                    </div>
+                </div>
+            </fieldset>
 
-            <div class="modal-footer" id="modalFooter-obra">
-            </div>
+            <fieldset class="borde" style="border-radius: 4px">
+                <div id="divTablaPac" style="height: 460px; overflow: auto">
+                </div>
+            </fieldset>
         </div>
 
 
@@ -257,8 +271,24 @@
 //                    float          : "right"
 //                });
 
+                $("#modal-pac").dialog({
+                    autoOpen: false,
+                    resizable: true,
+                    modal: true,
+                    draggable: false,
+                    width: 800,
+                    height: 400,
+                    position: 'center',
+                    title: 'Variables de Transporte',
+                    buttons   : {
+                        "Cerrar": function () {
+                            $("#dialTransporte").dialog("close");
+                        }
+                    }
+                });
+
                 $("#btnPac").click(function () {
-                    $("#modal-pac").modal("show");
+                    $("#modal-pac").dialog("open");
                 });
 
                 $(".btn-new").click(function () {
@@ -392,6 +422,24 @@
                     cargarBusqueda();
                 });
 
+
+                $("#cnsl-pac").click(function () {
+                    var buscarPor = $("#buscarPor").val();
+                    var criterio = $("#criterioCriterio").val();
+                    var ordenar = $("#ordenar").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "${createLink(controller: 'concurso', action:'listaPac')}",
+                        data: {
+                            buscarPor: buscarPor,
+                            criterio: criterio,
+                            ordenar: ordenar
+                        },
+                        success: function (msg) {
+                            $("#divTablaPac").html(msg);
+                        }
+                    });
+                });
 
 
 

@@ -157,14 +157,39 @@ class ConcursoController {
     } //index
 
     def list() {
+        def listaBuscar = [1: 'Descripción', 2: 'Departamento', 3: 'Partida']
 //        println "list: $params"
 //        def campos = ["descripcion": ["Descripción", "string"]]
 //        if (!params.sort) {
 //            params.sort = "id"
 //            params.order = "desc"
 //        }
-//        return [concursoInstanceList: Concurso.list(params), params: params, campos: campos]
+        return [listaBuscar: listaBuscar, params: params]
     } //list
+
+    def listaPac(){
+        println "listaPac" + params
+        def datos;
+        def listaBuscar = ['pacpdscr', 'dptodscr', 'prspdscr']
+
+        def select = "select pacp__id, pacpdscr, dptodscr, prspdscr " +
+                "from pacp, dpto, prsp "
+        def txwh = "where dpto.dpto__id = pacp.dpto__id and prsp.prsp__id = pacp.prsp__id "
+        def sqlTx = ""
+        def bsca = listaBuscar[params.buscarPor.toInteger()-1]
+        def ordn = listaBuscar[params.ordenar.toInteger()-1]
+        println "buscar: $bsca, orden: $ordn ... ${params.buscarPor.toInteger()-1} --> ${listaBuscar[params.buscarPor.toInteger()]}"
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by pacp__id, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos, tipo: params.band, rubro: params.rubro]
+
+    }
+
 
     def tablaConcursos() {
         println "buscar concursos .... $params"
@@ -211,6 +236,7 @@ class ConcursoController {
 
 
     def nuevoProceso() {
+        println "nuevoProceso $params"
         def pac = Pac.get(params.id)
         def admin = Administracion.findAllByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(new Date(), new Date())
         def concurso = new Concurso()
