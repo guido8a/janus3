@@ -43,8 +43,8 @@
     </g:if>
 </div>
 
-<div class="alert alert-info col-md-12" style="font-size: 18px">
-    Asignación de techos anuales a partidas presupuestarias
+<div class="col-md-12" style="font-size: 18px">
+    <h3>Asignación de techos anuales a partidas presupuestarias</h3>
 </div>
 
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;">
@@ -69,22 +69,23 @@
                         <i class="fa fa-file"></i>
                         Nueva partida
                     </a>
-                    <a href="#" class="btn btn-warning" title="Crear nueva partida" id="prsp_editar">
+                    <a href="#" class="btn btn-warning" title="Crear nueva partida" id="prsp_editar" disabled>
                         <i class="fa fa-edit"></i>
                         Editar
                     </a>
+                    <div class="col-md-12"></div>
 
-                    <div class="span2 dato" style="width: 100px;">Fuente:</div>
-                    <input class="form-control col-md-4 dato" type="text" style="width: 360px;font-size: 12px;" id="item_fuente" disabled> <br>
+                    <div class="col-md-1 dato" >Fuente:</div>
+                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_fuente" disabled> <div class="col-md-12"></div>
 
-                    <div class="span2 dato" style="width: 100px;">Programa:</div>
-                    <input class="form-control col-md-4" type="text" style="width: 510px;font-size: 12px;" id="item_prog" disabled> <br>
+                    <div class="col-md-1 dato" >Programa:</div>
+                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;font-size: 12px;" id="item_prog" disabled> <div class="col-md-12"></div>
 
-                    <div class="span2 dato" style="width: 100px;">Subprograma:</div>
-                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_spro" disabled> <br>
+                    <div class="col-md-1 dato" >Subprograma:</div>
+                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_spro" disabled> <div class="col-md-12"></div>
 
-                    <div class="span2 dato" style="width: 100px;">Proyecto:</div>
-                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_proy" disabled>  <br>
+                    <div class="col-md-1 dato" >Proyecto:</div>
+                    <input class="form-control col-md-4 dato" type="text" style="width: 510px;;font-size: 12px;" id="item_proy" disabled>  <div class="col-md-12"></div>
 
                 </div>
             </div>
@@ -97,17 +98,13 @@
                               class="form-control required" value="${actual.id}" style="width: 100px;"/>
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
-            </div>
 
-            <div class="col-md-12 control-group">
                 <h3> <span class="col-md-2 badge badge-secondary">Valor</span></h3>
 
                 <div class="col-md-2 controls">
-                    <g:field type="number" name="valor" id="valor" class="form-control required" value="0.00" style="width: 150px;"/>
+                    <g:textField name="valor" id="valor" class="form-control number required" value="0.00" style="width: 150px;"/>
                     <p class="help-block ui-helper-hidden"></p>
                 </div>
-
-                <div class="col-md-6"></div>
 
                 <div class="col-md-2" >
                     <span>
@@ -115,78 +112,110 @@
                     </span>
                 </div>
             </div>
-
         </g:form>
-
     </div>
-
 
     <div id="list-Asignacion" class="col-md-12" style="border-top: 1px solid black; margin-top: 15px">
 
     </div>
 
-
-
 </div>
 
 
-<div class="modal grande hide fade" id="modal-ccp" style="overflow: hidden;">
-    <div class="modal-header btn-info">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+%{--<div  id="modal-ccp" style="overflow: hidden;">--}%
 
-        <h3 id="modalTitle"></h3>
-    </div>
+%{--    <div class="modal-body" id="modalBody">--}%
+%{--        <bsc:buscador name="pac.buscador.id" value="" accion="buscaPrsp" controlador="asignacion" campos="${campos}"--}%
+%{--                      label="cpac" tipo="lista"/>--}%
+%{--    </div>--}%
 
-    <div class="modal-body" id="modalBody">
-        <bsc:buscador name="pac.buscador.id" value="" accion="buscaPrsp" controlador="asignacion" campos="${campos}"
-                      label="cpac" tipo="lista"/>
-    </div>
+%{--    <div class="modal-footer" id="modalFooter">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
-    <div class="modal-footer" id="modalFooter">
-    </div>
-</div>
+%{--<div class="modal large hide fade" id="modal-presupuesto">--}%
+%{--    <div class="modal-header btn-warning">--}%
+%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-<div class="modal large hide fade" id="modal-presupuesto">
-    <div class="modal-header btn-warning">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+%{--        <h3 id="modalTitle-presupuesto"></h3>--}%
+%{--    </div>--}%
 
-        <h3 id="modalTitle-presupuesto"></h3>
-    </div>
+%{--    <div class="modal-body" id="modalBody-presupuesto">--}%
+%{--    </div>--}%
 
-    <div class="modal-body" id="modalBody-presupuesto">
-    </div>
+%{--    <div class="modal-footer" id="modalFooter-presupuesto">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
-    <div class="modal-footer" id="modalFooter-presupuesto">
-    </div>
-</div>
+
 <script type="text/javascript">
+
+    var bcpc;
+
+    $("#item_presupuesto").dblclick(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'buscarPresupuesto')}",
+            data    : {},
+            success : function (msg) {
+                bcpc = bootbox.dialog({
+                    id      : "dlgBuscarPR",
+                    title   : "Buscar Partida",
+                    class: 'modal-lg',
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function cerrarBuscadorPartida(){
+        bcpc.modal("hide")
+    }
+
+    $("#valor").keydown(function (ev) {
+        return validarNum(ev);
+    });
+
+    function validarNum(ev) {
+        /*
+         48-57      -> numeros
+         96-105     -> teclado numerico
+         188        -> , (coma)
+         190        -> . (punto) teclado
+         110        -> . (punto) teclado numerico
+         8          -> backspace
+         46         -> delete
+         9          -> tab
+         37         -> flecha izq
+         39         -> flecha der
+         */
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39 || ev.keyCode === 190 || ev.keyCode === 110 ) ;
+    }
+
     function cargarTecho() {
         if ($("#item_prsp").val() * 1 > 0) {
             $.ajax({
-                type: "POST", url: "${g.createLink(controller: 'asignacion',action:'cargarTecho')}",
+                type: "POST",
+                url: "${g.createLink(controller: 'asignacion',action:'cargarTecho')}",
                 data: "id=" + $("#item_prsp").val() + "&anio=" + $("#anio").val(),
                 success: function (msg) {
                     $("#valor").val(number_format(msg, 2, ".", ""))
                 }
             });
         } else {
-            $.box({
-                imageClass: "box_info",
-                text: "Por favor escoja una partida presupuestaria, dando doble click en el campo de texto",
-                title: "Alerta",
-                iconClose: false,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function () {
-                        }
-                    },
-                    width: 500
-                }
-            });
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Escoja una partida presupuestaria, dando doble click en el campo de texto 'Partida' " + '</strong>');
         }
-
     }
 
     $("#prsp_editar").click(function () {
@@ -208,20 +237,17 @@
                         type: "POST", url: "${g.createLink(controller: 'presupuesto', action:'saveAjax')}",
                         data: $("#frmSave-presupuestoInstance").serialize(),
                         success: function (msg) {
-//                            ////console.log(msg)
-                            var parts = msg.split("&")
-                            $("#item_prsp").val(parts[0])
-                            $("#item_presupuesto").val(parts[1])
-                            $("#item_presupuesto").attr("title", parts[2])
-                            $("#item_desc").val(parts[2])
-                            $("#item_fuente").val(parts[3])
-                            $("#item_prog").val(parts[4])
-                            $("#item_spro").val(parts[5])
-                            $("#item_proy").val(parts[6])
+                            var parts = msg.split("&");
+                            $("#item_prsp").val(parts[0]);
+                            $("#item_presupuesto").val(parts[1]).attr("title", parts[2]);
+                            $("#item_desc").val(parts[2]);
+                            $("#item_fuente").val(parts[3]);
+                            $("#item_prog").val(parts[4]);
+                            $("#item_spro").val(parts[5]);
+                            $("#item_proy").val(parts[6]);
                             $("#modal-presupuesto").modal("hide");
                         }
                     });
-
                     return false;
                 });
 
@@ -235,90 +261,113 @@
     });
 
     $("#guardar").click(function () {
-        var msn = ""
-        var valor = $("#valor").val()
+        var msn = "";
+        var valor = $("#valor").val();
         if ($("#item_prsp").val() * 1 < 1) {
-            msn += "<br>Error: Escoja una partida presupuestaria, dando doble click en el campo de texto"
+            msn += "Escoja una partida presupuestaria, dando doble click en el campo de texto 'Partida' "
         }
         if (isNaN(valor)) {
-            msn += "<br>Error: El valor debe ser un número positivo"
+            msn += "El valor debe ser un número positivo"
         } else {
             if (valor * 1 < 0) {
-                msn += "<br>Error: El valor debe ser un número positivo"
+                msn += "El valor debe ser un número positivo"
             }
         }
-        if (msn == "")
-            $(".frm_asgn").submit()
+        if (msn === ""){
+            var d = cargarLoader("Guardando...");
+            $(".frm_asgn").submit();
+        }
         else {
-            $.box({
-                imageClass: "box_info",
-                text: msn,
-                title: "Errores",
-                iconClose: false,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function () {
-                        }
-                    },
-                    width: 500
-                }
-            });
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + msn + '</strong>');
         }
+    });
 
-    })
 
+    $("#anio").change(cargarTecho);
 
-    $("#anio").change(cargarTecho)
     $("#item_agregar_prsp").click(function () {
+
+
+        createEditPresupuesto();
+
+
+        %{--$.ajax({--}%
+        %{--    type: "POST",--}%
+        %{--    url: "${createLink(action:'form_ajax', controller: 'presupuesto')}",--}%
+        %{--    success: function (msg) {--}%
+        %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+        %{--        var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');--}%
+
+        %{--        btnSave.click(function () {--}%
+        %{--            if ($("#frmSave-presupuestoInstance").valid()) {--}%
+        %{--                btnSave.replaceWith(spinner);--}%
+        %{--            }--}%
+        %{--            $.ajax({--}%
+        %{--                type: "POST",--}%
+        %{--                url: "${g.createLink(controller: 'presupuesto',action:'saveAjax')}",--}%
+        %{--                data: $("#frmSave-presupuestoInstance").serialize(),--}%
+        %{--                success: function (msg) {--}%
+        %{--                    var parts = msg.split("&")--}%
+        %{--                    $("#item_prsp").val(parts[0])--}%
+        %{--                    $("#item_presupuesto").val(parts[1]).attr("title", parts[2])--}%
+        %{--                    $("#item_desc").val(parts[2])--}%
+        %{--                    $("#item_fuente").val(parts[3])--}%
+        %{--                    $("#item_prog").val(parts[4])--}%
+        %{--                    $("#item_spro").val(parts[5])--}%
+        %{--                    $("#item_proy").val(parts[6])--}%
+        %{--                    $("#modal-presupuesto").modal("hide");--}%
+        %{--                }--}%
+        %{--            });--}%
+
+        %{--            return false;--}%
+        %{--        });--}%
+
+        %{--        $("#modalTitle-presupuesto").html("Crear Presupuesto");--}%
+        %{--        $("#modalBody-presupuesto").html(msg);--}%
+        %{--        $("#modalFooter-presupuesto").html("").append(btnOk).append(btnSave);--}%
+        %{--        $("#modal-presupuesto").modal("show");--}%
+        %{--    }--}%
+        %{--});--}%
+        %{--return false;--}%
+    });
+
+
+    function createEditPresupuesto(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
         $.ajax({
-            type: "POST",
-            url: "${createLink(action:'form_ajax', controller: 'presupuesto')}",
-            success: function (msg) {
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
-
-                btnSave.click(function () {
-                    if ($("#frmSave-presupuestoInstance").valid()) {
-                        btnSave.replaceWith(spinner);
-                    }
-                    $.ajax({
-                        type: "POST", url: "${g.createLink(controller: 'presupuesto',action:'saveAjax')}",
-                        data: $("#frmSave-presupuestoInstance").serialize(),
-                        success: function (msg) {
-                            console.log(msg)
-                            var parts = msg.split("&")
-                            $("#item_prsp").val(parts[0])
-                            $("#item_presupuesto").val(parts[1])
-                            $("#item_presupuesto").attr("title", parts[2])
-                            $("#item_desc").val(parts[2])
-                            $("#item_fuente").val(parts[3])
-                            $("#item_prog").val(parts[4])
-                            $("#item_spro").val(parts[5])
-                            $("#item_proy").val(parts[6])
-                            $("#modal-presupuesto").modal("hide");
-                        }
-                    });
-
-                    return false;
-                });
-
-                $("#modalTitle-presupuesto").html("Crear Presupuesto");
-                $("#modalBody-presupuesto").html(msg);
-                $("#modalFooter-presupuesto").html("").append(btnOk).append(btnSave);
-                $("#modal-presupuesto").modal("show");
-            }
-        });
-        return false;
-    });
-    $("#item_presupuesto").dblclick(function () {
-        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        $("#modalTitle").html("Partidas presupuestarias");
-        $("#modalFooter").html("").append(btnOk);
-        $(".contenidoBuscador").html("");
-        $("#modal-ccp").modal("show");
-    });
+            type    : "POST",
+            url     : "${createLink(controller: 'presupuesto', action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditPR",
+                    title : title + " presupuesto",
+                    // class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                // return submitFormGrupo(parentId);
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
 
     cargarListaAsinacion();
 

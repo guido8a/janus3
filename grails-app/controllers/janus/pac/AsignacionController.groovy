@@ -8,6 +8,7 @@ class AsignacionController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     def buscadorService
+    def dbConnectionService
 
     def index() {
         redirect(action: "form_ajax", params: params)
@@ -40,17 +41,22 @@ class AsignacionController {
 
     def tabla(){
 //        println "tabla "+params
-        def anio = new Date().format("yyyy")
-        if (params.anio)
-            anio=params.anio
-        def actual = Anio.findByAnio(anio.toString())
-        if(!actual){
-            actual=Anio.list([sort: "id"])?.pop()
-        }
-        def asignaciones = Asignacion.findAllByAnio(actual)
-        asignaciones.sort{it.prespuesto.descripcion}
-        [asignaciones:asignaciones,actual: actual]
+        def anio
+        def asignaciones
 
+        if(params.anio){
+            anio = Anio.findByAnio(params.anio)
+        }else{
+            anio = Anio.findByAnio(new Date().format("yyyy"))
+        }
+
+        if(anio){
+            asignaciones = Asignacion.findAllByAnio(anio)
+        }else{
+            asignaciones = []
+        }
+
+        [asignaciones:asignaciones, anio: anio]
     }
 
     def buscaPrsp(){
@@ -191,4 +197,29 @@ class AsignacionController {
             redirect(action: "list")
         }
     } //delete
+
+    def buscarPresupuesto(){
+
+    }
+
+    def tablaPresupuesto_ajax(){
+//        println("tabla pre " + params)
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['prspnmro', 'prspdscr']
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+
+        def select = "select * from prsp"
+        def txwh = " where $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by prspdscr limit 30 ".toString()
+//        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+
+//        println("data " + datos)
+        return[presupuestos: datos]
+    }
+
+
 } //fin controller
