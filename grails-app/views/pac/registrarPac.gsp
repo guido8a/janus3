@@ -42,7 +42,7 @@
 
                 <div class="linea" style="height: 98%;"></div>
 
-                <div class="row-fluid" style="margin-left: 0px">
+                <div class="row" style="margin-left: 0px">
                     <div class="col-md-1">
                         <b>Año:</b>
                         <g:select name="anio" from="${janus.pac.Anio.list([sort: 'anio'])}" id="item_anio" optionValue="anio" optionKey="id" value="${actual.id}" style="width: 80px;font-size: 14px; font-weight: bold "></g:select>
@@ -52,7 +52,7 @@
                         <b>Partida presupuestaria:</b>
                         <input type="text" style="width: 190px;;font-size: 12px" id="item_presupuesto">
                         <input type="hidden" style="width: 60px" id="item_prsp">
-                        <a href="#" class="btn btn-warning" title="Crear nueva partida" style="margin-top: -10px" id="item_agregar_prsp">
+                        <a href="#" class="btn btn-xs btn-warning" title="Crear nueva partida" style="margin-top: -10px" id="item_agregar_prsp">
                             <i class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <div class="row-fluid" style="margin-left: 0px">
+                <div class="row" style="margin-left: 0px">
                     <div class="col-md-4">
                         <b>Requirente:</b>
                         <input type="text" id="item_req" style="width: 250px; font-size: 12px;">
@@ -92,7 +92,7 @@
 
                 </div>
 
-                <div class="row-fluid" style="margin-left: 0px">
+                <div class="row" style="margin-left: 0px">
                     <div class="col-md-4">
                         <b>Tipo procedimiento:</b>
                         <g:select name="tipoProcedimiento.id" from="${janus.pac.TipoProcedimiento.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 213px;;font-size: 12px" id="item_tipoProc"/>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
 
-                <div class="row-fluid" style="margin-left: 0px">
+                <div class="row" style="margin-left: 0px">
 
                     <div class="col-md-4" style="width: 400px;">
                         <b>Descripción:</b>
@@ -135,19 +135,19 @@
                         <b>Cuatrimestre:</b>
 
                         <div class="btn-group" data-toggle="buttons-checkbox">
-                            <button type="button" id="item_c1" class="btn btn-info " style="font-size: 12px">C.1</button>
-                            <button type="button" id="item_c2" class="btn btn-info " style="font-size: 12px">C.2</button>
-                            <button type="button" id="item_c3" class="btn btn-info " style="font-size: 12px">C.3</button>
+                            <button type="button" id="item_c1" class="btn btn-xs btn-info" style="font-size: 14px; width: 40px"> C.1</button>
+                            <button type="button" id="item_c2" class="btn btn-xs btn-info" style="font-size: 14px; width: 40px"> C.2</button>
+                            <button type="button" id="item_c3" class="btn btn-xs btn-info" style="font-size: 14px; width: 40px"> C.3</button>
                         </div>
                     </div>
 
-                    <div class="col-md-1" style="margin-left: 12px;padding-top:30px; width:90px;">
+                    <div class="col-md-1" style="margin-left: -30px;padding-top:20px; width:100px;">
                         <input type="hidden" value="" id="vol_id">
-                        <a href="#" class="btn btn-success" title="Agregar" style="margin-top: -10px" id="item_agregar">
-                            <i class="icon-plus"></i>
+                        <a href="#" class="btn btn-xs btn-success" title="Agregar" style="margin-top: -10px" id="item_agregar">
+                            <i class="fa fa-plus"></i>
                         </a>
-                        <g:link action="formUploadPac" class="btn" title="Subir Excel" style="margin-top: -10px" id="btnUpload">
-                            <i class="icon-cloud-upload"></i>
+                        <g:link action="formUploadPac" class="btn btn-xs" title="Subir Excel" style="margin-top: -10px" id="btnUpload">
+                            <i class="fa fa-upload"></i>
                         </g:link>
                     </div>
                 </div>
@@ -178,12 +178,7 @@
             </div>
         </div>
 
-        <div class="modal hide fade" id="modal-presupuesto" style="width: 780px">
-            <div class="modal-header btn-warning">
-                <button type="button" class="close" data-dismiss="modal">×</button>
-
-                <h3 id="modalTitle-presupuesto"></h3>
-            </div>
+        <div id="modal-presupuesto" style="width: 780px">
 
             <div class="modal-body" id="modalBody-presupuesto">
             </div>
@@ -251,6 +246,18 @@
                     }
                 });
             }
+
+            $("#modal-presupuesto").dialog({
+                autoOpen: false,
+                resizable: true,
+                modal: true,
+                draggable: false,
+                width: 800,
+                height: 440,
+                position: 'center',
+                title: 'Crear Presupuesto',
+            });
+
             $(function () {
                 $("#item_agregar_prsp").click(function () {
                     $.ajax({
@@ -272,7 +279,7 @@
                                         $("#item_prsp").val(parts[0])
                                         $("#item_presupuesto").val(parts[1])
                                         $("#item_presupuesto").attr("title", parts[2])
-                                        $("#modal-presupuesto").modal("hide");
+                                        $("#modal-presupuesto").dialog("close");
                                         cargarTecho()
                                     }
                                 });
@@ -280,10 +287,11 @@
                                 return false;
                             });
 
-                            $("#modalTitle-presupuesto").html("Crear Presupuesto");
+//                            $("#modalTitle-presupuesto").html("Crear Presupuesto");
                             $("#modalBody-presupuesto").html(msg);
                             $("#modalFooter-presupuesto").html("").append(btnOk).append(btnSave);
-                            $("#modal-presupuesto").modal("show");
+                            $("#modal-presupuesto").dialog("open");
+                            $(".ui-dialog-titlebar-close").html("x");
                         }
                     });
                     return false;

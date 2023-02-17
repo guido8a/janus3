@@ -11,12 +11,12 @@
 <head>
 
     <meta name="layout" content="main">
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 
     <style type="text/css">
 
@@ -50,7 +50,7 @@
 <body>
 
 <g:if test="${flash.message}">
-    <div class="span12">
+    <div class="col-md-12">
         <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
             <a class="close" data-dismiss="alert" href="#">×</a>
             <elm:poneHtml textoHtml="${flash.message}"/>
@@ -61,8 +61,8 @@
 
 <div class="row">
 
-    %{--<div class="span12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;height: 35px;">--}%
-    <div class="span12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;">
+    %{--<div class="col-md-12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;height: 35px;">--}%
+    <div class="col-md-12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;">
         <button class="btn" id="btn-lista"><i class="icon-book"></i> Lista</button>
         <button class="btn" id="btn-nuevo"><i class="icon-plus"></i> Nuevo</button>
         <g:if test="${contrato?.estado != 'R'}">
@@ -114,18 +114,18 @@
 
     <fieldset class="grupo" style="position: relative; margin-top: 10px;border-bottom: 1px solid black;">
 
-        <div class="grupo span4" style="display: inline;">
-            <label class="span1 formato" style="width: 90px;">Contrato N°</label>
-            <div class="span2"><g:textField name="codigo" maxlength="20" class="codigo required caps"
+        <div class="grupo col-md-4" style="display: inline;">
+            <label class="col-md-1 formato" style="width: 90px;">Contrato N°</label>
+            <div class="col-md-2"><g:textField name="codigo" maxlength="20" class="codigo required caps"
                                             value="${contrato?.codigo}" style="font-weight: bold; width: 140px"/></div>
             <p class="help-block ui-helper-hidden"></p>
         </div>
 
-        <div class="span2 formato">Memo de Distribución</div>
+        <div class="col-md-2 formato">Memo de Distribución</div>
 
-        <div class="span3"><g:textField name="memo" class="memo caps allCaps" value="${contrato?.memo}" maxlength="20"/></div>
+        <div class="col-md-3"><g:textField name="memo" class="memo caps allCaps" value="${contrato?.memo}" maxlength="20"/></div>
 
-        <div class="span2 text-info" style="font-weight: bolder">
+        <div class="col-md-2 text-info" style="font-weight: bolder">
             Contrato ${contrato?.estado == 'R'? 'Registrado' : 'No Registrado'}
         </div>
 
@@ -142,48 +142,48 @@
 
         <g:if test="${contrato?.codigo != null}">
 
-            <div class="span12">
+            <div class="col-md-12">
 
-                <div class="span1 formato">Obra</div>
-                <div class="span4"><g:textField name="obra" id="obraCodigo" class="obraCodigo required" autocomplete="off"
+                <div class="col-md-1 formato">Obra</div>
+                <div class="col-md-4"><g:textField name="obra" id="obraCodigo" class="obraCodigo required" autocomplete="off"
                                                 value="${contrato?.oferta?.concurso?.obra?.codigo}" disabled="true"/>
                 <strong class="text-info" style="font-size: large">${contrato?.obra?.codigo - contrato?.oferta?.concurso?.obra?.codigo}</strong></div>
 
-                <div class="span1 formato">Nombre</div>
-                <div class="span3">
+                <div class="col-md-1 formato">Nombre</div>
+                <div class="col-md-3">
                     <g:textField name="nombre" class="nombreObra" value="${contrato?.oferta?.concurso?.obra?.nombre}"
                                  style="width: 500px" disabled="true"/></div>
 
             </div>
 
-            <div class="span12" style="margin-top: 5px">
+            <div class="col-md-12" style="margin-top: 5px">
 
-                <div class="span1 formato">Parroquia</div>
-                <div class="span4"><g:textField name="parroquia" class="parroquia" value="${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}" disabled="true"/></div>
+                <div class="col-md-1 formato">Parroquia</div>
+                <div class="col-md-4"><g:textField name="parroquia" class="parroquia" value="${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}" disabled="true"/></div>
 
-                <div class="span1 formato">Cantón</div>
+                <div class="col-md-1 formato">Cantón</div>
 
-                <div class="span2"><g:textField name="canton" class="canton" value="${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}" disabled="true"/></div>
-
-            </div>
-
-            <div class="span12" style="margin-top: 5px">
-
-                <div class="span1 formato">Clase Obra</div>
-
-                <div class="span3"><g:textField name="claseObra" class="claseObra" value="${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}" disabled="true"/></div>
+                <div class="col-md-2"><g:textField name="canton" class="canton" value="${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}" disabled="true"/></div>
 
             </div>
 
-            <div class="span12" style="margin-top: 5px">
+            <div class="col-md-12" style="margin-top: 5px">
 
-                <div class="span1 formato">Contratista</div>
+                <div class="col-md-1 formato">Clase Obra</div>
 
-                <div class="span4"><g:textField name="contratista" class="contratista" value="${contrato?.oferta?.proveedor?.nombre}" disabled="true"  style="width: 320px"/></div>
+                <div class="col-md-3"><g:textField name="claseObra" class="claseObra" value="${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}" disabled="true"/></div>
 
-                <div class="span4 formato">Fecha presentación de la Oferta</div>
+            </div>
 
-                <div class="span1"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"
+            <div class="col-md-12" style="margin-top: 5px">
+
+                <div class="col-md-1 formato">Contratista</div>
+
+                <div class="col-md-4"><g:textField name="contratista" class="contratista" value="${contrato?.oferta?.proveedor?.nombre}" disabled="true"  style="width: 320px"/></div>
+
+                <div class="col-md-4 formato">Fecha presentación de la Oferta</div>
+
+                <div class="col-md-1"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"
                                                 disabled="true" style="width: 100px; margin-left: -180px"/></div>
 
             </div>
@@ -192,71 +192,71 @@
 
         <g:else>
 
-            <div class="span12" style="margin-top: 5px" align="center">
+            <div class="col-md-12" style="margin-top: 5px" align="center">
 
-                <div class="span2 formato">Obra</div>
+                <div class="col-md-2 formato">Obra</div>
 
-                <div class="span3">
+                <div class="col-md-3">
                     <input type="hidden" id="obraId" value="${contrato?.oferta?.concurso?.obra?.codigo}" name="obra.id">
                     <g:textField name="obra" id="obraCodigo" class="obraCodigo required txtBusqueda" value="${contrato?.oferta?.concurso?.obra?.codigo}"/>
                 </div>
 
-                <div class="span1 formato">Nombre</div>
+                <div class="col-md-1 formato">Nombre</div>
 
-                <div class="span5">
+                <div class="col-md-5">
                     <g:textField name="nombre" class="nombreObra" id="nombreObra" style="width: 400px" disabled="true"/>
                 </div>
 
             </div>
 
-            <div class="span12" style="margin-top: 5px" align="center">
-                <div class="span2 formato">Oferta</div>
+            <div class="col-md-12" style="margin-top: 5px" align="center">
+                <div class="col-md-2 formato">Oferta</div>
 
-                <div class="span3" id="div_ofertas">
+                <div class="col-md-3" id="div_ofertas">
                     <g:select name="oferta.id" from="" noSelection="['-1': 'Seleccione']" id="oferta" optionKey="id"/>
                 </div>
 
-                %{--<div class="span3 formato" style="margin-left: -1px">Fecha presentación de la Oferta</div>--}%
+                %{--<div class="col-md-3 formato" style="margin-left: -1px">Fecha presentación de la Oferta</div>--}%
 
-                %{--<div class="span2"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"--}%
+                %{--<div class="col-md-2"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"--}%
                 %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
 
-                <div class="span6" id="filaFecha">
+                <div class="col-md-6" id="filaFecha">
 
                 </div>
-                %{--<div class="span2"><g:textField name="fechaPresentacion" class="fechaPresentacion" id="fechaPresentacion"--}%
+                %{--<div class="col-md-2"><g:textField name="fechaPresentacion" class="fechaPresentacion" id="fechaPresentacion"--}%
                 %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
             </div>
 
-            <div class="span12" style="margin-top: 5px" align="center">
-                <div class="span2 formato">Contratista</div>
+            <div class="col-md-12" style="margin-top: 5px" align="center">
+                <div class="col-md-2 formato">Contratista</div>
 
-                <div class="span3">
+                <div class="col-md-3">
                     <g:textField name="contratista" class="contratista" id="contratista" disabled="true"/>
                 </div>
             </div>
 
-            <div class="span12" style="margin-top: 5px" align="center">
+            <div class="col-md-12" style="margin-top: 5px" align="center">
 
-                <div class="span2 formato">Parroquia</div>
+                <div class="col-md-2 formato">Parroquia</div>
 
-                <div class="span3"><g:textField name="parroquia" class="parroquia" id="parr"/></div>
+                <div class="col-md-3"><g:textField name="parroquia" class="parroquia" id="parr"/></div>
 
-                <div class="span1 formato">Cantón</div>
+                <div class="col-md-1 formato">Cantón</div>
 
-                <div class="span2"><g:textField name="canton" class="canton" id="canton"/></div>
-
-            </div>
-
-            <div class="span12" style="margin-top: 5px" align="center">
-
-                <div class="span2 formato">Clase Obra</div>
-
-                <div class="span3"><g:textField name="claseObra" class="claseObra" id="clase"/></div>
+                <div class="col-md-2"><g:textField name="canton" class="canton" id="canton"/></div>
 
             </div>
 
-            <div class="span12" style="margin-top: 5px" align="center">
+            <div class="col-md-12" style="margin-top: 5px" align="center">
+
+                <div class="col-md-2 formato">Clase Obra</div>
+
+                <div class="col-md-3"><g:textField name="claseObra" class="claseObra" id="clase"/></div>
+
+            </div>
+
+            <div class="col-md-12" style="margin-top: 5px" align="center">
 
             </div>
 
@@ -266,44 +266,44 @@
 
     <fieldset class="" style="position: relative; height: 130px; border-bottom: 1px solid black;">
 
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="span2 formato text-info">Tipo de contrato</div>
+            <div class="col-md-2 formato text-info">Tipo de contrato</div>
 
-            <div class="span3" style="margin-left:-20px">
+            <div class="col-md-3" style="margin-left:-20px">
                 <g:select from="${janus.pac.TipoContrato.list()}" name="tipoContrato.id" id="tpcr"
                           class="tipoContrato activo text-info" value="${contrato?.tipoContrato?.id}"
                           optionKey="id" optionValue="descripcion" style="font-weight: bolder"/></div>
 
             <div id="CntrPrincipal" hidden>
-                <div class="span1 formato text-info" style="margin-left:-20px; width: 100px;">Contrato Principal</div>
+                <div class="col-md-1 formato text-info" style="margin-left:-20px; width: 100px;">Contrato Principal</div>
 
-                <div class="span2" style="margin-left:-20px">
+                <div class="col-md-2" style="margin-left:-20px">
                     <g:select from="${janus.Contrato.list([sort: 'fechaSubscripcion'])}" name="padre.id"
                               class="activo text-info" noSelection="['-1': '-- Seleccione']"
                               value="${contrato?.padre?.id}" optionKey="id" optionValue="codigo"
                               style="width: 140px" />
                 </div>
             </div>
-            <div class="span1 formato">Fecha de Suscripción</div>
+            <div class="col-md-1 formato">Fecha de Suscripción</div>
 
-            <div class="span1"><elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo" value="${contrato?.fechaSubscripcion}"/></div>
+            <div class="col-md-1"><elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo" value="${contrato?.fechaSubscripcion}"/></div>
 
             <div class="span 3">
-                <div class="span1 formato" style="width: 100px">Aplica reajuste</div>
+                <div class="col-md-1 formato" style="width: 100px">Aplica reajuste</div>
 
-                <div class="span1">
+                <div class="col-md-1">
                     <g:select name="aplicaReajuste" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value"
                               value="${contrato?.aplicaReajuste == 1 ? 1 : 0}" style="width: 60px"/>
                 </div>
             </div>
         </div>
 
-        <div class="span12" style="margin-top: 5px">
+        <div class="col-md-12" style="margin-top: 5px">
 
-            <div class="span2 formato">Objeto del Contrato</div>
+            <div class="col-md-2 formato">Objeto del Contrato</div>
 
-            <div class="span9" style="margin-left: -20px"><g:textArea name="objeto" class="activo"
+            <div class="col-md-9" style="margin-left: -20px"><g:textArea name="objeto" class="activo"
                                                                       style="height: 55px; width: 960px; resize: none; margin-top: -6px" value="${contrato?.objeto}"/></div>
 
         </div>
@@ -312,130 +312,130 @@
 
     <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
 
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="span2 formato">Multa por retraso de obra</div>
+            <div class="col-md-2 formato">Multa por retraso de obra</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <g:textField name="multaRetraso" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaRetraso ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="span1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -100px">
                 x 1000
             </div>
-            <div class="span1">
+            <div class="col-md-1">
             </div>
 
-            <div class="span2 formato">Multa por no presentación de planilla</div>
+            <div class="col-md-2 formato">Multa por no presentación de planilla</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <g:textField name="multaPlanilla" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaPlanilla ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="span1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -100px">
                 x 1000
             </div>
 
         </div>
 
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="span2 formato">Multa por incumplimiento del cronograma</div>
+            <div class="col-md-2 formato">Multa por incumplimiento del cronograma</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <g:textField name="multaIncumplimiento" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaIncumplimiento ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="span1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -100px">
                 x 1000
             </div>
-            <div class="span1">
+            <div class="col-md-1">
             </div>
 
-            <div class="span2 formato">Multa por no acatar disposiciones del fiscalizador</div>
+            <div class="col-md-2 formato">Multa por no acatar disposiciones del fiscalizador</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <g:textField name="multaDisposiciones" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaDisposiciones ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="span1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -100px">
                 x 1000
             </div>
 
         </div>
 
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="span2 formato">Monto del contrato</div>
+            <div class="col-md-2 formato">Monto del contrato</div>
 
 %{--
-            <div class="span3"><g:textField name="monto" class="monto activo number"
+            <div class="col-md-3"><g:textField name="monto" class="monto activo number"
                                             value="${g.formatNumber(number: contrato?.monto, maxFractionDigits: 2, minFractionDigits: 2, format: '##,###')}"/></div>
 --}%
-            <div class="span3"><g:textField name="monto" class="monto activo number"
+            <div class="col-md-3"><g:textField name="monto" class="monto activo number"
                  value="${contrato?.monto}"/></div>
 
-            <div class="span2 formato">Plazo</div>
+            <div class="col-md-2 formato">Plazo</div>
 
-            <div class="span2"><g:textField name="plazo" class="plazo activo" style="width: 50px" maxlength="4"
+            <div class="col-md-2"><g:textField name="plazo" class="plazo activo" style="width: 50px" maxlength="4"
                                             value="${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"/>
             </div>
-            <div class="span1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -100px">
                 Días
             </div>
 
         </div>
 
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="span2 formato">Anticipo sin reajuste</div>
+            <div class="col-md-2 formato">Anticipo sin reajuste</div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 <g:textField name="porcentajeAnticipo" class="anticipo activo"
                              value="${g.formatNumber(number: contrato?.porcentajeAnticipo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"
                              style="width: 30px; text-align: right"/> %
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 <g:textField name="anticipo" class="anticipoValor activo" style="width: 105px; text-align: right"
                              value="${g.formatNumber(number: contrato?.anticipo, maxFractionDigits: 2, minFractionDigits: 2, locale: 'ec')}"/>
             </div>
 
 
             %{--<g:if test="${contrato?.codigo != null}">--}%
-            <div class="span2 formato">Indices 30 días antes de la presentación de la oferta</div>
-            <div class="span3"><g:select name="periodoInec.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}"
+            <div class="col-md-2 formato">Indices 30 días antes de la presentación de la oferta</div>
+            <div class="col-md-3"><g:select name="periodoInec.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}"
                                          class="indiceOferta activo" value="${contrato?.periodoInec?.id}"
                                          optionValue="descripcion" optionKey="id"/></div>
             %{--</g:if>--}%
             %{--<g:else>--}%
-            %{--<div class="span6" id="filaIndice">--}%
+            %{--<div class="col-md-6" id="filaIndice">--}%
             %{--</div>--}%
             %{--</g:else>--}%
 
         </div>
 
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="span1 formato">Departamento Administrador</div>
+            <div class="col-md-1 formato">Departamento Administrador</div>
 
-            <div class="span4">
+            <div class="col-md-4">
                 <g:select name="depAdministrador.id" from="${janus.Departamento.list([sort: 'descripcion'])}" optionKey="id"
-                          optionValue="descripcion"  value="${contrato?.depAdministrador?.id?:1}" class="required span4"/>
+                          optionValue="descripcion"  value="${contrato?.depAdministrador?.id?:1}" class="required col-md-4"/>
             </div>
 
-            <div class="span2 formato">Indirectos</div>
+            <div class="col-md-2 formato">Indirectos</div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 <g:textField name="indirectos" class="anticipo activo"
                              value="${g.formatNumber(number: contrato?.indirectos ?: 20, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"
                              style="width: 30px; text-align: right"/> %
             </div>
 
             <div class="span 3" style="border-color: #888; border-style: solid; border-width: thin">
-                <div class="span2 formato">La multa por retraso de obra incluye el valor del reajuste</div>
+                <div class="col-md-2 formato">La multa por retraso de obra incluye el valor del reajuste</div>
 
-                <div class="span1">
+                <div class="col-md-1">
                     <g:select name="conReajuste" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value" value="${contrato?.conReajuste == 1 ? 1 : 0}" style="width: 60px"/>
                 </div>
             </div>
@@ -444,19 +444,19 @@
 
         </div>
 
-        <div class="span12" style="margin-top: 10px">
-            <div class="span2 formato">Administrador delegado</div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-2 formato">Administrador delegado</div>
 
-            <div class="${contrato?.administrador?.nombre ? 'span6' : 'span9'}">${contrato?.administrador?.titulo} ${contrato?.administrador?.nombre} ${contrato?.administrador?.apellido}</div>
+            <div class="${contrato?.administrador?.nombre ? 'col-md-6' : 'col-md-9'}">${contrato?.administrador?.titulo} ${contrato?.administrador?.nombre} ${contrato?.administrador?.apellido}</div>
 
-            <div class="span3 formato"></div>
+            <div class="col-md-3 formato"></div>
 
-            <div class="span3"></div>
+            <div class="col-md-3"></div>
 
             <div class="span 3" style="border-color: #888; border-style: solid; border-width: thin">
-                <div class="span2 formato">Aplica multa al saldo por planillar</div>
+                <div class="col-md-2 formato">Aplica multa al saldo por planillar</div>
 
-                <div class="span1">
+                <div class="col-md-1">
                     <g:select name="saldoMulta" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value" value="${contrato?.saldoMulta == 1 ? 1 : 0}" style="width: 60px"/>
                 </div>
             </div>
@@ -624,7 +624,7 @@
 <div id="borrarContrato">
 
     <fieldset>
-        <div class="span3">
+        <div class="col-md-3">
             Está seguro de que desea borrar el contrato: <div style="font-weight: bold;">${contrato?.codigo} ?</div>
 
         </div>
@@ -634,12 +634,12 @@
 
 <div id="integrarCronoDialog">
     <fieldset>
-        <div class="span4">
+        <div class="col-md-4">
             Seleccione el contrato complementario cuyo cronograma será integrado al cronograma del contrato: <strong>${contrato?.codigo}</strong>
         </div>
     </fieldset>
     <fieldset style="margin-top: 10px">
-        <div class="span4">
+        <div class="col-md-4">
             <g:select from="${complementarios}" optionKey="id" optionValue="${{it?.codigo + " - " + it?.objeto}}"
                       name="complementarios_name" id="contratosComp" class="form-control" style="width: 380px"/>
         </div>
@@ -648,7 +648,7 @@
 
 <div id="integrarCronoDialogNo">
     <fieldset>
-        <div class="span4">
+        <div class="col-md-4">
             Ya se ha realizado la integración del cronograma del contrato complementario al contrato: <p><strong>${contrato?.codigo}</strong></p>
         </div>
     </fieldset>
@@ -656,7 +656,7 @@
 
 <div id="integrarFPDialogNo">
     <fieldset>
-        <div class="span4">
+        <div class="col-md-4">
             Ya se ha realizado la integración de la fórmula polinómica del contrato complementario al contrato:
             <p><strong>${contrato?.codigo}</strong></p>
         </div>
@@ -665,12 +665,12 @@
 
 <div id="integrarFPDialog">
     <fieldset>
-        <div class="span4">
+        <div class="col-md-4">
             Seleccione el contrato complementario cuya FP será integrada a la FP del contrato: <strong>${contrato?.codigo}</strong>
         </div>
     </fieldset>
     <fieldset style="margin-top: 10px">
-        <div class="span4">
+        <div class="col-md-4">
             <g:select from="${formula}" optionKey="id" optionValue="${{it?.codigo + " - " + it?.objeto}}"
                       name="complementariosFP_name" id="contratosFP" class="form-control" style="width: 380px"/>
         </div>

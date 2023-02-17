@@ -262,6 +262,7 @@
 
         $("#btnPac").click(function () {
             $("#modal-pac").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x");
         });
 
         $(".btn-new").click(function () {

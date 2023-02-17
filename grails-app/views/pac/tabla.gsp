@@ -1,13 +1,13 @@
-<div class="row-fluid" style="margin-left: 0px;margin-bottom: 10px;">
+<div class="row" style="margin-left: 0px;margin-bottom: 10px;">
 
-    <div class="span1">
+    <div class="col-md-1">
         <div class="btn-group" data-toggle="buttons-checkbox">
             <button type="button" id="ver_todos" class="btn btn-info ${(todos=="1")?'active':''} " style="font-size: 14px">Ver todos</button>
 
         </div>
 
     </div>
-    <div class="span3">
+    <div class="col-md-3">
         <a href="#" class="btn  " id="imprimir">
             <i class="icon-file"></i>
             Imprimir
@@ -17,10 +17,10 @@
             Excel
         </a>
     </div>
-    <div class="span4">
+    <div class="col-md-6">
         <b>Coordinación:</b> ${dep}
     </div>
-    <div class="span2">
+    <div class="col-md-1">
         <b>Año:</b> ${anio}
     </div>
 
@@ -66,8 +66,8 @@
             <td style="text-align: center" class="c2">${p.c2}</td>
             <td style="text-align: center" class="c3">${p.c3}</td>
             <td style="width: 40px;text-align: center" class="col_delete">
-                <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${p.id}">
-                    <i class="icon-trash"></i></a>
+                <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${p.id}">
+                    <i class="fa fa-trash"></i></a>
             </td>
         </tr>
 
@@ -82,26 +82,24 @@
 </div>
 <script type="text/javascript">
 
-    $.contextMenu({
+    $("tbody>tr").contextMenu({
         selector: '.item_row',
         callback: function(key, options) {
             if(key=="edit"){
                 $(this).dblclick()
             }
-            %{--if(key=="print"){--}%
-            %{--var dsps=${obra.distanciaPeso}--}%
-            %{--var dsvs=${obra.distanciaVolumen}--}%
-            %{--var volqueta=${precioVol}--}%
-            %{--var chofer=${precioChof}--}%
-            %{--var datos = "?dsps="+dsps+"&dsvs="+dsvs+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()--}%
-            %{--location.href="${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}"+datos--}%
-            %{--var datos = "?dsps="+dsps+"Wdsvs="+dsvs+"Wprvl="+volqueta+"Wprch="+chofer+"Wfecha=${obra.fechaPreciosRubros.format('dd-MM-yyyy')}Wid="+$(this).attr("item")+"Wlugar=${obra.lugar.id}Windi=${indirectos}Wobra=${obra.id}"--}%
-            %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}"+datos--}%
-            %{--location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url--}%
-            %{--}--}%
         },
         items: {
-            "edit": {name: "Editar", icon: "edit"}
+            header   : {
+                label  : "Acciones",
+                header : true
+            },
+            editar   : {
+                label  : "Doble clic para Editar",
+                icon   : "fa fa-edit",
+                action : function ($element) {
+                }
+            },
         }
     });
 
@@ -182,9 +180,8 @@
         if($(this).find(".c3").html()=="S")
             $("#item_c3").addClass("active")
         cargarTecho()
-
-
     });
+
     $(".borrarItem").click(function(){
         if(confirm("Esta seguro de eliminar este registro del PAC?")){
             $.ajax({type : "POST", url : "${g.createLink(controller: 'pac',action:'eliminarPac')}",

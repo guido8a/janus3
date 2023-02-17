@@ -138,8 +138,9 @@
 }
 .btn-info:active,
 .btn-info.active {
-  background-color: #3b5074;
-  border-color: #384b6e;
+  background-color: #1b3054;
+  border-color: #3b5074;
+  font-weight: bold;
 }
 .btn-info.disabled,
 .btn-info:disabled,
