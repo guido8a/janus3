@@ -2,7 +2,7 @@
 <%@ page import="janus.Presupuesto" %>
 
 <div id="create-presupuestoInstance" class="span" role="main">
-<g:form class="form-horizontal" name="frmSave-presupuestoInstance" action="save">
+<g:form class="form-horizontal" name="frmSave-presupuestoInstance" action="saveAjax">
     <g:hiddenField name="id" value="${presupuestoInstance?.id}"/>
 
     <div class="form-group ${hasErrors(bean: presupuestoInstance, field: 'numero', 'error')} ">
@@ -10,7 +10,7 @@
             <label for="numero" class="col-md-2 control-label text-info">
                 Número
             </label>
-            <span class="col-md-6">
+            <span class="col-md-8">
                 <g:textField name="numero" maxlength="50" class="form-control required" value="${presupuestoInstance?.numero}" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
@@ -51,6 +51,45 @@
             </span>
         </span>
     </div>
+
+    <div class="form-group ${hasErrors(bean: presupuestoInstance, field: 'programa', 'error')} ">
+        <span class="grupo">
+            <label for="programa" class="col-md-2 control-label text-info">
+                Programa
+            </label>
+            <span class="col-md-8">
+                <g:textField name="programa" maxlength="255" class="form-control required" value="${presupuestoInstance?.programa}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: presupuestoInstance, field: 'subPrograma', 'error')} ">
+        <span class="grupo">
+            <label for="subPrograma" class="col-md-2 control-label text-info">
+                SubPrograma
+            </label>
+            <span class="col-md-8">
+                <g:textField name="subPrograma" maxlength="255" class="form-control required" value="${presupuestoInstance?.subPrograma}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: presupuestoInstance, field: 'proyecto', 'error')} ">
+        <span class="grupo">
+            <label for="proyecto" class="col-md-2 control-label text-info">
+                Proyecto
+            </label>
+            <span class="col-md-8">
+                <g:textField name="proyecto" maxlength="255" class="form-control required" value="${presupuestoInstance?.proyecto}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
+
+
 
 
 
@@ -111,65 +150,71 @@
 %{--            <p class="help-block ui-helper-hidden"></p>--}%
 %{--        </div>--}%
 %{--    </div>--}%
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Programa
-            </span>
-        </div>
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Programa--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-        <div class="controls">
-            <g:textField name="programa"  maxlength="255" class=" required" style="resize: none;width: 300px;" value="${presupuestoInstance?.programa}"/>
-            <span class="mandatory">*</span>
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Subprograma
-            </span>
-        </div>
+%{--        <div class="controls">--}%
+%{--            <g:textField name="programa"  maxlength="255" class=" required" style="resize: none;width: 300px;" value="${presupuestoInstance?.programa}"/>--}%
+%{--            <span class="mandatory">*</span>--}%
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Subprograma--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-        <div class="controls">
-            <g:textField name="subPrograma" maxlength="255" class=" required" style="resize: none;width: 300px;" value="${presupuestoInstance?.subPrograma}"/>
-            <span class="mandatory">*</span>
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Proyecto
-            </span>
-        </div>
+%{--        <div class="controls">--}%
+%{--            <g:textField name="subPrograma" maxlength="255" class=" required" style="resize: none;width: 300px;" value="${presupuestoInstance?.subPrograma}"/>--}%
+%{--            <span class="mandatory">*</span>--}%
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Proyecto--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-        <div class="controls">
-            <g:textField name="proyecto"  maxlength="255" class=" required" style="resize: none;width: 300px;" value="${presupuestoInstance?.proyecto}"/>
-            <span class="mandatory">*</span>
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+%{--        <div class="controls">--}%
+%{--            <g:textField name="proyecto"  maxlength="255" class=" required" style="resize: none;width: 300px;" value="${presupuestoInstance?.proyecto}"/>--}%
+%{--            <span class="mandatory">*</span>--}%
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
 
 
 </g:form>
 
 <script type="text/javascript">
-    var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-    var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>")
 
-    $("#frmSave-presupuestoInstance").validate({
+    var validator = $("#frmSave-presupuestoInstance").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $("[name=btnSave-presupuestoInstance]").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormPresupuesto();
+            return false;
+        }
+        return true;
     });
 </script>

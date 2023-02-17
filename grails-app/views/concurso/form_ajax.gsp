@@ -77,18 +77,10 @@
 
 <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;height: 150px;margin-bottom: 10px;">
     <p class="css-vertical-text" style="font-size: 30px;margin-left: -7px">
-        %{--<i class="icon-arrow-left active" id="min" style="cursor: pointer" title="Ocultar"></i>--}%
-        %{--<span id="msg" title="Ocultar" style="cursor: pointer">P.A.C.</span>--}%
         <span id="msg">P A C</span>
     </p>
 
     <div class="linea" style="height: 100%"></div>
-
-    %{--<div class="row " id="mostrar" style="display: none;cursor: pointer">--}%
-    %{--<div class="col-md-10">--}%
-    %{--<b>Ver P.A.C.</b>--}%
-    %{--</div>--}%
-    %{--</div>--}%
 
     <div class="row">
         <div class="col-md-12">
@@ -176,269 +168,272 @@
 </div>
 
 <div style="border-bottom: 1px solid black;padding-left: 40px;position: relative;margin-bottom: 10px; height: 440px">
-<p class="css-vertical-text">Proceso de contratación</p>
+    <p class="css-vertical-text">Proceso de contratación</p>
 
-<div class="linea" style="height: 100%"></div>
+    <div class="linea" style="height: 100%"></div>
 
-<g:form class="form-horizontal" name="frmSave-Concurso" action="save" id="${concursoInstance?.id}">
-    <ul class="nav nav-pills red ui-corner-top" id="myTab">
-        <li class="active"><a href="#datos" style="padding-left: 30px; padding-right: 30px">Datos proceso</a></li>
-        <li><a href="#fechas" style="padding-left: 30px; padding-right: 30px">Fechas del proceso</a></li>
-        %{--<li><a href="#fechas2" style="color: #000000 !important;">Fechas de control del trámite</a></li>--}%
-    </ul>
+    <g:form class="form-horizontal" name="frmSave-Concurso" action="save" id="${concursoInstance?.id}">
+        <ul class="nav nav-pills red ui-corner-top" id="myTab">
+            <li class="active"><a href="#datos" style="padding-left: 30px; padding-right: 30px">Datos proceso</a></li>
+            <li><a href="#fechas" style="padding-left: 30px; padding-right: 30px">Fechas del proceso</a></li>
+            %{--<li><a href="#fechas2" style="color: #000000 !important;">Fechas de control del trámite</a></li>--}%
+        </ul>
 
-    <div class="tab-content ui-corner-bottom" style="height: 385px">
-        <div class="tab-pane active" id="datos">
+        <div class="tab-content ui-corner-bottom" style="height: 385px">
+            <div class="tab-pane active" id="datos">
 
-            <div class="row">
-                <div class="col-md-7">
-                    <span class="badge col-md-4">
-                        Prefecto
-                    </span>
+                <div class="row">
+                    <div class="col-md-7">
+                        <span class="badge col-md-4">
+                            Prefecto
+                        </span>
 
-                    <div class="controls col-md-8">
-                        <g:hiddenField name="administracion.id" value="${concursoInstance?.administracion?.id}"/>
-                        ${concursoInstance?.administracion?.nombrePrefecto}
+                        <div class="controls col-md-8">
+                            <g:hiddenField name="administracion.id" value="${concursoInstance?.administracion?.id}"/>
+                            ${concursoInstance?.administracion?.nombrePrefecto}
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="control-group">
+                            <div>
+                                <span class="badge col-md-3">
+                                    Estado
+                                </span>
+                            </div>
+
+                            <div class="controls col-md-1">
+                                <g:hiddenField name="estado" value="${concursoInstance?.estado}"/>
+                                ${concursoInstance?.estado == 'R' ? 'Registrado' : 'No registrado'}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col-md-5">
-                    <div class="control-group">
-                        <div>
-                            <span class="badge col-md-3">
-                                Estado
-                            </span>
-                        </div>
+                <div class="row" style="margin-top: -10px">
+                    <div class="col-md-12" style="margin-top: 10px">
+                        <div class="control-group">
+                            <div>
+                                <span class="badge col-md-2">
+                                    Objeto
+                                </span>
+                            </div>
 
-                        <div class="controls col-md-1">
-                            <g:hiddenField name="estado" value="${concursoInstance?.estado}"/>
-                            ${concursoInstance?.estado == 'R' ? 'Registrado' : 'No registrado'}
+                            <div class="controls col-md-10">
+                                <g:textArea name="objeto" class="col-md-12" style="resize: vertical; height: 80px"
+                                            value="${concursoInstance?.objeto}"/>
+                                <p class="help-block ui-helper-hidden"></p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="row" style="margin-top: -10px">
-                <div class="col-md-12" style="margin-top: 10px">
-                    <div class="control-group">
+                %{--<div class="col-md-6" style="margin-top: 10px">--}%
+
+                <div class="row">
+                    <div class="control-group col-md-7" style="margin-top: 10px">
                         <div>
-                            <span class="badge col-md-2">
-                                Objeto
+                            <span class="badge col-md-4">
+                                Número de certificación:
                             </span>
                         </div>
 
-                        <div class="controls col-md-10">
-                            <g:textArea name="objeto" class="col-md-12" style="resize: vertical; height: 80px"
-                                        value="${concursoInstance?.objeto}"/>
+                        <div class="controls col-md-8" style="margin-left: 0px; padding-right: 0px">
+                            <g:textField name="numeroCertificacion"
+                                         value="${concursoInstance?.numeroCertificacion ?: '0000'}" style="width: 50px;"
+                                         maxlength="4"/> (Número de certificación de disponibilidad de fondos)
+                        </div>
+                    </div>
+
+                    <div class="control-group col-md-5" style="margin-top: 10px">
+                        <div>
+                            <span class="badge col-md-4">
+                                Código
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            <g:textField name="codigo" value="${concursoInstance?.codigo}" maxlength="20"
+                                         class="allCaps required"/>
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            %{--<div class="col-md-6" style="margin-top: 10px">--}%
-
-            <div class="row">
-                <div class="control-group col-md-7" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Número de certificación:
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8" style="margin-left: 0px; padding-right: 0px">
-                        <g:textField name="numeroCertificacion"
-                                     value="${concursoInstance?.numeroCertificacion ?: '0000'}" style="width: 50px;"
-                                     maxlength="4"/> (Número de certificación de disponibilidad de fondos)
-                    </div>
-                </div>
-
-                <div class="control-group col-md-5" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Código
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <g:textField name="codigo" value="${concursoInstance?.codigo}" maxlength="20"
-                                     class="allCaps required"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="control-group col-md-7" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Memo Certificación Fondos
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        %{--<div class="input-append">--}%
-                        <g:textField name="memoCertificacionFondos"
-                                     value="${concursoInstance?.memoCertificacionFondos}" style="text-align: left;"
-                                     class="allCaps"/>
-                        %{--</div>--}%
-
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-
-                <div class="control-group col-md-5" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Costo Bases
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <input type="radio" name="costo" id="rbt_costoBases"
-                            ${(concursoInstance.costoBases > 0 || (concursoInstance.costoBases == 0 &&
-                                    concursoInstance.porMilBases == 0) || !concursoInstance.costoBases || !concursoInstance.porMilBases) ? "checked" : ""}/>
-                        <g:field type="text" name="costoBases" class="input-mini" style="width: 60px"
-                                 value="${concursoInstance.costoBases == null ? 200 : concursoInstance.costoBases}"/>
-                        <input type="radio" name="costo"
-                               id="rbt_porMilBases" ${concursoInstance.porMilBases > 0 ? "checked" : ""}/>
-                        <g:field type="text" name="porMilBases" class="input-mini" style="width: 60px"
-                                 value="${concursoInstance.porMilBases ?: 0}"/> x 1000
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="control-group col-md-7" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Memo SIF.
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <g:textField name="memoSif" value="${concursoInstance?.memoSif}" class="allCaps"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-
-                <div class="control-group col-md-5" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Memo de requerimiento
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <g:textField name="memoRequerimiento" value="${concursoInstance?.memoRequerimiento}"
-                                     class="allCaps"/>
-                        <p class="help-block ui-helper-hidden allCaps"></p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="control-group col-md-7" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Obra requerida
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <input type="hidden" id="obra_id" name="obra.id" value="${concursoInstance?.obra?.id}">
-                        <input type="text" id="obra_busqueda" value="${concursoInstance?.obra?.codigo}"
-                               title="${concursoInstance?.obra?.nombre}" style="width: 200px;">
-
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-                <div class="control-group col-md-5" style="margin-top: 10px">
-                    <div>
-                        <span class="badge col-md-4">
-                            Monto referencial
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <div class="input-append">
-                            <g:field type="text" name="presupuestoReferencial" class="required number"
-                                     value="${concursoInstance?.presupuestoReferencial ?: 0}"
-                                     style="text-align: right;width: 120px;"/>
-                            <span class="add-on">$</span>
+                <div class="row">
+                    <div class="control-group col-md-7" style="margin-top: 10px">
+                        <div>
+                            <span class="badge col-md-4">
+                                Memo Certificación Fondos
+                            </span>
                         </div>
 
-                        <p class="help-block ui-helper-hidden"></p>
+                        <div class="controls col-md-8">
+                            %{--<div class="input-append">--}%
+                            <g:textField name="memoCertificacionFondos"
+                                         value="${concursoInstance?.memoCertificacionFondos}" style="text-align: left;"
+                                         class="allCaps"/>
+                            %{--</div>--}%
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
                     </div>
+
+
+                    <div class="control-group col-md-5" style="margin-top: 10px">
+                        <div>
+                            <span class="badge col-md-4">
+                                Costo Bases
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            <input type="radio" name="costo" id="rbt_costoBases"
+                                ${(concursoInstance.costoBases > 0 || (concursoInstance.costoBases == 0 &&
+                                        concursoInstance.porMilBases == 0) || !concursoInstance.costoBases || !concursoInstance.porMilBases) ? "checked" : ""}/>
+                            <g:field type="text" name="costoBases" class="input-mini" style="width: 60px"
+                                     value="${concursoInstance.costoBases == null ? 200 : concursoInstance.costoBases}"/>
+                            <input type="radio" name="costo"
+                                   id="rbt_porMilBases" ${concursoInstance.porMilBases > 0 ? "checked" : ""}/>
+                            <g:field type="text" name="porMilBases" class="input-mini" style="width: 60px"
+                                     value="${concursoInstance.porMilBases ?: 0}"/> x 1000
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
                 </div>
 
-            </div>
+                <div class="row">
+                    <div class="control-group col-md-7" style="margin-top: 10px">
+                        <div>
+                            <span class="badge col-md-4">
+                                Memo SIF.
+                            </span>
+                        </div>
 
-
-            <div class="row">
-                <div class="control-group col-md-12">
-                    <div>
-                        <span class="badge col-md-2">
-                            Observaciones
-                        </span>
+                        <div class="controls col-md-8">
+                            <g:textField name="memoSif" value="${concursoInstance?.memoSif}" class="allCaps"/>
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
                     </div>
 
-                    <div class="controls col-md-10">
-                        <g:textField name="observaciones" class="col-md-12"
-                                     value="${concursoInstance?.observaciones}"/>
-                        <p class="help-block ui-helper-hidden"></p>
+
+                    <div class="control-group col-md-5" style="margin-top: 10px">
+                        <div>
+                            <span class="badge col-md-4">
+                                Memo de requerimiento
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            <g:textField name="memoRequerimiento" value="${concursoInstance?.memoRequerimiento}"
+                                         class="allCaps"/>
+                            <p class="help-block ui-helper-hidden allCaps"></p>
+                        </div>
                     </div>
+
                 </div>
+
+                <div class="row">
+                    <div class="control-group col-md-7" style="margin-top: 10px">
+                        <div>
+                            <span class="badge col-md-4">
+                                Obra requerida
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            <input type="hidden" id="obra_id" name="obra.id" value="${concursoInstance?.obra?.id}">
+                            <input type="text" id="obra_busqueda" value="${concursoInstance?.obra?.codigo}"
+                                   title="${concursoInstance?.obra?.nombre}" style="width: 200px;">
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+                    <div class="control-group col-md-5" style="margin-top: 10px">
+                        <div>
+                            <span class="badge col-md-4">
+                                Monto referencial
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            <div class="input-append">
+                                <g:field type="text" name="presupuestoReferencial" class="required number"
+                                         value="${concursoInstance?.presupuestoReferencial ?: 0}"
+                                         style="text-align: right;width: 120px;"/>
+                                <span class="add-on">$</span>
+                            </div>
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="control-group col-md-12">
+                        <div>
+                            <span class="badge col-md-2">
+                                Observaciones
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-10">
+                            <g:textField name="observaciones" class="col-md-12"
+                                         value="${concursoInstance?.observaciones}"/>
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+                </div> <!-- fin tab datos -->
             </div> <!-- fin tab datos -->
-        </div> <!-- fin tab datos -->
 
-        <div class="tab-pane" id="fechas">
-            %{--<div id="cols" style="float: left;">--}%
+            <div class="tab-pane" id="fechas">
+                %{--<div id="cols" style="float: left;">--}%
 
-            <g:set var="minHour" value="${8}"/>
-            <g:set var="maxHour" value="${20}"/>
-            <g:set var="stepMin" value="${10}"/>
+                <g:set var="minHour" value="${8}"/>
+                <g:set var="maxHour" value="${20}"/>
+                <g:set var="stepMin" value="${10}"/>
 
-            <div class="row" style="margin-top:10px">
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Publicación
-                        </span>
+                <div class="row" style="margin-top:10px">
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Publicación
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaPublicacion" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaPublicacion}" controlType="select"--}%
+                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
+
+                            <input aria-label="" name="fechaPublicacion" id='fecha1' type='text' class="input-small" value="${concursoInstance?.fechaPublicacion}" />
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
                     </div>
 
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaPublicacion" class=""
-                                            value="${concursoInstance?.fechaPublicacion}" controlType="select"
-                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Inicio Evaluación Oferta
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaInicioEvaluacionOferta" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaInicioEvaluacionOferta}"--}%
+                            %{--                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                            stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaInicioEvaluacionOferta" id='fecha2' type='text' class="input-small" value="${concursoInstance?.fechaInicioEvaluacionOferta}" />
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Inicio Evaluación Oferta
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaInicioEvaluacionOferta" class=""
-                                            value="${concursoInstance?.fechaInicioEvaluacionOferta}"
-                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                            stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-            </div>
-
-        <div class="row" style="margin-top:10px">
+                <div class="row" style="margin-top:10px">
                     <div class="control-group col-md-6">
                         <div>
                             <span class="badge col-md-4">
@@ -447,32 +442,35 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            <elm:datetimepicker showTime="false" name="fechaAceptacionProveedor" class=""
-                                                value="${concursoInstance?.fechaAceptacionProveedor}"
-                                                controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                                stepMinute="${stepMin}"/>
+                            %{--                            <elm:datetimepicker showTime="false" name="fechaAceptacionProveedor" class=""--}%
+                            %{--                                                value="${concursoInstance?.fechaAceptacionProveedor}"--}%
+                            %{--                                                controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                                stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaAceptacionProveedor" id='fecha3' type='text' class="input-small" value="${concursoInstance?.fechaAceptacionProveedor}" />
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </div>
 
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Límite resultados finales
-                        </span>
-                    </div>
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Límite resultados finales
+                            </span>
+                        </div>
 
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaLimiteResultadosFinales" class=""
-                                            value="${concursoInstance?.fechaLimiteResultadosFinales}"
-                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                            stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaLimiteResultadosFinales" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaLimiteResultadosFinales}"--}%
+                            %{--                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                            stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaLimiteResultadosFinales" id='fecha4' type='text' class="input-small" value="${concursoInstance?.fechaLimiteResultadosFinales}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        <div class="row" style="margin-top:10px">
+                <div class="row" style="margin-top:10px">
                     <div class="control-group col-md-6">
                         <div>
                             <span class="badge col-md-4">
@@ -481,386 +479,417 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            <elm:datetimepicker showTime="false" name="fechaLimitePreguntas" class=""
-                                                value="${concursoInstance?.fechaLimitePreguntas}"
-                                                controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                                stepMinute="${stepMin}"/>
+                            %{--                            <elm:datetimepicker showTime="false" name="fechaLimitePreguntas" class=""--}%
+                            %{--                                                value="${concursoInstance?.fechaLimitePreguntas}"--}%
+                            %{--                                                controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                                stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaLimitePreguntas" id='fecha5' type='text' class="input-small" value="${concursoInstance?.fechaLimitePreguntas}" />
+
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </div>
 
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Adjudicación
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaAdjudicacion" class=""
-                                            value="${concursoInstance?.fechaAdjudicacion}" controlType="select"
-                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-            </div>
-
-        <div class="row" style="margin-top:10px">
-
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Límite Respuestas
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaLimiteRespuestas" class=""
-                                            value="${concursoInstance?.fechaLimiteRespuestas}"
-                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                            stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Inicio
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaInicio" class=""
-                                            value="${concursoInstance?.fechaInicio}" controlType="select"
-                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-
-            </div>
-
-        <div class="row" style="margin-top:10px">
-            <div class="control-group col-md-6">
-                <div>
-                    <span class="badge col-md-4">
-                        Límite Entrega Ofertas
-                    </span>
-                </div>
-
-                <div class="controls col-md-8">
-                    <elm:datetimepicker showTime="false" name="fechaLimiteEntregaOfertas" class=""
-                                        value="${concursoInstance?.fechaLimiteEntregaOfertas}"
-                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                        stepMinute="${stepMin}"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </div>
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Calificación
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaCalificacion" class=""
-                                            value="${concursoInstance?.fechaCalificacion}" controlType="select"
-                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-            </div>
-
-        <div class="row" style="margin-top:10px">
-            <div class="control-group col-md-6">
-                <div>
-                    <span class="badge col-md-4">
-                        Apertura Ofertas
-                    </span>
-                </div>
-
-                <div class="controls col-md-8">
-                    <elm:datetimepicker showTime="false" name="fechaAperturaOfertas" class=""
-                                        value="${concursoInstance?.fechaAperturaOfertas}"
-                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                        stepMinute="${stepMin}"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </div>
-                <div class="control-group col-md-6">
-                    <div>
-                        <span class="badge col-md-4">
-                            Inicio Puja
-                        </span>
-                    </div>
-
-                    <div class="controls col-md-8">
-                        <elm:datetimepicker showTime="false" name="fechaInicioPuja" class=""
-                                            value="${concursoInstance?.fechaInicioPuja}" controlType="select"
-                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-            </div>
-
-        <div class="row" style="margin-top:10px">
-            <div class="control-group col-md-6">
-                <div>
-                    <span class="badge col-md-4">
-                        Solicitar Convalidación
-                    </span>
-                </div>
-
-                <div class="controls col-md-8">
-                    <elm:datetimepicker showTime="false" name="fechaLimiteSolicitarConvalidacion" class=""
-                                        value="${concursoInstance?.fechaLimiteSolicitarConvalidacion}"
-                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                        stepMinute="${stepMin}"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </div>
-            <div class="control-group col-md-6">
-                <div>
-                    <span class="badge col-md-4">
-                        Fin Puja
-                    </span>
-                </div>
-
-                <div class="controls col-md-8">
-                    <elm:datetimepicker showTime="false" name="fechaFinPuja" class=""
-                                        value="${concursoInstance?.fechaFinPuja}" controlType="select"
-                                        minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </div>
-
-
-        </div>
-
-        <div class="row" style="margin-top:10px">
-            <div class="control-group col-md-6">
-                <div>
-                    <span class="badge col-md-4">
-                        Recibir Convalidación
-                    </span>
-                </div>
-
-                <div class="controls col-md-8">
-                    <elm:datetimepicker showTime="false" name="fechaLimiteRespuestaConvalidacion" class=""
-                                        value="${concursoInstance?.fechaLimiteRespuestaConvalidacion}"
-                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                        stepMinute="${stepMin}"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </div>
-
-            <div class="control-group col-md-6">
-                <div>
-                    <span class="badge col-md-4">
-                        Notificación adjudicación
-                    </span>
-                </div>
-
-                <div class="controls col-md-8">
-                    <elm:datetimepicker showTime="false" name="fechaNotificacionAdjudicacion" class=""
-                                        value="${concursoInstance?.fechaNotificacionAdjudicacion}"
-                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"
-                                        stepMinute="${stepMin}"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </div>
-
-        </div> <!-- fin col 1 -->
-
-
-
-    %{--</div>--}%
-    </div> <!-- fin tab fechas -->
-
-    <div class="tab-pane" id="fechas2">
-        %{--<div id="cols" style="float: left;">--}%
-        <div class="row" style="margin: 10px;">
-            <div class="col-md-5">
-                <a href="#" id="tramites" class="btn btn-primary">
-                    <i class="icon-search"></i> Ver tramites S.A.D.
-                </a>
-            </div>
-        </div>
-
-        <fielset id="desc_prep"
-                 style="padding-bottom: 10px;border: 1px solid #000000;width: 95%;float: left;margin-left: 33px;padding: 10px;margin-bottom: 20px;"
-                 class="ui-corner-all">
-            <legend style="color:#876945;border-color: #6f5437;cursor: pointer" id="label_prep" class="active"
-                    title="Minimizar">Etapa Preparatoria <i class="icon-arrow-down" style="cursor: pointer"
-                                                            title="Mostrar seguimiento"></i></legend>
-
-            <div class="row" style="">
-                <div class="col-md-6">
-                    <div class="control-group">
+                    <div class="control-group col-md-6">
                         <div>
-                            <span class="badge">
-                                Fecha Inicio Preparatorio
+                            <span class="badge col-md-4">
+                                Adjudicación
                             </span>
                         </div>
 
-                        <div class="controls">
-                            <elm:datepicker name="fechaInicioPreparatorio" class=""
-                                            value="${concursoInstance?.fechaInicioPreparatorio ?: concursoInstance?.fechaPublicacion}"
-                                            style="width:130px;float: left"/>
-                            <g:if test="${concursoInstance?.fechaInicioPreparatorio == null}">
-                                <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip"
-                                   title="Empezar preparatorio" id="inicio_prep" style="margin-left: 5px;">
-                                    <i class="icon-check"></i>
-                                </a>
-                            </g:if>
-                            <div id="info_prep" style="width: 200px;float: left;margin-left: 10px;">
-                                <span style="color: ${(duracionPrep < maxPrep) ? 'green' : 'red'}">
-                                    <g:if test="${concursoInstance.fechaInicioPreparatorio != null}">
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaAdjudicacion" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaAdjudicacion}" controlType="select"--}%
+                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaAdjudicacion" id='fecha6' type='text' class="input-small" value="${concursoInstance?.fechaAdjudicacion}" />
 
-                                        <g:if test="${duracionPrep < maxPrep}">
-                                            <g:if test="${maxPrep - duracionPrep < 2}">
-                                                <div class="amarillo"></div>
-                                            </g:if>
-                                            <g:else>
-                                                <div class="verde"></div>
-                                            </g:else>
-                                        </g:if>
-                                        <g:else>
-                                            <g:set var="retraso"
-                                                   value="- ${((new Date()) - (concursoInstance?.fechaInicioPreparatorio + maxPrep))} días de retraso"/>
-                                            <div class="rojo" title="Retrasado"></div>
-                                        </g:else>
-                                        <g:if test="${concursoInstance?.fechaFinPreparatorio == null}">
-                                            En curso ${retraso}
-                                        </g:if>
-                                        <g:else>
-                                            Terminado
-                                        </g:else>
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
 
+                </div>
+
+                <div class="row" style="margin-top:10px">
+
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Límite Respuestas
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaLimiteRespuestas" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaLimiteRespuestas}"--}%
+                            %{--                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                            stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaLimiteRespuestas" id='fecha7' type='text' class="input-small" value="${concursoInstance?.fechaLimiteRespuestas}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Inicio
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaInicio" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaInicio}" controlType="select"--}%
+                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaInicio" id='fecha8' type='text' class="input-small" value="${concursoInstance?.fechaInicio}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row" style="margin-top:10px">
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Límite Entrega Ofertas
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                    <elm:datetimepicker showTime="false" name="fechaLimiteEntregaOfertas" class=""--}%
+                            %{--                                        value="${concursoInstance?.fechaLimiteEntregaOfertas}"--}%
+                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                        stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small" value="${concursoInstance?.fechaLimiteEntregaOfertas}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Calificación
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaCalificacion" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaCalificacion}" controlType="select"--}%
+                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaCalificacion" id='fecha10' type='text' class="input-small" value="${concursoInstance?.fechaCalificacion}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px">
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Apertura Ofertas
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                    <elm:datetimepicker showTime="false" name="fechaAperturaOfertas" class=""--}%
+                            %{--                                        value="${concursoInstance?.fechaAperturaOfertas}"--}%
+                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                        stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaAperturaOfertas" id='fecha11' type='text' class="input-small" value="${concursoInstance?.fechaAperturaOfertas}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Inicio Puja
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                        <elm:datetimepicker showTime="false" name="fechaInicioPuja" class=""--}%
+                            %{--                                            value="${concursoInstance?.fechaInicioPuja}" controlType="select"--}%
+                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaInicioPuja" id='fecha12' type='text' class="input-small" value="${concursoInstance?.fechaInicioPuja}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px">
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Solicitar Convalidación
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                    <elm:datetimepicker showTime="false" name="fechaLimiteSolicitarConvalidacion" class=""--}%
+                            %{--                                        value="${concursoInstance?.fechaLimiteSolicitarConvalidacion}"--}%
+                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                        stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaLimiteSolicitarConvalidacion" id='fecha13' type='text' class="input-small" value="${concursoInstance?.fechaLimiteSolicitarConvalidacion}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Fin Puja
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                    <elm:datetimepicker showTime="false" name="fechaFinPuja" class=""--}%
+                            %{--                                        value="${concursoInstance?.fechaFinPuja}" controlType="select"--}%
+                            %{--                                        minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaFinPuja" id='fecha14' type='text' class="input-small" value="${concursoInstance?.fechaFinPuja}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row" style="margin-top:10px">
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Recibir Convalidación
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                    <elm:datetimepicker showTime="false" name="fechaLimiteRespuestaConvalidacion" class=""--}%
+                            %{--                                        value="${concursoInstance?.fechaLimiteRespuestaConvalidacion}"--}%
+                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                        stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaLimiteRespuestaConvalidacion" id='fecha15' type='text' class="input-small" value="${concursoInstance?.fechaLimiteRespuestaConvalidacion}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+                    <div class="control-group col-md-6">
+                        <div>
+                            <span class="badge col-md-4">
+                                Notificación adjudicación
+                            </span>
+                        </div>
+
+                        <div class="controls col-md-8">
+                            %{--                    <elm:datetimepicker showTime="false" name="fechaNotificacionAdjudicacion" class=""--}%
+                            %{--                                        value="${concursoInstance?.fechaNotificacionAdjudicacion}"--}%
+                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
+                            %{--                                        stepMinute="${stepMin}"/>--}%
+                            <input aria-label="" name="fechaNotificacionAdjudicacion" id='fecha16' type='text' class="input-small" value="${concursoInstance?.fechaNotificacionAdjudicacion}" />
+
+                            <p class="help-block ui-helper-hidden"></p>
+                        </div>
+                    </div>
+
+                </div> <!-- fin col 1 -->
+
+
+
+            %{--</div>--}%
+            </div> <!-- fin tab fechas -->
+
+            <div class="tab-pane" id="fechas2">
+                %{--<div id="cols" style="float: left;">--}%
+                <div class="row" style="margin: 10px;">
+                    <div class="col-md-5">
+                        <a href="#" id="tramites" class="btn btn-primary">
+                            <i class="icon-search"></i> Ver tramites S.A.D.
+                        </a>
+                    </div>
+                </div>
+
+                <fielset id="desc_prep"
+                         style="padding-bottom: 10px;border: 1px solid #000000;width: 95%;float: left;margin-left: 33px;padding: 10px;margin-bottom: 20px;"
+                         class="ui-corner-all">
+                    <legend style="color:#876945;border-color: #6f5437;cursor: pointer" id="label_prep" class="active"
+                            title="Minimizar">Etapa Preparatoria <i class="icon-arrow-down" style="cursor: pointer"
+                                                                    title="Mostrar seguimiento"></i></legend>
+
+                    <div class="row" style="">
+                        <div class="col-md-6">
+                            <div class="control-group">
+                                <div>
+                                    <span class="badge">
+                                        Fecha Inicio Preparatorio
+                                    </span>
+                                </div>
+
+                                <div class="controls">
+                                    %{--                            <elm:datepicker name="fechaInicioPreparatorio" class=""--}%
+                                    %{--                                            value="${concursoInstance?.fechaInicioPreparatorio ?: concursoInstance?.fechaPublicacion}"--}%
+                                    %{--                                            style="width:130px;float: left"/>--}%
+                                    <input aria-label="" name="fechaInicioPreparatorio" id='fecha17' type='text' class="input-small" value="${concursoInstance?.fechaInicioPreparatorio}" />
+
+                                    <g:if test="${concursoInstance?.fechaInicioPreparatorio == null}">
+                                        <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip"
+                                           title="Empezar preparatorio" id="inicio_prep" style="margin-left: 5px;">
+                                            <i class="icon-check"></i>
+                                        </a>
                                     </g:if>
+                                    <div id="info_prep" style="width: 200px;float: left;margin-left: 10px;">
+                                        <span style="color: ${(duracionPrep < maxPrep) ? 'green' : 'red'}">
+                                            <g:if test="${concursoInstance.fechaInicioPreparatorio != null}">
+
+                                                <g:if test="${duracionPrep < maxPrep}">
+                                                    <g:if test="${maxPrep - duracionPrep < 2}">
+                                                        <div class="amarillo"></div>
+                                                    </g:if>
+                                                    <g:else>
+                                                        <div class="verde"></div>
+                                                    </g:else>
+                                                </g:if>
+                                                <g:else>
+                                                    <g:set var="retraso"
+                                                           value="- ${((new Date()) - (concursoInstance?.fechaInicioPreparatorio + maxPrep))} días de retraso"/>
+                                                    <div class="rojo" title="Retrasado"></div>
+                                                </g:else>
+                                                <g:if test="${concursoInstance?.fechaFinPreparatorio == null}">
+                                                    En curso ${retraso}
+                                                </g:if>
+                                                <g:else>
+                                                    Terminado
+                                                </g:else>
+
+                                            </g:if>
+                                        </span>
+                                    </div>
+
+                                    <p class="help-block ui-helper-hidden"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="control-group">
+                                <div>
+                                    <span class="badge">
+                                        Fecha Fin Preparatorio
+                                    </span>
+                                </div>
+
+                                <div class="controls">
+                                    %{--                            <elm:datepicker name="fechaFinPreparatorio" class=""--}%
+                                    %{--                                            value="${concursoInstance?.fechaFinPreparatorio}"--}%
+                                    %{--                                            style="width:130px;"/>                           --}%
+                                    <input aria-label="" name="fechaFinPreparatorio" id='fecha18' type='text' class="input-small" value="${concursoInstance?.fechaFinPreparatorio}" />
+                                    <p class="help-block ui-helper-hidden"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-11 hide_prep"
+                         style="height: 20px;margin: 10px;margin-left: 30px;margin-bottom: 20px;">
+                        <div class="col-md-3"
+                             style="background: ${(concursoInstance?.fechaEtapa1 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 1 ${concursoInstance?.fechaEtapa1?.format("dd-MM-yyyy")}</div>
+
+                        <div class="col-md-5"
+                             style="background:  ${(concursoInstance?.fechaEtapa2 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 2 ${concursoInstance?.fechaEtapa2?.format("dd-MM-yyyy")}</div>
+
+                        <div class="col-md-3"
+                             style="background:  ${(concursoInstance?.fechaEtapa3 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 3 ${concursoInstance?.fechaEtapa3?.format("dd-MM-yyyy")}</div>
+                    </div>
+                    <fieldset class="col-md-11 ui-corner-all hide_prep" id="seguimiento"
+                              style="padding: 0px;margin-left: 0px;">
+                        <legend style="border:none;background: none;">Seguimiento del tramite</legend>
+                    </fieldset>
+
+                </fielset>
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                        <div class="control-group">
+                            <div>
+                                <span class="badge">
+                                    Fecha Inicio Precontractual
                                 </span>
                             </div>
 
-                            <p class="help-block ui-helper-hidden"></p>
-                        </div>
-                    </div>
-                </div>
+                            <div class="controls">
+                                %{--                        <elm:datepicker name="fechaInicioPrecontractual" class=""--}%
+                                %{--                                        value="${concursoInstance?.fechaInicioPrecontractual}"--}%
+                                %{--                                        style="width:130px;"/>--}%
+                                <input aria-label="" name="fechaInicioPrecontractual" id='fecha19' type='text' class="input-small" value="${concursoInstance?.fechaInicioPrecontractual}" />
 
-                <div class="col-md-4">
-                    <div class="control-group">
-                        <div>
-                            <span class="badge">
-                                Fecha Fin Preparatorio
-                            </span>
+                                <p class="help-block ui-helper-hidden"></p>
+                            </div>
                         </div>
 
-                        <div class="controls">
-                            <elm:datepicker name="fechaFinPreparatorio" class=""
-                                            value="${concursoInstance?.fechaFinPreparatorio}"
-                                            style="width:130px;"/>
-                            <p class="help-block ui-helper-hidden"></p>
+                        <div class="control-group">
+                            <div>
+                                <span class="badge">
+                                    Fecha Inicio Contractual
+                                </span>
+                            </div>
+
+                            <div class="controls">
+                                %{--                        <elm:datepicker name="fechaInicioContractual" class=""--}%
+                                %{--                                        value="${concursoInstance?.fechaInicioContractual}"--}%
+                                %{--                                        style="width:130px;"/>--}%
+                                <input aria-label="" name="fechaInicioContractual" id='fecha20' type='text' class="input-small" value="${concursoInstance?.fechaInicioContractual}" />
+
+                                <p class="help-block ui-helper-hidden"></p>
+                            </div>
                         </div>
-                    </div>
+
+                    </div> <!-- fin col 1 -->
+
+                    <div class="col-md-5">
+
+                        <div class="control-group">
+                            <div>
+                                <span class="badge">
+                                    Fecha Fin Precontractual
+                                </span>
+                            </div>
+
+                            <div class="controls">
+                                %{--                        <elm:datepicker name="fechaFinPrecontractual" class=""--}%
+                                %{--                                        value="${concursoInstance?.fechaFinPrecontractual}"--}%
+                                %{--                                        style="width:130px;"/>--}%
+                                <input aria-label="" name="fechaFinPrecontractual" id='fecha21' type='text' class="input-small" value="${concursoInstance?.fechaFinPrecontractual}" />
+
+                                <p class="help-block ui-helper-hidden"></p>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div>
+                                <span class="badge">
+                                    Fecha Fin Contractual
+                                </span>
+                            </div>
+
+                            <div class="controls">
+                                %{--                        <elm:datepicker name="fechaFinContractual" class=""--}%
+                                %{--                                        value="${concursoInstance?.fechaFinContractual}" style="width:130px;"/>--}%
+                                <input aria-label="" name="fechaFinContractual" id='fecha22' type='text' class="input-small" value="${concursoInstance?.fechaFinContractual}" />
+
+                                <p class="help-block ui-helper-hidden"></p>
+                            </div>
+                        </div>
+                    </div> <!-- fin col 2-->
                 </div>
-            </div>
-
-            <div class="col-md-11 hide_prep"
-                 style="height: 20px;margin: 10px;margin-left: 30px;margin-bottom: 20px;">
-                <div class="col-md-3"
-                     style="background: ${(concursoInstance?.fechaEtapa1 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 1 ${concursoInstance?.fechaEtapa1?.format("dd-MM-yyyy")}</div>
-
-                <div class="col-md-5"
-                     style="background:  ${(concursoInstance?.fechaEtapa2 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 2 ${concursoInstance?.fechaEtapa2?.format("dd-MM-yyyy")}</div>
-
-                <div class="col-md-3"
-                     style="background:  ${(concursoInstance?.fechaEtapa3 != null) ? '#feff6d' : 'gray'};margin: 0px;height: 15px;border-right: 2px solid black;text-align: center;font-weight: bold">Etapa 3 ${concursoInstance?.fechaEtapa3?.format("dd-MM-yyyy")}</div>
-            </div>
-            <fieldset class="col-md-11 ui-corner-all hide_prep" id="seguimiento"
-                      style="padding: 0px;margin-left: 0px;">
-                <legend style="border:none;background: none;">Seguimiento del tramite</legend>
-            </fieldset>
-
-        </fielset>
-
-        <div class="row">
-            <div class="col-md-6">
-
-                <div class="control-group">
-                    <div>
-                        <span class="badge">
-                            Fecha Inicio Precontractual
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <elm:datepicker name="fechaInicioPrecontractual" class=""
-                                        value="${concursoInstance?.fechaInicioPrecontractual}"
-                                        style="width:130px;"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <div>
-                        <span class="badge">
-                            Fecha Inicio Contractual
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <elm:datepicker name="fechaInicioContractual" class=""
-                                        value="${concursoInstance?.fechaInicioContractual}"
-                                        style="width:130px;"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-            </div> <!-- fin col 1 -->
-
-            <div class="col-md-5">
-
-                <div class="control-group">
-                    <div>
-                        <span class="badge">
-                            Fecha Fin Precontractual
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <elm:datepicker name="fechaFinPrecontractual" class=""
-                                        value="${concursoInstance?.fechaFinPrecontractual}"
-                                        style="width:130px;"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-                <div class="control-group">
-                    <div>
-                        <span class="badge">
-                            Fecha Fin Contractual
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <elm:datepicker name="fechaFinContractual" class=""
-                                        value="${concursoInstance?.fechaFinContractual}" style="width:130px;"/>
-                        <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
-
-            </div> <!-- fin col 2-->
-
+            </div> <!-- fin tab fechas2 -->
         </div>
-    </div> <!-- fin tab fechas2 -->
-
-        </div>
-</g:form>
-
+    </g:form>
 </div>
 
 <div class="modal grandote hide fade" id="modal-busqueda" style="overflow: hidden">
@@ -899,18 +928,25 @@
 </div>
 
 <script type="text/javascript">
+
+    $('#fecha1, #fecha2, #fecha3, #fecha4, #fecha5, #fecha6, #fecha7, #fecha8, #fecha9, #fecha10, #fecha11, #fecha12, #fecha13, #fecha14, #fecha15, #fecha16, #fecha17, #fecha18, #fecha19, #fecha20, #fecha21, #fecha22').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY HH:mm',
+        // minDate: moment({hour: 9, minute: 30}),
+        sideBySide: true,
+        icons: {
+        }
+    });
+
     function cargarDatos() {
 
         $.ajax({
             type: "POST", url: "${g.createLink(controller: 'concurso',action:'datosObra')}",
             data: "obra=" + $("#obra_id").val(),
             success: function (msg) {
-                //console.log(msg)
-                var parts = msg.split("&&")
-                //console.log(parts,number_format(parts[3], 2, ".", " "))
-                $("#presupuestoReferencial").val(parts[3])
+                var parts = msg.split("&&");
+                $("#presupuestoReferencial").val(parts[3]);
                 $("#obra_busqueda").val(parts[0]).attr("title", parts[1])
-
             }
         });
     }
@@ -922,22 +958,21 @@
 
     $("#label_prep").click(function () {
         if ($(this).hasClass("active")) {
-            $(".hide_prep").hide()
-            $(this).removeClass("active")
+            $(".hide_prep").hide();
+            $(this).removeClass("active");
             $(this).attr("title", "Maximizar")
         } else {
-            $(".hide_prep").show("slide")
-            $(this).addClass("active")
+            $(".hide_prep").show("slide");
+            $(this).addClass("active");
             $(this).attr("title", "Minimizar")
         }
-
     });
 
     $("[name=costo]").click(function () {
         var id = $(this).attr("id");
         var p = id.split("_");
         id = p[1];
-        if (id == "porMilBases") {
+        if (id === "porMilBases") {
             $("#costoBases").val(0);
         } else {
             $("#porMilBases").val(0);
@@ -945,50 +980,35 @@
     });
 
     $("#inicio_prep").click(function () {
-        var memo = $("#memoRequerimiento").val().trim()
-        var fecha = $("#fechaInicioPreparatorio").val()
-        var error = ""
-        if (memo == "") {
-            error = "<br>Error: Primero ingrese un memorando de requerimiento"
+        var memo = $("#memoRequerimiento").val().trim();
+        var fecha = $("#fechaInicioPreparatorio").val();
+        var error = "";
+        if (memo === "") {
+            error = "<br>Primero ingrese un memorando de requerimiento"
         }
-        if (fecha == "") {
-            error += "<br>Error: Seleccione una fecha de inicio"
+        if (fecha === "") {
+            error += "<br>Seleccione una fecha de inicio"
         }
 
-        if (error == "") {
+        if (error === "") {
             $.ajax({
                 type: "POST",
                 url: "${g.createLink(action:'iniciarPreparatorio',controller: 'concurso')}",
                 data: "id=${concursoInstance?.id}&memo=" + memo + "&fecha=" + fecha,
                 success: function (msg) {
-                    if (msg == "ok") {
+                    if (msg === "ok") {
                         window.location.reload(true)
                     }
                 }
             });
         } else {
-            $.box({
-                imageClass: "box_info",
-                text: error,
-                title: "Errores",
-                iconClose: false,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function () {
-                        }
-                    },
-                    width: 500
-                }
-            });
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + error + '</strong>');
         }
 
     });
 
     $("#frmSave-Concurso").validate({
         errorPlacement: function (error, element) {
-//                    console.log(error)
             element.parent().find(".help-block").html(error).show();
         },
         success: function (label) {
@@ -1001,35 +1021,6 @@
         }
     });
 
-    //            $("#min").click(function () {
-    //                if ($(this).hasClass("active")) {
-    //                    $(".header").hide("slide");
-    //                    $("#msg").hide();
-    //                    $("#min").removeClass("icon-arrow-left").removeClass("active").addClass("icon-arrow-right");
-    //                    $(this).attr("title", "Mostrar");
-    //                    $(this).parent().parent().animate({
-    //                        height : 35
-    //                    });
-    //                    $("#mostrar").show()
-    //                } else {
-    //                    $(".header").show("slide");
-    //                    $("#msg").show();
-    //                    $("#min").removeClass("icon-arrow-right").addClass("active").addClass("icon-arrow-left");
-    //                    $(this).attr("title", "Ocultar");
-    //                    $("#mostrar").hide("");
-    //                    $(this).parent().parent().animate({
-    //                        height : 150
-    //                    })
-    //                }
-    //
-    //            });
-    //            $("#msg").click(function () {
-    //                $("#min").click();
-    //            });
-    //            $("#mostrar").click(function () {
-    //                $("#min").click();
-    //            });
-
     $("#obra_busqueda").dblclick(function () {
         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
         $("#modalTitle_busqueda").html("Lista de obras");
@@ -1039,29 +1030,27 @@
     });
 
     $("#btnSave").click(function () {
-//                console.log("aaa")
         $("#frmSave-Concurso").submit();
     });
 
     $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
+        if (ev.keyCode === 13) {
             submitForm($(".btn-success"));
         }
     });
 
     $("#btnRegi").click(function () {
         var obraId = $.trim($("#obra_id").val());
-        if (obraId != "") {
+        if (obraId !== "") {
             var esta = $("#estado").val();
-            if (esta == 'R') {
+            if (esta === 'R') {
                 $("#estado").val("N");
             } else {
                 $("#estado").val("R");
             }
             $("#frmSave-Concurso").submit();
-//                    console.log( $("#frmSave-Concurso"))
         } else {
-            alert("Seleccione una obra!");
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione una obra" + '</strong>');
         }
 
     });

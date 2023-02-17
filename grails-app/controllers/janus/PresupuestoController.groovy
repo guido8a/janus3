@@ -33,20 +33,23 @@ class PresupuestoController {
     def saveAjax() {
        println "save prsp "+params
         def presupuestoInstance
+
         if (params.id) {
             presupuestoInstance = Presupuesto.get(params.id)
             if (!presupuestoInstance) {
-                render "error"
+                render "no_No existe el presupuesto"
                 return
             }//no existe el objeto
-            presupuestoInstance.properties = params
+
         }//es edit
         else {
-            presupuestoInstance = new Presupuesto(params)
+            presupuestoInstance = new Presupuesto()
         } //es create
-        println "sprog "+presupuestoInstance.subPrograma
+
+        presupuestoInstance.properties = params
+
+
         if (!presupuestoInstance.save(flush: true)) {
-           // println "error save prsp "+presupuestoInstance.errors
             flash.clase = "alert-error"
             def str = "<h4>No se pudo guardar Presupuesto " + (presupuestoInstance.id ? presupuestoInstance.id : "") + "</h4>"
 
@@ -60,20 +63,14 @@ class PresupuestoController {
             }
             str += "</ul>"
 
+            render "no_" + str
+        }else{
 
-            render "error"
-            return
+            render "ok_Presupuesto guardado correctamente_${presupuestoInstance.id}_${presupuestoInstance.numero}_${presupuestoInstance.descripcion}_" +
+                    "${presupuestoInstance.fuente}_${presupuestoInstance.programa}&${presupuestoInstance.subPrograma}_" +
+                    "${presupuestoInstance.proyecto}"
         }
 
-/*
-        println "${presupuestoInstance.id}&${presupuestoInstance.numero}&${presupuestoInstance.descripcion}&" +
-                "${presupuestoInstance.fuente}&${presupuestoInstance.programa}&${presupuestoInstance.subPrograma}&" +
-                "${presupuestoInstance.proyecto}"
-*/
-        render "${presupuestoInstance.id}&${presupuestoInstance.numero}&${presupuestoInstance.descripcion}&" +
-                "${presupuestoInstance.fuente}&${presupuestoInstance.programa}&${presupuestoInstance.subPrograma}&" +
-                "${presupuestoInstance.proyecto}"
-        return
     } //save
 
     def save() {

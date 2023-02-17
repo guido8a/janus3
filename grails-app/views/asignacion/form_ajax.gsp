@@ -121,33 +121,6 @@
 
 </div>
 
-
-%{--<div  id="modal-ccp" style="overflow: hidden;">--}%
-
-%{--    <div class="modal-body" id="modalBody">--}%
-%{--        <bsc:buscador name="pac.buscador.id" value="" accion="buscaPrsp" controlador="asignacion" campos="${campos}"--}%
-%{--                      label="cpac" tipo="lista"/>--}%
-%{--    </div>--}%
-
-%{--    <div class="modal-footer" id="modalFooter">--}%
-%{--    </div>--}%
-%{--</div>--}%
-
-%{--<div class="modal large hide fade" id="modal-presupuesto">--}%
-%{--    <div class="modal-header btn-warning">--}%
-%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-%{--        <h3 id="modalTitle-presupuesto"></h3>--}%
-%{--    </div>--}%
-
-%{--    <div class="modal-body" id="modalBody-presupuesto">--}%
-%{--    </div>--}%
-
-%{--    <div class="modal-footer" id="modalFooter-presupuesto">--}%
-%{--    </div>--}%
-%{--</div>--}%
-
-
 <script type="text/javascript">
 
     var bcpc;
@@ -219,45 +192,7 @@
     }
 
     $("#prsp_editar").click(function () {
-        $.ajax({
-            type: "POST",
-            data: {
-                id: $("#item_prsp").val()
-            },
-            url: "${createLink(action:'form_ajax', controller:'presupuesto')}",
-            success: function (msg) {
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
-
-                btnSave.click(function () {
-                    if ($("#frmSave-presupuestoInstance").valid()) {
-                        btnSave.replaceWith(spinner);
-                    }
-                    $.ajax({
-                        type: "POST", url: "${g.createLink(controller: 'presupuesto', action:'saveAjax')}",
-                        data: $("#frmSave-presupuestoInstance").serialize(),
-                        success: function (msg) {
-                            var parts = msg.split("&");
-                            $("#item_prsp").val(parts[0]);
-                            $("#item_presupuesto").val(parts[1]).attr("title", parts[2]);
-                            $("#item_desc").val(parts[2]);
-                            $("#item_fuente").val(parts[3]);
-                            $("#item_prog").val(parts[4]);
-                            $("#item_spro").val(parts[5]);
-                            $("#item_proy").val(parts[6]);
-                            $("#modal-presupuesto").modal("hide");
-                        }
-                    });
-                    return false;
-                });
-
-                $("#modalTitle-presupuesto").html("Crear Presupuesto");
-                $("#modalBody-presupuesto").html(msg);
-                $("#modalFooter-presupuesto").html("").append(btnOk).append(btnSave);
-                $("#modal-presupuesto").modal("show");
-            }
-        });
-        return false;
+        createEditPresupuesto($("#item_prsp").val());
     });
 
     $("#guardar").click(function () {
@@ -282,53 +217,10 @@
         }
     });
 
-
     $("#anio").change(cargarTecho);
 
     $("#item_agregar_prsp").click(function () {
-
-
         createEditPresupuesto();
-
-
-        %{--$.ajax({--}%
-        %{--    type: "POST",--}%
-        %{--    url: "${createLink(action:'form_ajax', controller: 'presupuesto')}",--}%
-        %{--    success: function (msg) {--}%
-        %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-        %{--        var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');--}%
-
-        %{--        btnSave.click(function () {--}%
-        %{--            if ($("#frmSave-presupuestoInstance").valid()) {--}%
-        %{--                btnSave.replaceWith(spinner);--}%
-        %{--            }--}%
-        %{--            $.ajax({--}%
-        %{--                type: "POST",--}%
-        %{--                url: "${g.createLink(controller: 'presupuesto',action:'saveAjax')}",--}%
-        %{--                data: $("#frmSave-presupuestoInstance").serialize(),--}%
-        %{--                success: function (msg) {--}%
-        %{--                    var parts = msg.split("&")--}%
-        %{--                    $("#item_prsp").val(parts[0])--}%
-        %{--                    $("#item_presupuesto").val(parts[1]).attr("title", parts[2])--}%
-        %{--                    $("#item_desc").val(parts[2])--}%
-        %{--                    $("#item_fuente").val(parts[3])--}%
-        %{--                    $("#item_prog").val(parts[4])--}%
-        %{--                    $("#item_spro").val(parts[5])--}%
-        %{--                    $("#item_proy").val(parts[6])--}%
-        %{--                    $("#modal-presupuesto").modal("hide");--}%
-        %{--                }--}%
-        %{--            });--}%
-
-        %{--            return false;--}%
-        %{--        });--}%
-
-        %{--        $("#modalTitle-presupuesto").html("Crear Presupuesto");--}%
-        %{--        $("#modalBody-presupuesto").html(msg);--}%
-        %{--        $("#modalFooter-presupuesto").html("").append(btnOk).append(btnSave);--}%
-        %{--        $("#modal-presupuesto").modal("show");--}%
-        %{--    }--}%
-        %{--});--}%
-        %{--return false;--}%
     });
 
 
@@ -357,7 +249,7 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                // return submitFormGrupo(parentId);
+                                return submitFormPresupuesto();
                             } //callback
                         } //guardar
                     } //buttons
@@ -368,6 +260,38 @@
             } //success
         }); //ajax
     } //createEdit
+
+    function submitFormPresupuesto() {
+        var $form = $("#frmSave-presupuestoInstance");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dd = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dd.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        $("#item_prsp").val(parts[2]);
+                        $("#item_presupuesto").val(parts[3]);
+                        $("#item_desc").val(parts[4]);
+                        $("#item_fuente").val(parts[5]);
+                        $("#item_prog").val(parts[6]);
+                        $("#item_spro").val(parts[7]);
+                        $("#item_proy").val(parts[8]);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
     cargarListaAsinacion();
 

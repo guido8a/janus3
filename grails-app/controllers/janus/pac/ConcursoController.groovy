@@ -582,7 +582,6 @@ class ConcursoController {
         }
         if (params.fechaPublicacion) {
             params.fechaPublicacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaPublicacion)
-            println params.fechaPublicacion
         }
         if (params.fechaLimiteEntregaOfertas) {
             params.fechaLimiteEntregaOfertas = new Date().parse("dd-MM-yyyy HH:mm", params.fechaLimiteEntregaOfertas)
@@ -623,22 +622,22 @@ class ConcursoController {
         }
 
         if (params.fechaInicioPreparatorio) {
-            params.fechaInicioPreparatorio = new Date().parse("dd-MM-yyyy", params.fechaInicioPreparatorio)
+            params.fechaInicioPreparatorio = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioPreparatorio)
         }
         if (params.fechaFinPreparatorio) {
-            params.fechaFinPreparatorio = new Date().parse("dd-MM-yyyy", params.fechaFinPreparatorio)
+            params.fechaFinPreparatorio = new Date().parse("dd-MM-yyyy HH:mm", params.fechaFinPreparatorio)
         }
         if (params.fechaInicioPrecontractual) {
-            params.fechaInicioPrecontractual = new Date().parse("dd-MM-yyyy", params.fechaInicioPrecontractual)
+            params.fechaInicioPrecontractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioPrecontractual)
         }
         if (params.fechaFinPrecontractual) {
-            params.fechaFinPrecontractual = new Date().parse("dd-MM-yyyy", params.fechaFinPrecontractual)
+            params.fechaFinPrecontractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaFinPrecontractual)
         }
         if (params.fechaInicioContractual) {
-            params.fechaInicioContractual = new Date().parse("dd-MM-yyyy", params.fechaInicioContractual)
+            params.fechaInicioContractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaInicioContractual)
         }
         if (params.fechaFinContractual) {
-            params.fechaFinContractual = new Date().parse("dd-MM-yyyy", params.fechaFinContractual)
+            params.fechaFinContractual = new Date().parse("dd-MM-yyyy HH:mm", params.fechaFinContractual)
         }
         if (params.fechaNotificacionAdjudicacion) {
             params.fechaNotificacionAdjudicacion = new Date().parse("dd-MM-yyyy HH:mm", params.fechaNotificacionAdjudicacion)
