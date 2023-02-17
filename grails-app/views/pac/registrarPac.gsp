@@ -6,14 +6,14 @@
         <title>
             P.A.C.
         </title>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
-        <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+        %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>--}%
+        %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>--}%
+        %{--<link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>--}%
         <style type="text/css">
         td {
             font-size : 10px !important;
@@ -26,7 +26,7 @@
     </head>
 
     <body>
-        <div class="span12">
+        <div class="col-md-12">
             <g:if test="${flash.message}">
                 <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
                     <a class="close" data-dismiss="alert" href="#">×</a>
@@ -35,55 +35,56 @@
             </g:if>
         </div>
 
-        <div id="list-grupo" class="span12" role="main" style="margin-top: 10px;margin-left: 0px">
-            <div class="borde_abajo" style="padding-left: 45px;position: relative;">
+        <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: 0px">
+            <div class="borde_abajo" style="padding-left: 45px;position: relative; height: 180px; border-bottom: solid;
+                border-width: 1px">
                 <p class="css-vertical-text">P.A.C.</p>
 
                 <div class="linea" style="height: 98%;"></div>
 
                 <div class="row-fluid" style="margin-left: 0px">
-                    <div class="span1">
+                    <div class="col-md-1">
                         <b>Año:</b>
                         <g:select name="anio" from="${janus.pac.Anio.list([sort: 'anio'])}" id="item_anio" optionValue="anio" optionKey="id" value="${actual.id}" style="width: 80px;font-size: 14px; font-weight: bold "></g:select>
                     </div>
 
-                    <div class="span3">
+                    <div class="col-md-3">
                         <b>Partida presupuestaria:</b>
                         <input type="text" style="width: 190px;;font-size: 12px" id="item_presupuesto">
                         <input type="hidden" style="width: 60px" id="item_prsp">
                         <a href="#" class="btn btn-warning" title="Crear nueva partida" style="margin-top: -10px" id="item_agregar_prsp">
-                            <i class="icon-edit"></i>
+                            <i class="fa fa-edit"></i>
                         </a>
                     </div>
 
-                    <div class="span2">
+                    <div class="col-md-2">
                         <b>Techo:</b>
                         <input type="text" id="techo" disabled="true" style="width: 120px;;text-align: right">
                     </div>
 
-                    <div class="span2">
+                    <div class="col-md-2">
                         <b>Comprometido:</b>
                         <input type="text" id="usado" disabled="true" style="width: 120px;;text-align: right">
                     </div>
 
-                    <div class="span2">
+                    <div class="col-md-2">
                         <b>Disponible:</b>
                         <input type="text" id="disponible" disabled="true" style="width: 120px;text-align: right">
                     </div>
                 </div>
 
                 <div class="row-fluid" style="margin-left: 0px">
-                    <div class="span4">
+                    <div class="col-md-4">
                         <b>Requirente:</b>
                         <input type="text" id="item_req" style="width: 250px; font-size: 12px;">
                     </div>
 
-                    <div class="span3">
+                    <div class="col-md-3">
                         <b>Memorando:</b>
                         <input class="allCaps" type="text" id="item_memo" style="width: 156px; font-size: 12px;">
                     </div>
 
-                    <div class="span4">
+                    <div class="col-md-4">
                         <b>Coordinación:</b>
                         <input type="hidden" id="item_id">
                         <g:select name="presupuesto.id" from="${janus.Departamento.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 250px;;font-size: 12px" id="item_depto"/>
@@ -92,18 +93,18 @@
                 </div>
 
                 <div class="row-fluid" style="margin-left: 0px">
-                    <div class="span4">
+                    <div class="col-md-4">
                         <b>Tipo procedimiento:</b>
                         <g:select name="tipoProcedimiento.id" from="${janus.pac.TipoProcedimiento.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 213px;;font-size: 12px" id="item_tipoProc"/>
                     </div>
 
-                    <div class="span3">
+                    <div class="col-md-3">
                         <b>Código C.P.:</b>
                         <input type="text" style="width: 154px;;font-size: 12px" id="item_codigo">
                         <input type="hidden" style="width: 60px" id="item_cpac">
                     </div>
 
-                    <div class="span5">
+                    <div class="col-md-5">
                         <b>Tipo compra:</b>
                         <g:select name="tipo" from="${janus.pac.TipoCompra.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 120px;;font-size: 12px; margin-left: 6px;" id="item_tipo"/>
                     </div>
@@ -111,26 +112,26 @@
 
                 <div class="row-fluid" style="margin-left: 0px">
 
-                    <div class="span4" style="width: 400px;">
+                    <div class="col-md-4" style="width: 400px;">
                         <b>Descripción:</b>
                         <input type="text" style="width: 400px;font-size: 12px" id="item_desc">
                     </div>
-                    <div class="span2">
+                    <div class="col-md-2">
                         <b>Cantidad:</b>
                         <input type="text" style="width: 100px;text-align: right" id="item_cantidad" value="1">
                     </div>
 
-                    <div class="span2" style="margin-left: -40px;">
+                    <div class="col-md-2" style="margin-left: -40px;">
                         <b>Costo unitario:</b>
                         <input type="text" style="width: 123px;text-align: right" id="item_precio" value="1">
                     </div>
 
-                    <div class="span1" style="margin-left: -10px;">
+                    <div class="col-md-1" style="margin-left: -10px;">
                         <b>Unidad:</b>
                         <g:select name="unidad.id" from="${janus.pac.UnidadIncop.list()}" id="item_unidad" optionKey="id" optionValue="codigo" style="width: 60px;font-size: 12px"/>
                     </div>
 
-                    <div class="span2">
+                    <div class="col-md-2">
                         <b>Cuatrimestre:</b>
 
                         <div class="btn-group" data-toggle="buttons-checkbox">
@@ -140,7 +141,7 @@
                         </div>
                     </div>
 
-                    <div class="span1" style="margin-left: 12px;padding-top:30px; width:90px;">
+                    <div class="col-md-1" style="margin-left: 12px;padding-top:30px; width:90px;">
                         <input type="hidden" value="" id="vol_id">
                         <a href="#" class="btn btn-success" title="Agregar" style="margin-top: -10px" id="item_agregar">
                             <i class="icon-plus"></i>

@@ -218,7 +218,8 @@ class ConcursoController {
         println "armaSql: $params"
         def campos = buscadorService.parmProcesos()
 
-        def sqlSelect = "select cncr__id, obranmbr, pacpdscr, cncrcdgo, cncrobjt, cncrbase, cncrpmbs, cncretdo " +
+        def sqlSelect = "select cncr__id, obranmbr, pacpdscr, cncrcdgo, cncrobjt, cncrbase, cncrpmbs, cncretdo," +
+                "(select count(*) from dcmt dc where dc.cncr__id = cncr.cncr__id) cuenta " +
                 "from cncr left join obra on obra.obra__id = cncr.obra__id, pacp "
 
         def sqlWhere = "where pacp.pacp__id = cncr.pacp__id "

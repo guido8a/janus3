@@ -27,7 +27,7 @@
                 <td style="width: 10%;">${cncr.cncrcdgo}</td>
                 <td style="width: 20%;">${cncr.cncrobjt}</td>
                 <td style="text-align: right; width: 10%;">${cncr.cncrbase}</td>
-                <td style="text-align: center; width: 10%;">0</td>
+                <td style="text-align: center; width: 10%;">${cncr.cuenta}</td>
                 <td style="width: 10%;">
                     <strong style="color: ${cncr.cncretdo == "R" ? '#78b665' : '#c42623'} "> ${(cncr.cncretdo == "R") ? "Registrado" : "No registrado"}</strong>
                 </td>
