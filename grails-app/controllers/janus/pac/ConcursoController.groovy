@@ -205,7 +205,7 @@ class ConcursoController {
         def msg = ""
         if(data?.size() > 20){
             data.pop()   //descarta el último puesto que son 21
-            msg = "<div class='alert-danger' style='margin-top:10px; diplay:block; height:25px;margin-bottom: 20px; font-size:18px !important'>" +
+            msg = "<div class='alert alert-warning' style='margin-top:5px; diplay:block; height:40px;margin-bottom: 5px; font-size:18px !important'>" +
                     " <i class='fa fa-exclamation-triangle pull-left'></i> Su búsqueda ha generado más de 20 resultados. " +
                     "<strong>Use más letras para especificar mejor la búsqueda</strong>.</div>"
         }
@@ -569,7 +569,7 @@ class ConcursoController {
 
 
     def save() {
-        println "save concurso... " + params
+//        println "save concurso... " + params
 
         if (params.codigo) {
             params.codigo = params.codigo.toUpperCase()
