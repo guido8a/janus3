@@ -4,13 +4,13 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr style="width: 100%;">
-            <th style="width: 15%;">Obra</th>
+            <th style="width: 19%;">Obra</th>
             <th style="width: 25%;">Pac</th>
             <th style="width: 10%;">Código</th>
             <th style="width: 20%;">Objeto</th>
             <th style="width: 10%;">Costo Bases</th>
-            <th style="width: 10%;">Documentos</th>
-            <th style="width: 10%">Estado</th>
+            <th style="width: 8%;">Documentos</th>
+            <th style="width: 8%">Estado</th>
         </tr>
         </thead>
 
@@ -22,13 +22,13 @@
         <tbody>
         <g:each in="${data}" status="i" var="cncr">
             <tr style="font-size: 11px" class="item_row" data-id="${cncr.cncr__id}" reg="${cncr.cncretdo}">
-                <td style="width: 15%;">${cncr.obranmbr}</td>
+                <td style="width: 19%;">${cncr.obranmbr}</td>
                 <td style="width: 25%;">${cncr.pacpdscr}</td>
                 <td style="width: 10%;">${cncr.cncrcdgo}</td>
                 <td style="width: 20%;">${cncr.cncrobjt}</td>
                 <td style="text-align: right; width: 10%;">${cncr.cncrbase}</td>
-                <td style="text-align: center; width: 10%;">${cncr.cuenta}</td>
-                <td style="width: 10%;">
+                <td style="text-align: center; width: 8%;">${cncr.cuenta}</td>
+                <td style="width: 8%;">
                     <strong style="color: ${cncr.cncretdo == "R" ? '#78b665' : '#c42623'} "> ${(cncr.cncretdo == "R") ? "Registrado" : "No registrado"}</strong>
                 </td>
             </tr>
@@ -59,7 +59,7 @@
                             },
                             success : function (msg) {
                                 bootbox.dialog({
-                                    title   : "Ver Año",
+                                    title   : "Ver Concurso",
                                     message : msg,
                                     buttons : {
                                         ok : {
