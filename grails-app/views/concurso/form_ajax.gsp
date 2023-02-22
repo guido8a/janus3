@@ -342,10 +342,10 @@
                             </span>
                         </div>
 
-                        <div class="controls col-md-8">
+                        <div class="controls col-md-6">
                             <input type="hidden" id="obra_id" name="obra.id" value="${concursoInstance?.obra?.id}">
                             <input type="text" id="obra_busqueda" value="${concursoInstance?.obra?.codigo}"
-                                   title="${concursoInstance?.obra?.nombre}" style="width: 200px;">
+                                   title="${concursoInstance?.obra?.nombre}" readonly>
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -927,7 +927,72 @@
     </div>
 </div>
 
+<div id="listaObra" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaObra}" optionKey="key"
+                          optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Criterio
+            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+            <g:select name="ordenar" class="ordenar" from="${listaObra}" style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="cnsl-obras"><i class="fa fa-search"></i> Consultar</button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaObra" style="height: 460px; overflow: auto">
+        </div>
+    </fieldset>
+</div>
+
 <script type="text/javascript">
+
+    $("#cnsl-obras").click(function () {
+        buscaObras();
+    });
+
+    $("#listaObra").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 500,
+        position: 'center',
+        title: 'Obras'
+    });
+
+    function buscaObras() {
+        var buscarPor = $("#buscarPor").val();
+        var tipo = $("#buscarTipo").val();
+        var criterio = $("#criterioCriterio").val();
+        var ordenar = $("#ordenar").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'concurso', action:'tablaObras_ajax')}",
+            data: {
+                buscarPor: buscarPor,
+                buscarTipo: tipo,
+                criterio: criterio,
+                ordenar: ordenar
+            },
+            success: function (msg) {
+                $("#divTablaObra").html(msg);
+            }
+        });
+    }
 
     $('#fecha1, #fecha2, #fecha3, #fecha4, #fecha5, #fecha6, #fecha7, #fecha8, #fecha9, #fecha10, #fecha11, #fecha12, #fecha13, #fecha14, #fecha15, #fecha16, #fecha17, #fecha18, #fecha19, #fecha20, #fecha21, #fecha22').datetimepicker({
         locale: 'es',
@@ -939,7 +1004,6 @@
     });
 
     function cargarDatos() {
-
         $.ajax({
             type: "POST", url: "${g.createLink(controller: 'concurso',action:'datosObra')}",
             data: "obra=" + $("#obra_id").val(),
@@ -1022,11 +1086,13 @@
     });
 
     $("#obra_busqueda").dblclick(function () {
-        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        $("#modalTitle_busqueda").html("Lista de obras");
-        $("#modalFooter_busqueda").html("").append(btnOk);
-        $("#modal-busqueda").modal("show");
-        $("#contenidoBuscador").html("")
+        $("#listaObra").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x")
+        // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+        // $("#modalTitle_busqueda").html("Lista de obras");
+        // $("#modalFooter_busqueda").html("").append(btnOk);
+        // $("#modal-busqueda").modal("show");
+        // $("#contenidoBuscador").html("")
     });
 
     $("#btnSave").click(function () {

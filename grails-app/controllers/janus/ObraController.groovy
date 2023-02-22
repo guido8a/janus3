@@ -486,7 +486,7 @@ class ObraController {
             fechaPrecio = d.fcha
         }
 
-        def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Inrgeso', 4: 'Mem. Salida', 5: 'Estado']
+        def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
         def sbprMF = [:]
 
         programa = Programacion.list([sort: 'descripcion']);

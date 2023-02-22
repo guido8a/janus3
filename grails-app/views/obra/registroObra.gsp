@@ -997,7 +997,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         width: 1000,
         height: 500,
         position: 'center',
-        title: 'Rubros'
+        title: 'Obras'
     });
 
     $("#modal-TipoObra").dialog({

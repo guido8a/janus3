@@ -362,6 +362,7 @@ class ConcursoController {
     def form_ajax() {
         println "aqui $params"
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazo": ["Plazo", "int"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "canton": ["Canton", "string"]]
+        def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
         def duracionPrep = 0
         def duracionPre = 0
         def duracionCon = 0
@@ -424,7 +425,7 @@ class ConcursoController {
             //no existe el objeto
         } //es edit
         return [concursoInstance: concursoInstance, campos: campos, duracionPrep: duracionPrep, duracionPre: duracionPre,
-                duracionCon: duracionCon, maxPrep: maxPrep, maxPre: maxPre, maxCon: maxCon]
+                duracionCon: duracionCon, maxPrep: maxPrep, maxPre: maxPre, maxCon: maxCon, listaObra: listaObra]
     } //form_ajax
 
 
@@ -758,6 +759,29 @@ class ConcursoController {
             render "error"
         else
             render "ok"
+
+    }
+
+    def tablaObras_ajax(){
+        println "listaItems" + params
+        def datos;
+        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
+
+        def select = "select obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
+                "from obra, parr, dpto "
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id "
+        def sqlTx = ""
+        def bsca = listaObra[params.buscarPor.toInteger()-1]
+        def ordn = listaObra[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos]
 
     }
 
