@@ -11,16 +11,6 @@
         Lista de Procesos
     </title>
 
-    %{--<asset:javascript src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.js"/>--}%
-    %{--<asset:javascript src="/apli/lzm.context-0.5.js"/>--}%
-    %{--<asset:javascript src="/jquery/plugins/jQuery-contextMenu-gh-pages/src/jquery.contextMenu.css"/>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>--}%
     <style>
     td {
         line-height : 12px !important;
@@ -159,7 +149,6 @@
     </fieldset>
 </div>
 
-
 <script type="text/javascript">
     var url = "${resource(dir:'images', file:'spinner_24.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
@@ -171,78 +160,7 @@
         $("#frmSave-Concurso").submit();
     }
 
-
-
     $(function () {
-
-
-        %{--$.contextMenu({--}%
-        %{--selector : '.item_row',--}%
-        %{--items    : {--}%
-        %{--"view"   : {--}%
-        %{--name     : "Ver",--}%
-        %{--icon     : "view",--}%
-        %{--callback : function (key, options) {--}%
-        %{--location.href = "${g.createLink(controller: 'concurso',action: 'show')}/" + $(this).attr("id")--}%
-        %{--}--}%
-        %{--},--}%
-        %{--"edit"   : {--}%
-        %{--name     : "Editar",--}%
-        %{--icon     : "edit",--}%
-        %{--callback : function (key, options) {--}%
-        %{--location.href = "${g.createLink(action: 'form_ajax')}/" + $(this).attr("id")--}%
-        %{--}--}%
-        %{--},--}%
-        %{--"delete" : {--}%
-        %{--name     : "Eliminar",--}%
-        %{--icon     : "delete",--}%
-        %{--callback : function (key, options) {--}%
-        %{--var id = $(this).attr("id");--}%
-        %{--$("#id").val(id);--}%
-        %{--var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-        %{--var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');--}%
-
-        %{--btnDelete.click(function () {--}%
-        %{--btnDelete.replaceWith(spinner);--}%
-        %{--$("#frmDelete-Concurso").submit();--}%
-        %{--return false;--}%
-        %{--});--}%
-
-        %{--$("#modalDeleteHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");--}%
-        %{--$("#modalDeleteTitle").html("Eliminar Concurso");--}%
-        %{--$("#modalDeleteBody").html("<p>¿Está seguro de querer eliminar este Proceso?</p>");--}%
-        %{--$("#modalDeleteFooter").html("").append(btnOk).append(btnDelete);--}%
-        %{--$("#modal-Delete").modal("show");--}%
-        %{--return false;--}%
-        %{--}--}%
-        %{--},--}%
-        %{--"docs"   : {--}%
-        %{--name     : "Documentos",--}%
-        %{--icon     : "doc",--}%
-        %{--callback : function (key, options) {--}%
-        %{--location.href = "${g.createLink(controller: 'documentoProceso',action: 'list')}/" + $(this).attr("id")--}%
-        %{--}--}%
-        %{--},--}%
-        %{--"ofrt"   : {--}%
-        %{--name     : "Ofertas",--}%
-        %{--icon     : "ofrt",--}%
-        %{--callback : function (key, options) {--}%
-        %{--location.href = "${g.createLink(controller: 'oferta',action: 'list')}/" + $(this).attr("id")--}%
-        %{--},--}%
-        %{--disabled : function (key, opt) {--}%
-        %{--return opt.$trigger.attr("reg") != 'R'--}%
-        %{--}--}%
-        %{--}--}%
-        %{--//                "print": {name:"Imprimir",icon:"print"}--}%
-        %{--}--}%
-        %{--});--}%
-        %{--$('[rel=tooltip]').tooltip();--}%
-
-//                $(".paginate").paginate({
-//                    maxRows        : 10,
-//                    searchPosition : $("#busca"),
-//                    float          : "right"
-//                });
 
         $("#modal-pac").dialog({
             autoOpen: false,
@@ -255,7 +173,7 @@
             title: 'Seleccionar PAC',
             buttons   : {
                 "Cerrar": function () {
-                    $("#dialTransporte").dialog("close");
+                    $("#modal-pac").dialog("close");
                 }
             }
         });
@@ -396,7 +314,6 @@
             cargarBusqueda();
         });
 
-
         $("#cnsl-pac").click(function () {
             var buscarPor = $("#buscarPor").val();
             var criterio = $("#criterioCriterio").val();
@@ -414,10 +331,6 @@
                 }
             });
         });
-
-
-
-
 
     });
 
