@@ -21,8 +21,6 @@ class ProgramacionController {
         if (params.id) {
             programacionInstance = Programacion.get(params.id)
             if (!programacionInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Programacion con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -54,6 +52,7 @@ class ProgramacionController {
 
         def fechaI;
         def fechaF;
+        def band = 0;
 
         if(params.fechaInicio){
             fechaI = new Date().parse("dd-MM-yyyy", params.fechaInicio)
@@ -66,9 +65,17 @@ class ProgramacionController {
         params.fechaInicio = fechaI
         params.fechaFin = fechaF
 
-        if(fechaI >= fechaF){
-            render "no_No se puede crear la Programación la Fecha Fin debe ser mayor a la Fecha Inicio"
-        }else {
+        if(fechaI && fechaF){
+            if(fechaI >= fechaF){
+                band = 1
+            }else{
+                band = 0
+            }
+        }else{
+            band = 0;
+        }
+
+        if(band == 0){
             def programacionInstance
 
             if (params.id) {
@@ -89,7 +96,11 @@ class ProgramacionController {
             } else {
                 render "ok_Programación guardada correctamente"
             }
+        }else{
+            render "no_No se puede crear la Programación la Fecha Fin debe ser mayor a la Fecha Inicio"
         }
+
+
     } //save
 
     def save_ext() {
@@ -169,22 +180,16 @@ class ProgramacionController {
     def delete() {
         def programacionInstance = Programacion.get(params.id)
         if (!programacionInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Programacion con id " + params.id
-            redirect(action: "list")
-            return
+            render "no_No se encontró la programación"
         }
 
         try {
             programacionInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente la Programacion " + programacionInstance.descripcion
-            redirect(action: "list")
+            render "ok_Programación borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar la Programacion " + (programacionInstance.descripcion ? programacionInstance.descripcion : "")
-            redirect(action: "list")
+            println("error al guardar la programación " + programacionInstance.errors)
+            render "no_Error al guardar la programación"
         }
     } //delete
 } //fin controller

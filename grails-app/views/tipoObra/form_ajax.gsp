@@ -4,82 +4,61 @@
 <g:form class="form-horizontal" name="frmSave-TipoObra" action="save">
     <g:hiddenField name="id" value="${tipoObraInstance?.id}"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: tipoObraInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-2 control-label text-info">
                 Código
-            </span>
-        </div>
-<g:if test="${tipoObraInstance?.id}">
-    <div class="controls">
-        <g:textField name="codigo" maxlength="4" class=" required" value="${tipoObraInstance?.codigo}" readonly="readonly"/>
-        <span class="mandatory">*</span>
-
-        <p class="help-block ui-helper-hidden"></p>
-    </div>
-</g:if>
-<g:else>
-            <div class="controls">
-                <g:textField name="codigo" maxlength="4" class=" required allCaps" value="${tipoObraInstance?.codigo}"/>
-                <span class="mandatory">*</span>
-
+            </label>
+            <span class="col-md-2">
+                <g:textField name="codigo" maxlength="4" class="form-control allCaps required" value="${tipoObraInstance?.codigo}" readonly="${tipoObraInstance?.id ? true : false}" />
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
- </g:else>
-
-
+            </span>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: tipoObraInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-2 control-label text-info">
                 Descripción
+            </label>
+            <span class="col-md-8">
+                <g:textField name="descripcion" maxlength="63" class="form-control allCaps required" value="${tipoObraInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="descripcion" maxlength="63" class=" required" value="${tipoObraInstance?.descripcion}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Grupo
+    <div class="form-group ${hasErrors(bean: tipoObraInstance, field: 'grupo', 'error')} ">
+        <span class="grupo">
+            <label for="tipo" class="col-md-2 control-label text-info">
+                Tipo
+            </label>
+            <span class="col-md-4">
+                <g:select name="tipo" from="${janus.Grupo.list()}"  optionValue="descripcion" optionKey="id"  class="form-control required" value="${tipoObraInstance?.grupo?.id}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:select id="grupo" name="grupo.id" from="${janus.Grupo.list()}" optionKey="id" class="many-to-one "
-                      value="${tipoObraInstance?.grupo?.id}" />
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
 </g:form>
 
 <script type="text/javascript">
     $("#frmSave-TipoObra").validate({
-        errorPlacement: function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
-        success: function (label) {
-            label.parent().hide();
-        },
-        errorClass: "label label-important",
-        submitHandler: function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormTipoObra();
+            return false;
         }
+        return true;
     });
 </script>

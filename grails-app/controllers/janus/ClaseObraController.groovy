@@ -12,7 +12,7 @@ class ClaseObraController {
     } //index
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 100, 100)
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [claseObraInstanceList: ClaseObra.list(params), claseObraInstanceTotal: ClaseObra.count(), params: params]
     } //list
 
@@ -77,8 +77,6 @@ class ClaseObraController {
         if (params.id) {
             claseObraInstance = ClaseObra.get(params.id)
             if (!claseObraInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró ClaseObra con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -88,83 +86,38 @@ class ClaseObraController {
 
     def save() {
 
-//        println("params " + params)
-
-        def clases = ClaseObra.list()
-
         def clasesOrdenadas = ClaseObra.list(sort: 'codigo' )
-//        def pp = ClaseObra.findByCodigo(params.codigo)
-
         def codigos = []
+        def claseObraInstance
 
         clasesOrdenadas.each {
             codigos += it?.codigo
         }
 
-//        println("codigos " + codigos)
+        params.descripcion = params.descripcion.toUpperCase();
 
-        def claseObraInstance
         if (params.id) {
             claseObraInstance = ClaseObra.get(params.id)
             if (!claseObraInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró ClaseObra con id " + params.id
-                redirect(action: 'list')
-                return
+                render "no_Error al guardar la clase de obra"
             }//no existe el objeto
             claseObraInstance.properties = params
         }//es edit
         else {
-//            if(!pp){
-//                claseObraInstance = new ClaseObra(params)
-//            }else{
-//                flash.clase = "alert-error"
-//                flash.message = "No se pudo guardar la clase de obra, el código ya existe!!"
-//                redirect(action: 'list')
-//                return
-//            }
-
-            println("codigo ultimo " + (codigos.last() + 1))
-
             claseObraInstance = new ClaseObra(params)
             claseObraInstance.codigo =  (codigos.last() + 1)
-
-
         } //es create
+
         if (!claseObraInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar ClaseObra " + (claseObraInstance.id ? claseObraInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            claseObraInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            render "no_Error al guardar la clase de obra"
+        }else{
+            render "ok_Clase de obra guardada correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente ClaseObra " + claseObraInstance?.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente ClaseObra " + claseObraInstance?.descripcion
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def claseObraInstance = ClaseObra.get(params.id)
         if (!claseObraInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró ClaseObra con id " + params.id
             redirect(action: "list")
             return
         }
@@ -174,22 +127,17 @@ class ClaseObraController {
     def delete() {
         def claseObraInstance = ClaseObra.get(params.id)
         if (!claseObraInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró ClaseObra con id " + params.id
             redirect(action: "list")
             return
         }
 
         try {
             claseObraInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente ClaseObra " + claseObraInstance?.descripcion
-            redirect(action: "list")
+            render "ok_Clase borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar ClaseObra " + (claseObraInstance.id ? claseObraInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar la clase de obra " + claseObraInstance.errors)
+           render "no_Error al borrar la clase"
         }
     } //delete
 } //fin controller

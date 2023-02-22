@@ -34,67 +34,35 @@ class EstadoObraController {
         def estadoObraInstance
 
         params.codigo = params.codigo.toUpperCase();
+        params.descripcion = params.descripcion.toUpperCase();
 
         def existe = EstadoObra.findByCodigo(params.codigo)
 
         if (params.id) {
             estadoObraInstance = EstadoObra.get(params.id)
             if (!estadoObraInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Estado Obra con id " + params.id
-                redirect(action: 'list')
-                return
+                render "no_Error al guardar el estado de obra"
             }//no existe el objeto
             estadoObraInstance.properties = params
-        }//es edit
-        else {
-
+        }else {
             if(!existe){
                 estadoObraInstance = new EstadoObra(params)
             }else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el estado de la obra, el código ya existe!!"
-                redirect(action: 'list')
-                return
-
+               render "no_El código ya existe"
             }
-
-
         } //es create
+
         if (!estadoObraInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Estado Obra " + (estadoObraInstance.id ? estadoObraInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            estadoObraInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            println("error al guardar el estado de obra " + estadoObraInstance.errors)
+            render "no_Error al guardar el estado de obra"
+        }else{
+            render "ok_Estado de obra guardado correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Estado Obra: " + estadoObraInstance?.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Estado Obra " + estadoObraInstance?.descripcion
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def estadoObraInstance = EstadoObra.get(params.id)
         if (!estadoObraInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Estado Obra con id " + params.id
             redirect(action: "list")
             return
         }
@@ -104,22 +72,16 @@ class EstadoObraController {
     def delete() {
         def estadoObraInstance = EstadoObra.get(params.id)
         if (!estadoObraInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Estado Obra con id " + params.id
-            redirect(action: "list")
-            return
+            render "no_Error al borrar el estado de obra"
         }
 
         try {
             estadoObraInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Estado Obra " + estadoObraInstance?.descripcion
-            redirect(action: "list")
+            render "ok_Estado de obra borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Estado Obra " + (estadoObraInstance.id ? estadoObraInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar el estado de obra  " + estadoObraInstance.errors)
+            render "no_Error al borrar el estado de obra"
         }
     } //delete
 } //fin controller

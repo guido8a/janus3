@@ -4,87 +4,84 @@
 <g:form class="form-horizontal" name="frmSave-Programacion" action="save">
     <g:hiddenField name="id" value="${programacionInstance?.id}"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: programacionInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-2 control-label text-info">
                 Descripción
+            </label>
+            <span class="col-md-8">
+                <g:textField name="descripcion" maxlength="40" class="form-control allCaps required" value="${programacionInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="descripcion" maxlength="40" class=" required allCaps"
-                         value="${programacionInstance?.descripcion}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Fecha Inicio
-            </span>
-        </div>
-
-        <div class="controls">
-            <elm:datepicker name="fechaInicio" class="" value="${programacionInstance?.fechaInicio}"/>
-
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Fecha Fin
-            </span>
-        </div>
-
-        <div class="controls">
-            <elm:datepicker name="fechaFin" class="" value="${programacionInstance?.fechaFin}"/>
-
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: programacionInstance, field: 'grupo', 'error')} ">
+        <span class="grupo">
+            <label for="grupo" class="col-md-2 control-label text-info">
                 Grupo
+            </label>
+            <span class="col-md-4">
+                <g:select name="grupo" from="${janus.Grupo.list()}"  optionValue="descripcion" optionKey="id"  class="form-control required" value="${programacionInstance?.grupo?.id}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
+        </span>
+    </div>
 
-        <div class="controls">
-            <g:select id="grupo" name="grupo.id" from="${janus.Grupo.list()}" optionKey="id" class="many-to-one "
-                      value="${programacionInstance?.grupo?.id}" />
+    <div class="form-group ${hasErrors(bean: programacionInstance, field: 'fechaInicio', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-2 control-label text-info">
+                Fecha Inicio
+            </label>
+            <span class="col-md-4">
+                <input aria-label="" name="fechaInicio" id='fecha1' type='text' class="form-control" value="${programacionInstance?.fechaInicio?.format("dd-MM-yyyy")}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
 
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+    <div class="form-group ${hasErrors(bean: programacionInstance, field: 'fechaFin', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-2 control-label text-info">
+                Fecha Fin
+            </label>
+            <span class="col-md-4">
+                <input aria-label="" name="fechaFin" id='fecha2' type='text' class="form-control" value="${programacionInstance?.fechaFin?.format("dd-MM-yyyy")}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
     </div>
 
 </g:form>
 
 <script type="text/javascript">
-    $("#frmSave-Programacion").validate({
-        errorPlacement: function (error, element) {
-            element.parent().find(".help-block").html(error).show();
-        },
-        success: function (label) {
-            label.parent().hide();
-        },
-        errorClass: "label label-important",
-        submitHandler: function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+
+    $('#fecha1, #fecha2').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
         }
     });
 
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $("#frmSave-Programacion").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
         }
+    });
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormProgramacion();
+            return false;
+        }
+        return true;
     });
 </script>

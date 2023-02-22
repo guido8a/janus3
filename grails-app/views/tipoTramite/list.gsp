@@ -17,7 +17,7 @@
     </g:link>
     <a href="#" class="btn btn-success btn-new">
         <i class="fa fa-file"></i>
-        Nueva Tipo de Trámite
+        Nuevo Tipo de Trámite
     </a>
 </div>
 

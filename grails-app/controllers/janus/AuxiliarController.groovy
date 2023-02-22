@@ -2,6 +2,7 @@ package janus
 
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class AuxiliarController {
 

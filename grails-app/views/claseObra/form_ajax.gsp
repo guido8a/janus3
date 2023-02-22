@@ -4,121 +4,51 @@
 <g:form class="form-horizontal" name="frmSave-ClaseObra" action="save">
     <g:hiddenField name="id" value="${claseObraInstance?.id}"/>
 
-    %{--<div class="control-group">--}%
-        %{--<div>--}%
-            %{--<span class="control-label label label-inverse">--}%
-                %{--Código--}%
-            %{--</span>--}%
-        %{--</div>--}%
-
-        %{--<g:if test="${claseObraInstance?.id}">--}%
-            %{--<div class="controls">--}%
-               %{--<g:textField name="codigo" readonly="readonly" class=" required" value="${fieldValue(bean: claseObraInstance, field: 'codigo')}"/>--}%
-                %{--<span class="mandatory">*</span>--}%
-                %{--<p class="help-block ui-helper-hidden"></p>--}%
-            %{--</div>--}%
-        %{--</g:if>--}%
-
-        %{--<g:else>--}%
-            %{--<div class="controls">--}%
-                %{--<g:textField name="codigo" class=" required" value=""/>--}%
-                %{--<span class="mandatory">*</span>--}%
-                %{--<p class="help-block ui-helper-hidden"></p>--}%
-            %{--</div>--}%
-        %{--</g:else>--}%
-    %{--</div>--}%
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: claseObraInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-2 control-label text-info">
                 Descripción
+            </label>
+            <span class="col-md-8">
+                <g:textField name="descripcion" maxlength="63" class="form-control allCaps required" value="${claseObraInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="descripcion" maxlength="63" class=" required" value="${claseObraInstance?.descripcion}"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
-
-    %{--<div class="control-group">--}%
-        %{--<div>--}%
-            %{--<span class="control-label label label-inverse">--}%
-                %{--Tipo--}%
-            %{--</span>--}%
-        %{--</div>--}%
-
-        %{--<div class="controls">--}%
-            %{--<g:textField name="tipo" maxlength="1" class="" value="${claseObraInstance?.tipo}"/>--}%
-
-            %{--<p class="help-block ui-helper-hidden"></p>--}%
-        %{--</div>--}%
-    %{--</div>--}%
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: claseObraInstance, field: 'grupo', 'error')} ">
+        <span class="grupo">
+            <label for="grupo" class="col-md-2 control-label text-info">
                 Grupo
+            </label>
+            <span class="col-md-4">
+                <g:select name="grupo" from="${janus.Grupo.list()}"  optionValue="descripcion" optionKey="id"  class="form-control required" value="${claseObraInstance?.grupo?.id}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:select id="grupo" name="grupo.id" from="${janus.Grupo.list()}" optionKey="id" class="many-to-one "
-                      value="${claseObraInstance?.grupo?.id}" />
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
 </g:form>
 
 <script type="text/javascript">
     $("#frmSave-ClaseObra").validate({
-        errorPlacement: function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
-        success: function (label) {
-            label.parent().hide();
-        },
-        errorClass: "label label-important",
-        submitHandler: function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormClaseObra();
+            return false;
         }
+        return true;
     });
-
-
-    function validarNum(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
-        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-                (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-                ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-                ev.keyCode == 37 || ev.keyCode == 39);
-    }
-
-
-    $("#codigo").keydown(function (ev){
-
-        return validarNum(ev)
-    })
-
 </script>

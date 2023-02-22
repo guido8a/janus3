@@ -6,18 +6,6 @@
     <title>
         Lista de Procesos
     </title>
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-timepicker/js', file: 'jquery-ui-timepicker-addon.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-timepicker/i18n', file: 'jquery.ui.datetimepicker-es.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jquery-timepicker/css', file: 'jquery-ui-timepicker-addon.css')}" rel="stylesheet">--}%
 
     <style>
     td {
@@ -176,7 +164,6 @@
         <ul class="nav nav-pills red ui-corner-top" id="myTab">
             <li class="active"><a href="#datos" style="padding-left: 30px; padding-right: 30px">Datos proceso</a></li>
             <li><a href="#fechas" style="padding-left: 30px; padding-right: 30px">Fechas del proceso</a></li>
-            %{--<li><a href="#fechas2" style="color: #000000 !important;">Fechas de control del trámite</a></li>--}%
         </ul>
 
         <div class="tab-content ui-corner-bottom" style="height: 385px">
@@ -228,8 +215,6 @@
                     </div>
                 </div>
 
-                %{--<div class="col-md-6" style="margin-top: 10px">--}%
-
                 <div class="row">
                     <div class="control-group col-md-7" style="margin-top: 10px">
                         <div>
@@ -269,11 +254,9 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--<div class="input-append">--}%
                             <g:textField name="memoCertificacionFondos"
                                          value="${concursoInstance?.memoCertificacionFondos}" style="text-align: left;"
                                          class="allCaps"/>
-                            %{--</div>--}%
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -391,7 +374,6 @@
             </div> <!-- fin tab datos -->
 
             <div class="tab-pane" id="fechas">
-                %{--<div id="cols" style="float: left;">--}%
 
                 <g:set var="minHour" value="${8}"/>
                 <g:set var="maxHour" value="${20}"/>
@@ -406,11 +388,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaPublicacion" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaPublicacion}" controlType="select"--}%
-                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
-
-                            <input aria-label="" name="fechaPublicacion" id='fecha1' type='text' class="input-small" value="${concursoInstance?.fechaPublicacion}" />
+                            <input aria-label="" name="fechaPublicacion" id='fecha1' type='text' class="input-small" value="${concursoInstance?.fechaPublicacion?.format("dd-MM-yyyy HH:mm")}" />
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </div>
@@ -423,11 +401,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaInicioEvaluacionOferta" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaInicioEvaluacionOferta}"--}%
-                            %{--                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                            stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaInicioEvaluacionOferta" id='fecha2' type='text' class="input-small" value="${concursoInstance?.fechaInicioEvaluacionOferta}" />
+                            <input aria-label="" name="fechaInicioEvaluacionOferta" id='fecha2' type='text' class="input-small" value="${concursoInstance?.fechaInicioEvaluacionOferta?.format("dd-MM-yyyy HH:mm")}" />
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </div>
@@ -442,11 +416,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                            <elm:datetimepicker showTime="false" name="fechaAceptacionProveedor" class=""--}%
-                            %{--                                                value="${concursoInstance?.fechaAceptacionProveedor}"--}%
-                            %{--                                                controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                                stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaAceptacionProveedor" id='fecha3' type='text' class="input-small" value="${concursoInstance?.fechaAceptacionProveedor}" />
+                            <input aria-label="" name="fechaAceptacionProveedor" id='fecha3' type='text' class="input-small" value="${concursoInstance?.fechaAceptacionProveedor?.format("dd-MM-yyyy HH:mm")}" />
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </div>
@@ -459,12 +429,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaLimiteResultadosFinales" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaLimiteResultadosFinales}"--}%
-                            %{--                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                            stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaLimiteResultadosFinales" id='fecha4' type='text' class="input-small" value="${concursoInstance?.fechaLimiteResultadosFinales}" />
-
+                            <input aria-label="" name="fechaLimiteResultadosFinales" id='fecha4' type='text' class="input-small" value="${concursoInstance?.fechaLimiteResultadosFinales?.format("dd-MM-yyyy HH:mm")}" />
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
                     </div>
@@ -479,11 +444,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                            <elm:datetimepicker showTime="false" name="fechaLimitePreguntas" class=""--}%
-                            %{--                                                value="${concursoInstance?.fechaLimitePreguntas}"--}%
-                            %{--                                                controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                                stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaLimitePreguntas" id='fecha5' type='text' class="input-small" value="${concursoInstance?.fechaLimitePreguntas}" />
+                            <input aria-label="" name="fechaLimitePreguntas" id='fecha5' type='text' class="input-small" value="${concursoInstance?.fechaLimitePreguntas?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -497,10 +458,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaAdjudicacion" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaAdjudicacion}" controlType="select"--}%
-                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaAdjudicacion" id='fecha6' type='text' class="input-small" value="${concursoInstance?.fechaAdjudicacion}" />
+                            <input aria-label="" name="fechaAdjudicacion" id='fecha6' type='text' class="input-small" value="${concursoInstance?.fechaAdjudicacion?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -518,11 +476,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaLimiteRespuestas" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaLimiteRespuestas}"--}%
-                            %{--                                            controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                            stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaLimiteRespuestas" id='fecha7' type='text' class="input-small" value="${concursoInstance?.fechaLimiteRespuestas}" />
+                            <input aria-label="" name="fechaLimiteRespuestas" id='fecha7' type='text' class="input-small" value="${concursoInstance?.fechaLimiteRespuestas?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -536,10 +490,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaInicio" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaInicio}" controlType="select"--}%
-                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaInicio" id='fecha8' type='text' class="input-small" value="${concursoInstance?.fechaInicio}" />
+                            <input aria-label="" name="fechaInicio" id='fecha8' type='text' class="input-small" value="${concursoInstance?.fechaInicio?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -557,11 +508,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                    <elm:datetimepicker showTime="false" name="fechaLimiteEntregaOfertas" class=""--}%
-                            %{--                                        value="${concursoInstance?.fechaLimiteEntregaOfertas}"--}%
-                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                        stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small" value="${concursoInstance?.fechaLimiteEntregaOfertas}" />
+                            <input aria-label="" name="fechaLimiteEntregaOfertas" id='fecha9' type='text' class="input-small" value="${concursoInstance?.fechaLimiteEntregaOfertas?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -574,10 +521,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaCalificacion" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaCalificacion}" controlType="select"--}%
-                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaCalificacion" id='fecha10' type='text' class="input-small" value="${concursoInstance?.fechaCalificacion}" />
+                            <input aria-label="" name="fechaCalificacion" id='fecha10' type='text' class="input-small" value="${concursoInstance?.fechaCalificacion?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -594,11 +538,8 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                    <elm:datetimepicker showTime="false" name="fechaAperturaOfertas" class=""--}%
-                            %{--                                        value="${concursoInstance?.fechaAperturaOfertas}"--}%
-                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                        stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaAperturaOfertas" id='fecha11' type='text' class="input-small" value="${concursoInstance?.fechaAperturaOfertas}" />
+
+                            <input aria-label="" name="fechaAperturaOfertas" id='fecha11' type='text' class="input-small" value="${concursoInstance?.fechaAperturaOfertas?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -611,10 +552,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                        <elm:datetimepicker showTime="false" name="fechaInicioPuja" class=""--}%
-                            %{--                                            value="${concursoInstance?.fechaInicioPuja}" controlType="select"--}%
-                            %{--                                            minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaInicioPuja" id='fecha12' type='text' class="input-small" value="${concursoInstance?.fechaInicioPuja}" />
+                            <input aria-label="" name="fechaInicioPuja" id='fecha12' type='text' class="input-small" value="${concursoInstance?.fechaInicioPuja?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -631,11 +569,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                    <elm:datetimepicker showTime="false" name="fechaLimiteSolicitarConvalidacion" class=""--}%
-                            %{--                                        value="${concursoInstance?.fechaLimiteSolicitarConvalidacion}"--}%
-                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                        stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaLimiteSolicitarConvalidacion" id='fecha13' type='text' class="input-small" value="${concursoInstance?.fechaLimiteSolicitarConvalidacion}" />
+                            <input aria-label="" name="fechaLimiteSolicitarConvalidacion" id='fecha13' type='text' class="input-small" value="${concursoInstance?.fechaLimiteSolicitarConvalidacion?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -648,10 +582,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                    <elm:datetimepicker showTime="false" name="fechaFinPuja" class=""--}%
-                            %{--                                        value="${concursoInstance?.fechaFinPuja}" controlType="select"--}%
-                            %{--                                        minHour="${minHour}" maxHour="${maxHour}" stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaFinPuja" id='fecha14' type='text' class="input-small" value="${concursoInstance?.fechaFinPuja}" />
+                            <input aria-label="" name="fechaFinPuja" id='fecha14' type='text' class="input-small" value="${concursoInstance?.fechaFinPuja?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -669,11 +600,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                    <elm:datetimepicker showTime="false" name="fechaLimiteRespuestaConvalidacion" class=""--}%
-                            %{--                                        value="${concursoInstance?.fechaLimiteRespuestaConvalidacion}"--}%
-                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                        stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaLimiteRespuestaConvalidacion" id='fecha15' type='text' class="input-small" value="${concursoInstance?.fechaLimiteRespuestaConvalidacion}" />
+                            <input aria-label="" name="fechaLimiteRespuestaConvalidacion" id='fecha15' type='text' class="input-small" value="${concursoInstance?.fechaLimiteRespuestaConvalidacion?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -687,11 +614,7 @@
                         </div>
 
                         <div class="controls col-md-8">
-                            %{--                    <elm:datetimepicker showTime="false" name="fechaNotificacionAdjudicacion" class=""--}%
-                            %{--                                        value="${concursoInstance?.fechaNotificacionAdjudicacion}"--}%
-                            %{--                                        controlType="select" minHour="${minHour}" maxHour="${maxHour}"--}%
-                            %{--                                        stepMinute="${stepMin}"/>--}%
-                            <input aria-label="" name="fechaNotificacionAdjudicacion" id='fecha16' type='text' class="input-small" value="${concursoInstance?.fechaNotificacionAdjudicacion}" />
+                            <input aria-label="" name="fechaNotificacionAdjudicacion" id='fecha16' type='text' class="input-small" value="${concursoInstance?.fechaNotificacionAdjudicacion?.format("dd-MM-yyyy HH:mm")}" />
 
                             <p class="help-block ui-helper-hidden"></p>
                         </div>
@@ -731,10 +654,7 @@
                                 </div>
 
                                 <div class="controls">
-                                    %{--                            <elm:datepicker name="fechaInicioPreparatorio" class=""--}%
-                                    %{--                                            value="${concursoInstance?.fechaInicioPreparatorio ?: concursoInstance?.fechaPublicacion}"--}%
-                                    %{--                                            style="width:130px;float: left"/>--}%
-                                    <input aria-label="" name="fechaInicioPreparatorio" id='fecha17' type='text' class="input-small" value="${concursoInstance?.fechaInicioPreparatorio}" />
+                                    <input aria-label="" name="fechaInicioPreparatorio" id='fecha17' type='text' class="input-small" value="${concursoInstance?.fechaInicioPreparatorio?.format("dd-MM-yyyy HH:mm")}" />
 
                                     <g:if test="${concursoInstance?.fechaInicioPreparatorio == null}">
                                         <a class="btn btn-small btn-primary btn-ajax" href="#" rel="tooltip"
@@ -784,10 +704,7 @@
                                 </div>
 
                                 <div class="controls">
-                                    %{--                            <elm:datepicker name="fechaFinPreparatorio" class=""--}%
-                                    %{--                                            value="${concursoInstance?.fechaFinPreparatorio}"--}%
-                                    %{--                                            style="width:130px;"/>                           --}%
-                                    <input aria-label="" name="fechaFinPreparatorio" id='fecha18' type='text' class="input-small" value="${concursoInstance?.fechaFinPreparatorio}" />
+                                    <input aria-label="" name="fechaFinPreparatorio" id='fecha18' type='text' class="input-small" value="${concursoInstance?.fechaFinPreparatorio?.format("dd-MM-yyyy HH:mm")}" />
                                     <p class="help-block ui-helper-hidden"></p>
                                 </div>
                             </div>
@@ -823,10 +740,7 @@
                             </div>
 
                             <div class="controls">
-                                %{--                        <elm:datepicker name="fechaInicioPrecontractual" class=""--}%
-                                %{--                                        value="${concursoInstance?.fechaInicioPrecontractual}"--}%
-                                %{--                                        style="width:130px;"/>--}%
-                                <input aria-label="" name="fechaInicioPrecontractual" id='fecha19' type='text' class="input-small" value="${concursoInstance?.fechaInicioPrecontractual}" />
+                                <input aria-label="" name="fechaInicioPrecontractual" id='fecha19' type='text' class="input-small" value="${concursoInstance?.fechaInicioPrecontractual?.format("dd-MM-yyyy HH:mm")}" />
 
                                 <p class="help-block ui-helper-hidden"></p>
                             </div>
@@ -843,7 +757,7 @@
                                 %{--                        <elm:datepicker name="fechaInicioContractual" class=""--}%
                                 %{--                                        value="${concursoInstance?.fechaInicioContractual}"--}%
                                 %{--                                        style="width:130px;"/>--}%
-                                <input aria-label="" name="fechaInicioContractual" id='fecha20' type='text' class="input-small" value="${concursoInstance?.fechaInicioContractual}" />
+                                <input aria-label="" name="fechaInicioContractual" id='fecha20' type='text' class="input-small" value="${concursoInstance?.fechaInicioContractual?.format("dd-MM-yyyy HH:mm")}" />
 
                                 <p class="help-block ui-helper-hidden"></p>
                             </div>
@@ -864,7 +778,7 @@
                                 %{--                        <elm:datepicker name="fechaFinPrecontractual" class=""--}%
                                 %{--                                        value="${concursoInstance?.fechaFinPrecontractual}"--}%
                                 %{--                                        style="width:130px;"/>--}%
-                                <input aria-label="" name="fechaFinPrecontractual" id='fecha21' type='text' class="input-small" value="${concursoInstance?.fechaFinPrecontractual}" />
+                                <input aria-label="" name="fechaFinPrecontractual" id='fecha21' type='text' class="input-small" value="${concursoInstance?.fechaFinPrecontractual?.format("dd-MM-yyyy HH:mm")}" />
 
                                 <p class="help-block ui-helper-hidden"></p>
                             </div>
@@ -878,10 +792,7 @@
                             </div>
 
                             <div class="controls">
-                                %{--                        <elm:datepicker name="fechaFinContractual" class=""--}%
-                                %{--                                        value="${concursoInstance?.fechaFinContractual}" style="width:130px;"/>--}%
-                                <input aria-label="" name="fechaFinContractual" id='fecha22' type='text' class="input-small" value="${concursoInstance?.fechaFinContractual}" />
-
+                                <input aria-label="" name="fechaFinContractual" id='fecha22' type='text' class="input-small" value="${concursoInstance?.fechaFinContractual?.format("dd-MM-yyyy HH:mm")}" />
                                 <p class="help-block ui-helper-hidden"></p>
                             </div>
                         </div>
