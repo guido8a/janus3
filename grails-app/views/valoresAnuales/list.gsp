@@ -20,7 +20,6 @@
     </a>
 </div>
 
-
 <div id="list-ValoresAnuales" role="main" style="margin-top: 10px;">
 
     <table class="table table-bordered table-striped table-condensed table-hover">
@@ -41,7 +40,7 @@
         <tbody >
         <g:each in="${valoresAnualesInstanceList}" status="i" var="valoresAnualesInstance">
             <tr>
-                <td>${valoresAnualesInstance?.anio}</td>
+                <td>${valoresAnualesInstance?.anioNuevo?.anio}</td>
                 <td>${fieldValue(bean: valoresAnualesInstance, field: "costoDiesel")}</td>
                 <td>${fieldValue(bean: valoresAnualesInstance, field: "costoGrasa")}</td>
                 <td>${fieldValue(bean: valoresAnualesInstance, field: "costoLubricante")}</td>

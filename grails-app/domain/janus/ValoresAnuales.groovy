@@ -37,5 +37,6 @@ class ValoresAnuales {
     }
     static constraints = {
         anioNuevo(blank: true, nullable: true)
+        anio(blank: true, nullable: true)
     }
 }

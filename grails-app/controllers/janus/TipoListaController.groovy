@@ -31,12 +31,13 @@ class TipoListaController {
 
     def save() {
         def tipoListaInstance
+
+        params.codigo = params.codigo.toUpperCase();
+
         if(params.id) {
             tipoListaInstance = TipoLista.get(params.id)
             if(!tipoListaInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Tipo Lista con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el registro"
                 return
             }//no existe el objeto
             tipoListaInstance.properties = params
@@ -45,32 +46,12 @@ class TipoListaController {
             tipoListaInstance = new TipoLista(params)
         } //es create
         if (!tipoListaInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Tipo Lista " + (tipoListaInstance.id ? tipoListaInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            tipoListaInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            println("Error al guardar el tipo" + tipoListaInstance.errors)
+            render "no_Error al guardar el tipo"
+        }else{
+            render "ok_Tipo guardado correctamente"
         }
 
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Tipo Lista " + tipoListaInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Tipo Lista " + tipoListaInstance.id
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
@@ -87,22 +68,17 @@ class TipoListaController {
     def delete() {
         def tipoListaInstance = TipoLista.get(params.id)
         if (!tipoListaInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Tipo Lista con id " + params.id
-            redirect(action: "list")
+        render "no_No se encontró el registro"
             return
         }
 
         try {
             tipoListaInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Tipo Lista " + tipoListaInstance.id
-            redirect(action: "list")
+            render "ok_Tipo borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Tipo Lista " + (tipoListaInstance.id ? tipoListaInstance.id : "")
-            redirect(action: "list")
+            println("Error al borrar el tipo " + tipoListaInstance.errors)
+            render "no_Error al borrar el tipo"
         }
     } //delete
 } //fin controller
