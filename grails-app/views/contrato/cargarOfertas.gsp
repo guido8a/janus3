@@ -1,4 +1,4 @@
-<elm:select name="oferta.id" id="ofertas" from="${ofertas}" optionKey="id" optionValue="proveedor" noSelection="['-1': 'Seleccione']" class="required"  optionClass="${{ it.monto + "_" + it.plazo }}"/>
+<g:select name="oferta.id" id="ofertas" from="${ofertas}" optionKey="id" optionValue="proveedor" noSelection="['-1': 'Seleccione']" class="required"  optionClass="${{ it.monto + "_" + it.plazo }}"/>
 <script type="text/javascript">
     $("#ofertas").change(function () {
         if ($(this).val() != "-1") {

@@ -3,16 +3,16 @@
 <head>
 
     <meta name="layout" content="main">
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>
-    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>
+    %{--<script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
+    %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
 
     <style type="text/css">
 
@@ -35,7 +35,7 @@
 <body>
 
 <g:if test="${flash.message}">
-    <div class="span12" style="margin-bottom: 10px;">
+    <div class="col-md-12" style="margin-bottom: 10px;">
         <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
             <a class="close" data-dismiss="alert" href="#">×</a>
             <elm:poneHtml textoHtml="${flash.message}"/>
@@ -43,14 +43,14 @@
     </div>
 </g:if>
 
-<div class="span12 hide" style="margin-bottom: 10px;" id="divError">
+<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divError">
     <div class="alert alert-error" role="status">
         <a class="close" data-dismiss="alert" href="#">×</a>
         <span id="spanError"></span>
     </div>
 </div>
 
-<div class="span12 hide" style="margin-bottom: 10px;" id="divOk">
+<div class="col-md-12 hide" style="margin-bottom: 10px;" id="divOk">
     <div class="alert alert-info" role="status">
         <a class="close" data-dismiss="alert" href="#">×</a>
         <span id="spanOk"></span>
@@ -59,8 +59,8 @@
 
 
 <div class="row">
-    <div class="span12 btn-group" role="navigation" style="margin-left: 0;width: 100%;height: 35px;">
-        <button class="btn" id="btn-lista"><i class="icon-book"></i> Lista</button>
+    <div class="col-md-12 btn-group" role="navigation" style="margin-left: 0;width: 100%;height: 35px;">
+        <button class="btn" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
         <g:if test="${contrato?.id}">
             <g:link controller="documentoProceso" class="btn" action="list" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id]">
                 <i class="icon-book"></i> Biblioteca
@@ -116,26 +116,26 @@
 <g:form class="registroContrato" name="frm-registroContrato" action="save">
     <g:hiddenField name="id" value="${contrato?.id}"/>
     <fieldset class="" style="position: relative; border-bottom: 1px solid black; width: 100%;">
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
             <g:if test="${contrato?.codigo != null}">
-                <div class="span2 formato">Contrato N°</div>
+                <div class="col-md-2 formato">Contrato N°</div>
 
-                <div class="span3">${contrato?.codigo}</div>
+                <div class="col-md-3">${contrato?.codigo}</div>
 
-                <div class="span2 formato">Memo de Distribución</div>
+                <div class="col-md-2 formato">Memo de Distribución</div>
 
-                <div class="span3">${contrato?.memo}</div>
+                <div class="col-md-3">${contrato?.memo}</div>
             %{--</div>--}%
             </g:if>
 
             <g:else>
-                <div class="span2 formato">Contrato N°</div>
+                <div class="col-md-2 formato">Contrato N°</div>
 
-                <div class="span3">${contrato?.codigo}</div>
+                <div class="col-md-3">${contrato?.codigo}</div>
 
-                <div class="span2 formato">Memo de Distribución</div>
+                <div class="col-md-2 formato">Memo de Distribución</div>
 
-                <div class="span3">${contrato?.memo}</div>
+                <div class="col-md-3">${contrato?.memo}</div>
 
             </g:else>
         </div> <!--DSAFSD-->
@@ -150,224 +150,224 @@
     %{--<g:hiddenField name="oferta" class="oferta" value="${contrato?.oferta?.id}"/>--}%
 
         <g:if test="${contrato?.codigo != null}">
-            <div class="span12">
-                <div class="span1 formato">Obra</div>
+            <div class="col-md-12">
+                <div class="col-md-1 formato">Obra</div>
 
-                <div class="span10 formato">${contrato?.oferta?.concurso?.obra?.codigo} - ${contrato?.oferta?.concurso?.obra?.nombre}
+                <div class="col-md-10 formato">${contrato?.oferta?.concurso?.obra?.codigo} - ${contrato?.oferta?.concurso?.obra?.nombre}
                 (${contrato?.oferta?.concurso?.obra?.departamento?.direccion?.nombre})</div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span1 formato">Parroquia</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-1 formato">Parroquia</div>
 
-                <div class="span4">${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}</div>
+                <div class="col-md-4">${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}</div>
 
-                <div class="span1 formato">Cantón</div>
+                <div class="col-md-1 formato">Cantón</div>
 
-                <div class="span2">${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}</div>
+                <div class="col-md-2">${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}</div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span1 formato">Comunidad</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-1 formato">Comunidad</div>
 
-                <div class="span4">${contrato?.oferta?.concurso?.obra?.comunidad?.nombre}</div>
+                <div class="col-md-4">${contrato?.oferta?.concurso?.obra?.comunidad?.nombre}</div>
 
-                <div class="span1 formato">Sitio</div>
+                <div class="col-md-1 formato">Sitio</div>
 
-                <div class="span5">${contrato?.oferta?.concurso?.obra?.sitio}</div>
+                <div class="col-md-5">${contrato?.oferta?.concurso?.obra?.sitio}</div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span1 formato">Localidad</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-1 formato">Localidad</div>
 
-                <div class="span4">${contrato?.oferta?.concurso?.obra?.barrio}</div>
+                <div class="col-md-4">${contrato?.oferta?.concurso?.obra?.barrio}</div>
 
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span1 formato">Clase Obra</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-1 formato">Clase Obra</div>
 
-                <div class="span4">${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}</div>
+                <div class="col-md-4">${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}</div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span1 formato">Contratista</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-1 formato">Contratista</div>
 
-                <div class="span4">${contrato?.oferta?.proveedor?.nombre}</div>
+                <div class="col-md-4">${contrato?.oferta?.proveedor?.nombre}</div>
 
-                <div class="span1 formato">Estado</div>
+                <div class="col-md-1 formato">Estado</div>
 
-                <div class="span2">${(contrato.estado == "R") ? "Registrado" : "No registrado"}</div>
+                <div class="col-md-2">${(contrato.estado == "R") ? "Registrado" : "No registrado"}</div>
             </div>
         </g:if>
 
         <g:else>
-            <div class="span12" style="margin-top: 5px">
-                <div class="span2 formato">Obra</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-2 formato">Obra</div>
 
-                <div class="span3">
+                <div class="col-md-3">
                     ${contrato?.oferta?.concurso?.obra?.codigo}
                 </div>
 
-                <div class="span1 formato">Nombre</div>
+                <div class="col-md-1 formato">Nombre</div>
 
-                <div class="span5">
+                <div class="col-md-5">
                     ${contrato?.oferta?.concurso?.obra?.nombre}
                 </div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span2 formato">Oferta</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-2 formato">Oferta</div>
 
-                <div class="span3" id="div_ofertas">
+                <div class="col-md-3" id="div_ofertas">
                     ${contrato?.oferta?.descripcion}
                 </div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span2 formato">Contratista</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-2 formato">Contratista</div>
 
-                <div class="span3">
+                <div class="col-md-3">
                     ${contrato?.oferta?.proveedor?.nombreContacto ? (contrato?.oferta?.proveedor?.nombreContacto + " " + contrato?.oferta?.proveedor?.apellidoContacto) : contrato?.oferta?.proveedor?.nombre}
                 </div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span2 formato">Parroquia</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-2 formato">Parroquia</div>
 
-                <div class="span3">${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}</div>
+                <div class="col-md-3">${contrato?.oferta?.concurso?.obra?.parroquia?.nombre}</div>
 
-                <div class="span1 formato">Cantón</div>
+                <div class="col-md-1 formato">Cantón</div>
 
-                <div class="span2">${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}</div>
+                <div class="col-md-2">${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.nombre}</div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
-                <div class="span2 formato">Clase Obra</div>
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-2 formato">Clase Obra</div>
 
-                <div class="span3">${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}</div>
+                <div class="col-md-3">${contrato?.oferta?.concurso?.obra?.claseObra?.descripcion}</div>
             </div>
 
-            <div class="span12" style="margin-top: 5px">
+            <div class="col-md-12" style="margin-top: 5px">
             </div>
         </g:else>
     </fieldset>
 
     <fieldset class="" style="position: relative;  border-bottom: 1px solid black;padding: 10px;">
-        <div class="span12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px">
             <g:if test="${contrato?.tipoContrato?.codigo?.trim() == 'C'}">
-                <div class="span1 formato text-info">Tipo</div>
-                <div class="span4 text-info">${contrato?.tipoContrato?.descripcion}</div>
+                <div class="col-md-1 formato text-info">Tipo</div>
+                <div class="col-md-4 text-info">${contrato?.tipoContrato?.descripcion}</div>
             </g:if>
             <g:else>
-                <div class="span1 formato">Tipo</div>
+                <div class="col-md-1 formato">Tipo</div>
                 <g:if test="${complementario}">
-                    <div class="span2">${contrato?.tipoContrato?.descripcion}</div>
+                    <div class="col-md-2">${contrato?.tipoContrato?.descripcion}</div>
                 </g:if>
                 <g:else>
-                    <div class="span4">${contrato?.tipoContrato?.descripcion}</div>
+                    <div class="col-md-4">${contrato?.tipoContrato?.descripcion}</div>
                 </g:else>
             </g:else>
             <g:if test="${complementario}">
-                <div class="text-info span3" style="margin-left: -40px">
+                <div class="text-info col-md-3" style="margin-left: -40px">
                     <strong>Complementario: ${complementario?.codigo}</strong>
                 </div>
             </g:if>
 
-            <div class="span2 formato">Fecha de Suscripción</div>
-            <div class="span2">${contrato?.fechaSubscripcion?.format("dd-MM-yyyy")}</div>
-            <div class="span1 formato">Indirectos</div>
-            <div class="span1">${contrato?.indirectos?:'__'}%</div>
+            <div class="col-md-2 formato">Fecha de Suscripción</div>
+            <div class="col-md-2">${contrato?.fechaSubscripcion?.format("dd-MM-yyyy")}</div>
+            <div class="col-md-1 formato">Indirectos</div>
+            <div class="col-md-1">${contrato?.indirectos?:'__'}%</div>
         </div>
 
-        <div class="span12" style="margin-top: 5px">
+        <div class="col-md-12" style="margin-top: 5px">
             <g:if test="${contrato?.tipoContrato?.codigo?.trim() == 'C'}">
-                <div class="span2 formato text-info" style="margin-left:0px;">Objeto del Contrato</div>
-                <div class="span10 text-info" style="margin-left: -40px">${contrato?.objeto}</div>
+                <div class="col-md-2 formato text-info" style="margin-left:0px;">Objeto del Contrato</div>
+                <div class="col-md-10 text-info" style="margin-left: -40px">${contrato?.objeto}</div>
             </g:if>
             <g:else>
-                <div class="span2 formato" style="margin-left:0px;">Objeto del Contrato</div>
-                <div class="span10" style="margin-left: -40px">${contrato?.objeto}</div>
+                <div class="col-md-2 formato" style="margin-left:0px;">Objeto del Contrato</div>
+                <div class="col-md-10" style="margin-left: -40px">${contrato?.objeto}</div>
             </g:else>
         </div>
 
         <div class="col-md-5" style="margin-top: 5px">
-            <div class="span2 formato" style="margin-left:60px;">Aplica Reajuste</div>
-            <div class="span2" style="margin-left: -60px">${contrato?.aplicaReajuste == 1 ? 'SI' : 'NO'}</div>
+            <div class="col-md-2 formato" style="margin-left:60px;">Aplica Reajuste</div>
+            <div class="col-md-2" style="margin-left: -60px">${contrato?.aplicaReajuste == 1 ? 'SI' : 'NO'}</div>
         </div>
 
         <div class="col-md-5" style="margin-top: 5px">
-            <div class="span4 formato" style="margin-left:10px;">La multa por retraso de obra incluye el valor del reajuste</div>
-            <div class="span2" style="margin-left: -30px">${contrato?.conReajuste == 1 ? 'SI' : 'NO'}</div>
+            <div class="col-md-4 formato" style="margin-left:10px;">La multa por retraso de obra incluye el valor del reajuste</div>
+            <div class="col-md-2" style="margin-left: -30px">${contrato?.conReajuste == 1 ? 'SI' : 'NO'}</div>
         </div>
 
         <div class="col-md-5" style="margin-top: 5px">
-            <div class="span3 formato" style="margin-left:10px;">Aplica multa al saldo por planillar</div>
-            <div class="span1" style="margin-left: -60px">${contrato?.saldoMulta == 1 ? 'SI' : 'NO'}</div>
+            <div class="col-md-3 formato" style="margin-left:10px;">Aplica multa al saldo por planillar</div>
+            <div class="col-md-1" style="margin-left: -60px">${contrato?.saldoMulta == 1 ? 'SI' : 'NO'}</div>
         </div>
 
     </fieldset>
 
     <fieldset class="" style="position: relative;  padding: 10px;border-bottom: 1px solid black;">
-        <div class="span12" style="margin-top: 10px">
-            <div class="span3 formato">Multa por retraso</div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-3 formato">Multa por retraso</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaRetraso, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
 
-            <div class="span4 formato">Multa por no presentación de planilla</div>
+            <div class="col-md-4 formato">Multa por no presentación de planilla</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaPlanilla, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
         </div>
 
-        <div class="span12" style="margin-top: 10px">
-            <div class="span3 formato">Multa por incumplimiento del cronograma</div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-3 formato">Multa por incumplimiento del cronograma</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaIncumplimiento, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
 
-            <div class="span4 formato">Multa por no acatar disposiciones del fiscalizador</div>
+            <div class="col-md-4 formato">Multa por no acatar disposiciones del fiscalizador</div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.multaDisposiciones, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} x 1000
             </div>
         </div>
 
-        <div class="span12" style="margin-top: 10px">
-            <div class="span2 formato">Monto</div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-2 formato">Monto</div>
 
-            <div class="span3">${g.formatNumber(number: contrato?.monto, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}</div>
+            <div class="col-md-3">${g.formatNumber(number: contrato?.monto, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}</div>
 
-            <div class="span4 formato">Plazo</div>
+            <div class="col-md-4 formato">Plazo</div>
 
-            <div class="span2">${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} Días</div>
+            <div class="col-md-2">${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} Días</div>
         </div>
 
-        <div class="span12" style="margin-top: 10px">
-            <div class="span2 formato">Anticipo</div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-2 formato">Anticipo</div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 ${g.formatNumber(number: contrato?.porcentajeAnticipo, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')} %
             </div>
 
-            <div class="span2">
+            <div class="col-md-2">
                 ${g.formatNumber(number: contrato?.anticipo, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale: 'ec')}
             </div>
 
-            <div class="span4 formato">Indices 30 días antes de la presentación de la oferta</div>
+            <div class="col-md-4 formato">Indices 30 días antes de la presentación de la oferta</div>
 
-            <div class="span2">${contrato?.periodoInec?.descripcion}</div>
+            <div class="col-md-2">${contrato?.periodoInec?.descripcion}</div>
         </div>
 
         <g:if test="${contrato?.adicionales}">
-            <div class="span12" style="margin-top: 10px">
-                <div class="span3 formato">Memo de autorización de Obras Adicionales</div>
+            <div class="col-md-12" style="margin-top: 10px">
+                <div class="col-md-3 formato">Memo de autorización de Obras Adicionales</div>
 
-                <div class="span3">
+                <div class="col-md-3">
                     ${contrato?.adicionales}
                 </div>
             </div>
@@ -377,25 +377,25 @@
     </fieldset>
     <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black; margin-top: -10px">
 
-        <div class="span12" style="margin-top: 10px">
-            <div class="span2 formato">Administrador delegado</div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-2 formato">Administrador delegado</div>
 
-            <div class="span3">${contrato?.administrador?.titulo} ${contrato?.administrador?.nombre} ${contrato?.administrador?.apellido}</div>
+            <div class="col-md-3">${contrato?.administrador?.titulo} ${contrato?.administrador?.nombre} ${contrato?.administrador?.apellido}</div>
 
-            <div class="span3 formato">Fiscalizador delegado</div>
+            <div class="col-md-3 formato">Fiscalizador delegado</div>
 
-            <div class="span3">${contrato?.fiscalizador?.titulo} ${contrato?.fiscalizador?.nombre} ${contrato?.fiscalizador?.apellido}</div>
+            <div class="col-md-3">${contrato?.fiscalizador?.titulo} ${contrato?.fiscalizador?.nombre} ${contrato?.fiscalizador?.apellido}</div>
         </div>
 
 
-        <div class="span12" style="margin-top: 10px">
-            <div class="span2 formato">Delegado del prefecto</div>
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-2 formato">Delegado del prefecto</div>
 
-            <div class="span3">${contrato?.delegadoPrefecto?.titulo} ${contrato?.delegadoPrefecto?.nombre} ${contrato?.delegadoPrefecto?.apellido}</div>
+            <div class="col-md-3">${contrato?.delegadoPrefecto?.titulo} ${contrato?.delegadoPrefecto?.nombre} ${contrato?.delegadoPrefecto?.apellido}</div>
 
-            <div class="span3 formato">Delegado de fiscalización </div>
+            <div class="col-md-3 formato">Delegado de fiscalización </div>
 
-            <div class="span3">${contrato?.delegadoFiscalizacion?.titulo} ${contrato?.delegadoFiscalizacion?.nombre} ${contrato?.delegadoFiscalizacion?.apellido}</div>
+            <div class="col-md-3">${contrato?.delegadoFiscalizacion?.titulo} ${contrato?.delegadoFiscalizacion?.nombre} ${contrato?.delegadoFiscalizacion?.apellido}</div>
         </div>
 
     </fieldset>
@@ -561,11 +561,41 @@
 
 </div>
 
+<div id="listaContrato" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaContrato}" optionKey="key"
+                          optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Criterio
+            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+            <g:select name="ordenar" class="ordenar" from="${listaContrato}" style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="cnsl-contratos"><i class="fa fa-search"></i> Consultar</button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaRbro" style="height: 460px; overflow: auto">
+        </div>
+    </fieldset>
+</div>
+
 %{--<div id="imprimirDialog">--}%
 
 %{--<fieldset>--}%
 
-%{--<div class="span3">--}%
+%{--<div class="col-md-3">--}%
 
 %{--No existe una fecha de inicio de obra, no se puede imprimir el contrato!--}%
 
@@ -578,7 +608,7 @@
 <div id="LQDialogo">
 
     <fieldset>
-        <div class="span3">
+        <div class="col-md-3">
             Está seguro de querer iniciar el proceso para generar la Fórmula Polinómica de Liquidación
         </div>
     </fieldset>
@@ -974,16 +1004,44 @@
     });
 
     $("#btn-lista").click(function () {
-        $("#btn-cancelar").attr("disabled", true);
-//        $("#btn-aceptar").attr("disabled", true);
-        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        $("#modalTitle_busqueda").html("Lista de Contratos");
-        $("#modalFooter_busqueda").html("").append(btnOk);
-        $("#buscarDialog").unbind("click")
-        $("#buscarDialog").bind("click", enviar)
-        $("#contenidoBuscador").html("")
-        $("#modal-busqueda").modal("show");
+        $("#listaContrato").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x")
     });
+
+    $("#listaContrato").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 500,
+        position: 'center',
+        title: 'Contratos en Ejecución'
+    });
+
+    $("#cnsl-contratos").click(function () {
+        buscaContratos();
+    });
+
+    function buscaContratos() {
+        var buscarPor = $("#buscarPor").val();
+        var tipo = $("#buscarTipo").val();
+        var criterio = $("#criterioCriterio").val();
+        var ordenar = $("#ordenar").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'contrato', action:'contratos')}",
+            data: {
+                buscarPor: buscarPor,
+                buscarTipo: tipo,
+                criterio: criterio,
+                ordenar: ordenar
+            },
+            success: function (msg) {
+                $("#divTablaRbro").html(msg);
+            }
+        });
+    }
 
     $("#btn-nuevo").click(function () {
         location.href = "${createLink(action: 'registroContrato')}"

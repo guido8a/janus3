@@ -4,6 +4,7 @@ import janus.ejecucion.*
 import janus.pac.*
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class ContratoController {
 
@@ -55,6 +56,7 @@ class ContratoController {
     def verContrato() {
         def contrato
         def complementario
+        def listaContrato = [1: 'Código', 2: 'Nombre', 3: 'Contratista', 4: 'Fiscalizador', 5: 'Administrador']
 
         println "params de verContrato: $params"
         println "perfil: ${session.perfil.codigo}"
@@ -107,18 +109,22 @@ class ContratoController {
                 def esDirFis = directoresFis.contains(session.usuario.id) ? "S" : "N"
                 println "esDirector: $esDirector directores: ${directoresFis}, dirFis: ${esDirFis}"
 
-                def campos = ["codigo": ["Contrato No.", "string"], "nombre": ["Nombre", "string"], "prov": ["Contratista", "string"]]
+                def campos = ["codigo": ["Contrato No.", "string"], "nombre": ["Nombre", "string"],
+                              "prov": ["Contratista", "string"]]
 
-                [campos: campos, contrato: contrato, esDirector: esDirector, esDirFis: esDirFis, complementario: complementario]
+                [campos: campos, contrato: contrato, esDirector: esDirector, esDirFis: esDirFis,
+                 complementario: complementario, listaContrato: listaContrato]
             } else {
-                def campos = ["codigo": ["Contrato No.", "string"], "nombre": ["Nombre", "string"], "prov": ["Contratista", "string"]]
-                [campos: campos, complementario: complementario]
+                def campos = ["codigo": ["Contrato No.", "string"], "nombre": ["Nombre", "string"],
+                              "prov": ["Contratista", "string"]]
+                [campos: campos, complementario: complementario, listaContrato: listaContrato]
             }
 
 
         } else {
-            def campos = ["codigo": ["Contrato No.", "string"], "nombre": ["Nombre", "string"], "prov": ["Contratista", "string"]]
-            [campos: campos, complementario: complementario]
+            def campos = ["codigo": ["Contrato No.", "string"], "nombre": ["Nombre", "string"],
+                          "prov": ["Contratista", "string"]]
+            [campos: campos, complementario: complementario, listaContrato: listaContrato]
         }
     }
 
@@ -305,6 +311,9 @@ class ContratoController {
         def contrato
         def planilla  // si hay planillas de inhabilita el desregistrar
         def complementario
+        def listaContrato = [1: 'Código', 2: 'Nombre', 3: 'Contratista']
+        def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
+
 
         if (params.contrato) {
             contrato = Contrato.get(params.contrato).refresh()
@@ -331,12 +340,88 @@ class ContratoController {
                     "compFp: $fp, complementarios: $filtrados, formula: $complementario]"
 
             [campos: campos, contrato: contrato, planilla: planilla, complementario: complementario,
-             compFp: fp, complementarios: filtrados, formula: complementario]
+             compFp: fp, complementarios: filtrados, formula: complementario, listaContrato: listaContrato,
+             listaObra: listaObra]
         } else {
             def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"]]
-            [campos: campos]
+            [campos: campos,listaContrato: listaContrato, listaObra: listaObra]
         }
     }
+
+    def listaContratos(){
+        println "listaItems" + params
+        def datos;
+        def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr']
+
+        def select = "select cntr__id, cntrcdgo, cntrobjt, cntretdo, cntrfcsb, prvenmbr " +
+                "from cntr, ofrt, prve "
+        def txwh = "where ofrt.ofrt__id = cntr.ofrt__id and prve.prve__id = ofrt.prve__id "
+        def sqlTx = ""
+        def bsca = listaObra[params.buscarPor.toInteger()-1]
+        def ordn = listaObra[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by cntrfcsb desc, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos]
+
+    }
+
+    def contratos(){
+        println "listaItems" + params
+        def datos;
+        def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr', 'fs.prsnapll', 'ad.prsnapll']
+
+        def select = "select cntr.cntr__id, cntrcdgo, cntrobjt, cntretdo, cntrfcsb, prvenmbr, " +
+                "fs.prsnnmbr||' '||fs.prsnapll fscl, ad.prsnnmbr||' '||ad.prsnapll admn " +
+                "from cntr, ofrt, prve, fscr, adcr, prsn ad, prsn fs"
+        def txwh = "where ofrt.ofrt__id = cntr.ofrt__id and prve.prve__id = ofrt.prve__id and " +
+                "fscr.cntr__id = cntr.cntr__id and adcr.cntr__id = cntr.cntr__id and " +
+                "ad.prsn__id = adcr.prsn__id and fs.prsn__id = fscr.prsn__id and adcrfcfn is null and " +
+                "fscrfcfn is null "
+        def sqlTx = ""
+        def bsca = listaObra[params.buscarPor.toInteger()-1]
+        def ordn = listaObra[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by cntrfcsb desc, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos]
+
+    }
+
+    def tablaObras_ajax(){
+        println "listaItems" + params
+        def datos;
+        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
+
+        def select = "select obra.obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
+                "from obra, parr, dpto, cncr, ofrt "
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and " +
+                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id "
+        def sqlTx = ""
+        def bsca = listaObra[params.buscarPor.toInteger()-1]
+        def ordn = listaObra[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 21 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos]
+
+    }
+
 
     def saveCambiosPolinomica() {
         if (params.valor.class == java.lang.String) {
@@ -954,7 +1039,7 @@ class ContratoController {
     }
 
     def cargarOfertas() {
-//        println "params " + params
+        println "cargarOfertas params " + params
         def obra = Obra.get(params.id)
 //        println "obra " + obra
         def concurso = janus.pac.Concurso.findByObraAndEstado(obra, "R")

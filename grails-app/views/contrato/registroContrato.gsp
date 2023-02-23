@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 1/14/13
-  Time: 11:49 AM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page import="janus.Contrato; janus.ejecucion.FormulaPolinomicaContractual; janus.ejecucion.TipoPlanilla" contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
@@ -39,7 +31,8 @@
     }
 
     .adm{
-        background-color: #4341c9;
+        color: #fff;
+        background-color: #5a7ab2;
     }
     </style>
 
@@ -63,7 +56,7 @@
 
     %{--<div class="col-md-12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;height: 35px;">--}%
     <div class="col-md-12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;">
-        <button class="btn" id="btn-lista"><i class="icon-book"></i> Lista</button>
+        <button class="btn" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
         <button class="btn" id="btn-nuevo"><i class="icon-plus"></i> Nuevo</button>
         <g:if test="${contrato?.estado != 'R'}">
             <button class="btn btn-success" id="btn-aceptar"><i class="icon-save"></i> Guardar</button>
@@ -112,10 +105,10 @@
         </g:if>
     </g:if>
 
-    <fieldset class="grupo" style="position: relative; margin-top: 10px;border-bottom: 1px solid black;">
+    <fieldset class="grupo" style="position: relative; margin-top: 10px; height: 30px; border-bottom: 1px solid black;">
 
         <div class="grupo col-md-4" style="display: inline;">
-            <label class="col-md-1 formato" style="width: 90px;">Contrato N°</label>
+            <label class="col-md-1 formato" style="width: 100px;">Contrato N°</label>
             <div class="col-md-2"><g:textField name="codigo" maxlength="20" class="codigo required caps"
                                             value="${contrato?.codigo}" style="font-weight: bold; width: 140px"/></div>
             <p class="help-block ui-helper-hidden"></p>
@@ -198,7 +191,8 @@
 
                 <div class="col-md-3">
                     <input type="hidden" id="obraId" value="${contrato?.oferta?.concurso?.obra?.codigo}" name="obra.id">
-                    <g:textField name="obra" id="obraCodigo" class="obraCodigo required txtBusqueda" value="${contrato?.oferta?.concurso?.obra?.codigo}"/>
+                    <g:textField name="obra" id="obraCodigo" class="obraCodigo required txtBusqueda"
+                                 value="${contrato?.oferta?.concurso?.obra?.codigo}" readOnly="true"/>
                 </div>
 
                 <div class="col-md-1 formato">Nombre</div>
@@ -264,19 +258,19 @@
 
     </fieldset>
 
-    <fieldset class="" style="position: relative; height: 130px; border-bottom: 1px solid black;">
+    <fieldset class="" style="position: relative; height: 110px; border-bottom: 1px solid black;">
 
         <div class="col-md-12" style="margin-top: 10px">
 
             <div class="col-md-2 formato text-info">Tipo de contrato</div>
 
-            <div class="col-md-3" style="margin-left:-20px">
+            <div class="col-md-2" style="margin-left:-50px">
                 <g:select from="${janus.pac.TipoContrato.list()}" name="tipoContrato.id" id="tpcr"
                           class="tipoContrato activo text-info" value="${contrato?.tipoContrato?.id}"
                           optionKey="id" optionValue="descripcion" style="font-weight: bolder"/></div>
 
             <div id="CntrPrincipal" hidden>
-                <div class="col-md-1 formato text-info" style="margin-left:-20px; width: 100px;">Contrato Principal</div>
+                <div class="col-md-1 formato text-info" style="margin-left:0px; width: 100px;">Contrato Principal</div>
 
                 <div class="col-md-2" style="margin-left:-20px">
                     <g:select from="${janus.Contrato.list([sort: 'fechaSubscripcion'])}" name="padre.id"
@@ -287,10 +281,12 @@
             </div>
             <div class="col-md-1 formato">Fecha de Suscripción</div>
 
-            <div class="col-md-1"><elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo" value="${contrato?.fechaSubscripcion}"/></div>
+            <div class="col-md-2">
+                <elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo"
+                                value="${contrato?.fechaSubscripcion}"/></div>
 
-            <div class="span 3">
-                <div class="col-md-1 formato" style="width: 100px">Aplica reajuste</div>
+            <div class="col-md-2">
+                <div class="col-md-1 formato" style="width: 100px; margin-left: 20px">Aplica reajuste</div>
 
                 <div class="col-md-1">
                     <g:select name="aplicaReajuste" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value"
@@ -303,36 +299,37 @@
 
             <div class="col-md-2 formato">Objeto del Contrato</div>
 
-            <div class="col-md-9" style="margin-left: -20px"><g:textArea name="objeto" class="activo"
+            <div class="col-md-9" style="margin-left: -50px"><g:textArea name="objeto" class="activo"
                                                                       style="height: 55px; width: 960px; resize: none; margin-top: -6px" value="${contrato?.objeto}"/></div>
 
         </div>
 
     </fieldset>
 
-    <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
+    <fieldset class="" style="position: relative; border-bottom: 1px solid black; padding-bottom: 10px">
 
         <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="col-md-2 formato">Multa por retraso de obra</div>
+            <div class="col-md-3 formato">Multa por retraso de obra</div>
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <g:textField name="multaRetraso" class="number" style="width: 50px"
-                             value="${g.formatNumber(number: contrato?.multaRetraso ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
+                             value="${g.formatNumber(number: contrato?.multaRetraso ?: 0, maxFractionDigits: 0,
+                                     minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="col-md-1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -40px">
                 x 1000
             </div>
             <div class="col-md-1">
             </div>
 
-            <div class="col-md-2 formato">Multa por no presentación de planilla</div>
+            <div class="col-md-4 formato">Multa por no presentación de planilla</div>
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <g:textField name="multaPlanilla" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaPlanilla ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="col-md-1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -40px">
                 x 1000
             </div>
 
@@ -340,25 +337,25 @@
 
         <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="col-md-2 formato">Multa por incumplimiento del cronograma</div>
+            <div class="col-md-3 formato">Multa por incumplimiento del cronograma</div>
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <g:textField name="multaIncumplimiento" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaIncumplimiento ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="col-md-1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -40px">
                 x 1000
             </div>
             <div class="col-md-1">
             </div>
 
-            <div class="col-md-2 formato">Multa por no acatar disposiciones del fiscalizador</div>
+            <div class="col-md-4 formato">Multa por no acatar disposiciones del fiscalizador</div>
 
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <g:textField name="multaDisposiciones" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaDisposiciones ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
             </div>
-            <div class="col-md-1" style="margin-left: -100px">
+            <div class="col-md-1" style="margin-left: -40px">
                 x 1000
             </div>
 
@@ -366,29 +363,35 @@
 
         <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="col-md-2 formato">Monto del contrato</div>
+            <div class="col-md-3 formato">Monto del contrato</div>
 
-%{--
-            <div class="col-md-3"><g:textField name="monto" class="monto activo number"
-                                            value="${g.formatNumber(number: contrato?.monto, maxFractionDigits: 2, minFractionDigits: 2, format: '##,###')}"/></div>
---}%
-            <div class="col-md-3"><g:textField name="monto" class="monto activo number"
+            <div class="col-md-2"><g:textField name="monto" class="monto activo number"
                  value="${contrato?.monto}"/></div>
 
-            <div class="col-md-2 formato">Plazo</div>
+            <div class="col-md-1 formato" style="margin-left: 53px">Plazo</div>
 
-            <div class="col-md-2"><g:textField name="plazo" class="plazo activo" style="width: 50px" maxlength="4"
-                                            value="${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"/>
+            <div class="col-md-2">
+                <g:textField name="plazo" class="plazo activo" style="width: 50px; margin-left: -40px" maxlength="4"
+                value="${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"/>
             </div>
-            <div class="col-md-1" style="margin-left: -100px">
+            <div class="col-md-2" style="margin-left: -160px">
                 Días
             </div>
+            <div class="col-md-1 formato" style="margin-left: 65px">Indirectos</div>
+
+            <div class="col-md-1">
+                <g:textField name="indirectos" class="anticipo activo"
+                             value="${g.formatNumber(number: contrato?.indirectos ?: 20, maxFractionDigits: 0,
+                                     minFractionDigits: 0, locale: 'ec')}"
+                             style="width: 30px; text-align: right"/> %
+            </div>
+
 
         </div>
 
         <div class="col-md-12" style="margin-top: 10px">
 
-            <div class="col-md-2 formato">Anticipo sin reajuste</div>
+            <div class="col-md-3 formato">Anticipo sin reajuste</div>
 
             <div class="col-md-1">
                 <g:textField name="porcentajeAnticipo" class="anticipo activo"
@@ -396,163 +399,130 @@
                              style="width: 30px; text-align: right"/> %
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-2" style="margin-left: -40px">
                 <g:textField name="anticipo" class="anticipoValor activo" style="width: 105px; text-align: right"
                              value="${g.formatNumber(number: contrato?.anticipo, maxFractionDigits: 2, minFractionDigits: 2, locale: 'ec')}"/>
             </div>
 
 
-            %{--<g:if test="${contrato?.codigo != null}">--}%
-            <div class="col-md-2 formato">Indices 30 días antes de la presentación de la oferta</div>
-            <div class="col-md-3"><g:select name="periodoInec.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}"
-                                         class="indiceOferta activo" value="${contrato?.periodoInec?.id}"
-                                         optionValue="descripcion" optionKey="id"/></div>
-            %{--</g:if>--}%
-            %{--<g:else>--}%
-            %{--<div class="col-md-6" id="filaIndice">--}%
-            %{--</div>--}%
-            %{--</g:else>--}%
-
+            <div class="col-md-4 formato">Indices 30 días antes de la presentación de la oferta</div>
+            <div class="col-md-2">
+                <g:select name="periodoInec.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}"
+                    class="indiceOferta activo" value="${contrato?.periodoInec?.id}"
+                    optionValue="descripcion" optionKey="id" style="width: 200px"/></div>
         </div>
 
-        <div class="col-md-12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 15px">
 
-            <div class="col-md-1 formato">Departamento Administrador</div>
+            <div class="col-md-2 formato">Departamento Administrador</div>
 
             <div class="col-md-4">
-                <g:select name="depAdministrador.id" from="${janus.Departamento.list([sort: 'descripcion'])}" optionKey="id"
-                          optionValue="descripcion"  value="${contrato?.depAdministrador?.id?:1}" class="required col-md-4"/>
+                <g:select name="depAdministrador.id" from="${janus.Departamento.list([sort: 'descripcion'])}"
+                          optionKey="id" optionValue="descripcion"  value="${contrato?.depAdministrador?.id?:1}"
+                          class="required" style="width: 300px"/>
             </div>
 
-            <div class="col-md-2 formato">Indirectos</div>
-
+            <div class="col-md-4 formato" style="margin-left: -40px">La multa por retraso de obra incluye el valor del reajuste</div>
             <div class="col-md-1">
-                <g:textField name="indirectos" class="anticipo activo"
-                             value="${g.formatNumber(number: contrato?.indirectos ?: 20, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"
-                             style="width: 30px; text-align: right"/> %
+                <g:select name="conReajuste" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value" value="${contrato?.conReajuste == 1 ? 1 : 0}" style="width: 60px"/>
             </div>
-
-            <div class="span 3" style="border-color: #888; border-style: solid; border-width: thin">
-                <div class="col-md-2 formato">La multa por retraso de obra incluye el valor del reajuste</div>
-
-                <div class="col-md-1">
-                    <g:select name="conReajuste" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value" value="${contrato?.conReajuste == 1 ? 1 : 0}" style="width: 60px"/>
-                </div>
-            </div>
-
-
 
         </div>
 
         <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-2 formato">Administrador delegado</div>
 
-            <div class="${contrato?.administrador?.nombre ? 'col-md-6' : 'col-md-9'}">${contrato?.administrador?.titulo} ${contrato?.administrador?.nombre} ${contrato?.administrador?.apellido}</div>
+            <div class="${contrato?.administrador?.nombre ? 'col-md-4' : 'col-md-4'}">
+                ${contrato?.administrador?.titulo} ${contrato?.administrador?.nombre} ${contrato?.administrador?.apellido}
+            </div>
 
-            <div class="col-md-3 formato"></div>
-
-            <div class="col-md-3"></div>
-
-            <div class="span 3" style="border-color: #888; border-style: solid; border-width: thin">
-                <div class="col-md-2 formato">Aplica multa al saldo por planillar</div>
-
-                <div class="col-md-1">
-                    <g:select name="saldoMulta" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value" value="${contrato?.saldoMulta == 1 ? 1 : 0}" style="width: 60px"/>
-                </div>
+            <div class="col-md-4 formato" style="margin-left: -40px">Aplica multa al saldo por planillar</div>
+            <div class="col-md-1">
+                <g:select name="saldoMulta" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value"
+                          value="${contrato?.saldoMulta == 1 ? 1 : 0}" style="width: 60px"/>
             </div>
         </div>
     </fieldset>
 
-</g:form>
+    </g:form>
 
-<g:if test="${contrato}">
-    <div class="navbar navbar-inverse" style="margin-top: -10px;padding-left: 5px;">
+    <g:if test="${contrato}">
+    <div class="btn-group" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
 
-        <div class="navbar-inner">
-            <div class="botones">
+        <g:if test="${contrato?.estado == 'R'}">
+            <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
+                <a href="#" class="btn" id="btnFPoli">F. polinómica</a>
+            </g:if>
+            <g:else>
+                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}"><i
+                        class="fa fa-superscript"></i> F. polinómica</g:link>
+            </g:else>
+        </g:if>
+        <g:else>
+            <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
+                <a href="#" class="fa fa-superscript" id="btnFPoliPregunta"
+                   data-id="${contrato?.id}">F. polinómica</a>
+            </g:if>
+            <g:else>
+                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}"><i
+                        class="fa fa-superscript"></i> F. polinómica</g:link>
+            </g:else>
+        </g:else>
 
-                <ul class="nav">
-                    %{--
-                                        <li>
-                                            <g:link controller="cronogramaContrato" action="index" id="${contrato?.id}">
-                                                <i class="icon-th"></i> Cronograma
-                                            </g:link>
-                                        </li>
-                    --}%
-                    <li>
 
-                        <g:if test="${contrato?.estado == 'R'}">
-                            <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
-                                <a href="#" class="icon-superscript" id="btnFPoli"> F. polinómica</a>
-                            </g:if>
-                            <g:else>
-                                <g:link action="copiarPolinomica" id="${contrato?.id}"><i class="icon-superscript"></i> F. polinómica</g:link>
-                            </g:else>
-                        </g:if>
-                        <g:else>
-                            <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
-                                <a href="#" class="icon-superscript" id="btnFPoliPregunta" data-id="${contrato?.id}"> F. polinómica</a>
-                            </g:if>
-                            <g:else>
-                                <g:link action="copiarPolinomica" id="${contrato?.id}"><i class="icon-superscript"></i> F. polinómica</g:link>
-                            </g:else>
-                        </g:else>
-                    </li>
 
-                    <li>
-                        <g:link controller="documentoProceso" action="list" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id, show: 1]">
-                            <i class="icon-book"></i> Biblioteca
-                        </g:link>
-                    </li>
+        <g:link controller="documentoProceso" class="btn" action="list" id="${contrato?.oferta?.concursoId}"
+                params="[contrato: contrato?.id, show: 1]">
+            <i class="fa fa-book"></i> Biblioteca
+        </g:link>
 
-                    <li>
-                        <g:link controller="contrato" action="asignar" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id, show: 1]">
-                            <i class="icon-plus"></i> Asignar F. Polinómica
-                        </g:link>
-                    </li>
-                    <g:if test="${session.perfil.codigo == 'CNTR' && contrato?.estado == 'R' && !contrato.padre}">
-                        <li>
-                            <a href="#" id="btnAgregarAdmin" class="adm">
-                                <i class="icon-user"></i> Administrador
-                            </a>
-                        </li>
-                    </g:if>
-                    <li>
-                        <g:link class="contratado" controller="cronogramaContrato" action="editarVocr" id="${contrato?.id}"
-                                title="Nuevo Cronograma Contrato Complementario">
-                            <i class="icon-th"></i> Valores Contratados
-                        </g:link>
-                    </li>
-                    <li>
-                        <g:link class="comple" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
-                                title="Nuevo Cronograma Contrato Complementario">
-                            <i class="icon-th"></i> Cronograma Total
-                        </g:link>
-                    </li>
-                    <li>
-                        <g:link class="comple" controller="cronogramaContrato" action="corrigeCrcr" id="${contrato?.id}"
-                                title="Nuevo Cronograma Contrato Complementario">
-                            <i class="icon-th"></i> Corregir decimales Crono.
-                        </g:link>
-                    </li>
-                    <g:if test="${complementario}">
-                        <li>
-                            <a href="#" class="comple" name="integrarFP_name" id="integrarFP"
-                               title="Integración al contrato principal la FP del contrato complementario">
-                                <i class="fa icon-th"></i> Integrar FP Comp.
-                            </a>
-                        </li>
 
-                        <li>
-                            <a href="#" class="comple" name="integrar_name" id="integrarCronograma"
-                               title="Integración al cronograma principal los rubros del contrato complementario">
-                                <i class="fa icon-th"></i> Integrar cronograma Comp.
-                            </a>
-                        </li>
-                    </g:if>
-                </ul>
-            </div>
-        </div>
+
+        <g:link controller="contrato" action="asignar" class="btn" id="${contrato?.oferta?.concursoId}"
+                params="[contrato: contrato?.id, show: 1]">
+            <i class="icon-plus"></i> Asignar F. Polinómica
+        </g:link>
+
+        <g:if test="${session.perfil.codigo == 'CNTR' && contrato?.estado == 'R' && !contrato.padre}">
+
+            <a href="#" id="btnAgregarAdmin" class="btn adm">
+                <i class="icon-user"></i> Administrador
+            </a>
+
+        </g:if>
+
+        <g:link class="contratado, btn" controller="cronogramaContrato" action="editarVocr" id="${contrato?.id}"
+                title="Nuevo Cronograma Contrato Complementario">
+            <i class="icon-th"></i> Valores Contratados
+        </g:link>
+
+
+        <g:link class="comple, btn" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
+                title="Nuevo Cronograma Contrato Complementario">
+            <i class="icon-th"></i> Cronograma Total
+        </g:link>
+
+
+        <g:link class="comple, btn" controller="cronogramaContrato" action="corrigeCrcr" id="${contrato?.id}"
+                title="Nuevo Cronograma Contrato Complementario">
+            <i class="icon-th"></i> Corregir decimales Crono.
+        </g:link>
+
+        <g:if test="${complementario}">
+
+            <a href="#" class="comple, btn" name="integrarFP_name" id="integrarFP"
+               title="Integración al contrato principal la FP del contrato complementario">
+                <i class="fa icon-th"></i> Integrar FP Comp.
+            </a>
+
+
+
+            <a href="#" class="btn comple" name="integrar_name" id="integrarCronograma"
+               title="Integración al cronograma principal los rubros del contrato complementario">
+                <i class="fa icon-th"></i> Integrar cronograma Comp.
+            </a>
+
+        </g:if>
     </div>
 
 %{--comentar para no incluir complementearios--}%
@@ -605,6 +575,37 @@
     </div>
 
 </div>
+
+<div id="listaContrato" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaContrato}" optionKey="key"
+                          optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Criterio
+            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+            <g:select name="ordenar" class="ordenar" from="${listaContrato}" style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="cnsl-contratos"><i class="fa fa-search"></i> Consultar</button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaRbro" style="height: 460px; overflow: auto">
+        </div>
+    </fieldset>
+</div>
+
 
 <div class="modal grandote hide fade" id="modal-busqueda" style="overflow: hidden">
     <div class="modal-header btn-primary">
@@ -676,6 +677,37 @@
         </div>
     </fieldset>
 </div>
+
+<div id="listaObra" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaObra}" optionKey="key"
+                          optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Criterio
+            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+            <g:select name="ordenar" class="ordenar" from="${listaObra}" style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="cnsl-obras"><i class="fa fa-search"></i> Consultar</button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaObra" style="height: 460px; overflow: auto">
+        </div>
+    </fieldset>
+</div>
+
 
 
 <script type="text/javascript">
@@ -1236,27 +1268,90 @@
         }
     }
 
-    $("#obraCodigo").dblclick(function () {
-        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        $("#modalTitle_busqueda").html("Lista de obras");
-        $("#modalFooter_busqueda").html("<span class=\"text-info\">Use un criterio de búsqueda para localizar obras</span>").append(btnOk);
-        $("#modal-busqueda").modal("show");
-        $("#contenidoBuscador").html("")
-        $("#buscarDialog").unbind("click")
-        $("#buscarDialog").bind("click", enviarObra)
-
+    $("#listaObra").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 500,
+        position: 'center',
+        title: 'Obras ofertadas'
     });
+
+
+    $("#obraCodigo").dblclick(function () {
+        $("#listaObra").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x")
+    });
+
+    $("#cnsl-obras").click(function () {
+        buscaObras();
+    });
+
+    function buscaObras() {
+        var buscarPor = $("#buscarPor").val();
+        var tipo = $("#buscarTipo").val();
+        var criterio = $("#criterioCriterio").val();
+        var ordenar = $("#ordenar").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'contrato', action:'tablaObras_ajax')}",
+            data: {
+                buscarPor: buscarPor,
+                buscarTipo: tipo,
+                criterio: criterio,
+                ordenar: ordenar
+            },
+            success: function (msg) {
+                $("#divTablaObra").html(msg);
+            }
+        });
+    }
+
+
 
     $("#btn-lista").click(function () {
-        $("#btn-cancelar").attr("disabled", true);
-        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        $("#modalTitle_busqueda").html("Lista de Contratos");
-        $("#modalFooter_busqueda").html("").append(btnOk);
-        $("#buscarDialog").unbind("click")
-        $("#buscarDialog").bind("click", enviar)
-        $("#contenidoBuscador").html("")
-        $("#modal-busqueda").modal("show");
+        $("#listaContrato").dialog("open");
+        $(".ui-dialog-titlebar-close").html("x")
     });
+
+    $("#listaContrato").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 1000,
+        height: 500,
+        position: 'center',
+        title: 'Contratos'
+    });
+
+    $("#cnsl-contratos").click(function () {
+        buscaContratos();
+    });
+
+    function buscaContratos() {
+        var buscarPor = $("#buscarPor").val();
+        var tipo = $("#buscarTipo").val();
+        var criterio = $("#criterioCriterio").val();
+        var ordenar = $("#ordenar").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'contrato', action:'listaContratos')}",
+            data: {
+                buscarPor: buscarPor,
+                buscarTipo: tipo,
+                criterio: criterio,
+                ordenar: ordenar
+            },
+            success: function (msg) {
+                $("#divTablaRbro").html(msg);
+            }
+        });
+    }
+
+
 
     $("#btn-nuevo").click(function () {
         location.href = "${createLink(action: 'registroContrato')}"

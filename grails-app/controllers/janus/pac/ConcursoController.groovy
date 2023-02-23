@@ -769,7 +769,7 @@ class ConcursoController {
 
         def select = "select obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
                 "from obra, parr, dpto "
-        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id "
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and obraetdo = 'R' "
         def sqlTx = ""
         def bsca = listaObra[params.buscarPor.toInteger()-1]
         def ordn = listaObra[params.ordenar.toInteger()-1]
