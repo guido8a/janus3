@@ -12,7 +12,7 @@ class AnioController {
     } //index
 
     def list() {
-        [anioInstanceList: Anio.list(params), params: params]
+        [anioInstanceList: Anio.list(params).sort{it.anio}, params: params]
     } //list
 
     def form_ajax() {
@@ -34,43 +34,29 @@ class AnioController {
         if (params.id) {
             anioInstance = Anio.get(params.id)
             if (!anioInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Anio con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el año"
                 return
             }//no existe el objeto
             anioInstance.properties = params
         }//es edit
         else {
-            anioInstance = new Anio(params)
+
+            def existe = Anio.findAllByAnio(params.anio)
+
+            if(!existe){
+                anioInstance = new Anio(params)
+            }else{
+                render "no_El año ingresado ya existe"
+                return
+            }
+
         } //es create
         if (!anioInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Anio " + (anioInstance.id ? anioInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            anioInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            println("Error al guardar el año" + anioInstance.errors)
+            render "no_Error al guardar el año"
+        }else{
+            render "ok_Año guardado correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Anio " + anioInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Anio " + anioInstance.id
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
@@ -87,22 +73,17 @@ class AnioController {
     def delete() {
         def anioInstance = Anio.get(params.id)
         if (!anioInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Anio con id " + params.id
-            redirect(action: "list")
+            render "no_No se encontró el año"
             return
         }
 
         try {
             anioInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Anio " + anioInstance.id
-            redirect(action: "list")
+            render "ok_Año borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Anio " + (anioInstance.id ? anioInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar el año "  + anioInstance.errors)
+            render "no_Error al borrar el año"
         }
     } //delete
 } //fin controller

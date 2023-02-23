@@ -12,12 +12,6 @@ class ValoresAnualesController {
     } //index
 
     def list() {
-//
-//        def num = 10687.25
-//
-//        println num
-//        println NumberToLetterConverter.convertNumberToLetter(num)
-
         [valoresAnualesInstanceList: ValoresAnuales.list(params), params: params]
     } //list
 

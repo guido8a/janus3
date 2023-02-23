@@ -127,8 +127,7 @@ class ClaseObraController {
     def delete() {
         def claseObraInstance = ClaseObra.get(params.id)
         if (!claseObraInstance) {
-            redirect(action: "list")
-            return
+            render "ok_No se encontró la clase"
         }
 
         try {

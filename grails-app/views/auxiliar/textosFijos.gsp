@@ -10,13 +10,17 @@
         font-size: 12px;
     }
 
+    .bordeVerde{
+        border-color: green;
+    }
+
+
     </style>
 
     <title>Formato de Impresión</title>
 </head>
 
 <body>
-
 
 <div class="span12 btn-group" role="navigation">
     <g:link class="link btn btn-info" controller="inicio" action="parametros">
@@ -45,7 +49,7 @@
 
                         <div class="span3"><g:textArea name="memo1" value="${auxiliarFijo?.memo1}" rows="4" cols="4"
                                                        style="width: 600px; height: 55px; resize: none;"
-                                                       disabled="true"/></div>
+                                                       disabled="true" class="form-control"/></div>
                     </div>
 
 
@@ -54,7 +58,7 @@
 
                         <div class="span3"><g:textArea name="memo2" value="${auxiliarFijo?.memo2}" rows="4" cols="4"
                                                        style="width: 600px; height: 55px;  resize: none;"
-                                                       disabled="true"/></div>
+                                                       disabled="true" class="form-control"/></div>
 
                     </div>
                 </g:form>
@@ -82,7 +86,7 @@
                         <div class="span1">Título</div>
 
                         <div class="span3"><g:textField name="titulo" value="${auxiliarFijo?.titulo}" style="width: 560px"
-                                                        disabled="true"/></div>
+                                                        disabled="true" class="form-control"/></div>
 
                     </div>
 
@@ -94,7 +98,7 @@
                     <div class="span6">
                         <div class="span3"><g:textArea name="general" value="${auxiliarFijo?.general}" rows="4" cols="4"
                                                        style="width: 665px; height: 130px; resize: none;"
-                                                       disabled="true"/></div>
+                                                       disabled="true" class="form-control"/></div>
 
                     </div>
 
@@ -106,7 +110,7 @@
                     <div class="span6">
                         <div class="span3"><g:textArea name="baseCont" value="${auxiliarFijo?.baseCont}" rows="4" cols="4"
                                                        style="width: 665px; height: 35px; resize: none;"
-                                                       disabled="true"/></div>
+                                                       disabled="true" class="form-control"/></div>
 
                     </div>
 
@@ -117,7 +121,7 @@
                     <div class="span6">
                         <div class="span3"><g:textArea name="presupuestoRef" value="${auxiliarFijo?.presupuestoRef}"
                                                        rows="4" cols="4" style="width: 665px; height: 35px; resize: none;"
-                                                       disabled="true"/></div>
+                                                       disabled="true" class="form-control"/></div>
                     </div>
                 </g:form>
 
@@ -150,7 +154,7 @@
                     <div class="span6">
                         <div class="span3"><g:textArea name="notaAuxiliar" value="${auxiliarFijo?.notaAuxiliar}" rows="4"
                                                        cols="4" style="width: 665px; height: 130px; resize: none;"
-                                                       disabled="true"/></div>
+                                                       disabled="true" class="form-control"/></div>
                     </div>
                 </g:form>
 
@@ -192,21 +196,19 @@
     $("#tabs").tabs();
 
     $("#btnEditarMemo").click(function () {
-        $("#memo1").attr("disabled", false);
-        $("#memo2").attr("disabled", false)
+        $("#memo1").attr("disabled", false).addClass("bordeVerde");
+        $("#memo2").attr("disabled", false).addClass("bordeVerde");
     });
-
-    // var active2 = $("#tabs").tabs("option", "event");
 
     $("#btnAceptarMemo").click(function () {
         $("#frm-memo").submit();
     });
 
     $("#btnEditarTextoF").click(function () {
-        $("#presupuestoRef").attr("disabled", false);
-        $("#baseCont").attr("disabled", false);
-        $("#general").attr("disabled", false);
-        $("#titulo").attr("disabled", false);
+        $("#presupuestoRef").attr("disabled", false).addClass("bordeVerde");
+        $("#baseCont").attr("disabled", false).addClass("bordeVerde");
+        $("#general").attr("disabled", false).addClass("bordeVerde");
+        $("#titulo").attr("disabled", false).addClass("bordeVerde");
     });
 
     $("#btnAceptarTextoF").click(function () {
@@ -214,8 +216,8 @@
     });
 
     $("#btnEditarTextoRet").click(function () {
-        $("#retencion").attr("disabled", false);
-        $("#notaAuxiliar").attr("disabled", false);
+        $("#retencion").attr("disabled", false).addClass("bordeVerde");
+        $("#notaAuxiliar").attr("disabled", false).addClass("bordeVerde");
     });
 
     $("#btnAceptarTextoRet").click(function () {
@@ -223,7 +225,7 @@
     });
 
     $("#piePaginaSel").change(function () {
-        $("#piePaginaSel").attr("disabled", false);
+        $("#piePaginaSel").attr("disabled", false).addClass("bordeVerde");
         $("#descripcion").attr("disabled", true);
         $("#texto").attr("disabled", true);
         $("#adicional").attr("disabled", true);

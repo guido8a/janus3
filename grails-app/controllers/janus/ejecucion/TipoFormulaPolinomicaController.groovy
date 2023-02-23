@@ -30,7 +30,6 @@ class TipoFormulaPolinomicaController {
     } //form_ajax
 
     def save() {
-
         params.codigo = params.codigo.toUpperCase();
 
         def existe = TipoFormulaPolinomica.findByCodigo(params.codigo)
@@ -39,60 +38,29 @@ class TipoFormulaPolinomicaController {
         if (params.id) {
             tipoFormulaPolinomicaInstance = TipoFormulaPolinomica.get(params.id)
             if (!tipoFormulaPolinomicaInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Tipo Formula Polinomica con id " + params.id
-                redirect(action: 'list')
-                return
+                render "no_No se encontró el tipo de fórmula polinómica"
             }//no existe el objeto
             tipoFormulaPolinomicaInstance.properties = params
         }//es edit
         else {
-
             if(!existe){
                 tipoFormulaPolinomicaInstance = new TipoFormulaPolinomica(params)
             }else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar la fórmula polinómica, el código ya existe!!"
-                redirect(action: 'list')
-                return
+                render "no_El código ingresado ya existe"
             }
-
-
         } //es create
-        if (!tipoFormulaPolinomicaInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Tipo Formula Polinomica " + (tipoFormulaPolinomicaInstance.id ? tipoFormulaPolinomicaInstance.id : "") + "</h4>"
 
-            str += "<ul>"
-            tipoFormulaPolinomicaInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+        if(!tipoFormulaPolinomicaInstance.save(flush: true)) {
+            println("error al guardar el tipo de fp " + tipoFormulaPolinomicaInstance.errors)
+            render "no_Error al guardar el tipo de fórmula polinómica"
+        }else{
+            render "ok_Tipo de Fórmula Polinómica guardada correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Tipo Formula Polinomica " + tipoFormulaPolinomicaInstance?.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Tipo Formula Polinomica " + tipoFormulaPolinomicaInstance?.descripcion
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def tipoFormulaPolinomicaInstance = TipoFormulaPolinomica.get(params.id)
         if (!tipoFormulaPolinomicaInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Tipo Formula Polinomica con id " + params.id
             redirect(action: "list")
             return
         }
@@ -102,22 +70,16 @@ class TipoFormulaPolinomicaController {
     def delete() {
         def tipoFormulaPolinomicaInstance = TipoFormulaPolinomica.get(params.id)
         if (!tipoFormulaPolinomicaInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Tipo Formula Polinomica con id " + params.id
-            redirect(action: "list")
-            return
+        render "no_No se encontró el tipo de fórmula polinómica"
         }
 
         try {
             tipoFormulaPolinomicaInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Tipo Formula Polinomica " + tipoFormulaPolinomicaInstance?.descripcion
-            redirect(action: "list")
+            render "ok_Tipo de fórmula polinómica borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Tipo Formula Polinomica " + (tipoFormulaPolinomicaInstance.id ? tipoFormulaPolinomicaInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar la fp " + tipoFormulaPolinomicaInstance?.errors)
+            render "no_Error al borrar el tipo de Fórmula Polinómica"
         }
     } //delete
 } //fin controller

@@ -2,242 +2,220 @@
 <%@ page import="janus.ValoresAnuales" %>
 <!doctype html>
 <html>
-    <head>
-        <meta name="layout" content="main">
-        <title>
-            Lista de Valores Anuales
-        </title>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    </head>
-    <body>
-
-        <g:if test="${flash.message}">
-            <div class="row">
-                <div class="span12">
-                    <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                        <a class="close" data-dismiss="alert" href="#">×</a>
-                        ${flash.message}
-                    </div>
-                </div>
-            </div>
-        </g:if>
-
-        <div class="row">
-            <div class="span9 btn-group" role="navigation">
-                <a href="#" class="btn btn-ajax btn-new">
-                    <i class="icon-plus"></i>
-                     Crear Valores Anuales
-                </a>
-            </div>
-            <div class="span3" id="busqueda-ValoresAnuales"></div>
-        </div>
-
-        <g:form action="delete" name="frmDelete-ValoresAnuales">
-            <g:hiddenField name="id"/>
-        </g:form>
-
-        <div id="list-ValoresAnuales" role="main" style="margin-top: 10px;">
-
-            <table class="table table-bordered table-striped table-condensed table-hover">
-                <thead>
-                    <tr>
-
-                    
-                        <g:sortableColumn property="anio" title="Año" />
-                    
-                        <g:sortableColumn property="costoDiesel" title="Costo Diesel" />
-                    
-                        <g:sortableColumn property="costoGrasa" title="Costo Grasa" />
-                    
-                        <g:sortableColumn property="costoLubricante" title="Costo Lubricante" />
-                    
-                        <g:sortableColumn property="factorCostoRepuestosReparaciones" title="Factor Costo Repuestos Reparaciones" />
-                    
-                        <g:sortableColumn property="sueldoBasicoUnificado" title="Sueldo Básico Unificado" />
-
-                        <g:sortableColumn property="tasaInteresAnual" title="Tasa de Interés Anual" />
-
-                        <g:sortableColumn property="seguro" title="Seguro" />
-
-                        <g:sortableColumn property="inflacion" title="Inflación"/>
-
-                    
-                        <th width="150">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="paginate">
-                <g:each in="${valoresAnualesInstanceList}" status="i" var="valoresAnualesInstance">
-                    <tr>
-                    
-                        %{--<td>${fieldValue(bean: valoresAnualesInstance, field: "anio")}</td>--}%
-                        <td>${valoresAnualesInstance?.anio}</td>
-                    
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "costoDiesel")}</td>
-                    
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "costoGrasa")}</td>
-                    
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "costoLubricante")}</td>
-                    
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "factorCostoRepuestosReparaciones")}</td>
-                    
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "sueldoBasicoUnificado")}</td>
-
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "tasaInteresAnual")}</td>
-
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "seguro")}</td>
-
-                        <td>${fieldValue(bean: valoresAnualesInstance, field: "inflacion")}</td>
+<head>
+    <meta name="layout" content="main">
+    <title>
+        Lista de Valores Anuales
+    </title>
+</head>
+<body>
+<div class="span12 btn-group" role="navigation">
+    <g:link class="link btn btn-info" controller="inicio" action="parametros">
+        <i class="fa fa-arrow-left"></i>
+        Parámetros
+    </g:link>
+    <a href="#" class="btn btn-success btn-new">
+        <i class="fa fa-file"></i>
+        Nuevos Valores Anuales
+    </a>
+</div>
 
 
-                        <td>
-                            <a class="btn btn-small btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${valoresAnualesInstance.id}">
-                                <i class="icon-zoom-in icon-large"></i>
-                            </a>
-                            <a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${valoresAnualesInstance.id}">
-                                <i class="icon-pencil icon-large"></i>
-                            </a>
+<div id="list-ValoresAnuales" role="main" style="margin-top: 10px;">
 
-                            <a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${valoresAnualesInstance.id}">
-                                <i class="icon-trash icon-large"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <thead>
+        <tr>
+            <th>Año</th>
+            <th>Costo Diesel</th>
+            <th>Costo Grasa</th>
+            <th>Costo Lubricante</th>
+            <th>Factor Costo Repuestos Reparaciones</th>
+            <th>Sueldo Básico Unificado</th>
+            <th>Tasa de Interés Anual</th>
+            <th>Seguro</th>
+            <th>Inflación</th>
+            <th style="width: 130px">Acciones</th>
+        </tr>
+        </thead>
+        <tbody >
+        <g:each in="${valoresAnualesInstanceList}" status="i" var="valoresAnualesInstance">
+            <tr>
+                <td>${valoresAnualesInstance?.anio}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "costoDiesel")}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "costoGrasa")}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "costoLubricante")}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "factorCostoRepuestosReparaciones")}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "sueldoBasicoUnificado")}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "tasaInteresAnual")}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "seguro")}</td>
+                <td>${fieldValue(bean: valoresAnualesInstance, field: "inflacion")}</td>
+                <td>
+                    <a class="btn btn-info btn-xs btn-show" href="#"  title="Ver" data-id="${valoresAnualesInstance.id}">
+                        <i class="fa fa-clipboard"></i>
+                    </a>
+                    <a class="btn btn-success btn-xs btn-edit" href="#"  title="Editar" data-id="${valoresAnualesInstance.id}">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a class="btn btn-danger btn-xs btn-delete" href="#" title="Eliminar" data-id="${valoresAnualesInstance.id}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        </g:each>
+        </tbody>
+    </table>
+</div>
 
-        </div>
+<script type="text/javascript">
+    function createEditRow(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
 
-        <div class="modal hide fade" id="modal-ValoresAnuales">
-            <div class="modal-header" id="modalHeader">
-                <button type="button" class="close darker" data-dismiss="modal">
-                    <i class="icon-remove-circle"></i>
-                </button>
-
-                <h3 id="modalTitle"></h3>
-            </div>
-
-            <div class="modal-body" id="modalBody">
-            </div>
-
-            <div class="modal-footer" id="modalFooter">
-            </div>
-        </div>
-
-        <script type="text/javascript">
-            var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-            var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
-
-            function submitForm(btn) {
-                if ($("#frmSave-ValoresAnuales").valid()) {
-                    btn.replaceWith(spinner);
-                }
-                $("#frmSave-ValoresAnuales").submit();
-            }
-
-            $(function () {
-                $('[rel=tooltip]').tooltip();
-
-                $(".paginate").paginate({
-                    maxRows        : 10,
-                    searchPosition : $("#busqueda-ValoresAnuales"),
-                    float          : "right"
-                });
-
-                $(".btn-new").click(function () {
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                            btnSave.click(function () {
-                                submitForm(btnSave);
-                                return false;
-                            });
-
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                            $("#modalTitle").html("Crear Valores Anuales");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-ValoresAnuales").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn new
-
-                $(".btn-edit").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        data    : {
-                            id : id
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : title + " Clase de Obra",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
                         },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormVA();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
 
-                            btnSave.click(function () {
-                                submitForm(btnSave);
-                                return false;
-                            });
-
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
-                            $("#modalTitle").html("Editar Valores Anuales");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-ValoresAnuales").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn edit
-
-                $(".btn-show").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
-                            $("#modalTitle").html("Ver Valores Anuales");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk);
-                            $("#modal-ValoresAnuales").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn show
-
-                $(".btn-delete").click(function () {
-                    var id = $(this).data("id");
-                    $("#id").val(id);
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-                    btnDelete.click(function () {
-                        btnDelete.replaceWith(spinner);
-                        $("#frmDelete-ValoresAnuales").submit();
+    function submitFormVA() {
+        var $form = $("#frmSave-ValoresAnuales");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                         return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-                    $("#modalTitle").html("Eliminar Valores Anuales");
-                    $("#modalBody").html("<p>¿Está seguro de querer eliminar este Valores Anuales?</p>");
-                    $("#modalFooter").html("").append(btnOk).append(btnDelete);
-                    $("#modal-ValoresAnuales").modal("show");
-                    return false;
-                });
-
+                    }
+                }
             });
+        } else {
+            return false;
+        }
+    }
 
-        </script>
+    $(function () {
 
-    </body>
+        $(".btn-new").click(function () {
+            createEditRow();
+        }); //click btn new
+
+        $(".btn-edit").click(function () {
+            var id = $(this).data("id");
+            createEditRow(id);
+        }); //click btn edit
+
+        $(".btn-delete").click(function () {
+            var id = $(this).data("id");
+            deleteRow(id);
+        });
+
+        $(".btn-show").click(function () {
+            var id = $(this).data("id");
+            $.ajax({
+                type    : "POST",
+                url     : "${createLink(action:'show_ajax')}",
+                data    : {
+                    id : id
+                },
+                success : function (msg) {
+                    bootbox.dialog({
+                        title   : "Tipo de Obra",
+                        message : msg,
+                        buttons : {
+                            ok : {
+                                label     : "Aceptar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }); //click btn show
+
+        function deleteRow(itemId) {
+            bootbox.dialog({
+                title   : "Alerta",
+                message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este registro? Esta acción no se puede deshacer.</p>",
+                buttons : {
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
+                        }
+                    },
+                    eliminar : {
+                        label     : "<i class='fa fa-trash'></i> Eliminar",
+                        className : "btn-danger",
+                        callback  : function () {
+                            var v = cargarLoader("Eliminando...");
+                            $.ajax({
+                                type    : "POST",
+                                url     : '${createLink(action:'delete')}',
+                                data    : {
+                                    id : itemId
+                                },
+                                success : function (msg) {
+                                    v.modal("hide");
+                                    var parts = msg.split("_");
+                                    if(parts[0] === 'ok'){
+                                        log(parts[1],"success");
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 800);
+                                    }else{
+                                        log(parts[1],"error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
+
+
+    });
+
+</script>
+
+</body>
 </html>

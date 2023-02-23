@@ -1,7 +1,10 @@
 package janus
 
+import janus.pac.Anio
+
 class ValoresAnuales {
 
+    Anio    anioNuevo
     Integer anio
     Double sueldoBasicoUnificado
     Double seguro
@@ -20,6 +23,7 @@ class ValoresAnuales {
         version false
         columns {
             id column: 'vlan__id'
+            anioNuevo column: 'anio__id'
             anio column: 'vlananio'
             sueldoBasicoUnificado column: 'vlan_sbu'
             seguro column: 'vlansgro'
@@ -32,7 +36,6 @@ class ValoresAnuales {
         }
     }
     static constraints = {
-
-
+        anioNuevo(blank: true, nullable: true)
     }
 }

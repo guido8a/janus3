@@ -7,7 +7,7 @@
     <style type="text/css">
 
     .tab-content, .left, .right {
-        height : 700px;
+        height : 710px;
     }
 
     .tab-content {
@@ -35,13 +35,16 @@
 <body>
 
 
-<ul class="nav nav-tabs">
-    <li class="active"><a href="#generales" data-toggle="tab">Generales</a></li>
-    <li><a href="#obras" data-toggle="tab">Obras</a></li>
-    <li><a href="#contratacion" data-toggle="tab">Contratación</a></li>
-    <li><a href="#ejecucion" data-toggle="tab">Ejecución</a></li>
-</ul>
+
 <div class="tab-content ui-corner-bottom">
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#generales" data-toggle="tab">Generales</a></li>
+        <li><a href="#obras" data-toggle="tab">Obras</a></li>
+        <li><a href="#contratacion" data-toggle="tab">Contratación</a></li>
+        <li><a href="#ejecucion" data-toggle="tab">Ejecución</a></li>
+    </ul>
+
     <div class="tab-pane active" id="generales">
         <div class="left pull-left">
             <ul class="fa-ul">
