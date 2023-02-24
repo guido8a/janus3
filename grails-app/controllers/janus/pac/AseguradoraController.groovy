@@ -12,7 +12,8 @@ class AseguradoraController {
     } //index
 
     def list() {
-        [aseguradoraInstanceList: Aseguradora.list(params), params: params]
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [aseguradoraInstanceList: Aseguradora.list(params), aseguradoraTotal: Aseguradora.count(), params: params]
     } //list
 
     def form_ajax() {
@@ -20,8 +21,6 @@ class AseguradoraController {
         if (params.id) {
             aseguradoraInstance = Aseguradora.get(params.id)
             if (!aseguradoraInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Aseguradora con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto

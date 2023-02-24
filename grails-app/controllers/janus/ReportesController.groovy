@@ -5,6 +5,7 @@ import com.lowagie.text.pdf.PdfPCell
 import com.lowagie.text.pdf.PdfPTable
 import com.lowagie.text.pdf.PdfWriter
 import janus.ejecucion.Planilla
+import janus.pac.Aseguradora
 import janus.pac.Garantia
 import jxl.Workbook
 import jxl.WorkbookSettings
@@ -5980,9 +5981,9 @@ class ReportesController {
     }
 
 
-    def aseguradoras() {
-        def asg = janus.pac.Aseguradora.list()
-        [asg: asg]
+    def _aseguradoras() {
+        def asg = Aseguradora.list()
+        renderPdf(template:'/reportes/aseguradoras', model: [asg: asg], filename: 'aseguradoras.pdf')
     }
 
 

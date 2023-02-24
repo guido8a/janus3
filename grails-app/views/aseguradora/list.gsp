@@ -6,231 +6,218 @@
     <title>
         Lista de Aseguradoras
     </title>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
 </head>
 
 <body>
 
-<g:if test="${flash.message}">
-    <div class="row">
-        <div class="span12">
-            <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                <a class="close" data-dismiss="alert" href="#">×</a>
-                ${flash.message}
-            </div>
-        </div>
-    </div>
-</g:if>
-
-<div class="row">
-    <div class="span9 btn-group" role="navigation">
-        <a href="#" class="btn btn-ajax btn-new">
-            <i class="icon-file"></i>
-            Crear  Aseguradora
-        </a>
-        <a href="#" class="btn btn-primary" id="print" >
-            <i class="icon-print"></i>
-            Imprimir
-        </a>
-    </div>
-
-    <div class="span3" id="busqueda-Aseguradora"></div>
+<div class="span12 btn-group" role="navigation">
+    <g:link class="link btn btn-info" controller="inicio" action="parametros">
+        <i class="fa fa-arrow-left"></i>
+        Parámetros
+    </g:link>
+    <a href="#" class="btn btn-success btn-new">
+        <i class="fa fa-file"></i>
+        Nueva aseguradora
+    </a>
+    <a href="#" class="btn btn-primary" id="print" >
+        <i class="fa fa-print"></i>
+        Imprimir
+    </a>
 </div>
-
-<g:form action="delete" name="frmDelete-Aseguradora">
-    <g:hiddenField name="id"/>
-</g:form>
 
 <div id="list-Aseguradora" role="main" style="margin-top: 10px;">
 
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-
-            <g:sortableColumn property="nombre" title="Nombre"/>
-
-            <g:sortableColumn property="fax" title="Fax"/>
-
-            <g:sortableColumn property="telefonos" title="Teléfonos"/>
-
-            <g:sortableColumn property="mail" title="Mail"/>
-
-            <g:sortableColumn property="responsable" title="Responsable"/>
-
-            <g:sortableColumn property="fechaContacto" title="Fecha Contacto"/>
-
-            <th width="150">Acciones</th>
+            <th>Nombre</th>
+            <th>Fax</th>
+            <th>Teléfonos</th>
+            <th>Mail</th>
+            <th>Responsable</th>
+            <th>Fecha contacto</th>
+            <th style="width: 120px">Acciones</th>
         </tr>
         </thead>
         <tbody class="paginate">
         <g:each in="${aseguradoraInstanceList}" status="i" var="aseguradoraInstance">
             <tr>
-
                 <td>${fieldValue(bean: aseguradoraInstance, field: "nombre")}</td>
-
                 <td>${fieldValue(bean: aseguradoraInstance, field: "fax")}</td>
-
                 <td>${fieldValue(bean: aseguradoraInstance, field: "telefonos")}</td>
-
                 <td>${fieldValue(bean: aseguradoraInstance, field: "mail")}</td>
-
                 <td>${fieldValue(bean: aseguradoraInstance, field: "responsable")}</td>
-
-                <td><g:formatDate date="${aseguradoraInstance.fechaContacto}"/></td>
-
+                <td><g:formatDate date="${aseguradoraInstance.fechaContacto}" format="dd-MM-yyyy"/></td>
                 <td>
-                    <a class="btn btn-small btn-show btn-ajax" href="#" rel="tooltip" title="Ver"
-                       data-id="${aseguradoraInstance.id}">
-                        <i class="icon-zoom-in icon-large"></i>
+                    <a class="btn btn-info btn-xs btn-show" href="#"  title="Ver" data-id="${aseguradoraInstance.id}">
+                        <i class="fa fa-clipboard"></i>
                     </a>
-                    <a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar"
-                       data-id="${aseguradoraInstance.id}">
-                        <i class="icon-pencil icon-large"></i>
+                    <a class="btn btn-success btn-xs btn-edit" href="#"  title="Editar" data-id="${aseguradoraInstance.id}">
+                        <i class="fa fa-edit"></i>
                     </a>
-
-                    <a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar"
-                       data-id="${aseguradoraInstance.id}">
-                        <i class="icon-trash icon-large"></i>
+                    <a class="btn btn-danger btn-xs btn-delete" href="#" title="Eliminar" data-id="${aseguradoraInstance.id}">
+                        <i class="fa fa-trash"></i>
                     </a>
                 </td>
             </tr>
         </g:each>
         </tbody>
     </table>
-
 </div>
 
-<div class="modal hide fade" id="modal-Aseguradora">
-    <div class="modal-header" id="modalHeader">
-        <button type="button" class="close darker" data-dismiss="modal">
-            <i class="icon-remove-circle"></i>
-        </button>
+<elm:pagination total="${aseguradoraTotal}" params="${params}" />
 
-        <h3 id="modalTitle"></h3>
-    </div>
-
-    <div class="modal-body" id="modalBody">
-    </div>
-
-    <div class="modal-footer" id="modalFooter">
-    </div>
-</div>
 
 <script type="text/javascript">
-    var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-    var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
 
-    function submitForm(btn) {
-        if ($("#frmSave-Aseguradora").valid()) {
-            btn.replaceWith(spinner);
+    $("#print").click(function(){
+        location.href="${createLink(controller: 'reportes', action: '_aseguradoras')}"
+    });
+
+    function createEditRow(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
+
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'form_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : title + " Aseguradora",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormAseguradora();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormAseguradora() {
+        var $form = $("#frmSave-ClaseObra");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
         }
-        $("#frmSave-Aseguradora").submit();
     }
 
     $(function () {
-        $('[rel=tooltip]').tooltip();
-
-        $(".paginate").paginate({
-            maxRows: 15,
-            searchPosition: $("#busqueda-Aseguradora"),
-            float: "right"
-        });
 
         $(".btn-new").click(function () {
-            $.ajax({
-                type: "POST",
-                url: "${createLink(action:'form_ajax')}",
-                success: function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                    $("#modalTitle").html("Crear Aseguradora");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Aseguradora").modal("show");
-                }
-            });
-            return false;
+            createEditRow();
         }); //click btn new
 
         $(".btn-edit").click(function () {
             var id = $(this).data("id");
-            $.ajax({
-                type: "POST",
-                url: "${createLink(action:'form_ajax')}",
-                data: {
-                    id: id
-                },
-                success: function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
-                    $("#modalTitle").html("Editar Aseguradora");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Aseguradora").modal("show");
-                }
-            });
-            return false;
+            createEditRow(id);
         }); //click btn edit
 
-
-        $("#print").click(function(){
-            location.href="${createLink(controller: 'pdf',action: 'pdfLink')}?url=${createLink(controller: 'reportes',action: 'aseguradoras')}"
+        $(".btn-delete").click(function () {
+            var id = $(this).data("id");
+            deleteRow(id);
         });
 
         $(".btn-show").click(function () {
             var id = $(this).data("id");
             $.ajax({
-                type: "POST",
-                url: "${createLink(action:'show_ajax')}",
-                data: {
-                    id: id
+                type    : "POST",
+                url     : "${createLink(action:'show_ajax')}",
+                data    : {
+                    id : id
                 },
-                success: function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
-                    $("#modalTitle").html("Ver Aseguradora");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk);
-                    $("#modal-Aseguradora").modal("show");
+                success : function (msg) {
+                    bootbox.dialog({
+                        title   : "Aseguradoras",
+                        message : msg,
+                        buttons : {
+                            ok : {
+                                label     : "Aceptar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        }
+                    });
                 }
             });
-            return false;
         }); //click btn show
 
-        $(".btn-delete").click(function () {
-            var id = $(this).data("id");
-            $("#id").val(id);
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-            var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-            btnDelete.click(function () {
-                btnDelete.replaceWith(spinner);
-                $("#frmDelete-Aseguradora").submit();
-                return false;
+        function deleteRow(itemId) {
+            bootbox.dialog({
+                title   : "Alerta",
+                message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este registro? Esta acción no se puede deshacer.</p>",
+                buttons : {
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
+                        }
+                    },
+                    eliminar : {
+                        label     : "<i class='fa fa-trash'></i> Eliminar",
+                        className : "btn-danger",
+                        callback  : function () {
+                            var v = cargarLoader("Eliminando...");
+                            $.ajax({
+                                type    : "POST",
+                                url     : '${createLink(action:'delete')}',
+                                data    : {
+                                    id : itemId
+                                },
+                                success : function (msg) {
+                                    v.modal("hide");
+                                    var parts = msg.split("_");
+                                    if(parts[0] === 'ok'){
+                                        log(parts[1],"success");
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 800);
+                                    }else{
+                                        log(parts[1],"error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
             });
+        }
 
-            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-            $("#modalTitle").html("Eliminar Aseguradora");
-            $("#modalBody").html("<p>¿Está seguro de querer eliminar esta Aseguradora?</p>");
-            $("#modalFooter").html("").append(btnOk).append(btnDelete);
-            $("#modal-Aseguradora").modal("show");
-            return false;
-        });
 
     });
 

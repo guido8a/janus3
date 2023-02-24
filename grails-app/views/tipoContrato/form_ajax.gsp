@@ -2,68 +2,53 @@
 <%@ page import="janus.pac.TipoContrato" %>
 
 <div id="create-TipoContrato" class="span" role="main">
-    <g:form class="form-horizontal" name="frmSave-TipoContrato" action="save">
-        <g:hiddenField name="id" value="${tipoContratoInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-
-            <g:if test="${tipoContratoInstance?.id}">
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="2" class="" value="${tipoContratoInstance?.codigo}" readonly="readonly"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:if>
-            <g:else>
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="2" class="required allCaps" value="${tipoContratoInstance?.codigo}"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:else>
-
-
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="32" class="required" value="${tipoContratoInstance?.descripcion}"/>
-                <span class="mandatory">*</span>
+<g:form class="form-horizontal" name="frmSave-TipoContrato" action="save">
+    <g:hiddenField name="id" value="${tipoContratoInstance?.id}"/>
+    <div class="form-group ${hasErrors(bean: tipoContratoInstance, field: 'codigo', 'error')} ">
+        <span class="grupo">
+            <label for="codigo" class="col-md-2 control-label text-info">
+                Código
+            </label>
+            <span class="col-md-3">
+                <g:textField name="codigo" maxlength="2" class="form-control allCaps required" value="${tipoContratoInstance?.codigo}" readonly="${tipoContratoInstance?.id ? true : false}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-    </g:form>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: tipoContratoInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-2 control-label text-info">
+                Descripción
+            </label>
+            <span class="col-md-8">
+                <g:textField name="descripcion" maxlength="32" class="form-control required" value="${tipoContratoInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+</g:form>
 
 <script type="text/javascript">
     $("#frmSave-TipoContrato").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormTC();
+            return false;
         }
+        return true;
     });
 </script>
