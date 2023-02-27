@@ -12,7 +12,7 @@ class FuenteFinanciamientoController {
     } //index
 
     def list() {
-        [fuenteFinanciamientoInstanceList: FuenteFinanciamiento.list(params), params: params]
+        [fuenteFinanciamientoInstanceList: FuenteFinanciamiento.list([sort: 'descripcion']), params: params]
     } //list
 
     def form_ajax() {
@@ -20,8 +20,6 @@ class FuenteFinanciamientoController {
         if (params.id) {
             fuenteFinanciamientoInstance = FuenteFinanciamiento.get(params.id)
             if (!fuenteFinanciamientoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Fuente Financiamiento con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -31,8 +29,6 @@ class FuenteFinanciamientoController {
 
     def save() {
 
-//        println("params " + params)
-
         params.descripcion = params.descripcion.toUpperCase();
 
         def existe = FuenteFinanciamiento.findByDescripcion(params.descripcion)
@@ -41,18 +37,14 @@ class FuenteFinanciamientoController {
         if (params.id) {
             fuenteFinanciamientoInstance = FuenteFinanciamiento.get(params.id)
             if (!fuenteFinanciamientoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Fuente Financiamiento con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el registro"
                 return
             }//no existe el objeto
             fuenteFinanciamientoInstance.properties = params
         }//es edit
         else {
             if(existe){
-                flash.clase = "alert-error"
-                flash.message = "Ya existe una Fuente de Financiamiento con ese nombre!"
-                redirect(action: 'list')
+                render "no_Ya existe una fuente de financiamiento con ese nombre"
                 return
             }else{
                 fuenteFinanciamientoInstance = new FuenteFinanciamiento(params)
@@ -60,64 +52,26 @@ class FuenteFinanciamientoController {
 
         } //es create
         if (!fuenteFinanciamientoInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Fuente Financiamiento " + (fuenteFinanciamientoInstance.id ? fuenteFinanciamientoInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            fuenteFinanciamientoInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            render "no_Error al guardar la fuente"
+        }else{
+            render "ok_Fuente guardada correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Fuente Financiamiento " + fuenteFinanciamientoInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Fuente Financiamiento " + fuenteFinanciamientoInstance.descripcion
-        }
-        redirect(action: 'list')
     } //save
-
-    def show_ajax() {
-        def fuenteFinanciamientoInstance = FuenteFinanciamiento.get(params.id)
-        if (!fuenteFinanciamientoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Fuente Financiamiento con id " + params.id
-            redirect(action: "list")
-            return
-        }
-        [fuenteFinanciamientoInstance: fuenteFinanciamientoInstance]
-    } //show
 
     def delete() {
         def fuenteFinanciamientoInstance = FuenteFinanciamiento.get(params.id)
         if (!fuenteFinanciamientoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Fuente Financiamiento con id " + params.id
-            redirect(action: "list")
+            render "no_No se encontró el registro"
             return
         }
 
         try {
             fuenteFinanciamientoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Fuente Financiamiento " + fuenteFinanciamientoInstance.descripcion
-            redirect(action: "list")
+            render "ok_Fuente borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Fuente Financiamiento " + (fuenteFinanciamientoInstance.id ? fuenteFinanciamientoInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar la fuente " + fuenteFinanciamientoInstance.errors)
+            render "no_Error al la fuente"
         }
     } //delete
 } //fin controller

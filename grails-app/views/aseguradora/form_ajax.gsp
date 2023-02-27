@@ -21,7 +21,7 @@
             <label for="fax" class="col-md-2 control-label text-info">
                 Fax
             </label>
-            <span class="col-md-8">
+            <span class="col-md-6">
                 <g:textField name="fax" maxlength="15" class="form-control" value="${aseguradoraInstance?.fax}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
@@ -33,7 +33,7 @@
             <label for="telefonos" class="col-md-2 control-label text-info">
                 Teléfonos
             </label>
-            <span class="col-md-8">
+            <span class="col-md-6">
                 <g:textField name="telefonos" maxlength="63" class="form-control" value="${aseguradoraInstance?.telefonos}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
@@ -69,7 +69,7 @@
             <label class="col-md-2 control-label text-info">
                 Tipo
             </label>
-            <span class="col-md-8">
+            <span class="col-md-6">
                 <g:select name="tipo" from="${janus.pac.TipoAseguradora.list()}" optionKey="id" optionValue="descripcion"
                           class="many-to-one form-control" value="${aseguradoraInstance?.tipo?.id}" noSelection="['null': 'Seleccione...']"/>
                 <p class="help-block ui-helper-hidden"></p>
@@ -82,7 +82,7 @@
             <label class="col-md-2 control-label text-info">
                 Fecha Contacto
             </label>
-            <span class="col-md-8">
+            <span class="col-md-4">
                 <input aria-label="" name="fechaContacto" id='fecha1' type='text' class="form-control" value="${aseguradoraInstance?.fechaContacto?.format("dd-MM-yyyy")}" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>

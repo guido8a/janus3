@@ -21,8 +21,6 @@ class TipoPlanillaController {
         if(params.id) {
             tipoPlanillaInstance = TipoPlanilla.get(params.id)
             if(!tipoPlanillaInstance) {
-                flash.clase = "alert-error"
-                flash.message =  "No se encontró Tipo Planilla con id " + params.id
                 redirect(action:  "list")
                 return
             } //no existe el objeto
@@ -38,9 +36,7 @@ class TipoPlanillaController {
         if(params.id) {
             tipoPlanillaInstance = TipoPlanilla.get(params.id)
             if(!tipoPlanillaInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Tipo Planilla con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el registro"
                 return
             }//no existe el objeto
             tipoPlanillaInstance.properties = params
@@ -50,71 +46,31 @@ class TipoPlanillaController {
             if(!existe)
                 tipoPlanillaInstance = new TipoPlanilla(params)
             else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el código ya existe."
-                redirect(action: 'list')
+                render "no_El código ingresado ya existe"
                 return
             }
         } //es create
         if (!tipoPlanillaInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Tipo Planilla " + (tipoPlanillaInstance.id ? tipoPlanillaInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            tipoPlanillaInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            render "no_Error al guardar el tipo"
+        }else{
+            render "ok_Tipo guardado correctamente"
         }
-
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Tipo Planilla " + tipoPlanillaInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Tipo Planilla " + tipoPlanillaInstance.id
-        }
-        redirect(action: 'list')
     } //save
 
-    def show_ajax() {
-        def tipoPlanillaInstance = TipoPlanilla.get(params.id)
-        if (!tipoPlanillaInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Tipo Planilla con id " + params.id
-            redirect(action: "list")
-            return
-        }
-        [tipoPlanillaInstance: tipoPlanillaInstance]
-    } //show
 
     def delete() {
         def tipoPlanillaInstance = TipoPlanilla.get(params.id)
         if (!tipoPlanillaInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Tipo Planilla con id " + params.id
-            redirect(action: "list")
+            render "no_No se encontró el registro"
             return
         }
 
         try {
             tipoPlanillaInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Tipo Planilla " + tipoPlanillaInstance.id
-            redirect(action: "list")
+            render "ok_Tipo borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Tipo Planilla " + (tipoPlanillaInstance.id ? tipoPlanillaInstance.id : "")
-            redirect(action: "list")
+            render "no_Error al borrar el tipo"
         }
     } //delete
 } //fin controller

@@ -1,6 +1,5 @@
 package janus.pac
 
-
 import org.springframework.dao.DataIntegrityViolationException
 
 class UnidadIncopController {
@@ -20,8 +19,6 @@ class UnidadIncopController {
         if(params.id) {
             unidadIncopInstance = UnidadIncop.get(params.id)
             if(!unidadIncopInstance) {
-                flash.clase = "alert-error"
-                flash.message =  "No se encontró Unidad Incop con id " + params.id
                 redirect(action:  "list")
                 return
             } //no existe el objeto
@@ -31,17 +28,13 @@ class UnidadIncopController {
 
     def save() {
 
-//        println("params " + params)
-
         params.codigo = params.codigo.toUpperCase();
 
         def unidadIncopInstance
         if(params.id) {
             unidadIncopInstance = UnidadIncop.get(params.id)
             if(!unidadIncopInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Unidad Incop con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el registro"
                 return
             }//no existe el objeto
             unidadIncopInstance.properties = params
@@ -51,46 +44,23 @@ class UnidadIncopController {
             if(!existe)
                 unidadIncopInstance = new UnidadIncop(params)
             else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el código ya existe."
-                redirect(action: 'list')
+                render "no_Código ya existente"
                 return
             }
         } //es create
         if (!unidadIncopInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Unidad Incop " + (unidadIncopInstance.id ? unidadIncopInstance.id : "") + "</h4>"
+            println("error al guardar la unidad " + unidadIncopInstance.errors)
+            render "no_Error al guardar la unidad"
+        }else{
+            render "ok_Unidad guardada correctamente"
 
-            str += "<ul>"
-            unidadIncopInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
         }
 
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Unidad Incop " + unidadIncopInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Unidad Incop " + unidadIncopInstance.descripcion
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def unidadIncopInstance = UnidadIncop.get(params.id)
         if (!unidadIncopInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Unidad Incop con id " + params.id
             redirect(action: "list")
             return
         }
@@ -100,22 +70,17 @@ class UnidadIncopController {
     def delete() {
         def unidadIncopInstance = UnidadIncop.get(params.id)
         if (!unidadIncopInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Unidad Incop con id " + params.id
-            redirect(action: "list")
+            render "no_No se encontró el registro"
             return
         }
 
         try {
             unidadIncopInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Unidad Incop " + unidadIncopInstance.descripcion
-            redirect(action: "list")
+            render "ok_Unidad borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Unidad Incop " + (unidadIncopInstance.id ? unidadIncopInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar la unidad " + unidadIncopInstance.errors)
+            render "no_Error al borrar la unidad"
         }
     } //delete
 } //fin controller

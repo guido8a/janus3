@@ -1,6 +1,5 @@
 package janus.pac
 
-
 import org.springframework.dao.DataIntegrityViolationException
 
 class TipoCompraController {
@@ -12,7 +11,7 @@ class TipoCompraController {
     } //index
 
     def list() {
-        [tipoCompraInstanceList: TipoCompra.list(params), params: params]
+        [tipoCompraInstanceList: TipoCompra.list([sort: 'descripcion']), params: params]
     } //list
 
     def form_ajax() {
@@ -20,8 +19,6 @@ class TipoCompraController {
         if (params.id) {
             tipoCompraInstance = TipoCompra.get(params.id)
             if (!tipoCompraInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró el Tipo Compra con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -34,9 +31,7 @@ class TipoCompraController {
         if (params.id) {
             tipoCompraInstance = TipoCompra.get(params.id)
             if (!tipoCompraInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró el Tipo Compra con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el registro"
                 return
             }//no existe el objeto
             tipoCompraInstance.properties = params
@@ -44,65 +39,29 @@ class TipoCompraController {
         else {
             tipoCompraInstance = new TipoCompra(params)
         } //es create
+
         if (!tipoCompraInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar el Tipo Compra " + (tipoCompraInstance.id ? tipoCompraInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            tipoCompraInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            render "no_Error al guardar el tipo"
+        }else{
+            render "ok_Tipo guardado correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente el Tipo Compra " + tipoCompraInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente el Tipo Compra " + tipoCompraInstance.descripcion
-        }
-        redirect(action: 'list')
     } //save
 
-    def show_ajax() {
-        def tipoCompraInstance = TipoCompra.get(params.id)
-        if (!tipoCompraInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Tipo Compra con id " + params.id
-            redirect(action: "list")
-            return
-        }
-        [tipoCompraInstance: tipoCompraInstance]
-    } //show
 
     def delete() {
         def tipoCompraInstance = TipoCompra.get(params.id)
         if (!tipoCompraInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Tipo Compra con id " + params.id
-            redirect(action: "list")
+            render "no_No se encontró el registro"
             return
         }
 
         try {
             tipoCompraInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente el Tipo Compra " + tipoCompraInstance.descripcion
-            redirect(action: "list")
+            render "ok_Tipo borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar el Tipo Compra " + (tipoCompraInstance.id ? tipoCompraInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar el tipo " + tipoCompraInstance.errors)
+            render "no_Error al el tipo"
         }
     } //delete
 } //fin controller

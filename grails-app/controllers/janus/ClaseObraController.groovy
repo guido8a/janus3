@@ -127,7 +127,8 @@ class ClaseObraController {
     def delete() {
         def claseObraInstance = ClaseObra.get(params.id)
         if (!claseObraInstance) {
-            render "ok_No se encontró la clase"
+            render "ok_No se encontró el registro"
+            return
         }
 
         try {

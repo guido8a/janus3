@@ -313,7 +313,7 @@
                                             <strong style="font-size: 14px"> o institución bancaria que emite la garantía.</strong>
                                         </p>
                                         <p>
-                                            <g:link class="link btn btn-warning btn-xs" controller="inicio" action="variables">
+                                            <g:link class="link btn btn-warning btn-xs" controller="unidadIncop" action="list">
                                                 <i class="fa fa-globe fa-2x"></i>
                                                 Unidad del Item
                                             </g:link>

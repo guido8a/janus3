@@ -12,7 +12,7 @@ class TipoProcedimientoController {
     } //index
 
     def list() {
-        [tipoProcedimientoInstanceList: TipoProcedimiento.list([sort: 'id']), params: params]
+        [tipoProcedimientoInstanceList: TipoProcedimiento.list([sort: 'descripcion']), params: params]
     } //list
 
     def form_ajax() {
@@ -20,8 +20,6 @@ class TipoProcedimientoController {
         if(params.id) {
             tipoProcedimientoInstance = TipoProcedimiento.get(params.id)
             if(!tipoProcedimientoInstance) {
-                flash.clase = "alert-error"
-                flash.message =  "No se encontró Tipo Procedimiento con id " + params.id
                 redirect(action:  "list")
                 return
             } //no existe el objeto
@@ -37,9 +35,7 @@ class TipoProcedimientoController {
         if(params.id) {
             tipoProcedimientoInstance = TipoProcedimiento.get(params.id)
             if(!tipoProcedimientoInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Tipo Procedimiento con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el registro"
                 return
             }//no existe el objeto
             tipoProcedimientoInstance.properties = params
@@ -49,46 +45,21 @@ class TipoProcedimientoController {
             if(!existe)
                 tipoProcedimientoInstance = new TipoProcedimiento(params)
             else{
-                flash.clase = "alert-error"
-                flash.message = "No se pudo guardar el código ya existe."
-                redirect(action: 'list')
+             render "no_Código ya existente"
                 return
             }
         } //es create
         if (!tipoProcedimientoInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Tipo Procedimiento " + (tipoProcedimientoInstance.id ? tipoProcedimientoInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            tipoProcedimientoInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            println("error al guardar el tipo " + tipoProcedimientoInstance.errors)
+            render "no_Error al guardar el tipo"
+        }else{
+            render "ok_Tipo guardado correctamente"
         }
-
-        if(params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Tipo Procedimiento " + tipoProcedimientoInstance.descripcion
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Tipo Procedimiento " + tipoProcedimientoInstance.descripcion
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
         def tipoProcedimientoInstance = TipoProcedimiento.get(params.id)
         if (!tipoProcedimientoInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Tipo Procedimiento con id " + params.id
             redirect(action: "list")
             return
         }
@@ -98,22 +69,17 @@ class TipoProcedimientoController {
     def delete() {
         def tipoProcedimientoInstance = TipoProcedimiento.get(params.id)
         if (!tipoProcedimientoInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró Tipo Procedimiento con id " + params.id
-            redirect(action: "list")
+            render "no_No se encontró el registro"
             return
         }
 
         try {
             tipoProcedimientoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente Tipo Procedimiento " + tipoProcedimientoInstance.descripcion
-            redirect(action: "list")
+            render "ok_Tipo borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar Tipo Procedimiento " + (tipoProcedimientoInstance.id ? tipoProcedimientoInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar el tipo " + tipoProcedimientoInstance.errors)
+            render "no_Error al borrar el tipo"
         }
     } //delete
 } //fin controller

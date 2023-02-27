@@ -109,7 +109,7 @@
     } //createEdit
 
     function submitFormAseguradora() {
-        var $form = $("#frmSave-ClaseObra");
+        var $form = $("#frmSave-Aseguradora");
         if ($form.valid()) {
             var data = $form.serialize();
             var dialog = cargarLoader("Guardando...");

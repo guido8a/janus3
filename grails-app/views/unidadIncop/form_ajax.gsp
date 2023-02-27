@@ -1,72 +1,54 @@
-
 <%@ page import="janus.pac.UnidadIncop" %>
 
 <div id="create-UnidadIncop" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave-UnidadIncop" action="save">
         <g:hiddenField name="id" value="${unidadIncopInstance?.id}"/>
                 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: unidadIncopInstance, field: 'codigo', 'error')} ">
+            <span class="grupo">
+                <label for="codigo" class="col-md-2 control-label text-info">
                     Código
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="codigo" maxlength="7" class="form-control allCaps required" value="${unidadIncopInstance?.codigo}" readonly="${unidadIncopInstance?.id ? true : false}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <g:if test="${unidadIncopInstance?.id}">
-
-
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="7" class="required allCaps" value="${unidadIncopInstance?.codigo}" readonly="readonly"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-
-            </g:if>
-            <g:else>
-                <div class="controls">
-                    <g:textField name="codigo" maxlength="7" class="required allCaps" value="${unidadIncopInstance?.codigo}"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-
-            </g:else>
-
+            </span>
         </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+
+        <div class="form-group ${hasErrors(bean: unidadIncopInstance, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-2 control-label text-info">
                     Descripción
+                </label>
+                <span class="col-md-8">
+                    <g:textField name="descripcion" maxlength="32" class="form-control required" value="${unidadIncopInstance?.descripcion}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="32" class="required" value="${unidadIncopInstance?.descripcion}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-                
     </g:form>
 
 <script type="text/javascript">
     $("#frmSave-UnidadIncop").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormUnidad();
+            return false;
         }
+        return true;
     });
 </script>

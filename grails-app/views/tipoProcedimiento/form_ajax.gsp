@@ -4,149 +4,123 @@
 <div id="create-TipoProcedimiento" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave-TipoProcedimiento" action="save">
         <g:hiddenField name="id" value="${tipoProcedimientoInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-4 control-label text-info">
                     Descripción
+                </label>
+                <span class="col-md-8">
+                    <g:textField name="descripcion" maxlength="63" class="form-control required" value="${tipoProcedimientoInstance?.descripcion}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="64" class="required" value="${tipoProcedimientoInstance?.descripcion}"/>
-                
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'sigla', 'error')} ">
+            <span class="grupo">
+                <label for="sigla" class="col-md-4 control-label text-info">
                     Sigla
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="sigla" maxlength="5" class="form-control allCaps required" value="${tipoProcedimientoInstance?.sigla}" readonly="${tipoProcedimientoInstance?.id ? true : false}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-            <g:if test="${tipoProcedimientoInstance?.id}">
-                <div class="controls">
-                    <g:textField name="sigla" maxlength="5" class=" required allCaps" value="${tipoProcedimientoInstance?.sigla}" readonly="readonly"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:if>
-            <g:else>
-                <div class="controls">
-                    <g:textField name="sigla" maxlength="5" class=" required allCaps" value="${tipoProcedimientoInstance?.sigla}"/>
-                    <span class="mandatory">*</span>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
-            </g:else>
-
+            </span>
         </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'fuente', 'error')} ">
+            <span class="grupo">
+                <label  class="col-md-4 control-label text-info">
                     Fuente
+                </label>
+                <span class="col-md-4">
+                    <g:select name="fuente" from="${['OF' : 'OF', 'OB' : 'OB']}" class="form-control" optionValue="value" optionKey="key" value="${tipoProcedimientoInstance?.fuente}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:select name="fuente" from="${tipoProcedimientoInstance.constraints.fuente.inList}" class="" value="${tipoProcedimientoInstance?.fuente}" valueMessagePrefix="tipoProcedimiento.fuente" noSelection="['': '']"/>
-                
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'bases', 'error')} ">
+            <span class="grupo">
+                <label for="bases" class="col-md-4 control-label text-info">
                     Bases
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="bases" class="form-control number required" value="${tipoProcedimientoInstance?.bases}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField type="number" name="bases" class=" required" value="${fieldValue(bean: tipoProcedimientoInstance, field: 'bases')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-                
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'preparatorio', 'error')} ">
+            <span class="grupo">
+                <label for="preparatorio" class="col-md-4 control-label text-info">
                     Período Preparatorio (d)
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="preparatorio" class="form-control number required" value="${tipoProcedimientoInstance?.preparatorio}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField type="number" name="preparatorio" class=" required" value="${fieldValue(bean: tipoProcedimientoInstance, field: 'preparatorio')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'precontractual', 'error')} ">
+            <span class="grupo">
+                <label for="precontractual" class="col-md-4 control-label text-info">
                     Período Precontractual (d)
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="precontractual" class="form-control number required" value="${tipoProcedimientoInstance?.precontractual}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField type="number" name="precontractual" class=" required" value="${fieldValue(bean: tipoProcedimientoInstance, field: 'precontractual')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'contractual', 'error')} ">
+            <span class="grupo">
+                <label for="contractual" class="col-md-4 control-label text-info">
                     Período Contractual (d)
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="contractual" class="form-control number required" value="${tipoProcedimientoInstance?.contractual}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField type="number" name="contractual" class=" required" value="${fieldValue(bean: tipoProcedimientoInstance, field: 'contractual')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'techo', 'error')} ">
+            <span class="grupo">
+                <label for="techo" class="col-md-4 control-label text-info">
                     Techo
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="techo" class="form-control number required" value="${tipoProcedimientoInstance?.techo}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField type="number" name="techo" class=" required" value="${fieldValue(bean: tipoProcedimientoInstance, field: 'techo')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-                
+
     </g:form>
 
 <script type="text/javascript">
     $("#frmSave-TipoProcedimiento").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function(form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormTP();
+            return false;
         }
+        return true;
     });
 </script>
