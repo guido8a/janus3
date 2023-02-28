@@ -3,12 +3,6 @@
 <head>
 
     <meta name="layout" content="main">
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 
     <style type="text/css">
 
@@ -53,43 +47,28 @@
 
 
 <div class="row">
-
-    %{--<div class="col-md-12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;height: 35px;">--}%
-    <div class="col-md-12 btn-group" role="navigation" style="margin-left: 0px;width: 100%;">
-        <button class="btn" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
-        <button class="btn" id="btn-nuevo"><i class="icon-plus"></i> Nuevo</button>
+    <div class="col-md-12 btn-group" role="navigation" style="width: 100%;">
+        <button class="btn btn-info" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
+        <button class="btn" id="btn-nuevo"><i class="fa fa-plus"></i> Nuevo</button>
         <g:if test="${contrato?.estado != 'R'}">
-            <button class="btn btn-success" id="btn-aceptar"><i class="icon-save"></i> Guardar</button>
+            <button class="btn btn-success" id="btn-aceptar"><i class="fa fa-save"></i> Guardar</button>
         </g:if>
-        <button class="btn" id="btn-cancelar"><i class="icon-undo"></i> Cancelar</button>
+        <button class="btn" id="btn-cancelar"><i class="fa fa-times"></i> Cancelar</button>
         <g:if test="${contrato?.id}">
             <g:if test="${contrato?.id && contrato?.estado != 'R'}">
-                <button class="btn" id="btn-borrar"><i class="icon-remove"></i> Eliminar Contrato</button>
+                <button class="btn btn-danger" id="btn-borrar"><i class="fa fa-trash"></i> Eliminar Contrato</button>
             </g:if>
         </g:if>
 
         <g:if test="${contrato?.estado == 'R'}">
             <g:if test="${planilla == 0}">
-                <button class="btn" id="btn-desregistrar"><i class="icon-exclamation"></i> Cambiar Estado
+                <button class="btn" id="btn-desregistrar"><i class="fa fa-retweet"></i> Cambiar Estado
                 </button>
             </g:if>
         </g:if>
         <g:if test="${contrato?.id && contrato?.estado != 'R'}">
-            <button class="btn" id="btn-registrar"><i class="icon-exclamation"></i> Registrar</button>
+            <button class="btn" id="btn-registrar"><i class="fa fa-retweet"></i> Registrar</button>
         </g:if>
-
-
-
-    %{--<g:if test="${contrato?.estado != 'R' && }">--}%
-
-    %{--</g:if>--}%
-    %{--<g:else>--}%
-
-    %{--</g:else>--}%
-
-
-
-    %{--<button class="btn" id="btn-salir"><i class="icon-ban-circle"></i> Salir</button>--}%
     </div>
 </div>
 
@@ -97,29 +76,21 @@
 
     <g:hiddenField name="id" value="${contrato?.id}"/>
 
-    <g:if test="${contrato?.estado == 'R'}">
-        <g:if test="${planilla != 0}">
-            <div id="alertaEstado" title="Obra en ejecución">
-                <p>Este contrato ya posee planillas y se halla en ejecución</p>
-            </div>
-        </g:if>
-    </g:if>
-
     <fieldset class="grupo" style="position: relative; margin-top: 10px; height: 30px; border-bottom: 1px solid black;">
 
         <div class="grupo col-md-4" style="display: inline;">
-            <label class="col-md-1 formato" style="width: 100px;">Contrato N°</label>
+            <label class="col-md-1 formato" style="width: 100px; color: #0b2c89">Contrato N°</label>
             <div class="col-md-2"><g:textField name="codigo" maxlength="20" class="codigo required caps"
-                                            value="${contrato?.codigo}" style="font-weight: bold; width: 140px"/></div>
+                                               value="${contrato?.codigo}" style="font-weight: bold; width: 140px"/></div>
             <p class="help-block ui-helper-hidden"></p>
         </div>
 
-        <div class="col-md-2 formato">Memo de Distribución</div>
+        <div class="col-md-2 formato" style="color: #0b2c89;"> Memo de Distribución</div>
 
         <div class="col-md-3"><g:textField name="memo" class="memo caps allCaps" value="${contrato?.memo}" maxlength="20"/></div>
 
-        <div class="col-md-2 text-info" style="font-weight: bolder">
-            Contrato ${contrato?.estado == 'R'? 'Registrado' : 'No Registrado'}
+        <div class="col-md-2 " style="font-weight: bolder; font-size: 14px; background-color: ${contrato?.estado == 'R' ? 'green' : '#0b2c89'}; color: white; text-align: center">
+          <i class="${contrato?.estado == 'R' ? 'fa fa-check' : 'fa fa-exclamation-triangle'}"></i>  Contrato ${contrato?.estado == 'R'? 'Registrado' : 'No Registrado'}
         </div>
 
     </fieldset>
@@ -131,16 +102,14 @@
 
         <div class="linea" style="height: 85%;"></div>
 
-    %{--<g:hiddenField name="ofertaAc" class="oferta" value="${contrato?.oferta?.id}"/>--}%
-
         <g:if test="${contrato?.codigo != null}">
 
             <div class="col-md-12">
 
                 <div class="col-md-1 formato">Obra</div>
                 <div class="col-md-4"><g:textField name="obra" id="obraCodigo" class="obraCodigo required" autocomplete="off"
-                                                value="${contrato?.oferta?.concurso?.obra?.codigo}" disabled="true"/>
-                <strong class="text-info" style="font-size: large">${contrato?.obra?.codigo - contrato?.oferta?.concurso?.obra?.codigo}</strong></div>
+                                                   value="${contrato?.oferta?.concurso?.obra?.codigo}" disabled="true"/>
+                    <strong class="text-info" style="font-size: large">${contrato?.obra?.codigo - contrato?.oferta?.concurso?.obra?.codigo}</strong></div>
 
                 <div class="col-md-1 formato">Nombre</div>
                 <div class="col-md-3">
@@ -177,7 +146,7 @@
                 <div class="col-md-4 formato">Fecha presentación de la Oferta</div>
 
                 <div class="col-md-1"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"
-                                                disabled="true" style="width: 100px; margin-left: -180px"/></div>
+                                                   disabled="true" style="width: 100px; margin-left: -180px"/></div>
 
             </div>
 
@@ -197,7 +166,7 @@
 
                 <div class="col-md-1 formato">Nombre</div>
 
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <g:textField name="nombre" class="nombreObra" id="nombreObra" style="width: 400px" disabled="true"/>
                 </div>
 
@@ -207,7 +176,7 @@
                 <div class="col-md-2 formato">Oferta</div>
 
                 <div class="col-md-3" id="div_ofertas">
-                    <g:select name="oferta.id" from="" noSelection="['-1': 'Seleccione']" id="oferta" optionKey="id"/>
+%{--                    <g:select name="oferta.id" from="" noSelection="['-1': 'Seleccione']" id="oferta" optionKey="id"/>--}%
                 </div>
 
                 %{--<div class="col-md-3 formato" style="margin-left: -1px">Fecha presentación de la Oferta</div>--}%
@@ -270,7 +239,7 @@
                           optionKey="id" optionValue="descripcion" style="font-weight: bolder"/></div>
 
             <div id="CntrPrincipal" hidden>
-                <div class="col-md-1 formato text-info" style="margin-left:0px; width: 100px;">Contrato Principal</div>
+                <div class="col-md-1 formato text-info" style="width: 100px;">Contrato Principal</div>
 
                 <div class="col-md-2" style="margin-left:-20px">
                     <g:select from="${janus.Contrato.list([sort: 'fechaSubscripcion'])}" name="padre.id"
@@ -282,12 +251,13 @@
             <div class="col-md-1 formato">Fecha de Suscripción</div>
 
             <div class="col-md-2">
-                <elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo"
-                                value="${contrato?.fechaSubscripcion}"/></div>
+                %{--                <elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo"--}%
+                %{--                                value="${contrato?.fechaSubscripcion}"/>--}%
+                <input aria-label="" name="fechaSubscripcion" id='fecha1' type='text' class="input-small" value="${contrato?.fechaSubscripcion?.format("dd-MM-yyyy")}" />
+            </div>
 
             <div class="col-md-2">
                 <div class="col-md-1 formato" style="width: 100px; margin-left: 20px">Aplica reajuste</div>
-
                 <div class="col-md-1">
                     <g:select name="aplicaReajuste" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value"
                               value="${contrato?.aplicaReajuste == 1 ? 1 : 0}" style="width: 60px"/>
@@ -296,12 +266,9 @@
         </div>
 
         <div class="col-md-12" style="margin-top: 5px">
-
             <div class="col-md-2 formato">Objeto del Contrato</div>
-
             <div class="col-md-9" style="margin-left: -50px"><g:textArea name="objeto" class="activo"
-                                                                      style="height: 55px; width: 960px; resize: none; margin-top: -6px" value="${contrato?.objeto}"/></div>
-
+                                                                         style="height: 55px; width: 960px; resize: none; margin-top: -6px" value="${contrato?.objeto}"/></div>
         </div>
 
     </fieldset>
@@ -366,13 +333,13 @@
             <div class="col-md-3 formato">Monto del contrato</div>
 
             <div class="col-md-2"><g:textField name="monto" class="monto activo number"
-                 value="${contrato?.monto}"/></div>
+                                               value="${contrato?.monto}"/></div>
 
             <div class="col-md-1 formato" style="margin-left: 53px">Plazo</div>
 
             <div class="col-md-2">
                 <g:textField name="plazo" class="plazo activo" style="width: 50px; margin-left: -40px" maxlength="4"
-                value="${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"/>
+                             value="${g.formatNumber(number: contrato?.plazo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"/>
             </div>
             <div class="col-md-2" style="margin-left: -160px">
                 Días
@@ -408,8 +375,8 @@
             <div class="col-md-4 formato">Indices 30 días antes de la presentación de la oferta</div>
             <div class="col-md-2">
                 <g:select name="periodoInec.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}"
-                    class="indiceOferta activo" value="${contrato?.periodoInec?.id}"
-                    optionValue="descripcion" optionKey="id" style="width: 200px"/></div>
+                          class="indiceOferta activo" value="${contrato?.periodoInec?.id}"
+                          optionValue="descripcion" optionKey="id" style="width: 200px"/></div>
         </div>
 
         <div class="col-md-12" style="margin-top: 15px">
@@ -444,9 +411,9 @@
         </div>
     </fieldset>
 
-    </g:form>
+</g:form>
 
-    <g:if test="${contrato}">
+<g:if test="${contrato}">
     <div class="btn-group" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
 
         <g:if test="${contrato?.estado == 'R'}">
@@ -469,33 +436,26 @@
             </g:else>
         </g:else>
 
-
-
         <g:link controller="documentoProceso" class="btn" action="list" id="${contrato?.oferta?.concursoId}"
                 params="[contrato: contrato?.id, show: 1]">
             <i class="fa fa-book"></i> Biblioteca
         </g:link>
 
-
-
         <g:link controller="contrato" action="asignar" class="btn" id="${contrato?.oferta?.concursoId}"
                 params="[contrato: contrato?.id, show: 1]">
-            <i class="icon-plus"></i> Asignar F. Polinómica
+            <i class="fa fa-plus"></i> Asignar F. Polinómica
         </g:link>
 
         <g:if test="${session.perfil.codigo == 'CNTR' && contrato?.estado == 'R' && !contrato.padre}">
-
             <a href="#" id="btnAgregarAdmin" class="btn adm">
-                <i class="icon-user"></i> Administrador
+                <i class="fa fa-user"></i> Administrador
             </a>
-
         </g:if>
 
         <g:link class="contratado, btn" controller="cronogramaContrato" action="editarVocr" id="${contrato?.id}"
                 title="Nuevo Cronograma Contrato Complementario">
             <i class="icon-th"></i> Valores Contratados
         </g:link>
-
 
         <g:link class="comple, btn" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
                 title="Nuevo Cronograma Contrato Complementario">
@@ -509,19 +469,14 @@
         </g:link>
 
         <g:if test="${complementario}">
-
             <a href="#" class="comple, btn" name="integrarFP_name" id="integrarFP"
                title="Integración al contrato principal la FP del contrato complementario">
                 <i class="fa icon-th"></i> Integrar FP Comp.
             </a>
-
-
-
             <a href="#" class="btn comple" name="integrar_name" id="integrarCronograma"
                title="Integración al cronograma principal los rubros del contrato complementario">
                 <i class="fa icon-th"></i> Integrar cronograma Comp.
             </a>
-
         </g:if>
     </div>
 
@@ -606,7 +561,6 @@
     </fieldset>
 </div>
 
-
 <div class="modal grandote hide fade" id="modal-busqueda" style="overflow: hidden">
     <div class="modal-header btn-primary">
         <button type="button" class="close" data-dismiss="modal">x</button>
@@ -621,17 +575,14 @@
 
 </div>
 
-
 <div id="borrarContrato">
 
     <fieldset>
         <div class="col-md-3">
             Está seguro de que desea borrar el contrato: <div style="font-weight: bold;">${contrato?.codigo} ?</div>
-
         </div>
     </fieldset>
 </div>
-
 
 <div id="integrarCronoDialog">
     <fieldset>
@@ -708,36 +659,47 @@
     </fieldset>
 </div>
 
-
-
 <script type="text/javascript">
+
+    $('#fecha1').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
+
+    window.addEventListener("load", function() {
+        <g:if test="${contrato?.estado == 'R'}">
+        <g:if test="${planilla != 0}">
+        bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'> Este contrato ya posee planillas y se encuentra en ejecución. </strong>");
+        </g:if>
+        </g:if>
+    });
 
     $("#btnFPoliPregunta").click(function () {
         var id = $(this).data("id");
-        $.box({
-            imageClass : "box_info",
-            title      : "Confirmación",
-            text       : "Está seguro que desea copiar la FP de la obra al contrato?",
-            iconClose  : false,
-            dialog     : {
-                width         : 400,
-                resizable     : false,
-                draggable     : false,
-                closeOnEscape : false,
-                buttons       : {
-                    "Aceptar" : function () {
-                         location.href="${createLink(controller: 'contrato', action: 'copiarPolinomica')}?id=" + id
-                    },
-                    "Cancelar" : function () {
-                    }
+        bootbox.confirm({
+            title: "Copiar FP",
+            message: "Está seguro que desea copiar la FP de la obra al contrato?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var d = cargarLoader("Cargando...");
+                    location.href="${createLink(controller: 'contrato', action: 'copiarPolinomica')}?id=" + id
                 }
             }
         });
-
-
     });
-
-
 
     $("#preguntarFPDialog").dialog({
         autoOpen  : false,
@@ -777,12 +739,9 @@
         }
     });
 
-
-
     $("#btnFPoli").click(function () {
-       alert("Este contrato fue registrado sin fórmula polinómica")
+        alert("Este contrato fue registrado sin fórmula polinómica")
     });
-
 
     $("#btnAgregarAdmin").click(function () {
         $.ajax({
@@ -795,7 +754,7 @@
                 var $btnOk = $('<a href="#" class="btn">Aceptar</a>');
                 $btnOk.click(function () {
                     $(this).replaceWith(spinner);
-                    location.reload(true);
+                    location.reload();
                 });
                 $("#modal_tittle_var").text("Administradores");
                 $("#modal_body_var").html(msg);
@@ -810,7 +769,7 @@
 
     $("#integrarFP").click(function () {
         var fp = parseInt("${compFp}");
-        if(fp == 0){
+        if(fp === 0){
             $("#integrarFPDialog").dialog("open")
         }else{
             $("#integrarFPDialogNo").dialog("open")
@@ -851,44 +810,10 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        if(parts[0] == 'no'){
-                                            $.box({
-                                                imageClass : "box_info",
-                                                title      : "Alerta",
-                                                text       : parts[1],
-                                                iconClose  : false,
-                                                dialog     : {
-                                                    width         : 400,
-                                                    resizable     : false,
-                                                    draggable     : false,
-                                                    closeOnEscape : false,
-                                                    buttons       : {
-                                                        "Aceptar" : function () {
-                                                        }
-                                                    }
-                                                }
-                                            });
+                                        if(parts[0] === 'no'){
+                                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
                                         }else{
                                             location.reload();
-                                            /*
-                                             $.box({
-                                             imageClass : "box_info",
-                                             title      : "Integrado",
-                                             text       : parts[1],
-                                             iconClose  : false,
-                                             dialog     : {
-                                             width         : 400,
-                                             resizable     : false,
-                                             draggable     : false,
-                                             closeOnEscape : false,
-                                             buttons       : {
-                                             "Aceptar" : function () {
-                                             $("#integrarFPDialog").dialog("close");
-                                             }
-                                             }
-                                             }
-                                             });
-                                             */
                                         }
                                     }
                                 });
@@ -947,7 +872,6 @@
         }
     });
 
-
     $("#integrarCronoDialog").dialog({
         autoOpen  : false,
         resizable : false,
@@ -981,41 +905,23 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        if(parts[0] == 'no'){
-                                            $.box({
-                                                imageClass : "box_info",
-                                                title      : "Alerta",
-                                                text       : parts[1],
-                                                iconClose  : false,
-                                                dialog     : {
-                                                    width         : 400,
-                                                    resizable     : false,
-                                                    draggable     : false,
-                                                    closeOnEscape : false,
-                                                    buttons       : {
-                                                        "Aceptar" : function () {
-                                                        }
-                                                    }
-                                                }
-                                            });
+                                        if(parts[0] === 'no'){
+                                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
                                         } else {
-                                            $.box({
-                                                imageClass : "box_info",
-                                                title      : "Integrado",
-                                                text       : parts[1],
-                                                iconClose  : false,
-                                                dialog     : {
-                                                    width         : 400,
-                                                    resizable     : false,
-                                                    draggable     : false,
-                                                    closeOnEscape : false,
-                                                    buttons       : {
-                                                        "Aceptar" : function () {
+                                            var b = bootbox.dialog({
+                                                id      : "dlgCreateEdit",
+                                                title   : "Integrado",
+                                                message : "<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1],
+                                                buttons : {
+                                                    cancelar : {
+                                                        label     : "Aceptar",
+                                                        className : "btn-primary",
+                                                        callback  : function () {
                                                             $("#integrarCronoDialog").dialog("close");
                                                         }
                                                     }
-                                                }
-                                            });
+                                                } //buttons
+                                            }); //dialog
                                         }
                                         location.reload();
                                     }
@@ -1036,47 +942,45 @@
 
     $("#multaRetraso").keydown(function (ev) {
     }).keyup(function () {
-        if($(this).val() == ''){
+        if($(this).val() === ''){
             $(this).val(0)
         }
     });
-
 
     $("#multaPlanilla").keydown(function (ev) {
     }).keyup(function () {
-        if($(this).val() == ''){
+        if($(this).val() === ''){
             $(this).val(0)
         }
     });
-
 
     $("#multaIncumplimiento").keydown(function (ev) {
     }).keyup(function () {
-        if($(this).val() == ''){
+        if($(this).val() === ''){
             $(this).val(0)
         }
     });
 
-
     $("#multaDisposiciones").keydown(function (ev) {
     }).keyup(function () {
-        if($(this).val() == ''){
+        if($(this).val() === ''){
             $(this).val(0)
         }
     });
 
     function updateAnticipo() {
-        %{--console.log("reg:", "${contrato?.estado}", "${contrato?.estado != 'R'}")--}%
-        if("${contrato?.estado}" != 'R') {
+        if("${contrato?.estado}" !== 'R') {
             var porcentaje = $("#porcentajeAnticipo").val();
             var monto = $("#monto").val().replace(/,/g, "");
             var anticipoValor = Math.round(parseFloat(porcentaje) * parseFloat(monto)) / 100;
-            $("#anticipo").val(anticipoValor);
-        }
-//                $("#anticipo").val(number_format(anticipoValor, 2, ".", ","));
-//                $("#monto").val(number_format(monto, 2, ".", ","));
-    }
+            if(anticipoValor){
+                $("#anticipo").val(anticipoValor);
+            }else{
+                $("#anticipo").val('');
+            }
 
+        }
+    }
 
     $("#frmRegistroContrato").validate({
         errorClass: "help-block",
@@ -1111,44 +1015,19 @@
     });
 
     function validarNum(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-        ev.keyCode == 190 || ev.keyCode == 110 ||
-        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-        ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 190 || ev.keyCode === 110 ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
     }
 
     function validarInt(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         37         -> flecha izq
-         39         -> flecha der
-         */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-        ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
     }
-
 
     $(".number").keydown(function (ev) {
         return validarInt(ev);
@@ -1176,7 +1055,6 @@
         updateAnticipo();
     });
 
-
     $("#indirectos").keydown(function (ev) {
         return validarNum(ev);
     }).keyup(function () {
@@ -1186,34 +1064,14 @@
         }
     });
 
-
-    //            $("#anticipo").keydown(function (ev) {
-    //                return validarNum(ev);
-    //            }).keyup(function () {
-    //                        var enteros = $(this).val();
-    //                        updateAnticipo();
-    //                        var porcentaje = $("#porcentajeAnticipo").val();
-    //                        var monto = $("#monto").val();
-    //                        var anticipoValor = (porcentaje * (monto)) / 100;
-    //                        $("#anticipo").val(number_format(anticipoValor, 2, ".", ""));
-    //                    }).click(function () {
-    //                        updateAnticipo();
-    //                        var porcentaje = $("#porcentajeAnticipo").val();
-    //                        var monto = $("#monto").val();
-    //                        var anticipoValor = (porcentaje * (monto)) / 100;
-    //                        $("#anticipo").val(number_format(anticipoValor, 2, ".", ","));
-    //                    });
-
     $("#financiamiento").keydown(function (ev) {
         return validarNum(ev);
     }).keyup(function () {
         var enteros = $(this).val();
     });
 
-
     $("#tpcr").change(function () {
-//        console.log("--->", $("#tpcr").val());
-        if($("#tpcr").val() == "3") {
+        if($("#tpcr").val() === "3") {
             $("#CntrPrincipal").show();
         } else {
             $("#CntrPrincipal").hide();
@@ -1234,7 +1092,9 @@
                 $("#operador :selected").val() + "&criterios=" + $("#criterio").val()
         }
         data += "&ordenado=" + $("#campoOrdn :selected").val() + "&orden=" + $("#orden :selected").val();
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'contrato', action:'buscarObra')}",
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'contrato', action:'buscarObra')}",
             data     : data,
             success  : function (msg) {
                 $("#spinner").hide();
@@ -1247,7 +1107,8 @@
     function cargarCombo() {
         if ($("#obraId").val() * 1 > 0) {
             $.ajax({
-                type    : "POST", url : "${g.createLink(controller: 'contrato',action:'cargarOfertas')}",
+                type    : "POST",
+                url : "${g.createLink(controller: 'contrato',action:'cargarOfertas')}",
                 data    : "id=" + $("#obraId").val(),
                 success : function (msg) {
                     $("#div_ofertas").html(msg)
@@ -1259,7 +1120,8 @@
     function cargarCanton() {
         if ($("#obraId").val() * 1 > 0) {
             $.ajax({
-                type    : "POST", url : "${g.createLink(controller: 'contrato',action:'cargarCanton')}",
+                type    : "POST",
+                url : "${g.createLink(controller: 'contrato',action:'cargarCanton')}",
                 data    : "id=" + $("#obraId").val(),
                 success : function (msg) {
                     $("#canton").val(msg)
@@ -1278,7 +1140,6 @@
         position: 'center',
         title: 'Obras ofertadas'
     });
-
 
     $("#obraCodigo").dblclick(function () {
         $("#listaObra").dialog("open");
@@ -1308,8 +1169,6 @@
             }
         });
     }
-
-
 
     $("#btn-lista").click(function () {
         $("#listaContrato").dialog("open");
@@ -1351,8 +1210,6 @@
         });
     }
 
-
-
     $("#btn-nuevo").click(function () {
         location.href = "${createLink(action: 'registroContrato')}"
     });
@@ -1365,19 +1222,15 @@
 
     });
 
-
     $("#btn-salir").click(function () {
         location.href = "${g.createLink(action: 'index', controller: "inicio")}";
     });
 
     $("#btn-aceptar").click(function () {
-//                console.log("guardar", $(".indiceOferta").val())
         if($(".indiceOferta").val()){
-//                    console.log("hace submit")
             $("#frmRegistroContrato").submit();
-//                    console.log("DESPUÉS DE submit")
         }else{
-            alert("No ha seleccionado un indice!")
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i> No ha seleccionado un indice")
         }
     });
 
@@ -1390,45 +1243,31 @@
             data    : "id=${contrato?.id}",
             success : function (msg) {
                 var parts = msg.split("_");
-                if (parts[0] == "ok") {
-                    alert("Contrato registrado");
-                    location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
+                if (parts[0] === "ok") {
+                    bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato registrado");
+                    setTimeout(function () {
+                        location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
+                    }, 800);
                 } else {
                     spinner.replaceWith($btn);
-                    $.box({
-                        imageClass : "box_info",
-                        title      : "Alerta",
-                        text       : parts[1],
-                        iconClose  : false,
-                        dialog     : {
-                            width         : 400,
-                            resizable     : false,
-                            draggable     : false,
-                            closeOnEscape : false,
-                            buttons       : {
-                                "Aceptar" : function () {
-                                }
-                            }
-                        }
-                    });
+                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
                 }
             }
         });
     });
 
     $("#btn-desregistrar").click(function () {
-
         $.ajax({
             type    : "POST",
             url     : "${createLink(action: 'cambiarEstado')}",
             data    : "id=${contrato?.id}",
             success : function (msg) {
-
-                %{--location.href = "${g.createLink(action: 'registroContrato')}";--}%
-                location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
+                bootbox.alert("<i class='fa fa-check fa-3x text-success'></i> Contrato sin registro");
+                setTimeout(function () {
+                    location.href = "${g.createLink(controller: 'contrato', action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
+                }, 800);
             }
         });
-
     });
 
     $("#btn-cancelar").click(function () {
@@ -1437,7 +1276,7 @@
         } else {
             location.href = "${g.createLink(action: 'registroContrato')}" + "?contrato=" + "${contrato?.id}";
         }
-    })
+    });
 
     $("#btn-borrar").click(function () {
         if (${contrato?.codigo != null}) {
@@ -1446,7 +1285,6 @@
     });
 
     $("#borrarContrato").dialog({
-
         autoOpen  : false,
         resizable : false,
         modal     : true,

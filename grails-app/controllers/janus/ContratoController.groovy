@@ -1039,54 +1039,30 @@ class ContratoController {
     }
 
     def cargarOfertas() {
-        println "cargarOfertas params " + params
+//        println "cargarOfertas params " + params
         def obra = Obra.get(params.id)
-//        println "obra " + obra
         def concurso = janus.pac.Concurso.findByObraAndEstado(obra, "R")
-//        println "concurso " + concurso
         def ofertas = janus.pac.Oferta.findAllByConcurso(concurso)
-
-//        new Date('dd-MM-yyyy', ofertas?.fechaEntrega)
-//        println ofertas
-//        println ofertas.monto
-//        println ofertas.plazo
         return [ofertas: ofertas]
     }
-
 
     def cargarCanton() {
         def obra = Obra.get(params.id)
         render obra?.parroquia?.canton?.nombre
     }
 
-
     def getFecha() {
-
         def fechaOferta = Oferta.get(params.id).fechaEntrega?.format('dd-MM-yyyy')
-
         return [fechaOferta: fechaOferta]
-
     }
 
     def getIndice() {
-
-
         def fechaOferta = Oferta.get(params.id).fechaEntrega?.format('dd-MM-yyyy')
-
-//        println("fechaOferta " + fechaOferta)
-
         def fechaOfertaMenos = (Oferta.get(params.id).fechaEntrega - 30).format("dd-MM-yyyy")
         def fechaOfertaSin = (Oferta.get(params.id).fechaEntrega - 30)
-
-//        println("fechaNueva " + fechaOfertaMenos)
-
         def idFecha = PeriodoValidez.findByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(fechaOfertaSin, fechaOfertaSin)
 
-//        println("-->" + idFecha.id)
-
         return [fechaOferta: fechaOferta, periodoValidez: idFecha]
-
-
     }
 
     def form_ajax() {
