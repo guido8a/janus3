@@ -1,11 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 27/09/21
-  Time: 11:32
---%>
-
-
 <table class="table table-bordered table-striped table-hover table-condensed" id="tabla">
     <thead>
     <tr>
@@ -49,6 +41,10 @@
         $("#nombreObra").val($(this).data("nombre"));
         $("#listaObra").dialog("close");
         cargarCombo();
+        cargarCanton();
+        cargarParroquia();
+        cargarClaseObra();
+        cargarPorcentajeAnticipo();
     });
 
 </script>

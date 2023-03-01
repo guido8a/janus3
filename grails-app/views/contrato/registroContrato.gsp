@@ -45,7 +45,6 @@
     </div>
 </g:if>
 
-
 <div class="row">
     <div class="col-md-12 btn-group" role="navigation" style="width: 100%;">
         <button class="btn btn-info" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
@@ -361,13 +360,13 @@
             <div class="col-md-3 formato">Anticipo sin reajuste</div>
 
             <div class="col-md-1">
-                <g:textField name="porcentajeAnticipo" class="anticipo activo"
+                <g:textField name="porcentajeAnticipo" class="anticipo required activo"
                              value="${g.formatNumber(number: contrato?.porcentajeAnticipo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"
                              style="width: 30px; text-align: right"/> %
             </div>
 
             <div class="col-md-2" style="margin-left: -40px">
-                <g:textField name="anticipo" class="anticipoValor activo" style="width: 105px; text-align: right"
+                <g:textField name="anticipo" class="anticipoValor activo required" style="width: 105px; text-align: right"
                              value="${g.formatNumber(number: contrato?.anticipo, maxFractionDigits: 2, minFractionDigits: 2, locale: 'ec')}"/>
             </div>
 
@@ -418,21 +417,22 @@
 
         <g:if test="${contrato?.estado == 'R'}">
             <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
-                <a href="#" class="btn" id="btnFPoli">F. polinómica</a>
+                <a href="#" class="btn" id="btnFPoli"><i class="fa fa-superscript"></i> F. polinómica</a>
             </g:if>
             <g:else>
                 <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}"><i
-                        class="fa fa-superscript"></i> F. polinómica</g:link>
+                        class="btn"></i> <i class="fa fa-superscript"></i> F. polinómica</g:link>
             </g:else>
         </g:if>
         <g:else>
             <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
-                <a href="#" class="fa fa-superscript" id="btnFPoliPregunta"
-                   data-id="${contrato?.id}">F. polinómica</a>
+                <a href="#" class="btn" id="btnFPoliPregunta"
+                   data-id="${contrato?.id}"><i class="fa fa-superscript"></i> F. polinómica
+                </a>
             </g:if>
             <g:else>
-                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}"><i
-                        class="fa fa-superscript"></i> F. polinómica</g:link>
+                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}">
+                    <i class="fa fa-superscript"></i> F. polinómica</g:link>
             </g:else>
         </g:else>
 
@@ -454,28 +454,28 @@
 
         <g:link class="contratado, btn" controller="cronogramaContrato" action="editarVocr" id="${contrato?.id}"
                 title="Nuevo Cronograma Contrato Complementario">
-            <i class="icon-th"></i> Valores Contratados
+            <i class="fa fa-file-code"></i> Valores Contratados
         </g:link>
 
         <g:link class="comple, btn" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
                 title="Nuevo Cronograma Contrato Complementario">
-            <i class="icon-th"></i> Cronograma Total
+            <i class="fa fa-clipboard"></i> Cronograma Total
         </g:link>
 
 
         <g:link class="comple, btn" controller="cronogramaContrato" action="corrigeCrcr" id="${contrato?.id}"
                 title="Nuevo Cronograma Contrato Complementario">
-            <i class="icon-th"></i> Corregir decimales Crono.
+            <i class="fa fa-th"></i> Corregir decimales Crono.
         </g:link>
 
         <g:if test="${complementario}">
             <a href="#" class="comple, btn" name="integrarFP_name" id="integrarFP"
                title="Integración al contrato principal la FP del contrato complementario">
-                <i class="fa icon-th"></i> Integrar FP Comp.
+                <i class="fa fa-th"></i> Integrar FP Comp.
             </a>
             <a href="#" class="btn comple" name="integrar_name" id="integrarCronograma"
                title="Integración al cronograma principal los rubros del contrato complementario">
-                <i class="fa icon-th"></i> Integrar cronograma Comp.
+                <i class="fa fa-th"></i> Integrar cronograma Comp.
             </a>
         </g:if>
     </div>
@@ -740,7 +740,7 @@
     });
 
     $("#btnFPoli").click(function () {
-        alert("Este contrato fue registrado sin fórmula polinómica")
+        bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'> Este contrato fue registrado sin fórmula polinómica. </strong>");
     });
 
     $("#btnAgregarAdmin").click(function () {
@@ -751,21 +751,25 @@
                 contrato : "${contrato?.id}"
             },
             success : function (msg) {
-                var $btnOk = $('<a href="#" class="btn">Aceptar</a>');
-                $btnOk.click(function () {
-                    $(this).replaceWith(spinner);
-                    location.reload();
-                });
-                $("#modal_tittle_var").text("Administradores");
-                $("#modal_body_var").html(msg);
-                $("#administrador").data("contrato", "${contrato?.id}");
-                $("#modal_footer_var").html($btnOk);
-                $("#modal-var").modal("show");
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Asignar administrador",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                                cargarLoader("Cargando...");
+                                location.reload();
+                            }
+                        }
+                    } //buttons
+                }); //dialog
             }
         });
         return false;
     });
-
 
     $("#integrarFP").click(function () {
         var fp = parseInt("${compFp}");
@@ -976,9 +980,8 @@
             if(anticipoValor){
                 $("#anticipo").val(anticipoValor);
             }else{
-                $("#anticipo").val('');
+                $("#anticipo").val(0);
             }
-
         }
     }
 
@@ -1125,6 +1128,45 @@
                 data    : "id=" + $("#obraId").val(),
                 success : function (msg) {
                     $("#canton").val(msg)
+                }
+            });
+        }
+    }
+
+    function cargarParroquia() {
+        if ($("#obraId").val() * 1 > 0) {
+            $.ajax({
+                type    : "POST",
+                url : "${g.createLink(controller: 'contrato',action:'cargarParroquia')}",
+                data    : "id=" + $("#obraId").val(),
+                success : function (msg) {
+                    $("#parr").val(msg)
+                }
+            });
+        }
+    }
+
+    function cargarClaseObra() {
+        if ($("#obraId").val() * 1 > 0) {
+            $.ajax({
+                type    : "POST",
+                url : "${g.createLink(controller: 'contrato',action:'cargarClase')}",
+                data    : "id=" + $("#obraId").val(),
+                success : function (msg) {
+                    $("#clase").val(msg)
+                }
+            });
+        }
+    }
+
+    function cargarPorcentajeAnticipo() {
+        if ($("#obraId").val() * 1 > 0) {
+            $.ajax({
+                type    : "POST",
+                url : "${g.createLink(controller: 'contrato',action:'cargarPorcentaje')}",
+                data    : "id=" + $("#obraId").val(),
+                success : function (msg) {
+                    $("#porcentajeAnticipo").val(msg)
                 }
             });
         }

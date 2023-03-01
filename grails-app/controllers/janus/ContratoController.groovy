@@ -1051,6 +1051,21 @@ class ContratoController {
         render obra?.parroquia?.canton?.nombre
     }
 
+    def cargarParroquia(){
+        def obra = Obra.get(params.id)
+        render obra?.parroquia?.nombre
+    }
+
+    def cargarClase(){
+        def obra = Obra.get(params.id)
+        render obra?.claseObra?.descripcion
+    }
+
+    def cargarPorcentaje(){
+        def obra = Obra.get(params.id)
+        render obra?.porcentajeAnticipo
+    }
+
     def getFecha() {
         def fechaOferta = Oferta.get(params.id).fechaEntrega?.format('dd-MM-yyyy')
         return [fechaOferta: fechaOferta]
@@ -1098,15 +1113,8 @@ class ContratoController {
             params.fechaSubscripcion = new Date().parse("dd-MM-yyyy", params.fechaSubscripcion)
         }
 
-//        println("params con " + params.conReajuste)
-
-
-//        def indice = PeriodosInec.get(params."periodoValidez.id")
         def indice = PeriodosInec.get(params."periodoInec.id")
         def tipoContrato = TipoContrato.get(params."tipoContrato.id")
-
-
-//        println("oferta " + oferta + " " + params."oferta.id")
 
         params.monto = params.monto.toDouble()
         params.anticipo = params.anticipo.toDouble()
@@ -1166,10 +1174,10 @@ class ContratoController {
 
         if (params.id) {
             flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance.codigo
+            flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance?.codigo
         } else {
             flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Contrato " + contratoInstance.id
+            flash.message = "Se ha creado correctamente el Contrato " + contratoInstance?.codigo
         }
         redirect(action: 'registroContrato', params: [contrato: contratoInstance.id])
     } //save

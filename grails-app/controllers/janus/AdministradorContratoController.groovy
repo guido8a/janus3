@@ -1,6 +1,7 @@
 package janus
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class AdministradorContratoController {
 
@@ -12,10 +13,15 @@ class AdministradorContratoController {
 
     def addAdmin() {
 //        println params
+
         def contrato = Contrato.get(params.contrato)
         def persona = Persona.get(params.admin)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
-        def error = ""
+
+        if(!persona){
+            render "NO_Seleccione una persona"
+            return
+        }
 
         def nuevo = new AdministradorContrato([
                 contrato: contrato,
@@ -25,25 +31,17 @@ class AdministradorContratoController {
         def admins = AdministradorContrato.findAllByContrato(contrato, [sort: 'fechaInicio', order: "desc"])
 
         if (admins.size() > 0) {
-//            def newest = contrato.administradorContrato
             def newest = admins.first()
 
-//            println "CURRENT: " + newest
-//            println newest.class
             if (newest.id) {
-//                println newest.fechaInicio
-//                println desde
+
                 if (newest.fechaInicio < desde) {
                     newest.fechaFin = desde - 1
                     if (!newest.save(flush: true)) {
                         println "error al poner fecha fin de newest " + newest + " " + newest.errors
                     }
                 } else {
-//                    error = "NOPE"
-//                    println "nope:    " + desde.format("dd-MM-yyyy")
-//                    AdministradorContrato.findAllByContrato(contrato).each {
-//                        println it.fechaInicio.format("dd-MM-yyyy") + "    ->    " + it.fechaFin?.format("dd-MM-yyyy")
-//                    }
+
                     def overlap = AdministradorContrato.withCriteria {
                         eq("contrato", contrato)
                         le("fechaInicio", desde)
@@ -52,27 +50,22 @@ class AdministradorContratoController {
                             isNull("fechaFin")
                         }
                     }
-//                    println "** "
-//                    overlap.each {
-//                        println it.fechaInicio.format("dd-MM-yyyy") + "    ->    " + it.fechaFin?.format("dd-MM-yyyy")
-//                    }
+
                     if (overlap.size() > 0) {
-//                        error = "NO_No puede asignar una fecha de inicio entre ${overlap.fechaInicio*.format('dd-MM-yyyy')} y ${overlap.fechaFin*.format('dd-MM-yyyy')}"
-                        error = "NO_No puede asignar con esa fecha de inicio"
+                        render "NO_No puede asignar con esa fecha de inicio"
+                        return
                     }
                     nuevo.fechaFin = newest.fechaInicio - 1
-//                    error = "NO_No puede asignar una fecha de inicio inferior a " + newest.fechaInicio.format("dd-MM-yyyy")
                 }
             }
         }
-        if (error == "") {
-            if (!nuevo.save(flush: true)) {
-                println "error al crear nuevo admin: " + nuevo.errors
-            }
+        if (!nuevo.save(flush: true)) {
+            println "error al crear nuevo admin: " + nuevo.errors
+            render "NO_Error al crear el nuevo administrador"
+        }else{
             render "OK"
-        } else {
-            render error
         }
+
     }
 
     def tabla() {
@@ -99,7 +92,7 @@ class AdministradorContratoController {
 //        def personal = Persona.findAllByActivoAndDepartamento(1, dptoDireccion, [sort: 'apellido'])
         def personal = Persona.findAllByActivoAndDepartamentoInList(1, dptos, [sort: 'apellido'])
 
-        [administradorContratoInstanceList: AdministradorContrato.list(params), params: params, personal: personal]
+        [administradorContratoInstanceList: AdministradorContrato.list(params), params: params, personal: personal, contrato: contrato]
     }
 
 
