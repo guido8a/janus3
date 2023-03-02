@@ -485,6 +485,8 @@ class ContratoController {
             order("numero", "asc")
         }
 
+        println("contrato " + contrato)
+
         def cuadrilla = FormulaPolinomicaContractual.findAllByContratoAndNumeroIlike(contrato, 'c%', [sort: 'numero'])
         return [ps: ps, cuadrilla: cuadrilla, contrato: contrato, formulas: formulasVarias]
     }
@@ -559,7 +561,7 @@ class ContratoController {
             order("numero", "asc")
         }
 
-        return [ps: ps, cuadrilla: cuadrilla]
+        return [ps: ps, cuadrilla: cuadrilla, fp: fpReajuste]
     }
 
     def copiarFormula() {
@@ -1243,10 +1245,16 @@ class ContratoController {
 //        println("asignar params " + params)
         def contrato = Contrato.get(params.contrato)
         def subPres = VolumenesObra.findAllByObra(contrato.obra).subPresupuesto.unique()
-        def formulas = FormulaPolinomicaReajuste.findAllByContrato(contrato)
-        def fpsp = FormulaSubpresupuesto.findAllByReajusteInList(formulas, [sort: 'subPresupuesto'])
 
-//        println "formulas: $formulas"
+        def formulas = FormulaPolinomicaReajuste.findAllByContrato(contrato)
+
+        def fpsp = []
+
+        if(formulas){
+            fpsp = FormulaSubpresupuesto.findAllByReajusteInList(formulas)
+        }else{
+            fpsp = []
+        }
 
         return [contrato: contrato, subpresupuesto: subPres, formulas: formulas, fpsp: fpsp]
     }
@@ -1536,16 +1544,12 @@ class ContratoController {
 
     def editarIndiceC_ajax(){
         def indiceActual = FormulaPolinomicaContractual.get(params.id)
-
         def tipoIndice = TipoIndice.findByCodigo('O')
         def indices = Indice.findAllByTipoIndice(tipoIndice).sort{it.descripcion}
-
         return [indices: indices, indiceActual: indiceActual]
     }
 
-
     def guardarNuevoIndice(){
-//        println("params gni " + params)
 
         def indice = Indice.get(params.indice)
         def fpc

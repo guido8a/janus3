@@ -3,12 +3,6 @@
 <head>
 
     <meta name="layout" content="main">
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-
-    <link rel="stylesheet" href="${resource(dir: 'css', file: 'tableHandler.css')}">
 
     <title>Fórmula Polinómica</title>
 
@@ -24,39 +18,43 @@
 
 <body>
 
-<div class="row" style="margin-bottom: 10px;">
-    <div class="span9 btn-group" role="navigation">
+<div class="col-md-12" style="margin-bottom: 10px;">
+    <div class="col-md-8 btn-group" role="navigation">
         <g:link controller="contrato" action="registroContrato" params="[contrato: contrato?.id]"
-                class="btn btn-ajax btn-new" title="Regresar al contrato">
-            <i class="icon-double-angle-left"></i>
+                class="btn btn-info btn-new" title="Regresar al contrato">
+            <i class="fa fa-arrow-left"></i>
             Contrato
         </g:link>
-        <a href="#" class="btn btn-success" id="btnSave"><i class="icon-save"></i> Guardar</a>
+        <a href="#" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</a>
 
-        <g:select name="listaFormulas" id="existentes" from="${formulas}" optionValue="descripcion" optionKey="id"
-                  style="margin-left: 40px; margin-top: 10px; margin-right: 10px" class="span4"/>
-        <a href="#" class="btn btn-info" id="btnCopiar"><i class="icon-save"></i> Crear fórmula polinómica</a>
+        <div class="col-md-5">
+            <g:select name="listaFormulas" id="existentes" from="${formulas}" optionValue="descripcion" optionKey="id"
+                      style="margin-right: 1px" class="form-control"/>
+        </div>
+        <div class="col-md-3">
+            <a href="#" class="btn btn-info" id="btnCopiar"><i class="fa fa-file"></i> Crear fórmula polinómica</a>
+        </div>
     </div>
 </div>
 
-<div style="min-height: 50px;"> <span>Contrato:</span> <span class="titulo" style="display: inline-block; width: 800px; vertical-align:top;"> ${contrato.objeto}</span></div>
+<div style="min-height: 50px; margin-bottom: 10px">
+    Contrato: <span style="font-size: 14px; font-weight: bold"> ${contrato.objeto} </span>
+</div>
 
 
 <div id="divTabla">
 </div>
 
 <div id="dialog-confirma" title="Crear Fórmula Polinómica" style="display: none">
-    <p><span class="ui-icon ui-icon-alert"
+    <span class="ui-icon ui-icon-alert"
              style="float:left; margin:0 7px 70px 0;"></span>
-        <p>Crear una fórmula polinómica adicional para este contrato.</p>
-        <p>Se creará la nueva fórmula en base a una existente.</p>
-    </p>
+    <p>Crear una fórmula polinómica adicional para este contrato.</p>
+    <p>Se creará la nueva fórmula en base a una existente.</p>
 </div>
 
 <div id="forma-fprj" title="Crear nueva Fórmula Polinómica" style="display: none">
     <p class="validateTips">Todos los campos son obligatorios</p>
     <g:form action="creaFprj">
-        %{--<input type="hidden" id="cntr__id" value="${contrato?.id}">--}%
         <fieldset>
             <label for="name">Name</label>
             <input type="text" name="name" id="name" value="Jane Smith" class="text ui-widget-content ui-corner-all">
@@ -64,17 +62,12 @@
             <input type="text" name="email" id="email" value="jane@smith.com" class="text ui-widget-content ui-corner-all">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" value="xxxxxxx" class="text ui-widget-content ui-corner-all">
-
-            <!-- Allow form submission with keyboard without duplicating the dialog button -->
-            %{--<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">--}%
         </fieldset>
     </g:form>
 </div>
 
 <div id="ajx_frma" style="width:520px;"></div>
 
-<script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandlerBody.js')}"></script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandler.js')}"></script>
 
 <script type="text/javascript">
     decimales = 3;
@@ -112,22 +105,19 @@
             var valor = parseFloat(td.data("valor"));
             var orig = parseFloat(td.data("original"));
 
-            if (valor != orig) {
-                if (str != "") {
+            if (valor !== orig) {
+                if (str !== "") {
                     str += "&";
                 }
                 str += "valor=" + id + "_" + valor;
             }
         });
-        if (str != "") {
-//                    btn.hide().after(spinner);
+        if (str !== "") {
             $.ajax({
                 type: "POST",
                 url: "${createLink(action:'saveCambiosPolinomica')}",
                 data: str,
                 success: function (msg) {
-//                            spinner.remove();
-//                            btn.show();
                     var parts = msg.split("_");
                     var ok = parts[0];
                     var no = parts[1];
@@ -149,11 +139,9 @@
     //cargar tabla de fórmulas polinómicas
 
     function cargarTabla(id) {
-
-//                var interval = loading("detalle")
-
         $.ajax({
-            type: "POST", url: "${g.createLink(controller: 'contrato',action:'tablaFormula_ajax')}",
+            type: "POST",
+            url: "${g.createLink(controller: 'contrato',action:'tablaFormula_ajax')}",
             data: {
                 id: id,
                 cntr: ${contrato.id}
@@ -166,7 +154,6 @@
 
     $("#existentes").change(function () {
         var idFormula = $(this).val();
-//        console.log(idFormula)
         cargarTabla(idFormula);
     });
 
@@ -175,10 +162,10 @@
 
     function loading(div) {
         y = 0;
-        $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>")
-        var interval = setInterval(function () {
-            if (y == 30) {
-                $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
+        $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>");
+       setInterval(function () {
+            if (y === 30) {
+                $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>");
                 y = 0
             }
             $("#loading").append(".");
@@ -188,31 +175,31 @@
     }
 
 
-    /*
-     $("#btnCopiar").click(function () {
+    %{--/*--}%
+    %{-- $("#btnCopiar").click(function () {--}%
 
-     if (confirm("Está seguro de copiar la fórmula polinómica?")) {
+    %{-- if (confirm("Está seguro de copiar la fórmula polinómica?")) {--}%
 
-     $.ajax({
-     type : "POST",
-     url : "${g.createLink(controller: 'contrato',action:'copiarFormula')}",
-     data     : {
-     id: $("#lista").val()
-     },
-     success  : function (msg) {
-     var alerta;
-     if(msg == 'si'){
-     alert("Fórmula polinómica copiada correctamente");
-     window.location.reload(true)
-     }else{
-     alert("Error al copiar la fórmula polinómica")
-     }
-     }
-     });
-     }
+    %{-- $.ajax({--}%
+    %{-- type : "POST",--}%
+    %{-- url : "${g.createLink(controller: 'contrato',action:'copiarFormula')}",--}%
+    %{-- data     : {--}%
+    %{-- id: $("#lista").val()--}%
+    %{-- },--}%
+    %{-- success  : function (msg) {--}%
+    %{-- var alerta;--}%
+    %{-- if(msg == 'si'){--}%
+    %{-- alert("Fórmula polinómica copiada correctamente");--}%
+    %{-- window.location.reload(true)--}%
+    %{-- }else{--}%
+    %{-- alert("Error al copiar la fórmula polinómica")--}%
+    %{-- }--}%
+    %{-- }--}%
+    %{-- });--}%
+    %{-- }--}%
 
-     });
-     */
+    %{-- });--}%
+    %{-- */--}%
 
     dlgo = $("#forma-fprj" ).dialog({
         autoOpen: false,
@@ -222,35 +209,19 @@
         buttons: {
             "Create an account": function () {
                 envia();
-//                dlgo.find("form").submit();
             },
             Cancel: function() {
                 dlgo.dialog( "close" );
             }
         }
-//        close: function() {
-//            form[0].reset();
-////            allFields.removeClass( "ui-state-error" );
-//        }
     });
 
     function envia() {
         var valid = true;
-//        console.log('entra a envia')
-//        allFields.removeClass( "ui-state-error" );
         dlgo.dialog("close");
         dlgo.find("form").submit();
         return valid;
     }
-
-/*
-    form = dlgo.find( "form" ).on( "submit", function( event ) {
-        event.preventDefault();
-        envia();
-        console.log('hace submit')
-        form.submit();
-    });
-*/
 
     $("#btnCopiar").click(function () {
         $("#dialog-confirma").dialog({
@@ -258,15 +229,13 @@
             height: 220,
             modal: true,
             buttons: {
-                "Crear Fórmula": function () {
+                "Crear": function () {
                     $(this).dialog("close");
-//                    dlgo.dialog("open");
                     $.ajax({
                         type    : "POST", url : "${createLink(action: 'fpReajuste_ajax')}",
                         data    : "&cntr=${contrato.id}",
                         success : function (msg) {
-                            $("#ajx_frma").dialog("option","title", "Crear Fórmula")
-                            $("#ajx_frma").html(msg).show("puff", 100);
+                            $("#ajx_frma").dialog("option","title", "Crear Fórmula").html(msg).show("puff", 100);
                         }
                     });
                     $("#ajx_frma").dialog("open");
@@ -275,8 +244,7 @@
                     $(this).dialog("close");
                 }
             }
-        });
-        $('#dialog-confirma').dialog('open');
+        }).dialog('open');
     });
 
     $("#ajx_frma").dialog({
@@ -296,11 +264,9 @@
                 $.ajax({
                     type    : "POST", url : "${createLink(action: 'grabaFprj')}",
                     data    : "&contrato.id=" + $('#cntr').val() + "&tipoFormulaPolinomica.id=" + $('#tipoFormulaPolinomica').val() +
-                    "&descripcion=" + $('#descripcion').val() + "&copiarDe=" + $('#existentes').val(),
+                        "&descripcion=" + $('#descripcion').val() + "&copiarDe=" + $('#existentes').val(),
                     success : function (msg) {
-                        //$("#ajx").html(msg)
-                        location.reload(true);
-
+                        location.reload();
                     }
                 });
             },

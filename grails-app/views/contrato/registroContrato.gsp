@@ -266,8 +266,9 @@
 
         <div class="col-md-12" style="margin-top: 5px">
             <div class="col-md-2 formato">Objeto del Contrato</div>
-            <div class="col-md-9" style="margin-left: -50px"><g:textArea name="objeto" class="activo"
-                                                                         style="height: 55px; width: 960px; resize: none; margin-top: -6px" value="${contrato?.objeto}"/></div>
+            <div class="col-md-9" style="margin-left: -50px">
+                <g:textArea name="objeto" class="activo required" style="height: 55px; width: 960px; resize: none; margin-top: -6px" value="${contrato?.objeto}"/>
+            </div>
         </div>
 
     </fieldset>
@@ -701,43 +702,43 @@
         });
     });
 
-    $("#preguntarFPDialog").dialog({
-        autoOpen  : false,
-        resizable : false,
-        modal     : true,
-        draggable : false,
-        width     : 450,
-        height    : 220,
-        position  : 'center',
-        title     : 'Generar Fórmula Polinómica',
-        buttons   : {
-            "Aceptar"  : function () {
-                $.box({
-                    imageClass : "box_info",
-                    title      : "Confirmación",
-                    text       : "Está seguro que desea generar la FP del contrato?",
-                    iconClose  : false,
-                    dialog     : {
-                        width         : 400,
-                        resizable     : false,
-                        draggable     : false,
-                        closeOnEscape : false,
-                        buttons       : {
-                            "Aceptar" : function () {
-
-                            },
-                            "Cancelar" : function () {
-                                $("#preguntarFPDialog").dialog("close");
-                            }
-                        }
-                    }
-                });
-            },
-            "Cancelar" : function () {
-                $("#preguntarFPDialog").dialog("close");
-            }
-        }
-    });
+    // $("#preguntarFPDialog").dialog({
+    //     autoOpen  : false,
+    //     resizable : false,
+    //     modal     : true,
+    //     draggable : false,
+    //     width     : 450,
+    //     height    : 220,
+    //     position  : 'center',
+    //     title     : 'Generar Fórmula Polinómica',
+    //     buttons   : {
+    //         "Aceptar"  : function () {
+    //             $.box({
+    //                 imageClass : "box_info",
+    //                 title      : "Confirmación",
+    //                 text       : "Está seguro que desea generar la FP del contrato?",
+    //                 iconClose  : false,
+    //                 dialog     : {
+    //                     width         : 400,
+    //                     resizable     : false,
+    //                     draggable     : false,
+    //                     closeOnEscape : false,
+    //                     buttons       : {
+    //                         "Aceptar" : function () {
+    //
+    //                         },
+    //                         "Cancelar" : function () {
+    //                             $("#preguntarFPDialog").dialog("close");
+    //                         }
+    //                     }
+    //                 }
+    //             });
+    //         },
+    //         "Cancelar" : function () {
+    //             $("#preguntarFPDialog").dialog("close");
+    //         }
+    //     }
+    // });
 
     $("#btnFPoli").click(function () {
         bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'> Este contrato fue registrado sin fórmula polinómica. </strong>");
@@ -793,38 +794,39 @@
             "Aceptar"  : function () {
                 var complementario = $("#contratosFP").val();
 
-                $.box({
-                    imageClass : "box_info",
-                    title      : "Confirmación",
-                    text       : "Está seguro que desea integrar la FP del contrato con la FP del contrato complementario?",
-                    iconClose  : false,
-                    dialog     : {
-                        width         : 400,
-                        resizable     : false,
-                        draggable     : false,
-                        closeOnEscape : false,
-                        buttons       : {
-                            "Aceptar" : function () {
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(controller: 'contrato', action: 'integrarFP')}",
-                                    data    :  {
-                                        id: '${contrato?.id}',
-                                        comp: complementario
-                                    },
-                                    success : function (msg) {
-                                        var parts = msg.split("_");
-                                        if(parts[0] === 'no'){
-                                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
-                                        }else{
-                                            location.reload();
-                                        }
+                bootbox.confirm({
+                    title: "Integrar FP",
+                    message: "Está seguro que desea integrar la FP del contrato con la FP del contrato complementario?",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Aceptar',
+                            className: 'btn-success'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var d1 = cargarLoader("Cargando...");
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(controller: 'contrato', action: 'integrarFP')}",
+                                data    :  {
+                                    id: '${contrato?.id}',
+                                    comp: complementario
+                                },
+                                success : function (msg) {
+                                    d1.modal("hide");
+                                    var parts = msg.split("_");
+                                    if(parts[0] === 'no'){
+                                        bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
+                                    }else{
+                                        location.reload();
                                     }
-                                });
-                            },
-                            "Cancelar" : function () {
-                                $("#integrarFPDialog").dialog("close");
-                            }
+                                }
+                            });
                         }
                     }
                 });

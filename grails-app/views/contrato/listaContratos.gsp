@@ -24,8 +24,8 @@
         <g:each in="${data}" var="dt" status="i">
             <tr>
                 <td style="width: 8%">${dt.cntrcdgo}</td>
-                <td style="width: 40%">${dt.cntrobjt}</td>
-                <td style="width: 8%"> ${dt.cntrfcsb.format('dd/MM/yyyy')}
+                <td style="width: 40%">${dt?.cntrobjt}</td>
+                <td style="width: 8%"> ${dt?.cntrfcsb?.format('dd/MM/yyyy')}
                 <td style="width: 34%"> ${dt.prvenmbr}
                 <td style="width: 6%"> ${dt.cntretdo}
                 </td>
