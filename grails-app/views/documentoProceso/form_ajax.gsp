@@ -1,103 +1,96 @@
 <%@ page import="janus.pac.DocumentoProceso" %>
 
-<div id="create-DocumentoProceso" class="span" role="main" xmlns="http://www.w3.org/1999/html">
-    <g:uploadForm class="form-horizontal" name="frmSave-DocumentoProceso" action="save">
+<div id="create-DocumentoProceso" class="span" role="main">
+    <g:uploadForm class="form-horizontal" method="post" name="frmSave-DocumentoProceso" action="save">
         <g:hiddenField name="id" value="${documentoProcesoInstance?.id}"/>
         <g:hiddenField name="concurso.id" value="${concurso.id}"/>
         <g:hiddenField name="contrato" value="${contrato?.id}"/>
         <g:hiddenField name="show" value="${show}"/>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: documentoProcesoInstance, field: 'etapa', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Etapa
+                </label>
+                <span class="col-md-3">
+                    <g:select id="etapa" name="etapa.id" from="${janus.pac.Etapa.list()}" optionKey="id" class="form-control many-to-one "
+                              value="${documentoProcesoInstance?.etapa?.id?:4}"
+                              optionValue="descripcion"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:select id="etapa" name="etapa.id" from="${janus.pac.Etapa.list()}" optionKey="id" class="many-to-one "
-                          value="${documentoProcesoInstance?.etapa?.id?:4}"
-                          optionValue="descripcion"/>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: documentoProcesoInstance, field: 'path', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Archivo
+                </label>
+                <span class="col-md-8">
+                    <g:if test="${documentoProcesoInstance?.path}">
+                        <span class="text-success">
+                            ${documentoProcesoInstance?.path ? documentoProcesoInstance?.path : 'No se encuentra cargado ningún archivo' }
+                        </span>
+                    </g:if>
+                    <g:else>
+                        <input type="file" id="archivo" name="archivo" class='required'/>
+                    </g:else>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:if test="${documentoProcesoInstance?.path}">
-                    <span>
-                        ${documentoProcesoInstance?.path ? documentoProcesoInstance?.path : 'No se encuentra cargado ningún archivo!' }
-                    </span>
-                </g:if>
-                <g:else>
-                    <input type="file" id="archivo" name="archivo" class="${documentoProcesoInstance?.path ? '' : 'required'}"/>
-                </g:else>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: documentoProcesoInstance, field: 'nombre', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Nombre
+                </label>
+                <span class="col-md-6">
+                    <g:textArea name="nombre" maxlength="255" class="form-control required"
+                                value="${documentoProcesoInstance?.nombre}"  style="resize: none"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textArea name="nombre" cols="40" rows="2" maxlength="255" class="required"
-                            value="${documentoProcesoInstance?.nombre}"
-                            style="width:280px;"/>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: documentoProcesoInstance, field: 'resumen', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Resumen
+                </label>
+                <span class="col-md-6">
+                    <g:textArea name="resumen" maxlength="1024" class="form-control" value="${documentoProcesoInstance?.resumen}"
+                                style="resize: none"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textArea name="resumen" cols="40" rows="2" maxlength="1024" class="" value="${documentoProcesoInstance?.resumen}"
-                            style="width:280px;"/>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: documentoProcesoInstance, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Descripción
+                </label>
+                <span class="col-md-6">
+                    <g:textField name="descripcion" maxlength="63" class="form-control required"
+                                 value="${documentoProcesoInstance?.descripcion ?: respaldo}"
+                                 style="width:280px;"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="63" class="required"
-                             value="${documentoProcesoInstance?.descripcion?:respaldo}"
-                             style="width:280px;"/>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: documentoProcesoInstance, field: 'palabrasClave', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Palabras Clave
+                </label>
+                <span class="col-md-6">
+                    <g:textField name="palabrasClave" maxlength="63" class="form-control" value="${documentoProcesoInstance?.palabrasClave}"
+                    />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="palabrasClave" maxlength="63" class="" value="${documentoProcesoInstance?.palabrasClave}"
-                             style="width:280px;"/>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
     </g:uploadForm>
@@ -105,22 +98,24 @@
 
 <script type="text/javascript">
     $("#frmSave-DocumentoProceso").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
-
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormDoc();
+            return false;
         }
+        return true;
     });
 </script>

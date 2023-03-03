@@ -25,15 +25,15 @@
             <i class="fa fa-arrow-left"></i>
             Contrato
         </g:link>
-        <a href="#" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</a>
+    %{--        <a href="#" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</a>--}%
 
-        <div class="col-md-5">
-            <g:select name="listaFormulas" id="existentes" from="${formulas}" optionValue="descripcion" optionKey="id"
-                      style="margin-right: 1px" class="form-control"/>
-        </div>
-        <div class="col-md-3">
-            <a href="#" class="btn btn-info" id="btnCopiar"><i class="fa fa-file"></i> Crear fórmula polinómica</a>
-        </div>
+%{--        <div class="col-md-6">--}%
+%{--            <g:select name="listaFormulas" id="existentes" from="${formulas}" optionValue="descripcion" optionKey="id"--}%
+%{--                      style="margin-right: 1px" class="form-control"/>--}%
+%{--        </div>--}%
+%{--        <div class="col-md-3">--}%
+%{--            <a href="#" class="btn btn-info" id="btnCopiar"><i class="fa fa-file"></i> Crear fórmula polinómica</a>--}%
+%{--        </div>--}%
     </div>
 </div>
 
@@ -47,7 +47,7 @@
 
 <div id="dialog-confirma" title="Crear Fórmula Polinómica" style="display: none">
     <span class="ui-icon ui-icon-alert"
-             style="float:left; margin:0 7px 70px 0;"></span>
+          style="float:left; margin:0 7px 70px 0;"></span>
     <p>Crear una fórmula polinómica adicional para este contrato.</p>
     <p>Se creará la nueva fórmula en base a una existente.</p>
 </div>
@@ -96,38 +96,37 @@
 
     $(".editable").first().addClass("selected");
 
-    $("#btnSave").click(function () {
-//                var btn = $(this);
-        var str = "";
-        $(".editable").each(function () {
-            var td = $(this);
-            var id = td.data("id");
-            var valor = parseFloat(td.data("valor"));
-            var orig = parseFloat(td.data("original"));
+    %{--$("#btnSave").click(function () {--}%
+    %{--    var str = "";--}%
+    %{--    $(".editable").each(function () {--}%
+    %{--        var td = $(this);--}%
+    %{--        var id = td.data("id");--}%
+    %{--        var valor = parseFloat(td.data("valor"));--}%
+    %{--        var orig = parseFloat(td.data("original"));--}%
 
-            if (valor !== orig) {
-                if (str !== "") {
-                    str += "&";
-                }
-                str += "valor=" + id + "_" + valor;
-            }
-        });
-        if (str !== "") {
-            $.ajax({
-                type: "POST",
-                url: "${createLink(action:'saveCambiosPolinomica')}",
-                data: str,
-                success: function (msg) {
-                    var parts = msg.split("_");
-                    var ok = parts[0];
-                    var no = parts[1];
-                    doHighlight({elem: $(ok), clase: "ok"});
-                    doHighlight({elem: $(no), clase: "no"});
-                }
-            });
-        }
-        return false;
-    });
+    %{--        if (valor !== orig) {--}%
+    %{--            if (str !== "") {--}%
+    %{--                str += "&";--}%
+    %{--            }--}%
+    %{--            str += "valor=" + id + "_" + valor;--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--    if (str !== "") {--}%
+    %{--        $.ajax({--}%
+    %{--            type: "POST",--}%
+    %{--            url: "${createLink(action:'saveCambiosPolinomica')}",--}%
+    %{--            data: str,--}%
+    %{--            success: function (msg) {--}%
+    %{--                var parts = msg.split("_");--}%
+    %{--                var ok = parts[0];--}%
+    %{--                var no = parts[1];--}%
+    %{--                doHighlight({elem: $(ok), clase: "ok"});--}%
+    %{--                doHighlight({elem: $(no), clase: "no"});--}%
+    %{--            }--}%
+    %{--        });--}%
+    %{--    }--}%
+    %{--    return false;--}%
+    %{--});--}%
 
     $("#tabs").tabs({
         heightStyle: "fill",
@@ -163,7 +162,7 @@
     function loading(div) {
         y = 0;
         $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>");
-       setInterval(function () {
+        setInterval(function () {
             if (y === 30) {
                 $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>");
                 y = 0
@@ -224,27 +223,37 @@
     }
 
     $("#btnCopiar").click(function () {
-        $("#dialog-confirma").dialog({
-            resizable: false,
-            height: 220,
-            modal: true,
-            buttons: {
-                "Crear": function () {
-                    $(this).dialog("close");
-                    $.ajax({
-                        type    : "POST", url : "${createLink(action: 'fpReajuste_ajax')}",
-                        data    : "&cntr=${contrato.id}",
-                        success : function (msg) {
-                            $("#ajx_frma").dialog("option","title", "Crear Fórmula").html(msg).show("puff", 100);
-                        }
-                    });
-                    $("#ajx_frma").dialog("open");
+        var b = bootbox.dialog({
+            id      : "dlgCreateEditCF",
+            title   : "Crear Fórmula Polinómica",
+            message : "Crear una fórmula polinómica adicional para este contrato?</br>" +
+                      "Se creará la nueva fórmula en base a una existente.",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
                 },
-                "Cancelar": function () {
-                    $(this).dialog("close");
-                }
-            }
-        }).dialog('open');
+                guardar  : {
+                    id        : "btnSave",
+                    label     : "<i class='fa fa-check'></i> Crear",
+                    className : "btn-success",
+                    callback  : function () {
+
+                        $.ajax({
+                            type    : "POST",
+                            url : "${createLink(action: 'fpReajuste_ajax')}",
+                            data    : "&cntr=${contrato.id}",
+                            success : function (msg) {
+                                $("#ajx_frma").dialog("option","title", "Crear Fórmula").html(msg).show("puff", 100);
+                            }
+                        });
+                        $("#ajx_frma").dialog("open");
+                    } //callback
+                } //guardar
+            } //buttons
+        }); //dialog
     });
 
     $("#ajx_frma").dialog({

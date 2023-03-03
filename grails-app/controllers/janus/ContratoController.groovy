@@ -1023,7 +1023,7 @@ class ContratoController {
 //            println "lista2 ${nuevaLista[0].class}"
 
             render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: nuevaLista,
-                   funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs,
+                                                     funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs,
                                                      width: 1800, paginas: 12])
         } else {
 //            println "entro reporte"
@@ -1033,9 +1033,9 @@ class ContratoController {
             def anchos = [7, 10, 7, 7, 7, 7, 7, 4, 7, 7, 7, 7, 7, 7]
             /*el ancho de las columnas en porcentajes... solo enteros*/
             redirect(controller: "reportes", action: "reporteBuscador", params: [listaCampos: listaCampos,
-               listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado,
-               criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras",
-               anchos: anchos, extras: extras, landscape: true])
+                                                                                 listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado,
+                                                                                 criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras",
+                                                                                 anchos: anchos, extras: extras, landscape: true])
         }
 
     }
@@ -1120,7 +1120,7 @@ class ContratoController {
 
         params.monto = params.monto.toDouble()
         params.anticipo = params.anticipo.toDouble()
-        
+
         if (params.id) {
             contratoInstance = Contrato.get(params.id)
             contratoInstance.properties = params
@@ -1337,8 +1337,8 @@ class ContratoController {
 
         if (fpReajuste == null) {
             def fprj = new FormulaPolinomicaReajuste(contrato: cntr,
-                        tipoFormulaPolinomica: tipo,
-                        descripcion: "Fórmula polinómica del contrato principal")
+                    tipoFormulaPolinomica: tipo,
+                    descripcion: "Fórmula polinómica del contrato principal")
 
             if (!fprj.save(flush: true)) {
                 println "error al crear la FP del contrato, errores: " + fprj.errors
@@ -1425,7 +1425,7 @@ class ContratoController {
             render "no_El contrato complementario seleccionado no tiene cronograma!"
         } else {
 
-        def volumenesContrato = VolumenContrato.findAllByContrato(complementario)
+            def volumenesContrato = VolumenContrato.findAllByContrato(complementario)
             volumenesContrato.each{ v ->
                 println "procesa ${v.item}"
                 def nuevoVocr = new VolumenContrato(v.properties)
@@ -1528,17 +1528,10 @@ class ContratoController {
         }
     }
 
-
     def editarIndice_ajax(){
         def indiceActual = FormulaPolinomicaContractual.get(params.id)
-
         def tipoIndice = TipoIndice.findByCodigo('M')
         def indices = Indice.findAllByTipoIndiceAndIdNotEqual(tipoIndice, 143).sort{it.descripcion}
-//        def mano = Indice.findByCodigo('MO')
-//        def indices = Indice.findAllByTipoIndice(tipoIndice).sort{it.descripcion}
-//        def i = indices.id - mano.id
-//        def ind = Indice.findAllByIdInList(i)
-
         return [indices: indices, indiceActual: indiceActual]
     }
 

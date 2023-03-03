@@ -209,11 +209,11 @@ class DocumentoProcesoController {
         if(params.docuResp == 'R') dscr = 'Respaldo para obras adicionales'
         if(params.docuResp == 'C') dscr = 'Respaldo para Costo mas prcentaje'
         return [documentoProcesoInstance: documentoProcesoInstance, concurso: concurso, contrato: contrato, show: show,
-        respaldo: dscr]
+                respaldo: dscr]
     } //form_ajax
 
     def save() {
-//        println("params " + params)
+        println("params doc" + params)
         def documentoProcesoInstance
         if (params.id) {
             documentoProcesoInstance = DocumentoProceso.get(params.id)
@@ -354,38 +354,25 @@ class DocumentoProcesoController {
 
     def delete() {
         def documentoProcesoInstance = DocumentoProceso.get(params.id)
+        def folder = pathBiblioteca
+
         if (!documentoProcesoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Documento Proceso con id " + params.id
-            redirect(action: "list")
+            render "no_No se encontró el registro"
             return
         }
-        def path = documentoProcesoInstance.path
-        def cid = documentoProcesoInstance.concursoId
+
         try {
             documentoProcesoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente el documento del proceso " + (documentoProcesoInstance?.concurso?.codigo ?: '')
-            def folder = "archivos"
-            path = servletContext.getRealPath("/") + folder + File.separatorChar + path
+
+            def path = "/var/janus/" + folder + File.separatorChar + documentoProcesoInstance.path
             def file = new File(path)
             file.delete()
 
-            if (params.contrato) {
-                redirect(action: "list", id: cid, params: [contrato: params.contrato, show: params.show])
-            } else {
-                redirect(action: "list", id: cid)
-            }
+            render "ok_Se ha eliminado correctamente el documento del proceso"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Documento Proceso " + (documentoProcesoInstance.id ? documentoProcesoInstance.id : "")
-
-            if (params.contrato) {
-                redirect(action: "list", id: cid, params: [contrato: params.contrato])
-            } else {
-                redirect(action: "list", id: cid)
-            }
+            println("error " + documentoProcesoInstance.errors)
+            render "no_Error al eliminar el documento del proceso"
         }
     } //delete
 } //fin controller

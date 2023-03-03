@@ -105,25 +105,25 @@
     </div>
 </div>
 
-<div class="modal hide fade mediumModal" id="modal-var" style="overflow: hidden">
-    <div class="modal-header btn-primary">
-        <button type="button" class="close" data-dismiss="modal">x</button>
+%{--<div class="modal hide fade mediumModal" id="modal-var" style="overflow: hidden">--}%
+%{--    <div class="modal-header btn-primary">--}%
+%{--        <button type="button" class="close" data-dismiss="modal">x</button>--}%
 
-        <h3 id="modal_tittle_var">
+%{--        <h3 id="modal_tittle_var">--}%
 
-        </h3>
+%{--        </h3>--}%
 
-    </div>
+%{--    </div>--}%
 
-    <div class="modal-body" id="modal_body_var">
+%{--    <div class="modal-body" id="modal_body_var">--}%
 
-    </div>
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modal_footer_var">
+%{--    <div class="modal-footer" id="modal_footer_var">--}%
 
-    </div>
+%{--    </div>--}%
 
-</div>
+%{--</div>--}%
 
 <script type="text/javascript">
 
@@ -183,137 +183,117 @@
 
     $(".btnEditarIndice").click(function () {
         var id = $(this).data("id");
-        $.ajax({
+
+               $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'contrato', action: 'editarIndice_ajax')}",
             data    : {
                 id : id
             },
             success : function (msg) {
-                var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');
-                var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                $btnSave.click(function () {
-                    $(this).replaceWith(spinner);
-                    var indiceNuevo = $("#indice").val();
-                    var valorNuevo = $("#valor").val();
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'guardarNuevoIndice')}",
-                        data    : {
-                            id   : id,
-                            indice: indiceNuevo,
-                            valor: valorNuevo
-                        },
-                        success : function (msg) {
-                            $("#modal-var").modal("hide");
-                            if(msg === 'ok'){
-                                $.box({
-                                    imageClass: "box_info",
-                                    text: "Guardado correctamente",
-                                    title: "Guardado",
-                                    iconClose: false,
-                                    dialog: {
-                                        resizable: false,
-                                        draggable: false,
-                                        width: 400,
-                                        buttons: {
-                                            "Aceptar": function () {
-                                                location.reload(true);
-                                            }
-                                        }
-                                    }
-                                });
-                            }else{
-                                $.box({
-                                    imageClass: "box_info",
-                                    text: "Error al guardar!",
-                                    title: "Error",
-                                    iconClose: false,
-                                    dialog: {
-                                        resizable: false,
-                                        draggable: false,
-                                        width: 400,
-                                        buttons: {
-                                            "Aceptar": function () {
-                                            }
-                                        }
-                                    }
-                                });
+                var i = bootbox.dialog({
+                    id      : "dlgCreateEditI",
+                    title   : "Editar índice",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-
-                        }
-                    });
-                });
-                $("#modal_tittle_var").text("Editar índice");
-                $("#modal_body_var").html(msg);
-                $("#modal_footer_var").html($btnCerrar).append($btnSave);
-                $("#modal-var").modal("show");
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var indiceNuevo = $("#indice").val();
+                                var valorNuevo = $("#valor").val();
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action:'guardarNuevoIndice')}",
+                                    data    : {
+                                        id   : id,
+                                        indice: indiceNuevo,
+                                        valor: valorNuevo
+                                    },
+                                    success : function (msg) {
+                                        $("#modal-var").modal("hide");
+                                        if(msg === 'ok'){
+                                            log("Guardado correctamente","success");
+                                            cargarTabla('${fp?.id}');
+                                        }else{
+                                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "Error al guardar el Indice")
+                                        }
+                                    }
+                                });
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
             }
         });
         return false;
     });
 
+    // decimales = 3;
+    // tabla = $(".table");
+    //
+    // beforeDoEdit = function (sel, tf) {
+    //     var tipo = sel.data("tipo");
+    //     tf.data("tipo", tipo);
+    // };
+    //
+    // textFieldBinds = {
+    //     keyup : function () {
+    //         var tipo = $(this).data("tipo");
+    //         var td = $(this).parents("td");
+    //         var val = $(this).val();
+    //         var thTot = $("th." + tipo);
+    //         var tds = $(".editable[data-tipo=" + tipo + "]").not(td);
+    //
+    //         var tot = parseFloat(val);
+    //         tds.each(function () {
+    //             tot += parseFloat($(this).data("valor"));
+    //         });
+    //         thTot.text(tot);
+    //     }
+    // };
+    //
+    // $(".editable").first().addClass("selected");
 
+    %{--$("#btnSave").click(function () {--}%
+    %{--    var str = "";--}%
+    %{--    $(".editable").each(function () {--}%
+    %{--        var td = $(this);--}%
+    %{--        var id = td.data("id");--}%
+    %{--        var valor = parseFloat(td.data("valor"));--}%
+    %{--        var orig = parseFloat(td.data("original"));--}%
 
-    decimales = 3;
-    tabla = $(".table");
-
-    beforeDoEdit = function (sel, tf) {
-        var tipo = sel.data("tipo");
-        tf.data("tipo", tipo);
-    };
-
-    textFieldBinds = {
-        keyup : function () {
-            var tipo = $(this).data("tipo");
-            var td = $(this).parents("td");
-            var val = $(this).val();
-            var thTot = $("th." + tipo);
-            var tds = $(".editable[data-tipo=" + tipo + "]").not(td);
-
-            var tot = parseFloat(val);
-            tds.each(function () {
-                tot += parseFloat($(this).data("valor"));
-            });
-            thTot.text(tot);
-        }
-    };
-
-    $(".editable").first().addClass("selected");
-
-    $("#btnSave").click(function () {
-//                var btn = $(this);
-        var str = "";
-        $(".editable").each(function () {
-            var td = $(this);
-            var id = td.data("id");
-            var valor = parseFloat(td.data("valor"));
-            var orig = parseFloat(td.data("original"));
-
-            if (valor !== orig) {
-                if (str !== "") {
-                    str += "&";
-                }
-                str += "valor=" + id + "_" + valor;
-            }
-        });
-        if (str !== "") {
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'saveCambiosPolinomica')}",
-                data    : str,
-                success : function (msg) {
-                    var parts = msg.split("_");
-                    var ok = parts[0];
-                    var no = parts[1];
-                    doHighlight({elem : $(ok), clase : "ok"});
-                    doHighlight({elem : $(no), clase : "no"});
-                    location.reload();
-                }
-            });
-        }
-        return false;
-    });
+    %{--        if (valor !== orig) {--}%
+    %{--            if (str !== "") {--}%
+    %{--                str += "&";--}%
+    %{--            }--}%
+    %{--            str += "valor=" + id + "_" + valor;--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--    if (str !== "") {--}%
+    %{--        $.ajax({--}%
+    %{--            type    : "POST",--}%
+    %{--            url     : "${createLink(action:'saveCambiosPolinomica')}",--}%
+    %{--            data    : str,--}%
+    %{--            success : function (msg) {--}%
+    %{--                var parts = msg.split("_");--}%
+    %{--                var ok = parts[0];--}%
+    %{--                var no = parts[1];--}%
+    %{--                doHighlight({elem : $(ok), clase : "ok"});--}%
+    %{--                doHighlight({elem : $(no), clase : "no"});--}%
+    %{--                location.reload();--}%
+    %{--            }--}%
+    %{--        });--}%
+    %{--    }--}%
+    %{--    return false;--}%
+    %{--});--}%
 
     $("#tabs").tabs({
         heightStyle : "fill",
