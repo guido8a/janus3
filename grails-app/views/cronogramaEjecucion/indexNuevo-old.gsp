@@ -32,7 +32,7 @@
     Cronograma de ejecución de la obra ${obra.nombre} (${meses} mes${meses == 1 ? "" : "es"})
 </div>
 
-<div class="btn-toolbar" id="toolbar">
+<div class="btn-toolbar hide" id="toolbar">
     <div class="btn-group">
         <a href="${g.createLink(controller: 'contrato', action: 'verContrato', params: [contrato: contrato?.id])}"
            class="btn btn-ajax btn-new" id="atras" rel="tooltip" title="Regresar al contrato">
@@ -42,7 +42,6 @@
     </div>
 
     <g:if test="${meses > 0}">
-
         <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
             <div class="btn-group">
                 <g:if test="${suspensiones.size() == 0}">
@@ -89,12 +88,6 @@
                 <i class="icon-print"></i>
                 %{--Imprimir--}%
             </a>
-        </g:if>
-        <g:if test="${contrato.fiscalizador?.id == session.usuario.id || contrato.administrador?.id == session.usuario.id}">
-            <g:if test="${contrato.administrador?.id == session.usuario.id}">
-            <div class="btn-group" style="width: 400px">
-            </div>
-            </g:if>
 
             <div class="btn" style="height: 30px; font-size: 10px">
                 De:
@@ -110,7 +103,7 @@
 
 <g:if test="${flash.message}">
     <div class="row">
-        <div class="col-md-12">
+        <div class="span12">
             <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
                 <a class="close" data-dismiss="alert" href="#">×</a>
                 ${flash.message}
@@ -121,8 +114,7 @@
 
 
 <div style="font-size: 14px">
-    <i class="fa fa-check" style="color: #cf0e21"></i>
-    La ruta crítica se muestra con los rubros marcados en amarillo
+    <i class="icon-exclamation-sign" style="color: #cf0e21"></i> La ruta crítica se muestra con los rubros marcados en amarillo
 </div>
 
 <g:if test="${(suspensiones.size() != 0) && ini}">
@@ -198,6 +190,7 @@
 
     function updateTabla() {
         var divLoad = $("<div style='text-align: center;'></div>").html(spinnerBg).append("<br/>Cargando...Por favor espere...");
+        var tx = "";
         $("#toolbar").hide();
         $("#divTabla").html(divLoad);
         $.ajax({
@@ -210,6 +203,8 @@
             },
             success: function (msg) {
                 $("#divTabla").html(msg);
+                %{--tx = <elm:poneHtml textoHtml="${msg}"/>--}%
+//                $("#divTabla").html(tx);
                 $("#toolbar").show();
             }
         });
@@ -298,6 +293,7 @@
                     $("#modalTitle-forms").html("Ampliación");
                     $("#modalBody-forms").html(msg);
                     $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
+                    $("#modal-forms").height("420px");
                     $("#modal-forms").modal("show");
 
                 }
@@ -338,6 +334,7 @@
                     $("#modalTitle-forms").html("Terminar Suspensión");
                     $("#modalBody-forms").html(msg);
                     $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
+                    $("#modal-forms").height("560px");
                     $("#modal-forms").modal("show");
 
                 }
@@ -392,8 +389,8 @@
                     $("#modalTitle-forms").html("Suspensión");
                     $("#modalBody-forms").html(msg);
                     $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
+                    $("#modal-forms").height("560px");
                     $("#modal-forms").modal("show");
-
                 }
             });
             return false;
@@ -443,6 +440,7 @@
                         $("#modalTitle-forms").html("Modificación");
                         $("#modalBody-forms").html(msg);
                         $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
+                        $("#modal-forms").height("580px");
                         $("#modal-forms").modal("show");
                     }
                 });

@@ -1,5 +1,8 @@
 <g:set var="meses" value="${obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)}"/>
 
+%{--tabla--}%
+
+
 <g:if test="${meses > 0}">
     <elm:poneHtml textoHtml="${tabla}"/>
 </g:if>

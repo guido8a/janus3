@@ -1343,7 +1343,12 @@ class CronogramaEjecucionController {
             html += numero(totCan)
             html += "</td>"
             html += "</tr>"
+            println "procesa ${crono.codigo}"
         }
+
+        fin = new Date()
+        println "cronogramaObraEjec: termina html tabla --> ${TimeCategory.minus(fin, inicio)}"
+
         html += "</tbody>"
 
         html += "<tfoot>"
@@ -1523,15 +1528,6 @@ class CronogramaEjecucionController {
             eq("obra", obra)
             eq("tipo", "S")
             isNull("fechaFin")
-/*
-            or {
-                isNull("fechaFin")
-                and {
-                    le("fechaInicio", new Date().clearTime())
-                    gt("fechaFin", new Date().clearTime())
-                }
-            }
-*/
         }
 
         println "obra: ${obra.id}, suspensiones: ${suspensiones}"
@@ -3288,6 +3284,10 @@ class CronogramaEjecucionController {
         html += "</table>"
 
         return [html: html]
+    }
+
+    def tablax() {
+        
     }
 
 

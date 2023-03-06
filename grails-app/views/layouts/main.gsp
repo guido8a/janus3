@@ -59,6 +59,7 @@
 
     <script type="text/javascript">
         var spinner = $('<asset:image src="apli/spinner32.gif" style="padding: 40px;"/>');
+        var spinnerBg = $('<asset:image src="apli/spinner32.gif" style="padding: 40px;"/>');
         %{--var spinnerSquare64 = $('<asset:image src="/spinner_64.GIF" style="padding: 40px;"/>');--}%
     </script>
 
