@@ -1,3 +1,5 @@
+<asset:javascript src="/apli/tableHandlerBody.js"/>
+<asset:stylesheet src="/tableHandler.css"/>
+
 <elm:poneHtml textoHtml="${html}"/>
 
-<script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandler_2.js')}"></script>

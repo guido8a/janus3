@@ -453,10 +453,10 @@
             </a>
         </g:if>
 
-        <g:link class="contratado, btn" controller="cronogramaContrato" action="editarVocr" id="${contrato?.id}"
-                title="Nuevo Cronograma Contrato Complementario">
-            <i class="fa fa-file-code"></i> Valores Contratados
-        </g:link>
+%{--        <g:link class="contratado, btn" controller="cronogramaContrato" action="editarVocr" id="${contrato?.id}"--}%
+%{--                title="Nuevo Cronograma Contrato Complementario">--}%
+%{--            <i class="fa fa-file-code"></i> Valores Contratados--}%
+%{--        </g:link>--}%
 
         <g:link class="comple, btn" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
                 title="Nuevo Cronograma Contrato Complementario">
@@ -464,10 +464,10 @@
         </g:link>
 
 
-        <g:link class="comple, btn" controller="cronogramaContrato" action="corrigeCrcr" id="${contrato?.id}"
-                title="Nuevo Cronograma Contrato Complementario">
-            <i class="fa fa-th"></i> Corregir decimales Crono.
-        </g:link>
+%{--        <g:link class="comple, btn" controller="cronogramaContrato" action="corrigeCrcr" id="${contrato?.id}"--}%
+%{--                title="Nuevo Cronograma Contrato Complementario">--}%
+%{--            <i class="fa fa-th"></i> Corregir decimales Crono.--}%
+%{--        </g:link>--}%
 
         <g:if test="${complementario}">
             <a href="#" class="comple, btn" name="integrarFP_name" id="integrarFP"

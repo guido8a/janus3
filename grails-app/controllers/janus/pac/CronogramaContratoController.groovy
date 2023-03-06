@@ -641,9 +641,8 @@ class CronogramaContratoController {
 
     }
 
-
     def editarVocr() {
-        println "--> $params"
+//        println "--> $params"
         def sbpr = []
         def sql = "select distinct sbpr__id from vocr where cntr__id = ${params.id}"
         def cn = dbConnectionService.getConnection()
@@ -658,8 +657,6 @@ class CronogramaContratoController {
         def cn1 = dbConnectionService.getConnection()
         def suma = 0
         def totl = ""
-        println params
-
         def sqlTx = "select vocr__id id, vocrordn, itemnmbr, unddcdgo, vocrcntd::numeric(14,2), vocrpcun, vocrsbtt " +
                 "from vocr, item, undd " +
                 "where item.item__id = vocr.item__id and undd.undd__id = item.undd__id and " +
@@ -672,12 +669,10 @@ class CronogramaContratoController {
 
         def txValor = ""
         def editar = ""
-        println sqlTx
 
         def html = "<table class=\"table table-bordered table-striped table-hover table-condensed\" id=\"tablaPrecios\">"
         html += "<thead>"
         html += "<tr>"
-//        html += "<th>Id</th>"
         html += "<th>Orden</th>"
         html += "<th>Nombre del Indice</th>"
         html += "<th>Cantidad</th>"
@@ -687,17 +682,12 @@ class CronogramaContratoController {
         def body = ""
         cn.eachRow(sqlTx.toString()) { d ->
             body += "<tr>"
-//            body += "<td>${d.id}</td>"
             body += "<td>${d.vocrordn}</td>"
             body += "<td>${d.itemnmbr}</td>"
 
             def sbtt = ""
             editar = "editable"
             sbtt = g.formatNumber(number: d.vocrsbtt, maxFractionDigits: 2, minFractionDigits: 2, format: "##,##0", locale: "ec")
-/*
-                body += "<td class='${editar} number' data-original='${d.vocrcntd}' data-cmpo='vocrcntd' " +
-                        "data-id='${d.id}' data-valor='${d.vocrcntd}'>" + d.vocrcntd + '</td>'
-*/
             body += "<td style='text-align:right'>${d.vocrcntd}</td>"
             body += "<td class='${editar} number' data-original='${d.vocrpcun}' data-cmpo='vocrpcun' " +
                     "data-id='${d.id}' data-valor='${d.vocrpcun}'>" + d.vocrpcun + '</td>'
@@ -708,7 +698,6 @@ class CronogramaContratoController {
         html += "</tr>"
         html += "</thead>"
         html += "<tbody>"
-        //println html
 
         cn.close()
         cn1.close()
@@ -719,7 +708,6 @@ class CronogramaContratoController {
 
         html += "</tbody>"
         html += "</table>"
-        //println html
         [html: html]
     }
 

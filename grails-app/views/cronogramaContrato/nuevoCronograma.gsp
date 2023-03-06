@@ -1,45 +1,44 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 28/09/17
-  Time: 10:54
---%>
 
 <%@ page import="janus.pac.CronogramaContratado; janus.pac.CronogramaContrato" %>
 <!doctype html>
 <html>
 <head>
     <meta name="layout" content="main">
+    <style>
+        .negrita{
+            font-weight: bold;
+            font-style: italic;
+        }
+    </style>
 
 
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">
+%{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+%{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+%{--    <link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
     <title>Cronograma</title>
 </head>
 
 <body>
 <g:set var="meses" value="${Math.ceil(contrato.plazo/30).toInteger()}"/>
-%{--<g:set var="plazoOk" value="${detalle.findAll { it.dias && it.dias > 0 }.size() > 0}"/>--}%
 <g:set var="sum" value="${0}"/>
 
-<div class="tituloTree">
-    Cronograma del contrato de la obra ${obra.descripcion} (${meses} mes${meses == 1 ? "" : "es"})
+<div class="tituloTree alert alert-info">
+    Cronograma del contrato de la obra: <strong> ${obra.descripcion} (${meses} mes${meses == 1 ? "" : "es"}) </strong>
 </div>
 
-<div class="btn-toolbar">
+<div class="btn-toolbar" style="margin-top: 15px">
     <div class="btn-group">
-        <a href="${g.createLink(controller: 'contrato', action: 'registroContrato', params: [contrato: contrato?.id])}" class="btn btn-ajax btn-new" id="atras" title="Regresar al contrato">
-            <i class="icon-arrow-left"></i>
-            Regresar
+        <a href="${g.createLink(controller: 'contrato', action: 'registroContrato', params: [contrato: contrato?.id])}" class="btn btn-info btn-new" id="atras" title="Regresar al contrato">
+            <i class="fa fa-arrow-left"></i>
+            Contrato
         </a>
         %{--<g:if test="${meses > 0 && plazoOk && contrato.estado != 'R'}">--}%
             <a href="#" class="btn disabled" id="btnDeleteRubro">
-                <i class="icon-minus"></i>
+                <i class="fa fa-minus"></i>
                 Eliminar Rubro
             </a>
-            <a href="#" class="btn" id="btnDeleteCronograma">
-                <i class="icon-trash"></i>
+            <a href="#" class="btn btn-danger" id="btnDeleteCronograma">
+                <i class="fa fa-trash"></i>
                 Eliminar Cronograma
             </a>
         %{--</g:if>--}%
@@ -48,46 +47,51 @@
     %{--<g:if test="${meses > 0 && plazoOk}">--}%
         <div class="btn-group">
             <a href="#" class="btn" id="btnGrafico">
-                <i class="icon-bar-chart"></i>
+                <i class="fa fa-clipboard"></i>
                 Gráficos de avance
             </a>
             <a href="#" id="btnReporte" class="btn">
-                <i class="icon-print"></i>
+                <i class="fa fa-print"></i>
                 Imprimir
             </a>
         </div>
     %{--</g:if>--}%
 
 
-    <div class="btn-group">
-    <g:link controller="cronogramaContrato" action="excelCronograma" class="btn btn-print btnExcel"
-            id="${contrato?.id}"
-            title="Exportar a excel el cronograma"
-            style="margin-left: 80px;">
-        <i class="icon-table"></i> Generar Archivo Excel
-    </g:link>
-    <g:link controller="cronogramaContrato" action="subirExcelCronograma" class="btn btn-print btnExcel"
-            id="${contrato?.id}"
-            title="Subir archivo excel"
-            style="margin-left: 0px;">
-        <i class="icon-arrow-up"></i> Cargar desde Excel
-    </g:link>
+%{--    <div class="btn-group">--}%
+%{--    <g:link controller="cronogramaContrato" action="excelCronograma" class="btn btn-print btnExcel"--}%
+%{--            id="${contrato?.id}"--}%
+%{--            title="Exportar a excel el cronograma"--}%
+%{--            style="margin-left: 80px;">--}%
+%{--        <i class="fa fa-file-excel"></i> Generar Archivo Excel--}%
+%{--    </g:link>--}%
+%{--    <g:link controller="cronogramaContrato" action="subirExcelCronograma" class="btn btn-print btnExcel"--}%
+%{--            id="${contrato?.id}"--}%
+%{--            title="Subir archivo excel"--}%
+%{--            style="margin-left: 0px;">--}%
+%{--        <i class="fa fa-arrow-up"></i> Cargar desde Excel--}%
+%{--    </g:link>--}%
+%{--    </div>--}%
+</div>
+
+<div class="col-md-12" style="margin-top: 5px; margin-bottom: 5px;">
+    <div class="col-md-3">
+        <strong>Subpresupuesto:</strong>
+        <g:select name="subpresupuesto" class="form-control" from="${subpres}" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"
+                  style="font-size: 10px" id="subpres" value="${subpre}"
+                  noSelection="['-1': 'TODOS']"/>
+    </div>
+    <div class="col-md-2" style="margin-top: 15px">
+        <a href="#" class="btn btn-info"  id="btnSubpre"><i class="fa fa-search"></i> Ver</a>
+
+        <g:if test="${contrato.estado != 'R'}">
+            <a href="#" class="btn" id="btnDesmarcar"><i class="fa icon-eraser"></i> Desmarcar todo</a>
+        </g:if>
     </div>
 </div>
 
-<div style="margin-bottom: 5px;">
-    <strong>Subpresupuesto:</strong> <g:select name="subpresupuesto" from="${subpres}" optionKey="id" optionValue="descripcion"
-                              style="width: 300px;font-size: 10px" id="subpres" value="${subpre}"
-                              noSelection="['-1': 'TODOS']"/>
-    <a href="#" class="btn" style="margin-top: -10px;" id="btnSubpre"><i class="fa icon-double-angle-down"></i> Cambiar</a>
-
-    <g:if test="${contrato.estado != 'R'}">
-        <a href="#" class="btn" style="margin-top: -10px;" id="btnDesmarcar"><i class="fa icon-eraser"></i> Desmarcar todo</a>
-    </g:if>
-</div>
-
 <div>
-    La ruta crítica se muestra con los rubros marcados en amarillo
+   <strong style="font-size: 14px"> * La ruta crítica se muestra con los rubros marcados en amarillo </strong>
 </div>
 
 %{--<g:if test="${meses > 0 && plazoOk}">--}%
@@ -128,12 +132,9 @@
             </thead>
             <tbody id="tabla_material">
 
-
             <g:each in="${detalle}" var="vol" status="s">
 
-                %{--<g:set var="cronos" value="${CronogramaContrato.findAllByVolumenObra(vol)}"/>--}%
                 <g:set var="cronos" value="${CronogramaContratado.findAllByVolumenContrato(vol)}"/>
-
 
                 <tr class="item_row ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''}" id="${vol.id} " data-id="${vol.id}">
                     <td class="codigo">
@@ -146,15 +147,11 @@
                         ${vol.item.unidad.codigo}
                     </td>
                     <td class="num cantidad" data-valor="${vol.volumenCantidad + vol.cantidadComplementaria}">
-                        %{--<g:formatNumber number="${vol.volumenCantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>--}%
                         <g:formatNumber number="${vol.volumenCantidad + vol.cantidadComplementaria}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
-                    %{--<td class="num precioU" data-valor="${precios[vol.id.toString()]}">--}%
                     <td class="num precioU" data-valor="${vol.volumenPrecio}">
-                        %{--<g:formatNumber number="${precios[vol.id.toString()]/vol.volumenCantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>--}%
                         <g:formatNumber number="${vol.volumenPrecio}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
-                    %{--<g:set var="parcial" value="${precios[vol.id.toString()]}"/>--}%
                     <g:set var="parcial" value="${Math.round( (vol.volumenCantidad + vol.cantidadComplementaria)* vol.volumenPrecio*10000)/10000}"/>
                     <td class="num subtotal" data-valor="${parcial}">
                         <g:formatNumber number="${parcial}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
@@ -181,9 +178,8 @@
                         &nbsp
                     </td>
                     <td style="text-align: center">
-                        %{--<a href="#" class="btn btn-success btn-small btnEditar" data-id="${vol?.id}" data-cantidad="${vol?.volumenCantidad}" title="Editar cantidad complementaria">--}%
-                        <a href="#" class="btn btn-success btn-small btnEditar" data-id="${vol?.id}" data-cantidad="${vol.volumenCantidad + vol.cantidadComplementaria}" title="Editar cantidad complementaria">
-                            <i class="fa icon-pencil"></i>
+                        <a href="#" class="btn btn-success btn-xs btnEditar" data-id="${vol?.id}" data-cantidad="${vol.volumenCantidad + vol.cantidadComplementaria}" title="Editar cantidad complementaria">
+                            <i class="fa fa-edit"></i>
                         </a>
                     </td>
                     <td colspan="2">
@@ -229,24 +225,24 @@
             <tfoot>
             <tr>
                 <td></td>
-                <td colspan="4">TOTAL PARCIAL</td>
-                <td class="num">
+                <td colspan="4" class="negrita">TOTAL PARCIAL</td>
+                <td class="num negrita">
                     <g:formatNumber number="${sum}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                 </td>
-                <td>T</td>
+                <td class="negrita">T</td>
                 <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} totalParcial total" data-mes="${i + 1}" data-valor="0">
+                    <td class="num mes${i + 1} totalParcial total negrita" data-mes="${i + 1}" data-valor="0">
                     </td>
                 </g:each>
                 <td></td>
             </tr>
             <tr>
                 <td></td>
-                <td colspan="4">TOTAL ACUMULADO</td>
+                <td colspan="4" class="negrita">TOTAL ACUMULADO</td>
                 <td></td>
-                <td>T</td>
+                <td class="negrita">T</td>
                 <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} totalAcumulado total" data-mes="${i + 1}" data-valor="0">
+                    <td class="num mes${i + 1} totalAcumulado total negrita" data-mes="${i + 1}" data-valor="0">
                         0.00
                     </td>
                 </g:each>
@@ -254,11 +250,11 @@
             </tr>
             <tr>
                 <td></td>
-                <td colspan="4">% PARCIAL</td>
+                <td colspan="4" class="negrita">% PARCIAL</td>
                 <td></td>
-                <td>T</td>
+                <td class="negrita">T</td>
                 <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} prctParcial total" data-mes="${i + 1}" data-valor="0">
+                    <td class="num mes${i + 1} prctParcial total negrita" data-mes="${i + 1}" data-valor="0">
                         0.00
                     </td>
                 </g:each>
@@ -266,11 +262,11 @@
             </tr>
             <tr>
                 <td></td>
-                <td colspan="4">% ACUMULADO</td>
+                <td colspan="4" class="negrita">% ACUMULADO</td>
                 <td></td>
-                <td>T</td>
+                <td class="negrita">T</td>
                 <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} prctAcumulado total" data-mes="${i + 1}" data-valor="0">
+                    <td class="num mes${i + 1} prctAcumulado total negrita" data-mes="${i + 1}" data-valor="0">
                         0.00
                     </td>
                 </g:each>

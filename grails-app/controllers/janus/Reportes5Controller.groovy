@@ -12,6 +12,7 @@ import janus.pac.CronogramaContratado
 import jxl.Workbook
 import jxl.WorkbookSettings
 import jxl.write.*
+import seguridad.Persona
 
 import java.awt.*
 
