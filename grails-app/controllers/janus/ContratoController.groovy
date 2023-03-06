@@ -485,6 +485,8 @@ class ContratoController {
             order("numero", "asc")
         }
 
+        println("contrato " + contrato)
+
         def cuadrilla = FormulaPolinomicaContractual.findAllByContratoAndNumeroIlike(contrato, 'c%', [sort: 'numero'])
         return [ps: ps, cuadrilla: cuadrilla, contrato: contrato, formulas: formulasVarias]
     }
@@ -559,7 +561,7 @@ class ContratoController {
             order("numero", "asc")
         }
 
-        return [ps: ps, cuadrilla: cuadrilla]
+        return [ps: ps, cuadrilla: cuadrilla, fp: fpReajuste]
     }
 
     def copiarFormula() {
@@ -1021,7 +1023,7 @@ class ContratoController {
 //            println "lista2 ${nuevaLista[0].class}"
 
             render(view: '../tablaBuscador', model: [listaTitulos: listaTitulos, listaCampos: listaCampos, lista: nuevaLista,
-                   funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs,
+                                                     funciones: funciones, url: url, controller: "llamada", numRegistros: numRegistros, funcionJs: funcionJs,
                                                      width: 1800, paginas: 12])
         } else {
 //            println "entro reporte"
@@ -1031,62 +1033,53 @@ class ContratoController {
             def anchos = [7, 10, 7, 7, 7, 7, 7, 4, 7, 7, 7, 7, 7, 7]
             /*el ancho de las columnas en porcentajes... solo enteros*/
             redirect(controller: "reportes", action: "reporteBuscador", params: [listaCampos: listaCampos,
-               listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado,
-               criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras",
-               anchos: anchos, extras: extras, landscape: true])
+                                                                                 listaTitulos: listaTitulos, tabla: "Obra", orden: params.orden, ordenado: params.ordenado,
+                                                                                 criterios: params.criterios, operadores: params.operadores, campos: params.campos, titulo: "Obras",
+                                                                                 anchos: anchos, extras: extras, landscape: true])
         }
 
     }
 
     def cargarOfertas() {
-        println "cargarOfertas params " + params
+//        println "cargarOfertas params " + params
         def obra = Obra.get(params.id)
-//        println "obra " + obra
         def concurso = janus.pac.Concurso.findByObraAndEstado(obra, "R")
-//        println "concurso " + concurso
         def ofertas = janus.pac.Oferta.findAllByConcurso(concurso)
-
-//        new Date('dd-MM-yyyy', ofertas?.fechaEntrega)
-//        println ofertas
-//        println ofertas.monto
-//        println ofertas.plazo
         return [ofertas: ofertas]
     }
-
 
     def cargarCanton() {
         def obra = Obra.get(params.id)
         render obra?.parroquia?.canton?.nombre
     }
 
+    def cargarParroquia(){
+        def obra = Obra.get(params.id)
+        render obra?.parroquia?.nombre
+    }
+
+    def cargarClase(){
+        def obra = Obra.get(params.id)
+        render obra?.claseObra?.descripcion
+    }
+
+    def cargarPorcentaje(){
+        def obra = Obra.get(params.id)
+        render obra?.porcentajeAnticipo
+    }
 
     def getFecha() {
-
         def fechaOferta = Oferta.get(params.id).fechaEntrega?.format('dd-MM-yyyy')
-
         return [fechaOferta: fechaOferta]
-
     }
 
     def getIndice() {
-
-
         def fechaOferta = Oferta.get(params.id).fechaEntrega?.format('dd-MM-yyyy')
-
-//        println("fechaOferta " + fechaOferta)
-
         def fechaOfertaMenos = (Oferta.get(params.id).fechaEntrega - 30).format("dd-MM-yyyy")
         def fechaOfertaSin = (Oferta.get(params.id).fechaEntrega - 30)
-
-//        println("fechaNueva " + fechaOfertaMenos)
-
         def idFecha = PeriodoValidez.findByFechaInicioLessThanEqualsAndFechaFinGreaterThanEquals(fechaOfertaSin, fechaOfertaSin)
 
-//        println("-->" + idFecha.id)
-
         return [fechaOferta: fechaOferta, periodoValidez: idFecha]
-
-
     }
 
     def form_ajax() {
@@ -1122,19 +1115,12 @@ class ContratoController {
             params.fechaSubscripcion = new Date().parse("dd-MM-yyyy", params.fechaSubscripcion)
         }
 
-//        println("params con " + params.conReajuste)
-
-
-//        def indice = PeriodosInec.get(params."periodoValidez.id")
         def indice = PeriodosInec.get(params."periodoInec.id")
         def tipoContrato = TipoContrato.get(params."tipoContrato.id")
 
-
-//        println("oferta " + oferta + " " + params."oferta.id")
-
         params.monto = params.monto.toDouble()
         params.anticipo = params.anticipo.toDouble()
-        
+
         if (params.id) {
             contratoInstance = Contrato.get(params.id)
             contratoInstance.properties = params
@@ -1190,10 +1176,10 @@ class ContratoController {
 
         if (params.id) {
             flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance.codigo
+            flash.message = "Se ha actualizado correctamente Contrato " + contratoInstance?.codigo
         } else {
             flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Contrato " + contratoInstance.id
+            flash.message = "Se ha creado correctamente el Contrato " + contratoInstance?.codigo
         }
         redirect(action: 'registroContrato', params: [contrato: contratoInstance.id])
     } //save
@@ -1259,10 +1245,16 @@ class ContratoController {
 //        println("asignar params " + params)
         def contrato = Contrato.get(params.contrato)
         def subPres = VolumenesObra.findAllByObra(contrato.obra).subPresupuesto.unique()
-        def formulas = FormulaPolinomicaReajuste.findAllByContrato(contrato)
-        def fpsp = FormulaSubpresupuesto.findAllByReajusteInList(formulas, [sort: 'subPresupuesto'])
 
-//        println "formulas: $formulas"
+        def formulas = FormulaPolinomicaReajuste.findAllByContrato(contrato)
+
+        def fpsp = []
+
+        if(formulas){
+            fpsp = FormulaSubpresupuesto.findAllByReajusteInList(formulas)
+        }else{
+            fpsp = []
+        }
 
         return [contrato: contrato, subpresupuesto: subPres, formulas: formulas, fpsp: fpsp]
     }
@@ -1345,8 +1337,8 @@ class ContratoController {
 
         if (fpReajuste == null) {
             def fprj = new FormulaPolinomicaReajuste(contrato: cntr,
-                        tipoFormulaPolinomica: tipo,
-                        descripcion: "Fórmula polinómica del contrato principal")
+                    tipoFormulaPolinomica: tipo,
+                    descripcion: "Fórmula polinómica del contrato principal")
 
             if (!fprj.save(flush: true)) {
                 println "error al crear la FP del contrato, errores: " + fprj.errors
@@ -1433,7 +1425,7 @@ class ContratoController {
             render "no_El contrato complementario seleccionado no tiene cronograma!"
         } else {
 
-        def volumenesContrato = VolumenContrato.findAllByContrato(complementario)
+            def volumenesContrato = VolumenContrato.findAllByContrato(complementario)
             volumenesContrato.each{ v ->
                 println "procesa ${v.item}"
                 def nuevoVocr = new VolumenContrato(v.properties)
@@ -1536,32 +1528,21 @@ class ContratoController {
         }
     }
 
-
     def editarIndice_ajax(){
         def indiceActual = FormulaPolinomicaContractual.get(params.id)
-
         def tipoIndice = TipoIndice.findByCodigo('M')
         def indices = Indice.findAllByTipoIndiceAndIdNotEqual(tipoIndice, 143).sort{it.descripcion}
-//        def mano = Indice.findByCodigo('MO')
-//        def indices = Indice.findAllByTipoIndice(tipoIndice).sort{it.descripcion}
-//        def i = indices.id - mano.id
-//        def ind = Indice.findAllByIdInList(i)
-
         return [indices: indices, indiceActual: indiceActual]
     }
 
     def editarIndiceC_ajax(){
         def indiceActual = FormulaPolinomicaContractual.get(params.id)
-
         def tipoIndice = TipoIndice.findByCodigo('O')
         def indices = Indice.findAllByTipoIndice(tipoIndice).sort{it.descripcion}
-
         return [indices: indices, indiceActual: indiceActual]
     }
 
-
     def guardarNuevoIndice(){
-//        println("params gni " + params)
 
         def indice = Indice.get(params.indice)
         def fpc

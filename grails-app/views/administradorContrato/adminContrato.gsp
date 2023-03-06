@@ -1,30 +1,45 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 09/01/18
-  Time: 15:22
---%>
 
 <%@ page import="janus.Departamento; janus.Contrato" %>
 <fieldset>
-    <legend>Nuevo Administrador</legend>
 
     <div class="alert alert-error hide" id="divError">
     </div>
 
-    <g:select id="administrador" name="administrador.id" from="${personal}"
-              optionKey="id" class="many-to-one required" optionValue="${{ it.apellido + ' ' + it.nombre }}"
-              noSelection="['null': 'Seleccione ...']" style="width:300px; margin-right: 20px;"/>
-    Desde: <elm:datepicker value="${new Date()}" name="desde" class="input-small"/>
-    <a href="#" class="btn btn-success" id="btnAddAdmin" style="margin-top: -9px; margin-left: 20px;"><i class="icon-plus"></i> Agregar</a>
+    <div class="row">
+        <div class="col-md-2"><label> Personas </label></div>
+        <div class="col-md-4">
+            <g:select id="administrador" name="administrador.id" from="${personal}"
+                      optionKey="id" class="many-to-one required form-control" optionValue="${{ it.apellido + ' ' + it.nombre }}"
+                      noSelection="['null': 'Seleccione ...']" style="width:300px; margin-right: 20px;"/>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 5px">
+        <div class="col-md-2"><label>Desde</label></div>
+        <div class="col-md-3">
+            <input aria-label="" name="desde" id='fechaAC' type='text' class="form-control" value="${new Date()?.format("dd-MM-yyyy")}" />
+        </div>
+        <div class="col-md-2">
+            <a href="#" class="btn btn-success" id="btnAddAdmin" style=""><i class="fa fa-plus"></i> Agregar</a>
+        </div>
+    </div>
+
 </fieldset>
 
 <div id="tabla"></div>
 
 <script type="text/javascript">
+
+    $('#fechaAC').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
+
     function loadTabla() {
         $("#tabla").html("");
-        var contrato = $("#administrador").data("contrato");
+        var contrato = '${contrato?.id}';
         $.ajax({
             type    : "POST",
             url     : "${createLink(action: 'tabla')}",
@@ -37,17 +52,14 @@
         });
     }
     $(function () {
-//        console.log("ASdf", $("#administrador"), $("#administrador").data("contrato"));
-//        loadTabla();
-        setTimeout(function () {
-            loadTabla()
-        }, 200);
+
+        loadTabla();
 
         $("#btnAddAdmin").click(function () {
             var $admin = $("#administrador");
-            var contrato = $admin.data("contrato");
+            var contrato = '${contrato?.id}';
             var admin = $admin.val();
-            var desde = $("#desde").val();
+            var desde = $("#fechaAC").val();
 
             $.ajax({
                 type    : "POST",
@@ -58,18 +70,14 @@
                     desde    : desde
                 },
                 success : function (msg) {
-                    console.log(msg)
                     var p = msg.split("_");
-                    if (p[0] == "NO") {
-//                        log(p[1], true);
-                        alert(p[1])
+                    if (p[0] === "NO") {
+                        bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  p[1] +  "</strong>");
                     } else {
                         loadTabla();
-                        location.reload(true);
                     }
                 }
             });
-
         });
     });
 
