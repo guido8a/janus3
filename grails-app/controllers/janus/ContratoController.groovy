@@ -406,7 +406,8 @@ class ContratoController {
         def select = "select obra.obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
                 "from obra, parr, dpto, cncr, ofrt "
         def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and " +
-                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id "
+                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
+                "obra.obra__id not in (select obra__id from cntr)"
         def sqlTx = ""
         def bsca = listaObra[params.buscarPor.toInteger()-1]
         def ordn = listaObra[params.ordenar.toInteger()-1]
