@@ -1,99 +1,140 @@
 <!doctype html>
 <html>
-    <head>
-        <meta name="layout" content="main">
-        <title>Gráficos de avance</title>
+<head>
+    <meta name="layout" content="main">
+    <title>Gráficos de avance</title>
 
-        <script language="javascript" type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jqplot', file: 'jquery.jqplot.min.js')}"></script>
-        <link rel="stylesheet" type="text/css" href="${resource(dir: 'js/jquery/plugins/jqplot', file: 'jquery.jqplot.min.css')}"/>
+    <asset:javascript src="/apli/Chart.js"/>
 
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jqplot/plugins', file: 'jqplot.canvasTextRenderer.min.js')}"></script>
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jqplot/plugins', file: 'jqplot.canvasAxisLabelRenderer.min.js')}"></script>
-        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jqplot/plugins', file: 'jqplot.highlighter.min.js')}"></script>
+    <style>
+    .grafico{
+        border-style: solid;
+        border-color: #606060;
+        border-width: 1px;
+        width: 47%;
+        float: left;
+        text-align: center;
+        height: 420px;
+        border-radius: 8px;
+        margin: 10px;
+    }
 
-    </head>
+    </style>
 
-    <body>
-        <div class="btn-toolbar">
-            <div class="btn-group">
-                <g:link action="${!nuevo ? 'index' : 'nuevoCronograma'}" id="${contrato.id}" params="[subpre: params.subpre]" class="btn">
-                    <i class="icon-caret-left"></i>
-                    Cronograma
-                </g:link>
-            </div>
-        </div>
+</head>
 
-        <div id="grafEco" class="graf" style="margin-top: 15px;"></div>
+<body>
+<div class="btn-toolbar">
+    <div class="btn-group">
+        <g:link action="nuevoCronograma" id="${contrato?.id}" class="btn btn-info">
+            <i class="fa fa-arrow-left"></i>
+            Contrato
+        </g:link>
+    </div>
+</div>
 
-        <div id="grafFis" class="graf"></div>
+<div id="grafEco" class="graf" style="margin-top: 15px;"></div>
 
-        <script type="text/javascript">
-            var plotEco = $.jqplot("grafEco", ${params.datae},
+<div id="grafFis" class="graf"></div>
+
+
+<div class="chart-container grafico" id="chart-area" hidden>
+    <h3 id="titulo"></h3>
+    <div id="subTitulo" style="font-size: 14px"></div>
+    <div id="graf">
+        <canvas id="clases" style="margin-top: 30px"></canvas>
+    </div>
+</div>
+
+<div class="chart-container grafico" id="chart-area2" hidden>
+    <h3 id="titulo2"></h3>
+    <div id="subTitulo2" style="font-size: 14px"></div>
+    <div id="graf2">
+        <canvas id="clases2" style="margin-top: 30px"></canvas>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var canvas = $("#clases");
+    var myChart;
+
+    $(function () {
+        openLoader("Graficando...");
+
+        $("#chart-area").removeClass('hidden');
+
+        var valores = "${data}".split("_");
+        var valores2 = "${datapcnt}".split("_");
+        var meses = "${mes}".split("_");
+        console.log('data', valores);
+        $("#titulo").html("Avance Económico ($)");
+        $("#titulo2").html("Avance Físico (%)");
+        $("#subTitulo").html("Obra: ${obra.nombre}");
+        $("#subTitulo2").html("Obra: ${obra.nombre}");
+        $("#clases").remove();
+        $("#chart-area").removeAttr('hidden');
+        $("#chart-area2").removeAttr('hidden');
+
+        $('#graf').append('<canvas id="clases" style="margin-top: 30px"></canvas>');
+        $('#graf2').append('<canvas id="clases2" style="margin-top: 30px"></canvas>');
+
+        $("#clases").off();
+        canvas = $("#clases")
+        var chartData = {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [
                     {
-                        title       : "Avance económico de la obra ${obra.descripcion}",
-                        axes        : {
-                            xaxis : {
-                                min           : 1,
-                                ticks         : ${params.txe},
-                                pad           : 5.5,
-                                label         : 'Mes',
-                                labelRenderer : $.jqplot.CanvasAxisLabelRenderer
-                            },
-                            yaxis : {
-                                min           : 0,
-                                max           : ${params.me},
-                                ticks         : ${params.tye},
-                                pad           : 5.5,
-                                label         : 'Avance económico ($)',
-                                labelRenderer : $.jqplot.CanvasAxisLabelRenderer
-                            }
-                        },
-                        highlighter : {
-                            show         : true,
-//                            showMarker  : true,
-                            showTooltip  : true,
-                            tooltipAxes  : 'both',
-                            formatString : '<table class="jqplot-highlighter"> <tr><td>mes:</td><td>%s</td></tr> <tr><td>valor:</td><td>%s</td></tr> </table>'
-                        },
-                        series      : [
-                            {
-                                color : "#${params.colore}"
-                            }
-                        ]
-                    });
-            var plotFis = $.jqplot("grafFis", ${params.dataf},
+                        label: ["Acumulado"],
+                        borderColor: ['#40d6d8'],
+                        data: valores
+                    }
+                ]
+            },
+            options: {
+                legend: {
+                    display: false,
+                    labels: {
+                        fontColor: 'rgb(20, 80, 100)',
+                        fontSize: 14
+                    }
+                }
+            }
+        };
+
+        $("#clases2").off();
+        canvas2 = $("#clases2")
+        var chartData2 = {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [
                     {
-                        title       : "Avance físico de la obra ${obra.descripcion}",
-                        axes        : {
-                            xaxis : {
-                                min           : 1,
-                                ticks         : ${params.txf},
-                                pad           : 5.5,
-                                label         : 'Mes',
-                                labelRenderer : $.jqplot.CanvasAxisLabelRenderer
-                            },
-                            yaxis : {
-                                min           : 0,
-                                max           : ${params.mf},
-                                ticks         : ${params.tyf},
-                                pad           : 5.5,
-                                label         : 'Avance económico (%)',
-                                labelRenderer : $.jqplot.CanvasAxisLabelRenderer
-                            }
-                        },
-                        highlighter : {
-                            show         : true,
-//                            showMarker  : true,
-                            showTooltip  : true,
-                            tooltipAxes  : 'both',
-                            formatString : '<table class="jqplot-highlighter"> <tr><td>mes:</td><td>%s</td></tr> <tr><td>valor:</td><td>%s</td></tr> </table>'
-                        },
-                        series      : [
-                            {
-                                color : "#${params.colorf}"
-                            }
-                        ]
-                    });
-        </script>
-    </body>
+                        label: ["Acumulado (%)"],
+                        borderColor: ['#8086d8'],
+                        data: valores2
+                    }
+                ]
+            },
+            options: {
+                legend: {
+                    display: false,
+                    labels: {
+                        fontColor: 'rgb(20, 80, 100)',
+                        fontSize: 14
+                    }
+                }
+            }
+        };
+
+        myChart = new Chart(canvas, chartData, 1);
+        myChart2 = new Chart(canvas2, chartData2, 1);
+
+    });
+
+</script>
+</body>
 </html>

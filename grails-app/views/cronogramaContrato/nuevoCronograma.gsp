@@ -5,16 +5,16 @@
 <head>
     <meta name="layout" content="main">
     <style>
-        .negrita{
-            font-weight: bold;
-            font-style: italic;
-        }
+    .negrita{
+        font-weight: bold;
+        font-style: italic;
+    }
     </style>
 
 
-%{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-%{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-%{--    <link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
+    %{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--    <link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
     <title>Cronograma</title>
 </head>
 
@@ -33,45 +33,45 @@
             Contrato
         </a>
         %{--<g:if test="${meses > 0 && plazoOk && contrato.estado != 'R'}">--}%
-            <a href="#" class="btn disabled" id="btnDeleteRubro">
-                <i class="fa fa-minus"></i>
-                Eliminar Rubro
-            </a>
-            <a href="#" class="btn btn-danger" id="btnDeleteCronograma">
-                <i class="fa fa-trash"></i>
-                Eliminar Cronograma
-            </a>
+        <a href="#" class="btn disabled" id="btnDeleteRubro">
+            <i class="fa fa-minus"></i>
+            Eliminar Rubro
+        </a>
+        <a href="#" class="btn btn-danger" id="btnDeleteCronograma">
+            <i class="fa fa-trash"></i>
+            Eliminar Cronograma
+        </a>
         %{--</g:if>--}%
     </div>
 
     %{--<g:if test="${meses > 0 && plazoOk}">--}%
-        <div class="btn-group">
-            <a href="#" class="btn" id="btnGrafico">
-                <i class="fa fa-clipboard"></i>
-                Gráficos de avance
-            </a>
-            <a href="#" id="btnReporte" class="btn">
-                <i class="fa fa-print"></i>
-                Imprimir
-            </a>
-        </div>
+    <div class="btn-group">
+        <a href="#" class="btn" id="btnGrafico">
+            <i class="fa fa-clipboard"></i>
+            Gráficos de avance
+        </a>
+        <a href="#" id="btnReporte" class="btn">
+            <i class="fa fa-print"></i>
+            Imprimir
+        </a>
+    </div>
     %{--</g:if>--}%
 
 
-%{--    <div class="btn-group">--}%
-%{--    <g:link controller="cronogramaContrato" action="excelCronograma" class="btn btn-print btnExcel"--}%
-%{--            id="${contrato?.id}"--}%
-%{--            title="Exportar a excel el cronograma"--}%
-%{--            style="margin-left: 80px;">--}%
-%{--        <i class="fa fa-file-excel"></i> Generar Archivo Excel--}%
-%{--    </g:link>--}%
-%{--    <g:link controller="cronogramaContrato" action="subirExcelCronograma" class="btn btn-print btnExcel"--}%
-%{--            id="${contrato?.id}"--}%
-%{--            title="Subir archivo excel"--}%
-%{--            style="margin-left: 0px;">--}%
-%{--        <i class="fa fa-arrow-up"></i> Cargar desde Excel--}%
-%{--    </g:link>--}%
-%{--    </div>--}%
+    %{--    <div class="btn-group">--}%
+    %{--    <g:link controller="cronogramaContrato" action="excelCronograma" class="btn btn-print btnExcel"--}%
+    %{--            id="${contrato?.id}"--}%
+    %{--            title="Exportar a excel el cronograma"--}%
+    %{--            style="margin-left: 80px;">--}%
+    %{--        <i class="fa fa-file-excel"></i> Generar Archivo Excel--}%
+    %{--    </g:link>--}%
+    %{--    <g:link controller="cronogramaContrato" action="subirExcelCronograma" class="btn btn-print btnExcel"--}%
+    %{--            id="${contrato?.id}"--}%
+    %{--            title="Subir archivo excel"--}%
+    %{--            style="margin-left: 0px;">--}%
+    %{--        <i class="fa fa-arrow-up"></i> Cargar desde Excel--}%
+    %{--    </g:link>--}%
+    %{--    </div>--}%
 </div>
 
 <div class="col-md-12" style="margin-top: 5px; margin-bottom: 5px;">
@@ -91,190 +91,190 @@
 </div>
 
 <div>
-   <strong style="font-size: 14px"> * La ruta crítica se muestra con los rubros marcados en amarillo </strong>
+    <strong style="font-size: 14px"> * La ruta crítica se muestra con los rubros marcados en amarillo </strong>
 </div>
 
 %{--<g:if test="${meses > 0 && plazoOk}">--}%
-    <div class="divTabla">
-        <table class="table table-bordered table-condensed table-hover">
-            <thead>
-            <tr>
-                <th class="codigo">
-                    Código
+<div class="divTabla">
+    <table class="table table-bordered table-condensed table-hover">
+        <thead>
+        <tr>
+            <th class="codigo">
+                Código
+            </th>
+            <th class="nombre">
+                Rubro
+            </th>
+            <th class="unidad">
+                Unidad
+            </th>
+            <th class="cantidad">
+                Cantidad
+            </th>
+            <th class="precioU">
+                Unitario
+            </th>
+            <th class="subtotal">
+                C.Total
+            </th>
+            <th class="tiny">
+                T.
+            </th>
+            <g:each in="${0..meses - 1}" var="i">
+                <th class="meses">
+                    Mes ${i + 1}
                 </th>
-                <th class="nombre">
-                    Rubro
-                </th>
-                <th class="unidad">
-                    Unidad
-                </th>
-                <th class="cantidad">
-                    Cantidad
-                </th>
-                <th class="precioU">
-                    Unitario
-                </th>
-                <th class="subtotal">
-                    C.Total
-                </th>
-                <th class="tiny">
-                    T.
-                </th>
-                <g:each in="${0..meses - 1}" var="i">
-                    <th class="meses">
-                        Mes ${i + 1}
-                    </th>
-                </g:each>
-                <th class="totalRubro">
-                    Total Rubro
-                </th>
-            </tr>
-            </thead>
-            <tbody id="tabla_material">
-
-            <g:each in="${detalle}" var="vol" status="s">
-
-                <g:set var="cronos" value="${CronogramaContratado.findAllByVolumenContrato(vol)}"/>
-
-                <tr class="item_row ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''}" id="${vol.id} " data-id="${vol.id}">
-                    <td class="codigo">
-                        ${vol.item.codigo}
-                    </td>
-                    <td class="nombre">
-                        ${vol.item.nombre}
-                    </td>
-                    <td style="text-align: center" class="unidad">
-                        ${vol.item.unidad.codigo}
-                    </td>
-                    <td class="num cantidad" data-valor="${vol.volumenCantidad + vol.cantidadComplementaria}">
-                        <g:formatNumber number="${vol.volumenCantidad + vol.cantidadComplementaria}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-                    </td>
-                    <td class="num precioU" data-valor="${vol.volumenPrecio}">
-                        <g:formatNumber number="${vol.volumenPrecio}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-                    </td>
-                    <g:set var="parcial" value="${Math.round( (vol.volumenCantidad + vol.cantidadComplementaria)* vol.volumenPrecio*10000)/10000}"/>
-                    <td class="num subtotal" data-valor="${parcial}">
-                        <g:formatNumber number="${parcial}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-                        <g:set var="sum" value="${sum + parcial}"/>
-                    </td>
-                    <td class="tiny">
-                        $
-                    </td>
-                    <g:each in="${0..meses - 1}" var="i">
-                        <g:set var="prec" value="${cronos.find { it.periodo == i + 1 }}"/>
-                        <td class="dol mes meses num mes${i + 1} rubro${vol.id}" data-mes="${i + 1}" data-rubro="${vol.id}" data-valor="0"
-                            data-tipo="dol" data-val="${prec?.precio ?: 0}" data-id="${prec?.id ?: ''}">
-                            <g:formatNumber number="${prec?.precio}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-                        </td>
-                    </g:each>
-                    <td class="num rubro${vol.id} dol total totalRubro">
-                        <span>
-                        </span> $
-                    </td>
-                </tr>
-
-                <tr class="item_prc ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''}" data-id="${vol.id}">
-                    <td colspan="3">
-                        &nbsp
-                    </td>
-                    <td style="text-align: center">
-                        <a href="#" class="btn btn-success btn-xs btnEditar" data-id="${vol?.id}" data-cantidad="${vol.volumenCantidad + vol.cantidadComplementaria}" title="Editar cantidad complementaria">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                    </td>
-                    <td colspan="2">
-                        &nbsp
-                    </td>
-                    <td>
-                        %
-                    </td>
-                    <g:each in="${0..meses - 1}" var="i">
-                        <g:set var="porc" value="${cronos.find { it.periodo == i + 1 }}"/>
-                        <td class="prct mes num mes${i + 1} rubro${vol.id}" data-mes="${i + 1}" data-rubro="${vol.id}" data-valor="0"
-                            data-tipo="prct" data-val="${porc?.porcentaje ?: 0}" data-id="${porc?.id ?: ''}">
-                            <g:formatNumber number="${porc?.porcentaje}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-                        </td>
-                    </g:each>
-                    <td class="num rubro${vol.id} prct total totalRubro">
-                        <span>
-                        </span> %
-                    </td>
-                </tr>
-                <tr class="item_f ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''}" data-id="${vol.id}">
-                    <td colspan="6">
-                        &nbsp
-                    </td>
-                    <td>
-                        F
-                    </td>
-                    <g:each in="${0..meses - 1}" var="i">
-                        <g:set var="cant" value="${cronos.find { it.periodo == i + 1 }}"/>
-                        <td class="fis mes num mes${i + 1} rubro${vol.id}" data-mes="${i + 1}" data-rubro="${vol.id}" data-valor="0"
-                            data-tipo="fis" data-val="${cant?.cantidad ?: 0}" data-id="${cant?.id ?: ''}">
-                            <g:formatNumber number="${cant?.cantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-                        </td>
-                    </g:each>
-                    <td class="num rubro${vol.id} fis total totalRubro">
-                        <span>
-                        </span> F
-                    </td>
-                </tr>
-
             </g:each>
-            </tbody>
-            <tfoot>
-            <tr>
-                <td></td>
-                <td colspan="4" class="negrita">TOTAL PARCIAL</td>
-                <td class="num negrita">
-                    <g:formatNumber number="${sum}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+            <th class="totalRubro">
+                Total Rubro
+            </th>
+        </tr>
+        </thead>
+        <tbody id="tabla_material">
+
+        <g:each in="${detalle}" var="vol" status="s">
+
+            <g:set var="cronos" value="${CronogramaContratado.findAllByVolumenContrato(vol)}"/>
+
+            <tr class="item_row ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''}" id="${vol.id} " data-id="${vol.id}">
+                <td class="codigo">
+                    ${vol.item.codigo}
                 </td>
-                <td class="negrita">T</td>
+                <td class="nombre">
+                    ${vol.item.nombre}
+                </td>
+                <td style="text-align: center" class="unidad">
+                    ${vol.item.unidad.codigo}
+                </td>
+                <td class="num cantidad" data-valor="${vol.volumenCantidad + vol.cantidadComplementaria}">
+                    <g:formatNumber number="${vol.volumenCantidad + vol.cantidadComplementaria}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                </td>
+                <td class="num precioU" data-valor="${vol.volumenPrecio}">
+                    <g:formatNumber number="${vol.volumenPrecio}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                </td>
+                <g:set var="parcial" value="${Math.round( (vol.volumenCantidad + vol.cantidadComplementaria)* vol.volumenPrecio*10000)/10000}"/>
+                <td class="num subtotal" data-valor="${parcial}">
+                    <g:formatNumber number="${parcial}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+                    <g:set var="sum" value="${sum + parcial}"/>
+                </td>
+                <td class="tiny">
+                    $
+                </td>
                 <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} totalParcial total negrita" data-mes="${i + 1}" data-valor="0">
+                    <g:set var="prec" value="${cronos.find { it.periodo == i + 1 }}"/>
+                    <td class="dol mes meses num mes${i + 1} rubro${vol.id}" data-mes="${i + 1}" data-rubro="${vol.id}" data-valor="0"
+                        data-tipo="dol" data-val="${prec?.precio ?: 0}" data-id="${prec?.id ?: ''}">
+                        <g:formatNumber number="${prec?.precio}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
                 </g:each>
-                <td></td>
+                <td class="num rubro${vol.id} dol total totalRubro">
+                    <span>
+                    </span> $
+                </td>
             </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" class="negrita">TOTAL ACUMULADO</td>
-                <td></td>
-                <td class="negrita">T</td>
+
+            <tr class="item_prc ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''}" data-id="${vol.id}">
+                <td colspan="3">
+                    &nbsp
+                </td>
+                <td style="text-align: center">
+                    <a href="#" class="btn btn-success btn-xs btnEditar" data-id="${vol?.id}" data-cantidad="${vol.volumenCantidad + vol.cantidadComplementaria}" title="Editar cantidad complementaria">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                </td>
+                <td colspan="2">
+                    &nbsp
+                </td>
+                <td>
+                    %
+                </td>
                 <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} totalAcumulado total negrita" data-mes="${i + 1}" data-valor="0">
-                        0.00
+                    <g:set var="porc" value="${cronos.find { it.periodo == i + 1 }}"/>
+                    <td class="prct mes num mes${i + 1} rubro${vol.id}" data-mes="${i + 1}" data-rubro="${vol.id}" data-valor="0"
+                        data-tipo="prct" data-val="${porc?.porcentaje ?: 0}" data-id="${porc?.id ?: ''}">
+                        <g:formatNumber number="${porc?.porcentaje}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
                 </g:each>
-                <td></td>
+                <td class="num rubro${vol.id} prct total totalRubro">
+                    <span>
+                    </span> %
+                </td>
             </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" class="negrita">% PARCIAL</td>
-                <td></td>
-                <td class="negrita">T</td>
+            <tr class="item_f ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''}" data-id="${vol.id}">
+                <td colspan="6">
+                    &nbsp
+                </td>
+                <td>
+                    F
+                </td>
                 <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} prctParcial total negrita" data-mes="${i + 1}" data-valor="0">
-                        0.00
+                    <g:set var="cant" value="${cronos.find { it.periodo == i + 1 }}"/>
+                    <td class="fis mes num mes${i + 1} rubro${vol.id}" data-mes="${i + 1}" data-rubro="${vol.id}" data-valor="0"
+                        data-tipo="fis" data-val="${cant?.cantidad ?: 0}" data-id="${cant?.id ?: ''}">
+                        <g:formatNumber number="${cant?.cantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
                     </td>
                 </g:each>
-                <td></td>
+                <td class="num rubro${vol.id} fis total totalRubro">
+                    <span>
+                    </span> F
+                </td>
             </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" class="negrita">% ACUMULADO</td>
-                <td></td>
-                <td class="negrita">T</td>
-                <g:each in="${0..meses - 1}" var="i">
-                    <td class="num mes${i + 1} prctAcumulado total negrita" data-mes="${i + 1}" data-valor="0">
-                        0.00
-                    </td>
-                </g:each>
-                <td></td>
-            </tr>
-            </tfoot>
-        </table>
-    </div>
+
+        </g:each>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td></td>
+            <td colspan="4" class="negrita">TOTAL PARCIAL</td>
+            <td class="num negrita">
+                <g:formatNumber number="${sum}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
+            </td>
+            <td class="negrita">T</td>
+            <g:each in="${0..meses - 1}" var="i">
+                <td class="num mes${i + 1} totalParcial total negrita" data-mes="${i + 1}" data-valor="0">
+                </td>
+            </g:each>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="4" class="negrita">TOTAL ACUMULADO</td>
+            <td></td>
+            <td class="negrita">T</td>
+            <g:each in="${0..meses - 1}" var="i">
+                <td class="num mes${i + 1} totalAcumulado total negrita" data-mes="${i + 1}" data-valor="0">
+                    0.00
+                </td>
+            </g:each>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="4" class="negrita">% PARCIAL</td>
+            <td></td>
+            <td class="negrita">T</td>
+            <g:each in="${0..meses - 1}" var="i">
+                <td class="num mes${i + 1} prctParcial total negrita" data-mes="${i + 1}" data-valor="0">
+                    0.00
+                </td>
+            </g:each>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td colspan="4" class="negrita">% ACUMULADO</td>
+            <td></td>
+            <td class="negrita">T</td>
+            <g:each in="${0..meses - 1}" var="i">
+                <td class="num mes${i + 1} prctAcumulado total negrita" data-mes="${i + 1}" data-valor="0">
+                    0.00
+                </td>
+            </g:each>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
+</div>
 
 <div class="modal hide fade" id="modal-cronograma">
     <div class="modal-header">
@@ -419,16 +419,16 @@
 
 
 %{--<div id="modificarCantidadDialog">--}%
-    %{--<fieldset>--}%
-        %{--<div class="span4">--}%
-            %{--<strong></strong>--}%
-        %{--</div>--}%
-    %{--</fieldset>--}%
-    %{--<fieldset style="margin-top: 10px">--}%
-        %{--<div class="span4">--}%
+%{--<fieldset>--}%
+%{--<div class="span4">--}%
+%{--<strong></strong>--}%
+%{--</div>--}%
+%{--</fieldset>--}%
+%{--<fieldset style="margin-top: 10px">--}%
+%{--<div class="span4">--}%
 
-        %{--</div>--}%
-    %{--</fieldset>--}%
+%{--</div>--}%
+%{--</fieldset>--}%
 %{--</div>--}%
 
 
@@ -448,86 +448,72 @@
     </div>
 </div>
 
-
 <script type="text/javascript">
 
-        $(".btnEditar").click(function () {
-            var id = $(this).data("id")
-            var cantidad = $(this).data("cantidad")
-//            $("#modificarCantidadDialog").dialog("open")
+    $(".btnEditar").click(function () {
+        var id = $(this).data("id");
+        var cantidad = $(this).data("cantidad");
+
+        $.ajax({
+            type: 'POST',
+            url:'${createLink(controller: 'cronogramaContrato', action: 'modificarCantidad_ajax')}',
+            data:{
+                id: id
+            },
+            success: function (msg) {
 
 
-
-            $.ajax({
-                type: 'POST',
-                url:'${createLink(controller: 'cronogramaContrato', action: 'modificarCantidad_ajax')}',
-                data:{
-                    id: id
-                },
-                success: function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        $(this).replaceWith(spinner);
-                        $.ajax({
-                            type: "POST",
-                            url: "${createLink(controller: 'cronogramaContrato', action:'guardarCantidad_ajax')}",
-                            data: $("#frmSave-Programacion").serialize(),
-                            success: function (msg) {
-                                if (msg == 'ok') {
-                                    alert("Cantidad modificada!");
-                                    setTimeout(function () {
-                                        location.href = "${g.createLink(controller: 'cronogramaContrato', action: 'nuevoCronograma')}/" + "${contrato?.id}";
-                                    }, 700);
-                                } else {
-                                    alert("Error al modificar la cantidad!")
-                                }
-                                $("#modal-TipoObra").modal("hide");
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Modificar la cantidad",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-                        });
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormModificarCantidad();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+    function submitFormModificarCantidad() {
+        var $form = $("#frmSave-Programacion");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    if(msg === 'ok'){
+                        log("Cantidad Modificada", "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al cambiar la cantidad" + '</strong>');
                         return false;
-                    });
-                    $("#modalHeader_tipo").removeClass("btn-edit btn-show btn-delete");
-                    $("#modalTitle_tipo").html("Cambiar cantidad complementaria");
-                    $("#modalBody_tipo").html(msg);
-                    $("#modalFooter_tipo").html("").append(btnOk).append(btnSave);
-                    $("#modal-TipoObra").modal("show");
+                    }
                 }
             });
-
-
-
-        });
-
-        %{--$("#modificarCantidadDialog").dialog({--}%
-            %{--autoOpen  : false,--}%
-            %{--resizable : false,--}%
-            %{--modal     : true,--}%
-            %{--draggable : false,--}%
-            %{--width     : 450,--}%
-            %{--height    : 180,--}%
-            %{--position  : 'center',--}%
-            %{--title     : 'Editar cantidad complementaria',--}%
-            %{--buttons   : {--}%
-                %{--"Cerrar": function () {--}%
-                    %{--$("#modificarCantidadDialog").dialog("close")--}%
-                %{--},--}%
-                %{--"Guardar": function () {--}%
-                    %{--$.ajax({--}%
-                       %{--type: 'POST',--}%
-                        %{--url:'${createLink(controller: 'cronogramaContrato', action: 'modificarCantidad_ajax')}',--}%
-                        %{--data:{--}%
-                            %{--id: $(".btnEditar").data("id")--}%
-                        %{--},--}%
-                        %{--success: function (msg) {--}%
-                            %{--$("#modificarCantidadDialog").dialog("close")--}%
-                        %{--}--}%
-                    %{--});--}%
-                %{--}--}%
-
-            %{--}--}%
-        %{--});--}%
+        } else {
+            return false;
+        }
+    }
 
     function updateTotales() {
 
@@ -609,23 +595,23 @@
         var prct = $.trim($prct.val());
         var prec = $.trim($prec.val());
 
-        if (periodoIni == "") {
+        if (periodoIni === "") {
             log("Ingrese el periodo inicial");
             return false;
         }
-        if (periodoFin == "") {
+        if (periodoFin === "") {
             log("Ingrese el periodo final");
             return false;
         }
-        if (cant == "") {
+        if (cant === "") {
             log("Ingrese la cantidad, porcentaje o precio");
             return false;
         }
-        if (prct == "") {
+        if (prct === "") {
             log("Ingrese el porcentaje, cantidad o precio");
             return false;
         }
-        if (prec == "") {
+        if (prec === "") {
             log("Ingrese el precio, cantidad o porcentaje");
             return false;
         }
@@ -709,25 +695,14 @@
             }
 
         } catch (e) {
-//                    ////console.log(e);
             return false;
         }
         return true;
     }
 
     function validarNum(ev) {
-        /*
-         48-57      -> numeros
-         96-105     -> teclado numerico
-         188        -> , (coma)
-         190        -> . (punto) teclado
-         110        -> . (punto) teclado numerico
-         8          -> backspace
-         46         -> delete
-         9          -> tab
-         */
-//        ////console.log(ev.keyCode);
-        return ((ev.keyCode >= 48 && ev.keyCode <= 57) || (ev.keyCode >= 96 && ev.keyCode <= 105) || ev.keyCode == 190 || ev.keyCode == 110 || ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9);
+
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) || (ev.keyCode >= 96 && ev.keyCode <= 105) || ev.keyCode === 190 || ev.keyCode === 110 || ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9);
     }
 
     function getSelected() {
@@ -1098,24 +1073,6 @@
                         if (validar2()) {
                             $btnOk.replaceWith(spinner);
 
-/*
-                            $(".item_row.rowSelected").each(function () {
-                                var id = $(this).data("id");
-                                $.ajax({
-                                    async   : false,
-                                    type    : "POST",
-                                    url     : "${createLink(action:'deleteRubroNuevo_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        $(".mes.rubro" + id).text("").data("val", 0);
-                                        updateTotales();
-                                    }
-                                });
-                            });
-*/
-
                             var dataAjax = "";
 
                             var periodoIni = parseInt($("#periodosDesde").val());
@@ -1174,7 +1131,7 @@
                                 data    : dataAjax,
                                 success : function (msg) {
                                     var parts = msg.split("_");
-                                    if (parts[0] == "OK") {
+                                    if (parts[0] === "OK") {
                                         parts = parts[1].split(";");
                                         for (var i = 0; i < parts.length; i++) {
                                             var p = parts[i].split(":");
@@ -1277,73 +1234,13 @@
         });
 
         $("#btnGrafico").click(function () {
-            var dataEco = "[[";
-            dataEco += "[0,0],";
-            var ticksXEco = "[0,";
-            var ticksYEco = "[0,";
-            var maxEco = 0;
-
-            $(".totalAcumulado.total").each(function () {
-                var mes = $(this).data("mes");
-                ticksXEco += mes + ",";
-                var val = $(this).data("val");
-                ticksYEco += number_format(val, 2, ".", "") + ",";
-                if (val > maxEco) {
-                    maxEco = val;
-                }
-                dataEco += "[" + mes + "," + val + "],";
-            });
-            dataEco = dataEco.substr(0, dataEco.length - 1);
-            dataEco += "]]";
-            ticksXEco = ticksXEco.substr(0, ticksXEco.length - 1);
-            ticksXEco += "]";
-            ticksYEco += number_format(${sum}, 2, ".", "");
-
-            ticksYEco += "]";
-
-            var dataFis = "[[";
-            dataFis += "[0,0],";
-            var ticksXFis = "[0,";
-            var ticksYFis = "[0,";
-            var maxFis = 0;
-            $(".prctAcumulado.total").each(function () {
-                var mes = $(this).data("mes");
-                ticksXFis += mes + ",";
-                var val = $(this).data("val");
-                ticksYFis += number_format(val, 2, ".", "") + ",";
-                if (val > maxFis) {
-                    maxFis = val;
-                }
-                dataFis += "[" + mes + "," + val + "],";
-            });
-            dataFis = dataFis.substr(0, dataFis.length - 1);
-            dataFis += "]]";
-            ticksXFis = ticksXFis.substr(0, ticksXFis.length - 1);
-            ticksXFis += "]";
-
-            ticksYFis += number_format(100, 2, ".", "");
-
-            ticksYFis += "]";
-
-            var tituloe = "Avance económico de la obra";
-            var colore = "5FAB78";
-            var titulof = "Avance físico de la obra";
-            var colorf = "5F81AA";
-
-            maxFis = 100;
-            maxEco = ${sum};
-
-            var d = "datae=" + dataEco + "&txe=" + ticksXEco + "&tye=" + ticksYEco + "&me=" + maxEco + "&tituloe=" + tituloe + "&colore=" + colore;
-            d += "&dataf=" + dataFis + "&txf=" + ticksXFis + "&tyf=" + ticksYFis + "&mf=" + maxFis + "&titulof=" + titulof + "&colorf=" + colorf;
-            d += "&obra=${obra.id}&contrato=${contrato.id}";
-            d += "&subpre=${subpre}";
-
-            var url = "${createLink(action: 'graficos2')}?" + d + "&nuevo=" + 1;
-//                    ////console.log(url);
-            location.href = url;
-
+            var d = "obra=${obra.id}";
+            d += "&sbpr=${subpre}";
+            d +="&contrato=${contrato?.id}";
+            location.href = "${createLink(action: 'graficos2')}?" + d;
             return false;
         });
+
     });
 </script>
 

@@ -521,10 +521,46 @@ class CronogramaContratoController {
     }
 
     def graficos2() {
-//        println("params " + params)
+        println "grafico $params"
+        def cn = dbConnectionService.getConnection()
+        println "grafico: $params"
         def obra = Obra.get(params.obra)
-        def contrato = Contrato.get(params.contrato)
-        return [params: params, contrato: contrato, obra: obra, nuevo: params.nuevo]
+        def sbpr = SubPresupuesto.get(params.sbpr)
+        def contrato= Contrato.get(params.contrato)
+
+        def sql
+        def data = "0"
+        def prdo = "Inicio"
+        def suma = 0, i = 0, sumapcnt = 0, datapcnt = ""
+
+        def subtitulo = ''
+        def pattern1 = "###.##%"
+
+        sql = "select sum(crnoprct) pcnt from crno, vlob where obra__id = ${params.obra} and " +
+                "crno.vlob__id = vlob.vlob__id"
+        println "sql: $sql"
+        def total = cn.rows(sql.toString())[0].pcnt
+
+        sql = "select sum(crnoprco) suma, sum(crnoprct) pcnt, crnoprdo from crno, vlob where obra__id = ${params.obra} and " +
+                "crno.vlob__id = vlob.vlob__id group by crnoprdo"
+        println "sql: $sql"
+        cn.eachRow(sql.toString()) { d ->
+            println "valor de suma: $suma"
+            i++
+            suma += d.suma
+            sumapcnt += Math.round(d.pcnt/total * 10000) / 100
+            data += "_$suma"
+            datapcnt += "_$sumapcnt"
+            prdo += "_Mes ${i}"
+        }
+
+        println "data: $data, prdo, datapcnt: $datapcnt"
+
+        return [data: data, datapcnt: datapcnt, mes: prdo, obra: obra, sbpr: sbpr, contrato: contrato]
+
+//        def obra = Obra.get(params.obra)
+//        def contrato = Contrato.get(params.contrato)
+//        return [params: params, contrato: contrato, obra: obra, nuevo: params.nuevo]
     }
 
 
@@ -605,7 +641,6 @@ class CronogramaContratoController {
     }
 
     def modificarCantidad_ajax (){
-//        println("params " + params)
         def volumen = VolumenContrato.get(params.id)
         def cantidadActual = volumen.volumenCantidad
         def cantidadComp = volumen.cantidadComplementaria

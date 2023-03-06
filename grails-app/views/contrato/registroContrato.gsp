@@ -702,44 +702,6 @@
         });
     });
 
-    // $("#preguntarFPDialog").dialog({
-    //     autoOpen  : false,
-    //     resizable : false,
-    //     modal     : true,
-    //     draggable : false,
-    //     width     : 450,
-    //     height    : 220,
-    //     position  : 'center',
-    //     title     : 'Generar Fórmula Polinómica',
-    //     buttons   : {
-    //         "Aceptar"  : function () {
-    //             $.box({
-    //                 imageClass : "box_info",
-    //                 title      : "Confirmación",
-    //                 text       : "Está seguro que desea generar la FP del contrato?",
-    //                 iconClose  : false,
-    //                 dialog     : {
-    //                     width         : 400,
-    //                     resizable     : false,
-    //                     draggable     : false,
-    //                     closeOnEscape : false,
-    //                     buttons       : {
-    //                         "Aceptar" : function () {
-    //
-    //                         },
-    //                         "Cancelar" : function () {
-    //                             $("#preguntarFPDialog").dialog("close");
-    //                         }
-    //                     }
-    //                 }
-    //             });
-    //         },
-    //         "Cancelar" : function () {
-    //             $("#preguntarFPDialog").dialog("close");
-    //         }
-    //     }
-    // });
-
     $("#btnFPoli").click(function () {
         bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'> Este contrato fue registrado sin fórmula polinómica. </strong>");
     });
