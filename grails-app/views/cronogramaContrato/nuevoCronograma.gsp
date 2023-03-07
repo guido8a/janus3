@@ -34,7 +34,7 @@
 </div>
 
 <div class="btn-toolbar" style="margin-top: 15px">
-    <div class="btn-group">
+    <div class="btn-group" style="margin-top: 10px">
         <a href="${g.createLink(controller: 'contrato', action: 'registroContrato', params: [contrato: contrato?.id])}" class="btn btn-info btn-new" id="atras" title="Regresar al contrato">
             <i class="fa fa-arrow-left"></i>
             Contrato
@@ -52,7 +52,7 @@
     </div>
 
     %{--<g:if test="${meses > 0 && plazoOk}">--}%
-    <div class="btn-group">
+    <div class="btn-group" style="margin-top: 10px">
         <a href="#" class="btn" id="btnGrafico">
             <i class="fa fa-clipboard"></i>
             Gráficos de avance
@@ -79,23 +79,41 @@
     %{--        <i class="fa fa-arrow-up"></i> Cargar desde Excel--}%
     %{--    </g:link>--}%
     %{--    </div>--}%
-</div>
 
-<div class="col-md-12" style="margin-top: 5px; margin-bottom: 5px;">
+
+
     <div class="col-md-3">
         <strong>Subpresupuesto:</strong>
         <g:select name="subpresupuesto" class="form-control" from="${subpres}" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"
                   style="font-size: 10px" id="subpres" value="${subpre}"
                   noSelection="['-1': 'TODOS']"/>
     </div>
-    <div class="col-md-4" style="margin-top: 15px">
+    <div class="col-md-3" style="margin-top: 15px">
         <a href="#" class="btn btn-info"  id="btnSubpre"><i class="fa fa-search"></i> Ver</a>
 
         <g:if test="${contrato.estado != 'R'}">
             <a href="#" class="btn" id="btnDesmarcar"><i class="fa fa-eraser"></i> Desmarcar todo</a>
         </g:if>
     </div>
+
+
 </div>
+
+%{--<div class="col-md-12" style="margin-top: 5px; margin-bottom: 5px;">--}%
+%{--    <div class="col-md-3">--}%
+%{--        <strong>Subpresupuesto:</strong>--}%
+%{--        <g:select name="subpresupuesto" class="form-control" from="${subpres}" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"--}%
+%{--                  style="font-size: 10px" id="subpres" value="${subpre}"--}%
+%{--                  noSelection="['-1': 'TODOS']"/>--}%
+%{--    </div>--}%
+%{--    <div class="col-md-4" style="margin-top: 15px">--}%
+%{--        <a href="#" class="btn btn-info"  id="btnSubpre"><i class="fa fa-search"></i> Ver</a>--}%
+
+%{--        <g:if test="${contrato.estado != 'R'}">--}%
+%{--            <a href="#" class="btn" id="btnDesmarcar"><i class="fa fa-eraser"></i> Desmarcar todo</a>--}%
+%{--        </g:if>--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 <div>
     <strong style="font-size: 14px"> * La ruta crítica se muestra con los rubros marcados en amarillo </strong>
@@ -284,11 +302,6 @@
 </div>
 
 <div class="" id="modal-cronograma">
-%{--    <div class="modal-header">--}%
-%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-%{--        <h3 id="modalTitle"></h3>--}%
-%{--    </div>--}%
 
     <div class="modal-body" id="modalBody">
         <form class="form-horizontal" id="frmRubro">
@@ -356,7 +369,7 @@
             </div>
         </form>
 
-        <div id="divRubro">
+        <div id="divRubro" class="col-md-3 badge" style="width: 135px; margin-top: 10px; margin-bottom: 20px">
             Múltiples rubros
         </div>
 
