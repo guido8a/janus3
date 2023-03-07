@@ -349,7 +349,7 @@ class ContratoController {
     }
 
     def listaContratos(){
-        println "listaItems" + params
+        println "listaContratos" + params
         def datos;
         def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr']
 
@@ -372,7 +372,7 @@ class ContratoController {
     }
 
     def contratos(){
-        println "listaItems" + params
+        println "contratos" + params
         def datos;
         def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr', 'fs.prsnapll', 'ad.prsnapll']
 
@@ -1471,6 +1471,9 @@ class ContratoController {
         }
     }
 
+
+    /* copia en frpl la FP del complementario y,
+     * en fprj añade la frpl copiada */
     def integrarFP () {
         println("params " + params)
         def contrato = Contrato.get(params.id)

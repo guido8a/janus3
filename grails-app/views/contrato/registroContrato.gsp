@@ -18,7 +18,8 @@
     }
 
     .comple{
-        background-color: #254897;
+        color: #000;
+        background-color: #aabfb4;
     }
     .contratado{
         background-color: #3d9794;
@@ -28,6 +29,11 @@
         color: #fff;
         background-color: #5a7ab2;
     }
+    .adm:hover{
+        color: #ffd;
+        background-color: #4a6aa2;
+    }
+
     </style>
 
 
@@ -469,7 +475,7 @@
 %{--        </g:link>--}%
 
         <g:if test="${complementario}">
-            <a href="#" class="comple, btn" name="integrarFP_name" id="integrarFP"
+            <a href="#" class="comple btn" name="integrarFP_name" id="integrarFP"
                title="Integración al contrato principal la FP del contrato complementario">
                 <i class="fa fa-th"></i> Integrar FP Comp.
             </a>
@@ -600,7 +606,7 @@
 
 <div id="integrarCronoDialogNo">
     <fieldset>
-        <div class="col-md-4">
+        <div class="col-md-12">
             Ya se ha realizado la integración del cronograma del contrato complementario al contrato: <p><strong>${contrato?.codigo}</strong></p>
         </div>
     </fieldset>
@@ -608,7 +614,7 @@
 
 <div id="integrarFPDialogNo">
     <fieldset>
-        <div class="col-md-4">
+        <div class="col-md-12">
             Ya se ha realizado la integración de la fórmula polinómica del contrato complementario al contrato:
             <p><strong>${contrato?.codigo}</strong></p>
         </div>
@@ -617,12 +623,12 @@
 
 <div id="integrarFPDialog">
     <fieldset>
-        <div class="col-md-4">
+        <div class="col-md-12">
             Seleccione el contrato complementario cuya FP será integrada a la FP del contrato: <strong>${contrato?.codigo}</strong>
         </div>
     </fieldset>
     <fieldset style="margin-top: 10px">
-        <div class="col-md-4">
+        <div class="col-md-12">
             <g:select from="${formula}" optionKey="id" optionValue="${{it?.codigo + " - " + it?.objeto}}"
                       name="complementariosFP_name" id="contratosFP" class="form-control" style="width: 380px"/>
         </div>
@@ -640,7 +646,7 @@
             </div>
 
             <div class="col-md-2">Criterio
-            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            <g:textField name="buscarCriterio" id="criterioObra" style="width: 80%"/>
             </div>
 
             <div class="col-md-2">Ordenado por
@@ -1158,7 +1164,7 @@
     function buscaObras() {
         var buscarPor = $("#buscarPor").val();
         var tipo = $("#buscarTipo").val();
-        var criterio = $("#criterioCriterio").val();
+        var criterio = $("#criterioObra").val();
         var ordenar = $("#ordenar").val();
         $.ajax({
             type: "POST",
@@ -1199,6 +1205,7 @@
         var buscarPor = $("#buscarPor").val();
         var tipo = $("#buscarTipo").val();
         var criterio = $("#criterioCriterio").val();
+        console.log('criterio', criterio)
         var ordenar = $("#ordenar").val();
         $.ajax({
             type: "POST",
