@@ -67,7 +67,7 @@ class PresupuestoController {
         }else{
 
             render "ok_Presupuesto guardado correctamente_${presupuestoInstance.id}_${presupuestoInstance.numero}_${presupuestoInstance.descripcion}_" +
-                    "${presupuestoInstance.fuente}_${presupuestoInstance.programa}&${presupuestoInstance.subPrograma}_" +
+                    "${presupuestoInstance.fuente}_${presupuestoInstance.programa}_${presupuestoInstance.subPrograma}_" +
                     "${presupuestoInstance.proyecto}"
         }
 

@@ -353,7 +353,6 @@
                              style="width: 30px; text-align: right"/> %
             </div>
 
-
         </div>
 
         <div class="col-md-12" style="margin-top: 10px">
@@ -421,8 +420,8 @@
                 <a href="#" class="btn" id="btnFPoli"><i class="fa fa-superscript"></i> F. polinómica</a>
             </g:if>
             <g:else>
-                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}"><i
-                        class="btn"></i> <i class="fa fa-superscript"></i> F. polinómica</g:link>
+                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}">
+                    <i class="fa fa-superscript"></i> F. polinómica</g:link>
             </g:else>
         </g:if>
         <g:else>

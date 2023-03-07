@@ -9,12 +9,12 @@
         font-weight: bold;
         font-style: italic;
     }
+    .rowSelected {
+        background-color: #39abc7;
+    }
+
     </style>
 
-
-    %{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--    <link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
     <title>Cronograma</title>
 </head>
 
@@ -37,7 +37,7 @@
             <i class="fa fa-minus"></i>
             Eliminar Rubro
         </a>
-        <a href="#" class="btn btn-danger" id="btnDeleteCronograma">
+        <a href="#" class="btn btn-danger ${contrato?.estado == 'R' ? 'disabled' : ''} " id="btnDeleteCronograma">
             <i class="fa fa-trash"></i>
             Eliminar Cronograma
         </a>
@@ -81,11 +81,11 @@
                   style="font-size: 10px" id="subpres" value="${subpre}"
                   noSelection="['-1': 'TODOS']"/>
     </div>
-    <div class="col-md-2" style="margin-top: 15px">
+    <div class="col-md-4" style="margin-top: 15px">
         <a href="#" class="btn btn-info"  id="btnSubpre"><i class="fa fa-search"></i> Ver</a>
 
         <g:if test="${contrato.estado != 'R'}">
-            <a href="#" class="btn" id="btnDesmarcar"><i class="fa icon-eraser"></i> Desmarcar todo</a>
+            <a href="#" class="btn" id="btnDesmarcar"><i class="fa fa-eraser"></i> Desmarcar todo</a>
         </g:if>
     </div>
 </div>
@@ -360,11 +360,9 @@
             Múltiples rubros
         </div>
 
-
         <div class="well">
             <div class="row" style="margin-bottom: 10px;">
                 <div class="span5">
-                    %{--Períodos   <input id="periodosDesde" class="spinner"/> al <input id="periodosHasta" class="spinner" value="${meses}"/>--}%
                     Períodos   <input id="periodosDesde" type="text" class="input-mini tf"/> al
                     <input id="periodosHasta" type="text" class="input-mini tf" value="${meses}"/>
                 </div>
@@ -417,21 +415,6 @@
     </div>
 </div>
 
-
-%{--<div id="modificarCantidadDialog">--}%
-%{--<fieldset>--}%
-%{--<div class="span4">--}%
-%{--<strong></strong>--}%
-%{--</div>--}%
-%{--</fieldset>--}%
-%{--<fieldset style="margin-top: 10px">--}%
-%{--<div class="span4">--}%
-
-%{--</div>--}%
-%{--</fieldset>--}%
-%{--</div>--}%
-
-
 <div class="modal hide fade mediumModal" id="modal-TipoObra" style=";overflow: hidden;">
     <div class="modal-header btn-primary">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -461,8 +444,6 @@
                 id: id
             },
             success: function (msg) {
-
-
                 var b = bootbox.dialog({
                     id      : "dlgCreateEdit",
                     title   : "Modificar la cantidad",
@@ -563,7 +544,6 @@
             var $totalAcumulado = $(".totalAcumulado.mes" + i);
             var $prctParcial = $(".prctParcial.mes" + i);
             var $prctAcumulado = $(".prctAcumulado.mes" + i);
-            //total: .dol
             var tot = 0;
             $(".dol.mes" + i).not(".total").each(function () {
                 var val = parseFloat($(this).data("val"));
@@ -636,15 +616,15 @@
             maxPrec = parseFloat(maxPrec);
 
             if (cant > maxCant) {
-                log("La cantidad debe ser menor que " + maxCant);
+                bootbox.alert("La cantidad debe ser menor que " + maxCant);
                 return false;
             }
             if (prct > maxPrct) {
-                log("El porcentaje debe ser menor que " + maxPrct);
+                bootbox.alert("El porcentaje debe ser menor que " + maxPrct);
                 return false;
             }
             if (prec > maxPrec) {
-                log("El precio debe ser menor que " + maxPrec);
+                bootbox.alert("El precio debe ser menor que " + maxPrec);
                 return false;
             }
 
@@ -662,16 +642,16 @@
 
         var prct = $.trim($prct.val());
 
-        if (periodoIni == "") {
-            log("Ingrese el periodo inicial");
+        if (periodoIni === "") {
+            bootbox.alert("Ingrese el periodo inicial");
             return false;
         }
-        if (periodoFin == "") {
-            log("Ingrese el periodo final");
+        if (periodoFin === "") {
+            bootbox.alert("Ingrese el periodo final");
             return false;
         }
-        if (prct == "") {
-            log("Ingrese el porcentaje, cantidad o precio");
+        if (prct === "") {
+            bootbox.alert("Ingrese el porcentaje, cantidad o precio");
             return false;
         }
 
@@ -682,7 +662,7 @@
             periodoFin = parseFloat(periodoFin);
 
             if (periodoFin < periodoIni) {
-                log("El periodo inicial debe ser inferior al periodo final");
+                bootbox.alert("El periodo inicial debe ser inferior al periodo final");
                 return false;
             }
 
@@ -690,7 +670,7 @@
             maxPrct = parseFloat(maxPrct);
 
             if (prct > maxPrct) {
-                log("El porcentaje debe ser menor que " + maxPrct);
+                bootbox.alert("El porcentaje debe ser menor que " + maxPrct);
                 return false;
             }
 
@@ -701,13 +681,11 @@
     }
 
     function validarNum(ev) {
-
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) || (ev.keyCode >= 96 && ev.keyCode <= 105) || ev.keyCode === 190 || ev.keyCode === 110 || ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9);
     }
 
     function getSelected() {
-        var selected = $(".item_row").filter(".rowSelected");
-        return selected;
+        return $(".item_row").filter(".rowSelected");
     }
 
     $(function () {
@@ -717,22 +695,15 @@
         updateTotales();
 
         $("#btnDesmarcar").click(function () {
-            $(".rowSelected").removeClass("rowSelected");
+            quitarSeleccion();
         });
 
+        function quitarSeleccion () {
+            $("#btnDeleteRubro").addClass("disabled");
+            $(".rowSelected").removeClass("rowSelected");
+        }
+
         $("#btnSubpre").click(function () {
-            $.box({
-                imageClass : "box_info",
-                text       : "Cargando... Por favor espere...",
-                title      : "Cargando",
-                iconClose  : false,
-                dialog     : {
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : false,
-                    buttons       : false
-                }
-            });
             location.href = "${createLink(action: 'nuevoCronograma')}/${contrato.id}?subpre=" + $("#subpres").val();
         });
 
@@ -762,7 +733,7 @@
             }
 
             var sel = getSelected();
-            if (sel.length == 0) {
+            if (sel.length === 0) {
                 $("#btnLimpiarRubro, #btnDeleteRubro").addClass("disabled");
             } else {
                 $("#btnLimpiarRubro, #btnDeleteRubro").removeClass("disabled");
@@ -793,7 +764,7 @@
         $("#tf_cant").keyup(function (ev) {
             if (validarNum(ev)) {
                 var val = $.trim($(this).val());
-                if (val == "") {
+                if (val === "") {
                     $("#tf_prct").val("");
                     $("#tf_precio").val("");
                 } else {
@@ -809,24 +780,24 @@
                         var dol = $precio.data("max") * (prct / 100);
                         $("#tf_prct").val(number_format(prct, 2, ".", "")).data("val", prct);
                         $precio.val(number_format(dol, 2, ".", "")).data("val", dol);
-                        if (ev.keyCode != 110 && ev.keyCode != 190) {
+                        if (ev.keyCode !== 110 && ev.keyCode !== 190) {
                             $("#tf_cant").val(val).data("val", val);
                         }
                     } catch (e) {
-//                                ////console.log(e);
                     }
                 }
             }
         });
+
         $("#tf_prct").keyup(function (ev) {
             if (validarNum(ev)) {
                 var prct = $.trim($(this).val());
-                if (prct == "") {
+                if (prct === "") {
                     $("#tf_cant").val("");
                     $("#tf_precio").val("");
                 } else {
                     var $sel = getSelected();
-                    if ($sel.length == 1) {
+                    if ($sel.length === 1) {
                         try {
                             prct = parseFloat(prct);
                             var max = parseFloat($(this).data("max"));
@@ -840,11 +811,10 @@
                             var dol = $precio.data("max") * (prct / 100);
                             $cant.val(number_format(val, 2, ".", "")).data("val", val);
                             $precio.val(number_format(dol, 2, ".", "")).data("val", dol);
-                            if (ev.keyCode != 110 && ev.keyCode != 190) {
+                            if (ev.keyCode !== 110 && ev.keyCode !== 190) {
                                 $("#tf_prct").val(prct).data("val", prct);
                             }
                         } catch (e) {
-//                                    ////console.log(e);
                         }
                     } //if $sel.lenght = 1
                     else {
@@ -853,13 +823,12 @@
                             if (prct > 100) {
                                 prct = 100;
                             }
-                            if (ev.keyCode != 110 && ev.keyCode != 190) {
+                            if (ev.keyCode !== 110 && ev.keyCode !== 190) {
                                 $("#tf_prct").val(prct).data("val", prct);
                                 $("#tf_cant").val("").data("val", null);
                                 $("#tf_precio").val("").data("val", null);
                             }
                         } catch (e) {
-//                                    ////console.log(e);
                         }
                     } //$sel.lenght > 1
                 }
@@ -868,7 +837,7 @@
         $("#tf_precio").keyup(function (ev) {
             if (validarNum(ev)) {
                 var dol = $.trim($(this).val());
-                if (dol == "") {
+                if (dol === "") {
                     $("#tf_prct").val("");
                     $("#tf_cant").val("");
                 } else {
@@ -886,11 +855,10 @@
 
                         $("#tf_prct").val(number_format(prct, 2, ".", "")).data("val", prct);
                         $cant.val(number_format(cant, 2, ".", "")).data("val", cant);
-                        if (ev.keyCode != 110 && ev.keyCode != 190) {
+                        if (ev.keyCode !== 110 && ev.keyCode !== 190) {
                             $("#tf_precio").val(dol).data("val", dol);
                         }
                     } catch (e) {
-//                                ////console.log(e);
                     }
                 }
             }
@@ -973,7 +941,7 @@
 
                     var d, i, dol;
 
-                    if (periodoIni == periodoFin) {
+                    if (periodoIni === periodoFin) {
                         dol = subtotal * (prct / 100);
                         $(".dol.mes" + periodoIni + ".rubro" + rubro).text(number_format(dol, 2, ".", ",")).data("val", dol);
                         $(".prct.mes" + periodoIni + ".rubro" + rubro).text(number_format(prct, 2, ".", ",")).data("val", prct);
@@ -989,7 +957,7 @@
                         cant = Math.round((cant / meses) * 100) / 100;
 
                         for (i = periodoIni; i <= periodoFin; i++) {
-                            if (i == periodoFin) {
+                            if (i === periodoFin) {
                                 dol = dolCalc;
                                 prct = prctCalc;
                                 cant = cantCalc;
@@ -1011,7 +979,7 @@
                         data    : dataAjax,
                         success : function (msg) {
                             var parts = msg.split("_");
-                            if (parts[0] == "OK") {
+                            if (parts[0] === "OK") {
                                 parts = parts[1].split(";");
                                 for (i = 0; i < parts.length; i++) {
                                     var p = parts[i].split(":");
@@ -1024,7 +992,6 @@
                                 updateTotales();
                                 $("#modal-cronograma").modal("hide");
                             } else {
-                                ////console.log("ERROR");
                             }
                             $(".rowSelected").removeClass("rowSelected");
                         }
@@ -1044,7 +1011,7 @@
             var $sel = getSelected();
             var $celda = $(this);
 
-            if ($sel.length == 1) {
+            if ($sel.length === 1) {
                 clickOne($celda);
             } else {
                 if ($sel.length > 1) {
@@ -1091,7 +1058,7 @@
                                 var cantCal = cantTot * (prct / 100);
                                 var precCal = precTot * (prct / 100);
 
-                                if (periodoIni == periodoFin) {
+                                if (periodoIni === periodoFin) {
                                     $(".dol.mes" + periodoIni + ".rubro" + rubro).text(number_format(precCal, 2, ".", ",")).data("val", precCal);
                                     $(".prct.mes" + periodoIni + ".rubro" + rubro).text(number_format(prct, 2, ".", ",")).data("val", prct);
                                     $(".fis.mes" + periodoIni + ".rubro" + rubro).text(number_format(cantCal, 2, ".", ",")).data("val", cantCal);
@@ -1106,7 +1073,7 @@
                                     var prRest = prct, cnRest = cantCal, peRest = precCal;
 
                                     for (var i = periodoIni; i <= periodoFin; i++) {
-                                        if (i == periodoFin) {
+                                        if (i === periodoFin) {
                                             pr = prRest;
                                             cn = cnRest;
                                             pe = peRest;
@@ -1146,15 +1113,12 @@
                                         $("#modal-cronograma").modal("hide");
 
                                         $(".rowSelected").removeClass("rowSelected");
-
                                     } else {
-//                                                ////console.log("ERROR");
                                     }
                                 }
                             });
                         } //if validar
                     });
-
                     $("#modalTitle").html("Registro del Cronograma");
                     $("#modalFooter").html("").append($btnCancel).append($btnOk);
                     $("#modal-cronograma").modal("show");
@@ -1163,71 +1127,79 @@
 
         }); //fin dblclick
 
-
         $("#btnDeleteRubro").click(function () {
-            $.box({
-                imageClass : "box_info",
-                text       : "Se eliminarán los rubros marcados, continuar?<br/>Los datos serán eliminados inmediatamente, y no se puede deshacer.",
-                title      : "Confirmación",
-                iconClose  : false,
-                dialog     : {
-                    resizable : false,
-                    draggable : false,
-                    buttons   : {
-                        "Aceptar"  : function () {
-
-                            $(".item_row.rowSelected").each(function () {
-                                var id = $(this).data("id");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action:'deleteRubroNuevo_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        $(".mes.rubro" + id).text("").data("val", 0);
-                                        updateTotales();
-                                    }
-                                });
+            bootbox.confirm({
+                title: "Eliminar Cronograma",
+                message: "Se eliminarán los rubros marcados, desea continuar?<br/>Los datos serán eliminados inmediatamente, y no se puede deshacer.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-trash"></i> Borrar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        var g = cargarLoader("Borrando...");
+                        $(".item_row.rowSelected").each(function () {
+                            var id = $(this).data("id");
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'deleteRubroNuevo_ajax')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    g.modal("hide");
+                                    $(".mes.rubro" + id).text("").data("val", 0);
+                                    quitarSeleccion();
+                                    updateTotales();
+                                }
                             });
-                        },
-                        "Cancelar" : function () {
-                        }
+                        });
                     }
                 }
             });
         });
 
         $("#btnDeleteCronograma").click(function () {
-            $.box({
-                imageClass : "box_info",
-                text       : "Se eliminará todo el cronograma, continuar?<br/>Los datos serán eliminados inmediatamente, y no se puede deshacer.",
-                title      : "Confirmación",
-                iconClose  : false,
-                dialog     : {
-                    resizable : false,
-                    draggable : false,
-                    buttons   : {
-                        "Aceptar"  : function () {
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'deleteCronogramaNuevo_ajax')}",
-                                data    : {
-                                    obra : ${obra.id}
-                                },
-                                success : function (msg) {
-                                    $(".mes").text("").data("val", 0);
-                                    updateTotales();
-                                }
-                            });
-                        },
-                        "Cancelar" : function () {
-                        }
+            bootbox.confirm({
+                title: "Eliminar Cronograma",
+                message: "Se eliminará todo el cronograma, desea continuar? <br/> Los datos serán eliminados inmediatamente, y no se puede deshacer.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-trash"></i> Borrar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        var g = cargarLoader("Borrando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(action:'deleteCronogramaNuevo_ajax')}",
+                            data    : {
+                                obra : ${obra.id}
+                            },
+                            success : function (msg) {
+                                g.modal("hide");
+                                $(".mes").text("").data("val", 0);
+                                updateTotales();
+                            }
+                        });
                     }
                 }
             });
         });
         </g:if>
+
         $("#btnReporte").click(function () {
             location.href = "${createLink(controller: 'reportes5', action:'reporteCronogramaNuevoPdf', id:contrato.id, params:[tipo:'contrato'])}";
             return false;
