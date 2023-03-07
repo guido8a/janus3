@@ -257,8 +257,6 @@
                 type    : "POST",
                 url     : "${createLink(action:'form_ajax', controller:'presupuesto')}",
                 success : function (msg) {
-
-
                     var b = bootbox.dialog({
                         id      : "dlgCreateEdit",
                         title   : "Registrar PAC",

@@ -4,13 +4,20 @@
 <html>
 <head>
     <meta name="layout" content="main">
+
+    <asset:javascript src="/apli/tableHandlerBody.js"/>
+    <asset:stylesheet src="/tableHandler.css"/>
+    <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
+    <asset:javascript src="/jquery/plugins/box/css/jquery.luz.box.css"/>
+    <asset:stylesheet src="/apli/cronograma.css"/>
+
     <style>
     .negrita{
         font-weight: bold;
         font-style: italic;
     }
     .rowSelected {
-        background-color: #39abc7;
+        /*background-color: #39abc7;*/
     }
 
     </style>
@@ -276,21 +283,23 @@
     </table>
 </div>
 
-<div class="modal hide fade" id="modal-cronograma">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+<div class="" id="modal-cronograma">
+%{--    <div class="modal-header">--}%
+%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modalTitle"></h3>
-    </div>
+%{--        <h3 id="modalTitle"></h3>--}%
+%{--    </div>--}%
 
     <div class="modal-body" id="modalBody">
         <form class="form-horizontal" id="frmRubro">
+
             <div class="control-group sm">
-                <div>
-                    <span id="num-label" class="control-label label label-inverse">
-                        Rubro N.
-                    </span>
-                </div>
+
+                <span class="col-md-3 badge" style="width: 135px; margin-right: 10px">
+                    Rubro N.
+                </span>
+
+
 
                 <div class="controls">
                     <span aria-labelledby="num-label" id="spanCodigo">
@@ -300,11 +309,9 @@
             </div>
 
             <div class="control-group sm">
-                <div>
-                    <span id="desc-label" class="control-label label label-inverse">
-                        Descripción
-                    </span>
-                </div>
+                <span class="col-md-3 badge" style="width: 135px;margin-right: 10px">
+                    Descripción
+                </span>
 
                 <div class="controls">
                     <span aria-labelledby="desc-label" id="spanDesc">
@@ -314,11 +321,9 @@
             </div>
 
             <div class="control-group sm">
-                <div>
-                    <span id="cant-label" class="control-label label label-inverse">
-                        Cantidad
-                    </span>
-                </div>
+                <span class="col-md-3 badge" style="width: 135px;margin-right: 10px">
+                    Cantidad
+                </span>
 
                 <div class="controls">
                     <span aria-labelledby="cant-label" id="spanCant">
@@ -328,11 +333,9 @@
             </div>
 
             <div class="control-group sm">
-                <div>
-                    <span id="precio-label" class="control-label label label-inverse">
-                        Precio
-                    </span>
-                </div>
+                <span class="col-md-3 badge" style="width: 135px;margin-right: 10px">
+                    Precio
+                </span>
 
                 <div class="controls">
                     <span aria-labelledby="precio-label" id="spanPrecio">
@@ -342,12 +345,9 @@
             </div>
 
             <div class="control-group sm">
-                <div>
-                    <span id="st-label" class="control-label label label-inverse">
-                        Subtotal
-                    </span>
-                </div>
-
+                <span class="col-md-3 badge" style="width: 135px;margin-right: 10px">
+                    Subtotal
+                </span>
                 <div class="controls">
                     <span aria-labelledby="st-label" id="spanSubtotal">
 
@@ -368,21 +368,51 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="span5">
+%{--            <div class="row">--}%
+%{--                <div class="span5">--}%
+%{--                    <input type="radio" class="radio cant" name="tipo" id="rd_cant" value="cant" checked=""/>--}%
+%{--                    Cantidad <input type="text" class="input-mini tf" id="tf_cant"/><span class="spUnidad"></span>--}%
+%{--                    de <span id="spCant"></span> <span class="spUnidad"></span>--}%
+%{--                </div>--}%
+%{--            </div>--}%
+
+            <div class="col-md-12">
+                <div class="col-md-1">
                     <input type="radio" class="radio cant" name="tipo" id="rd_cant" value="cant" checked=""/>
-                    Cantidad <input type="text" class="input-mini tf" id="tf_cant"/><span class="spUnidad"></span>
+                </div>
+                <div class="col-md-2">
+                    Cantidad
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="input-mini tf" id="tf_cant"/><span class="spUnidad"></span>
+                </div>
+                <div class="col-md-3">
                     de <span id="spCant"></span> <span class="spUnidad"></span>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="span5">
+            <div class="col-md-12">
+                <div class="col-md-1">
                     <input type="radio" class="radio prct" name="tipo" id="rd_prct" value="prct"/>
-                    Porcentaje <input type="text" class="input-mini tf" id="tf_prct"/>%
-                de <span id="spPrct"></span>%
+                </div>
+                <div class="col-md-2">
+                    Porcentaje
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="input-mini tf" id="tf_prct"/>%
+                </div>
+                <div class="col-md-3">
+                    de <span id="spPrct"></span>%
                 </div>
             </div>
+
+%{--            <div class="row">--}%
+%{--                <div class="span5">--}%
+%{--                    <input type="radio" class="radio prct" name="tipo" id="rd_prct" value="prct"/>--}%
+%{--                    Porcentaje <input type="text" class="input-mini tf" id="tf_prct"/>%--}%
+%{--                de <span id="spPrct"></span>%--}%
+%{--                </div>--}%
+%{--            </div>--}%
 
             <div class="row">
                 <div class="span5">
@@ -432,6 +462,18 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $("#modal-cronograma").dialog({
+        autoOpen: false,
+        resizable: true,
+        modal: true,
+        draggable: false,
+        width: 550,
+        height: 530,
+        position: 'center',
+        title: 'Registro del cronograma'
+    });
 
     $(".btnEditar").click(function () {
         var id = $(this).data("id");
@@ -1003,11 +1045,14 @@
             $("#modalTitle").html("Registro del Cronograma");
 
             $("#modalFooter").html("").append($btnCancel).append($btnOk);
-            $("#modal-cronograma").modal("show");
+            $("#modal-cronograma").dialog("open");
         }
 
         <g:if test="${contrato.estado!='R'}">
         $(".mes").dblclick(function () {
+
+            console.log("---> ")
+
             var $sel = getSelected();
             var $celda = $(this);
 
@@ -1121,7 +1166,7 @@
                     });
                     $("#modalTitle").html("Registro del Cronograma");
                     $("#modalFooter").html("").append($btnCancel).append($btnOk);
-                    $("#modal-cronograma").modal("show");
+                    $("#modal-cronograma").dialog("open");
                 }
             }
 
