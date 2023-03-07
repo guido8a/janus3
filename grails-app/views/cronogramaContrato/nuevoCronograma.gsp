@@ -360,7 +360,7 @@
             Múltiples rubros
         </div>
 
-        <div class="well">
+        <div class="well" style="height: 180px">
             <div class="row" style="margin-bottom: 10px;">
                 <div class="span5">
                     Períodos   <input id="periodosDesde" type="text" class="input-mini tf"/> al
@@ -376,7 +376,7 @@
 %{--                </div>--}%
 %{--            </div>--}%
 
-            <div class="col-md-12">
+            <div class="col-md-12" style="margin-top: 5px">
                 <div class="col-md-1">
                     <input type="radio" class="radio cant" name="tipo" id="rd_cant" value="cant" checked=""/>
                 </div>
@@ -384,14 +384,14 @@
                     Cantidad
                 </div>
                 <div class="col-md-6">
-                    <input type="text" class="input-mini tf" id="tf_cant"/><span class="spUnidad"></span>
+                    <input type="text" class="input-mini tf" id="tf_cant"/> <span class="spUnidad"></span>
                 </div>
                 <div class="col-md-3">
                     de <span id="spCant"></span> <span class="spUnidad"></span>
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12" style="margin-top: 5px">
                 <div class="col-md-1">
                     <input type="radio" class="radio prct" name="tipo" id="rd_prct" value="prct"/>
                 </div>
@@ -399,10 +399,25 @@
                     Porcentaje
                 </div>
                 <div class="col-md-6">
-                    <input type="text" class="input-mini tf" id="tf_prct"/>%
+                    <input type="text" class="input-mini tf" id="tf_prct"/> %
                 </div>
                 <div class="col-md-3">
                     de <span id="spPrct"></span>%
+                </div>
+            </div>
+
+            <div class="col-md-12" style="margin-top: 5px">
+                <div class="col-md-1">
+                    <input type="radio" class="radio precio" name="tipo" id="rd_precio" value="prct"/>
+                </div>
+                <div class="col-md-2">
+                    Precio
+                </div>
+                <div class="col-md-6">
+                    <input type="text" class="input-mini tf" id="tf_precio"/> $
+                </div>
+                <div class="col-md-3">
+                    de <span id="spPrecio"></span>$
                 </div>
             </div>
 
@@ -414,13 +429,13 @@
 %{--                </div>--}%
 %{--            </div>--}%
 
-            <div class="row">
-                <div class="span5">
-                    <input type="radio" class="radio precio" name="tipo" id="rd_precio" value="prct"/>
-                    Precio <input type="text" class="input-mini tf" id="tf_precio"/>$
-                de <span id="spPrecio"></span>$
-                </div>
-            </div>
+%{--            <div class="row">--}%
+%{--                <div class="span5">--}%
+%{--                    <input type="radio" class="radio precio" name="tipo" id="rd_precio" value="prct"/>--}%
+%{--                    Precio <input type="text" class="input-mini tf" id="tf_precio"/>$--}%
+%{--                de <span id="spPrecio"></span>$--}%
+%{--                </div>--}%
+%{--            </div>--}%
         </div>
 
     </div>
@@ -463,14 +478,13 @@
 
 <script type="text/javascript">
 
-
     $("#modal-cronograma").dialog({
         autoOpen: false,
         resizable: true,
         modal: true,
         draggable: false,
         width: 550,
-        height: 530,
+        height: 480,
         position: 'center',
         title: 'Registro del cronograma'
     });
@@ -618,23 +632,23 @@
         var prec = $.trim($prec.val());
 
         if (periodoIni === "") {
-            log("Ingrese el periodo inicial");
+            bootbox.alert("Ingrese el periodo inicial");
             return false;
         }
         if (periodoFin === "") {
-            log("Ingrese el periodo final");
+            bootbox.alert("Ingrese el periodo final");
             return false;
         }
         if (cant === "") {
-            log("Ingrese la cantidad, porcentaje o precio");
+            bootbox.alert("Ingrese la cantidad, porcentaje o precio");
             return false;
         }
         if (prct === "") {
-            log("Ingrese el porcentaje, cantidad o precio");
+            bootbox.alert("Ingrese el porcentaje, cantidad o precio");
             return false;
         }
         if (prec === "") {
-            log("Ingrese el precio, cantidad o porcentaje");
+            bootbox.alert("Ingrese el precio, cantidad o porcentaje");
             return false;
         }
 
@@ -647,7 +661,7 @@
             periodoFin = parseFloat(periodoFin);
 
             if (periodoFin < periodoIni) {
-                log("El periodo inicial debe ser inferior al periodo final");
+                bootbox.alert("El periodo inicial debe ser inferior al periodo final");
                 return false;
             }
 
@@ -966,8 +980,8 @@
             $("#spanSubtotal").text(number_format(subtotal, 2, ".", ",") + " $");
             $(".spUnidad").text(unidad);
 
-            var $btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            var $btnOk = $('<a href="#" class="btn btn-success">Aceptar</a>');
+            var $btnCancel = $('<a href="#" data-dismiss="modal" class="btn btn-info" id="btnCerrar"><i class="fa fa-times"></i> Cerrar</a>');
+            var $btnOk = $('<a href="#" class="btn btn-success"><i class="fa fa-save"></i> Aceptar</a>');
 
             $btnOk.click(function () {
                 if (validar()) {
@@ -1032,7 +1046,7 @@
                                     $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
                                 }
                                 updateTotales();
-                                $("#modal-cronograma").modal("hide");
+                                $("#modal-cronograma").dialog("close");
                             } else {
                             }
                             $(".rowSelected").removeClass("rowSelected");
@@ -1040,6 +1054,10 @@
                     });
                 }
                 return false;
+            });
+
+            $btnCancel.click(function () {
+                $("#modal-cronograma").dialog("close");
             });
 
             $("#modalTitle").html("Registro del Cronograma");
@@ -1050,8 +1068,6 @@
 
         <g:if test="${contrato.estado!='R'}">
         $(".mes").dblclick(function () {
-
-            console.log("---> ")
 
             var $sel = getSelected();
             var $celda = $(this);
@@ -1078,8 +1094,8 @@
                     $("#spPrecio").text("");
                     $("#spPrct").text(100);
 
-                    var $btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                    var $btnOk = $('<a href="#" class="btn btn-success">Aceptar</a>');
+                    var $btnCancel = $('<a href="#" data-dismiss="modal" class="btn btn-info" id="btnCerrar"><i class="fa fa-times"></i> Cerrar</a>');
+                    var $btnOk = $('<a href="#" class="btn btn-success"><i class="fa fa-save"></i> Aceptar</a>');
 
                     $btnOk.click(function () {
                         if (validar2()) {
@@ -1136,7 +1152,6 @@
                                 }
                             });
                             dataAjax += "&cont=${contrato.id}";
-//                                    console.log("-->>" + dataAjax)
                             $.ajax({
                                 type    : "POST",
                                 url     : "${createLink(action:'saveCronoNuevo_ajax')}",
@@ -1155,7 +1170,7 @@
                                             $(".fis.mes" + mes + ".rubro" + rubro).data("id", id);
                                         }
                                         updateTotales();
-                                        $("#modal-cronograma").modal("hide");
+                                        $("#modal-cronograma").dialog("close");
 
                                         $(".rowSelected").removeClass("rowSelected");
                                     } else {
@@ -1164,6 +1179,11 @@
                             });
                         } //if validar
                     });
+
+                    $btnCancel.click(function () {
+                        $("#modal-cronograma").dialog("close");
+                    });
+
                     $("#modalTitle").html("Registro del Cronograma");
                     $("#modalFooter").html("").append($btnCancel).append($btnOk);
                     $("#modal-cronograma").dialog("open");
