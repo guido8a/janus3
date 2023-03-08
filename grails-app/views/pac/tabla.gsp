@@ -97,28 +97,28 @@
                 icon   : "fa fa-edit",
                 action : function ($element) {
                 }
-            },
+            }
         }
     });
 
     $("#imprimir").click(function(){
-        var datos=""
+        var datos="";
         if($(this).hasClass("active")){
             datos+="todos=1"
 
         }else{
             if($("#item_depto").val()*1>0){
-                datos = "dpto="+$("#item_depto").val()+"Wanio="+$("#item_anio").val()
+                datos = "dpto="+$("#item_depto").val()+"&anio="+$("#item_anio").val()
             }else{
                 datos="anio="+$("#item_anio").val()
             }
         }
-        location.href="${createLink(controller: 'pdf',action: 'pdfLink')}?url=${createLink(controller: 'reportes',action: 'pac')}?"+datos
-        %{--location.href="${createLink(controller: 'reportes',action: 'pac')}?"+datos--}%
+        %{--location.href="${createLink(controller: 'pdf',action: 'pdfLink')}?url=${createLink(controller: 'reportes',action: 'pac')}?"+datos--}%
+        location.href="${createLink(controller: 'reportes', action: '_pac')}?" + datos
     });
 
     $("#excel").click(function(){
-        var datos=""
+        var datos="";
         if($(this).hasClass("active")){
             datos+="todos=1"
 
@@ -130,7 +130,7 @@
             }
         }
         location.href="${createLink(controller: 'reportes',action: 'pacExcel')}?"+datos
-    })
+    });
 
     $("#ver_todos").click(function(){
         if($(this).hasClass("active")){
@@ -143,7 +143,7 @@
                 }
             });
         }
-    })
+    });
 
     $(".item_row").dblclick(function(){
 

@@ -1,26 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 11/22/12
-  Time: 12:59 PM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <title>PAC</title>
-        %{--<link href="../../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/custom.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/font-awesome.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
-        <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
-        <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
-        <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
-        <link href="../css/font-awesome.css" rel="stylesheet" type="text/css"/>
+
         <style type="text/css">
         @page {
             size   : 21cm 29.7cm;  /*width height */
@@ -32,7 +14,6 @@
         }
 
         .hoja {
-            /*background  : #e6e6fa;*/
             height      : 24.7cm; /*29.7-(1.5*2)*/
             font-family : arial;
             font-size   : 10px;
@@ -42,12 +23,9 @@
         .tituloPdf {
             height        : 100px;
             font-size     : 11px;
-            /*font-weight   : bold;*/
             text-align    : center;
             margin-bottom : 5px;
             width         : 95%;
-            /*font-family       : 'Tulpen One', cursive !important;*/
-            /*font-family : "Open Sans Condensed" !important;*/
         }
 
         .totales {
@@ -63,17 +41,6 @@
             color      : #AAAAAA;
         }
 
-            /*th {*/
-            /*background : #cccccc;*/
-            /*}*/
-
-            /*tbody tr:nth-child(2n+1) {*/
-            /*background : none repeat scroll 0 0 #E1F1F7;*/
-            /*}*/
-
-            /*tbody tr:nth-child(2n) {*/
-            /*background : none repeat scroll 0 0 #F5F5F5;*/
-            /*}*/
         thead tr {
             margin : 0px
         }
@@ -112,7 +79,6 @@
         td {
             margin : 0px !important;
             border : none !important;
-
         }
 
         </style>
@@ -123,7 +89,7 @@
 
             <div class="tituloPdf">
                 <p>
-                    <b>G.A.D. LOS RÍOS</b>
+                    <b>G.A.D. PROVINCIA DE PICHINCHA</b>
                 </p>
 
                 <p>
@@ -165,7 +131,7 @@
                     </tr>
                 </thead>
                 <tbody id="tabla_pac">
-                    <g:set var="total" value="${0}"></g:set>
+                    <g:set var="total" value="${0}"/>
                     <g:each in="${pac}" var="p" status="i">
 
                         <tr class="item_row ${(i % 2 == 0) ? 'even' : 'odd'}">
@@ -181,7 +147,7 @@
                             <td style="width: 40px !important;text-align: center" class="unidad">${p.unidad.codigo}</td>
                             <td style="text-align: right" class="costo"><g:formatNumber number="${p.costo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                             <td style="text-align: right" class="total"><g:formatNumber number="${p.cantidad * p.costo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                            <g:set var="total" value="${total + p.cantidad * p.costo}"></g:set>
+                            <g:set var="total" value="${total + p.cantidad * p.costo}"/>
                             <td style="text-align: center" class="c1">${p.c1}</td>
                             <td style="text-align: center" class="c2">${p.c2}</td>
                             <td style="text-align: center" class="c3">${p.c3}</td>

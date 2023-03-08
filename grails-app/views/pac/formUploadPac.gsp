@@ -1,17 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 8/29/13
-  Time: 11:32 AM
-  To change this template use File | Settings | File Templates.
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <meta name="layout" content="main">
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
         <title>Subir archivo excel PAC</title>
 
         <style type="text/css">
@@ -32,22 +23,22 @@
         </g:if>
 
         <g:uploadForm action="uploadFile" method="post" name="frmUpload">
-            <div id="list-grupo" class="span12" role="main" style="margin-top: 10px;margin-left: 0px">
+            <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: 0px">
                 <div class="row-fluid" style="margin-left: 0px">
-                    <div class="span4">
-                        <div class="span3"><b>Requirente:</b></div>
-                        <g:textField class="required" name="requirente" maxlength="100" style="width: 250px; font-size: 12px;"/>
+                    <div class="col-md-4">
+                        <b>Requirente:</b>
+                        <g:textField class="required form-control" name="requirente" maxlength="100" style="width: 250px; font-size: 12px;"/>
                     </div>
 
-                    <div class="span3">
+                    <div class="col-md-3">
                         <b>Memorando:</b>
-                        <g:textField class="allCaps required" name="memo" maxlength="20" style="width: 156px; font-size: 12px;"/>
+                        <g:textField class="allCaps required form-control" name="memo" maxlength="20" style="width: 156px; font-size: 12px;"/>
                     </div>
 
-                    <div class="span4">
+                    <div class="col-md-5">
                         <b>Coordinación:</b>
                         <input type="hidden" id="item_id">
-                        <g:select name="coordinacion" from="${janus.Departamento.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 250px;font-size: 12px;"/>
+                        <g:select name="coordinacion" from="${janus.Departamento.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" class="form-control" style="font-size: 12px;"/>
                     </div>
                 </div>
 
@@ -112,7 +103,6 @@
                         </div>
                     </div>
                 </div>
-
 
 
                 <div class="row-fluid" style="margin-left: 0px">

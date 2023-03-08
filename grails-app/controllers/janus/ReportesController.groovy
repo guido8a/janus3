@@ -381,14 +381,14 @@ class ReportesController {
         }
         fila++
 
-        def tagLib = new BuscadorTagLib()
+//        def tagLib = new BuscadorTagLib()
         lista.each { d ->
             listaCampos.eachWithIndex { c, j ->
                 def campo
                 if (funciones) {
-                    if (funciones[j])
-                        campo = tagLib.operacion([propiedad: c, funcion: funciones[j], registro: d]).toString()
-                    else
+//                    if (funciones[j])
+//                        campo = tagLib.operacion([propiedad: c, funcion: funciones[j], registro: d]).toString()
+//                    else
                         campo = d.properties[c].toString()
                 } else {
                     campo = d.properties[c].toString()
@@ -536,7 +536,7 @@ class ReportesController {
         }
     }
 
-    def pac() {
+    def _pac() {
 //        println "params REPORTE " + params
         def pac
         def dep
@@ -558,8 +558,7 @@ class ReportesController {
             anio = "Todos"
             pac = janus.pac.Pac.list([sort: "id"])
         }
-
-        [pac: pac, todos: params.todos, dep: dep, anio: anio]
+        renderPdf(template:'/reportes/pac', model: [pac: pac, todos: params.todos, dep: dep, anio: anio], filename: 'pac.pdf')
     }
 
     def pacExcel() {
@@ -665,7 +664,6 @@ class ReportesController {
         output.write(file.getBytes());
     }
 
-
     def analisisPrecios() {
 
     }
@@ -676,7 +674,6 @@ class ReportesController {
         }
     }
 
-
     private
     static void addContent(Document document, catFont, columnas, headers, anchos, campos, funciones, datos) throws DocumentException {
         Font small = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
@@ -684,7 +681,6 @@ class ReportesController {
         createTable(parrafo, columnas, headers, anchos, campos, funciones, datos);
         document.add(parrafo);
     }
-
 
     private
     static void createTable(Paragraph subCatPart, columnas, headers, anchos, campos, funciones, datos) throws BadElementException {
@@ -698,27 +694,23 @@ class ReportesController {
             table.addCell(c1);
         }
         table.setHeaderRows(1);
-        def tagLib = new BuscadorTagLib()
+//        def tagLib = new BuscadorTagLib()
         datos.each { d ->
             campos.eachWithIndex { c, j ->
                 def campo
                 if (funciones) {
-                    if (funciones[j])
-                        campo = tagLib.operacion([propiedad: c, funcion: funciones[j], registro: d]).toString()
-                    else
+//                    if (funciones[j])
+//                        campo = tagLib.operacion([propiedad: c, funcion: funciones[j], registro: d]).toString()
+//                    else
                         campo = d.properties[c].toString()
                 } else {
                     campo = d.properties[c].toString()
                 }
-
                 table.addCell(new Phrase(campo, small));
-
             }
 
         }
-
         subCatPart.add(table);
-
     }
 
     private static void createList(Section subCatPart) {
@@ -729,13 +721,11 @@ class ReportesController {
         subCatPart.add(list);
     }
 
-
     static arregloEnteros(array) {
         int[] ia = new int[array.size()]
         array.eachWithIndex { it, i ->
             ia[i] = it.toInteger()
         }
-
         return ia
     }
 
@@ -759,13 +749,8 @@ class ReportesController {
                 "obra__id= ${params.id}\n" +
                 "order by sbprdscr,grpodscr,sbgrdscr,dprtdscr,itemnmbr"
 
-//        println("sql:" + sql)
-
         def cn = dbConnectionService.getConnection()
-
         def res = cn.rows(sql.toString())
-
-//        return [res: res, obra: obra]
 
         def baos = new ByteArrayOutputStream()
         def name = "subgrupos_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -832,7 +817,6 @@ class ReportesController {
         addCellTabla(table, new Paragraph("Item", times10boldWhite), prmsCellHead)
         addCellTabla(table, new Paragraph("Cantidad", times10boldWhite), prmsCellHead)
 
-
         res.each { r ->
             addCellTabla(table, new Paragraph(r?.subpresupuesto, times8normal), prmsCellIzquierda)
             addCellTabla(table, new Paragraph(r?.grupo, times8normal), prmsCellIzquierda)
@@ -840,9 +824,6 @@ class ReportesController {
             addCellTabla(table, new Paragraph(r?.descripcion, times8normal), prmsCellIzquierda)
             addCellTabla(table, new Paragraph(r?.nombre, times8normal), prmsCellIzquierda)
             addCellTabla(table, new Paragraph(g.formatNumber(number: r?.cantidad, minFractionDigits: 3, maxFractionDigits: 3, format: "##,###0", locale: "ec"), times8normal), prmsNum)
-
-//            addCellTabla(table, new Paragraph(g.formatNumber(number: r?.subpresupuesto?.descripcion, minFractionDigits: 0, maxFractionDigits: 0, format: "##,#0", locale: "ec"), times8normal), prmsNum)
-
         }
 
         document.add(table);
@@ -853,9 +834,7 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
-
 
     def imprimirRubrosExcel() {
         def obra = Obra.get(params.obra.toLong())
@@ -1103,7 +1082,6 @@ class ReportesController {
         number = new Number(7, fila + 3, (totalRubro + totalIndi).toDouble().round(2)); sheet.addCell(number);
         return sheet
     }
-
 
     def imprimirRubros() {
         println "imprimirRubros... $params"
@@ -6308,11 +6286,6 @@ class ReportesController {
         addCellTabla(tablaTotalGeneral, new Paragraph(g.formatNumber(number: (obra?.valor ?: 0), minFractionDigits:
                 3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times10bold), prmsNum)
 
-
-
-
-//        println("size: " + document.pageSize.getHeight())
-
         document.add(tablaHeader);
         document.add(tablaTitulo);
         document.add(tablaComposicion);
@@ -6331,8 +6304,6 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
     def reporteComposicionMat() {
@@ -6364,8 +6335,6 @@ class ReportesController {
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
 
-
-
         def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
                 "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
                 "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
@@ -6383,7 +6352,6 @@ class ReportesController {
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
-
 
         def baos = new ByteArrayOutputStream()
         def name = "composicion_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -6489,7 +6457,6 @@ class ReportesController {
         tablaTotales.setWidthPercentage(100)
         tablaTotales.setWidths(arregloEnteros([70, 30]))
 
-
         addCellTabla(tablaHeader, new Paragraph("Código", times8bold), prmsCellHead2)
         addCellTabla(tablaHeader, new Paragraph("Item", times8bold), prmsCellHead2)
         addCellTabla(tablaHeader, new Paragraph("U", times8bold), prmsCellHead2)
@@ -6542,8 +6509,6 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
     def reporteComposicionMano() {
@@ -6579,8 +6544,6 @@ class ReportesController {
             println("entro")
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
-
-
 
         def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
                 "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
@@ -6729,8 +6692,6 @@ class ReportesController {
         addCellTabla(tablaTitulo2, new Paragraph("Mano de obra ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo2, new Paragraph(" ", times10bold), prmsCellIzquierda)
 
-
-
         res.each { j ->
 
 
@@ -6751,8 +6712,6 @@ class ReportesController {
 
                 totalesMano = j?.total
                 valorTotalMano = (total2 += totalesMano)
-
-
             }
 
         }
@@ -6774,8 +6733,6 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
     }
 
 
@@ -6809,8 +6766,6 @@ class ReportesController {
         if (params.sp.toString() != "-1") {
             wsp = "      AND v.sbpr__id = ${params.sp} \n"
         }
-
-
 
         def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
                 "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
@@ -6967,10 +6922,8 @@ class ReportesController {
         tablaTotalesEquipos.setWidthPercentage(100)
         tablaTotalesEquipos.setWidths(arregloEnteros([70, 30]))
 
-
         addCellTabla(tablaTitulo3, new Paragraph("Equipos ", times14bold), prmsCellIzquierda)
         addCellTabla(tablaTitulo3, new Paragraph(" ", times10bold), prmsCellIzquierda)
-
 
         res.each { k ->
 
@@ -6998,7 +6951,6 @@ class ReportesController {
         addCellTabla(tablaTotalesEquipos, new Paragraph(g.formatNumber(number: valorTotalEquipos, minFractionDigits:
                 3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times10bold), prmsNum)
 
-
         document.add(tablaTitulo3)
         document.add(tablaHeader);
         document.add(tablaComposicion3);
@@ -7011,9 +6963,7 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
-
 
     def matrizExcel() {
         def cn = dbConnectionService.getConnection()
@@ -7293,7 +7243,6 @@ class ReportesController {
                     0, maxFractionDigits: 2, format: "##,##0", locale: "ec") + " %", times8normal), prmsNum)
         }
 
-
         document.add(tablaAvance);
         document.close();
         pdfw.close()
@@ -7302,7 +7251,6 @@ class ReportesController {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
     def horasLaborables(fechaTemp, fechaFin, dias, fmt, noLaborables) {

@@ -42,7 +42,7 @@
 
             <div class="col-md-3">
                 <b>Partida presupuestaria:</b>
-                <input type="text" style="width: 190px;font-size: 12px" id="item_presupuesto">
+                <input type="text" style="width: 200px;font-size: 12px" id="item_presupuesto">
                 <input type="hidden" style="width: 60px" id="item_prsp">
                 <a href="#" class="btn btn-xs btn-warning" title="Crear nueva partida" style="margin-top: -5px" id="item_agregar_prsp">
                     <i class="fa fa-edit"></i>
@@ -146,7 +146,7 @@
         </div>
     </div>
 
-    <div class="borde_abajo" style="position: relative;float: left;width: 95%;padding-left: 45px">
+    <div class="borde_abajo" style="position: relative;float: left;width: 100%;padding-left: 45px">
         <p class="css-vertical-text">Detalle</p>
 
         <div class="linea" style="height: 98%;"></div>
@@ -155,29 +155,29 @@
     </div>
 </div>
 
-<div class="modal grande hide fade" id="modal-ccp" style="overflow: hidden;">
-    <div class="modal-header btn-info">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+%{--<div class="modal grande hide fade" id="modal-ccp" style="overflow: hidden;">--}%
+%{--    <div class="modal-header btn-info">--}%
+%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modalTitle"></h3>
-    </div>
+%{--        <h3 id="modalTitle"></h3>--}%
+%{--    </div>--}%
 
-    <div class="modal-body" id="modalBody">
-        <bsc:buscador name="pac.buscador.id" value="" accion="buscaCpac" controlador="pac" campos="${campos}" label="cpac" tipo="lista"/>
-    </div>
+%{--    <div class="modal-body" id="modalBody">--}%
+%{--        <bsc:buscador name="pac.buscador.id" value="" accion="buscaCpac" controlador="pac" campos="${campos}" label="cpac" tipo="lista"/>--}%
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modalFooter">
-    </div>
-</div>
+%{--    <div class="modal-footer" id="modalFooter">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
-<div id="modal-presupuesto" style="width: 780px">
+%{--<div id="modal-presupuesto" style="width: 780px">--}%
 
-    <div class="modal-body" id="modalBody-presupuesto">
-    </div>
+%{--    <div class="modal-body" id="modalBody-presupuesto">--}%
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modalFooter-presupuesto">
-    </div>
-</div>
+%{--    <div class="modal-footer" id="modalFooter-presupuesto">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 <script type="text/javascript">
 
@@ -239,7 +239,6 @@
     function cerrarBuscadorPP(){
         bcpp.modal("hide")
     }
-
 
     function cargarTecho() {
         if ($("#item_prsp").val() * 1 > 0) {
@@ -306,16 +305,16 @@
         });
     }
 
-    $("#modal-presupuesto").dialog({
-        autoOpen: false,
-        resizable: true,
-        modal: true,
-        draggable: false,
-        width: 800,
-        height: 440,
-        position: 'center',
-        title: 'Crear Presupuesto'
-    });
+    // $("#modal-presupuesto").dialog({
+    //     autoOpen: false,
+    //     resizable: true,
+    //     modal: true,
+    //     draggable: false,
+    //     width: 800,
+    //     height: 440,
+    //     position: 'center',
+    //     title: 'Crear Presupuesto'
+    // });
 
     $(function () {
 
@@ -379,15 +378,15 @@
             }
         }
 
-        $("#item_codigo").dblclick(function () {
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            $("#modalTitle").html("Código compras públicas");
-            $("#modalFooter").html("").append(btnOk);
-            $(".contenidoBuscador").html("");
-            $("#modal-ccp").modal("show");
-            $("#buscarDialog").unbind("click");
-            $("#buscarDialog").bind("click", enviar)
-        });
+        // $("#item_codigo").dblclick(function () {
+        //     var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+        //     $("#modalTitle").html("Código compras públicas");
+        //     $("#modalFooter").html("").append(btnOk);
+        //     $(".contenidoBuscador").html("");
+        //     $("#modal-ccp").modal("show");
+        //     $("#buscarDialog").unbind("click");
+        //     $("#buscarDialog").bind("click", enviar)
+        // });
 
         // $("#item_presupuesto").dblclick(function () {
         //     var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');

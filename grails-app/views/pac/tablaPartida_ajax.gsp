@@ -33,7 +33,7 @@
 
         $("#item_prsp").val(idPP);
         $("#item_presupuesto").val(codigo).attr("title", nombre);
-
+        cargarTecho();
         cerrarBuscadorPP();
     });
 </script>
