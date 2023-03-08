@@ -32,7 +32,12 @@
         var nombre = $(this).data("desc");
         $("#codigoComprasPublicas").val(idCPC);
         $("#item_codigo").val(codigo);
+        <g:if test="${tipo == '1'}">
+        $("#item_cpac").val(idCPC);
+        </g:if>
+        <g:else>
         $("#item_desc").val(nombre);
+        </g:else>
         cerrarBuscadorCPC();
     });
 </script>

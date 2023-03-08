@@ -17,38 +17,37 @@
                 </span>
             </span>
             <div class="col-md-1" style="margin-top: 1px">
-                <button class="btn btn-info" id="btnBuscarCPC"><i class="fa fa-search"></i></button>
+                <button class="btn btn-info" id="btnBuscarPP"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </fieldset>
 
     <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaCPC" style="height: 460px; overflow: auto; margin-top: 5px">
+        <div id="divTablaPP" style="height: 460px; overflow: auto; margin-top: 5px">
         </div>
     </fieldset>
 </div>
 
 <script type="text/javascript">
 
-    buscarCPC();
+    buscarPP();
 
-    $("#btnBuscarCPC").click(function () {
-        buscarCPC();
+    $("#btnBuscarPP").click(function () {
+        buscarPP();
     });
 
-    function buscarCPC() {
+    function buscarPP() {
         var buscarPor = $("#buscarPor option:selected").val();
         var criterio = $("#criterioCriterio").val();
         $.ajax({
             type: "POST",
-            url: "${createLink(controller: 'mantenimientoItems', action:'tablaCPC')}",
+            url: "${createLink(controller: 'pac', action:'tablaPartida_ajax')}",
             data: {
                 buscarPor: buscarPor,
-                criterio: criterio,
-                tipo: '${tipo}'
+                criterio: criterio
             },
             success: function (msg) {
-                $("#divTablaCPC").html(msg);
+                $("#divTablaPP").html(msg);
             }
         });
     }

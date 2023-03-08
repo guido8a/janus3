@@ -27,8 +27,8 @@
     </g:if>
 </div>
 
-<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;">
-    <div class="borde_abajo" style="padding-left: 45px;position: relative; height: 180px; border-bottom: solid;
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 1px;">
+    <div class="borde_abajo" style="padding-left: 45px;position: relative; height: 200px; border-bottom: solid;
     border-width: 1px">
         <p class="css-vertical-text">P.A.C.</p>
 
@@ -42,7 +42,7 @@
 
             <div class="col-md-3">
                 <b>Partida presupuestaria:</b>
-                <input type="text" style="width: 190px;;font-size: 12px" id="item_presupuesto">
+                <input type="text" style="width: 190px;font-size: 12px" id="item_presupuesto">
                 <input type="hidden" style="width: 60px" id="item_prsp">
                 <a href="#" class="btn btn-xs btn-warning" title="Crear nueva partida" style="margin-top: -5px" id="item_agregar_prsp">
                     <i class="fa fa-edit"></i>
@@ -51,21 +51,21 @@
 
             <div class="col-md-2">
                 <b>Techo:</b>
-                <input type="text" id="techo" disabled="" style="width: 120px;;text-align: right">
+                <input type="text" id="techo" disabled="" style="width: 120px;;text-align: right" class="form-control">
             </div>
 
             <div class="col-md-2">
                 <b>Comprometido:</b>
-                <input type="text" id="usado" disabled="" style="width: 120px;;text-align: right">
+                <input type="text" id="usado" disabled="" style="width: 120px;;text-align: right" class="form-control">
             </div>
 
             <div class="col-md-2">
                 <b>Disponible:</b>
-                <input type="text" id="disponible" disabled="" style="width: 120px;text-align: right">
+                <input type="text" id="disponible" disabled="" style="width: 120px;text-align: right" class="form-control">
             </div>
         </div>
 
-        <div class="row" style="margin-left: 0px">
+        <div class="row" style="margin-left: 1px">
             <div class="col-md-4">
                 <b>Requirente:</b>
                 <input type="text" id="item_req" style="width: 250px; font-size: 12px;">
@@ -81,7 +81,6 @@
                 <input type="hidden" id="item_id">
                 <g:select name="presupuesto.id" from="${janus.Departamento.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 250px;;font-size: 12px" id="item_depto"/>
             </div>
-
         </div>
 
         <div class="row" style="margin-left: 0px">
@@ -90,20 +89,22 @@
                 <g:select name="tipoProcedimiento.id" from="${janus.pac.TipoProcedimiento.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 213px;;font-size: 12px" id="item_tipoProc"/>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <b>Código C.P.:</b>
-                <input type="text" style="width: 154px;;font-size: 12px" id="item_codigo">
+                <input type="text" style="width: 154px;;font-size: 12px" id="item_codigo" readonly>
                 <input type="hidden" style="width: 60px" id="item_cpac">
+                <a href="#" class="btn btn-xs btn-info" title="buscar código CP" style="margin-top: -5px" id="btnBuscadorCPC">
+                    <i class="fa fa-search"></i>
+                </a>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <b>Tipo compra:</b>
                 <g:select name="tipo" from="${janus.pac.TipoCompra.list([sort: 'descripcion'])}" optionKey="id" optionValue="descripcion" style="width: 120px;;font-size: 12px; margin-left: 6px;" id="item_tipo"/>
             </div>
         </div>
 
-        <div class="row" style="margin-left: 0px">
-
+        <div class="row" style="margin-left: 1px">
             <div class="col-md-4" style="width: 400px;">
                 <b>Descripción:</b>
                 <input type="text" style="width: 400px;font-size: 12px" id="item_desc">
@@ -151,7 +152,6 @@
         <div class="linea" style="height: 98%;"></div>
 
         <div style="width: 99.7%;height: 580px;overflow-y: auto;float: right;" id="detalle"></div>
-
     </div>
 </div>
 
@@ -180,27 +180,90 @@
 </div>
 
 <script type="text/javascript">
+
+    var bcpc;
+    var bcpp;
+
+    $("#btnBuscadorCPC").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'mantenimientoItems', action:'buscadorCPC')}",
+            data    : {
+                tipo: 1
+            },
+            success : function (msg) {
+                bcpc = bootbox.dialog({
+                    id      : "dlgBuscarCPC",
+                    title   : "Buscar Código Compras Públicas",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    $("#item_presupuesto").dblclick(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'pac', action:'buscadorPartida_ajax')}",
+            data    : {},
+            success : function (msg) {
+                bcpp = bootbox.dialog({
+                    id      : "dlgBuscarCPC",
+                    title   : "Buscar Partida Presupuestaria",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function cerrarBuscadorCPC(){
+        bcpc.modal("hide")
+    }
+
+    function cerrarBuscadorPP(){
+        bcpp.modal("hide")
+    }
+
+
     function cargarTecho() {
         if ($("#item_prsp").val() * 1 > 0) {
-            $.ajax({type : "POST", url : "${g.createLink(controller: 'pac',action:'cargarTecho')}",
+            $.ajax({
+                type : "POST",
+                url : "${g.createLink(controller: 'pac',action:'cargarTecho')}",
                 data     : "id=" + $("#item_prsp").val() + "&anio=" + $("#item_anio").val() + "&pac_id=" + $("#item_id").val(),
                 success  : function (msg) {
-                    var parts = msg.split(";")
-                    $("#techo").val(number_format(parts[0], 2, ".", ""))
-                    $("#usado").val(number_format(parts[1], 2, ".", ""))
-                    var dis = parts[0] - parts[1]
+                    var parts = msg.split(";");
+                    $("#techo").val(number_format(parts[0], 2, ".", ""));
+                    $("#usado").val(number_format(parts[1], 2, ".", ""));
+                    var dis = parts[0] - parts[1];
                     if ($("#item_id").val() * 1 > 1) {
-                        var act = $("#item_cantidad").val() * $("#item_precio").val()
-                        if (isNaN(act) || act == "")
-                            act = 0
+                        var act = $("#item_cantidad").val() * $("#item_precio").val();
+                        if (isNaN(act) || act === "")
+                            act = 0;
                         dis += act
                     }
-
                     $("#disponible").val(number_format(dis, 2, ".", ""))
                 }
             });
         }
     }
+
     function enviarPrsp() {
         var data = "";
         $("#buscarDialog").hide();
@@ -214,7 +277,9 @@
             data = "tc=" + $("#tipoCampo").val() + "&campos=" + $("#campo :selected").val() + "&operadores=" + $("#operador :selected").val() + "&criterios=" + $("#criterio").val()
         }
         data += "&ordenado=" + $("#campoOrdn :selected").val() + "&orden=" + $("#orden :selected").val();
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'pac',action:'buscaPrsp')}",
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'pac',action:'buscaPrsp')}",
             data     : data,
             success  : function (msg) {
                 $("#spinner").hide();
@@ -223,15 +288,17 @@
             }
         });
     }
-    function cargarTabla() {
 
-        var datos = ""
+    function cargarTabla() {
+        var datos = "";
         if ($("#item_depto").val() * 1 > 0) {
             datos = "dpto=" + $("#item_depto").val() + "&anio=" + $("#item_anio").val()
         } else {
             datos = "anio=" + $("#item_anio").val()
         }
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'pac',action:'tabla')}",
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'pac',action:'tabla')}",
             data     : datos,
             success  : function (msg) {
                 $("#detalle").html(msg)
@@ -278,45 +345,10 @@
                             } //guardar
                         } //buttons
                     }); //dialog
-
-
-                    %{--var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-                    %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');--}%
-
-                    %{--btnSave.click(function () {--}%
-                    %{--    if ($("#frmSave-presupuestoInstance").valid()) {--}%
-                    %{--        btnSave.replaceWith(spinner);--}%
-                    %{--    }else{--}%
-                    %{--        return false;--}%
-                    %{--    }--}%
-                    %{--    $.ajax({--}%
-                    %{--        type : "POST",--}%
-                    %{--        url : "${g.createLink(controller:'presupuesto', action:'saveAjax')}",--}%
-                    %{--        data     : $("#frmSave-presupuestoInstance").serialize(),--}%
-                    %{--        success  : function (msg) {--}%
-
-                    %{--            var parts = msg.split("&")--}%
-                    %{--            $("#item_prsp").val(parts[0])--}%
-                    %{--            $("#item_presupuesto").val(parts[1])--}%
-                    %{--            $("#item_presupuesto").attr("title", parts[2])--}%
-                    %{--            $("#modal-presupuesto").dialog("close");--}%
-                    %{--            cargarTecho()--}%
-                    %{--        }--}%
-                    %{--    });--}%
-
-                    %{--    return false;--}%
-                    %{--});--}%
-
-//                            $("#modalTitle-presupuesto").html("Crear Presupuesto");
-//                             $("#modalBody-presupuesto").html(msg);
-//                             $("#modalFooter-presupuesto").html("").append(btnOk).append(btnSave);
-//                             $("#modal-presupuesto").dialog("open");
-//                             $(".ui-dialog-titlebar-close").html("x");
                 }
             });
             return false;
         });
-
 
         function submitFormNuevoPAC() {
             var $form = $("#frmSave-presupuestoInstance");
@@ -347,94 +379,88 @@
             }
         }
 
-
         $("#item_codigo").dblclick(function () {
             var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
             $("#modalTitle").html("Código compras públicas");
             $("#modalFooter").html("").append(btnOk);
-            $(".contenidoBuscador").html("")
+            $(".contenidoBuscador").html("");
             $("#modal-ccp").modal("show");
-            $("#buscarDialog").unbind("click")
+            $("#buscarDialog").unbind("click");
             $("#buscarDialog").bind("click", enviar)
-
         });
 
-        $("#item_presupuesto").dblclick(function () {
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            $("#modalTitle").html("Partidas presupuestarias");
-            $("#modalFooter").html("").append(btnOk);
-            $(".contenidoBuscador").html("")
-            $("#modal-ccp").modal("show");
-            $("#buscarDialog").unbind("click")
-            $("#buscarDialog").bind("click", enviarPrsp)
+        // $("#item_presupuesto").dblclick(function () {
+        //     var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+        //     $("#modalTitle").html("Partidas presupuestarias");
+        //     $("#modalFooter").html("").append(btnOk);
+        //     $(".contenidoBuscador").html("");
+        //     $("#modal-ccp").modal("show");
+        //     $("#buscarDialog").unbind("click");
+        //     $("#buscarDialog").bind("click", enviarPrsp)
+        // });
 
-        });
-        cargarTabla()
+        cargarTabla();
+
         $("#item_agregar").click(function () {
-            var dpto = $("#item_depto").val()
-            var anio = $("#item_anio").val()
-            var prsp = $("#item_prsp").val()
-
-            var cpac = $("#item_cpac").val()
-            var tipo = $("#item_tipo").val()
-            var desc = $("#item_desc").val()
-            var cant = $("#item_cantidad").val()
-            var req = $("#item_req").val()
-            var memo = $("#item_memo").val()
-            var tipoP = $("#item_tipoProc").val()
-            cant = str_replace(",", "", cant)
+            var dpto = $("#item_depto").val();
+            var anio = $("#item_anio").val();
+            var prsp = $("#item_prsp").val();
+            var cpac = $("#item_cpac").val();
+            var tipo = $("#item_tipo").val();
+            var desc = $("#item_desc").val();
+            var cant = $("#item_cantidad").val();
+            var req = $("#item_req").val();
+            var memo = $("#item_memo").val();
+            var tipoP = $("#item_tipoProc").val();
+            cant = str_replace(",", "", cant);
             if (isNaN(cant))
-                cant = 0
-            var costo = $("#item_precio").val()
-            var costoAnt = $("#item_precio").attr("valAnt")
-            costo = str_replace(",", "", costo)
+                cant = 0;
+            var costo = $("#item_precio").val();
+            var costoAnt = $("#item_precio").attr("valAnt");
+            costo = str_replace(",", "", costo);
             if (isNaN(costo))
-                costo = 0
-            costoAnt = str_replace(",", "", costoAnt)
+                costo = 0;
+            costoAnt = str_replace(",", "", costoAnt);
             if (isNaN(costoAnt))
-                costoAnt = 0
-            costoAnt = costoAnt * 1
-            var unidad = $("#item_unidad").val()
-            var c1 = $("#item_c1")
-            var c2 = $("#item_c2")
-            var c3 = $("#item_c3")
+                costoAnt = 0;
+            costoAnt = costoAnt * 1;
+            var unidad = $("#item_unidad").val();
+            var c1 = $("#item_c1");
+            var c2 = $("#item_c2");
+            var c3 = $("#item_c3");
             if (c1.hasClass("active"))
-                c1 = "S"
+                c1 = "S";
             else
-                c1 = ""
+                c1 = "";
             if (c2.hasClass("active"))
-                c2 = "S"
+                c2 = "S";
             else
-                c2 = ""
+                c2 = "";
             if (c3.hasClass("active"))
-                c3 = "S"
+                c3 = "S";
             else
-                c3 = ""
-            var msg = ""
-            if (req.trim() == "") {
+                c3 = "";
+            var msg = "";
+            if (req.trim() === "") {
                 msg += "<br>Error: Ingrese el nombre de la "  + '<strong>' + "persona requiriente" + '</strong>'
-
             }
-            if (memo.trim() == "") {
+            if (memo.trim() === "") {
                 msg += "<br>Error: Ingrese el numero del " + '<strong>' +  "memorando de referencia" + '</strong>'
             }
-            if (costo * 1 == 0 || cant * 1 == 0) {
+            if (costo * 1 === 0 || cant * 1 === 0) {
                 msg += "<br>Error: El costo y la cantidad deben ser números " + '<strong>' + "positivos" + '</strong>'
             }
-            if (desc.trim() == "") {
+            if (desc.trim() === "") {
                 msg += "<br>Error: Ingrese una " + '<strong>' + "descripción" + '</strong>'
-
             }
             if (prsp * 1 < 1) {
                 msg += "<br>Error: Escoja una partida presupuestaria"
-
             }
             if (cpac * 1 < 1) {
                 msg += "<br>Error en el Código CP: Escoja un código de compras públicas " + '<strong>' + "(CPC) válido" + '</strong>'
-
             }
             var disponible = $("#disponible").val();
-            if (disponible == "" || isNaN(disponible))
+            if (disponible === "" || isNaN(disponible))
                 disponible = 0;
             else
                 disponible = disponible * 1;
@@ -443,24 +469,11 @@
                 msg += "<br>Error: El valor total del P.A.C. (costo*cantidad) $" + (costo * cant) + " no se puede ser superior a: $" + (disponible + costoAnt)
             }
             if (msg !== "") {
-
-                $.box({
-                    imageClass : "box_info",
-                    text       : msg,
-                    title      : "Alerta",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        },
-                        width     : 500
-                    }
-                });
+                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg + '</strong>');
             } else {
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'pac', action:'regPac')}",
+                $.ajax({
+                    type : "POST",
+                    url : "${g.createLink(controller: 'pac', action:'regPac')}",
                     data     : {
                         "departamento.id"      : dpto,
                         "anio.id"              : anio,
@@ -507,10 +520,11 @@
 
         $("#item_depto").change(function () {
             cargarTabla()
-        })
+        });
+
         $("#item_anio").change(function () {
-            cargarTabla()
-            cargarTecho()
+            cargarTabla();
+            cargarTecho();
         })
     });
 </script>

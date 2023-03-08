@@ -1,19 +1,17 @@
 <div class="row" style="margin-left: 0px;margin-bottom: 10px;">
 
-    <div class="col-md-1">
+    <div class="col-md-2">
         <div class="btn-group" data-toggle="buttons-checkbox">
-            <button type="button" id="ver_todos" class="btn btn-info ${(todos=="1")?'active':''} " style="font-size: 14px">Ver todos</button>
-
+            <button type="button" id="ver_todos" class="btn btn-success ${(todos=="1")?'active':''} " style="font-size: 14px"><i class="fa fa-search"></i > Ver todos</button>
         </div>
-
     </div>
     <div class="col-md-3">
-        <a href="#" class="btn  " id="imprimir">
-            <i class="icon-file"></i>
+        <a href="#" class="btn  btn-info" id="imprimir">
+            <i class="fa fa-print"></i>
             Imprimir
         </a>
-        <a href="#" class="btn  " id="excel">
-            <i class="icon-file"></i>
+        <a href="#" class="btn  btn-info" id="excel">
+            <i class="fa fa-file-excel"></i>
             Excel
         </a>
     </div>

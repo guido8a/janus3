@@ -2283,24 +2283,28 @@ class MantenimientoItemsController {
 
     def buscadorCPC(){
         def listaItems = [1: 'Descripción', 2: 'Código']
-        return  [listaItems: listaItems]
+        return  [listaItems: listaItems, tipo: params.tipo]
     }
 
     def tablaCPC(){
+        println("params " + params)
         def datos;
         def sqlTx = ""
         def listaItems = ['cpacdscr', 'cpacnmro']
-        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def bsca
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
 
         def select = "select * from cpac"
         def txwh = " where $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by cpacdscr limit 30 ".toString()
-//        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-//        println("data " + datos)
-        [data: datos]
+        [data: datos, tipo: params.tipo]
     }
 
     def itemsUso () {
