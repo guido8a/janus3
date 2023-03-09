@@ -3,16 +3,6 @@
 <head>
 
     <meta name="layout" content="main">
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
 
     <style type="text/css">
 
@@ -57,58 +47,36 @@
     </div>
 </div>
 
-
 <div class="row">
     <div class="col-md-12 btn-group" role="navigation" style="margin-left: 0;width: 100%;height: 35px;">
-        <button class="btn" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
+        <button class="btn btn-info" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
         <g:if test="${contrato?.id}">
             <g:link controller="documentoProceso" class="btn" action="list" id="${contrato?.oferta?.concursoId}" params="[contrato: contrato?.id]">
-                <i class="icon-book"></i> Biblioteca
+                <i class="fa fa-book"></i> Biblioteca
             </g:link>
 
             <g:link controller="garantia" class="btn" action="garantiasContrato" id="${contrato?.id}">
-                <i class="icon-pencil"></i> Garantías
+                <i class="fa fa-th"></i> Garantías
             </g:link>
             <a href="${g.createLink(controller: 'contrato', action: 'polinomicaContrato', id: contrato?.id)}" class="btn">
-                <i class="icon-superscript"></i> Fórmula Polinómica
+                <i class="fa fa-superscript"></i> Fórmula Polinómica
             </a>
-
         </g:if>
-
-    %{--
-                    <g:if test="${janus.ejecucion.Planilla.countByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('A')) > 0 && contrato.oferta.concurso.obra.fechaInicio}">
-                        <g:link controller="cronogramaEjecucion" class="btn" action="creaCronogramaEjec" id="${contrato?.id}">
-                            <i class="icon-th"></i> Cronograma
-                        </g:link>
-                    </g:if>
-    --}%
-
         <g:if test="${janus.ejecucion.Planilla.countByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('A')) > 0 && contrato.oferta.concurso.obra.fechaInicio}">
             <g:link controller="cronogramaEjecucion" class="btn btn-info" action="creaCrngEjecNuevo" id="${contrato?.id}">
-                <i class="icon-th"></i> Cronograma
+                <i class="fa fa-calendar"></i> Cronograma
             </g:link>
         </g:if>
-
         <g:if test="${contrato?.id}">
             <a href="#" class="btn  " id="imprimir_sub">
-                <i class="icon-print"></i>
+                <i class="fa fa-print"></i>
                 Imp. Presupuesto
             </a>
             <a href="#" class="btn  " id="btnRubros">
-                <i class="icon-print"></i>
+                <i class="fa fa-print"></i>
                 Imp. Rubros y VAE
             </a>
-            
-%{--
-            <g:if test="${contrato?.anticipo == 0}">
-                <a href="#" class="btn btn-warning" id="inicioObra">
-                    <i class="icon-check text_info"></i>
-                    Inicio de Obra
-                </a>
-            </g:if>
---}%
         </g:if>
-
     </div>
 </div>
 
@@ -119,35 +87,23 @@
         <div class="col-md-12" style="margin-top: 10px">
             <g:if test="${contrato?.codigo != null}">
                 <div class="col-md-2 formato">Contrato N°</div>
-
                 <div class="col-md-3">${contrato?.codigo}</div>
-
                 <div class="col-md-2 formato">Memo de Distribución</div>
-
                 <div class="col-md-3">${contrato?.memo}</div>
-            %{--</div>--}%
             </g:if>
-
             <g:else>
                 <div class="col-md-2 formato">Contrato N°</div>
-
                 <div class="col-md-3">${contrato?.codigo}</div>
-
                 <div class="col-md-2 formato">Memo de Distribución</div>
-
                 <div class="col-md-3">${contrato?.memo}</div>
-
             </g:else>
         </div> <!--DSAFSD-->
     </fieldset>
-
 
     <fieldset class="" style="position: relative; padding: 10px;border-bottom: 1px solid black;">
         <p class="css-vertical-text">Contratación</p>
 
         <div class="linea" style="height: 85%;"></div>
-
-    %{--<g:hiddenField name="oferta" class="oferta" value="${contrato?.oferta?.id}"/>--}%
 
         <g:if test="${contrato?.codigo != null}">
             <div class="col-md-12">
@@ -403,18 +359,21 @@
 </g:form>
 
 
+<g:if test="${contrato && contrato?.tipoContrato?.codigo?.trim() != 'C'}">
 
-<g:if test="${contrato && contrato.tipoContrato?.codigo.trim() != 'C'}">
-    <div class="navbar navbar-inverse" style="margin-top: 20px;padding-left: 5px;">
+    <div class="row">
+        <div class="col-md-12 btn-group" role="navigation" style="margin-left: 0;width: 100%;height: 35px;">
+        </div>
+    </div>
 
-        <div class="navbar-inner">
+
+
+        <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top: 20px;padding-left: 5px;">
+%{--        <div class="navbar-inner">--}%
             <div class="botones">
-
                 <ul class="nav">
-
                     <li>
                         <g:if test="${contrato.obra?.tipo != 'D'}">
-                        %{--<g:if test="${contrato.tipoContrato?.codigo.trim() != 'C'}">--}%
                             <g:link controller="planilla" action="list" id="${contrato?.id}">
                                 <i class=" icon-file-alt"></i> Planillas
                             </g:link>
@@ -427,29 +386,11 @@
                         </g:link>
                     </li>
 
-                    %{--
-                                                <li>
-                                                    <a href="#" id="liquidacion">
-                                                        <i class=" icon-paperclip"></i> Generar FP Liquidación
-                                                    </a>
-                                                </li>
-                    --}%
-
                     <li>
                         <g:link controller="reportesPlanillas" action="reporteAvanceUI" id="${contrato?.id}">
                             <i class=" icon-paperclip"></i> Informe de avance
                         </g:link>
                     </li>
-
-                    %{--
-                                                <li>
-                                                    <g:if test="${esDirector == 'S'}">
-                                                        <a href="#" id="btnAdmin">
-                                                            <i class="icon-user"></i> Administrador
-                                                        </a>
-                                                    </g:if>
-                                                </li>
-                    --}%
 
                     <li>
                         <g:if test="${esDirFis == 'S'}">
@@ -458,27 +399,20 @@
                             </a>
                         </g:if>
                     </li>
-
                     <li>
-                        %{--<g:if test="${esDirFis == 'S'}">--}%
                         <a href="#" id="btnDelFisc">
                             <i class="icon-user"></i> Delegado fiscalización
                         </a>
-                        %{--</g:if>--}%
                     </li>
-
                     <li>
-                    %{--<g:if test="${esDirector == 'S'}">--}%
                         <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
                             <a href="#" id="btnPref">
                                 <i class="icon-user"></i> Delegado del Prefecto
                             </a>
                         </g:if>
                     </li>
-
                     <li>
                         <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
-                        %{--<g:if test="${esDirector == 'N'}">--}%
                             <a href="#" id="btnIndi">
                                 <i class="icon-file"></i> % de Indirectos
                             </a>
@@ -486,18 +420,14 @@
                     </li>
                     <li>
                         <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
-                        %{--<g:if test="${esDirector == 'N'}">--}%
-                        <a href="#" id="btnAdicionales">
-                            <i class="icon-file"></i> Autorización C + %
-                        </a>
+                            <a href="#" id="btnAdicionales">
+                                <i class="icon-file"></i> Autorización C + %
+                            </a>
                         </g:if>
                     </li>
-
                 </ul>
-
             </div>
-        </div>
-
+%{--        </div>--}%
     </div>
 </g:if>
 
@@ -520,7 +450,6 @@
         <a href="#" class="btn btn-success" id="btnVerAvance">Ver</a>
     </div>
 </div>
-
 
 <div class="modal hide fade mediumModal" id="modal-var" style="overflow: hidden">
     <div class="modal-header btn-primary">
@@ -657,10 +586,10 @@
          39         -> flecha der
          */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-        ev.keyCode == 190 || ev.keyCode == 110 ||
-        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-        ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode == 190 || ev.keyCode == 110 ||
+            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+            ev.keyCode == 37 || ev.keyCode == 39);
     }
 
     function validarInt(ev) {
@@ -677,9 +606,9 @@
          39         -> flecha der
          */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-        ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+            ev.keyCode == 37 || ev.keyCode == 39);
     }
 
     $("#btnAdmin").click(function () {

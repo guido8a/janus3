@@ -17,6 +17,7 @@
     </div>
     <div class="col-md-6">
         <b>Coordinación:</b> ${dep}
+    </br><b class="text-info">* Para editar un registro, doble clic en la fila correspondiente</b>
     </div>
     <div class="col-md-1">
         <b>Año:</b> ${anio}
@@ -43,7 +44,7 @@
     </tr>
     </thead>
     <tbody id="tabla_pac">
-    <g:set var="total" value="${0}"></g:set>
+    <g:set var="total" value="${0}"/>
     <g:each in="${pac}" var="p" status="i">
 
         <tr class="item_row" id="${p.id}"  dpto="${p.departamento.id}" req="${p.requiriente}" memo="${p.memo}" tipoP="${p.tipoProcedimiento?.id}">
@@ -59,16 +60,16 @@
             <td style="width: 40px !important;text-align: center" class="unidad" unidad="${p.unidad.id}">${p.unidad.codigo}</td>
             <td style="text-align: right" class="costo"><g:formatNumber number="${p.costo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
             <td style="text-align: right" class="total"><g:formatNumber number="${p.cantidad*p.costo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-            <g:set var="total" value="${total+p.cantidad*p.costo}"></g:set>
+            <g:set var="total" value="${total+p.cantidad*p.costo}"/>
             <td style="text-align: center" class="c1">${p.c1}</td>
             <td style="text-align: center" class="c2">${p.c2}</td>
             <td style="text-align: center" class="c3">${p.c3}</td>
             <td style="width: 40px;text-align: center" class="col_delete">
                 <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${p.id}">
-                    <i class="fa fa-trash"></i></a>
+                    <i class="fa fa-trash"></i>
+                </a>
             </td>
         </tr>
-
     </g:each>
     </tbody>
 </table>
@@ -83,7 +84,7 @@
     $("tbody>tr").contextMenu({
         selector: '.item_row',
         callback: function(key, options) {
-            if(key=="edit"){
+            if(key==="edit"){
                 $(this).dblclick()
             }
         },
@@ -113,7 +114,6 @@
                 datos="anio="+$("#item_anio").val()
             }
         }
-        %{--location.href="${createLink(controller: 'pdf',action: 'pdfLink')}?url=${createLink(controller: 'reportes',action: 'pac')}?"+datos--}%
         location.href="${createLink(controller: 'reportes', action: '_pac')}?" + datos
     });
 
@@ -146,49 +146,64 @@
     });
 
     $(".item_row").dblclick(function(){
+        $("#item_id").val($(this).attr("id"));
+        $("#item_depto").val($(this).attr("dpto"));
+        $("#item_anio").val($(this).find(".anio").attr("anio"));
+        $("#item_prsp").val($(this).find(".prsp").attr("prsp"));
+        $("#item_presupuesto").val($(this).find(".prsp").html()).attr("title",$(this).find(".prsp").attr("title"));
+        $("#item_cpac").val($(this).find(".cpac").attr("cpac"));
+        $("#item_codigo").val($(this).find(".cpac").html()).attr("title",$(this).find(".cpac").attr("title"));
+        $("#item_tipo").val($(this).find(".tipo").attr("tipo"));
+        $("#item_desc").val($(this).find(".desc").html());
+        $("#item_cantidad").val($(this).find(".cant").html().trim());
+        $("#item_precio").val($(this).find(".costo").html()).attr("valAnt",$(this).find(".costo").html());
+        $("#item_unidad").val($(this).find(".unidad").attr("unidad"));
+        $("#item_req").val($(this).attr("req"));
+        $("#item_memo").val($(this).attr("memo"));
+        $("#item_tipoProc").val($(this).attr("tipoP"));
 
-        $("#item_id").val($(this).attr("id"))
+        $("#item_c1, #item_c2, #item_c3").removeClass("active");
 
-        $("#item_depto").val($(this).attr("dpto"))
-        $("#item_anio").val($(this).find(".anio").attr("anio"))
-        $("#item_prsp").val($(this).find(".prsp").attr("prsp"))
-        $("#item_presupuesto").val($(this).find(".prsp").html())
-        $("#item_presupuesto").attr("title",$(this).find(".prsp").attr("title"))
-        $("#item_cpac").val($(this).find(".cpac").attr("cpac"))
-        $("#item_codigo").val($(this).find(".cpac").html())
-        $("#item_codigo").attr("title",$(this).find(".cpac").attr("title"))
-        $("#item_tipo").val($(this).find(".tipo").attr("tipo"))
-        $("#item_desc").val($(this).find(".desc").html())
-        $("#item_cantidad").val($(this).find(".cant").html().trim())
-        $("#item_precio").val($(this).find(".costo").html())
-        $("#item_precio").attr("valAnt",$(this).find(".costo").html())
-        $("#item_unidad").val($(this).find(".unidad").attr("unidad"))
-        $("#item_req").val($(this).attr("req"))
-        $("#item_memo").val($(this).attr("memo"))
-        $("#item_tipoProc").val($(this).attr("tipoP"))
+        if($(this).find(".c1").html()==="S")
+            $("#item_c1").addClass("active");
+        if($(this).find(".c2").html()==="S")
+            $("#item_c2").addClass("active");
+        if($(this).find(".c3").html()==="S")
+            $("#item_c3").addClass("active");
 
-        $("#item_c1").removeClass("active")
-        $("#item_c2").removeClass("active")
-        $("#item_c3").removeClass("active")
-
-        if($(this).find(".c1").html()=="S")
-            $("#item_c1").addClass("active")
-        if($(this).find(".c2").html()=="S")
-            $("#item_c2").addClass("active")
-        if($(this).find(".c3").html()=="S")
-            $("#item_c3").addClass("active")
         cargarTecho()
     });
 
     $(".borrarItem").click(function(){
-        if(confirm("Esta seguro de eliminar este registro del PAC?")){
-            $.ajax({type : "POST", url : "${g.createLink(controller: 'pac',action:'eliminarPac')}",
-                data     : "id=" + $(this).attr("iden"),
-                success  : function (msg) {
-                    cargarTabla()
 
+        bootbox.confirm({
+            title: "Eliminar Cronograma",
+            message: "Esta seguro de eliminar este registro del PAC?.",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
                 }
-            });
-        }
+            },
+            callback: function (result) {
+                if(result){
+                    var g = cargarLoader("Borrando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'pac',action:'eliminarPac')}",
+                        data     : "id=" + $(this).attr("iden"),
+                        success  : function (msg) {
+                            g.modal("hide")
+                            cargarTabla()
+                        }
+                    });
+                }
+            }
+        });
+
     });
 </script>
