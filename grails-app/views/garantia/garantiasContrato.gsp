@@ -1,24 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 1/16/13
-  Time: 11:10 AM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
     <title>Garantías contrato</title>
 
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>
+%{--    <script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href='${resource(dir: "js/jquery/plugins/box/css", file: "jquery.luz.box.css")}' rel='stylesheet' type='text/css'>
+%{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+%{--    <link href='${resource(dir: "js/jquery/plugins/box/css", file: "jquery.luz.box.css")}' rel='stylesheet' type='text/css'>--}%
 
     <style type="text/css">
     .selected, .selected td {
@@ -42,171 +34,161 @@
 
 <body>
 
-<div class="row" style="margin-bottom: 10px;">
-    <div class="span9 btn-group" role="navigation">
+%{--<div class="col-md-12" style="margin-bottom: 10px;">--}%
+    <div class="col-md-9 btn-group" role="navigation">
         <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-ajax btn-new" title="Regresar al contrato">
-            <i class="icon-double-angle-left"></i>
+            <i class="fa fa-arrow-left"></i>
             Contrato
         </g:link>
-        <a href="#" id="btnReporte" class="btn"><i class="icon-print"></i>
+        <a href="#" id="btnReporte" class="btn"><i class="fa fa-print"></i>
             Reporte
         </a>
-        <a href="#" id="btnReporteGeneral" class="btn"><i class="icon-print"></i>
+        <a href="#" id="btnReporteGeneral" class="btn"><i class="fa fa-print"></i>
             Reporte General Garantías
         </a>
-        <a href="#" id="btnReporteVenceran" class="btn"><i class="icon-print"></i>
+        <a href="#" id="btnReporteVenceran" class="btn"><i class="fa fa-print"></i>
             Reporte Grt. que vencerán
         </a>
-        <a href="#" id="btnReporteDevueltas" class="btn"><i class="icon-print"></i>
+        <a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-print"></i>
             Reporte Grt. Devueltas
         </a>
-        <a href="#" id="btnReporteVencidas" class="btn"><i class="icon-print"></i>
+        <a href="#" id="btnReporteVencidas" class="btn"><i class="fa fa-print"></i>
             Reporte Grt. Vencidas
         </a>
-
     </div>
-</div>
+%{--</div>--}%
 
-<div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative;">
+
+<div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative; min-height: 170px;">
     <p class="css-vertical-text">Contrato</p>
 
     <div class="linea" style="height: 100px;"></div>
 
-    <div class="row">
-        <div class="span1">
+    <div class="col-md-12" style="margin-top: 5px">
+        <div class="col-md-1">
             N. contrato
         </div>
-
-        <div class="span2">
-            <span class="span2 uneditable-input">${contrato?.codigo}</span>
+        <div class="col-md-2">
+            <span class="uneditable-input">${contrato?.codigo}</span>
         </div>
-
-        <div class="span1">
+        <div class="col-md-1">
             Suscripción
         </div>
-
-        <div class="span2">
-            <span class="span2 uneditable-input">${contrato?.fechaSubscripcion}</span>
+        <div class="col-md-2">
+            <span class="uneditable-input">${contrato?.fechaSubscripcion?.format("dd-MM-yyyy")}</span>
         </div>
-
-        <div class="span1">
+        <div class="col-md-1">
             Tipo Contrato
         </div>
-
-        <div class="span2">
-            <span class="span2 uneditable-input">${contrato?.tipoContrato?.descripcion}</span>
+        <div class="col-md-2">
+            <span class="uneditable-input">${contrato?.tipoContrato?.descripcion}</span>
         </div>
-
-        <div class="span1">
+        <div class="col-md-1">
             Monto
         </div>
-
-        <div class="span1">
-            <span class="span2 uneditable-input">${contrato?.monto}</span>
+        <div class="col-md-2">
+            <span class="uneditable-input">${contrato?.monto}</span>
         </div>
     </div>
 
-    <div class="row">
-        <div class="span1">
+    <div class="col-md-12" style="margin-top: 5px">
+        <div class="col-md-1">
             Proyecto
         </div>
-
-        <div class="span8">
-            <span class="span8 uneditable-input">${contrato?.oferta?.concurso?.obra?.descripcion}</span>
+        <div class="col-md-8">
+            <span class="uneditable-input">${contrato?.oferta?.concurso?.obra?.descripcion}</span>
         </div>
-
-        <div class="span1">
+        <div class="col-md-1">
             Fecha Inicio
         </div>
-
-        <div class="span1">
-            <span class="span1 uneditable-input">${contrato?.fechaInicio}</span>
+        <div class="col-md-2">
+            <span class="uneditable-input">${contrato?.fechaInicio}</span>
         </div>
     </div>
 
-    <div class="row">
-        <div class="span1">
+    <div class="col-md-12" style="margin-top: 5px">
+        <div class="col-md-1">
             Contratista
         </div>
 
-        <div class="span5">
-            <span class="span5 uneditable-input">${contrato?.oferta?.proveedor?.nombre}</span>
+        <div class="col-md-5">
+            <span class="uneditable-input">${contrato?.oferta?.proveedor?.nombre}</span>
         </div>
 
-        <div class="span1">
+        <div class="col-md-1">
             Memo Distrib.
         </div>
 
-        <div class="span2">
-            <span class="span2 uneditable-input">${contrato?.memo}</span>
+        <div class="col-md-2">
+            <span class="uneditable-input">${contrato?.memo}</span>
         </div>
 
-        <div class="span1">
+        <div class="col-md-1">
             Fecha Fin
         </div>
 
-        <div class="span1">
-            <span class="span1 uneditable-input">${contrato?.fechaFin}</span>
+        <div class="col-md-2">
+            <span class="uneditable-input">${contrato?.fechaFin}</span>
         </div>
     </div>
 </div> <!-- Contrato -->
 
 <form id="frmGarantia">
-    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative;">
+    <div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;min-height: 160px;position: relative;">
         <p class="css-vertical-text">Garantía</p>
 
         <div class="linea" style="height: 100px;"></div>
 
-        <div class="row">
-            <div class="span1">
+        <div class="col-md-12">
+            <div class="col-md-1">
                 Tipo
             </div>
 
-            <div class="span4">
-                <g:select name="tipoGarantia" from="${janus.pac.TipoGarantia.list([sort: 'descripcion'])}" class="span4 required" optionKey="id" optionValue="descripcion"/>
+            <div class="col-md-4">
+                <g:select name="tipoGarantia" from="${janus.pac.TipoGarantia.list([sort: 'descripcion'])}" class="required" optionKey="id" optionValue="descripcion"/>
             </div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 N. Garantía
             </div>
 
-            <div class="span2">
-                <g:textField name="codigo" class="span2 required allCaps"/>
+            <div class="col-md-2">
+                <g:textField name="codigo" class="required allCaps"/>
             </div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 Grnt. Original
             </div>
 
-            <div class="span2">
-                <g:textField name="padre" class="span2 allCaps" readonly="true"/>
+            <div class="col-md-2">
+                <g:textField name="padre" class="allCaps" readonly="true"/>
             </div>
         </div>
 
-        <div class="row">
-            <div class="span1">
+        <div class="col-md-12">
+            <div class="col-md-1">
                 Aseguradora
             </div>
 
-            <div class="span4">
-                <g:textField name="aseguradoraTxt" class="span4 required"/>
-                <g:hiddenField name="aseguradora" id="aseguradora" class="span4 required"/>
+            <div class="col-md-4">
+                <g:textField name="aseguradoraTxt" class=" required"/>
+                <g:hiddenField name="aseguradora" id="aseguradora" class="required"/>
             </div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 Documento
             </div>
 
-            <div class="span2">
-                <g:select name="tipoDocumentoGarantia" from="${janus.pac.TipoDocumentoGarantia.list([sort: 'descripcion'])}" class="span2 required" optionKey="id" optionValue="descripcion"/>
+            <div class="col-md-2">
+                <g:select name="tipoDocumentoGarantia" from="${janus.pac.TipoDocumentoGarantia.list([sort: 'descripcion'])}" class="required" optionKey="id" optionValue="descripcion"/>
             </div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 Monto
             </div>
 
-            <div class="span2 input-append">
-                <g:textField name="monto" class="span2 required number"/>
+            <div class="col-md-2 input-append">
+                <g:textField name="monto" class="required number"/>
                 <div class="btn-group">
                     <button class="btn dropdown-toggle" data-toggle="dropdown">
                         <span id="monedaSelected" data-id="${janus.pac.Moneda.findByCodigo("USD")?.id}" data-nombre="${janus.pac.Moneda.findByCodigo("USD")?.codigo}">
@@ -230,54 +212,47 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="span1">
+        <div class="col-md-12">
+            <div class="col-md-1">
                 Observaciones
             </div>
-            <div class="span10">
-                <g:textField name="observaciones" class="span10"/>
+            <div class="col-md-10">
+                <g:textField name="observaciones" class=""/>
             </div>
 
         </div>
 
-        <div class="row">
-            <div class="span1">
+        <div class="col-md-12">
+            <div class="col-md-1">
                 Emisión
             </div>
 
-            <div class="span2">
-                <elm:datepicker name="fechaInicio" class="span2 required" onClose="updateDias"/>
+            <div class="col-md-2">
+                <elm:datepicker name="fechaInicio" class="required" onClose="updateDias"/>
             </div>
 
-            <div class="span1">
+            <div class="col-md-1">
                 Vencimiento
             </div>
 
-            <div class="span2">
-                <elm:datepicker name="fechaFinalizacion" class="span2 required" onClose="updateDias"/>
+            <div class="col-md-2">
+                <elm:datepicker name="fechaFinalizacion" class="required" onClose="updateDias"/>
             </div>
 
-            <div class="span1" style="width: 8px;">
+            <div class="col-md-1" style="width: 8px;">
                 Días
             </div>
 
-            <div class="span1">
-                <g:textField name="diasGarantizados" class="span1 required" readonly="true"/>
+            <div class="col-md-2">
+                <g:textField name="diasGarantizados" class="required" readonly="true"/>
             </div>
 
-            %{--<div class="span1 estado hide" style="width: 12px;">--}%
-            %{--Estado--}%
-            %{--</div>--}%
 
-            %{--<div class="span2 estado sel hide">--}%
-            %{--<g:select name="estado" from="${estadosGarantia}" optionKey="codigo" class="input-medium" optionValue="descripcion"/>--}%
-            %{--</div>--}%
-
-            <div class="span2">
+            <div class="col-md-2">
                 <div class="btn-toolbar" id="btnsAdd">
                     <div class="btn-group">
                         <a href="#" id="btnAdd" class="btn btn-success" rel="tooltip" title="Agregar">
-                            <i class="icon-plus icon-large"></i>
+                            <i class="fa fa-plus"></i>
                         </a>
                     </div>
                 </div>
@@ -285,17 +260,17 @@
                 <div class="btn-toolbar hide" id="btnsEdit">
                     <div class="btn-group">
                         <a href="#" id="btnNew" class="btn" rel="tooltip" title="Nuevo">
-                            <i class="icon-file icon-large"></i>
+                            <i class="fa fa-file"></i>
                         </a>
                         <g:hiddenField name="id"/>
                         <a href="#" id="btnSave" class="btn" rel="tooltip" title="Guardar">
-                            <i class="icon-save icon-large"></i>
+                            <i class="fa fa-save"></i>
                         </a>
                         <a href="#" id="btnRenew" class="btn" rel="tooltip" title="Renovar">
-                            <i class="icon-retweet icon-large"></i>
+                            <i class="fa fa-retweet"></i>
                         </a>
                         <a href="#" id="btnDelete" class="btn" rel="tooltip" title="Eliminar">
-                            <i class="icon-trash icon-large"></i>
+                            <i class="fa fa-trash"></i>
                         </a>
                     </div>
                 </div>
@@ -314,19 +289,16 @@
         <tr>
             <th>Tipo</th>
             <th>N. Garantía</th>
-            %{--<th>Nro</th>--}%
             <th>Aseguradora</th>
             <th>Documento</th>
             <th>Estado</th>
             <th>Emisión</th>
             <th>Vencimiento</th>
             <th>Monto</th>
-            <th style="width: 55px;">Acciones</th>
-            %{--<th>Fecha</th>--}%
+            <th style="width: 65px;">Acciones</th>
         </tr>
         </thead>
         <tbody id="tbGarantias">
-
         </tbody>
     </table>
 
@@ -410,7 +382,7 @@
 
     function loadForm(data) {
         $.each(data, function (k, v) {
-            if (k == "moneda") {
+            if (k === "moneda") {
                 var id = v;
                 var $s = $("#mn-" + id);
                 var nombre = $s.data("nombre");
@@ -500,7 +472,7 @@
                                 obs    : r
                             },
                             success : function (msg) {
-                                if (msg != "NO") {
+                                if (msg !== "NO") {
                                     updateRow($.parseJSON(msg));
                                 }
                             }
@@ -517,8 +489,8 @@
         $td.empty();
         switch (estado) {
             case "1": // Vigente
-                var $devolver = $("<a href='#' class='btn btn-mini' title='Devolver'><i class='icon icon-reply'></i></a>");
-                var $pedirCobro = $("<a href='#' class='btn btn-mini' title='Pedir Cobro'><i class='icon icon-money'></i></a>");
+                var $devolver = $("<a href='#' class='btn btn-xs' title='Devolver'><i class='fa fa-reply'></i></a>");
+                var $pedirCobro = $("<a href='#' class='btn btn-xs' title='Pedir Cobro'><i class='fa fa-money'></i></a>");
 
                 $devolver.click(function () {
                     cambiarEstado(id, 3, "Devolver garantía");

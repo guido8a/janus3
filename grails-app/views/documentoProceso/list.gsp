@@ -41,7 +41,7 @@
             </g:if>
             <g:else>
                 <g:link controller="contrato" action="verContrato" class="btn btn-info" params="[contrato: contrato?.id]">
-                    <i class="fa fa-fa-arrow-left"></i>
+                    <i class="fa fa-arrow-left"></i>
                     Regresar
                 </g:link>
             </g:else>

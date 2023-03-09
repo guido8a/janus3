@@ -80,7 +80,6 @@
     </div>
 </div>
 
-
 <g:form class="registroContrato" name="frm-registroContrato" action="save">
     <g:hiddenField name="id" value="${contrato?.id}"/>
     <fieldset class="" style="position: relative; border-bottom: 1px solid black; width: 100%;">
@@ -247,19 +246,15 @@
             </g:else>
         </div>
 
-        <div class="col-md-5" style="margin-top: 5px">
-            <div class="col-md-2 formato" style="margin-left:60px;">Aplica Reajuste</div>
-            <div class="col-md-2" style="margin-left: -60px">${contrato?.aplicaReajuste == 1 ? 'SI' : 'NO'}</div>
-        </div>
+        <div class="col-md-12">
+                <div class="col-md-2 formato">Aplica Reajuste</div>
+                <div class="col-md-1">${contrato?.aplicaReajuste == 1 ? 'SI' : 'NO'}</div>
 
-        <div class="col-md-5" style="margin-top: 5px">
-            <div class="col-md-4 formato" style="margin-left:10px;">La multa por retraso de obra incluye el valor del reajuste</div>
-            <div class="col-md-2" style="margin-left: -30px">${contrato?.conReajuste == 1 ? 'SI' : 'NO'}</div>
-        </div>
+                <div class="col-md-4 formato" style="margin-left:10px;">La multa por retraso de obra incluye el valor del reajuste</div>
+                <div class="col-md-1" style="margin-left: -30px">${contrato?.conReajuste == 1 ? 'SI' : 'NO'}</div>
 
-        <div class="col-md-5" style="margin-top: 5px">
-            <div class="col-md-3 formato" style="margin-left:10px;">Aplica multa al saldo por planillar</div>
-            <div class="col-md-1" style="margin-left: -60px">${contrato?.saldoMulta == 1 ? 'SI' : 'NO'}</div>
+                <div class="col-md-3 formato" style="margin-left:10px;">Aplica multa al saldo por planillar</div>
+                <div class="col-md-1" style="margin-left: -60px">${contrato?.saldoMulta == 1 ? 'SI' : 'NO'}</div>
         </div>
 
     </fieldset>
@@ -358,79 +353,47 @@
 
 </g:form>
 
-
 <g:if test="${contrato && contrato?.tipoContrato?.codigo?.trim() != 'C'}">
-
     <div class="row">
         <div class="col-md-12 btn-group" role="navigation" style="margin-left: 0;width: 100%;height: 35px;">
+            <g:if test="${contrato.obra?.tipo != 'D'}">
+                <g:link controller="planilla" action="list" class="btn" id="${contrato?.id}">
+                    <i class=" fa fa-file-alt"></i> Planillas
+                </g:link>
+            </g:if>
+            <g:link action="fechasPedidoRecepcion" class="btn" id="${contrato?.id}">
+                <i class="fa fa-calendar"></i> Pedido de recepción
+            </g:link>
+            <g:link controller="reportesPlanillas" action="reporteAvanceUI" class="btn" id="${contrato?.id}">
+                <i class=" fa fa-paperclip"></i> Informe de avance
+            </g:link>
+            <g:if test="${esDirFis == 'S'}">
+                <a href="#" id="btnFisc">
+                    <i class="fa fa-user"></i> Fiscalizador
+                </a>
+            </g:if>
+            <a href="#" id="btnDelFisc" class="btn">
+                <i class="fa fa-user"></i> Delegado fiscalización
+            </a>
+            <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
+                <a href="#" id="btnPref" class="btn">
+                    <i class="fa fa-user"></i> Delegado del Prefecto
+                </a>
+            </g:if>
+            <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
+                <a href="#" id="btnIndi" class="btn">
+                    <i class="fa fa-file"></i> % de Indirectos
+                </a>
+            </g:if>
+
+            <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
+                <a href="#" id="btnAdicionales" class="btn">
+                    <i class="fa fa-file"></i> Autorización C + %
+                </a>
+            </g:if>
         </div>
     </div>
-
-
-
-        <div class="navbar navbar-expand-lg navbar-light bg-light" style="margin-top: 20px;padding-left: 5px;">
-%{--        <div class="navbar-inner">--}%
-            <div class="botones">
-                <ul class="nav">
-                    <li>
-                        <g:if test="${contrato.obra?.tipo != 'D'}">
-                            <g:link controller="planilla" action="list" id="${contrato?.id}">
-                                <i class=" icon-file-alt"></i> Planillas
-                            </g:link>
-                        </g:if>
-                    </li>
-
-                    <li>
-                        <g:link action="fechasPedidoRecepcion" id="${contrato?.id}">
-                            <i class=" icon-calendar-empty"></i> Pedido de recepción
-                        </g:link>
-                    </li>
-
-                    <li>
-                        <g:link controller="reportesPlanillas" action="reporteAvanceUI" id="${contrato?.id}">
-                            <i class=" icon-paperclip"></i> Informe de avance
-                        </g:link>
-                    </li>
-
-                    <li>
-                        <g:if test="${esDirFis == 'S'}">
-                            <a href="#" id="btnFisc">
-                                <i class="icon-user"></i> Fiscalizador
-                            </a>
-                        </g:if>
-                    </li>
-                    <li>
-                        <a href="#" id="btnDelFisc">
-                            <i class="icon-user"></i> Delegado fiscalización
-                        </a>
-                    </li>
-                    <li>
-                        <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
-                            <a href="#" id="btnPref">
-                                <i class="icon-user"></i> Delegado del Prefecto
-                            </a>
-                        </g:if>
-                    </li>
-                    <li>
-                        <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
-                            <a href="#" id="btnIndi">
-                                <i class="icon-file"></i> % de Indirectos
-                            </a>
-                        </g:if>
-                    </li>
-                    <li>
-                        <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
-                            <a href="#" id="btnAdicionales">
-                                <i class="icon-file"></i> Autorización C + %
-                            </a>
-                        </g:if>
-                    </li>
-                </ul>
-            </div>
-%{--        </div>--}%
-    </div>
 </g:if>
-
 
 <div class="modal hide fade" id="modal-fecha" style="overflow: hidden">
     <div class="modal-header">
