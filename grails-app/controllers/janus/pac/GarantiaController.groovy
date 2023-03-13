@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException
 class GarantiaController {
 
     def buscadorService
+    def dbConnectionService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -122,7 +123,7 @@ class GarantiaController {
     }
 
     def addGarantiaContrato() {
-//        println params
+        println("params gara " + params)
         def garantia, datos = true, padre = null
 
         switch (params.tipo.toString().trim().toLowerCase()) {
@@ -297,6 +298,54 @@ class GarantiaController {
 
     def fechas_ajax () {
 
+    }
+
+    def verificarFecha_ajax(){
+
+        def dias = 0
+
+        if(params.fecha1 && params.fecha2){
+
+            def f1 = new Date().parse("dd-MM-yyyy", params.fecha1)
+            def f2 = new Date().parse("dd-MM-yyyy", params.fecha2)
+
+
+            def r = f2.getTime()- f1.getTime()
+            dias = r / (1000 * 60 * 60 * 24)
+
+            if (dias < 0) {
+                dias = 0;
+            }
+
+            render dias
+
+        }else{
+            render dias
+        }
+    }
+
+    def buscadorAseguradora_ajax() {
+
+    }
+
+    def tablaAseguradoras_ajax () {
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['asgrnmbr']
+        def bsca
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+
+        def select = "select * from asgr"
+        def txwh = " where $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by asgrnmbr limit 30 ".toString()
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        [data: datos]
     }
 
 

@@ -4,13 +4,13 @@
     <meta name="layout" content="main">
     <title>Garantías contrato</title>
 
-%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
-%{--    <script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>--}%
 
-%{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-%{--    <link href='${resource(dir: "js/jquery/plugins/box/css", file: "jquery.luz.box.css")}' rel='stylesheet' type='text/css'>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--    <link href='${resource(dir: "js/jquery/plugins/box/css", file: "jquery.luz.box.css")}' rel='stylesheet' type='text/css'>--}%
 
     <style type="text/css">
     .selected, .selected td {
@@ -35,27 +35,27 @@
 <body>
 
 %{--<div class="col-md-12" style="margin-bottom: 10px;">--}%
-    <div class="col-md-9 btn-group" role="navigation">
-        <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-ajax btn-new" title="Regresar al contrato">
-            <i class="fa fa-arrow-left"></i>
-            Contrato
-        </g:link>
-        <a href="#" id="btnReporte" class="btn"><i class="fa fa-print"></i>
-            Reporte
-        </a>
-        <a href="#" id="btnReporteGeneral" class="btn"><i class="fa fa-print"></i>
-            Reporte General Garantías
-        </a>
-        <a href="#" id="btnReporteVenceran" class="btn"><i class="fa fa-print"></i>
-            Reporte Grt. que vencerán
-        </a>
-        <a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-print"></i>
-            Reporte Grt. Devueltas
-        </a>
-        <a href="#" id="btnReporteVencidas" class="btn"><i class="fa fa-print"></i>
-            Reporte Grt. Vencidas
-        </a>
-    </div>
+<div class="col-md-9 btn-group" role="navigation">
+    <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-info btn-new" title="Regresar al contrato">
+        <i class="fa fa-arrow-left"></i>
+        Contrato
+    </g:link>
+    <a href="#" id="btnReporte" class="btn"><i class="fa fa-print"></i>
+        Reporte
+    </a>
+    <a href="#" id="btnReporteGeneral" class="btn"><i class="fa fa-print"></i>
+        Reporte General Garantías
+    </a>
+    <a href="#" id="btnReporteVenceran" class="btn"><i class="fa fa-print"></i>
+        Reporte Grt. que vencerán
+    </a>
+    <a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-print"></i>
+        Reporte Grt. Devueltas
+    </a>
+    <a href="#" id="btnReporteVencidas" class="btn"><i class="fa fa-print"></i>
+        Reporte Grt. Vencidas
+    </a>
+</div>
 %{--</div>--}%
 
 
@@ -139,12 +139,12 @@
 
         <div class="linea" style="height: 100px;"></div>
 
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-bottom: 10px">
             <div class="col-md-1">
                 Tipo
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <g:select name="tipoGarantia" from="${janus.pac.TipoGarantia.list([sort: 'descripcion'])}" class="required" optionKey="id" optionValue="descripcion"/>
             </div>
 
@@ -156,7 +156,7 @@
                 <g:textField name="codigo" class="required allCaps"/>
             </div>
 
-            <div class="col-md-1">
+            <div class="col-md-2">
                 Grnt. Original
             </div>
 
@@ -170,9 +170,12 @@
                 Aseguradora
             </div>
 
-            <div class="col-md-4">
-                <g:textField name="aseguradoraTxt" class=" required"/>
+            <div class="col-md-3">
+                <g:textField name="aseguradoraTxt" class=" required" readonly=""/>
                 <g:hiddenField name="aseguradora" id="aseguradora" class="required"/>
+                <a href="#" class="btn btn-xs btn-info" title="Buscar aseguradora" style="margin-top: -5px" id="btnBuscadorASG">
+                    <i class="fa fa-search"></i>
+                </a>
             </div>
 
             <div class="col-md-1">
@@ -183,14 +186,14 @@
                 <g:select name="tipoDocumentoGarantia" from="${janus.pac.TipoDocumentoGarantia.list([sort: 'descripcion'])}" class="required" optionKey="id" optionValue="descripcion"/>
             </div>
 
-            <div class="col-md-1">
+            <div class="col-md-2">
                 Monto
             </div>
 
-            <div class="col-md-2 input-append">
+            <div class="col-md-3 input-append">
                 <g:textField name="monto" class="required number"/>
-                <div class="btn-group">
-                    <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <div class="btn-group" >
+                    <button class="btn btn-xs dropdown-toggle" data-toggle="dropdown">
                         <span id="monedaSelected" data-id="${janus.pac.Moneda.findByCodigo("USD")?.id}" data-nombre="${janus.pac.Moneda.findByCodigo("USD")?.codigo}">
                             ${janus.pac.Moneda.findByCodigo("USD")?.codigo}
                         </span>
@@ -201,7 +204,7 @@
                             <li id="mn-${moneda.id}" data-id="${moneda.id}" data-nombre="${moneda.codigo}" class="monedas ${moneda.codigo == 'USD' ? 'selected' : ''}">
                                 <a>
                                     <g:if test="${moneda.codigo == 'USD'}">
-                                        <i class="icon-chevron-right" id="marcaMoneda"></i>
+                                        <i class="fa fa-money-bill" id="marcaMoneda"></i>
                                     </g:if>
                                     ${moneda.codigo}
                                 </a>
@@ -212,14 +215,13 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12" style="margin-bottom: 5px">
             <div class="col-md-1">
                 Observaciones
             </div>
             <div class="col-md-10">
-                <g:textField name="observaciones" class=""/>
+                <g:textField name="observaciones" class="form-control"/>
             </div>
-
         </div>
 
         <div class="col-md-12">
@@ -227,8 +229,8 @@
                 Emisión
             </div>
 
-            <div class="col-md-2">
-                <elm:datepicker name="fechaInicio" class="required" onClose="updateDias"/>
+            <div class="col-md-3">
+                <input aria-label="" name="fechaInicio" id='fecha1' type='text' class="input-small required"  />
             </div>
 
             <div class="col-md-1">
@@ -236,17 +238,16 @@
             </div>
 
             <div class="col-md-2">
-                <elm:datepicker name="fechaFinalizacion" class="required" onClose="updateDias"/>
+                <input aria-label="" name="fechaFinalizacion" id='fecha2' type='text' class="input-small required"  />
             </div>
 
-            <div class="col-md-1" style="width: 8px;">
+            <div class="col-md-2" >
                 Días
             </div>
 
-            <div class="col-md-2">
-                <g:textField name="diasGarantizados" class="required" readonly="true"/>
+            <div class="col-md-1">
+                <g:textField name="diasGarantizados" class="form-control required" readonly="true"/>
             </div>
-
 
             <div class="col-md-2">
                 <div class="btn-toolbar" id="btnsAdd">
@@ -259,17 +260,17 @@
 
                 <div class="btn-toolbar hide" id="btnsEdit">
                     <div class="btn-group">
-                        <a href="#" id="btnNew" class="btn" rel="tooltip" title="Nuevo">
+                        <a href="#" id="btnNew" class="btn btn-xs btn-info" rel="tooltip" title="Nuevo">
                             <i class="fa fa-file"></i>
                         </a>
                         <g:hiddenField name="id"/>
-                        <a href="#" id="btnSave" class="btn" rel="tooltip" title="Guardar">
+                        <a href="#" id="btnSave" class="btn btn-xs btn-success" rel="tooltip" title="Guardar">
                             <i class="fa fa-save"></i>
                         </a>
-                        <a href="#" id="btnRenew" class="btn" rel="tooltip" title="Renovar">
+                        <a href="#" id="btnRenew" class="btn btn-xs" rel="tooltip" title="Renovar">
                             <i class="fa fa-retweet"></i>
                         </a>
-                        <a href="#" id="btnDelete" class="btn" rel="tooltip" title="Eliminar">
+                        <a href="#" id="btnDelete" class="btn btn-xs btn-danger" rel="tooltip" title="Eliminar">
                             <i class="fa fa-trash"></i>
                         </a>
                     </div>
@@ -341,36 +342,95 @@
 
 <script type="text/javascript">
 
+    var bcpp;
+
+    $('#fecha1, #fecha2').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        widgetPositioning: {
+            horizontal: "left",
+            vertical: "top"
+        },
+        icons: {
+        }
+    });
+
     var $frm = $("#frmGarantia"), $monedaSelected = $("#monedaSelected"), $body = $("#tbGarantias");
 
-    function daydiff(first, second) {
-        return (second - first) / (1000 * 60 * 60 * 24)
+    // function daydiff(first, second) {
+    //     return (second - first) / (1000 * 60 * 60 * 24)
+    // }
+
+    $("#fecha1, #fecha2").on("dp.change" , function () {
+        ff();
+    });
+
+    function ff () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'garantia', action: 'verificarFecha_ajax')}',
+            data:{
+                fecha1: $("#fecha1").val(),
+                fecha2: $("#fecha2").val()
+            },
+            success: function (msg){
+                $("#diasGarantizados").val(msg);
+            }
+        })
     }
 
-    function updateDias() {
-        var ini = $("#fechaInicio").datepicker("getDate");
-        var fin = $("#fechaFinalizacion").datepicker("getDate");
-        if (ini && fin) {
-            var dif = daydiff(ini, fin);
-            if (dif < 0) {
-                dif = 0;
-            }
-            $("#diasGarantizados").val(dif);
-        }
-        if (ini) {
-            $("#fechaFinalizacion").datepicker("option", "minDate", ini.add(1).days());
-        }
-        if (fin) {
-            $("#fechaInicio").datepicker("option", "maxDate", fin.add(-1).days());
-        }
+    $("#btnBuscadorASG").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'garantia', action:'buscadorAseguradora_ajax')}",
+            data    : {},
+            success : function (msg) {
+                bcpp = bootbox.dialog({
+                    id      : "dlgBuscarASG",
+                    title   : "Buscar Aseguradora",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function cerrarBuscadorASG(){
+        bcpp.modal("hide")
     }
+
+
+    // function updateDias() {
+    //     var ini = $("#fechaInicio").datepicker("getDate");
+    //     var fin = $("#fechaFinalizacion").datepicker("getDate");
+    //     if (ini && fin) {
+    //         var dif = daydiff(ini, fin);
+    //         if (dif < 0) {
+    //             dif = 0;
+    //         }
+    //         $("#diasGarantizados").val(dif);
+    //     }
+    //     if (ini) {
+    //         $("#fechaFinalizacion").datepicker("option", "minDate", ini.add(1).days());
+    //     }
+    //     if (fin) {
+    //         $("#fechaInicio").datepicker("option", "maxDate", fin.add(-1).days());
+    //     }
+    // }
 
     function rowsIniciales() {
         var g = <elm:poneHtml textoHtml='${garantias}'/>
         for (var i = 0; i < g.length; i++) {
             addRow(g[i], "last");
         }
-        console.log()
     }
 
     function reset() {
@@ -412,20 +472,19 @@
         var $add = $("#btnsAdd"), $edit = $("#btnsEdit");
         switch (tipo.toLowerCase()) {
             case "edit":
-                $add.hide();
-                $edit.show();
+                $add.addClass('hide');
+                $edit.removeClass('hide');
                 break;
             case "create":
                 reset();
-                $edit.hide();
-                $add.show();
+                $edit.addClass('hide');
+                $add.removeClass('hide');
                 break;
         }
         estado();
     }
 
     function clicks($tr) {
-//                var editables = [1, 2];  //vigente - pedido de cobro
         $tr.dblclick(function (ev) {
             if ($(this).hasClass("1") || $(this).hasClass("2")) {
                 padreCod = $tr.data("codigo");
@@ -441,7 +500,7 @@
 //                ////console.log("update row");
         var $tr = $("#" + data.id);
         $.each(data, function (k, v) {
-            if (k == "monto") {
+            if (k === "monto") {
                 $tr.find(".monto").text(number_format(data.monto, 2, ".", ",") + " " + data.monedaTxt)
             } else {
                 $tr.find("." + k).text(v);
@@ -490,7 +549,7 @@
         switch (estado) {
             case "1": // Vigente
                 var $devolver = $("<a href='#' class='btn btn-xs' title='Devolver'><i class='fa fa-reply'></i></a>");
-                var $pedirCobro = $("<a href='#' class='btn btn-xs' title='Pedir Cobro'><i class='fa fa-money'></i></a>");
+                var $pedirCobro = $("<a href='#' class='btn btn-xs' title='Pedir Cobro'><i class='fa fa-check'></i></a>");
 
                 $devolver.click(function () {
                     cambiarEstado(id, 3, "Devolver garantía");
@@ -605,7 +664,6 @@
             location.href = "${g.createLink(controller: 'reportes3', action:'reporteGarantiasVencidas')}"
         });
 
-
         $frm.validate();
 
         $("#btnAdd, #btnSave, #btnRenew").click(function () {
@@ -626,8 +684,8 @@
                     monto                    : $("#monto").val(),
                     monedaTxt                : $monedaSelected.data("nombre"),
                     moneda                   : $monedaSelected.data("id"),
-                    fechaInicio              : $("#fechaInicio").val(),
-                    fechaFinalizacion        : $("#fechaFinalizacion").val(),
+                    fechaInicio              : $("#fecha1").val(),
+                    fechaFinalizacion        : $("#fecha2").val(),
                     diasGarantizados         : $("#diasGarantizados").val(),
                     estado                   : 1,
                     estadoTxt                : 'Vigente',
@@ -636,18 +694,18 @@
                     observaciones            : $("#observaciones").val()
                 };
                 var continua = true;
-                if (btn == "btnAdd") {
+                if (btn === "btnAdd") {
                     $body.children("tr").each(function () {
 //                                console.log('..etdo......', $(this).attr("etdo").toString())
-                        if ($(this).data("tipoGarantia").toString() == data.tipoGarantia.toString() &&
-                                $(this).attr("etdo").toString() == "Vigente" ) {
+                        if ($(this).data("tipoGarantia").toString() === data.tipoGarantia.toString() &&
+                            $(this).attr("etdo").toString() === "Vigente" ) {
                             continua = false;
                         }
                     });
-                } else if (btn == "btnEdit") {
+                } else if (btn === "btnEdit") {
                     data.id = $("#id").val();
                     data.tipo = "edit";
-                } else if (btn == "btnRenew") {
+                } else if (btn === "btnRenew") {
                     data.id = $("#id").val();
                     data.tipo = "renew";
                     data.padre = padreCod;
@@ -660,13 +718,13 @@
                         data    : data,
                         success : function (msg) {
                             var parts = msg.split("_");
-                            if (parts[0] == "OK") {
-                                if (btn == "btnAdd") {
+                            if (parts[0] === "OK") {
+                                if (btn === "btnAdd") {
                                     data.id = parts[1];
                                     addRow(data, "first");
-                                } else if (btn == "btnEdit") {
+                                } else if (btn === "btnEdit") {
                                     updateRow(data);
-                                } else if (btn == "btnRenew") {
+                                } else if (btn === "btnRenew") {
                                     $("tr.selected").addClass("Renovada").data({
                                         estadoTxt : "Renovada",
                                         estado    : 6
@@ -675,11 +733,9 @@
                                     data.id = parts[1];
                                     addRow(data, "selected");
                                     botones("create");
-//                                            ////console.log(data);
                                 }
                                 reset();
                             } else {
-//                                        ////console.log("ERROR!!!!");
                             }
                         }
                     });

@@ -305,17 +305,6 @@
         });
     }
 
-    // $("#modal-presupuesto").dialog({
-    //     autoOpen: false,
-    //     resizable: true,
-    //     modal: true,
-    //     draggable: false,
-    //     width: 800,
-    //     height: 440,
-    //     position: 'center',
-    //     title: 'Crear Presupuesto'
-    // });
-
     $(function () {
 
         $("#item_agregar_prsp").click(function () {
