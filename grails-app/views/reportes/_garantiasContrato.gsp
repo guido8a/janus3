@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 3/5/13
-  Time: 11:51 AM
-  To change this template use File | Settings | File Templates.
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
@@ -17,7 +10,6 @@
         }
 
         .hoja {
-            /*background  : #e6e6fa;*/
             height      : 24.7cm; /*29.7-(1.5*2)*/
             font-family : arial;
             font-size   : 10px;
@@ -27,12 +19,9 @@
         .tituloPdf {
             height        : 100px;
             font-size     : 11px;
-            /*font-weight   : bold;*/
             text-align    : center;
             margin-bottom : 5px;
             width         : 95%;
-            /*font-family       : 'Tulpen One', cursive !important;*/
-            /*font-family : "Open Sans Condensed" !important;*/
         }
 
         h1 {
@@ -57,8 +46,6 @@
 
         td {
             margin : 0px !important;
-            /*border : none !important;*/
-
         }
 
         .even {
@@ -109,21 +96,21 @@
                 </tr>
                 <tr>
                     <td class="bold">Multa por retraso<br/>de obra</td>
-                    <td><elm:numero number="${contrato?.multaRetraso}" decimales="0" /> x 1000</td>
+                    <td>${contrato?.multaRetraso} x 1000</td>
                     <td class="bold">Multa por no <br/>presentación de planilla</td>
-                    <td><elm:numero number="${contrato?.multaPlanilla}" decimales="0"/> x 1000</td>
+                    <td>${contrato?.multaPlanilla} x 1000</td>
                 </tr>
                 <tr>
                     <td class="bold">Monto</td>
-                    <td>$<elm:numero number="${contrato?.monto}"/></td>
+                    <td>$ ${contrato?.monto}"</td>
                     <td class="bold">Plazo</td>
-                    <td><elm:numero number="${contrato?.plazo}" decimales="0"/> días</td>
+                    <td>${contrato?.plazo} días</td>
                 </tr>
                 <tr>
                     <td class="bold">Anticipo</td>
-                    <td><elm:numero number="${contrato?.porcentajeAnticipo}" decimales="0"/>%</td>
+                    <td>${contrato?.porcentajeAnticipo} %</td>
                     <td class="bold">Valor anticipo</td>
-                    <td>$<elm:numero number="${contrato?.anticipo}"/></td>
+                    <td>"$" ${contrato?.anticipo} </td>
                 </tr>
                 <tr>
                     <td class="bold">Índices de la oferta</td>
@@ -152,7 +139,7 @@
                 </tr>
                 <tr>
                     <td class="bold">Contratista</td>
-                    <td>${contrato?.oferta?.proveedor?.nombre.replaceAll(/&/, /&amp;/)}</td>
+                    <td>${contrato?.oferta?.proveedor?.nombre?.replaceAll(/&/, /&amp;/)}</td>
                 </tr>
             </table>
 
@@ -181,13 +168,11 @@
                             <td>${gar.estado?.descripcion}</td>
                             <td>${gar.fechaInicio.format("dd-MM-yyyy")}</td>
                             <td>${gar.fechaFinalizacion.format("dd-MM-yyyy")}</td>
-                            <td class="num"><elm:numero number="${gar.monto}"/> ${gar.moneda?.codigo}</td>
+                            <td class="num">${gar.monto}${gar?.moneda?.codigo}</td>
                         </tr>
                     </g:each>
                 </tbody>
             </table>
-
         </div>
-
     </body>
 </html>

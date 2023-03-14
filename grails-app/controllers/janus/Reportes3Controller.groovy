@@ -2214,7 +2214,7 @@ class Reportes3Controller {
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("CÁLCULO DEL VALOR POR HORA DE MANO DE OBRA", times14bold ))
         headers.add(new Paragraph(" "))
-        headers.add(new Paragraph("Babahoyo, " + fechaCalculo, times12bold));
+        headers.add(new Paragraph("Quito, " + fechaCalculo, times12bold));
         headers.add(new Paragraph(" ", times10bold));
         headers.add(new Paragraph(item.nombre, times12bold));
         headers.add(new Paragraph(" ", times10bold));
@@ -2361,7 +2361,7 @@ class Reportes3Controller {
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("CÁLCULO DEL VALOR POR HORA DE EQUIPOS", times14bold))
         headers.add(new Paragraph(" "))
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()), times12bold));
         headers.add(new Paragraph(" ", times10bold));
         headers.add(new Paragraph("Equipo:" + item.nombre, times12bold));
         headers.add(new Paragraph(" ", times10bold));
@@ -2723,7 +2723,7 @@ class Reportes3Controller {
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("REPORTE DE GARANTÍAS", times14bold ))
         headers.add(new Paragraph(" "))
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()), times12bold));
 //        headers.add(new Paragraph("QUITO, " + new Date().format("dd-MM-yyyy"), times12bold));
         headers.add(new Paragraph(" ", times10bold));
 
@@ -2851,7 +2851,7 @@ class Reportes3Controller {
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("REPORTE DE GARANTÍAS QUE VENCERÁN", times14bold ))
         headers.add(new Paragraph(" "))
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()), times12bold));
         headers.add(new Paragraph(" ", times10bold));
 
         PdfPTable tablaGarantia = new PdfPTable(10);
@@ -2897,25 +2897,16 @@ class Reportes3Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
     def reporteGarantiasDevueltas () {
-        //        println("-->>" + params)
 
-//        def fechaHasta = new Date().parse("dd-MM-yyyy",params.hasta)
-//        def fechaDesde = new Date().parse("dd-MM-yyyy",params.desde)
         def estado = EstadoGarantia.get(3)
         def contratos = Acta.findAllByTipo("D").contrato.id
         def fil = Contrato.list().id - contratos
         def filtrados = Contrato.findAllByIdInList(fil)
-//        def garantias =  Garantia.withCriteria {
-//            eq("estado", estado)
-//        }
 
-
-        def garantias = Garantia.findAllByContratoInListAndEstado(filtrados, estado, [sort:"contrato.contratista.nombre"],[sort:"fechaInicio", order:'desc'])
-
+        def garantias = Garantia.findAllByContratoInListAndEstado(filtrados, estado)
 
         def auxiliar = Auxiliar.get(1)
         def prmsHeaderHoja = [border: Color.WHITE]
@@ -2980,7 +2971,7 @@ class Reportes3Controller {
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("REPORTE DE GARANTÍAS DEVUELTAS", times14bold ))
         headers.add(new Paragraph(" "))
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()), times12bold));
         headers.add(new Paragraph(" ", times10bold));
 
         PdfPTable tablaGarantia = new PdfPTable(10);
@@ -2991,11 +2982,8 @@ class Reportes3Controller {
         addCellTabla(tablaGarantia, new Paragraph("Contratista", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Tipo de Garantía", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("N° Garantía", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Rnov", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Original", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Aseguradora", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Documento", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Estado", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Monto", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Emisión", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Vencimiento", times8bold), prmsCellHead2)
@@ -3006,11 +2994,8 @@ class Reportes3Controller {
             addCellTabla(tablaGarantia, new Paragraph(it?.contrato?.oferta?.proveedor?.nombre, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.tipoGarantia?.descripcion, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.codigo, times8normal), prmsCellHead4)
-//            addCellTabla(tablaGarantia, new Paragraph(g.formatNumber(number: it?.numeroRenovaciones, format: "###,###", locale: "ec", maxFractionDigits: 0, minFractionDigits: 0), times8normal), prmsCellHead3)
-//            addCellTabla(tablaGarantia, new Paragraph(it?.padre?.codigo, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.aseguradora?.nombre, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.tipoDocumentoGarantia?.descripcion, times8normal), prmsCellHead3)
-//            addCellTabla(tablaGarantia, new Paragraph(it?.estado?.descripcion, times8normal), prmsCellHead3)
             addCellTabla(tablaGarantia, new Paragraph(g.formatNumber(number: it?.monto, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8normal), prmsCellHead5)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaInicio.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaFinalizacion.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
@@ -3029,29 +3014,16 @@ class Reportes3Controller {
 
     }
 
-
     def reporteGarantiasVencidas () {
-        //        println("-->>" + params)
 
-//        def fechaHasta = new Date().parse("dd-MM-yyyy",params.hasta)
-//        def fechaDesde = new Date().parse("dd-MM-yyyy",params.desde)
         def estadoRev = EstadoGarantia.get(3)
         def estadoDev = EstadoGarantia.get(6)
         def contratos = Acta.findAllByTipo("D").contrato.id
         def fil = Contrato.list().id - contratos
         def filtrados = Contrato.findAllByIdInList(fil)
         def hoy = new Date()
-//        def garantias =  Garantia.withCriteria {
-//            ne("estado", estadoRev)
-//            ne("estado", estadoDev)
-//            lt("fechaFinalizacion", hoy)
-//        }
 
-
-        def garantias = Garantia.findAllByContratoInListAndFechaFinalizacionLessThanAndEstadoNotEqualAndEstadoNotEqual(filtrados,
-                hoy, estadoRev, estadoDev, [sort:"contrato.contratista.nombre"],[sort:"fechaInicio",order:'desc'])
-
-//        println("garantias " + garantias)
+        def garantias = Garantia.findAllByContratoInListAndFechaFinalizacionLessThanAndEstadoNotEqualAndEstadoNotEqual(filtrados, hoy, estadoRev, estadoDev)
 
         def auxiliar = Auxiliar.get(1)
         def prmsHeaderHoja = [border: Color.WHITE]
@@ -3116,7 +3088,7 @@ class Reportes3Controller {
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("REPORTE DE GARANTÍAS VENCIDAS", times14bold ))
         headers.add(new Paragraph(" "))
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()), times12bold));
         headers.add(new Paragraph(" ", times10bold));
 
         PdfPTable tablaGarantia = new PdfPTable(12);
@@ -3135,7 +3107,6 @@ class Reportes3Controller {
         addCellTabla(tablaGarantia, new Paragraph("Monto", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Emisión", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Vencimiento", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Cancelación", times8bold), prmsCellHead2)
 
         garantias.each {
             addCellTabla(tablaGarantia, new Paragraph(it?.contrato?.codigo, times8normal), prmsCellHead4)
@@ -3150,7 +3121,6 @@ class Reportes3Controller {
             addCellTabla(tablaGarantia, new Paragraph(g.formatNumber(number: it?.monto, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8normal), prmsCellHead5)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaInicio.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaFinalizacion.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
-//            addCellTabla(tablaGarantia, new Paragraph(it?.cancelada?.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
         }
 
         document.add(headers)
@@ -4067,7 +4037,7 @@ class Reportes3Controller {
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("REPORTE DE GARANTÍAS VENCIDAS", times14bold ))
         headers.add(new Paragraph(" "))
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()), times12bold));
         headers.add(new Paragraph(" ", times10bold));
 
         PdfPTable tablaGarantia = new PdfPTable(12);

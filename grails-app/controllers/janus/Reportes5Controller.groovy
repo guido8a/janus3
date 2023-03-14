@@ -834,7 +834,7 @@ class Reportes5Controller{
         label = new Label(1, 3, auxiliar?.memo1, times16format); sheet.addCell(label);
         label = new Label(1, 4, "FÓRMULA POLINÓMICA", times16format); sheet.addCell(label);
         label = new Label(1, 6, obra?.formulaPolinomica, times16format); sheet.addCell(label);
-        label = new Label(1, 8, "De existir variaciones en los costos de los componentes de precios unitarios estipulados en el contrato para la contrucción de:", times16format);
+        label = new Label(1, 8, "De existir variaciones en los costos de los componentes de precios unitarios estipulados en el contrato para la construcción de:", times16format);
         sheet.addCell(label);
 
         label = new Label(1, 10, "Nombre: ", times16format); sheet.addCell(label);

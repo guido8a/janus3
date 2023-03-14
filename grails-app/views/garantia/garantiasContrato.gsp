@@ -4,14 +4,6 @@
     <meta name="layout" content="main">
     <title>Garantías contrato</title>
 
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-    %{--    <script src="${resource(dir: 'js/jquery/plugins', file: 'jquery.livequery.min.js')}"></script>--}%
-
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--    <link href='${resource(dir: "js/jquery/plugins/box/css", file: "jquery.luz.box.css")}' rel='stylesheet' type='text/css'>--}%
-
     <style type="text/css">
     .selected, .selected td {
         background : #B8D5DD !important;
@@ -34,8 +26,7 @@
 
 <body>
 
-%{--<div class="col-md-12" style="margin-bottom: 10px;">--}%
-<div class="col-md-9 btn-group" role="navigation">
+<div class="col-md-9 btn-group">
     <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-info btn-new" title="Regresar al contrato">
         <i class="fa fa-arrow-left"></i>
         Contrato
@@ -56,10 +47,8 @@
         Reporte Grt. Vencidas
     </a>
 </div>
-%{--</div>--}%
 
-
-<div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 10px;position: relative; min-height: 170px;">
+<div style="border-bottom: 1px solid black;padding-left: 50px;margin-top: 50px;position: relative; min-height: 150px;">
     <p class="css-vertical-text">Contrato</p>
 
     <div class="linea" style="height: 100px;"></div>
@@ -230,7 +219,7 @@
             </div>
 
             <div class="col-md-3">
-                <input aria-label="" name="fechaInicio" id='fecha1' type='text' class="input-small required"  />
+                <input aria-label="" name="fechaInicio" id='fechaInicio' type='text' class="input-small required"  />
             </div>
 
             <div class="col-md-1">
@@ -238,7 +227,7 @@
             </div>
 
             <div class="col-md-2">
-                <input aria-label="" name="fechaFinalizacion" id='fecha2' type='text' class="input-small required"  />
+                <input aria-label="" name="fechaFinalizacion" id='fechaFinalizacion' type='text' class="input-small required"  />
             </div>
 
             <div class="col-md-2" >
@@ -344,7 +333,7 @@
 
     var bcpp;
 
-    $('#fecha1, #fecha2').datetimepicker({
+    $('#fechaInicio, #fechaFinalizacion').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
         sideBySide: true,
@@ -358,11 +347,7 @@
 
     var $frm = $("#frmGarantia"), $monedaSelected = $("#monedaSelected"), $body = $("#tbGarantias");
 
-    // function daydiff(first, second) {
-    //     return (second - first) / (1000 * 60 * 60 * 24)
-    // }
-
-    $("#fecha1, #fecha2").on("dp.change" , function () {
+    $("#fechaInicio, #fechaFinalizacion").on("dp.change" , function () {
         ff();
     });
 
@@ -371,8 +356,8 @@
             type: 'POST',
             url: '${createLink(controller: 'garantia', action: 'verificarFecha_ajax')}',
             data:{
-                fecha1: $("#fecha1").val(),
-                fecha2: $("#fecha2").val()
+                fecha1: $("#fechaInicio").val(),
+                fecha2: $("#fechaFinalizacion").val()
             },
             success: function (msg){
                 $("#diasGarantizados").val(msg);
@@ -407,25 +392,6 @@
         bcpp.modal("hide")
     }
 
-
-    // function updateDias() {
-    //     var ini = $("#fechaInicio").datepicker("getDate");
-    //     var fin = $("#fechaFinalizacion").datepicker("getDate");
-    //     if (ini && fin) {
-    //         var dif = daydiff(ini, fin);
-    //         if (dif < 0) {
-    //             dif = 0;
-    //         }
-    //         $("#diasGarantizados").val(dif);
-    //     }
-    //     if (ini) {
-    //         $("#fechaFinalizacion").datepicker("option", "minDate", ini.add(1).days());
-    //     }
-    //     if (fin) {
-    //         $("#fechaInicio").datepicker("option", "maxDate", fin.add(-1).days());
-    //     }
-    // }
-
     function rowsIniciales() {
         var g = <elm:poneHtml textoHtml='${garantias}'/>
         for (var i = 0; i < g.length; i++) {
@@ -454,20 +420,6 @@
         });
     }
 
-    function estado() {
-//                console.log("ASDF");
-//                $(".estado").show();
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${createLink(action:'estados')}",--}%
-        %{--data    : {--}%
-        %{--},--}%
-        %{--success : function (msg) {--}%
-        %{--$(".estado.sel").html(msg);--}%
-        %{--}--}%
-        %{--});--}%
-    }
-
     function botones(tipo) {
         var $add = $("#btnsAdd"), $edit = $("#btnsEdit");
         switch (tipo.toLowerCase()) {
@@ -481,8 +433,8 @@
                 $add.removeClass('hide');
                 break;
         }
-        estado();
     }
+
 
     function clicks($tr) {
         $tr.dblclick(function (ev) {
@@ -497,7 +449,6 @@
     }
 
     function updateRow(data) {
-//                ////console.log("update row");
         var $tr = $("#" + data.id);
         $.each(data, function (k, v) {
             if (k === "monto") {
@@ -511,34 +462,25 @@
     }
 
     function cambiarEstado(id, estado, title) {
-
-        $.box({
-            imageClass : false,
-            input      : "<textarea style='width:260px; height: 70px;'></textarea>",
-            type       : "prompt",
-            title      : title,
-            text       : "Observaciones",
-            iconClose  : false,
-            dialog     : {
-                buttons : {
-                    "Guardar"  : function (r) {
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(action:'cambiarEstado')}",
-                            data    : {
-                                id     : id,
-                                estado : estado,
-                                obs    : r
-                            },
-                            success : function (msg) {
-                                if (msg !== "NO") {
-                                    updateRow($.parseJSON(msg));
-                                }
+        bootbox.prompt({
+            size: 'small',
+            title: title,
+            callback: function(result) {
+                if(result){
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(action:'cambiarEstado')}",
+                        data    : {
+                            id     : id,
+                            estado : estado,
+                            obs    : result
+                        },
+                        success : function (msg) {
+                            if (msg !== "NO") {
+                                updateRow($.parseJSON(msg));
                             }
-                        });
-                    },
-                    "Cancelar" : function () {
-                    }
+                        }
+                    });
                 }
             }
         });
@@ -548,8 +490,8 @@
         $td.empty();
         switch (estado) {
             case "1": // Vigente
-                var $devolver = $("<a href='#' class='btn btn-xs' title='Devolver'><i class='fa fa-reply'></i></a>");
-                var $pedirCobro = $("<a href='#' class='btn btn-xs' title='Pedir Cobro'><i class='fa fa-check'></i></a>");
+                var $devolver = $("<a href='#' class='btn btn-xs btn-warning' title='Devolver'><i class='fa fa-reply'></i></a>");
+                var $pedirCobro = $("<a href='#' class='btn btn-xs btn-success' title='Pedir Cobro'><i class='fa fa-check'></i></a>");
 
                 $devolver.click(function () {
                     cambiarEstado(id, 3, "Devolver garantía");
@@ -561,7 +503,7 @@
                 $td.append($devolver).append($pedirCobro);
                 break;
             case "2": // Pedido de cobro
-                var $efectivizar = $("<a href='#' class='btn btn-mini' title='Efectivizar'><i class='icon icon-archive'></i></a>");
+                var $efectivizar = $("<a href='#' class='btn btn-xs btn-success' title='Efectivizar'><i class='fa fa-archive'></i></a>");
                 $efectivizar.click(function () {
                     cambiarEstado(id, 4, "Efectivizar garantía");
                 });
@@ -627,7 +569,7 @@
         });
 
         $("#btnReporte").click(function () {
-            location.href = "${createLink(controller: 'pdf',action: 'pdfLink')}?url=${createLink(controller: 'reportes',action: 'garantiasContrato')}/${contrato?.id}"
+            location.href="${createLink(controller: 'reportes', action: '_garantiasContrato')}/${contrato?.id}";
         });
 
         $("#btnReporteGeneral").click(function () {
@@ -639,18 +581,28 @@
                 type: "POST",
                 url: "${createLink(controller: 'garantia', action: 'fechas_ajax')}",
                 success: function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-print"></i> Imprimir</a>');
 
-                    btnSave.click(function () {
-                        location.href = "${g.createLink(controller: 'reportes3', action:'reporteGarantiasVenceran' )}?desde=" + $("#fechaDesde").val() + "&hasta=" + $("#fechaHasta").val()
-                        $("#modal-presupuesto").modal("hide");
-                    });
-
-                    $("#modalTitle-presupuesto").html("Garantías que vencerán para el período:");
-                    $("#modalBody-presupuesto").html(msg);
-                    $("#modalFooter-presupuesto").html("").append(btnOk).append(btnSave);
-                    $("#modal-presupuesto").modal("show");
+                    var b = bootbox.dialog({
+                        id      : "dlgImprimir",
+                        title   : "Garantías que vencerán para el período",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-print'></i> Imprimir",
+                                className : "btn-success",
+                                callback  : function () {
+                                    location.href = "${g.createLink(controller: 'reportes3', action:'reporteGarantiasVenceran' )}?desde=" + $("#fechaDesde").val() + "&hasta=" + $("#fechaHasta").val()
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
                 }
             });
             return false;
@@ -668,7 +620,7 @@
 
         $("#btnAdd, #btnSave, #btnRenew").click(function () {
             var btn = $(this).attr("id");
-            if (btn == "btnRenew") {
+            if (btn === "btnRenew") {
                 $("#tipoGarantia").val($("tr.selected").data("tipoGarantia"));
             }
             if ($frm.valid()) {
@@ -684,8 +636,8 @@
                     monto                    : $("#monto").val(),
                     monedaTxt                : $monedaSelected.data("nombre"),
                     moneda                   : $monedaSelected.data("id"),
-                    fechaInicio              : $("#fecha1").val(),
-                    fechaFinalizacion        : $("#fecha2").val(),
+                    fechaInicio              : $("#fechaInicio").val(),
+                    fechaFinalizacion        : $("#fechaFinalizacion").val(),
                     diasGarantizados         : $("#diasGarantizados").val(),
                     estado                   : 1,
                     estadoTxt                : 'Vigente',
@@ -711,7 +663,6 @@
                     data.padre = padreCod;
                 }
                 if (continua) {
-//                            ////console.log(data);
                     $.ajax({
                         type    : "POST",
                         url     : "${createLink(action:'addGarantiaContrato')}",
@@ -740,21 +691,7 @@
                         }
                     });
                 } else {
-                    $.box({
-                        imageClass : "box_info",
-                        title      : "Alerta",
-                        text       : "Solamente puede ingresar una garantía de cada tipo",
-                        iconClose  : false,
-                        dialog     : {
-                            resizable     : false,
-                            draggable     : false,
-                            closeOnEscape : false,
-                            buttons       : {
-                                "Aceptar" : function () {
-                                }
-                            }
-                        }
-                    });
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Solamente puede ingresar una garantía de cada tipo" + '</strong>');
                 }
             }
         }); //btn add / save / renew
@@ -764,54 +701,90 @@
         }); //btn new
 
         $("#btnDelete").click(function () {
-            $.box({
-                imageClass : "box_info",
-                title      : "Alerta",
-                text       : "Está seguro de querer eliminar esta garantía? Esta acción no puede deshacerse",
-                iconClose  : false,
-                dialog     : {
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : false,
-                    buttons       : {
-                        "Aceptar"  : function () {
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'deleteGarantia')}",
-                                data    : {
-                                    id : $("tr.selected").attr("id")
-                                },
-                                success : function (msg) {
-                                    if (msg == "OK") {
-                                        $("tr.selected").remove();
-                                        reset();
-                                    } else {
-                                        $.box({
-                                            imageClass : "box_info",
-                                            title      : "Alerta",
-                                            text       : msg,
-                                            iconClose  : false,
-                                            dialog     : {
-                                                resizable     : false,
-                                                draggable     : false,
-                                                closeOnEscape : false,
-                                                buttons       : {
-                                                    "Aceptar" : function () {
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
+
+            bootbox.confirm({
+                title: "Alerta",
+                message: "Está seguro de querer eliminar esta garantía? Esta acción no puede deshacerse",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Salir',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-trash"></i> Borrar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        $.ajax({
+                            type    : "POST",
+                            url     : "${createLink(action:'deleteGarantia')}",
+                            data    : {
+                                id : $("tr.selected").attr("id")
+                            },
+                            success : function (msg) {
+                                if (msg === "OK") {
+                                    $("tr.selected").remove();
+                                    reset();
+                                   log("Garantía borrada correctamente", "success");
+                                } else {
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg + '</strong>');
                                 }
-                            });
-                        },
-                        "Cancelar" : function () {
-                        }
+                            }
+                        });
                     }
                 }
             });
-        }); //btn delete
 
+
+            %{--$.box({--}%
+            %{--    imageClass : "box_info",--}%
+            %{--    title      : "Alerta",--}%
+            %{--    text       : "Está seguro de querer eliminar esta garantía? Esta acción no puede deshacerse",--}%
+            %{--    iconClose  : false,--}%
+            %{--    dialog     : {--}%
+            %{--        resizable     : false,--}%
+            %{--        draggable     : false,--}%
+            %{--        closeOnEscape : false,--}%
+            %{--        buttons       : {--}%
+            %{--            "Aceptar"  : function () {--}%
+            %{--                $.ajax({--}%
+            %{--                    type    : "POST",--}%
+            %{--                    url     : "${createLink(action:'deleteGarantia')}",--}%
+            %{--                    data    : {--}%
+            %{--                        id : $("tr.selected").attr("id")--}%
+            %{--                    },--}%
+            %{--                    success : function (msg) {--}%
+            %{--                        if (msg === "OK") {--}%
+            %{--                            $("tr.selected").remove();--}%
+            %{--                            reset();--}%
+            %{--                        } else {--}%
+            %{--                            $.box({--}%
+            %{--                                imageClass : "box_info",--}%
+            %{--                                title      : "Alerta",--}%
+            %{--                                text       : msg,--}%
+            %{--                                iconClose  : false,--}%
+            %{--                                dialog     : {--}%
+            %{--                                    resizable     : false,--}%
+            %{--                                    draggable     : false,--}%
+            %{--                                    closeOnEscape : false,--}%
+            %{--                                    buttons       : {--}%
+            %{--                                        "Aceptar" : function () {--}%
+            %{--                                        }--}%
+            %{--                                    }--}%
+            %{--                                }--}%
+            %{--                            });--}%
+            %{--                        }--}%
+            %{--                    }--}%
+            %{--                });--}%
+            %{--            },--}%
+            %{--            "Cancelar" : function () {--}%
+            %{--            }--}%
+            %{--        }--}%
+            %{--    }--}%
+            %{--});--}%
+        }); //btn delete
     });
 </script>
 

@@ -40,12 +40,12 @@ class ReportesController {
         }
     }
 
-    def garantiasContrato() {
+    def _garantiasContrato() {
 //        println "reporte garantiasContrato $params"
         def auxiliar = Auxiliar.get(1)
         def contrato = Contrato.get(params.id)
         def garantias = Garantia.findAllByContrato(contrato)
-        return [contrato: contrato, garantias: garantias, auxiliar:auxiliar]
+        renderPdf(template:'/reportes/garantiasContrato', model: [contrato: contrato, garantias: garantias,auxiliar:auxiliar], filename: 'garantiasContrato.pdf')
     }
 
     def rubro = {
@@ -4999,7 +4999,7 @@ class ReportesController {
         Paragraph txtIzq = new Paragraph();
         txtIzq.setAlignment(Element.ALIGN_CENTER);
         txtIzq.setIndentationLeft(20)
-        txtIzq.add(new Paragraph("De existir variaciones en los costos de los componentes de precios unitarios estipulados en el contrato para la contrucción de: ", times10normal));
+        txtIzq.add(new Paragraph("De existir variaciones en los costos de los componentes de precios unitarios estipulados en el contrato para la construcción de: ", times10normal));
         document.add(txtIzq);
 
         PdfPTable tablaObra = new PdfPTable(2);

@@ -114,13 +114,20 @@ class GarantiaController {
 
     def deleteGarantia() {
         def garantia = Garantia.get(params.id)
-        if (Garantia.countByPadre(garantia) == 0) {
-            garantia.delete()
-            render "OK"
-        } else {
+        def existeHijos = Garantia.findAllByPadre(garantia)
+
+        if(existeHijos.size() != 0){
             render "No puede eliminar una garantía de la cual dependen otras"
+        }else{
+            try{
+               garantia.delete(flush: true)
+                render "OK"
+            }catch(e){
+                println("error al borrar la garantía " + garantia.errors)
+                render "Error al borrar la garantía"
+            }
         }
-    }
+     }
 
     def addGarantiaContrato() {
         println("params gara " + params)
