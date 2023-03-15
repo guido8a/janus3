@@ -46,11 +46,9 @@ class Reportes3Controller {
 
 
 
-    def imprimirTablaSub() {
+    def _imprimirTablaSub() {
 //        println "imprimir tabla sub "+params
         def obra = Obra.get(params.obra)
-
-//        println(obra?.fechaCreacionObra)
         def detalle
         def valores
         def subPre
@@ -67,14 +65,11 @@ class Reportes3Controller {
         if (params.sub)
             if (params.sub == '-1'){
                 valores = preciosService.rbro_pcun_v2(obra?.id)
-//                valores = preciosService.rbro_pcun_vae(obra?.id)
             }else {
                valores = preciosService.rbro_pcun_v3(obra?.id, params.sub)
-//               valores = preciosService.rbro_pcun_vae2(obra?.id, params.sub)
             }
         else
             valores = preciosService.rbro_pcun_v2(obra.id)
-//            valores = preciosService.rbro_pcun_vae(obra.id)
 
         def nombres = []
         def corregidos = []
@@ -117,7 +112,9 @@ class Reportes3Controller {
         def indirecto = obra.totales / 100
         preciosService.ac_rbroObra(obra.id)
 
-        [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos, auxiliar: auxiliar]
+        renderPdf(template:'/reportes3/imprimirTablaSub', model: [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos, auxiliar: auxiliar], filename: 'presupuesto.pdf')
+
+//        [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos, auxiliar: auxiliar]
     }
 
     def imprimirTablaSubVae () {

@@ -1568,4 +1568,9 @@ class ContratoController {
         }
     }
 
+    def botonesRubros_ajax(){
+        def contrato = Contrato.get(params.id)
+        return[contrato: contrato]
+    }
+
 } //fin controller

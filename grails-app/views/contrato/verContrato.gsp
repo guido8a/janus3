@@ -483,19 +483,6 @@
     </fieldset>
 </div>
 
-%{--<div id="imprimirDialog">--}%
-
-%{--<fieldset>--}%
-
-%{--<div class="col-md-3">--}%
-
-%{--No existe una fecha de inicio de obra, no se puede imprimir el contrato!--}%
-
-%{--</div>--}%
-
-%{--</fieldset>--}%
-
-%{--</div>--}%
 
 <div id="LQDialogo">
 
@@ -703,13 +690,11 @@
                     console.log('aceptar');
                     $(this).replaceWith(spinner);
                     $("#frmaIndi").submit();
-//                    location.reload(true);
                 });
                 $("#modal_tittle_var").text("Costos Indirectos");
                 $("#modal_body_var").html(msg);
                 $("#fiscalizador").data("contrato", "${contrato?.id}");
                 $("#modal_footer_var").html($btnCerrar).append($btnOk);
-//                $("#modal_footer_var").html($btnOk);
                 $("#modal-var").modal("show");
             }
         });
@@ -798,16 +783,8 @@
     }).keyup(function () {
         var enteros = $(this).val();
         updateAnticipo();
-//                        var porcentaje = $("#porcentajeAnticipo").val();
-//                        var monto = $("#monto").val();
-//                        var anticipoValor = (porcentaje * (monto)) / 100;
-//                        $("#anticipo").val(number_format(anticipoValor, 2, ".", ""));
     }).click(function () {
         updateAnticipo();
-//                        var porcentaje = $("#porcentajeAnticipo").val();
-//                        var monto = $("#monto").val();
-//                        var anticipoValor = (porcentaje * (monto)) / 100;
-//                        $("#anticipo").val(number_format(anticipoValor, 2, ".", ","));
     });
 
     $("#financiamiento").keydown(function (ev) {
@@ -890,8 +867,8 @@
         $("#modalTitle_busqueda").html("Lista de obras");
         $("#modalFooter_busqueda").html("").append(btnOk);
         $("#modal-busqueda").modal("show");
-        $("#contenidoBuscador").html("")
-        $("#buscarDialog").unbind("click")
+        $("#contenidoBuscador").html("");
+        $("#buscarDialog").unbind("click");
         $("#buscarDialog").bind("click", enviarObra)
     });
 
@@ -948,7 +925,6 @@
     });
 
     if (${contrato?.codigo != null}) {
-//                $("#btn-imprimir").attr("disabled", false);
         $(".activo").focus(function () {
             $("#btn-aceptar").attr("disabled", false)
         })
@@ -1031,55 +1007,15 @@
     });
 
     $("#liquidacion").click(function () {
-        if (${contrato?.id != null}) {
+        if(${contrato?.id != null}) {
             $("#LQDialogo").dialog("open")
         }
     });
 
-    %{--$("#btn-imprimir").click(function () {--}%
-    %{--if (${contrato?.fechaInicio != null}) {--}%
-    %{--location.href = "${g.createLink(controller: 'reportes3', action: 'reporteContrato', id: contrato?.id)}"--}%
-    %{--} else {--}%
-    %{--$("#imprimirDialog").dialog("open");--}%
-    %{--}--}%
-    %{--});--}%
-    //            $("#imprimirDialog").dialog({
-    //                autoOpen  : false,
-    //                resizable : false,
-    //                modal     : true,
-    //                draggable : false,
-    //                width     : 350,
-    //                height    : 180,
-    //                position  : 'center',
-    //                title     : 'Imprimir Contrato',
-    //                buttons   : {
-    //                    "Aceptar" : function () {
-    //                        $("#imprimirDialog").dialog("close");
-    //                    }
-    //                }
-    //            })
-
     $("#imprimir_sub").click(function () {
-
-        var subpre = -1
-        var datos = "?obra=${contrato?.oferta?.concurso?.obra?.id}Wsub=" + subpre
-        var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos
-        location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-
+        var subpre = -1;
+        location.href = "${g.createLink(controller: 'reportes3',action: '_imprimirTablaSub')}?obra=" + "${contrato?.oferta?.concurso?.obra?.id}&sub=" + subpre;
     });
-
-    //            $("#inicioObra").click(function () {
-    %{--var cntr = "${contrato.id}"--}%
-    %{--if ("${contrato.id}") {--}%
-    //                    $.ajax({
-    %{--type    : "POST", url : "${g.createLink(controller: 'planilla', action:'iniObraNoReajuste')}",--}%
-    //                        data    : "id=" + cntr,
-    //                        success : function (msg) {
-    //                            $("#canton").val(msg)
-    //                        }
-    //                    });
-    //                }
-    //            });
 
     $("#inicioObra").click(function () {
         $.ajax({
@@ -1093,9 +1029,8 @@
                 var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
                 $btnSave.click(function () {
                     $(this).replaceWith(spinner);
-                    var fcha = $("#fecha").val()
-                    var memo = $("#memo").val()
-                    console.log('...va inicio',fcha, memo)
+                    var fcha = $("#fecha").val();
+                    var memo = $("#memo").val();
                     $.ajax({
                         type    : "POST",
                         url     : "${createLink(controller: 'planilla', action:'iniciarObra')}",
@@ -1105,7 +1040,7 @@
                             memo  : memo
                         },
                         success : function (msg) {
-                            if(msg == "ok") {
+                            if(msg === "ok") {
                                 location.reload(true);
                             } else {
                                 log("Un error ha ocurrido al iniciar la obra", success)
@@ -1123,104 +1058,106 @@
     });
 
     $("#btnRubros").click(function () {
-
         var url = "${createLink(controller:'reportes', action:'imprimirRubros')}?obra=${contrato?.oferta?.concurso?.obra?.id}Wdesglose=";
         var urlVae = "${createLink(controller:'reportes3', action:'reporteRubrosVaeReg')}?obra=${contrato?.oferta?.concurso?.obra?.id}Wdesglose=";
-        $.box({
-            imageClass : "box_info",
-            text       : "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br><span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",
-            title      : "Imprimir Rubros de la Obra",
-            iconClose  : true,
-            dialog     : {
-                resizable : false,
-                draggable : false,
-                width     : 640,
-                height    : 280,
-                buttons   : {
 
-                    "Con desglose de Trans."     : function () {
-                        url += "1";
-                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                        location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';
-                    },
-                    "Sin desglose de Trans."     : function () {
-                        url += "0";
-                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                        location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';
-                    },
-                    "Exportar Rubros a Excel"    : function () {
-                        var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
-                        url += "1";
-                        location.href = url;
-                    },
-                    "VAE con desglose de Trans." : function () {
-                        urlVae += "1";
-                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae--}%
-                        location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';
-                    },
-                    "VAE sin desglose de Trans." : function () {
-                        urlVae += "0";
-                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae--}%
-                        location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';
-                    },
-                    "Exportar VAE a Excel"       : function () {
-                        var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
-                        urlVaeEx += "1";
-                        location.href = urlVaeEx;
-                    },
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'contrato', action: 'botonesRubros_ajax')}",
+            data:{
+                id : "${contrato?.id}"
+            },
+            success: function (msg) {
 
-                    %{--"Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra" : function () {--}%
-                    %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${contrato?.oferta?.concurso?.obra?.id}&tipo=ie";--}%
-                    %{--location.href = url;--}%
-                    %{--},--}%
-
-
-                    "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {
-                        %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
-                        %{--location.href = url;--}%
-                        var idObra;
-
-                        %{--if(${contrato}){--}%
-
-                        idObra = ${contrato?.obra?.id}
-
-                            $.ajax({
-                                type: "POST",
-                                url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
-                                data: {
-                                    id: idObra,
-                                    tipo: "ie"
-                                },
-                                success: function (msg) {
-
-                                    var parts = msg.split('*');
-
-                                    if (parts[0] == 'SI') {
-                                        $("#divError").hide();
-                                        %{--var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
-                                        var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${contrato?.obra?.id}&tipo=ie";
-                                        location.href = url;
-                                    } else {
-                                        $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
-                                        $("#divError").show()
-                                    }
-
-                                }
-                            });
-//                              }
-
-
-                    },
-
-                    "Cancelar" : function () {
-
-                    }
-                }
+                var b = bootbox.dialog({
+                    id      : "dlgImprimir",
+                    title   : "Imprimir Rubros de la Obra",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
             }
         });
+
+        %{--$.box({--}%
+        %{--    imageClass : "box_info",--}%
+        %{--    text       : "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br><span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",--}%
+        %{--    title      : "Imprimir Rubros de la Obra",--}%
+        %{--    iconClose  : true,--}%
+        %{--    dialog     : {--}%
+        %{--        resizable : false,--}%
+        %{--        draggable : false,--}%
+        %{--        width     : 640,--}%
+        %{--        height    : 280,--}%
+        %{--        buttons   : {--}%
+
+        %{--            "Con desglose de Trans."     : function () {--}%
+        %{--                url += "1";--}%
+        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
+        %{--            },--}%
+        %{--            "Sin desglose de Trans."     : function () {--}%
+        %{--                url += "0";--}%
+        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
+        %{--            },--}%
+        %{--            "Exportar Rubros a Excel"    : function () {--}%
+        %{--                var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";--}%
+        %{--                url += "1";--}%
+        %{--                location.href = url;--}%
+        %{--            },--}%
+        %{--            "VAE con desglose de Trans." : function () {--}%
+        %{--                urlVae += "1";--}%
+        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
+        %{--            },--}%
+        %{--            "VAE sin desglose de Trans." : function () {--}%
+        %{--                urlVae += "0";--}%
+        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
+        %{--            },--}%
+        %{--            "Exportar VAE a Excel"       : function () {--}%
+        %{--                var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";--}%
+        %{--                urlVaeEx += "1";--}%
+        %{--                location.href = urlVaeEx;--}%
+        %{--            },--}%
+        %{--            "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {--}%
+        %{--                var idObra;--}%
+
+        %{--                idObra = ${contrato?.obra?.id}--}%
+
+        %{--                    $.ajax({--}%
+        %{--                        type: "POST",--}%
+        %{--                        url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
+        %{--                        data: {--}%
+        %{--                            id: idObra,--}%
+        %{--                            tipo: "ie"--}%
+        %{--                        },--}%
+        %{--                        success: function (msg) {--}%
+
+        %{--                            var parts = msg.split('*');--}%
+
+        %{--                            if (parts[0] === 'SI') {--}%
+        %{--                                $("#divError").hide();--}%
+        %{--                                var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${contrato?.obra?.id}&tipo=ie";--}%
+        %{--                                location.href = url;--}%
+        %{--                            } else {--}%
+        %{--                                $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");--}%
+        %{--                                $("#divError").show()--}%
+        %{--                            }--}%
+        %{--                        }--}%
+        %{--                    });--}%
+        %{--            },--}%
+        %{--            "Cancelar" : function () {--}%
+
+        %{--            }--}%
+        %{--        }--}%
+        %{--    }--}%
+        %{--});--}%
         return false;
     });
-
 
 </script>
 </body>

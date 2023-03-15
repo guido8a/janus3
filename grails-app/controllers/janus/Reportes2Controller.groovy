@@ -626,18 +626,14 @@ class Reportes2Controller {
         if(params.id){
             obra = Obra.get(params.id)
         }
-        def persona = Persona.get(session.usuario.id)
-        def rubros = VolumenesObra.findAllByObra(obra).item.unique()
 
+        def rubros = VolumenesObra.findAllByObra(obra).item.unique()
         def baos = new ByteArrayOutputStream()
         def arrIl = []
         def arrIe = []
         def mensaje = ""
         def error = false
-
-
         def pagAct = 1
-
         def tipo = params.tipo //i: ilustraciones, e: especificaciones, ie: ambas
 
         rubros.each { rubro ->
@@ -651,13 +647,13 @@ class Reportes2Controller {
                 extIlustracion = rubro.foto.split("\\.")
                 extIlustracion = extIlustracion[extIlustracion.size() - 1]
 
-                pathIlustracion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro?.foto
+//                pathIlustracion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro?.foto
+                pathIlustracion = "/var/janus/" + "rubros" + File.separatorChar + rubro.foto
 
                 arrIl += (rubro?.foto + "*")
 
                 def il
 
-//                if (extIlustracion.toLowerCase() in ["pdf", "png", "jpg"]) {
                 if (extIlustracion.toLowerCase() in ["pdf"]) {  //solo pdf se tiene que cargar separadamente los png y jpg se insertan sin problema
                     try{
                         il = new FileInputStream(pathIlustracion)
@@ -672,17 +668,15 @@ class Reportes2Controller {
                     }
                 }
             }
-//            if (rubro.especificaciones && tipo.contains("e")) {
+
             def ares = ArchivoEspecificacion.findByItem(rubro)
-//            println "rubro: ${rubro.codigo}, ruta: ${ares?.ruta}"
             if (ares && tipo.contains("e")) {
                 mensaje += " ruta: ${ares?.ruta}"
-//                extEspecificacion = rubro.especificaciones.split("\\.")
                 extEspecificacion = ares.ruta.split("\\.")
                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
 
-//                pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro?.especificaciones
-                pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + ares?.ruta
+//                pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + ares?.ruta
+                pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
 
                 arrIe += ( ares?.ruta + "*")
 
@@ -701,11 +695,8 @@ class Reportes2Controller {
                     }
                 }
             }
-//            println mensaje
             if(!error) render "SI*"
         }
-//        println "existió error: $error"
-
     }
 
     def reporteRubroIlustracion_bck() {
