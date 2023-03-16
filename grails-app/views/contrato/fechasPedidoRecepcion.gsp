@@ -1,95 +1,95 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 6/25/13
-  Time: 1:32 PM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-
         <meta name="layout" content="main">
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-
-        <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
         <title>Fechas de pedido de recepción</title>
     </head>
 
     <body>
-        <g:if test="${flash.message}">
-            <div class="row">
-                <div class="span12">
-                    <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                        <a class="close" data-dismiss="alert" href="#">×</a>
-                        <elm:poneHtml textoHtml="${flash.message}"/>
-                    </div>
-                </div>
-            </div>
-        </g:if>
 
         <div class="row" style="margin-bottom: 10px;">
             <div class="span9 btn-group" role="navigation">
-                <g:link controller="contrato" action="verContrato" params="[id: contrato?.id]" class="btn btn-ajax btn-new" title="Regresar al contrato">
-                    <i class="icon-double-angle-left"></i>
+                <g:link controller="contrato" action="verContrato" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar al contrato">
+                    <i class="fa fa-arrow-left"></i>
                     Contrato
                 </g:link>
-                <g:link controller="planilla" action="listFiscalizador" id="${contrato?.id}" class="btn" title="Planillas">
-                    <i class="icon-arrow-left"></i>
+                <g:link controller="planilla" action="listFiscalizador" id="${contrato?.id}" class="btn " title="Planillas">
+                    <i class="fa fa-list"></i>
                     Planillas
                 </g:link>
-                <a href="#" class="btn btn-success" id="btnSave"><i class="icon-save"></i> Guardar</a>
+                <a href="#" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</a>
             </div>
         </div>
 
-        <div class="tituloChevere" style="margin-bottom: 10px;">Fecha de pedido de recepción</div>
+        <div class="alert alert-info" style="margin-bottom: 20px; font-size: 16px">Fecha de pedido de recepción</div>
 
-        <div id="create-Contrato" class="span" role="main">
+        <div id="create-Contrato" class="col-md-12" role="main" style="height: 400px">
             <g:form class="form-horizontal" name="frmSave" action="saveFechas" id="${contrato.id}">
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            del contratista
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <elm:datepicker name="fechaPedidoRecepcionContratista" value="${contrato.fechaPedidoRecepcionContratista}"/>
-                        <span class="mandatory">*</span>
-
+                <span class="grupo col-md-12" style="margin-bottom: 20px">
+                    <label for="fechaPedidoRecepcionContratista" class="col-md-2 control-label text-info">
+                        Del contratista
+                    </label>
+                    <span class="col-md-3">
+                        <input aria-label="" name="fechaPedidoRecepcionContratista" id='fechaPedidoRecepcionContratista' type='text' class="form-control required" value="${contrato.fechaPedidoRecepcionContratista?.format("dd-MM-yyyy")}" />
                         <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
+                    </span>
+                </span>
 
-                <div class="control-group">
-                    <div>
-                        <span class="control-label label label-inverse">
-                            del fiscalizador
-                        </span>
-                    </div>
-
-                    <div class="controls">
-                        <elm:datepicker name="fechaPedidoRecepcionFiscalizador" value="${contrato.fechaPedidoRecepcionFiscalizador}"/>
-                        <span class="mandatory">*</span>
-
+                <span class="grupo col-md-12">
+                    <label for="fechaPedidoRecepcionFiscalizador" class="col-md-2 control-label text-info">
+                        Del fiscalizador
+                    </label>
+                    <span class="col-md-3">
+                        <input aria-label="" name="fechaPedidoRecepcionFiscalizador" id='fechaPedidoRecepcionFiscalizador' type='text' class="form-control required" value="${contrato.fechaPedidoRecepcionFiscalizador?.format("dd-MM-yyyy")}" />
                         <p class="help-block ui-helper-hidden"></p>
-                    </div>
-                </div>
+                    </span>
+                </span>
             </g:form>
         </div>
 
         <script type="text/javascript">
+
+            $('#fechaPedidoRecepcionContratista, #fechaPedidoRecepcionFiscalizador').datetimepicker({
+                locale: 'es',
+                format: 'DD-MM-YYYY',
+                icons: {
+                }
+            });
+
             $(function () {
                 $("#btnSave").click(function () {
-                    $(this).replaceWith(spinner);
-                    $("#frmSave").submit();
+                    submitFormFechasRecepcion();
                 });
             });
-        </script>
 
+            function submitFormFechasRecepcion() {
+                var $form = $("#frmSave");
+                if ($form.valid()) {
+                    var data = $form.serialize();
+                    var dialog = cargarLoader("Guardando...");
+                    $.ajax({
+                        type    : "POST",
+                        url     : $form.attr("action"),
+                        data    : data,
+                        success : function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1], "success");
+                                setTimeout(function () {
+                                    location.reload();
+                                }, 800);
+                            }else{
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                return false;
+                            }
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            }
+
+        </script>
     </body>
 </html>

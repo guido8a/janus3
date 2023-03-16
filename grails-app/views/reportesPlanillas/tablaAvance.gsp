@@ -3,10 +3,8 @@
 <script type="text/javascript">
     $(function () {
         var sep = "^";
-        var $sp = spinner;
         $(".btnSave").click(function () {
-//            $(this).replaceWith($sp);
-            $("#btnSpin").show();
+            var g = cargarLoader("Guardando...");
             var data = "id=${contrato.id}&plnl=${plnl}";
             $(".texto").each(function () {
                 data += "&texto=" + $(this).data("num") + sep + $(this).val();
@@ -21,12 +19,12 @@
                 url     : "${createLink(action: 'saveAvance')}",
                 data    : data,
                 success : function (msg) {
-                    if (msg == "OK") {
-                        log("Se han almacenado los datos correctamente");
+                    g.modal("hide");
+                    if (msg === "OK") {
+                        log("Datos guardados correctamente", "success");
                     } else {
-                        log(msg, true);
+                        log(msg, "danger");
                     }
-                    $("#btnSpin").hide(2000);
                 }
             });
             return false;

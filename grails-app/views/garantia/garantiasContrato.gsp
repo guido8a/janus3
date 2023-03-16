@@ -736,54 +736,6 @@
                     }
                 }
             });
-
-
-            %{--$.box({--}%
-            %{--    imageClass : "box_info",--}%
-            %{--    title      : "Alerta",--}%
-            %{--    text       : "Está seguro de querer eliminar esta garantía? Esta acción no puede deshacerse",--}%
-            %{--    iconClose  : false,--}%
-            %{--    dialog     : {--}%
-            %{--        resizable     : false,--}%
-            %{--        draggable     : false,--}%
-            %{--        closeOnEscape : false,--}%
-            %{--        buttons       : {--}%
-            %{--            "Aceptar"  : function () {--}%
-            %{--                $.ajax({--}%
-            %{--                    type    : "POST",--}%
-            %{--                    url     : "${createLink(action:'deleteGarantia')}",--}%
-            %{--                    data    : {--}%
-            %{--                        id : $("tr.selected").attr("id")--}%
-            %{--                    },--}%
-            %{--                    success : function (msg) {--}%
-            %{--                        if (msg === "OK") {--}%
-            %{--                            $("tr.selected").remove();--}%
-            %{--                            reset();--}%
-            %{--                        } else {--}%
-            %{--                            $.box({--}%
-            %{--                                imageClass : "box_info",--}%
-            %{--                                title      : "Alerta",--}%
-            %{--                                text       : msg,--}%
-            %{--                                iconClose  : false,--}%
-            %{--                                dialog     : {--}%
-            %{--                                    resizable     : false,--}%
-            %{--                                    draggable     : false,--}%
-            %{--                                    closeOnEscape : false,--}%
-            %{--                                    buttons       : {--}%
-            %{--                                        "Aceptar" : function () {--}%
-            %{--                                        }--}%
-            %{--                                    }--}%
-            %{--                                }--}%
-            %{--                            });--}%
-            %{--                        }--}%
-            %{--                    }--}%
-            %{--                });--}%
-            %{--            },--}%
-            %{--            "Cancelar" : function () {--}%
-            %{--            }--}%
-            %{--        }--}%
-            %{--    }--}%
-            %{--});--}%
         }); //btn delete
     });
 </script>

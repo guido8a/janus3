@@ -13,7 +13,9 @@ import janus.pac.CrngEjecucionObra
 import janus.pac.CronogramaEjecucion
 import janus.pac.PeriodoEjecucion
 
+import javax.imageio.ImageIO
 import java.awt.*
+import java.awt.image.BufferedImage
 import java.text.SimpleDateFormat
 
 class ReportesPlanillasController {
@@ -65,7 +67,7 @@ class ReportesPlanillasController {
         def espacios = ""
         if(acta.espacios > 0) {
             acta.espacios.times {
-               espacios += "<br/>"
+                espacios += "<br/>"
             }
         }
 
@@ -87,13 +89,13 @@ class ReportesPlanillasController {
         def espacios = ""
         if(acta.espacios > 0) {
             acta.espacios.times {
-               espacios += "<br/>"
+                espacios += "<br/>"
             }
         }
 
 //        println "cmpl: $cmpl, ${cmpl.monto}"
         return [actaInstance: acta, directorDeFiscalizacion: delegadoFiscalizacion, espacios: espacios,
-        total: total, cmpl: cmpl]
+                total: total, cmpl: cmpl]
     }
 
     def reporteDiferencias() {
@@ -485,10 +487,10 @@ class ReportesPlanillasController {
                 "Observaciones",
                 "Conclusiones y recomendaciones"
         ]
-        def html = "<legend>Textos del informe de avance<span style='margin-left: 180px'>" +
-                "<a href='#' class='btn btn-success btnSave'><i class='icon icon-save'></i>Guardar</a> </span>" +
-                "<a href='#' class='btn btn-primary btnPrint'><i class='icon icon-print'></i>Imprimir</a>" +
-                "<a href='#' class='btn btn-success btnPrintTotal'><i class='icon icon-print'></i>Imprimir Total</a></legend>"
+        def html = "<legend>Textos del informe de avance<span style='margin-left: 180px;'>" +
+                "<a href='#' class='btn btn-success btnSave' style='margin-bottom: 10px'><i class='fa fa-save'></i> Guardar</a> </span>" +
+                "<a href='#' class='btn btn-primary btnPrint' style='margin-bottom: 10px'><i class='fa fa-print'></i> Imprimir</a> </span>" +
+                "<a href='#' class='btn btn-success btnPrintTotal' style='margin-bottom: 10px'><i class='fa fa-print'></i> Imprimir Total</a></legend>"
 //        if (band == 1) {
         def suspension = cn.rows("select prejfcin, prejfcfn from prej where cntr__id = ${contrato.id} and prejtipo = 'S'".toString())[0]
 //        println "suspensión: $suspension, ${suspension.prejfcin.class}"
@@ -541,9 +543,9 @@ class ReportesPlanillasController {
             }
         }
         html += "<div style='margin-bottom:10px; margin-top:5px;'>" +
-                "<a href='#' class='btn btn-success btnSave'><i class='icon icon-save'></i>Guardar</a>" +
+                "<a href='#' class='btn btn-success btnSave'><i class='fa fa-save'></i> Guardar</a>" +
                 "<a href='#' id='btnSpin' hidden >Procesando</a>" +
-                "<a href='#' class='btn btn-primary btnPrint' style='margin-left:15px;'><i class='icon icon-print'></i>Imprimir</a>" +
+                "<a href='#' class='btn btn-primary btnPrint' style='margin-left:15px;'><i class='fa fa-print'></i> Imprimir</a>" +
                 "</div>"
 
         return [html: html, contrato: contrato, fecha: params.plnl, plnl: plnl.id]
@@ -721,17 +723,18 @@ class ReportesPlanillasController {
 
         def formatoFechasTabla = "dd-MM-yyyy"
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_reportes.png"
-        Image logo = Image.getInstance(logoPath);
-        logo.scaleToFit(52, 52)
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_reportes.png"
+        def logoPath = "/var/janus/images/logo_reportes.png"
+
+//        Image logo = Image.getInstance(logoPath);
+//
+//        logo.scaleToFit(52, 52)
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
         Document document
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
 
-//        HeaderFooter footer = new HeaderFooter(new Phrase("This is page: "), true);
-//        document.setFooter(footer);
         document.resetHeader()
         document.resetFooter()
 
@@ -747,16 +750,14 @@ class ReportesPlanillasController {
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
         preface.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), fontTituloGad));
-//        preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(plnl.fechaFin, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
         preface.add(new Paragraph("AVANCE DE LA OBRA " + obra.nombre + " AL " + fechaConFormato(contrato?.fechaPedidoRecepcionFiscalizador, "dd MMMM yyyy").toUpperCase(), fontTituloGad));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
         Paragraph titulo = new Paragraph("INFORME DE FISCALIZACIÓN N°: " + plnl.numero, fontTituloGad);
-//        preface2.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
         preface2.add(new Paragraph("Fiscalizador: " + planillasService.nombrePersona(plnl.fiscalizador, 'pers') +
                 "   Fecha: " + fechaConFormato(plnl.fechaIngreso, "dd-MMM-yyyy")))
         addEmptyLine(preface2, 1);
-        document.add(logo)
+//        document.add(logo)
         document.add(preface);
         document.add(titulo);
         document.add(preface2);
@@ -782,9 +783,6 @@ class ReportesPlanillasController {
 
         addCellTabla(tablaGeneralidades, new Paragraph("MONTO DEL CONTRATO " + '$.', fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaGeneralidades, new Paragraph(numero(contrato.monto, 2), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-
-//        addCellTabla(tablaGeneralidades, new Paragraph("MONTO DEL CONTRATO COMP. "+'$.', fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-//        addCellTabla(tablaGeneralidades, new Paragraph("?", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
         addCellTabla(tablaGeneralidades, new Paragraph("NÚMERO CONTRATO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaGeneralidades, new Paragraph(contrato.codigo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
@@ -847,26 +845,26 @@ class ReportesPlanillasController {
         def totalDias = 0
 
         if(modificaciones.size() > 0){
-        modificaciones.each {mod ->
-            totalDias += mod.dias;
-            if(mod.tipo == 'A'){
-                addCellTabla(tablaDetalle, new Paragraph("AMPLIACIÓN DE PLAZO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-            }
-            if(mod.tipo == 'S'){
-                addCellTabla(tablaDetalle, new Paragraph("SUSPENSIÓN", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+            modificaciones.each {mod ->
+                totalDias += mod.dias;
+                if(mod.tipo == 'A'){
+                    addCellTabla(tablaDetalle, new Paragraph("AMPLIACIÓN DE PLAZO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                }
+                if(mod.tipo == 'S'){
+                    addCellTabla(tablaDetalle, new Paragraph("SUSPENSIÓN", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
 
-                addCellTabla(tablaDetalle, new Paragraph("REINICIO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(fechaConFormato(mod.fechaFin + 1, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph("", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph("", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph("REINICIO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(fechaConFormato(mod.fechaFin + 1, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph("", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph("", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                }
             }
-        }
             addCellTabla(tablaDetalle, new Paragraph("NUEVA FECHA VENCIMIENTO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalle, new Paragraph(fechaConFormato(prej.last().fechaFin, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
 
@@ -1127,10 +1125,10 @@ class ReportesPlanillasController {
 
         def formatoFechasTabla = "dd-MM-yyyy"
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_reportes.png"
-        Image logo = Image.getInstance(logoPath);
-        logo.scaleToFit(52, 52)
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_reportes.png"
+//        Image logo = Image.getInstance(logoPath);
+//        logo.scaleToFit(52, 52)
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
         Document document
         document = new Document(PageSize.A4);
@@ -1156,7 +1154,7 @@ class ReportesPlanillasController {
         Paragraph preface2 = new Paragraph();
         preface2.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
         addEmptyLine(preface2, 1);
-        document.add(logo)
+//        document.add(logo)
         document.add(preface);
         document.add(preface2);
 
@@ -1251,21 +1249,21 @@ class ReportesPlanillasController {
         def totalDias = 0
 
         if(modificaciones.size() > 0){
-        modificaciones.each {mod ->
-            totalDias += mod.dias;
-            if(mod.tipo == 'A'){
-                addCellTabla(tablaDetalle, new Paragraph("AMPLIACIÓN DE PLAZO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+            modificaciones.each {mod ->
+                totalDias += mod.dias;
+                if(mod.tipo == 'A'){
+                    addCellTabla(tablaDetalle, new Paragraph("AMPLIACIÓN DE PLAZO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                }
+                if(mod.tipo == 'S'){
+                    addCellTabla(tablaDetalle, new Paragraph("SUSPENSIÓN", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                    addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+                }
             }
-            if(mod.tipo == 'S'){
-                addCellTabla(tablaDetalle, new Paragraph("SUSPENSIÓN", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(numero(mod?.dias,0) + " DÍAS", fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph("MM. N.", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-                addCellTabla(tablaDetalle, new Paragraph(mod?.memo, fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-            }
-        }
             addCellTabla(tablaDetalle, new Paragraph("NUEVA FECHA VENCIMIENTO", fontTh), [pl: 20, border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalle, new Paragraph(fechaConFormato(prej.last().fechaFin, formatoFechasTabla), fontTd), [border: Color.BLACK, bcl: Color.WHITE, bwl: 0.1, bcr: Color.WHITE, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 3])
 

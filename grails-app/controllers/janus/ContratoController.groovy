@@ -29,28 +29,29 @@ class ContratoController {
     }
 
     def saveFechas() {
+
         def contrato = Contrato.get(params.id)
-        contrato.fechaPedidoRecepcionContratista = new Date().parse("dd-MM-yyyy", params.fechaPedidoRecepcionContratista)
-        contrato.fechaPedidoRecepcionFiscalizador = new Date().parse("dd-MM-yyyy", params.fechaPedidoRecepcionFiscalizador)
+        def fprc = new Date().parse("dd-MM-yyyy", params.fechaPedidoRecepcionContratista)
+        def fprf = new Date().parse("dd-MM-yyyy", params.fechaPedidoRecepcionFiscalizador)
+
+        contrato.fechaPedidoRecepcionContratista = fprc
+        contrato.fechaPedidoRecepcionFiscalizador = fprf
+
         contrato.obra.fechaFin = contrato.fechaPedidoRecepcionFiscalizador
 
         def liquidacion = Planilla.findByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('Q'))
+
         if (liquidacion) {
             liquidacion?.fechaFin = contrato.fechaPedidoRecepcionFiscalizador
             liquidacion.save(flush: true)
         }
 
-        contrato.obra.save(flush: true)
         if (!contrato.save(flush: true)) {
             println "Error al guardar fechas de pedido de recepcion (contrato controller l.33): " + contrato.errors
-            flash.clase = "alert-error"
-            flash.message = "Ha ocurrido un error al guardar las fechas de pedido de repción: "
-            flash.message += g.renderErrors(bean: contrato)
+            render "no_Error al guardar fechas de pedido de recepcion"
         } else {
-            flash.clase = "alert-success"
-            flash.message = "Fechas de pedido de recepción guardadas correctamente"
+            render "ok_Fechas de pedido de recepción guardadas correctamente"
         }
-        redirect(action: "fechasPedidoRecepcion", id: contrato.id)
     }
 
     def verContrato() {

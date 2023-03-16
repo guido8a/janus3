@@ -28,21 +28,16 @@
 <body>
 <g:set var="meses" value="${obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)}"/>
 
-<div class="tituloTree">
-    Cronograma de ejecución de la obra ${obra.nombre} (${meses} mes${meses == 1 ? "" : "es"})
-</div>
-
 <div class="btn-toolbar" id="toolbar">
     <div class="btn-group">
         <a href="${g.createLink(controller: 'contrato', action: 'verContrato', params: [contrato: contrato?.id])}"
-           class="btn btn-ajax btn-new" id="atras" rel="tooltip" title="Regresar al contrato">
-            <i class="icon-arrow-left"></i>
+           class="btn btn-info btn-new" id="atras" rel="tooltip" title="Regresar al contrato">
+            <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
     </div>
 
     <g:if test="${meses > 0}">
-
         <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
             <div class="btn-group">
                 <g:if test="${suspensiones.size() == 0}">
@@ -66,7 +61,6 @@
                     </a>
                 </g:else>
             </div>
-
             <div class="btn-group">
                 <g:if test="${suspensiones.size() == 0}">
                     <a href="#" class="btn btn-info" id="actualizaPrej">
@@ -75,7 +69,6 @@
                     </a>
                 </g:if>
             </div>
-
             <div class="btn-group">
                 <g:if test="${complementario}">
                     <a href="#" class="btn btn-warning" id="btnComp">
@@ -84,16 +77,14 @@
                     </a>
                 </g:if>
             </div>
-
             <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">
                 <i class="icon-print"></i>
-                %{--Imprimir--}%
             </a>
         </g:if>
         <g:if test="${contrato.fiscalizador?.id == session.usuario.id || contrato.administrador?.id == session.usuario.id}">
             <g:if test="${contrato.administrador?.id == session.usuario.id}">
-            <div class="btn-group" style="width: 400px">
-            </div>
+                <div class="btn-group" style="width: 400px">
+                </div>
             </g:if>
 
             <div class="btn" style="height: 30px; font-size: 10px">
@@ -108,6 +99,10 @@
     </g:if>
 </div>
 
+<div class="alert alert-info" style="margin-top: 10px">
+    Cronograma de ejecución de la obra: ${obra.nombre} (${meses} mes${meses == 1 ? "" : "es"})
+</div>
+
 <g:if test="${flash.message}">
     <div class="row">
         <div class="col-md-12">
@@ -120,7 +115,7 @@
 </g:if>
 
 
-<div style="font-size: 14px">
+<div class="alert alert-success" style="font-size: 14px">
     <i class="fa fa-check" style="color: #cf0e21"></i>
     La ruta crítica se muestra con los rubros marcados en amarillo
 </div>
@@ -149,8 +144,6 @@
     <div class="modal-footer" id="modalFooter-forms">
     </div>
 </div>
-
-
 
 
 <script type="text/javascript">
@@ -197,9 +190,10 @@
     }
 
     function updateTabla() {
-        var divLoad = $("<div style='text-align: center;'></div>").html(spinnerBg).append("<br/>Cargando...Por favor espere...");
+        // var divLoad = $("<div style='text-align: center;'></div>").html(spinnerBg).append("<br/>Cargando...Por favor espere...");
+        var g = cargarLoader("Cargando...");
         $("#toolbar").hide();
-        $("#divTabla").html(divLoad);
+        // $("#divTabla").html(divLoad);
         $.ajax({
             type: "POST",
             url: "${createLink(action: 'tablaNueva')}",
@@ -209,6 +203,7 @@
                 hasta: $("#hasta").val()
             },
             success: function (msg) {
+                g.modal("hide");
                 $("#divTabla").html(msg);
                 $("#toolbar").show();
             }
@@ -216,7 +211,6 @@
     }
 
     function log(msg) {
-        ////console.log(msg);
     }
 
     $(function () {

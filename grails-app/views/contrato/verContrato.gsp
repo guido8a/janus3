@@ -642,6 +642,7 @@
     });
 
     $("#btnDelFisc").click(function () {
+
         $.ajax({
             type    : "POST",
             url     : "${createLink(action: 'delegadoFiscalizacion')}",
@@ -649,29 +650,80 @@
                 id : "${contrato?.id}"
             },
             success : function (msg) {
-                var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');
-                var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                $btnSave.click(function () {
-                    $(this).replaceWith(spinner);
-                    var pref = $("#delegadoFisc").val();
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'saveDelegadoFisc')}",
-                        data    : {
-                            id   : "${contrato?.id}",
-                            pref : pref
+
+                var b = bootbox.dialog({
+                    id      : "dlDF",
+                    title   : "Delegado de Fizcalización",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
                         },
-                        success : function (msg) {
-                            location.reload(true);
-                        }
-                    });
-                });
-                $("#modal_tittle_var").text("Delegado de fiscalización");
-                $("#modal_body_var").html(msg);
-                $("#modal_footer_var").html($btnCerrar).append($btnSave);
-                $("#modal-var").modal("show");
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-print'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action:'saveDelegadoFisc')}",
+                                    data    : {
+                                        id   : "${contrato?.id}",
+                                        pref : pref
+                                    },
+                                    success : function (msg) {
+                                        location.reload();
+                                    }
+                                });
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+
+
+
+
+
             }
         });
+
+
+
+
+
+        %{--$.ajax({--}%
+        %{--    type    : "POST",--}%
+        %{--    url     : "${createLink(action: 'delegadoFiscalizacion')}",--}%
+        %{--    data    : {--}%
+        %{--        id : "${contrato?.id}"--}%
+        %{--    },--}%
+        %{--    success : function (msg) {--}%
+        %{--        var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');--}%
+        %{--        var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
+        %{--        $btnSave.click(function () {--}%
+        %{--            $(this).replaceWith(spinner);--}%
+        %{--            var pref = $("#delegadoFisc").val();--}%
+        %{--            $.ajax({--}%
+        %{--                type    : "POST",--}%
+        %{--                url     : "${createLink(action:'saveDelegadoFisc')}",--}%
+        %{--                data    : {--}%
+        %{--                    id   : "${contrato?.id}",--}%
+        %{--                    pref : pref--}%
+        %{--                },--}%
+        %{--                success : function (msg) {--}%
+        %{--                    location.reload(true);--}%
+        %{--                }--}%
+        %{--            });--}%
+        %{--        });--}%
+        %{--        $("#modal_tittle_var").text("Delegado de fiscalización");--}%
+        %{--        $("#modal_body_var").html(msg);--}%
+        %{--        $("#modal_footer_var").html($btnCerrar).append($btnSave);--}%
+        %{--        $("#modal-var").modal("show");--}%
+        %{--    }--}%
+        %{--});--}%
         return false;
     });
 
