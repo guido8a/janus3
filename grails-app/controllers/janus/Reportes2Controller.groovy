@@ -178,7 +178,6 @@ class Reportes2Controller {
     def reporteRubroIlustracion() {
         def obra = Obra.get(params.id)
         def persona = Persona.get(session.usuario.id)
-//        def rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
         def rubros
 
@@ -187,8 +186,6 @@ class Reportes2Controller {
         }else{
             rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()[0..(tama - 1)]
         }
-
-//        println "rubros: ${rubros.codigo}"
 
         def baos = new ByteArrayOutputStream()
         def name = "rubros_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -220,7 +217,6 @@ class Reportes2Controller {
         preface.add(new Paragraph("ANEXO DE ESPECIFICACIÓN DE RUBROS DE LA OBRA " + obra.nombre, catFont));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
-//        preface2.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
         preface2.add(new Paragraph("Generado por el usuario: " + (persona?.titulo ?: '') + ' ' + (persona?.nombre ?: '') + ' ' + (persona?.apellido ?: '') + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
         addEmptyLine(preface2, 1);
         document.add(preface);
@@ -255,8 +251,7 @@ class Reportes2Controller {
             if (rubro.foto && tipo.contains("i")) {
                 extIlustracion = rubro.foto.split("\\.")
                 extIlustracion = extIlustracion[extIlustracion.size() - 1]
-
-                pathIlustracion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro?.foto
+                pathIlustracion = "/var/janus/" + "rubros" + File.separatorChar + rubro?.foto
 
                 if (extIlustracion.toLowerCase() in ["pdf"]) {
                     readerIlustracion = new PdfReader(new FileInputStream(pathIlustracion));
@@ -264,19 +259,17 @@ class Reportes2Controller {
                 }
             }
 
-//            def ares = ArchivoEspecificacion.findByItem(rubro)
             def ares = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
-//            if (rubro.especificaciones && tipo.contains("e")) {
             if (ares && tipo.contains("e")) {
-//                extEspecificacion = rubro.especificaciones.split("\\.")
                 extEspecificacion = ares.ruta.split("\\.")
                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
+                pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
 
-                pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + ares?.ruta
-
-                if (extEspecificacion?.toLowerCase() == "pdf") {
+                if (pathEspecificacion.toLowerCase() in ["pdf"]) {
                     readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
                     pagesEspecificacion = readerEspecificacion.getNumberOfPages()
+                }else{
+                    redirect(controller: "contrato", action: "verContrato", params: [contrato: params.id])
                 }
             }
 
@@ -307,9 +300,7 @@ class Reportes2Controller {
                 addCellTabla(tablaRubro, new Paragraph("Especificación", fontTh), prmsTh)
                 if (extEspecificacion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
                     def img = Image.getInstance(pathEspecificacion);
-//                    if (img.getScaledWidth() > maxImageSize || img.getScaledHeight() > maxImageSize) {
                     img.scaleToFit(maxImageSize, maxImageSize);
-//                    }
                     addCellTabla(tablaRubro, img, prmsEs)
                 } else {
                     def str = "- PDF de ${pagesEspecificacion} página${pagesEspecificacion == 1 ? '' : 's'} adjunto a partir de la siguiente página -"
@@ -324,14 +315,7 @@ class Reportes2Controller {
                 addCellTabla(tablaRubro, new Paragraph("Ilustración", fontTh), prmsTh)
                 if (extIlustracion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
                     def img = Image.getInstance(pathIlustracion);
-
-//                    println "ilust: $pathIlustracion"
-//                    println "w: ${img.getScaledWidth()}, h: ${img.getScaledHeight()}"
-
-//                    if (img.getScaledWidth() > maxImageSize || img.getScaledHeight() > maxImageSize) {
                     img.scaleToFit(maxImageSize, maxImageSize);
-//                    }
-
                     addCellTabla(tablaRubro, img, prmsEs)
                 } else {
                     def str = "- PDF de ${pagesIlustracion} página${pagesIlustracion == 1 ? '' : 's'} adjunto "
@@ -352,8 +336,6 @@ class Reportes2Controller {
             document.add(tablaRubro)
 
             infoText(cb, document, rubrosText, DOC)
-//            infoText(cb, document, pagAct.toString(), PAG)
-//            pagAct++
 
             if (extEspecificacion == "pdf") {
                 pagesEspecificacion.times {
@@ -382,10 +364,7 @@ class Reportes2Controller {
                 }
                 document.newPage();
             }
-//            document.newPage();
         }
-
-
 
         document.close();
         pdfw.close()
@@ -655,17 +634,19 @@ class Reportes2Controller {
                 def il
 
                 if (extIlustracion.toLowerCase() in ["pdf"]) {  //solo pdf se tiene que cargar separadamente los png y jpg se insertan sin problema
-                    try{
-                        il = new FileInputStream(pathIlustracion)
+//                    try{
+//                        il = new FileInputStream(pathIlustracion)
                         render "SI*"
-                        mensaje += "..ok"
-                    }
-                    catch(e){
-                        arrIl += (rubro?.foto+"*")
-                        mensaje += " **** no existe"
-                        error = true
-                        render "NO*" + arrIl[0]
-                    }
+//                        mensaje += "..ok"
+//                    }
+//                    catch(e){
+//                        arrIl += (rubro?.foto+"*")
+//                        mensaje += " **** no existe"
+//                        error = true
+//                        render "NO*" + arrIl[0]
+//                    }
+                }else{
+                    render "NO*" + arrIl[0]
                 }
             }
 
@@ -682,17 +663,17 @@ class Reportes2Controller {
 
                 def fi
                 if (extEspecificacion.toLowerCase() in ["pdf"]) {
-                    try {
-                        fi = new FileInputStream(pathEspecificacion)
+//                    try {
+//                        fi = new FileInputStream(pathEspecificacion)
                         render "SI*"
-                        mensaje += "..ok"
-                    }
-                    catch (e){
-                        arrIe += (ares?.ruta + "*")
-                        mensaje += "********* No existe"
-                        error = true
+//                        mensaje += "..ok"
+//                    }
+//                    catch (e){
+//                        arrIe += (ares?.ruta + "*")
+//                        mensaje += "********* No existe"
+//                        error = true
                         render "NO*" + arrIe[0]
-                    }
+//                    }
                 }
             }
             if(!error) render "SI*"

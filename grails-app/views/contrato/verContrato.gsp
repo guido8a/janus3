@@ -368,7 +368,7 @@
                 <i class=" fa fa-paperclip"></i> Informe de avance
             </g:link>
             <g:if test="${esDirFis == 'S'}">
-                <a href="#" id="btnFisc">
+                <a href="#" class="btn" id="btnFisc">
                     <i class="fa fa-user"></i> Fiscalizador
                 </a>
             </g:if>
@@ -380,11 +380,11 @@
                     <i class="fa fa-user"></i> Delegado del Prefecto
                 </a>
             </g:if>
-            <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
+%{--            <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">--}%
                 <a href="#" id="btnIndi" class="btn">
                     <i class="fa fa-file"></i> % de Indirectos
                 </a>
-            </g:if>
+%{--            </g:if>--}%
 
             <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
                 <a href="#" id="btnAdicionales" class="btn">
@@ -497,22 +497,6 @@
 
 <script type="text/javascript">
 
-    function log(msg, error) {
-        var sticky = false;
-        var theme = "success";
-        if (error) {
-            sticky = true;
-            theme = "error";
-        }
-        $.jGrowl(msg, {
-            speed          : 'slow',
-            sticky         : sticky,
-            theme          : theme,
-            closerTemplate : '<div>[ cerrar todos ]</div>',
-            themeState     : ''
-        });
-    }
-
     function updateAnticipo() {
         var porcentaje = $("#porcentajeAnticipo").val();
         var monto = $("#monto").val().replace(",", "");
@@ -592,16 +576,20 @@
                 contrato : "${contrato?.id}"
             },
             success : function (msg) {
-                var $btnOk = $('<a href="#" class="btn">Aceptar</a>');
-                $btnOk.click(function () {
-                    $(this).replaceWith(spinner);
-                    location.reload(true);
-                });
-                $("#modal_tittle_var").text("Fiscalizadores");
-                $("#modal_body_var").html(msg);
-                $("#fiscalizador").data("contrato", "${contrato?.id}");
-                $("#modal_footer_var").html($btnOk);
-                $("#modal-var").modal("show");
+                var b = bootbox.dialog({
+                    id      : "dlF",
+                    title   : "Fiscalizador",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+
+                            }
+                        }
+                    } //buttons
+                }); //dialog
             }
         });
         return false;
@@ -615,34 +603,52 @@
                 id : "${contrato?.id}"
             },
             success : function (msg) {
-                var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');
-                var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                $btnSave.click(function () {
-                    $(this).replaceWith(spinner);
-                    var pref = $("#delegadoPrefecto").val();
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'saveDelegado')}",
-                        data    : {
-                            id   : "${contrato?.id}",
-                            pref : pref
+                var dp = bootbox.dialog({
+                    id      : "dlDP",
+                    title   : "Delegado del Prefecto",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
                         },
-                        success : function (msg) {
-                            location.reload(true);
-                        }
-                    });
-                });
-                $("#modal_tittle_var").text("Delegado del Prefecto");
-                $("#modal_body_var").html(msg);
-                $("#modal_footer_var").html($btnCerrar).append($btnSave);
-                $("#modal-var").modal("show");
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-print'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action:'saveDelegado')}",
+                                    data    : {
+                                        id   : "${contrato?.id}",
+                                        pref : $("#delegadoPrefecto").val()
+                                    },
+                                    success : function (msg) {
+                                        if(msg === 'OK'){
+                                            log("Delegado asignado correctamente","success");
+                                            var g = cargarLoader("Cargando...");
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 1000);
+                                        }else{
+                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al asignar el delegado" + '</strong>');
+                                        }
+                                        location.reload();
+                                    }
+                                });
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
             }
         });
         return false;
     });
 
     $("#btnDelFisc").click(function () {
-
         $.ajax({
             type    : "POST",
             url     : "${createLink(action: 'delegadoFiscalizacion')}",
@@ -650,7 +656,6 @@
                 id : "${contrato?.id}"
             },
             success : function (msg) {
-
                 var b = bootbox.dialog({
                     id      : "dlDF",
                     title   : "Delegado de Fizcalización",
@@ -672,9 +677,18 @@
                                     url     : "${createLink(action:'saveDelegadoFisc')}",
                                     data    : {
                                         id   : "${contrato?.id}",
-                                        pref : pref
+                                        pref : $("#delegadoFisc").val()
                                     },
                                     success : function (msg) {
+                                        if(msg === 'OK'){
+                                            log("Delegado asignado correctamente","success");
+                                            var g = cargarLoader("Cargando...");
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 1000);
+                                        }else{
+                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al asignar el delegado" + '</strong>');
+                                        }
                                         location.reload();
                                     }
                                 });
@@ -682,48 +696,8 @@
                         } //guardar
                     } //buttons
                 }); //dialog
-
-
-
-
-
             }
         });
-
-
-
-
-
-        %{--$.ajax({--}%
-        %{--    type    : "POST",--}%
-        %{--    url     : "${createLink(action: 'delegadoFiscalizacion')}",--}%
-        %{--    data    : {--}%
-        %{--        id : "${contrato?.id}"--}%
-        %{--    },--}%
-        %{--    success : function (msg) {--}%
-        %{--        var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');--}%
-        %{--        var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
-        %{--        $btnSave.click(function () {--}%
-        %{--            $(this).replaceWith(spinner);--}%
-        %{--            var pref = $("#delegadoFisc").val();--}%
-        %{--            $.ajax({--}%
-        %{--                type    : "POST",--}%
-        %{--                url     : "${createLink(action:'saveDelegadoFisc')}",--}%
-        %{--                data    : {--}%
-        %{--                    id   : "${contrato?.id}",--}%
-        %{--                    pref : pref--}%
-        %{--                },--}%
-        %{--                success : function (msg) {--}%
-        %{--                    location.reload(true);--}%
-        %{--                }--}%
-        %{--            });--}%
-        %{--        });--}%
-        %{--        $("#modal_tittle_var").text("Delegado de fiscalización");--}%
-        %{--        $("#modal_body_var").html(msg);--}%
-        %{--        $("#modal_footer_var").html($btnCerrar).append($btnSave);--}%
-        %{--        $("#modal-var").modal("show");--}%
-        %{--    }--}%
-        %{--});--}%
         return false;
     });
 
@@ -735,19 +709,64 @@
                 contrato : "${contrato?.id}"
             },
             success : function (msg) {
-                var $btnOk = $('<a href="#" class="btn">Aceptar</a>');
-                var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                console.log('--aceptar', $("#frmaIndi"));
-                $btnOk.click(function () {
-                    console.log('aceptar');
-                    $(this).replaceWith(spinner);
-                    $("#frmaIndi").submit();
-                });
-                $("#modal_tittle_var").text("Costos Indirectos");
-                $("#modal_body_var").html(msg);
-                $("#fiscalizador").data("contrato", "${contrato?.id}");
-                $("#modal_footer_var").html($btnCerrar).append($btnOk);
-                $("#modal-var").modal("show");
+                var pi = bootbox.dialog({
+                    id      : "dlIN",
+                    title   : "Costos Indirectos para planillas de Costo + %",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-print'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                %{--$.ajax({--}%
+                                %{--    type    : "POST",--}%
+                                %{--    url     : "${createLink(action:'saveDelegadoFisc')}",--}%
+                                %{--    data    : {--}%
+                                %{--        id   : "${contrato?.id}",--}%
+                                %{--        pref : $("#delegadoFisc").val()--}%
+                                %{--    },--}%
+                                %{--    success : function (msg) {--}%
+                                %{--        if(msg === 'OK'){--}%
+                                %{--            log("Delegado asignado correctamente","success");--}%
+                                %{--            var g = cargarLoader("Cargando...");--}%
+                                %{--            setTimeout(function () {--}%
+                                %{--                location.reload();--}%
+                                %{--            }, 1000);--}%
+                                %{--        }else{--}%
+                                %{--            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al asignar el delegado" + '</strong>');--}%
+                                %{--        }--}%
+                                %{--        location.reload();--}%
+                                %{--    }--}%
+                                %{--});--}%
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+
+
+
+
+
+                %{--var $btnOk = $('<a href="#" class="btn">Aceptar</a>');--}%
+                %{--var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
+                %{--console.log('--aceptar', $("#frmaIndi"));--}%
+                %{--$btnOk.click(function () {--}%
+                %{--    console.log('aceptar');--}%
+                %{--    $(this).replaceWith(spinner);--}%
+                %{--    $("#frmaIndi").submit();--}%
+                %{--});--}%
+                %{--$("#modal_tittle_var").text("Costos Indirectos");--}%
+                %{--$("#modal_body_var").html(msg);--}%
+                %{--$("#fiscalizador").data("contrato", "${contrato?.id}");--}%
+                %{--$("#modal_footer_var").html($btnCerrar).append($btnOk);--}%
+                %{--$("#modal-var").modal("show");--}%
             }
         });
         return false;
@@ -785,10 +804,10 @@
             url     : $form.attr("action"),
             data    : data,
             success : function (msg) {
-                if(msg == 'ok'){
+                if(msg === 'ok'){
                     log("Guardardo correctamente", false);
                     setTimeout(function () {
-                        location.reload(true);
+                        location.reload();
                     }, 1000);
                 }else{
                     log("Error al guardar", true);

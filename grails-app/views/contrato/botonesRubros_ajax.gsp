@@ -1,6 +1,6 @@
 <div class="container">
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
-        <a href="#" id="btnReporte" class="btn"><i class="fa fa-print"></i>
+        <a href="#" id="btnReporte" class="btn"><i class="fa fa-truck"></i>
             Con desglose de Trans.
         </a>
         <a href="#" id="btnReporteGeneral" class="btn"><i class="fa fa-print"></i>
@@ -12,7 +12,7 @@
     </div>
 
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
-        <a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-print"></i>
+        <a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-truck"></i>
             VAE con desglose de Trans.
         </a>
         <a href="#" id="btnReporteVencidas" class="btn"><i class="fa fa-print"></i>
@@ -24,7 +24,7 @@
     </div>
 
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
-        <a href="#" id="btnIlustraciones" class="btn"><i class="fa fa-print"></i>
+        <a href="#" id="btnIlustraciones" class="btn"><i class="fa fa-image"></i>
             Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra
         </a>
     </div>
@@ -76,8 +76,7 @@
                         $("#divError").hide();
                         location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${contrato?.obra?.id}&tipo=ie";
                     } else {
-                        $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
-                        $("#divError").show()
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Archivo no encontrado" + '</strong>');
                     }
                 }
             });

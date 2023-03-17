@@ -140,7 +140,6 @@ class ContratoController {
     }
 
     def saveDelegado() {
-        println "AQUI: " + params
         def contrato = Contrato.get(params.id)
         def delegado = Persona.get(params.pref)
 

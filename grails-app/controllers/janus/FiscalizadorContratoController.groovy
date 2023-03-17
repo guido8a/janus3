@@ -2,6 +2,7 @@ package janus
 
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class FiscalizadorContratoController {
 
@@ -12,7 +13,7 @@ class FiscalizadorContratoController {
     } //index
 
     def addFisc() {
-//        println params
+        println params
         def contrato = Contrato.get(params.contrato)
         def persona = Persona.get(params.fisc)
         def desde = new Date().parse("dd-MM-yyyy", params.desde)
@@ -23,24 +24,19 @@ class FiscalizadorContratoController {
                 fiscalizador: persona,
                 fechaInicio: desde
         ])
+
         def fiscs = FiscalizadorContrato.findAllByContrato(contrato, [sort: 'fechaInicio', order: "desc"])
 
         if (fiscs.size() > 0) {
-//            def newest = contrato.administradorContrato
             def newest = fiscs.first()
 
-//            println "CURRENT: " + newest
-//            println newest.class
             if (newest.id) {
-//                println newest.fechaInicio
-//                println desde
                 if (newest.fechaInicio < desde) {
                     newest.fechaFin = desde
                     if (!newest.save(flush: true)) {
                         println "error al poner fecha fin de newest " + newest + " " + newest.errors
                     }
                 } else {
-//                    error = "NO_No puede asignar una fecha de inicio inferior a " + newest.fechaInicio.format("dd-MM-yyyy")
                     def overlap = FiscalizadorContrato.withCriteria {
                         eq("contrato", contrato)
                         le("fechaInicio", desde)
@@ -49,10 +45,6 @@ class FiscalizadorContratoController {
                             isNull("fechaFin")
                         }
                     }
-//                    println "** "
-//                    overlap.each {
-//                        println it.fechaInicio.format("dd-MM-yyyy") + "    ->    " + it.fechaFin?.format("dd-MM-yyyy")
-//                    }
                     if (overlap.size() > 0) {
                         error = "NO_No puede asignar una fecha de inicio entre ${overlap.fechaInicio*.format('dd-MM-yyyy')} y ${overlap.fechaFin*.format('dd-MM-yyyy')}"
                     }
@@ -73,15 +65,15 @@ class FiscalizadorContratoController {
     def tabla() {
         def contrato = Contrato.get(params.contrato)
         def lista = FiscalizadorContrato.findAllByContrato(contrato, [sort: "fechaInicio", order: "desc"])
+        println("lista " + lista)
         [fiscalizadorContratoInstanceList: lista, params: params]
     }
 
     def list_ext() {
-        [administradorContratoInstanceList: AdministradorContrato.list(params), params: params]
+        [administradorContratoInstanceList: AdministradorContrato.list(params), params: params, contrato: params.contrato]
     } //list
 
     def indirectos() {
-//        println "params: $params"
         def cntr = Contrato.get(params.contrato)
         [cntr: cntr]
     } //list
