@@ -12,10 +12,11 @@
         <th style="width: 8%">Código</th>
         <th style="width: 35%">Objeto</th>
         <th style="width: 8%">Fecha</th>
-        <th style="width: 15%">Contratista</th>
+        <th style="width: 14%">Contratista</th>
         <th style="width: 15%">Administrador</th>
         <th style="width: 15%">Fiscalizador</th>
         <th style="width: 4%">Sel.</th>
+        <th style="width: 1%"></th>
     </tr>
     </thead>
 </table>
@@ -27,7 +28,7 @@
                 <td style="width: 8%">${dt.cntrcdgo}</td>
                 <td style="width: 35%">${dt.cntrobjt}</td>
                 <td style="width: 8%"> ${dt.cntrfcsb.format('dd/MM/yyyy')}
-                <td style="width: 15%"> ${dt.prvenmbr}
+                <td style="width: 14%"> ${dt.prvenmbr}
                 <td style="width: 15%"> ${dt.admn}
                 <td style="width: 15%"> ${dt.fscl}
                 </td>
@@ -36,7 +37,9 @@
                          regNmbr="${dt?.cntrobjt}" regCdgo="${dt?.cntrcdgo}"
                          data-id="${dt?.cntr__id}">
                         <button class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
-                    </div></td>
+                    </div>
+                </td>
+                <td style="width: 1%"></td>
             </tr>
         </g:each>
     </table>
@@ -44,10 +47,10 @@
 
 <script type="text/javascript">
     $(".selecciona").click(function () {
+        var g = cargarLoader("Cargando...");
         var id = $(this).data("id");
         $("#listaObra").dialog("close");
         $("#spinner").removeClass("hide");
         location.href = "${g.createLink(controller: 'contrato', action: 'verContrato')}" + "?contrato=" + id
     });
-
 </script>

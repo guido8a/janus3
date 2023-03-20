@@ -14,10 +14,8 @@ class PeriodosInecController {
     } //index
 
     def list() {
-        println params
-        def periodos = PeriodosInec.list([sort: 'fechaInicio'])
-//        [periodosInecInstanceList: PeriodosInec.list(params), params: params]
-        [periodosInecInstanceList: periodos, params: params]
+        params.max = Math.min(params.max ? params.int('max') : 18, 100)
+        [periodosInecInstanceList: PeriodosInec.list(params).sort{it.fechaInicio}, periodosInecInstanceTotal: PeriodosInec.count(), params: params]
     } //list
 
     def form_ajax() {

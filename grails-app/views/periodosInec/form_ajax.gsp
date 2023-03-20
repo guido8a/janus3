@@ -57,7 +57,7 @@
             </div>
 
             <div class="controls">
-                <g:select name="periodoCerrado" from="${periodosInecInstance.constraints.periodoCerrado.inList}" class=" required" value="${periodosInecInstance?.periodoCerrado}" valueMessagePrefix="periodosInec.periodoCerrado" style="width: 60px;"/>
+                <g:select name="periodoCerrado" from="${['N' : 'NO' , 'S' : 'SI']}" class=" required" value="${periodosInecInstance?.periodoCerrado}" optionKey="key" optionValue="value" style="width: 60px;"/>
                 <span class="mandatory">*</span>
                 <p class="help-block ui-helper-hidden"></p>
             </div>

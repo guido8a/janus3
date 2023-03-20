@@ -1,6 +1,5 @@
 package janus
 
-
 import org.springframework.dao.DataIntegrityViolationException
 import seguridad.Persona
 
@@ -79,43 +78,39 @@ class FiscalizadorContratoController {
     } //list
 
     def guardarIndirectos() {
-        println "guardar indirectos, params: $params"
         def cntr = Contrato.get(params.cntr)
         def pcnt = params.indirectos.trim().toDouble()
         if((pcnt >= 0.0) && (pcnt < 100.0)) {
             cntr.indirectos = pcnt
-            cntr.save(flush: true)
+            if(cntr.save(flush: true)){
+                render "ok_Valor guardado correctamente"
+            }else{
+                render "no_Error al guardar el valor"
+            }
         } else {
-            flash.clase = "alert-error"
-            flash.message = "Valor no válido: $params.indirectos"
+            render "no_valor no válido: $params.indirectos"
         }
-//        render "ok"
-        params.contrato = cntr.id
-        redirect(controller: 'contrato', action: 'verContrato', params: params)
     }
 
     def adicionales() {
-//        println "params: $params"
         def cntr = Contrato.get(params.contrato)
         [cntr: cntr]
     } //list
 
-
     def guardarAdicionales() {
-        println "guardar adicionales, params: $params"
         def cntr = Contrato.get(params.cntr)
         def adicionales = params.adicionales.trim().toUpperCase()
         if(adicionales) {
             cntr.adicionales = adicionales
-            cntr.save(flush: true)
+            if(cntr.save(flush: true)){
+                render "ok_Valor guardado correctamente"
+            }else{
+                render "no_Error al guardar el valor"
+            }
         } else {
-            flash.clase = "alert-error"
-            flash.message = "Valor no válido: $params.adicionales"
+            render "no_valor no válido"
         }
-        render "ok"
     }
-
-
 
     def list() {
         [fiscalizadorContratoInstanceList: FiscalizadorContrato.list(params), params: params]

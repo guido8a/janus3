@@ -380,15 +380,14 @@
                     <i class="fa fa-user"></i> Delegado del Prefecto
                 </a>
             </g:if>
-%{--            <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">--}%
+            <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
                 <a href="#" id="btnIndi" class="btn">
                     <i class="fa fa-file"></i> % de Indirectos
                 </a>
-%{--            </g:if>--}%
-
+            </g:if>
             <g:if test="${contrato.fiscalizador?.id == session.usuario.id}">
                 <a href="#" id="btnAdicionales" class="btn">
-                    <i class="fa fa-file"></i> Autorización C + %
+                    <i class="fa fa-check"></i> Autorización C + %
                 </a>
             </g:if>
         </div>
@@ -492,8 +491,6 @@
         </div>
     </fieldset>
 </div>
-
-
 
 <script type="text/javascript">
 
@@ -725,48 +722,31 @@
                             label     : "<i class='fa fa-print'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                %{--$.ajax({--}%
-                                %{--    type    : "POST",--}%
-                                %{--    url     : "${createLink(action:'saveDelegadoFisc')}",--}%
-                                %{--    data    : {--}%
-                                %{--        id   : "${contrato?.id}",--}%
-                                %{--        pref : $("#delegadoFisc").val()--}%
-                                %{--    },--}%
-                                %{--    success : function (msg) {--}%
-                                %{--        if(msg === 'OK'){--}%
-                                %{--            log("Delegado asignado correctamente","success");--}%
-                                %{--            var g = cargarLoader("Cargando...");--}%
-                                %{--            setTimeout(function () {--}%
-                                %{--                location.reload();--}%
-                                %{--            }, 1000);--}%
-                                %{--        }else{--}%
-                                %{--            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al asignar el delegado" + '</strong>');--}%
-                                %{--        }--}%
-                                %{--        location.reload();--}%
-                                %{--    }--}%
-                                %{--});--}%
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(controller: 'fiscalizadorContrato', action:'guardarIndirectos')}",
+                                    data    : {
+                                        cntr   : "${contrato?.id}",
+                                        indirectos : $("#indirectos").val()
+                                    },
+                                    success : function (msg) {
+                                        var parts = msg.split("_");
+                                        if(parts[0] === 'ok'){
+                                            log(parts[1],"success");
+                                            var g = cargarLoader("Cargando...");
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 1000);
+                                        }else{
+                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                        }
+                                        location.reload();
+                                    }
+                                });
                             } //callback
                         } //guardar
                     } //buttons
                 }); //dialog
-
-
-
-
-
-                %{--var $btnOk = $('<a href="#" class="btn">Aceptar</a>');--}%
-                %{--var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
-                %{--console.log('--aceptar', $("#frmaIndi"));--}%
-                %{--$btnOk.click(function () {--}%
-                %{--    console.log('aceptar');--}%
-                %{--    $(this).replaceWith(spinner);--}%
-                %{--    $("#frmaIndi").submit();--}%
-                %{--});--}%
-                %{--$("#modal_tittle_var").text("Costos Indirectos");--}%
-                %{--$("#modal_body_var").html(msg);--}%
-                %{--$("#fiscalizador").data("contrato", "${contrato?.id}");--}%
-                %{--$("#modal_footer_var").html($btnCerrar).append($btnOk);--}%
-                %{--$("#modal-var").modal("show");--}%
             }
         });
         return false;
@@ -780,42 +760,52 @@
                 contrato : "${contrato?.id}"
             },
             success : function (msg) {
-                var $btnOkA = $('<a href="#" class="btn">Aceptar</a>');
-                var $btnCerrarA = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                $btnOkA.click(function () {
-                    $(this).replaceWith(spinner);
-                    submitFormAdicionales();
-                });
-                $("#modal_tittle_var").text("Autorización de Obras Adicionales");
-                $("#modal_body_var").html(msg);
-                $("#fiscalizador").data("contrato", "${contrato?.id}");
-                $("#modal_footer_var").html($btnCerrarA).append($btnOkA);
-                $("#modal-var").modal("show");
+
+                var pi = bootbox.dialog({
+                    id      : "dlMAOA",
+                    title   : "Memorando  de Autorización de Obras Adicionales",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-print'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(controller: 'fiscalizadorContrato', action:'guardarAdicionales')}",
+                                    data    : {
+                                        cntr   : "${contrato?.id}",
+                                        adicionales : $("#adicionales").val()
+                                    },
+                                    success : function (msg) {
+                                        var parts = msg.split("_");
+                                        if(parts[0] === 'ok'){
+                                            log(parts[1],"success");
+                                            var g = cargarLoader("Cargando...");
+                                            setTimeout(function () {
+                                                location.reload();
+                                            }, 1000);
+                                        }else{
+                                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                        }
+                                        location.reload();
+                                    }
+                                });
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
             }
         });
         return false;
     });
-
-    function submitFormAdicionales() {
-        var $form = $("#frmAdicionales");
-        var data = $form.serialize();
-        $.ajax({
-            type    : "POST",
-            url     : $form.attr("action"),
-            data    : data,
-            success : function (msg) {
-                if(msg === 'ok'){
-                    log("Guardardo correctamente", false);
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                }else{
-                    log("Error al guardar", true);
-                    return false;
-                }
-            }
-        });
-    }
 
     $("#btnVerAvance").click(function () {
         $(this).replaceWith(spinner);
@@ -1114,7 +1104,7 @@
                             if(msg === "ok") {
                                 location.reload(true);
                             } else {
-                                log("Un error ha ocurrido al iniciar la obra", success)
+                                log("Un error ha ocurrido al iniciar la obra", "success")
                             }
                         }
                     });
@@ -1155,78 +1145,6 @@
                 }); //dialog
             }
         });
-
-        %{--$.box({--}%
-        %{--    imageClass : "box_info",--}%
-        %{--    text       : "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br><span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",--}%
-        %{--    title      : "Imprimir Rubros de la Obra",--}%
-        %{--    iconClose  : true,--}%
-        %{--    dialog     : {--}%
-        %{--        resizable : false,--}%
-        %{--        draggable : false,--}%
-        %{--        width     : 640,--}%
-        %{--        height    : 280,--}%
-        %{--        buttons   : {--}%
-
-        %{--            "Con desglose de Trans."     : function () {--}%
-        %{--                url += "1";--}%
-        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
-        %{--            },--}%
-        %{--            "Sin desglose de Trans."     : function () {--}%
-        %{--                url += "0";--}%
-        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
-        %{--            },--}%
-        %{--            "Exportar Rubros a Excel"    : function () {--}%
-        %{--                var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";--}%
-        %{--                url += "1";--}%
-        %{--                location.href = url;--}%
-        %{--            },--}%
-        %{--            "VAE con desglose de Trans." : function () {--}%
-        %{--                urlVae += "1";--}%
-        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
-        %{--            },--}%
-        %{--            "VAE sin desglose de Trans." : function () {--}%
-        %{--                urlVae += "0";--}%
-        %{--                location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${contrato?.oferta?.concurso?.obra?.id}';--}%
-        %{--            },--}%
-        %{--            "Exportar VAE a Excel"       : function () {--}%
-        %{--                var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";--}%
-        %{--                urlVaeEx += "1";--}%
-        %{--                location.href = urlVaeEx;--}%
-        %{--            },--}%
-        %{--            "Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra": function () {--}%
-        %{--                var idObra;--}%
-
-        %{--                idObra = ${contrato?.obra?.id}--}%
-
-        %{--                    $.ajax({--}%
-        %{--                        type: "POST",--}%
-        %{--                        url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
-        %{--                        data: {--}%
-        %{--                            id: idObra,--}%
-        %{--                            tipo: "ie"--}%
-        %{--                        },--}%
-        %{--                        success: function (msg) {--}%
-
-        %{--                            var parts = msg.split('*');--}%
-
-        %{--                            if (parts[0] === 'SI') {--}%
-        %{--                                $("#divError").hide();--}%
-        %{--                                var url = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${contrato?.obra?.id}&tipo=ie";--}%
-        %{--                                location.href = url;--}%
-        %{--                            } else {--}%
-        %{--                                $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");--}%
-        %{--                                $("#divError").show()--}%
-        %{--                            }--}%
-        %{--                        }--}%
-        %{--                    });--}%
-        %{--            },--}%
-        %{--            "Cancelar" : function () {--}%
-
-        %{--            }--}%
-        %{--        }--}%
-        %{--    }--}%
-        %{--});--}%
         return false;
     });
 
