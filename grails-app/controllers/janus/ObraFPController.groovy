@@ -1,6 +1,9 @@
 package janus
 
+import apli.DbConnectionService
+
 class ObraFPController {
+
     def dbConnectionService
     def obraService
     //static ArrayList rg_cmpo = []
@@ -294,6 +297,7 @@ class ObraFPController {
     }
 
     def verificaMatriz(id) {
+        println "verificaMatriz"
         def obra = Obra.get(id)
         def errr = ""
         if (!VolumenesObra.findAllByObra(obra)) errr += "<br><span class='label-azul'>No se ha ingresado los volúmenes de Obra</span>"
@@ -318,9 +322,11 @@ class ObraFPController {
     }
 
     def rubrosSinCantidad(id) {
+        println "rubrosSinCantidad ---1"
         def cn = dbConnectionService.getConnection()
         def er = 0;
         def tx_sql = "select count(*) nada from vlob where obra__id = ${id} and vlobcntd <= 0"
+        println "rubrosSinCantidad: $tx_sql"
         cn.eachRow(tx_sql.toString()) { row ->
             er = row.nada
         }

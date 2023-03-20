@@ -247,7 +247,7 @@ class ObraController {
 
     def regitrarObra() {
         def obra = Obra.get(params.id)
-        def obrafp = new ObraFPController()
+//        def obrafp = new ObraFPController()
 
         def msg = ""
         def vols = VolumenesObra.findAllByObra(obra)
@@ -274,22 +274,26 @@ class ObraController {
             return
         }
 
-        def res = obrafp.verificaMatriz(obra.id)
+//        def res = obrafp.verificaMatriz(obra.id)
+        def res = verificaMatriz(obra.id)
         if (res != "") {
             msg = res
-//            println "1 res "+msg
+            println "1 res "+msg
             render msg
             return
         }
 
-        res = obrafp.verifica_precios(obra.id)
+        println "....ok"
+        
+//        res = obrafp.verifica_precios(obra.id)
+        res = verifica_precios(obra.id)
         if (res.size() > 0) {
             msg = "<span style='color:red'>Errores detectados</span><br> <span class='label-azul'>No se encontraron precios para los siguientes items:</span><br>"
             msg += res.collect { "<b>ITEM</b>: $it.key ${it.value.join(", <b>Lista</b>: ")}" }.join('<br>')
             render msg
             return
         }
-//        println "2 res "+msg
+        println "2 res "+msg
 
         def fps = FormulaPolinomica.findAllByObra(obra)
 //        println "fps "+fps
@@ -1629,6 +1633,59 @@ class ObraController {
             render "no"
         }
     }
+
+    def verificaMatriz(id) {
+        println "verificaMatriz"
+        def obra = Obra.get(id)
+        def errr = ""
+        if (!VolumenesObra.findAllByObra(obra)) errr += "<br><span class='label-azul'>No se ha ingresado los volúmenes de Obra</span>"
+        if (!obra.lugar) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Peso Capital de cantón\" para esta Obra"
+        if (!obra.listaPeso1) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Peso Especial\" para esta Obra"
+        if (!obra.listaVolumen0) errr += "<br><span class='label-azul'>No se ha definido la Lista precios: </span>\"Materiales Pétreos Hormigones\" para esta Obra"
+        if (!obra.listaVolumen1) errr += "<br><span class='label-azul'>No se ha definido la Lista precios: </span>\"Materiales Mejoramiento\" para esta Obra"
+        if (!obra.listaVolumen2) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Materiales Carpeta Asfáltica\" para esta Obra"
+        if (!obra.listaManoObra) errr += "<br><span class='label-azul'>No se ha definido la Lista precios:</span> \"Mano de obra y equipos\" para esta Obra"
+
+//        if (!obra.distanciaPeso) errr += "<br> <span class='label-azul'> No se han ingresado las distancias al Peso</span>"
+        if (obra.distanciaPeso == null) errr += "<br> <span class='label-azul'> No se han ingresado las distancias al Peso</span>"
+//        if (!obra.distanciaVolumen) errr += "<br>  <span class='label-azul'>No se han ingresado las distancias al Volumen</span>"
+        if (obra.distanciaVolumen == null) errr += "<br>  <span class='label-azul'>No se han ingresado las distancias al Volumen</span>"
+        if (rubrosSinCantidad(id) > 0) errr += "<br> <span class='label-azul'>Existen Rubros con cantidades Negativas o CERO</span>"
+
+        //if (nombresCortos()) errr += "<br><span class='label-azul'>Existen Items con nombres cortos repetidos: </span>" + nombresCortos()
+
+        if (errr) errr = "<b><span style='color:red'>Errores detectados</span></b> " + errr
+        else errr = ""
+        return errr
+    }
+
+    def rubrosSinCantidad(id) {
+        println "rubrosSinCantidad ---1"
+        def cn = dbConnectionService.getConnection()
+        def er = 0;
+        def tx_sql = "select count(*) nada from vlob where obra__id = ${id} and vlobcntd <= 0"
+        println "rubrosSinCantidad: $tx_sql"
+        cn.eachRow(tx_sql.toString()) { row ->
+            er = row.nada
+        }
+        cn.close()
+        return er
+    }
+
+    def verifica_precios(id) {
+        // usa funcion
+        def cn = dbConnectionService.getConnection()
+        def errr = [:];
+        def tx_sql = "select itemcdgo, itemnmbr, tplsdscr from verifica_precios_v2(${id}) order by itemcdgo "
+        cn.eachRow(tx_sql.toString()) { row ->
+            errr.put(row["itemcdgo"]?.trim(), [row["itemnmbr"]?.trim(), row["tplsdscr"]?.trim()])
+//            errr += "Item: ${row.itemcdgo.trim()} ${row.itemnmbr.trim()} Lista: ${row.tplsdscr.trim()}\n"
+//            println "r "+row
+        }
+        cn.close()
+        return errr
+    }
+
 
 
 } //fin controller

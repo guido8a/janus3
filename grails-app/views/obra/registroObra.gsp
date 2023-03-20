@@ -109,7 +109,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) && (Concurso.countByObra(obra) == 0)}">
                 <g:if test="${obra?.fechaInicio == null}">
-                    <button class="btn" id="cambiarEstado"><i class="fa fa-rotate"></i> Cambiar de Estado</button>
+                    <button class="btn" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar de Estado</button>
                 </g:if>
             </g:if>
 
@@ -124,7 +124,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </g:if>
         <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D'}">
             <g:if test="${!obra?.fechaInicio}">
-                <button class="btn" id="btn-adminDirecta"><i class="fa fa-thumbs-up"></i> Iniciar obra
+                <button class="btn btn-azul" id="btn-adminDirecta"><i class="fa fa-thumbs-up"></i> Iniciar obra
                 </button>
             </g:if>
         </g:if>
@@ -164,7 +164,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${duenoObra == 1 && (Concurso.countByObra(obra) == 0) && (obra?.codigo[-2..-1] != 'OF')}">
                 <g:if test="${obra?.fechaInicio == null}">
-                    <button class="btn" id="cambiarEstado"><i class="fa fa-arrow-right"></i> Cambiar de Estado</button>
+                    <button class="btn" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar de Estado</button>
                 </g:if>
             </g:if>
 

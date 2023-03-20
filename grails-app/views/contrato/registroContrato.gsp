@@ -562,7 +562,7 @@
     </fieldset>
 
     <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaRbro" style="height: 460px; overflow: auto">
+        <div id="divTablaRbro" style="height: 400px; overflow: auto">
         </div>
     </fieldset>
 </div>
@@ -660,7 +660,7 @@
     </fieldset>
 
     <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaObra" style="height: 460px; overflow: auto">
+        <div id="divTablaObra" style="height: 400px; overflow: auto">
         </div>
     </fieldset>
 </div>
