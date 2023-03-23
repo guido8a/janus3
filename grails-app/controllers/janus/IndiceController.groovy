@@ -88,12 +88,7 @@ class IndiceController {
                 def src = new File(pathFile)
 
                 def i = 1
-//                while (src.exists()) {
-//                    pathFile = path + fn + "_" + i + "." + ext
-//                    src = new File(pathFile)
-//                    i++
-//                }
-//            println pathFile
+
                 def file = new File(pathFile)
                 f.transferTo(file) // guarda el archivo subido al nuevo path
 
@@ -310,16 +305,8 @@ class IndiceController {
     } //delete
 
     def valorIndice = {
-        def cn = dbConnectionService.getConnection()
         def anio = Anio.findByAnio(new Date().format('yyyy'))
-
-        def tx_sql = "select * from sp_vlin(${janus.pac.Anio.get(params?.anio ?: anio?.id)?.anio})"
-        def datos = cn.rows(tx_sql.toString())
-
-        cn.close()
-
-        //println "año: $anio.id"
-        [datos: datos, anio: params.anio?: anio?.id]
+        [anio: anio?.id]
     }
 
     def editarIndices() {
@@ -329,9 +316,7 @@ class IndiceController {
     def tablaValores() {
         def cn = dbConnectionService.getConnection()
         def cn1 = dbConnectionService.getConnection()
-        //println params
 
-//        def sqlTx = "SELECT indc__id, indcdscr, 0 valor from indc order by indcdscr limit 10"
         def sqlTx = "SELECT indc__id, indcdscr, 0 valor from indc order by tpin__id desc, indcdscr"
         def txValor = ""
         def cont = 0
@@ -341,15 +326,15 @@ class IndiceController {
         def fcha = PeriodosInec.get(prin).fechaInicio - 1
         def prinAnterior = PeriodosInec.findByFechaFinBetween(fcha, fcha + 2)?.id
         def periodos = [prinAnterior, prin]
-//        println prinAnterior
 
         def html = "<table class=\"table table-bordered table-striped table-hover table-condensed\" id=\"tablaPrecios\">"
         html += "<thead>"
         html += "<tr>"
         html += "<th>Indice_id</th>"
         html += "<th>Nombre del Indice</th>"
-        html += "<th>${PeriodosInec.get(prinAnterior)?.descripcion}</th>"
-        html += "<th>${PeriodosInec.get(prin).descripcion}</th>"
+        html += "<th>${PeriodosInec.get(prinAnterior)?.descripcion ?: ''}</th>"
+        html += "<th>${PeriodosInec.get(prin)?.descripcion ?: ''}</th>"
+        html += "<th>Editar</th>"
         html += "<th>Copiar Anterior</th>"
 
         def body = ""
@@ -364,7 +349,6 @@ class IndiceController {
                 rubro = "new"
                 txValor = "select vlin__id, vlinvalr, vlin.prin__id from vlin, prin where vlin.prin__id = ${periodos[cont]} and " +
                     "vlin.indc__id = ${d.indc__id} and prin.prin__id = vlin.prin__id order by prinfcin"
-                //println txValor
                 prec = g.formatNumber(number: 0.0, maxFractionDigits: 2, minFractionDigits: 2, locale: "ec")
                 p = 0.0
                 editar = periodos[cont]? "editable" : ""
@@ -377,69 +361,49 @@ class IndiceController {
                 }
                 body += "<td class='${editar} number' data-original='${p}' data-prin='${periodos[cont]}' " +
                         "data-id='${rubro}' data-indc='${d.indc__id}' data-valor='${p}'>" + prec + '</td>'
+
                 if(cont==1){
-                    body += "<td style='text-align:center'><a class='btn btn-small btn-show btn-ajax btCopia' href='#' rel='tooltip' title='Copiar' " +
-                            "</a>Copiar</td>"
+                    body += "<td style='text-align:center' ><a class='btn btn-xs btn-success btnEditar' data-id='${rubro}'  href='#' rel='tooltip' title='Editar' " +
+                            "</a><i class='fa fa-edit'></i>  </td>"
+                    body += "<td style='text-align:center'><a class='btn btn-xs btn-show btn-info btCopia' data-id='${rubro}' href='#' rel='tooltip' title='Copiar' " +
+                            "</a><i class='fa fa-copy'></i>  Copiar</td>"
                 }
 
-
                 cont++
             }
-/*
-            while (cont < 2) {
-                prec = g.formatNumber(number: 0.0, maxFractionDigits: 5, minFractionDigits: 5, locale: "ec")
-                p = 0.0
-                editar = periodos[cont]? "editable" : ""
-                body += "<td class='${editar} number' data-original='${p}' data-prin='${periodos[cont]}' " +
-                    "data-id='${rubro}' data-indc='${d.indc__id}' data-valor='0.0'>" + prec + '</td>'
-                cont++
-            }
-*/
 
         }
         html += "</tr>"
         html += "</thead>"
         html += "<tbody>"
-        //println html
 
         cn.close()
         cn1.close()
         html += body
-        html += "<script type=\'text/javascript\'>  \$(function () { \$('.btCopia').click(function () {" +
-//                "console.log('--->' + \$(this).parent().prev().data('valor'));" +
-//                "console.log('--->' + \$(this).parent().prev().prev().data('valor'));" +
-                "var vl = \$(this).parent().prev().prev().data('valor');" +
-                "\$(this).parent().prev().data('valor',vl).text(vl);" +
-                "}); });</script>"
-
+//        html += "<script type=\'text/javascript\'>  \$(function () { \$('.btCopia').click(function () {" +
+//                "var vl = \$(this).parent().prev().prev().data('valor');" +
+//                "\$(this).parent().prev().data('valor',vl).text(vl);" +
+//                "}); });</script>"
         html += "</tbody>"
         html += "</table>"
-        //println html
         [html: html]
     }
 
     def actualizaVlin() {
         println "actualizaVlin: " + params
-//        println("clase " + params?.item?.class)
-        //formato de id:###/new _ prin _ indc _ valor
+
         if(params?.item?.class == java.lang.String) {
             params?.item = [params?.item]
         }
 
         def oks = "", nos = ""
         params.item.each {
-//            println "Procesa: " + it
 
             def vlor = it.split("_")
             def nuevo = new ValorIndice()
-//            println "vlor: " + vlor
             def existe = ValorIndice.findByPeriodoAndIndice(PeriodosInec.get(vlor[1].toInteger()), Indice.get(vlor[2].toInteger()))
             println "inidice: ${existe?.indice}"
-/*
-            if (vlor[0] != "new") {
-                nuevo = ValorIndice.get(vlor[0].toInteger())
-            }
-*/
+
             if(existe){
                 nuevo = ValorIndice.get(existe.id)
             }
@@ -447,7 +411,6 @@ class IndiceController {
             nuevo.periodo = PeriodosInec.get(vlor[1])
             nuevo.indice = Indice.get(vlor[2])
             nuevo.valor = vlor[3].toDouble()
-//            println "periodo: ${nuevo.periodo}, indice: ${nuevo.indice}, valor: ${nuevo.valor}"
             if (!nuevo.save(flush: true)) {
                 println "indice controller l 395: "+"error " + vlor
                 if (nos != "") {
@@ -460,7 +423,6 @@ class IndiceController {
                 }
                 oks += "#" + vlor[0]
             }
-//            println nuevo.valor
         }
         render "ok"
     }
@@ -560,6 +522,40 @@ class IndiceController {
         println "borrarVlin: $params"
         ValorIndice.get(params.vlin_id)?.delete()
         render "ok"
+    }
+
+    def tablaValorIndices_ajax(){
+        def cn = dbConnectionService.getConnection()
+        def anio = Anio.findByAnio(new Date().format('yyyy'))
+
+        def tx_sql = "select * from sp_vlin(${janus.pac.Anio.get(params?.anio ?: anio?.id)?.anio})"
+        def datos = cn.rows(tx_sql.toString())
+
+        cn.close()
+
+        [datos: datos, anio: params.anio?: anio?.id]
+    }
+
+    def editarValorIndice_ajax(){
+        def valorIndice = ValorIndice.get(params.id)
+        return[valorIndice: valorIndice]
+    }
+
+    def saveValorIndice_ajax(){
+        def valorIndice = ValorIndice.get(params.id)
+
+        if(params.valor){
+            valorIndice.valor = params.valor.toDouble()
+        }else{
+            valorIndice.valor = 0
+        }
+
+        if(!valorIndice.save(flush:true)){
+            println("error al guardar el valor del indice " + valorIndice.errors)
+            render "no_Error al guardar el valor del indice "
+        }else{
+            render "ok_Valor del indice guardado correctamente"
+        }
     }
 
 
