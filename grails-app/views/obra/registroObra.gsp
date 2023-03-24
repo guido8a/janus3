@@ -730,13 +730,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 <div id="copiarDialogOfe">
     <fieldset>
-        <div class="col-md-3">
+        <div class="col-md-12">
             Seleccione el oferente para la obra: <div style="font-weight: bold">${obra?.nombre}</div>
         </div>
 
-        <div class="col-md-3" style="margin-top: 10px">
-            <div class="col-md-3">
-                <g:select name="oferenteCopia" from="${seguridad.Persona.findAllByDepartamento(Departamento.get(13))}"
+        <div class="col-md-12" style="margin-top: 10px">
+            <div class="col-md-10">
+                <g:select name="oferenteCopia"
+                          from="${seguridad.Persona.findAllByDepartamento(Departamento.get(13), [sort: 'nombre'])}"
                           optionKey="id" optionValue="${{
                     it.nombre + ' ' + it.apellido
                 }}"/>
@@ -1984,7 +1985,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             resizable: false,
             modal: true,
             draggable: false,
-            width: 380,
+            width: 420,
             position: 'center',
             title: 'Copiar la obra al sistema de oferentes',
             buttons: {

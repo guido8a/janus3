@@ -74,7 +74,8 @@ class ObraController {
     def listaObras(){
         println "listaItems" + params
         def datos;
-        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
+//        [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
+        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo']
 
         def select = "select obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
                 "from obra, parr, dpto "

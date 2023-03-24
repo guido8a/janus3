@@ -2,10 +2,9 @@ package utilitarios
 
 import janus.SubPresupuesto
 import janus.VolumenesObra
-//import org.codehaus.groovy.grails.orm.hibernate.cfg.GrailsDomainBinder
+import org.grails.orm.hibernate.cfg.GrailsDomainBinder
 
 class OferentesService {
-
     def dbConnectionService
     def grailsApplication
 
@@ -348,13 +347,13 @@ class OferentesService {
     }
 
 
-//    def exportDominio(dominio, campoReferencia, objeto) {
-////        println "exportDominio: dominio: $dominio, campoReferencia: $campoReferencia, objeto: $objeto"
-//        def mapa = new GrailsDomainBinder().getMapping(dominio)
-//        def tabla = mapa.table.name
-//        def validacion = "select * from ${tabla} where ${campoReferencia}=${objeto.id}"
-//        return exportDominio(dominio, campoReferencia, objeto, false, false, false, false, validacion)
-//    }
+    def exportDominio(dominio, campoReferencia, objeto) {
+//        println "exportDominio: dominio: $dominio, campoReferencia: $campoReferencia, objeto: $objeto"
+        def mapa = new GrailsDomainBinder().getMapping(dominio)
+        def tabla = mapa.table.name
+        def validacion = "select * from ${tabla} where ${campoReferencia}=${objeto.id}"
+        return exportDominio(dominio, campoReferencia, objeto, false, false, false, false, validacion)
+    }
 
     def exportDominio(dominio, campoReferencia, objeto, oferente, campoOferente) {
         def mapa = GrailsDomainBinder.getMapping(dominio)
@@ -370,158 +369,158 @@ class OferentesService {
         return exportDominio(dominio, campoReferencia, objeto, oferente, campoOferente, personaId, personaCol, validacion)
     }
 
-//    def exportDominio(dominio, campoReferencia, objeto, oferente, campoOferente, personaId, personaCol, sqlValidacion) {
-//        //println "dom "+dominio+" camp "+campoReferencia+"  obt "+objeto
-//        def sql = "insert into % & values # "
-//        def campos = "("
-//        def valores = "("
-//        def dc = grailsApplication.getDomainClass(dominio.toString().split(" ")[1])
-//        def mapa = new GrailsDomainBinder().getMapping(dominio)
-//        def tabla = mapa.table.name
-//        def validacion = sqlValidacion
-//        mapa.columns.eachWithIndex { c, i ->
-////            println "it " + c.key + " " + c.value.type + "  " + c.value.getColumn() + " " + c
-//            // print " " + c.key + " " + c.value.getColumn() + " ====> "
-//
-//            if (!personaCol || (personaCol && personaCol != c.value.getColumn())) {
-//                campos += "" + c.value.getColumn()
-//                if (i < mapa.columns.size() - 1) {
-//                    campos += ","
-//                }
-//                def p = dc.properties.find { prop ->
-//                    prop.name == c.key
-//                }
-//                valores += "" + campoASql(p, objeto)
-//                if (i < mapa.columns.size() - 1) {
-//                    // println "puso coma "+i
-//                    valores += ","
-//                }
-//            }
-//        }
-//        //println "campos antes de extas "+campos
-//        if (personaCol && personaId) {
-//            campos += ",${personaCol}"
-//            valores += ",${personaId}"
-//        }
-//        campos += ",${campoReferencia}"
-//        valores += ",${objeto.id}"
-//        if (oferente && campoOferente && personaCol != campoOferente) {
-//            campos += ",${campoOferente}"
-//            valores += ",${oferente}"
-//        }
-//        campos += ")"
-//        valores += ")"
-//
-//        //println "\ncampos " + campos
-////        println "valores " + valores
-//        sql = sql.replace("%", tabla)
-//        sql = sql.replace("&", campos)
-//        sql = sql.replace("#", valores)
-////        println "\nsql " + sql
-//        def cn = dbConnectionService.getConnectionOferentes()
-//        def count = 0
-//       // println "validacion sql  " + validacion
-//        cn.eachRow(validacion.toString()) { r ->
-//          //  println "r " + r
-//            count = r[0]
-//        }
-//       // println "res val "+count
-//        if (count == 0) {
-//            def res
-//            try {
-//              println "insert ! " + sql
-//                res = cn.executeInsert(sql.toString())
-//                println "res " + res
-//                res = res[0][0]
-////                println "res "+res
-//            } catch (e) {
-//                println "ERROR: " + e
-//                res = -1
-//            }
-//
-//            if(tabla == 'item') {
-//                cn.execute("update item set cpac__id = 0 where cpac__id is null")
-//            }
-//
-//            cn.close()
-//            return res
-//        } else {
-//            cn.close()
-//            return count
-//        }
-//
-//    }
-//
+    def exportDominio(dominio, campoReferencia, objeto, oferente, campoOferente, personaId, personaCol, sqlValidacion) {
+        //println "dom "+dominio+" camp "+campoReferencia+"  obt "+objeto
+        def sql = "insert into % & values # "
+        def campos = "("
+        def valores = "("
+        def dc = grailsApplication.getDomainClass(dominio.toString().split(" ")[1])
+        def mapa = new GrailsDomainBinder().getMapping(dominio)
+        def tabla = mapa.table.name
+        def validacion = sqlValidacion
+        mapa.columns.eachWithIndex { c, i ->
+//            println "it " + c.key + " " + c.value.type + "  " + c.value.getColumn() + " " + c
+            // print " " + c.key + " " + c.value.getColumn() + " ====> "
 
-//    def exportDominioSinReferencia(dominio, objeto, oferente, campoOferente,sqlValidacion){
-////        println "dom sin ref "+dominio+"  obt "+objeto
-//        def sql = "insert into % & values # "
-//        def campos = "("
-//        def valores = "("
-//        def dc = grailsApplication.getDomainClass(dominio.toString().split(" ")[1])
-//        def mapa = new GrailsDomainBinder().getMapping(dominio)
-//        def tabla = mapa.table.name
-//        def validacion = sqlValidacion
-//        mapa.columns.eachWithIndex { c, i ->
-////            println "it " + c.key + " " + c.value.type + "  " + c.value.getColumn() + " " + c
-////            print " " + c.key + " " + c.value.getColumn() + " ====> "
-//            campos += "" + c.value.getColumn()
-//            if (i < mapa.columns.size() - 1) {
-//                campos += ","
-//            }
-//            def p = dc.properties.find { prop ->
-//                prop.name == c.key
-//            }
-//            valores += "" + campoASql(p, objeto)
-//            if (i < mapa.columns.size() - 1) {
-//                valores += ","
-//            }
-//
-//        }
-//
-//        if (oferente && campoOferente) {
-//            campos += ",${campoOferente}"
-//            valores += ",${oferente}"
-//        }
-//
-//        campos += ")"
-//        valores += ")"
-//
-////        println "\ncampos " + campos
-////        println "valores " + valores
-//        sql = sql.replace("%", tabla)
-//        sql = sql.replace("&", campos)
-//        sql = sql.replace("#", valores)
-//
-//        def cn = dbConnectionService.getConnectionOferentes()
-//        def count = 0
-//        //println "validacion " + validacion
-//        cn.eachRow(validacion.toString()) { r ->
-//            //println "r " + r
-//            count = r[0]
-//        }
-//       // println " res validacion "+count
-//        if (count == 0) {
-//            def res
-//            try {
-//                println "insert!!!!  "+sql
-//                res = cn.executeInsert(sql.toString())
-////                println "res "+res
-//                res=res[0][0]
-////                println "res "+res
-//            } catch (e) {
-//                println "ERROR: " + e
-//                res = -1
-//            }
-//            cn.close()
-//            return res
-//        } else {
-//            cn.close()
-//            return count
-//        }
-//
-//
-//    }
+            if (!personaCol || (personaCol && personaCol != c.value.getColumn())) {
+                campos += "" + c.value.getColumn()
+                if (i < mapa.columns.size() - 1) {
+                    campos += ","
+                }
+                def p = dc.properties.find { prop ->
+                    prop.name == c.key
+                }
+                valores += "" + campoASql(p, objeto)
+                if (i < mapa.columns.size() - 1) {
+                    // println "puso coma "+i
+                    valores += ","
+                }
+            }
+        }
+        //println "campos antes de extas "+campos
+        if (personaCol && personaId) {
+            campos += ",${personaCol}"
+            valores += ",${personaId}"
+        }
+        campos += ",${campoReferencia}"
+        valores += ",${objeto.id}"
+        if (oferente && campoOferente && personaCol != campoOferente) {
+            campos += ",${campoOferente}"
+            valores += ",${oferente}"
+        }
+        campos += ")"
+        valores += ")"
+
+        //println "\ncampos " + campos
+//        println "valores " + valores
+        sql = sql.replace("%", tabla)
+        sql = sql.replace("&", campos)
+        sql = sql.replace("#", valores)
+//        println "\nsql " + sql
+        def cn = dbConnectionService.getConnectionOferentes()
+        def count = 0
+        // println "validacion sql  " + validacion
+        cn.eachRow(validacion.toString()) { r ->
+            //  println "r " + r
+            count = r[0]
+        }
+        // println "res val "+count
+        if (count == 0) {
+            def res
+            try {
+                println "insert ! " + sql
+                res = cn.executeInsert(sql.toString())
+                println "res " + res
+                res = res[0][0]
+//                println "res "+res
+            } catch (e) {
+                println "ERROR: " + e
+                res = -1
+            }
+
+            if(tabla == 'item') {
+                cn.execute("update item set cpac__id = 0 where cpac__id is null")
+            }
+
+            cn.close()
+            return res
+        } else {
+            cn.close()
+            return count
+        }
+
+    }
+
+
+    def exportDominioSinReferencia(dominio, objeto, oferente, campoOferente,sqlValidacion){
+//        println "dom sin ref "+dominio+"  obt "+objeto
+        def sql = "insert into % & values # "
+        def campos = "("
+        def valores = "("
+        def dc = grailsApplication.getDomainClass(dominio.toString().split(" ")[1])
+        def mapa = new GrailsDomainBinder().getMapping(dominio)
+        def tabla = mapa.table.name
+        def validacion = sqlValidacion
+        mapa.columns.eachWithIndex { c, i ->
+//            println "it " + c.key + " " + c.value.type + "  " + c.value.getColumn() + " " + c
+//            print " " + c.key + " " + c.value.getColumn() + " ====> "
+            campos += "" + c.value.getColumn()
+            if (i < mapa.columns.size() - 1) {
+                campos += ","
+            }
+            def p = dc.properties.find { prop ->
+                prop.name == c.key
+            }
+            valores += "" + campoASql(p, objeto)
+            if (i < mapa.columns.size() - 1) {
+                valores += ","
+            }
+
+        }
+
+        if (oferente && campoOferente) {
+            campos += ",${campoOferente}"
+            valores += ",${oferente}"
+        }
+
+        campos += ")"
+        valores += ")"
+
+//        println "\ncampos " + campos
+//        println "valores " + valores
+        sql = sql.replace("%", tabla)
+        sql = sql.replace("&", campos)
+        sql = sql.replace("#", valores)
+
+        def cn = dbConnectionService.getConnectionOferentes()
+        def count = 0
+        //println "validacion " + validacion
+        cn.eachRow(validacion.toString()) { r ->
+            //println "r " + r
+            count = r[0]
+        }
+        // println " res validacion "+count
+        if (count == 0) {
+            def res
+            try {
+                println "insert!!!!  "+sql
+                res = cn.executeInsert(sql.toString())
+//                println "res "+res
+                res=res[0][0]
+//                println "res "+res
+            } catch (e) {
+                println "ERROR: " + e
+                res = -1
+            }
+            cn.close()
+            return res
+        } else {
+            cn.close()
+            return count
+        }
+
+
+    }
 
     def sqlOferentes(sql, tipo){    //0 select 1 insert   2 update
         def res
@@ -569,8 +568,8 @@ class OferentesService {
             if (tipo =~ "String") {
                 def cmp = obj.properties[campo.name].replaceAll("'","\\\\'")
                 if(obj.properties[campo.name]=~"'"){
-                   // println "tiene comilla simple"
-                   // println "campo 3  "+obj.properties[campo.name].replaceAll("'","\\\\'")
+                    // println "tiene comilla simple"
+                    // println "campo 3  "+obj.properties[campo.name].replaceAll("'","\\\\'")
                 }
 
                 sql += "E'" + cmp+ "'"
@@ -603,5 +602,6 @@ class OferentesService {
         return sql
 
     }
+
 
 }
