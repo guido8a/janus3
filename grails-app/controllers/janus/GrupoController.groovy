@@ -198,7 +198,6 @@ class GrupoController {
         }
     }
 
-
     def deleteGr_ajax() {
         def grupo = Grupo.get(params.id)
         try {
@@ -210,9 +209,6 @@ class GrupoController {
             render "NO"
         }
     }
-
-
-
 
     def formDp_ajax() {
         def subgrupo = SubgrupoItems.get(params.subgrupo)
@@ -232,15 +228,9 @@ class GrupoController {
         return [subgrupo: subgrupo, departamentoItemInstance: departamentoItemInstance]
     }
 
-
     def checkCdDp_ajax() {
-//        println params
         if (params.id) {
             def departamento = DepartamentoItem.get(params.id)
-//            println params.codigo
-//            println params.codigo.class
-//            println departamento.codigo
-//            println departamento.codigo.class
             if (params.codigo == departamento.codigo.toString()) {
                 render true
             } else {
@@ -260,7 +250,6 @@ class GrupoController {
             }
         }
     }
-
 
     def checkDsDp_ajax() {
         if (params.id) {
@@ -286,7 +275,6 @@ class GrupoController {
     }
 
     def saveDp_ajax() {
-//        println params
         def accion = "create"
         def departamento = new DepartamentoItem()
         if (params.codigo) {
@@ -296,9 +284,7 @@ class GrupoController {
             params.descripcion = params.descripcion.toString().toUpperCase()
         }
         if (params.id) {
-//            println "EDIT!!!!"
             departamento = DepartamentoItem.get(params.id)
-//            println "\t\t" + departamento.codigo
             accion = "edit"
         }
         departamento.properties = params
@@ -323,7 +309,6 @@ class GrupoController {
         }
     }
 
-
     String makeBasicTree(params) {
 
         def id = params.id.toLong()
@@ -337,12 +322,9 @@ class GrupoController {
 
             case "root":
                 hijos = Grupo.findAll("from Grupo where id>3")
-//                println "\nhijos root: "+hijos+"\n"
                 break;
-
             case "grupo":
                 hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
-//                println "grupo" + hijos.descripcion
                 break;
             case "subgrupo":
                 hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
@@ -360,7 +342,6 @@ class GrupoController {
             switch (tipo) {
 
                 case "root":
-//                    hijosH = SubgrupoItems.findAllByGrupo(hijo)
                     hijosH = SubgrupoItems.findAllByGrupo(hijo)
                     desc = hijo.descripcion
                     rel = "grupo"
@@ -381,7 +362,6 @@ class GrupoController {
                     liId = "dp" + "_" + hijo.id
                     break;
                 case "departamento":
-//                    println("entro sub")
                     hijosH = []
                     desc = hijo.nombre
                     rel = "rubro"
@@ -400,55 +380,13 @@ class GrupoController {
         return tree
     }
 
-
     def loadTreePart() {
         render(makeBasicTree(params))
     }
 
-
     def searchTree_ajax() {
-//        println params
-//        def parts = params.search_string.split("~")
         def search = params.search.trim()
         if (search != "") {
-//            def id = params.tipo
-//            def find = Item.withCriteria {
-//                departamento {
-//                    subgrupo {
-//                        grupo {
-//                            eq("id", id.toLong())
-//                        }
-//                    }
-//                }
-//                ilike("nombre", "%" + search + "%")
-//            }
-//            def departamentos = [], subgrupos = [], grupos = []
-//            find.each { item ->
-//                if (!departamentos.contains(item.departamento))
-//                    departamentos.add(item.departamento)
-//                if (!subgrupos.contains(item.departamento.subgrupo))
-//                    subgrupos.add(item.departamento.subgrupo)
-//                if (!grupos.contains(item.departamento.subgrupo.grupo))
-//                    grupos.add(item.departamento.subgrupo.grupo)
-//            }
-//
-//            def ids = "["
-//
-//            if (find.size() > 0) {
-//                ids += "\"#materiales_1\","
-//
-//                grupos.each { gr ->
-//                    ids += "\"#gr_" + gr.id + "\","
-//                }
-//                subgrupos.each { sg ->
-//                    ids += "\"#sg_" + sg.id + "\","
-//                }
-//                departamentos.each { dp ->
-//                    ids += "\"#dp_" + dp.id + "\","
-//                }
-//                ids = ids[0..-2]
-//            }
-//            ids += "]"
 
             def grupos = Grupo.withCriteria {
                 or {
@@ -477,8 +415,6 @@ class GrupoController {
                     }
                 }
             }
-
-
 
             def ids = "["
             if (grupos.size() > 0 || subgrupos.size() > 0 || departamentos.size() > 0 || rubros.size() > 0) {
@@ -510,21 +446,11 @@ class GrupoController {
             }
             ids = ids[0..-2]
             ids += "]"
-
-//            println grupos
-//            println subgrupos
-//            println departamentos
-//            println rubros
-
-//            println ">>>>>>"
-//            println ids
-//            println "<<<<<<<"
             render ids
         } else {
             render ""
         }
     }
-
 
     def search_ajax() {
         def search = params.search.trim()
@@ -639,4 +565,103 @@ class GrupoController {
             }
         }
     } //delete
+
+    def loadTree() {
+        render(makeTreeNode(params))
+    }
+
+    def makeTreeNode(params) {
+        println "makeTreeNode.. $params"
+        def id = params.id
+        def tipo = ""
+        def liId = ""
+        def ico = ""
+
+        if(id.contains("_")) {
+            id = params.id.split("_")[1]
+            tipo = params.id.split("_")[0]
+        }
+
+        if (!params.order) {
+            params.order = "asc"
+        }
+
+        String tree = "", clase = "", rel = ""
+        def padre
+        def hijos = []
+
+        if (id == "#") {
+            //root
+//            def hh = Grupo.get(params.tipo)
+            def hh = Grupo.findAll("from Grupo where id>3")
+            if (hh) {
+                clase = "hasChildren jstree-closed"
+            }
+            tree = "<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' data-level='0' >" +
+                    "<a href='#' class='label_arbol'></a>" +
+                    "</li>"
+        } else {
+            if(id == 'root'){
+//                hijos = Grupo.get(params.tipo)
+                hijos = Grupo.findAll("from Grupo where id>3")
+                def data = ""
+                ico = ", \"icon\":\"fa fa-parking text-success\""
+                hijos.each { hijo ->
+                    clase = SubgrupoItems.findAllByGrupo(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
+//                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    tree += "<a href='#' class='label_arbol'>" + hijo?.descripcion + "</a>"
+                    tree += "</li>"
+                }
+            }else{
+                switch(tipo) {
+                    case "gp":
+                        hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
+                        liId = "sg_"
+                        ico = ", \"icon\":\"fa fa-copyright text-info\""
+                        hijos.each { h ->
+                            clase = DepartamentoItem.findBySubgrupo(h) ? "jstree-closed hasChildren" : ""
+//                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='' data-jstree='{\"type\":\"${"subgrupo"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>"  +  "<strong>" + "" + h?.codigo + " "  + "</strong>" +  h.descripcion + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                    case "sg":
+                        hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
+                        liId = "dp_"
+                        ico = ", \"icon\":\"fa fa-registered text-danger\""
+                        hijos.each { h ->
+                            clase = Item.findByDepartamento(h)? "jstree-closed hasChildren" : ""
+//                            tree += "<li id='" + liId + h.id + "' class='" + clase + "'  data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"departamento"}\" ${ico}}'>"
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "'  data-tipo='' data-jstree='{\"type\":\"${"departamento"}\" ${ico}}'>"
+                            if(Grupo.get(params.tipo)?.id == 2){
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "" + h?.codigo + " " + "</strong>"  + h.descripcion + "</a>"
+                            }else{
+                                tree += "<a href='#' class='label_arbol'>" +  "<strong>"  + "" + h?.subgrupo?.codigo + "." +  h?.codigo + " " + "</strong>"  + h.descripcion + "</a>"
+                            }
+                            tree += "</li>"
+                        }
+                        break
+                    case "dp":
+                        hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'nombre'])
+                        liId = "it_"
+                        ico = ", \"icon\":\"fa fa-info-circle text-warning\""
+                        hijos.each { h ->
+                            clase = ""
+//                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
+//                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + h?.codigo + " " + "</strong>" + h.nombre + "</a>"
+                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + "</strong>" + h.nombre + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+                }
+            }
+        }
+        return tree
+    }
+
+
+
 } //fin controller

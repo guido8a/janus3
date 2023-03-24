@@ -4,67 +4,70 @@
     <meta name="layout" content="main">
     <title>Grupos de Rubros</title>
 
-    <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>
-    %{--<script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
+    %{--    <g:if test="${janus.Parametros.findByEmpresaLike(message(code: 'ambiente2'))}">--}%
+    %{--        <link href="${resource(dir: 'css', file: 'treeV2.css')}" rel="stylesheet"/>--}%
+    %{--    </g:if>--}%
+    %{--    <g:else>--}%
+    .
+    %{--        <link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>--}%
+    %{--    </g:else>--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'custom-methods.js')}"></script>
+    <asset:javascript src="/jstree-3.0.8/dist/jstree.min.js"/>
+    <asset:stylesheet src="/jstree-3.0.8/dist/themes/default/style.min.css"/>
 
-    <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>
-    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>
-
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet"/>
-
-    <g:if test="${janus.Parametros.findByEmpresaLike(message(code: 'ambiente2'))}">
-        <link href="${resource(dir: 'css', file: 'treeV2.css')}" rel="stylesheet"/>
-    </g:if>
-    <g:else>
-        <link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>
-    </g:else>
 
 </head>
 
 <body>
 
-<g:if test="${flash.message}">
-    <div class="span12">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            <elm:poneHtml textoHtml="${flash.message}"/>
+<div class="col-md-12 btn-group" style="margin-bottom: 10px" >
+
+    <div class="col-md-3">
+        <div class="input-group input-group-sm">
+            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
+            <span class="input-group-btn">
+                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">
+                    <i class="fa fa-search"></i>&nbsp;
+                </a>
+            </span>
+        </div><!-- /input-group -->
+    </div>
+
+    <div class="col-md-1" >
+        <div class="btn-group">
+            <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
+                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
+            </a>
         </div>
     </div>
-</g:if>
 
+    <div class="col-md-4 hidden" id="divSearchRes">
+        <span id="spanSearchRes">
 
-<div id="loading" style="text-align:center;">
-    <img src="${resource(dir: 'images', file: 'spinner_24.gif')}" alt="Cargando..."/>
+        </span>
 
-    <p>Cargando... Por favor espere.</p>
-</div>
-
-
-<div id="treeArea" class="hide">
-    <form class="form-search" style="width: 500px;">
-        <div class="input-append">
-            <input type="text" class="input-medium search-query" id="search"/>
-            <a href='#' class='btn' id="btnSearch"><i class='icon-zoom-in'></i> Buscar</a>
+        <div class="btn-group">
+            <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
+                <i class="fa fa-chevron-down"></i>&nbsp;
+            </a>
+            <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
+                <i class="fa fa-chevron-up"></i>&nbsp;
+            </a>
+            <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
+                <i class="fa fa-times-circle"></i>&nbsp;
+            </a>
         </div>
-        <span id="cantRes"></span>
-        <input type="button" class="btn pull-right" value="Cerrar todo" onclick="$('#tree').jstree('close_all');">
-    </form>
+    </div>
 
-    %{--<div class="btn-group">--}%
-    %{--<input type="button" class="btn" value="Cerrar todo" onclick="$('#tree').jstree('close_all');">--}%
-    %{--<input type="button" class="btn" value="Abrir todo" onclick="$('#tree').jstree('open_all');">--}%
-    %{--</div>--}%
-
-    <div id="tree" class="ui-corner-all"></div>
-
-    <div id="info" class="ui-corner-all"></div>
 </div>
+
+<div id="cargando" class="text-center hide">
+    <img src="${resource(dir: 'images', file: 'spinner.gif')}" alt='Cargando...' width="64px" height="64px"/>
+    <p>Cargando...Por favor espere</p>
+</div>
+
+<div id="tree" class="col-md-8 ui-corner-all hide" style="overflow: auto"></div>
+<div id="info" class="col-md-4 ui-corner-all hide" style="border-style: groove; border-color: #0d7bdc"></div>
 
 <div class="modal longModal hide fade" id="modal-tree">
     <div class="modal-header" id="modalHeader">
@@ -79,7 +82,6 @@
     <div class="modal-footer" id="modalFooter">
     </div>
 </div>
-
 
 <div class="modal large hide fade " id="modal-transporte" style="overflow: hidden;">
     <div class="modal-header btn-primary">
@@ -99,7 +101,7 @@
 
             <div class="span3">
                 <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=6')}" optionKey="id"
-                    optionValue="descripcion" id="ciudad" style="width: 170px"/>
+                          optionValue="descripcion" id="ciudad" style="width: 170px"/>
             </div>
 
             <div class="span1">
@@ -157,12 +159,10 @@
         <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">
             <div class="span6">
                 <b>Distancia peso</b>
-                %{--<input type="text" style="width: 50px;" id="dist_peso" value="0.00">--}%
             </div>
 
             <div class="span5" style="margin-left: 30px;">
                 <b>Distancia volumen</b>
-                %{--<input type="text" style="width: 50px;" id="dist_vol" value="0.00">--}%
             </div>
         </div>
 
@@ -487,49 +487,85 @@
     </div>
 </div>
 
-
-
 <script type="text/javascript">
 
-    $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
+    var $treeContainer = $("#tree");
 
-    var btn = $("<a href='#' class='btn' id='btnSearch'><i class='icon-zoom-in'></i> Buscar</a>");
-    var urlSp = "${resource(dir: 'images', file: 'spinner.gif')}";
-    var sp = $('<span class="add-on" id="btnSearch"><img src="' + urlSp + '"/></span>');
+    %{--var icons = {--}%
+    %{--    edit   : "${resource(dir: 'images/tree', file: 'edit.png')}",--}%
+    %{--    delete : "${resource(dir: 'images/tree', file: 'delete.gif')}",--}%
+    %{--    info   : "${resource(dir: 'images/tree', file: 'info.png')}",--}%
+    %{--    print  : "${resource(dir: 'images/tree', file: 'print.png')}",--}%
 
-    var current = "1";
+    %{--    grupo        : "${resource(dir: 'images/tree', file: 'grupo_material.png')}",--}%
+    %{--    subgrupo     : "${resource(dir: 'images/tree', file: 'subgrupo_material.png')}",--}%
+    %{--    departamento : "${resource(dir: 'images/tree', file: 'departamento_material.png')}",--}%
+    %{--    rubro        : "${resource(dir: 'images/tree', file: 'item_material.png')}"--}%
+    %{--};--}%
 
-    var icons = {
-        edit   : "${resource(dir: 'images/tree', file: 'edit.png')}",
-        delete : "${resource(dir: 'images/tree', file: 'delete.gif')}",
-        info   : "${resource(dir: 'images/tree', file: 'info.png')}",
-        print  : "${resource(dir: 'images/tree', file: 'print.png')}",
+    $("#btnCollapseAll").click(function () {
 
-        grupo        : "${resource(dir: 'images/tree', file: 'grupo_material.png')}",
-        subgrupo     : "${resource(dir: 'images/tree', file: 'subgrupo_material.png')}",
-        departamento : "${resource(dir: 'images/tree', file: 'departamento_material.png')}",
-        rubro        : "${resource(dir: 'images/tree', file: 'item_material.png')}"
-    };
+        $("#tree").jstree("close_all");
+        var $scrollTo = $("#root");
+        $("#tree").jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+            scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+        });
+        recargarArbol();
 
-    function log(msg, error) {
-        var sticky = false;
-        var theme = "success";
-        if (error) {
-            sticky = true;
-            theme = "error";
+        $("#info").addClass('hide');
+        $("#info").html('');
+
+        return false;
+    });
+
+    function recargarArbol () {
+        $("#tree").removeClass("hide");
+        var $treeContainer = $("#tree");
+        $treeContainer.jstree("refresh")
+    }
+
+    function showInfo() {
+        var node = $("#tree").jstree(true).get_selected();
+
+        var nodeId = node.toString().split("_")[1];
+        var nodeNivel = node.toString().split("_")[0];
+
+        if(nodeNivel !== 'root'){
+            cargarInfo(nodeNivel, nodeId);
         }
-        $.jGrowl(msg, {
-            speed          : 'slow',
-            sticky         : sticky,
-            theme          : theme,
-            closerTemplate : '<div>[ cerrar todos ]</div>',
-            themeState     : ''
+    }
+
+    function cargarInfo(nodeNivel, nodeId){
+        switch (nodeNivel) {
+            case "gp":
+                url = "${createLink(action:'showGr_ajax')}";
+                break;
+            case "sg":
+                url = "${createLink(action:'showSg_ajax')}";
+                break;
+            case "dp":
+                url = "${createLink(action:'showDp_ajax')}";
+                break;
+            case "it":
+                url = "${createLink(action:'showRb_ajax')}";
+                break;
+        }
+
+        $.ajax({
+            type    : "POST",
+            url     : url,
+            data    : {
+                id : nodeId
+            },
+            success : function (msg) {
+                $("#info").removeClass('hide');
+                $("#info").html(msg);
+            }
         });
     }
 
     function getPrecios($cmb, $txt, $fcha) {
-        if ($cmb.val() != "-1") {
-//            var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&ids=" + $cmb.val();
+        if ($cmb.val() !== "-1") {
             var datos = "fecha=" + $fcha.val() + "&ciudad=" + $("#ciudad").val() + "&ids=" + $cmb.val();
             $.ajax({
                 type    : "POST",
@@ -550,52 +586,52 @@
         }
     }
 
-    function showInfo() {
-        var node = $.jstree._focused().get_selected();
-        var parent = node.parent().parent();
+    %{--function showInfo() {--}%
+    %{--    var node = $.jstree._focused().get_selected();--}%
+    %{--    var parent = node.parent().parent();--}%
 
-        var nodeStrId = node.attr("id");
-        var nodeText = $.trim(node.children("a").text());
+    %{--    var nodeStrId = node.attr("id");--}%
+    %{--    var nodeText = $.trim(node.children("a").text());--}%
 
-        var nodeRel = node.attr("rel");
-        var parts = nodeRel.split("_");
-        var nodeNivel = parts[0];
-        var nodeTipo = parts[1];
+    %{--    var nodeRel = node.attr("rel");--}%
+    %{--    var parts = nodeRel.split("_");--}%
+    %{--    var nodeNivel = parts[0];--}%
+    %{--    var nodeTipo = parts[1];--}%
 
-        parts = nodeStrId.split("_");
-        var nodeId = parts[1];
+    %{--    parts = nodeStrId.split("_");--}%
+    %{--    var nodeId = parts[1];--}%
 
-        var url = "";
+    %{--    var url = "";--}%
 
-        switch (nodeNivel) {
-            case "root":
-                break;
-            case "grupo":
-                url = "${createLink(action:'showGr_ajax')}";
-                break;
-            case "subgrupo":
-                url = "${createLink(action:'showSg_ajax')}";
-                break;
-            case "departamento":
-                url = "${createLink(action:'showDp_ajax')}";
-                break;
-            case "rubro":
-                url = "${createLink(action:'showRb_ajax')}";
-                break;
-        }
-        if (url != "") {
-            $.ajax({
-                type    : "POST",
-                url     : url,
-                data    : {
-                    id : nodeId
-                },
-                success : function (msg) {
-                    $("#info").html(msg);
-                }
-            });
-        }
-    }
+    %{--    switch (nodeNivel) {--}%
+    %{--        case "root":--}%
+    %{--            break;--}%
+    %{--        case "grupo":--}%
+    %{--            url = "${createLink(action:'showGr_ajax')}";--}%
+    %{--            break;--}%
+    %{--        case "subgrupo":--}%
+    %{--            url = "${createLink(action:'showSg_ajax')}";--}%
+    %{--            break;--}%
+    %{--        case "departamento":--}%
+    %{--            url = "${createLink(action:'showDp_ajax')}";--}%
+    %{--            break;--}%
+    %{--        case "rubro":--}%
+    %{--            url = "${createLink(action:'showRb_ajax')}";--}%
+    %{--            break;--}%
+    %{--    }--}%
+    %{--    if (url != "") {--}%
+    %{--        $.ajax({--}%
+    %{--            type    : "POST",--}%
+    %{--            url     : url,--}%
+    %{--            data    : {--}%
+    %{--                id : nodeId--}%
+    %{--            },--}%
+    %{--            success : function (msg) {--}%
+    %{--                $("#info").html(msg);--}%
+    %{--            }--}%
+    %{--        });--}%
+    %{--    }--}%
+    %{--}--}%
 
     function imprimir(params) {
         $("#nodeId").val(params.id);
@@ -604,7 +640,7 @@
         } else {
             $("#nodeGrupo").val();
         }
-        var obj = {
+        return obj = {
             label            : params.label,
             separator_before : params.sepBefore, // Insert a separator before the item
             separator_after  : params.sepAfter, // Insert a separator after the item
@@ -613,7 +649,6 @@
                 $("#modal-transporte").modal("show");
             }
         };
-        return obj;
     }
 
     function imprimirConsolidado(params) {
@@ -623,7 +658,7 @@
         } else {
             $("#nodeGrupo").val();
         }
-        var obj = {
+        return  obj = {
             label            : params.label,
             separator_before : params.sepBefore, // Insert a separator before the item
             separator_after  : params.sepAfter, // Insert a separator after the item
@@ -633,11 +668,10 @@
                 $("#fecha_precios2").change();
             }
         };
-        return obj;
     }
 
     function createUpdate(params) {
-        var obj = {
+        return obj = {
             label            : params.label,
             separator_before : params.sepBefore, // Insert a separator before the item
             separator_after  : params.sepAfter, // Insert a separator after the item
@@ -686,9 +720,9 @@
 //                                            $("#frmSave").submit();
                             return false;
                         });
-                        if (params.action == "create") {
+                        if (params.action === "create") {
                             $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                        } else if (params.action == "update") {
+                        } else if (params.action === "update") {
                             $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
                         }
                         $("#modalTitle").html(params.title);
@@ -699,7 +733,6 @@
                 });
             }
         };
-        return obj;
     }
 
     function remove(params) {
@@ -1047,123 +1080,193 @@
         return menuItems;
     }
 
-    function initTree() {
-        var id, rel, label;
-        id = "root";
-        rel = "root";
-        label = "Dirección Responsable";
+    cargarArbol();
 
-        $("#tree").bind("loaded.jstree",
-                function (event, data) {
-                    $("#loading").hide();
-                    $("#treeArea").show();
-                }).jstree({
-                    "core"        : {
-                        "initially_open" : [ id ]
-                    },
-                    "plugins"     : ["themes", "html_data", "json_data", "ui", "types", "contextmenu", "search", "crrm"/*, "dnd"/*, "wholerow"*/],
-                    "html_data"   : {
-                        "data" : "<ul type='root'><li id='" + id + "' class='root hasChildren jstree-closed' rel='" + rel + "' ><a href='#' class='label_arbol'>" + label + "</a></ul>",
-                        "ajax" : {
-                            "url"   : "${createLink(action: 'loadTreePart')}",
-                            "data"  : function (n) {
-                                var obj = $(n);
-                                var id = obj.attr("id");
-                                var parts = id.split("_");
-                                id = 0;
-                                if (parts.length > 1) {
-                                    id = parts[1]
-                                }
-                                var tipo = obj.attr("rel");
-                                return {id : id, tipo : tipo}
-                            },
-                            success : function (data) {
+    function cargarArbol() {
+        var $treeContainer = $("#tree");
+        $treeContainer.removeClass("hide");
+        $("#info").html("");
+        $("#cargando").removeClass('hide');
 
-                            },
-                            error   : function (data) {
-                                ////////console.log("error");
-                                ////////console.log(data);
-                            }
-                        }
-                    },
-                    "types"       : {
-                        "valid_children" : [ "root"  ],
-                        "types"          : {
+        $treeContainer.on("loaded.jstree", function () {
+            $("#cargando").hide();
+            $("#tree").removeClass("hidden");
 
-                            "root" : {
-
-                                "icon"           : {
-                                    "image" : icons.root
-                                },
-                                "valid_children" : [ "grupo" ]
-                            },
-
-                            "grupo"        : {
-                                "icon"           : {
-                                    "image" : icons.grupo
-                                },
-                                "valid_children" : [ "subgrupo" ]
-                            },
-                            "subgrupo"     : {
-                                "icon"           : {
-                                    "image" : icons.subgrupo
-                                },
-                                "valid_children" : [ "departamento" ]
-                            },
-                            "departamento" : {
-                                "icon"           : {
-                                    "image" : icons.departamento
-                                },
-                                "valid_children" : [ "rubro" ]
-                            },
-                            "rubro"        : {
-                                "icon"           : {
-                                    "image" : icons.rubro
-                                },
-                                "valid_children" : [ "" ]
-                            }
-                        }
-                    },
-                    "themes"      : {
-                        "theme" : "default"
-                    },
-                    "search"      : {
-                        "case_insensitive" : true,
-                        "ajax"             : {
-                            "url"    : "${createLink(action:'searchTree_ajax')}",
-                            "data"   : function () {
-                                return { search : this.data.search.str, tipo : current }
-                            },
-                            complete : function () {
-                                $("#btnSearch").replaceWith(btn);
-                                btn.click(function () {
-                                    doSearch();
-                                });
-                            }
-                        }
-                    },
-                    "contextmenu" : {
-                        select_node : true,
-                        "items"     : createContextmenu
-                    }, //contextmenu
-                    "ui"          : {
-                        "select_limit" : 1
+        }).on("select_node.jstree", function (node, selected, event) {
+        }).jstree({
+            plugins     : ["types", "state", "contextmenu", "search"],
+            core        : {
+                multiple       : false,
+                check_callback : true,
+                themes         : {
+                    variant : "small",
+                    dots    : true,
+                    stripes : true
+                },
+                data           : {
+                    url   : '${createLink(action:"loadTree")}',
+                    data  : function (node) {
+                        return {
+                            id    : node.id,
+                            tipo  : 1
+                        };
                     }
-                }).bind("search.jstree",function (e, data) {
-                    var cant = data.rslt.nodes.length;
-                    var search = data.rslt.str;
-                    $("#cantRes").html("<b>" + cant + "</b> resultado" + (cant == 1 ? "" : "s"));
-                    if (cant > 0) {
-                        var container = $('#tree'), scrollTo = $('.jstree-search').first();
-                        container.animate({
-                            scrollTop : scrollTo.offset().top - container.offset().top + container.scrollTop()
-                        }, 2000);
-                    }
-                }).bind("select_node.jstree", function (NODE, REF_NODE) {
-                    showInfo();
-                });
-
+                }
+            },
+            // contextmenu : {
+            //     show_at_node : false,
+            //     items        : createContextMenu
+            // },
+            state       : {
+                key : "unidades",
+                opened: false
+            },
+            %{--search      : {--}%
+            %{--    fuzzy             : false,--}%
+            %{--    show_only_matches : false,--}%
+            %{--    ajax              : {--}%
+            %{--        url     : "${createLink(action:'arbolSearch_ajax')}",--}%
+            %{--        success : function (msg) {--}%
+            %{--            var json = $.parseJSON(msg);--}%
+            %{--            $.each(json, function (i, obj) {--}%
+            %{--                $('#tree').jstree("open_node", obj);--}%
+            %{--            });--}%
+            %{--            setTimeout(function () {--}%
+            %{--                searchRes = $(".jstree-search");--}%
+            %{--                var cantRes = searchRes.length;--}%
+            %{--                posSearchShow = 0;--}%
+            %{--                $("#divSearchRes").removeClass("hidden");--}%
+            %{--                $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);--}%
+            %{--                scrollToSearchRes();--}%
+            %{--            }, 300);--}%
+            %{--        }--}%
+            %{--    }--}%
+            %{--},--}%
+            types       : {
+                root                : {
+                    icon : "fa fa-sitemap text-info"
+                }
+            }
+        }).bind("select_node.jstree", function (node, selected) {
+            showInfo();
+        });
     }
+
+
+    %{--function initTree() {--}%
+    %{--    var id, rel, label;--}%
+    %{--    id = "root";--}%
+    %{--    rel = "root";--}%
+    %{--    label = "Dirección Responsable";--}%
+
+    %{--    $("#tree").bind("loaded.jstree",--}%
+    %{--            function (event, data) {--}%
+    %{--                $("#loading").hide();--}%
+    %{--                $("#treeArea").show();--}%
+    %{--            }).jstree({--}%
+    %{--                "core"        : {--}%
+    %{--                    "initially_open" : [ id ]--}%
+    %{--                },--}%
+    %{--                "plugins"     : ["themes", "html_data", "json_data", "ui", "types", "contextmenu", "search", "crrm"/*, "dnd"/*, "wholerow"*/],--}%
+    %{--                "html_data"   : {--}%
+    %{--                    "data" : "<ul type='root'><li id='" + id + "' class='root hasChildren jstree-closed' rel='" + rel + "' ><a href='#' class='label_arbol'>" + label + "</a></ul>",--}%
+    %{--                    "ajax" : {--}%
+    %{--                        "url"   : "${createLink(action: 'loadTreePart')}",--}%
+    %{--                        "data"  : function (n) {--}%
+    %{--                            var obj = $(n);--}%
+    %{--                            var id = obj.attr("id");--}%
+    %{--                            var parts = id.split("_");--}%
+    %{--                            id = 0;--}%
+    %{--                            if (parts.length > 1) {--}%
+    %{--                                id = parts[1]--}%
+    %{--                            }--}%
+    %{--                            var tipo = obj.attr("rel");--}%
+    %{--                            return {id : id, tipo : tipo}--}%
+    %{--                        },--}%
+    %{--                        success : function (data) {--}%
+    %{--                        },--}%
+    %{--                        error   : function (data) {--}%
+    %{--                        }--}%
+    %{--                    }--}%
+    %{--                },--}%
+    %{--                "types"       : {--}%
+    %{--                    "valid_children" : [ "root"  ],--}%
+    %{--                    "types"          : {--}%
+
+    %{--                        "root" : {--}%
+
+    %{--                            "icon"           : {--}%
+    %{--                                "image" : icons.root--}%
+    %{--                            },--}%
+    %{--                            "valid_children" : [ "grupo" ]--}%
+    %{--                        },--}%
+
+    %{--                        "grupo"        : {--}%
+    %{--                            "icon"           : {--}%
+    %{--                                "image" : icons.grupo--}%
+    %{--                            },--}%
+    %{--                            "valid_children" : [ "subgrupo" ]--}%
+    %{--                        },--}%
+    %{--                        "subgrupo"     : {--}%
+    %{--                            "icon"           : {--}%
+    %{--                                "image" : icons.subgrupo--}%
+    %{--                            },--}%
+    %{--                            "valid_children" : [ "departamento" ]--}%
+    %{--                        },--}%
+    %{--                        "departamento" : {--}%
+    %{--                            "icon"           : {--}%
+    %{--                                "image" : icons.departamento--}%
+    %{--                            },--}%
+    %{--                            "valid_children" : [ "rubro" ]--}%
+    %{--                        },--}%
+    %{--                        "rubro"        : {--}%
+    %{--                            "icon"           : {--}%
+    %{--                                "image" : icons.rubro--}%
+    %{--                            },--}%
+    %{--                            "valid_children" : [ "" ]--}%
+    %{--                        }--}%
+    %{--                    }--}%
+    %{--                },--}%
+    %{--                "themes"      : {--}%
+    %{--                    "theme" : "default"--}%
+    %{--                },--}%
+    %{--                "search"      : {--}%
+    %{--                    "case_insensitive" : true,--}%
+    %{--                    "ajax"             : {--}%
+    %{--                        "url"    : "${createLink(action:'searchTree_ajax')}",--}%
+    %{--                        "data"   : function () {--}%
+    %{--                            return { search : this.data.search.str, tipo : current }--}%
+    %{--                        },--}%
+    %{--                        complete : function () {--}%
+    %{--                            $("#btnSearch").replaceWith(btn);--}%
+    %{--                            btn.click(function () {--}%
+    %{--                                doSearch();--}%
+    %{--                            });--}%
+    %{--                        }--}%
+    %{--                    }--}%
+    %{--                },--}%
+    %{--                "contextmenu" : {--}%
+    %{--                    select_node : true,--}%
+    %{--                    "items"     : createContextmenu--}%
+    %{--                }, //contextmenu--}%
+    %{--                "ui"          : {--}%
+    %{--                    "select_limit" : 1--}%
+    %{--                }--}%
+    %{--            }).bind("search.jstree",function (e, data) {--}%
+    %{--                var cant = data.rslt.nodes.length;--}%
+    %{--                var search = data.rslt.str;--}%
+    %{--                $("#cantRes").html("<b>" + cant + "</b> resultado" + (cant == 1 ? "" : "s"));--}%
+    %{--                if (cant > 0) {--}%
+    %{--                    var container = $('#tree'), scrollTo = $('.jstree-search').first();--}%
+    %{--                    container.animate({--}%
+    %{--                        scrollTop : scrollTo.offset().top - container.offset().top + container.scrollTop()--}%
+    %{--                    }, 2000);--}%
+    %{--                }--}%
+    %{--            }).bind("select_node.jstree", function (NODE, REF_NODE) {--}%
+    %{--                showInfo();--}%
+    %{--            });--}%
+
+    %{--}--}%
 
     function doSearch() {
         var val = $.trim($("#search").val());
@@ -1176,7 +1279,8 @@
     $(function () {
         $("#search").val("");
 
-        initTree();
+        // initTree();
+
         $("#fecha_precios").change(function(){
             $("#cmb_vol").change()
             $("#cmb_chof").change()
@@ -1225,10 +1329,6 @@
             var trans = $(this).data("transporte");
             var nodeId = $("#nodeId").val();
 
-            %{--var datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=" + nodeId + "Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "Wtrans=" + trans;--}%
-            %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubros')}?" + datos;--}%
-            %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=rubros_" + "${new Date().format('ddMMyyyy_hhmm')}" + ".pdf";--}%
-
             var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 +
                 "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val() +
                 "&id=" + nodeId + "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() +
@@ -1250,10 +1350,6 @@
             var chofer = $("#costo_chofer").val();
             var trans = $(this).data("transporte");
             var nodeId = $("#nodeId").val();
-
-            %{--var datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 + "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=" + nodeId + "Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() + "Wvolq=" + $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "Wtrans=" + trans;--}%
-            %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubrosVae')}?" + datos;--}%
-            %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=rubros_" + "${new Date().format('ddMMyyyy_hhmm')}" + ".pdf";--}%
 
             var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1
                 + "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val()
@@ -1277,13 +1373,6 @@
             var nodeId = $("#nodeId").val();
             var principal = false;
 
-            %{--var datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 +--}%
-            %{--        "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios").val() + "Wid=" + nodeId +--}%
-            %{--        "Wlugar=" + $("#ciudad").val() + "Wlistas=" + listas + "Wchof=" + $("#cmb_chof").val() +--}%
-            %{--        "Wvolq=" + $("#cmb_vol").val() + "Windi=" + $("#costo_indi").val() + "Wprincipal=" + principal +"Wtrans=" + trans;--}%
-            %{--var url = "${g.createLink(controller: 'reportes2',action: 'imprimirRubrosConsolidado')}?" + datos;--}%
-            %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=rubros_" + "${new Date().format('ddMMyyyy_hhmm')}" + ".pdf";--}%
-
             var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
                 "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios").val() + "&id=" + nodeId +
                 "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() +
@@ -1293,7 +1382,6 @@
             $("#modal-transporte").modal("hide");
             return false;
         });
-
 
         $("#imp_consolidado").click(function () {
             var dsp0 = $("#dist_p1g").val();
@@ -1313,22 +1401,12 @@
             var nodeId = $("#nodeId").val();
             var principal = true;
 
-            // var datos = "dsp0=" + dsp0 + "Wdsp1=" + dsp1 + "Wdsv0=" + dsv0 + "Wdsv1=" + dsv1 + "Wdsv2=" + dsv2 +
-            //         "Wprvl=" + volqueta + "Wprch=" + chofer + "Wfecha=" + $("#fecha_precios2").val() + "Wid=" + nodeId +
-            //         "Wlugar=" + $("#ciudad").val() + "Wlista1=" + lista1 + "Wlista2=" + lista2 + "Wlista3=" + lista3 +
-            //         "Wlista4=" + lista4 + "Wlista5=" + lista5 + "Wlista6=" + lista6 + "Wprincipal=" + principal
-            //         + "Wchof=" + $("#cmb_chof").val() +
-            //         "Wvolq=" + $("#cmb_vol").val() + "Windi=" + $("#costo_indi2").val() + "Wtrans=" + trans;
-            %{--var url = "${g.createLink(controller: 'reportes2',action: 'imprimirRubrosConsolidado2')}?" + datos;--}%
-            %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=rubros_" + "${new Date().format('ddMMyyyy_hhmm')}" + ".pdf";--}%
-
-
             var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
-                    "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
-                    "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
-                    "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
-                    + "&chof=" + $("#cmb_chof").val() +
-                    "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+                "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
+                "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
+                "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
+                + "&chof=" + $("#cmb_chof").val() +
+                "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
             location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosConsolidadoGrupo2')}?" + datos;
 
             $("#modal-transporte2").modal("hide");
@@ -1337,24 +1415,6 @@
 
 
         $("#imp_consolidado_excel").click(function () {
-
-//            var dsp0 = $("#dist_p1").val();
-//            var dsp1 = $("#dist_p2").val();
-//            var dsv0 = $("#dist_v1").val();
-//            var dsv1 = $("#dist_v2").val();
-//            var dsv2 = $("#dist_v3").val();
-//            var lista1 = $("#lista_1").val();
-//            var lista2 = $("#lista_2").val();
-//            var lista3 = $("#lista_3").val();
-//            var lista4 = $("#lista_4").val();
-//            var lista5 = $("#lista_5").val();
-//            var lista6 = $("#ciudad").val();
-//            var volqueta = $("#costo_volqueta").val();
-//            var chofer = $("#costo_chofer").val();
-//            var trans = $(this).data("transporte");
-//            var nodeId = $("#nodeId").val();
-//            var principal = true;
-
 
             var dsp0 = $("#dist_p1g").val();
             var dsp1 = $("#dist_p2g").val();
@@ -1373,21 +1433,16 @@
             var nodeId = $("#nodeId").val();
             var principal = true;
 
-
-
             var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
-                    "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
-                    "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
-                    "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
-                    + "&chof=" + $("#cmb_chof").val() +
-                    "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
-           location.href = "${g.createLink(controller: 'reportes2',action: 'consolidadoExcel')}?" + datos;
+                "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
+                "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
+                "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
+                + "&chof=" + $("#cmb_chof").val() +
+                "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+            location.href = "${g.createLink(controller: 'reportes2',action: 'consolidadoExcel')}?" + datos;
             $("#modal-transporte2").modal("hide");
             return false;
         });
-
-
-
 
         var cache = {};
         $("#search").autocomplete({
@@ -1418,7 +1473,6 @@
 
             }
         });
-
     });
 </script>
 
