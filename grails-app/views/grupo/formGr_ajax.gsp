@@ -2,73 +2,54 @@
 
 <div id="create" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave" action="saveGr_ajax">
-        %{--<g:hiddenField name="id" value="${subgrupoItemsInstance?.id}"/>--}%
         <g:hiddenField name="id" value="${grupo?.id}"/>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+
+        <div class="form-group ${hasErrors(bean: grupo, field: 'direccion', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Dirección
-                </span>
-            </div>
-
-            <div class="controls">
-                    <g:select name="direccion.id" from="${janus.Direccion.list()}" optionKey="id" optionValue="nombre" style="width: 540px" value="${grupo?.direccion?.id}"/>
-                    <span class="mandatory">*</span>
-
+                </label>
+                <span class="col-md-8">
+                    <g:select name="direccion" from="${janus.Direccion.list()}" optionKey="id" optionValue="nombre" class="form-control" value="${grupo?.direccion?.id}"/>
                     <p class="help-block ui-helper-hidden"></p>
-
-            </div>
+                </span>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: grupo, field: 'codigo', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Código
+                </label>
+                <span class="col-md-4">
+                    <g:if test="${grupo?.id}">
+                       <label> ${grupo?.codigo?.toString()} </label>
+                    </g:if>
+                    <g:else>
+                        <g:textField name="codigo" class="allCaps required input-small" value="${grupo?.codigo?.toString()}" maxlength="3"/>
+                        <p class="help-block ui-helper-hidden"></p>
+                    </g:else>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:if test="${grupo?.id}">
-                    %{--${grupo?.codigo?.toString()?.padLeft(3, '0')}--}%
-                    ${grupo?.codigo?.toString()}
-                </g:if>
-                <g:else>
-                    %{--<g:textField name="codigo" class="allCaps required input-small" value="${grupo?.codigo?.toString()?.padLeft(3, '0')}" maxlength="3"/>--}%
-                    <g:textField name="codigo" class="allCaps required input-small" value="${grupo?.codigo?.toString()}" maxlength="3"/>
-                    <span class="mandatory">*</span>
-
-                    <p class="help-block ui-helper-hidden"></p>
-                </g:else>
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: grupo, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Descripción
+                </label>
+                <span class="col-md-8">
+                    <g:textField name="descripcion" maxlength="31" class="allCaps required form-control" value="${grupo?.descripcion}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textArea cols="5" rows="3" style="height: 65px; resize: none;" name="descripcion" maxlength="31" class="allCaps required input-xxlarge" value="${grupo?.descripcion}"/>
-                <span class="mandatory">*</span>
-
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-
     </g:form>
 </div>
 
 <script type="text/javascript">
-
-    //    $(".allCaps").keyup(function () {
-    //        this.value = this.value.toUpperCase();
-    //    });
-
     $("#frmSave").validate({
-        //$("#descripcion").val($("#direccion.id").val())
         rules          : {
             descripcion : {
                 remote : {
@@ -85,12 +66,17 @@
                 remote : "La descripción ya se ha ingresado para otro item"
             }
         },
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important"
+            label.parents(".grupo").removeClass('has-error');
+        }
     });
 </script>

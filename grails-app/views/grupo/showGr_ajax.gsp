@@ -1,63 +1,25 @@
 <%@ page import="janus.Grupo" %>
 
+<legend>${grupoInstance.descripcion}</legend>
 
-<form class="form-horizontal">
-
-    <div class="tituloTree">${grupoInstance.descripcion}</div>
-
-%{--<g:if test="${grupoInstance?.descripcion}">--}%
-%{--<div class="control-group">--}%
-%{--<div>--}%
-%{--<span id="descripcion-label" class="control-label label label-inverse">--}%
-%{--Descripción--}%
-%{--</span>--}%
-%{--</div>--}%
-
-%{--<div class="controls">--}%
-
-%{--<span aria-labelledby="descripcion-label">--}%
-%{--<g:fieldValue bean="${grupoInstance}" field="descripcion"/>--}%
-%{--</span>--}%
-
-%{--</div>--}%
-%{--</div>--}%
-%{--</g:if>--}%
-
-
-    <g:if test="${grupoInstance?.direccion}">
-        <div class="control-group">
-            <div>
-                <span id="direccion-label" class="control-label label label-inverse">
-                    Dirección
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="codigo-label">
-                    <g:fieldValue bean="${grupoInstance}" field="direccion"/>
-                </span>
-
-            </div>
+<g:if test="${grupoInstance?.codigo}">
+    <div class="row">
+        <div class="col-md-2 text-info">
+            Código
         </div>
-    </g:if>
-
-    <g:if test="${grupoInstance?.codigo}">
-        <div class="control-group">
-            <div>
-                <span id="codigo-label" class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
-
-            <div class="controls">
-
-                <span aria-labelledby="codigo-label">
-                    <g:fieldValue bean="${grupoInstance}" field="codigo"/>
-                </span>
-
-            </div>
+        <div class="col-md-9">
+            ${grupoInstance?.codigo}
         </div>
-    </g:if>
+    </div>
+</g:if>
 
-</form>
+<g:if test="${grupoInstance?.direccion}">
+    <div class="row">
+        <div class="col-md-2 text-info">
+            Dirección
+        </div>
+        <div class="col-md-9">
+            ${grupoInstance?.direccion}
+        </div>
+    </div>
+</g:if>

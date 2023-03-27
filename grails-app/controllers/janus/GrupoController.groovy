@@ -77,7 +77,6 @@ class GrupoController {
 
 
     def formGr_ajax() {
-
         println(">>>>" + params)
         def grupo = Grupo.get(params.id)
 //        def direcciones = Dir
@@ -112,32 +111,31 @@ class GrupoController {
         }
     }
 
-
     def saveGr_ajax() {
-        println("params-->>" + params)
+        def grupo
 
-        def accion = "create"
-        def grupo = new Grupo()
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
         }
         if (params.descripcion) {
             params.descripcion = params.descripcion.toString().toUpperCase()
         }
-        if (params.id) {
+
+        if(params.id){
             grupo = Grupo.get(params.id)
-            accion = "edit"
+        }else{
+            grupo = new Grupo()
         }
+
         grupo.properties = params
+
         if (grupo.save(flush: true)) {
-            render "OK_" + accion + "_" + grupo.id + "_" + grupo.descripcion
+            render "ok_Guardado correctamente"
         } else {
-            def errores = g.renderErrors(bean: grupo)
-            render "NO_" + errores
+            println("error al guardar el grupo " + grupo.errors)
+            render "no_Error al guardar el grupo"
         }
     }
-
-
 
 
     def checkDsSg_ajax() {
@@ -163,26 +161,28 @@ class GrupoController {
         }
     }
 
-
     def saveSg_ajax() {
-        def accion = "create"
-        def subgrupo = new SubgrupoItems()
+        def subgrupo
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
         }
         if (params.descripcion) {
             params.descripcion = params.descripcion.toString().toUpperCase()
         }
-        if (params.id) {
+
+        if(params.id){
             subgrupo = SubgrupoItems.get(params.id)
-            accion = "edit"
+        }else{
+            subgrupo = new SubgrupoItems()
         }
+
         subgrupo.properties = params
+
         if (subgrupo.save(flush: true)) {
-            render "OK_" + accion + "_" + subgrupo.id + "_" + subgrupo.codigo + " " + subgrupo.descripcion
+            render "ok_Guardado correctamente"
         } else {
-            def errores = g.renderErrors(bean: subgrupo)
-            render "NO_" + errores
+            println("error al guardar el subgrupo " + subgrupo.errors)
+            render "no_Error al guardar "
         }
     }
 
@@ -275,25 +275,27 @@ class GrupoController {
     }
 
     def saveDp_ajax() {
-        def accion = "create"
-        def departamento = new DepartamentoItem()
+        def departamento
         if (params.codigo) {
             params.codigo = params.codigo.toString().toUpperCase()
         }
         if (params.descripcion) {
             params.descripcion = params.descripcion.toString().toUpperCase()
         }
-        if (params.id) {
+
+        if(params.id){
             departamento = DepartamentoItem.get(params.id)
-            accion = "edit"
+        }else{
+            departamento = new DepartamentoItem()
         }
+
         departamento.properties = params
+
         if (departamento.save(flush: true)) {
-            render "OK_" + accion + "_" + departamento.id + "_" + departamento.descripcion
+            render "ok_Guardado correctamente"
         } else {
-            println "grupo controller l 275: " + departamento.errors
-            def errores = g.renderErrors(bean: departamento)
-            render "NO_" + errores
+            println("error al guardar el departamento " + departamento.errors)
+            render "no_Error al guardar "
         }
     }
 

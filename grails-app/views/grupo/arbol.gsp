@@ -558,8 +558,7 @@
                 id : nodeId
             },
             success : function (msg) {
-                $("#info").removeClass('hide');
-                $("#info").html(msg);
+                $("#info").removeClass('hide').html(msg);
             }
         });
     }
@@ -585,53 +584,6 @@
             $txt.val("0.00");
         }
     }
-
-    %{--function showInfo() {--}%
-    %{--    var node = $.jstree._focused().get_selected();--}%
-    %{--    var parent = node.parent().parent();--}%
-
-    %{--    var nodeStrId = node.attr("id");--}%
-    %{--    var nodeText = $.trim(node.children("a").text());--}%
-
-    %{--    var nodeRel = node.attr("rel");--}%
-    %{--    var parts = nodeRel.split("_");--}%
-    %{--    var nodeNivel = parts[0];--}%
-    %{--    var nodeTipo = parts[1];--}%
-
-    %{--    parts = nodeStrId.split("_");--}%
-    %{--    var nodeId = parts[1];--}%
-
-    %{--    var url = "";--}%
-
-    %{--    switch (nodeNivel) {--}%
-    %{--        case "root":--}%
-    %{--            break;--}%
-    %{--        case "grupo":--}%
-    %{--            url = "${createLink(action:'showGr_ajax')}";--}%
-    %{--            break;--}%
-    %{--        case "subgrupo":--}%
-    %{--            url = "${createLink(action:'showSg_ajax')}";--}%
-    %{--            break;--}%
-    %{--        case "departamento":--}%
-    %{--            url = "${createLink(action:'showDp_ajax')}";--}%
-    %{--            break;--}%
-    %{--        case "rubro":--}%
-    %{--            url = "${createLink(action:'showRb_ajax')}";--}%
-    %{--            break;--}%
-    %{--    }--}%
-    %{--    if (url != "") {--}%
-    %{--        $.ajax({--}%
-    %{--            type    : "POST",--}%
-    %{--            url     : url,--}%
-    %{--            data    : {--}%
-    %{--                id : nodeId--}%
-    %{--            },--}%
-    %{--            success : function (msg) {--}%
-    %{--                $("#info").html(msg);--}%
-    %{--            }--}%
-    %{--        });--}%
-    %{--    }--}%
-    %{--}--}%
 
     function imprimir(params) {
         $("#nodeId").val(params.id);
@@ -779,7 +731,7 @@
         return obj;
     }
 
-    function createContextmenu(node) {
+    function createContextmenu_old(node) {
         var parent = node.parent().parent();
 
         var nodeStrId = node.attr("id");
@@ -1080,6 +1032,430 @@
         return menuItems;
     }
 
+
+
+    function createContextMenu(node) {
+
+        var nodeStrId = node.id;
+        var $node = $("#" + nodeStrId);
+        var nodeId = nodeStrId.split("_")[1];
+        var parentId = $node.parent().parent().children()[1].id.split("_")[1];
+        var nodeType = $node.data("jstree").type;
+        var esRoot = nodeType === "root";
+        var esPrincipal = nodeType === "principal";
+        var esSubgrupo = nodeType.contains("subgrupo");
+        var esDepartamento = nodeType.contains("departamento");
+        var esItem = nodeType.contains("item");
+        var tipoGrupo = $node.data("tipo");
+        var nodeHasChildren = $node.hasClass("hasChildren");
+        var abueloId = null;
+
+        if(esDepartamento){
+            abueloId = $node.parent().parent().parent().parent().children()[1].id.split("_")[1];
+        }else{
+            abueloId = parentId
+        }
+
+        var items = {};
+
+        var editarSolicitante = {
+            label  : "Editar solicitante",
+            icon   : "fa fa-parking text-success",
+            action : function () {
+                createEditSolicitante(nodeId);
+            }
+        };
+
+        var nuevoGrupo = {
+            label  : "Nuevo grupo",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditGrupo(null, nodeId);
+            }
+        };
+
+        var editarGrupo = {
+            label  : "Editar grupo",
+            icon   : "fa fa-copyright text-info",
+            action : function () {
+                createEditGrupo(nodeId, parentId);
+            }
+        };
+
+        var nuevoSubgrupo = {
+            label  : "Nuevo subgrupo",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditSubgrupo(null, nodeId, abueloId);
+            }
+        };
+
+        var editarSubgrupo = {
+            label  : "Editar subgrupo",
+            icon   : "fa fa-registered text-danger",
+            action : function () {
+                createEditSubgrupo(nodeId, parentId, abueloId);
+            }
+        };
+
+        var imprimirGrupo = {
+            label  : "Imprimir rubros del grupo",
+            icon   : "fa fa-print text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var imprimirSubGrupo = {
+            label  : "Imprimir rubros del subgrupo",
+            icon   : "fa fa-print text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var imprimirCapitulo = {
+            label  : "Imprimir capítulo",
+            icon   : "fa fa-print text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var imprimirRubro = {
+            label  : "Imprimir rubro",
+            icon   : "fa fa-print text-warning",
+            action : function () {
+                createEditItem(nodeId, parentId);
+            }
+        };
+
+        var borrarGrupo = {
+            label            : "Borrar Grupo",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Eliminar Grupo",
+                    message: "Está seguro de borrar este grupo? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(action: 'deleteSg_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'OK'){
+                                        log("Grupo borrado correctamente","success");
+                                        setTimeout(function () {
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar el grupo", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarSolicitante = {
+            label            : "Eliminar solicitante",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Eliminar solicitante",
+                    message: "Está seguro de borrar este solicitante? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(action: 'deleteDp_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'OK'){
+                                        log("Subgrupo borrado correctamente","success");
+                                        setTimeout(function () {
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar el Subgrupo", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        var borrarSubgrupo = {
+            label            : "Eliminar subgrupo",
+            icon             : "fa fa-trash text-danger",
+            separator_before : true,
+            action           : function () {
+                bootbox.confirm({
+                    title: "Eliminar item",
+                    message: "Está seguro de borrar este registro? Esta acción no puede deshacerse.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar',
+                            className: 'btn-primary'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-trash"></i> Borrar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if(result){
+                            var dialog = cargarLoader("Borrando...");
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(action: 'deleteIt_ajax')}',
+                                data:{
+                                    id: nodeId
+                                },
+                                success: function (msg) {
+                                    dialog.modal('hide');
+                                    if(msg === 'OK'){
+                                        log("Borrado correctamente","success");
+                                        setTimeout(function () {
+                                            if(tipoSeleccionado === 1){
+                                                recargarMateriales();
+                                            }else if(tipoSeleccionado === 2){
+                                                recargaMano();
+                                            }else{
+                                                recargaEquipo();
+                                            }
+                                        }, 1000);
+                                    }else{
+                                        log("Error al borrar", "error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        };
+
+        if (esRoot) {
+        } else if (esPrincipal) {
+            items.editarSolicitante = editarSolicitante;
+            if(tipoGrupo !== 2){
+                items.nuevoGrupo = nuevoGrupo;
+            }
+            items.imprimirGrupo = imprimirGrupo;
+            if(!nodeHasChildren){
+                items.borrarSolicitante = borrarSolicitante;
+            }
+        } else if (esSubgrupo) {
+            if(tipoGrupo !== 2){
+                items.editarGrupo = editarGrupo;
+            }
+            items.nuevoSubgrupo = nuevoSubgrupo;
+            items.imprimirSubgrupo = imprimirSubGrupo;
+            if(!nodeHasChildren){
+                items.borrarGrupo = borrarGrupo;
+            }
+        } else if (esDepartamento) {
+            items.editarSubgrupo = editarSubgrupo;
+            items.imprimirCapitulo = imprimirCapitulo;
+            if(!nodeHasChildren){
+                items.borrarSubgrupo = borrarSubgrupo;
+            }
+
+        } else if (esItem) {
+            items.imprimirRubro = imprimirRubro;
+        }
+        return items;
+    }
+
+    function createEditSolicitante(id) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formGr_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditGP",
+                    title : title + " solicitante",
+                    // class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitForm() {
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        recargarArbol();
+                        showInfo();
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
+    function createEditGrupo(id, parentId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        data.grupo = parentId;
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formSg_gr_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditGP",
+                    title : title + " grupo",
+                    // class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function createEditSubgrupo(id, parentId, abueloId) {
+        var title = id ? "Editar" : "Crear";
+        var data = id ? {id : id} : {};
+        if (parentId) {
+            data.subgrupo = parentId;
+        }
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formDp_gr_ajax')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditDP",
+                    title : title + " subgrupo",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
     cargarArbol();
 
     function cargarArbol() {
@@ -1113,10 +1489,10 @@
                     }
                 }
             },
-            // contextmenu : {
-            //     show_at_node : false,
-            //     items        : createContextMenu
-            // },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
             state       : {
                 key : "unidades",
                 opened: false
@@ -1151,122 +1527,6 @@
             showInfo();
         });
     }
-
-
-    %{--function initTree() {--}%
-    %{--    var id, rel, label;--}%
-    %{--    id = "root";--}%
-    %{--    rel = "root";--}%
-    %{--    label = "Dirección Responsable";--}%
-
-    %{--    $("#tree").bind("loaded.jstree",--}%
-    %{--            function (event, data) {--}%
-    %{--                $("#loading").hide();--}%
-    %{--                $("#treeArea").show();--}%
-    %{--            }).jstree({--}%
-    %{--                "core"        : {--}%
-    %{--                    "initially_open" : [ id ]--}%
-    %{--                },--}%
-    %{--                "plugins"     : ["themes", "html_data", "json_data", "ui", "types", "contextmenu", "search", "crrm"/*, "dnd"/*, "wholerow"*/],--}%
-    %{--                "html_data"   : {--}%
-    %{--                    "data" : "<ul type='root'><li id='" + id + "' class='root hasChildren jstree-closed' rel='" + rel + "' ><a href='#' class='label_arbol'>" + label + "</a></ul>",--}%
-    %{--                    "ajax" : {--}%
-    %{--                        "url"   : "${createLink(action: 'loadTreePart')}",--}%
-    %{--                        "data"  : function (n) {--}%
-    %{--                            var obj = $(n);--}%
-    %{--                            var id = obj.attr("id");--}%
-    %{--                            var parts = id.split("_");--}%
-    %{--                            id = 0;--}%
-    %{--                            if (parts.length > 1) {--}%
-    %{--                                id = parts[1]--}%
-    %{--                            }--}%
-    %{--                            var tipo = obj.attr("rel");--}%
-    %{--                            return {id : id, tipo : tipo}--}%
-    %{--                        },--}%
-    %{--                        success : function (data) {--}%
-    %{--                        },--}%
-    %{--                        error   : function (data) {--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                },--}%
-    %{--                "types"       : {--}%
-    %{--                    "valid_children" : [ "root"  ],--}%
-    %{--                    "types"          : {--}%
-
-    %{--                        "root" : {--}%
-
-    %{--                            "icon"           : {--}%
-    %{--                                "image" : icons.root--}%
-    %{--                            },--}%
-    %{--                            "valid_children" : [ "grupo" ]--}%
-    %{--                        },--}%
-
-    %{--                        "grupo"        : {--}%
-    %{--                            "icon"           : {--}%
-    %{--                                "image" : icons.grupo--}%
-    %{--                            },--}%
-    %{--                            "valid_children" : [ "subgrupo" ]--}%
-    %{--                        },--}%
-    %{--                        "subgrupo"     : {--}%
-    %{--                            "icon"           : {--}%
-    %{--                                "image" : icons.subgrupo--}%
-    %{--                            },--}%
-    %{--                            "valid_children" : [ "departamento" ]--}%
-    %{--                        },--}%
-    %{--                        "departamento" : {--}%
-    %{--                            "icon"           : {--}%
-    %{--                                "image" : icons.departamento--}%
-    %{--                            },--}%
-    %{--                            "valid_children" : [ "rubro" ]--}%
-    %{--                        },--}%
-    %{--                        "rubro"        : {--}%
-    %{--                            "icon"           : {--}%
-    %{--                                "image" : icons.rubro--}%
-    %{--                            },--}%
-    %{--                            "valid_children" : [ "" ]--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                },--}%
-    %{--                "themes"      : {--}%
-    %{--                    "theme" : "default"--}%
-    %{--                },--}%
-    %{--                "search"      : {--}%
-    %{--                    "case_insensitive" : true,--}%
-    %{--                    "ajax"             : {--}%
-    %{--                        "url"    : "${createLink(action:'searchTree_ajax')}",--}%
-    %{--                        "data"   : function () {--}%
-    %{--                            return { search : this.data.search.str, tipo : current }--}%
-    %{--                        },--}%
-    %{--                        complete : function () {--}%
-    %{--                            $("#btnSearch").replaceWith(btn);--}%
-    %{--                            btn.click(function () {--}%
-    %{--                                doSearch();--}%
-    %{--                            });--}%
-    %{--                        }--}%
-    %{--                    }--}%
-    %{--                },--}%
-    %{--                "contextmenu" : {--}%
-    %{--                    select_node : true,--}%
-    %{--                    "items"     : createContextmenu--}%
-    %{--                }, //contextmenu--}%
-    %{--                "ui"          : {--}%
-    %{--                    "select_limit" : 1--}%
-    %{--                }--}%
-    %{--            }).bind("search.jstree",function (e, data) {--}%
-    %{--                var cant = data.rslt.nodes.length;--}%
-    %{--                var search = data.rslt.str;--}%
-    %{--                $("#cantRes").html("<b>" + cant + "</b> resultado" + (cant == 1 ? "" : "s"));--}%
-    %{--                if (cant > 0) {--}%
-    %{--                    var container = $('#tree'), scrollTo = $('.jstree-search').first();--}%
-    %{--                    container.animate({--}%
-    %{--                        scrollTop : scrollTo.offset().top - container.offset().top + container.scrollTop()--}%
-    %{--                    }, 2000);--}%
-    %{--                }--}%
-    %{--            }).bind("select_node.jstree", function (NODE, REF_NODE) {--}%
-    %{--                showInfo();--}%
-    %{--            });--}%
-
-    %{--}--}%
 
     function doSearch() {
         var val = $.trim($("#search").val());
@@ -1473,6 +1733,9 @@
 
             }
         });
+
+
+
     });
 </script>
 

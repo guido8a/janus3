@@ -3,79 +3,63 @@
 <div id="create" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave" action="saveDp_ajax">
         <g:hiddenField name="id" value="${departamentoItemInstance?.id}"/>
+        <g:hiddenField name="subgrupo" value="${subgrupo.id}"/>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Grupo:
+        <div class="form-group">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
+                    Grupo
+                </label>
+                <span class="col-md-8">
+                    ${subgrupo.descripcion}
                 </span>
-            </div>
-
-            <div class="controls">
-                ${subgrupo.descripcion}
-                <g:hiddenField name="subgrupo.id" value="${subgrupo.id}"/>
-
-            </div>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: departamentoItemInstance, field: 'codigo', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Código
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:set var="cd1" value="${subgrupo.codigo.toString().padLeft(3, '0')}"/>
-                <g:if test="${departamentoItemInstance.id}">
-                    <g:if test="${subgrupo.id != 21}">
-                        ${cd1}.</g:if>${departamentoItemInstance?.codigo?.toString()?.padLeft(3, '0')}
-                </g:if>
-                <g:else>
-                    <g:if test="${subgrupo.id != 21}">
-                        <div class="input-prepend">
-                            <span class="add-on">${cd1}</span>
-                            %{--<g:textField name="codigo" class="allCaps required input-small" value="${departamentoItemInstance?.codigo?.toString()?.padLeft(3, '0')}" maxlength="3"/>--}%
-                            <g:textField name="codigo" class="allCaps required input-small" value="${departamentoItemInstance?.codigo?.toString()}" maxlength="3"/>
-                            <span class="mandatory">*</span>
-
-                            <p class="help-block ui-helper-hidden"></p>
-                        </div>
+                </label>
+                <span class="col-md-2">
+                    <g:set var="cd1" value="${subgrupo.codigo.toString().padLeft(3, '0')}"/>
+                    <g:if test="${departamentoItemInstance.id}">
+                        <g:if test="${subgrupo.id != 21}">
+                            ${cd1}.</g:if>${departamentoItemInstance?.codigo?.toString()?.padLeft(3, '0')}
                     </g:if>
                     <g:else>
-                        %{--<g:textField name="codigo" class="allCaps required input-small" value="${departamentoItemInstance.codigo.toString().padLeft(3, '0')}" maxlength="3"/>--}%
-                        <g:textField name="codigo" class="allCaps required input-small" value="${departamentoItemInstance.codigo.toString()}" maxlength="3"/>
-                        <span class="mandatory">*</span>
-
-                        <p class="help-block ui-helper-hidden"></p>
+                        <g:if test="${subgrupo.id != 21}">
+                            <div class="input-prepend">
+                                <span class="add-on">${cd1}</span>
+                                <g:textField name="codigo" class="allCaps required form-control" value="${departamentoItemInstance?.codigo?.toString()}" maxlength="3"/>
+                                <p class="help-block ui-helper-hidden"></p>
+                            </div>
+                        </g:if>
+                        <g:else>
+                            <g:textField name="codigo" class="allCaps required form-control" value="${departamentoItemInstance.codigo.toString()}" maxlength="3"/>
+                            <p class="help-block ui-helper-hidden"></p>
+                        </g:else>
                     </g:else>
-                </g:else>
-            </div>
+                </span>
+            </span>
         </div>
 
-
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+        <div class="form-group ${hasErrors(bean: departamentoItemInstance, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Descripción
+                </label>
+                <span class="col-md-8">
+                    <g:textArea name="descripcion" style="resize: none" maxlength="50" class="allCaps required form-control" value="${departamentoItemInstance?.descripcion}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textArea cols="5" rows="3" name="descripcion" style="resize: none; height: 50px" maxlength="50" class="allCaps required input-xxlarge" value="${departamentoItemInstance?.descripcion}"/>
-                <span class="mandatory">*</span>
-
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
 
     </g:form>
 </div>
 <script type="text/javascript">
 
-    //    $(".allCaps").keyup(function () {
-    //        this.value = this.value.toUpperCase();
-    //    });
 
     $("#frmSave").validate({
         rules          : {
@@ -107,12 +91,17 @@
                 remote : "La descripción ya se ha ingresado para otro item"
             }
         },
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important"
+            label.parents(".grupo").removeClass('has-error');
+        }
     });
 </script>
