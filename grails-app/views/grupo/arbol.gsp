@@ -286,222 +286,209 @@
 
 
 
-<div class="modal large hide fade " id="modal-transporte2" style="overflow: hidden;">
-    <div class="modal-header btn-primary">
-        <button type="button" class="close" data-dismiss="modal">×</button>
+%{--<div class="modal large hide fade " id="modal-transporte2" style="overflow: hidden;">--}%
+%{--    <div class="modal-header btn-primary">--}%
+%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-        <h3 id="modal_trans_title2">
-            Variables de transporte para el Grupo
-        </h3>
-    </div>
+%{--        <h3 id="modal_trans_title2">--}%
+%{--            Variables de transporte para el Grupo--}%
+%{--        </h3>--}%
+%{--    </div>--}%
 
-    <div class="modal-body" id="modal_trans_body2">
-        <div class="row-fluid">
+%{--    <div class="modal-body" id="modal_trans_body2">--}%
+%{--        <div class="row-fluid">--}%
 
-            <div class="span2">
-                Lista de precios: MO y Equipos
-            </div>
+%{--            <div class="span2">--}%
+%{--                Lista de precios: MO y Equipos--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=6')}" optionKey="id"
-                          optionValue="descripcion" id="ciudad" style="width: 170px"/>
-            </div>
+%{--            <div class="span3">--}%
+%{--                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=6')}" optionKey="id"--}%
+%{--                          optionValue="descripcion" id="ciudad" style="width: 170px"/>--}%
+%{--            </div>--}%
 
-            <div class="span1">
-                Fecha
-            </div>
+%{--            <div class="span1">--}%
+%{--                Fecha--}%
+%{--            </div>--}%
 
-            <div class="span2">
-                <elm:datepicker name="item.fecha" class="" style="width: 90px;" id="fecha_precios2" value="${new java.util.Date()}"
-                                format="dd-MM-yyyy"/>
-            </div>
+%{--            <div class="span2">--}%
+%{--                <elm:datepicker name="item.fecha" class="" style="width: 90px;" id="fecha_precios2" value="${new java.util.Date()}"--}%
+%{--                                format="dd-MM-yyyy"/>--}%
+%{--            </div>--}%
 
-            <div class="span2" style="width: 120px;">
-                % costos indirectos
-            </div>
+%{--            <div class="span2" style="width: 120px;">--}%
+%{--                % costos indirectos--}%
+%{--            </div>--}%
 
-            <div class="span1">
-                <input type="text" style="width: 30px;" id="costo_indi2" value="22.5">
-            </div>
-        </div>
-        <hr style="margin: 5px 0 10px 0;"/>
+%{--            <div class="span1">--}%
+%{--                <input type="text" style="width: 30px;" id="costo_indi2" value="22.5">--}%
+%{--            </div>--}%
+%{--        </div>--}%
+%{--        <hr style="margin: 5px 0 10px 0;"/>--}%
 
-        <div class="row-fluid">
-            <div class="span1">
-                Volquete
-            </div>
+%{--        <div class="row-fluid">--}%
+%{--            <div class="span1">--}%
+%{--                Volquete--}%
+%{--            </div>--}%
 
-            <div class="span3" style="margin-left: 10px;">
-                <g:select style="width: 165px;" name="volquetes" from="${volquetes2}" optionKey="id" optionValue="nombre" id="cmb_vol2" noSelection="${['-1': 'Seleccione']}" value="${aux.volquete.id}"/>
-            </div>
+%{--            <div class="span3" style="margin-left: 10px;">--}%
+%{--                <g:select style="width: 165px;" name="volquetes" from="${volquetes2}" optionKey="id" optionValue="nombre" id="cmb_vol2" noSelection="${['-1': 'Seleccione']}" value="${aux.volquete.id}"/>--}%
+%{--            </div>--}%
 
-            <div class="span1" style="width: 35px; margin-left: 5px;">
-                Costo
-            </div>
+%{--            <div class="span1" style="width: 35px; margin-left: 5px;">--}%
+%{--                Costo--}%
+%{--            </div>--}%
 
-            <div class="span1" style="margin-left: 5px; width: 90px;">
-                <input type="text" style="width: 69px;text-align: right" disabled="" id="costo_volqueta2">
-            </div>
+%{--            <div class="span1" style="margin-left: 5px; width: 90px;">--}%
+%{--                <input type="text" style="width: 69px;text-align: right" disabled="" id="costo_volqueta2">--}%
+%{--            </div>--}%
 
-            <div class="span1" style="margin-left: 5px;">
-                Chofer
-            </div>
+%{--            <div class="span1" style="margin-left: 5px;">--}%
+%{--                Chofer--}%
+%{--            </div>--}%
 
-            <div class="span3" style="margin-left: 5px;">
-                <g:select style="width: 165px;" name="volquetes" from="${choferes}" optionKey="id" optionValue="nombre" id="cmb_chof2" noSelection="${['-1': 'Seleccione']}" value="${aux.chofer.id}"/>
-            </div>
+%{--            <div class="span3" style="margin-left: 5px;">--}%
+%{--                <g:select style="width: 165px;" name="volquetes" from="${choferes}" optionKey="id" optionValue="nombre" id="cmb_chof2" noSelection="${['-1': 'Seleccione']}" value="${aux.chofer.id}"/>--}%
+%{--            </div>--}%
 
-            <div class="span1" style="width: 35px;margin-left: 5px;">
-                Costo
-            </div>
+%{--            <div class="span1" style="width: 35px;margin-left: 5px;">--}%
+%{--                Costo--}%
+%{--            </div>--}%
 
-            <div class="span1" style="margin-left: 5px; width: 90px;">
-                <input type="text" style="width: 69px;text-align: right" disabled="" id="costo_chofer2">
-            </div>
-        </div>
+%{--            <div class="span1" style="margin-left: 5px; width: 90px;">--}%
+%{--                <input type="text" style="width: 69px;text-align: right" disabled="" id="costo_chofer2">--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
-        <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">
-            <div class="span6">
-                <b>Distancia peso</b>
-                %{--<input type="text" style="width: 50px;" id="dist_peso" value="0.00">--}%
-            </div>
+%{--        <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">--}%
+%{--            <div class="span6">--}%
+%{--                <b>Distancia peso</b>--}%
+%{--            </div>--}%
 
-            <div class="span5" style="margin-left: 30px;">
-                <b>Distancia volumen</b>
-                %{--<input type="text" style="width: 50px;" id="dist_vol" value="0.00">--}%
-            </div>
-        </div>
+%{--            <div class="span5" style="margin-left: 30px;">--}%
+%{--                <b>Distancia volumen</b>--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
-        <div class="row-fluid">
-            <div class="span2">
-                Canton
-            </div>
+%{--        <div class="row-fluid">--}%
+%{--            <div class="span2">--}%
+%{--                Canton--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                <input type="text" style="width: 50px;" id="dist_p1g" value="10.00">
-            </div>
+%{--            <div class="span3">--}%
+%{--                <input type="text" style="width: 50px;" id="dist_p1g" value="10.00">--}%
+%{--            </div>--}%
 
-            <div class="span4">
-                Materiales Petreos Hormigones
-            </div>
+%{--            <div class="span4">--}%
+%{--                Materiales Petreos Hormigones--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                <input type="text" style="width: 50px;" id="dist_v1g" value="20.00">
-            </div>
+%{--            <div class="span3">--}%
+%{--                <input type="text" style="width: 50px;" id="dist_v1g" value="20.00">--}%
+%{--            </div>--}%
 
-        </div>
+%{--        </div>--}%
 
-        <div class="row-fluid">
-            <div class="span2">
-                Especial
-            </div>
+%{--        <div class="row-fluid">--}%
+%{--            <div class="span2">--}%
+%{--                Especial--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                <input type="text" style="width: 50px;" id="dist_p2g" value="10.00">
-            </div>
+%{--            <div class="span3">--}%
+%{--                <input type="text" style="width: 50px;" id="dist_p2g" value="10.00">--}%
+%{--            </div>--}%
 
-            <div class="span4">
-                Materiales Mejoramiento
-            </div>
+%{--            <div class="span4">--}%
+%{--                Materiales Mejoramiento--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                <input type="text" style="width: 50px;" id="dist_v2g" value="20.00">
-            </div>
-        </div>
+%{--            <div class="span3">--}%
+%{--                <input type="text" style="width: 50px;" id="dist_v2g" value="20.00">--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
-        <div class="row-fluid">
-            <div class="span5">
+%{--        <div class="row-fluid">--}%
+%{--            <div class="span5">--}%
 
-            </div>
+%{--            </div>--}%
 
-            <div class="span4">
-                Materiales Carpeta Asfáltica
-            </div>
+%{--            <div class="span4">--}%
+%{--                Materiales Carpeta Asfáltica--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                <input type="text" style="width: 50px;" id="dist_v3g" value="20.00">
-            </div>
-        </div>
+%{--            <div class="span3">--}%
+%{--                <input type="text" style="width: 50px;" id="dist_v3g" value="20.00">--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
-        <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">
-            <div class="span6">
-                <b>Listas de precios</b>
-            </div>
-        </div>
+%{--        <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">--}%
+%{--            <div class="span6">--}%
+%{--                <b>Listas de precios</b>--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
-        <div class="row-fluid">
-            <div class="span1">
-                Cantón
-            </div>
+%{--        <div class="row-fluid">--}%
+%{--            <div class="span1">--}%
+%{--                Cantón--}%
+%{--            </div>--}%
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1g"/>
-            </div>
+%{--            <div class="span4">--}%
+%{--                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=1')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_1g"/>--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                Petreos Hormigones
-            </div>
+%{--            <div class="span3">--}%
+%{--                Petreos Hormigones--}%
+%{--            </div>--}%
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=3')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_3g"/>
-            </div>
-        </div>
+%{--            <div class="span4">--}%
+%{--                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=3')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_3g"/>--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
-        <div class="row-fluid">
-            <div class="span1">
-                Especial
-            </div>
+%{--        <div class="row-fluid">--}%
+%{--            <div class="span1">--}%
+%{--                Especial--}%
+%{--            </div>--}%
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_2g"/>
-            </div>
+%{--            <div class="span4">--}%
+%{--                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_2g"/>--}%
+%{--            </div>--}%
 
-            <div class="span3">
-                Mejoramiento
-            </div>
+%{--            <div class="span3">--}%
+%{--                Mejoramiento--}%
+%{--            </div>--}%
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=4')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_4g"/>
-            </div>
-        </div>
+%{--            <div class="span4">--}%
+%{--                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=4')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_4g"/>--}%
+%{--            </div>--}%
+%{--        </div>--}%
 
-        <div class="row-fluid">
-            <div class="span5"></div>
+%{--        <div class="row-fluid">--}%
+%{--            <div class="span5"></div>--}%
 
-            <div class="span3">
-                Carpeta Asfáltica
-            </div>
+%{--            <div class="span3">--}%
+%{--                Carpeta Asfáltica--}%
+%{--            </div>--}%
 
-            <div class="span4">
-                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=5')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_5g"/>
-            </div>
-        </div>
-    </div>
+%{--            <div class="span4">--}%
+%{--                <g:select name="item.ciudad.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=5')}" optionKey="id" optionValue="descripcion" class="span10" id="lista_5g"/>--}%
+%{--            </div>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modal_trans_footer2">
-        <g:hiddenField name="nodeId" val=""/>
-        <g:hiddenField name="nodeGrupo" val=""/>
-        <a href= "#" data-dismiss="modal" class="btn btn-primary" id="imp_consolidado" data-transporte="true"><i class="icon-print"></i>Consolidado</a>
-        <a href= "#" data-dismiss="modal" class="btn btn-primary" id="imp_consolidado_excel" data-transporte="true"><i class="icon-table"></i> Consolidado Excel</a>
-        <a href="#" data-dismiss="modal" class="btn" id="btnCancel">Cancelar</a>
-    </div>
-</div>
+%{--    <div class="modal-footer" id="modal_trans_footer2">--}%
+%{--        <g:hiddenField name="nodeId" val=""/>--}%
+%{--        <g:hiddenField name="nodeGrupo" val=""/>--}%
+%{--        <a href= "#" data-dismiss="modal" class="btn btn-primary" id="imp_consolidado" data-transporte="true"><i class="icon-print"></i>Consolidado</a>--}%
+%{--        <a href= "#" data-dismiss="modal" class="btn btn-primary" id="imp_consolidado_excel" data-transporte="true"><i class="icon-table"></i> Consolidado Excel</a>--}%
+%{--        <a href="#" data-dismiss="modal" class="btn" id="btnCancel">Cancelar</a>--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 <script type="text/javascript">
 
     var $treeContainer = $("#tree");
 
-    %{--var icons = {--}%
-    %{--    edit   : "${resource(dir: 'images/tree', file: 'edit.png')}",--}%
-    %{--    delete : "${resource(dir: 'images/tree', file: 'delete.gif')}",--}%
-    %{--    info   : "${resource(dir: 'images/tree', file: 'info.png')}",--}%
-    %{--    print  : "${resource(dir: 'images/tree', file: 'print.png')}",--}%
-
-    %{--    grupo        : "${resource(dir: 'images/tree', file: 'grupo_material.png')}",--}%
-    %{--    subgrupo     : "${resource(dir: 'images/tree', file: 'subgrupo_material.png')}",--}%
-    %{--    departamento : "${resource(dir: 'images/tree', file: 'departamento_material.png')}",--}%
-    %{--    rubro        : "${resource(dir: 'images/tree', file: 'item_material.png')}"--}%
-    %{--};--}%
 
     $("#btnCollapseAll").click(function () {
 
@@ -563,6 +550,33 @@
         });
     }
 
+    function imprimirRubrosGrupo(id) {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'imprimirRubros_ajax')}",
+            data    : {
+                id: id
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimir",
+                    title   : "Variables de transporte para el grupo",
+                    class : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    } //createEdit
+
+
     function getPrecios($cmb, $txt, $fcha) {
         if ($cmb.val() !== "-1") {
             var datos = "fecha=" + $fcha.val() + "&ciudad=" + $("#ciudad").val() + "&ids=" + $cmb.val();
@@ -616,120 +630,135 @@
             separator_after  : params.sepAfter, // Insert a separator after the item
             icon             : params.icon,
             action           : function (obj) {
-                $("#modal-transporte2").modal("show");
+                $("#modal-transporte2").dialog("open");
                 $("#fecha_precios2").change();
             }
         };
     }
 
-    function createUpdate(params) {
-        return obj = {
-            label            : params.label,
-            separator_before : params.sepBefore, // Insert a separator before the item
-            separator_after  : params.sepAfter, // Insert a separator after the item
-            icon             : params.icon,
-            action           : function (obj) {
-                $.ajax({
-                    type    : "POST",
-                    url     : params.url,
-                    data    : params.data,
-                    success : function (msg) {
-                        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                        var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
-
-                        btnSave.click(function () {
-                            if ($("#frmSave").valid()) {
-                                btnSave.replaceWith(spinner);
-                                var url = $("#frmSave").attr("action");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : url,
-                                    data    : $("#frmSave").serialize(),
-                                    success : function (msg) {
-                                        var parts = msg.split("_");
-                                        if (parts[0] == "OK") {
-                                            if (params.action == "create") {
-                                                if (params.open) {
-                                                    $("#" + params.nodeStrId).removeClass("jstree-leaf").addClass("jstree-closed");
-                                                    $('#tree').jstree("open_node", $("#" + params.nodeStrId));
-                                                }
-                                                $('#tree').jstree("create_node", $("#" + params.nodeStrId), params.where, {attr : {id : params.tipo + "_" + parts[2]}, data : parts[3]});
-                                                $("#modal-tree").modal("hide");
-                                                log(params.log + parts[3] + " creado correctamente");
-                                            } else if (params.action == "update") {
-                                                $("#tree").jstree('rename_node', $("#" + params.nodeStrId), parts[3]);
-                                                $("#modal-tree").modal("hide");
-                                                log(params.log + parts[3] + " editado correctamente");
-                                                showInfo();
-                                            }
-                                        } else {
-                                            $("#modal-tree").modal("hide");
-                                            log("Ha ocurrido el siguiente error: " + parts[1], true);
-                                        }
-                                    }
-                                });
-                            }
-//                                            $("#frmSave").submit();
-                            return false;
-                        });
-                        if (params.action === "create") {
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                        } else if (params.action === "update") {
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
-                        }
-                        $("#modalTitle").html(params.title);
-                        $("#modalBody").html(msg);
-                        $("#modalFooter").html("").append(btnOk).append(btnSave);
-                        $("#modal-tree").modal("show");
-                    }
-                });
+    $("#modal-transporte2").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        draggable: false,
+        width: 350,
+        height: 220,
+        position: 'center',
+        title: 'No se ha generado la Matriz!',
+        buttons: {
+            "Aceptar": function () {
+                $("#modal-transporte2").dialog("close");
             }
-        };
-    }
+        }
+    });
 
-    function remove(params) {
-        var obj = {
-            label            : params.label,
-            separator_before : params.sepBefore, // Insert a separator before the item
-            separator_after  : params.sepAfter, // Insert a separator after the item
-            icon             : params.icon,
-            action           : function (obj) {
+    // function createUpdate(params) {
+    //     return obj = {
+    //         label            : params.label,
+    //         separator_before : params.sepBefore, // Insert a separator before the item
+    //         separator_after  : params.sepAfter, // Insert a separator after the item
+    //         icon             : params.icon,
+    //         action           : function (obj) {
+    //             $.ajax({
+    //                 type    : "POST",
+    //                 url     : params.url,
+    //                 data    : params.data,
+    //                 success : function (msg) {
+    //                     var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+    //                     var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+    //
+    //                     btnSave.click(function () {
+    //                         if ($("#frmSave").valid()) {
+    //                             btnSave.replaceWith(spinner);
+    //                             var url = $("#frmSave").attr("action");
+    //                             $.ajax({
+    //                                 type    : "POST",
+    //                                 url     : url,
+    //                                 data    : $("#frmSave").serialize(),
+    //                                 success : function (msg) {
+    //                                     var parts = msg.split("_");
+    //                                     if (parts[0] == "OK") {
+    //                                         if (params.action == "create") {
+    //                                             if (params.open) {
+    //                                                 $("#" + params.nodeStrId).removeClass("jstree-leaf").addClass("jstree-closed");
+    //                                                 $('#tree').jstree("open_node", $("#" + params.nodeStrId));
+    //                                             }
+    //                                             $('#tree').jstree("create_node", $("#" + params.nodeStrId), params.where, {attr : {id : params.tipo + "_" + parts[2]}, data : parts[3]});
+    //                                             $("#modal-tree").modal("hide");
+    //                                             log(params.log + parts[3] + " creado correctamente");
+    //                                         } else if (params.action == "update") {
+    //                                             $("#tree").jstree('rename_node', $("#" + params.nodeStrId), parts[3]);
+    //                                             $("#modal-tree").modal("hide");
+    //                                             log(params.log + parts[3] + " editado correctamente");
+    //                                             showInfo();
+    //                                         }
+    //                                     } else {
+    //                                         $("#modal-tree").modal("hide");
+    //                                         log("Ha ocurrido el siguiente error: " + parts[1], true);
+    //                                     }
+    //                                 }
+    //                             });
+    //                         }
+    //                         return false;
+    //                     });
+    //                     if (params.action === "create") {
+    //                         $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+    //                     } else if (params.action === "update") {
+    //                         $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
+    //                     }
+    //                     $("#modalTitle").html(params.title);
+    //                     $("#modalBody").html(msg);
+    //                     $("#modalFooter").html("").append(btnOk).append(btnSave);
+    //                     $("#modal-tree").modal("show");
+    //                 }
+    //             });
+    //         }
+    //     };
+    // }
 
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-                $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-                $("#modalTitle").html(params.title);
-                $("#modalBody").html("<p>Está seguro de querer eliminar este " + params.confirm + "?</p>");
-                $("#modalFooter").html("").append(btnOk).append(btnSave);
-                $("#modal-tree").modal("show");
-
-                btnSave.click(function () {
-                    btnSave.replaceWith(spinner);
-                    $.ajax({
-                        type    : "POST",
-                        url     : params.url,
-                        data    : params.data,
-                        success : function (msg) {
-                            var parts = msg.split("_");
-                            if (parts[0] == "OK") {
-                                $("#tree").jstree('delete_node', $("#" + params.nodeStrId));
-                                $("#modal-tree").modal("hide");
-                                log(params.log + " eliminado correctamente");
-                                if ($("#" + params.parentStrId).children("ul").children().size() == 0) {
-                                    $("#" + params.parentStrId).removeClass("hasChildren");
-                                }
-                            } else {
-                                $("#modal-tree").modal("hide");
-                                log("Ha ocurrido un error al eliminar", true);
-                            }
-                        }
-                    });
-                    return false;
-                });
-            }
-        };
-        return obj;
-    }
+    // function remove(params) {
+    //     var obj = {
+    //         label            : params.label,
+    //         separator_before : params.sepBefore, // Insert a separator before the item
+    //         separator_after  : params.sepAfter, // Insert a separator after the item
+    //         icon             : params.icon,
+    //         action           : function (obj) {
+    //
+    //             var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+    //             var btnSave = $('<a href="#"  class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
+    //             $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
+    //             $("#modalTitle").html(params.title);
+    //             $("#modalBody").html("<p>Está seguro de querer eliminar este " + params.confirm + "?</p>");
+    //             $("#modalFooter").html("").append(btnOk).append(btnSave);
+    //             $("#modal-tree").modal("show");
+    //
+    //             btnSave.click(function () {
+    //                 btnSave.replaceWith(spinner);
+    //                 $.ajax({
+    //                     type    : "POST",
+    //                     url     : params.url,
+    //                     data    : params.data,
+    //                     success : function (msg) {
+    //                         var parts = msg.split("_");
+    //                         if (parts[0] == "OK") {
+    //                             $("#tree").jstree('delete_node', $("#" + params.nodeStrId));
+    //                             $("#modal-tree").modal("hide");
+    //                             log(params.log + " eliminado correctamente");
+    //                             if ($("#" + params.parentStrId).children("ul").children().size() == 0) {
+    //                                 $("#" + params.parentStrId).removeClass("hasChildren");
+    //                             }
+    //                         } else {
+    //                             $("#modal-tree").modal("hide");
+    //                             log("Ha ocurrido un error al eliminar", true);
+    //                         }
+    //                     }
+    //                 });
+    //                 return false;
+    //             });
+    //         }
+    //     };
+    //     return obj;
+    // }
 
     function createContextmenu_old(node) {
         var parent = node.parent().parent();
@@ -936,7 +965,6 @@
                     label     : "Nuevo subgrupo",
                     sepBefore : false,
                     sepAfter  : false,
-//                    icon      : icons["departamento_" + nodeTipo],
                     icon      : icons.departamento,
                     url       : "${createLink(action:'formDp_gr_ajax')}",
                     data      : {
@@ -1102,7 +1130,7 @@
             label  : "Imprimir rubros del grupo",
             icon   : "fa fa-print text-warning",
             action : function () {
-                createEditItem(nodeId, parentId);
+                imprimirRubrosGrupo(nodeId)
             }
         };
 
@@ -1161,15 +1189,8 @@
                                     dialog.modal('hide');
                                     if(msg === 'OK'){
                                         log("Grupo borrado correctamente","success");
-                                        setTimeout(function () {
-                                            if(tipoSeleccionado === 1){
-                                                recargarMateriales();
-                                            }else if(tipoSeleccionado === 2){
-                                                recargaMano();
-                                            }else{
-                                                recargaEquipo();
-                                            }
-                                        }, 1000);
+                                        recargarArbol();
+                                        $("#info").addClass('hide').html('');
                                     }else{
                                         log("Error al borrar el grupo", "error")
                                     }
@@ -1204,25 +1225,18 @@
                             var dialog = cargarLoader("Borrando...");
                             $.ajax({
                                 type: 'POST',
-                                url: '${createLink(action: 'deleteDp_ajax')}',
+                                url: '${createLink(action: 'deleteGr_ajax')}',
                                 data:{
                                     id: nodeId
                                 },
                                 success: function (msg) {
                                     dialog.modal('hide');
                                     if(msg === 'OK'){
-                                        log("Subgrupo borrado correctamente","success");
-                                        setTimeout(function () {
-                                            if(tipoSeleccionado === 1){
-                                                recargarMateriales();
-                                            }else if(tipoSeleccionado === 2){
-                                                recargaMano();
-                                            }else{
-                                                recargaEquipo();
-                                            }
-                                        }, 1000);
+                                        log("Solicitante borrado correctamente","success");
+                                        recargarArbol();
+                                        $("#info").addClass('hide').html('');
                                     }else{
-                                        log("Error al borrar el Subgrupo", "error")
+                                        log("Error al borrar el solicitante", "error")
                                     }
                                 }
                             });
@@ -1255,7 +1269,7 @@
                             var dialog = cargarLoader("Borrando...");
                             $.ajax({
                                 type: 'POST',
-                                url: '${createLink(action: 'deleteIt_ajax')}',
+                                url: '${createLink(action: 'deleteDp_ajax')}',
                                 data:{
                                     id: nodeId
                                 },
@@ -1263,15 +1277,8 @@
                                     dialog.modal('hide');
                                     if(msg === 'OK'){
                                         log("Borrado correctamente","success");
-                                        setTimeout(function () {
-                                            if(tipoSeleccionado === 1){
-                                                recargarMateriales();
-                                            }else if(tipoSeleccionado === 2){
-                                                recargaMano();
-                                            }else{
-                                                recargaEquipo();
-                                            }
-                                        }, 1000);
+                                        recargarArbol();
+                                        $("#info").addClass('hide').html('');
                                     }else{
                                         log("Error al borrar", "error")
                                     }
@@ -1643,66 +1650,66 @@
             return false;
         });
 
-        $("#imp_consolidado").click(function () {
-            var dsp0 = $("#dist_p1g").val();
-            var dsp1 = $("#dist_p2g").val();
-            var dsv0 = $("#dist_v1g").val();
-            var dsv1 = $("#dist_v2g").val();
-            var dsv2 = $("#dist_v3g").val();
-            var lista1 = $("#lista_1g").val();
-            var lista2 = $("#lista_2g").val();
-            var lista3 = $("#lista_3g").val();
-            var lista4 = $("#lista_4g").val();
-            var lista5 = $("#lista_5g").val();
-            var lista6 = $("#ciudad").val();
-            var volqueta = $("#costo_volqueta2").val();
-            var chofer = $("#costo_chofer2").val();
-            var trans = $(this).data("transporte");
-            var nodeId = $("#nodeId").val();
-            var principal = true;
+        %{--$("#imp_consolidado").click(function () {--}%
+        %{--    var dsp0 = $("#dist_p1g").val();--}%
+        %{--    var dsp1 = $("#dist_p2g").val();--}%
+        %{--    var dsv0 = $("#dist_v1g").val();--}%
+        %{--    var dsv1 = $("#dist_v2g").val();--}%
+        %{--    var dsv2 = $("#dist_v3g").val();--}%
+        %{--    var lista1 = $("#lista_1g").val();--}%
+        %{--    var lista2 = $("#lista_2g").val();--}%
+        %{--    var lista3 = $("#lista_3g").val();--}%
+        %{--    var lista4 = $("#lista_4g").val();--}%
+        %{--    var lista5 = $("#lista_5g").val();--}%
+        %{--    var lista6 = $("#ciudad").val();--}%
+        %{--    var volqueta = $("#costo_volqueta2").val();--}%
+        %{--    var chofer = $("#costo_chofer2").val();--}%
+        %{--    var trans = $(this).data("transporte");--}%
+        %{--    var nodeId = $("#nodeId").val();--}%
+        %{--    var principal = true;--}%
 
-            var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
-                "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
-                "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
-                "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
-                + "&chof=" + $("#cmb_chof").val() +
-                "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
-            location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosConsolidadoGrupo2')}?" + datos;
+        %{--    var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +--}%
+        %{--        "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +--}%
+        %{--        "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +--}%
+        %{--        "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal--}%
+        %{--        + "&chof=" + $("#cmb_chof").val() +--}%
+        %{--        "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;--}%
+        %{--    location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosConsolidadoGrupo2')}?" + datos;--}%
 
-            $("#modal-transporte2").modal("hide");
-            return false;
-        });
+        %{--    $("#modal-transporte2").modal("hide");--}%
+        %{--    return false;--}%
+        %{--});--}%
 
 
-        $("#imp_consolidado_excel").click(function () {
+        %{--$("#imp_consolidado_excel").click(function () {--}%
 
-            var dsp0 = $("#dist_p1g").val();
-            var dsp1 = $("#dist_p2g").val();
-            var dsv0 = $("#dist_v1g").val();
-            var dsv1 = $("#dist_v2g").val();
-            var dsv2 = $("#dist_v3g").val();
-            var lista1 = $("#lista_1g").val();
-            var lista2 = $("#lista_2g").val();
-            var lista3 = $("#lista_3g").val();
-            var lista4 = $("#lista_4g").val();
-            var lista5 = $("#lista_5g").val();
-            var lista6 = $("#ciudad").val();
-            var volqueta = $("#costo_volqueta2").val();
-            var chofer = $("#costo_chofer2").val();
-            var trans = $(this).data("transporte");
-            var nodeId = $("#nodeId").val();
-            var principal = true;
+        %{--    var dsp0 = $("#dist_p1g").val();--}%
+        %{--    var dsp1 = $("#dist_p2g").val();--}%
+        %{--    var dsv0 = $("#dist_v1g").val();--}%
+        %{--    var dsv1 = $("#dist_v2g").val();--}%
+        %{--    var dsv2 = $("#dist_v3g").val();--}%
+        %{--    var lista1 = $("#lista_1g").val();--}%
+        %{--    var lista2 = $("#lista_2g").val();--}%
+        %{--    var lista3 = $("#lista_3g").val();--}%
+        %{--    var lista4 = $("#lista_4g").val();--}%
+        %{--    var lista5 = $("#lista_5g").val();--}%
+        %{--    var lista6 = $("#ciudad").val();--}%
+        %{--    var volqueta = $("#costo_volqueta2").val();--}%
+        %{--    var chofer = $("#costo_chofer2").val();--}%
+        %{--    var trans = $(this).data("transporte");--}%
+        %{--    var nodeId = $("#nodeId").val();--}%
+        %{--    var principal = true;--}%
 
-            var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
-                "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
-                "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
-                "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
-                + "&chof=" + $("#cmb_chof").val() +
-                "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
-            location.href = "${g.createLink(controller: 'reportes2',action: 'consolidadoExcel')}?" + datos;
-            $("#modal-transporte2").modal("hide");
-            return false;
-        });
+        %{--    var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +--}%
+        %{--        "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +--}%
+        %{--        "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +--}%
+        %{--        "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal--}%
+        %{--        + "&chof=" + $("#cmb_chof").val() +--}%
+        %{--        "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;--}%
+        %{--    location.href = "${g.createLink(controller: 'reportes2',action: 'consolidadoExcel')}?" + datos;--}%
+        %{--    $("#modal-transporte2").modal("hide");--}%
+        %{--    return false;--}%
+        %{--});--}%
 
         var cache = {};
         $("#search").autocomplete({

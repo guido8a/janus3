@@ -667,7 +667,7 @@ class RubroController {
                 items.add(Item.get(it))
         }
         def precios = preciosService.getPrecioItemsString(fecha, lugar, items)
-//        println "precios " + precios
+        println "precios " + precios
         render precios
     }
 

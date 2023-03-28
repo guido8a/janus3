@@ -193,7 +193,7 @@ class GrupoController {
             render "OK"
         }
         catch (DataIntegrityViolationException e) {
-            println "grupo controller l 172: " + e
+            println "error al borrar el grupo " + subgrupo.errors
             render "NO"
         }
     }
@@ -205,7 +205,7 @@ class GrupoController {
             render "OK"
         }
         catch (DataIntegrityViolationException e) {
-            println "grupo controller l 185: " + e
+            println "error al borrar el solicitante " + grupo.errors
             render "NO"
         }
     }
@@ -306,7 +306,7 @@ class GrupoController {
             render "OK"
         }
         catch (DataIntegrityViolationException e) {
-            println "grupo controller l 288: " + e
+            println "error al borrar el departament " + departamento.errors
             render "NO"
         }
     }
@@ -662,6 +662,24 @@ class GrupoController {
             }
         }
         return tree
+    }
+
+    def imprimirRubros_ajax(){
+        def aux = Parametros.get(1)
+        def volquetes = []
+        def volquetes2 = []
+        def choferes = []
+        def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
+        grupoTransporte.each {
+            if (it.transporte.codigo == "H") {
+                choferes = Item.findAllByDepartamento(it)
+            }
+            if (it.transporte.codigo == "T") {
+                volquetes = Item.findAllByDepartamento(it)
+            }
+            volquetes2 += volquetes
+        }
+        return [volquetes2: volquetes2, choferes: choferes, aux: aux]
     }
 
 
