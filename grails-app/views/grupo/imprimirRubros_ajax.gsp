@@ -155,8 +155,18 @@
     <div class="col-md-12" style="text-align: right; margin-top: 20px">
         <g:hiddenField name="nodeId" val=""/>
         <g:hiddenField name="nodeGrupo" val=""/>
-        <a href= "#" data-dismiss="modal" class="btn btn-primary" id="imp_consolidado" data-transporte="true"><i class="fa fa-print"></i> Consolidado</a>
-        <a href= "#" data-dismiss="modal" class="btn btn-success" id="imp_consolidado_excel" data-transporte="true"><i class="fa fa-file-excel"></i> Consolidado Excel</a>
+
+        <g:if test="${id.split("_")[0] == 'gr'}">
+            <a href= "#" data-dismiss="modal" class="btn btn-primary" id="imp_consolidado" data-transporte="true"><i class="fa fa-print"></i> Consolidado</a>
+            <a href= "#" data-dismiss="modal" class="btn btn-success" id="imp_consolidado_excel" data-transporte="true"><i class="fa fa-file-excel"></i> Consolidado Excel</a>
+        </g:if>
+        <g:else>
+            <a href= "#" data-dismiss="modal" class="btn btn-primary" id="print_totales" data-transporte="true"><i class="fa fa-print"></i> Consolidado</a>
+            <a href="#" data-dismiss="modal" class="btn btn-info btnPrint" data-transporte="si"><i class="fa fa-truck"></i> Con transporte</a>
+            <a href="#" data-dismiss="modal" class="btn btn-primary btnPrint" data-transporte="no"><i class="fa fa-print"></i> Sin transporte</a>
+            <a href="#" data-dismiss="modal" class="btn btn-info btnPrintVae" data-transporte="si"><i class="fa fa-truck"></i> VAE con transporte</a>
+            <a href="#" data-dismiss="modal" class="btn btn-primary btnPrintVae" data-transporte="no"><i class="fa fa-print"></i> VAE sin transporte</a>
+        </g:else>
     </div>
 </div>
 
@@ -192,33 +202,86 @@
         }
     }
 
-    // $("#fecha_precios").change(function(){
-    //     $("#cmb_vol").change();
-    //     $("#cmb_chof").change();
-    // });
-
     $("#fecha_precios2").change(function(){
         $("#cmb_vol2").change();
         $("#cmb_chof2").change();
     });
 
-    // $("#cmb_vol").change(function () {
-    //     getPrecios($("#cmb_vol"), $("#costo_volqueta"), $("#fecha_precios"));
-    // });
     $("#cmb_vol2").change(function () {
         getPrecios($("#cmb_vol2"), $("#costo_volqueta2"), $("#fecha_precios2"));
     });
-
-    // $("#cmb_chof").change(function () {
-    //     getPrecios($("#cmb_chof"), $("#costo_chofer"), $("#fecha_precios"));
-    // });
 
     $("#cmb_chof2").change(function () {
         getPrecios($("#cmb_chof2"), $("#costo_chofer2"), $("#fecha_precios2"));
     });
 
-    // getPrecios($("#cmb_chof"), $("#costo_chofer"), $("#fecha_precios"));
-    // getPrecios($("#cmb_vol"), $("#costo_volqueta"), $("#fecha_precios"));
+    getPrecios($("#cmb_chof2"), $("#costo_chofer2"), $("#fecha_precios2"));
+    getPrecios($("#cmb_vol2"), $("#costo_volqueta2"), $("#fecha_precios2"));
+
+    $(".btnPrint").click(function () {
+
+        var dsp0 = $("#dist_p1g").val();
+        var dsp1 = $("#dist_p2g").val();
+        var dsv0 = $("#dist_v1g").val();
+        var dsv1 = $("#dist_v2g").val();
+        var dsv2 = $("#dist_v3g").val();
+        var listas = $("#lista_1g").val() + "," + $("#lista_2g").val() + "," + $("#lista_3g").val() + "," + $("#lista_4g").val() + "," + $("#lista_5g").val() + "," + $("#ciudad").val();
+        var volqueta = $("#costo_volqueta2").val();
+        var chofer = $("#costo_chofer2").val();
+        var trans = $(this).data("transporte");
+        var nodeId = '${id}';
+
+        var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 +
+            "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() +
+            "&id=" + nodeId + "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof2").val() +
+            "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteGrupo')}?" + datos;
+
+        return false;
+    });
+
+    $(".btnPrintVae").click(function () {
+        var dsp0 = $("#dist_p1g").val();
+        var dsp1 = $("#dist_p2g").val();
+        var dsv0 = $("#dist_v1g").val();
+        var dsv1 = $("#dist_v2g").val();
+        var dsv2 = $("#dist_v3g").val();
+        var listas = $("#lista_1g").val() + "," + $("#lista_2g").val() + "," + $("#lista_3g").val() + "," + $("#lista_4g").val() + "," + $("#lista_5g").val() + "," + $("#ciudad").val();
+        var volqueta = $("#costo_volqueta2").val();
+        var chofer = $("#costo_chofer2").val();
+        var trans = $(this).data("transporte");
+        var nodeId = '${id}';
+
+        var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1
+            + "&dsv2=" + dsv2 + "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val()
+            + "&id=" + nodeId + "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof2").val()
+            + "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeGrupo')}?" + datos;
+
+        return false;
+    });
+
+    $("#print_totales").click(function () {
+        var dsp0 = $("#dist_p1g").val();
+        var dsp1 = $("#dist_p2g").val();
+        var dsv0 = $("#dist_v1g").val();
+        var dsv1 = $("#dist_v2g").val();
+        var dsv2 = $("#dist_v3g").val();
+        var listas = $("#lista_1g").val() + "," + $("#lista_2g").val() + "," + $("#lista_3g").val() + "," + $("#lista_4g").val() + "," + $("#lista_5g").val() + "," + $("#ciudad").val();
+        var volqueta = $("#costo_volqueta2").val();
+        var chofer = $("#costo_chofer2").val();
+        var trans = $(this).data("transporte");
+        var nodeId = '${id}';
+        var principal = false;
+
+        var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
+            "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
+            "&lugar=" + $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof2").val() +
+            "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&principal=" + principal +"&trans=" + trans;
+        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosConsolidadoGrupo')}?" + datos;
+
+        return false;
+    });
 
     $("#imp_consolidado").click(function () {
         var dsp0 = $("#dist_p1g").val();
@@ -235,21 +298,19 @@
         var volqueta = $("#costo_volqueta2").val();
         var chofer = $("#costo_chofer2").val();
         var trans = $(this).data("transporte");
-        var nodeId = $("#nodeId").val();
+        var nodeId = '${id}';
         var principal = true;
 
         var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
             "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
             "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
             "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
-            + "&chof=" + $("#cmb_chof").val() +
-            "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
-        location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosConsolidadoGrupo2')}?" + datos;
+            + "&chof=" + $("#cmb_chof2").val() +
+            "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosConsolidadoGrupo2')}?" + datos;
 
-        $("#modal-transporte2").modal("hide");
         return false;
     });
-
 
     $("#imp_consolidado_excel").click(function () {
 
@@ -267,17 +328,16 @@
         var volqueta = $("#costo_volqueta2").val();
         var chofer = $("#costo_chofer2").val();
         var trans = $(this).data("transporte");
-        var nodeId = $("#nodeId").val();
+        var nodeId = '${id}';
         var principal = true;
 
         var datos = "dsp0=" + dsp0 + "&dsp1=" + dsp1 + "&dsv0=" + dsv0 + "&dsv1=" + dsv1 + "&dsv2=" + dsv2 +
             "&prvl=" + volqueta + "&prch=" + chofer + "&fecha=" + $("#fecha_precios2").val() + "&id=" + nodeId +
             "&lugar=" + $("#ciudad").val() + "&lista1=" + lista1 + "&lista2=" + lista2 + "&lista3=" + lista3 +
             "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
-            + "&chof=" + $("#cmb_chof").val() +
-            "&volq=" + $("#cmb_vol").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
+            + "&chof=" + $("#cmb_chof2").val() +
+            "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
         location.href = "${g.createLink(controller: 'reportes2',action: 'consolidadoExcel')}?" + datos;
-        $("#modal-transporte2").modal("hide");
         return false;
     });
 

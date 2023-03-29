@@ -611,13 +611,13 @@ class GrupoController {
                 hijos.each { hijo ->
                     clase = SubgrupoItems.findAllByGrupo(hijo) ? "jstree-closed hasChildren" : "jstree-closed"
 //                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
-                    tree += "<li id='gp_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
+                    tree += "<li id='gr_" + hijo.id + "' class='" + clase + "' ${data} data-tipo='' data-jstree='{\"type\":\"${"principal"}\" ${ico}}' >"
                     tree += "<a href='#' class='label_arbol'>" + hijo?.descripcion + "</a>"
                     tree += "</li>"
                 }
             }else{
                 switch(tipo) {
-                    case "gp":
+                    case "gr":
                         hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
                         liId = "sg_"
                         ico = ", \"icon\":\"fa fa-copyright text-info\""
@@ -647,7 +647,7 @@ class GrupoController {
                         break
                     case "dp":
                         hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'nombre'])
-                        liId = "it_"
+                        liId = "rb_"
                         ico = ", \"icon\":\"fa fa-info-circle text-warning\""
                         hijos.each { h ->
                             clase = ""
@@ -679,9 +679,44 @@ class GrupoController {
             }
             volquetes2 += volquetes
         }
-        return [volquetes2: volquetes2, choferes: choferes, aux: aux]
+        return [volquetes2: volquetes2, choferes: choferes, aux: aux, id: params.tipo + "_" + params.id]
     }
 
-
+    def arbolSearch_ajax() {
+        println "arbolSearch_ajax $params"
+        def search = params.str.trim()
+        if (search != "") {
+            def c = Item.createCriteria()
+            def find = c.list(params) {
+                or {
+                    ilike("nombre", "%" + search + "%")
+                    departamento {
+                        or {
+                            ilike("descripcion", "%" + search + "%")
+                        }
+                    }
+                }
+            }
+            def departamentos = []
+            find.each { pers ->
+                if (pers.departamento && !departamentos.contains(pers.departamento)) {
+                    departamentos.add(pers.departamento)
+                }
+            }
+            departamentos = departamentos.reverse()
+            def ids = "["
+            if (find.size() > 0) {
+                ids += "\"#root\","
+                departamentos.each { dp ->
+                    ids += "\"#dp_" + dp.id + "\","
+                }
+                ids = ids[0..-2]
+            }
+            ids += "]"
+            render ids
+        } else {
+            render ""
+        }
+    }
 
 } //fin controller
