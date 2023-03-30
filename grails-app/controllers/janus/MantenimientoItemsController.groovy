@@ -422,9 +422,25 @@ class MantenimientoItemsController {
                         liId = "it_"
                         ico = ", \"icon\":\"fa fa-info-circle text-warning\""
                         hijos.each { h ->
-                            clase = ""
+                            if(params.vae){
+                                clase = VaeItems.findAllByItem(h)? "jstree-closed hasChildren" : ""
+                            }else{
+                                clase = ""
+                            }
                             tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
                             tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + h?.codigo + " " + "</strong>" + h.nombre + "</a>"
+                            tree += "</li>"
+                        }
+                        break
+
+                    case "it":
+                        hijos =  VaeItems.findAllByItem(Item.get(id),[max:1])
+                        liId = "vae_"
+                        ico = ", \"icon\":\"fa fa-info-circle text-info\""
+                        hijos.each { h ->
+                            clase = ""
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
+                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "VAE" + "</strong>" + "</a>"
                             tree += "</li>"
                         }
                         break
@@ -1998,14 +2014,14 @@ class MantenimientoItemsController {
 
         def r = calcPrecio([
 //                lugarId: lugarId,
-                lugarId: lugar?.id ?: 'all',
-                fecha: params.fecha,
+lugarId: lugar?.id ?: 'all',
+fecha: params.fecha,
 //                operador: '=',
-                operador: operador,
+operador: operador,
 //                todasLasFechas: params.todasLasFechas,
-                todasLasFechas: false,
+todasLasFechas: false,
 //                itemId: itemId
-                itemId: item.id
+itemId: item.id
         ])
 
 
@@ -2180,10 +2196,12 @@ class MantenimientoItemsController {
     }
 
     def showVa_ajax() {
-        def parts = params.id.split("_")
-        def idMaterial = parts[0]
-        def idVae=parts[1]
-        def item = Item.get(parts[0])
+        def vaeItem = VaeItems.get(params.id)
+//        def parts = params.id.split("_")
+//        def idMaterial = parts[0]
+//        def idVae=parts[1]
+//        def item = Item.get(parts[0])
+        def item = vaeItem.item
         def vaeItems = VaeItems.findAllByItem(item, [sort: 'fecha'])
         return [params:params, item:item, vaeItems: vaeItems]
     }

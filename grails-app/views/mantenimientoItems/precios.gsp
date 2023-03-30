@@ -232,12 +232,17 @@
 
     $("#btnRefresh").click(function (){
         if(tipoSeleccionado === 1){
-            showInfo();
+            cargarMateriales();
+            recargarMateriales();
         }else if(tipoSeleccionado === 2){
-            showInfo2();
-        }else{
-            showInfo3();
+            cargarMano();
+            recargaMano();
+        }else if(tipoSeleccionado === 3) {
+            cargarEquipo();
+            recargaEquipo();
         }
+
+        $("#info").html("");
     });
 
     $("#btnCollapseAll").click(function () {
@@ -412,6 +417,7 @@
 
     function cargarInfo(nodeNivel, nodeId, itemId){
         var ca = cargarLoader("Cargando...");
+        var url = ""
         switch (nodeNivel) {
             case "gp":
                 url = "${createLink(action:'showGr_ajax')}";

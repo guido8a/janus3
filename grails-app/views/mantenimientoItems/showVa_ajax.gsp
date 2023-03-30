@@ -1,14 +1,12 @@
-<div class="tituloTree">Valores del VAE para: ${item.nombre} (${item.unidad?.codigo?.trim()})<br/>
+<fieldset class="borde">
+    <legend>Valores del VAE para: ${item.nombre} (${item.unidad?.codigo?.trim()}) </legend>
+</fieldset>
 
 <div style="height: 35px; width: 100%; margin-top: 20px;">
     <div class="btn-group pull-left">
-        <a href="#" class="btn btn-ajax" id="btnNew">
-            <i class="icon-home"></i>
+        <a href="#" class="btn btn-success" id="btnNew">
+            <i class="fa fa-file"></i>
             Nuevo Valor del VAE
-        </a>
-        <a href="#" class="btn btn-success btn-ajax" id="btnSave">
-            <i class="icon-save"></i>
-            Guardar
         </a>
     </div>
 </div>
@@ -32,15 +30,14 @@
                     <g:formatNumber number="${vae.porcentaje}" maxFractionDigits="2" minFractionDigits="2" format="#,##0" locale='ec'/>
                 </td>
                 <td class="delete">
-                %{--<g:if test="${precio.fechaIngreso == new java.util.Date().clearTime()}">--}%
                     <g:if test="${vae.registrado != 'R'}">
-                        <a href="#" class="btn btn-danger btn-small btnDelete" rel="tooltip" title="Eliminar" id="${vae.id}">
-                            <i class="icon-trash icon-large"></i>
+                        <a href="#" class="btn btn-danger btn-xs btnDelete" rel="tooltip" title="Eliminar" id="${vae.id}">
+                            <i class="fa fa-trash"></i>
                         </a>
                     </g:if>
                     <g:else>
-                        <a href="#" class="btn btn-danger btn-small btnDeleteReg" rel="tooltip" title="Eliminar" id="${vae.id}">
-                            <i class="icon-trash icon-large"></i>
+                        <a href="#" class="btn btn-danger btn-xs btnDeleteReg" rel="tooltip" title="Eliminar" id="${vae.id}">
+                            <i class="fa fa-trash"></i>
                         </a>
                     </g:else>
                 </td>
@@ -93,20 +90,6 @@
 </div>
 
 
-<div id="imprimirDialog">
-
-    <fieldset>
-        <div class="span3">
-            Elija la fecha de validez del cálculo:
-            <div class="span2" style="margin-top: 20px; margin-left: 50px">
-                <elm:datepicker name="fechaCalculo" class="span24" id="fechaCalculoId" value="${new java.util.Date()}" style="width: 100px" minDate="new Date(${new Date().format('yyyy')},0,1)" maxDate="new Date(${new Date().format('yyyy')},11,31)"
-                                readonly="true" />
-            </div>
-
-        </div>
-    </fieldset>
-</div>
-
 
 <script type="text/javascript">
     function validarNum(ev) {
@@ -129,10 +112,6 @@
         ev.keyCode == 37 || ev.keyCode == 39);
     }
 
-    $('[rel=tooltip]').tooltip();
-
-    $(".editable").first().addClass("selected");
-
     $("#btnNew").click(function () {
         $.ajax({
             type    : "POST",
@@ -144,7 +123,6 @@
                 ignore      : "${params.ignore}"
             },
             success : function (msg) {
-                //////console.log($("#fcDefecto").val())
                 var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
                 var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
 
@@ -152,7 +130,6 @@
                     if ($("#frmSave").valid()) {
                         btnSave.replaceWith(spinner);
                     }
-//                    $("#frmSave").submit();
 
                     $.ajax({
                         type    : "POST",
@@ -285,120 +262,113 @@
     var valorSueldo
     var id2
 
-    $("#btnCalc2").click(function () {
+    %{--$("#btnCalc2").click(function () {--}%
 
+    %{--    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+    %{--    var btnCalc = $('<a href="#"  class="btn btn-success"><i class="icon-check"></i> Calcular</a>');--}%
+    %{--    var a = "${anioRef}";--}%
 
-        var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-        var btnCalc = $('<a href="#"  class="btn btn-success"><i class="icon-check"></i> Calcular</a>');
-        var a = "${anioRef}";
+    %{--    var $valor = $("<input type='number' placeholder='Sueldo " + (new Date().getFullYear()) + "'/> ");--}%
 
-        var $valor = $("<input type='number' placeholder='Sueldo " + (new Date().getFullYear()) + "'/> ");
+    %{--    $valor.bind({--}%
+    %{--        keydown : function (ev) {--}%
+    %{--            var dec = 5;--}%
+    %{--            var val = $(this).val();--}%
+    %{--            if (ev.keyCode == 188 || ev.keyCode == 190 || ev.keyCode == 110) {--}%
+    %{--                if (!dec) {--}%
+    %{--                    return false;--}%
+    %{--                } else {--}%
+    %{--                    if (val.length == 0) {--}%
+    %{--                        $(this).val("0");--}%
+    %{--                    }--}%
+    %{--                    if (val.indexOf(".") > -1 || val.indexOf(",") > -1) {--}%
+    %{--                        return false;--}%
+    %{--                    }--}%
+    %{--                }--}%
+    %{--            } else {--}%
+    %{--                if (val.indexOf(".") > -1 || val.indexOf(",") > -1) {--}%
+    %{--                    if (dec) {--}%
+    %{--                        var parts = val.split(".");--}%
+    %{--                        var l = parts[1].length;--}%
+    %{--                        if (l >= dec) {--}%
+    %{--                            return false;--}%
+    %{--                        }--}%
+    %{--                    }--}%
+    %{--                }--}%
+    %{--            }--}%
+    %{--            return validarNum(ev);--}%
+    %{--        }--}%
+    %{--    });--}%
 
+    %{--    btnCalc.click(function () {--}%
 
+    %{--        valorSueldo = $valor.val();--}%
 
-        $valor.bind({
-            keydown : function (ev) {
-                var dec = 5;
-                var val = $(this).val();
-                if (ev.keyCode == 188 || ev.keyCode == 190 || ev.keyCode == 110) {
-                    if (!dec) {
-                        return false;
-                    } else {
-                        if (val.length == 0) {
-                            $(this).val("0");
-                        }
-                        if (val.indexOf(".") > -1 || val.indexOf(",") > -1) {
-                            return false;
-                        }
-                    }
-                } else {
-                    if (val.indexOf(".") > -1 || val.indexOf(",") > -1) {
-                        if (dec) {
-                            var parts = val.split(".");
-                            var l = parts[1].length;
-                            if (l >= dec) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-                return validarNum(ev);
-            }
-        });
+    %{--        $(this).replaceWith(spinner);--}%
 
-        btnCalc.click(function () {
+    %{--        $.ajax({--}%
+    %{--            type    : "POST",--}%
+    %{--            url     : "${createLink(action: 'calcPrecioRef_ajax')}",--}%
+    %{--            data    : {--}%
+    %{--                precio : $valor.val()--}%
+    %{--            },--}%
+    %{--            success : function (msg) {--}%
+    %{--                $("#modal-tree1").modal("hide");--}%
+    %{--                $("#btnCalc").hide();--}%
+    %{--                $("#spanRef").text("Precio ref: " + msg);--}%
+    %{--                $("#btnPrint").show();--}%
 
+    %{--            }--}%
+    %{--        });--}%
 
-            valorSueldo = $valor.val();
+    %{--        return valorSueldo--}%
 
+    %{--    });--}%
 
+    %{--    var $p1 = $("<p>").html("Por favor ingrese el sueldo básico para el Obrero del año " + (new Date().getFullYear()));--}%
+    %{--    var $p2 = $("<p>").html($valor);--}%
 
+    %{--    var $div = $("<div>").append($p1).append($p2);--}%
 
-            $(this).replaceWith(spinner);
+    %{--    $("#modalTitle-tree1").html("Cálculo del valor por Hora");--}%
+    %{--    $("#modalBody-tree1").html($div);--}%
+    %{--    $valor.focus();--}%
+    %{--    $("#modalFooter-tree1").html("").append(btnCancel).append(btnCalc);--}%
+    %{--    $("#modal-tree1").modal("show");--}%
 
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action: 'calcPrecioRef_ajax')}",
-                data    : {
-                    precio : $valor.val()
-                },
-                success : function (msg) {
-                    $("#modal-tree1").modal("hide");
-                    $("#btnCalc").hide();
-                    $("#spanRef").text("Precio ref: " + msg);
-                    $("#btnPrint").show();
-
-                }
-            });
-
-            return valorSueldo
-
-        });
-
-        var $p1 = $("<p>").html("Por favor ingrese el sueldo básico para el Obrero del año " + (new Date().getFullYear()));
-        var $p2 = $("<p>").html($valor);
-
-        var $div = $("<div>").append($p1).append($p2);
-
-        $("#modalTitle-tree1").html("Cálculo del valor por Hora");
-        $("#modalBody-tree1").html($div);
-        $valor.focus();
-        $("#modalFooter-tree1").html("").append(btnCancel).append(btnCalc);
-        $("#modal-tree1").modal("show");
-
-        return false;
-    });
+    %{--    return false;--}%
+    %{--});--}%
 
 
 
 
-    $("#btnCalc3").click(function () {
-        var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-        var btnCalc = $('<a href="#"  class="btn btn-success"><i class="icon-check"></i> Aceptar</a>');
-        var a = "${anioRef}";
+    %{--$("#btnCalc3").click(function () {--}%
+    %{--    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+    %{--    var btnCalc = $('<a href="#"  class="btn btn-success"><i class="icon-check"></i> Aceptar</a>');--}%
+    %{--    var a = "${anioRef}";--}%
 
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink(action: 'calcPrecEq')}",
-            data    : {
-                item : ${item.id}
-            },
-            success : function (msg) {
-                $("#modalTitle-tree2").html("Cálculo del valor por Hora de Equipos");
-                $("#modalBody-tree2").html(msg);
-                $("#modalFooter-tree2").html("").append(btnCancel).append(btnCalc);
-                $("#modal-tree2").modal("show");
-            }
-        });
+    %{--    $.ajax({--}%
+    %{--        type    : "POST",--}%
+    %{--        url     : "${createLink(action: 'calcPrecEq')}",--}%
+    %{--        data    : {--}%
+    %{--            item : ${item.id}--}%
+    %{--        },--}%
+    %{--        success : function (msg) {--}%
+    %{--            $("#modalTitle-tree2").html("Cálculo del valor por Hora de Equipos");--}%
+    %{--            $("#modalBody-tree2").html(msg);--}%
+    %{--            $("#modalFooter-tree2").html("").append(btnCancel).append(btnCalc);--}%
+    %{--            $("#modal-tree2").modal("show");--}%
+    %{--        }--}%
+    %{--    });--}%
 
-        btnCalc.click(function () {
-            $("#modal-tree2").modal("hide");
-            $("#btnCalc").hide();
-            $("#spanRef").text("Precio ref: " + number_format(data.ch, 2, ".", ""));
-        });
+    %{--    btnCalc.click(function () {--}%
+    %{--        $("#modal-tree2").modal("hide");--}%
+    %{--        $("#btnCalc").hide();--}%
+    %{--        $("#spanRef").text("Precio ref: " + number_format(data.ch, 2, ".", ""));--}%
+    %{--    });--}%
 
-        return false;
-    });
+    %{--    return false;--}%
+    %{--});--}%
 
     $(".btnDeleteReg").click(function () {
         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
@@ -507,4 +477,4 @@
     })
 
 </script>
-<script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandler2.js')}"></script>
+%{--<script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandler2.js')}"></script>--}%

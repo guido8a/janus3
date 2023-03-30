@@ -642,6 +642,40 @@
         return false;
     });
 
+    $("#btnPrevSearch").click(function () {
+        if (posSearchShow > 0) {
+            posSearchShow--;
+        } else {
+            posSearchShow = searchRes.length - 1;
+        }
+        scrollToSearchRes();
+        return false;
+    });
+
+    $("#btnNextSearch").click(function () {
+        if (posSearchShow < searchRes.length - 1) {
+            posSearchShow++;
+        } else {
+            posSearchShow = 0;
+        }
+        scrollToSearchRes();
+        return false;
+    });
+
+    $("#btnClearSearch").click(function () {
+        limpiarBusqueda();
+    });
+
+    function limpiarBusqueda(){
+        $treeContainer.jstree("clear_search");
+        $("#searchArbol").val("");
+        posSearchShow = 0;
+        searchRes = [];
+        $("#divSearchRes").addClass("hidden");
+        $("#spanSearchRes").text("");
+        $("#info").addClass('hide');
+    }
+
 </script>
 </body>
 </html>
