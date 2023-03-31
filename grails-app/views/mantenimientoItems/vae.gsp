@@ -8,35 +8,9 @@
     <asset:javascript src="/jstree-3.0.8/dist/jstree.min.js"/>
     <asset:stylesheet src="/jstree-3.0.8/dist/themes/default/style.min.css"/>
 
-    %{--        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree', file: 'jquery.jstree.js')}"></script>--}%
-    %{--        <script type="text/javascript" src="${resource(dir: 'js/jquery/plugins/jstree/_lib', file: 'jquery.cookie.js')}"></script>--}%
-
-    %{--        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-    %{--        <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
-    %{--        <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
-    %{--        <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
-    %{--        <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
-
-    %{--        <link href="${resource(dir: 'css', file: 'tree.css')}" rel="stylesheet"/>--}%
-
-    %{--        <script type="text/javascript" src="${resource(dir: 'js', file: 'tableHandlerBody2.js')}"></script>--}%
-    %{--        <link href="${resource(dir: 'css', file: 'tableHandler.css')}" rel="stylesheet"/>--}%
-
 </head>
 
 <body>
-
-%{--        <div class="span12">--}%
-%{--            <g:if test="${flash.message}">--}%
-%{--                <div class="alert ${flash.clase ?: 'alert-info'}" role="status">--}%
-%{--                    <a class="close" data-dismiss="alert" href="#">×</a>--}%
-%{--                    ${flash.message}--}%
-%{--                </div>--}%
-%{--            </g:if>--}%
-%{--        </div>--}%
-
 
 %{--        <div class="span12 btn-group" data-toggle="buttons-radio" style="margin-left:0px; height: 35px; width: 360px">--}%
 %{--            <a href="#" id="1" class="btn btn-info toggle active" data-reporte="materiales">--}%
@@ -114,7 +88,7 @@
         <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control" value="${ new Date().format("dd-MM-yyyy")}"/>
     </span>
 
-    <div class="col-md-4 hidden" id="divSearchRes">
+    <div class="col-md-3 hidden" id="divSearchRes">
         <span id="spanSearchRes">
 
         </span>
@@ -130,6 +104,12 @@
                 <i class="fa fa-times-circle"></i>&nbsp;
             </a>
         </div>
+    </div>
+
+    <div class="col-md-1">
+        <a href="#" class="btn btn-info btnExcelVae" title="Imprimir VAE">
+            <i class="fa fa-file-excel"></i>&nbsp;VAE
+        </a>
     </div>
 
 </div>
@@ -651,13 +631,8 @@
     }
 
 
-
-
-
-
-
     $(".btnExcelVae").click(function () {
-        var fecha = $("#fcDefecto").val();
+        var fecha = $("#datetimepicker2").val();
         location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelItemsVae' )}?fecha=" + fecha
     });
 

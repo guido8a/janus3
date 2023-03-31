@@ -2207,36 +2207,44 @@ itemId: item.id
     }
 
     def formVa_ajax() {
-        println " vae: " + params
+//        println " vae: " + params
         def vaeInstance = new VaeItems()
         if (params.fechaVae)
             vaeInstance.fecha = new Date().parse("dd-MM-yyyy", params.fechaVae)
-        println vaeInstance.fecha
         def itemInstance = Item.get(params.item)
         if (params.id) {
             vaeInstance = VaeItems.get(params.id)
         }
 
-        return [vaeInstance: vaeInstance, itemInstance: itemInstance]
-
+        return [vaeInstance: vaeInstance, itemInstance: itemInstance, item: params.item]
     }
 
     def saveVa_ajax() {
-        println "saveVa_ajax" +  params
-        def accion = "create"
-        def vaeItems = new VaeItems()
-        if (params.fecha)
+//        println ("saveVae_ajax" +  params)
+
+        def vaeItem
+
+        if (params.fecha){
             params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        params.fechaIngreso = new Date()
+        }
+
         params.porcentaje = params.porcentaje.toDouble()
-        vaeItems.properties = params
-        if (vaeItems.save(flush: true)) {
-            println "OK_"+ accion + "_" + vaeItems.id + "_" + vaeItems.porcentaje
-            render "OK"
-        } else {
-//            println "Vae items: " + vaeItems.errors
-            def errores = g.renderErrors(bean: vaeItems)
-            render "NO_" + errores
+
+        if(params.id){
+            vaeItem = VaeItems.get(params.id)
+        }else{
+            vaeItem = new VaeItems()
+            params.fechaIngreso = new Date()
+            vaeItem.item = Item.get(params.item)
+        }
+
+        vaeItem.properties = params
+
+        if(!vaeItem.save(flush:true)){
+            println("error al guardar el valor del vae" + vaeItem.errors)
+            render "no_Error al guardar el valor del vae"
+        }else{
+            render "ok_Guardado correctamente"
         }
     }
 
