@@ -11,7 +11,7 @@ class InicioController {
         def cn = dbConnectionService.getConnection()
         def prms = []
         def acciones = "'rubroPrincipal', 'registroObra', 'registrarPac', 'verContrato'"
-        def tx = "select accnnmbr from prms, accn where prfl__id = " + janus.seguridad.Prfl.findByNombre(session.perfil.toString()).id +
+        def tx = "select accnnmbr from prms, accn where prfl__id = " + seguridad.Prfl.findByNombre(session.perfil.toString()).id +
                 " and accn.accn__id = prms.accn__id and accnnmbr in (${acciones})"
         cn.eachRow(tx) { d ->
             prms << d.accnnmbr

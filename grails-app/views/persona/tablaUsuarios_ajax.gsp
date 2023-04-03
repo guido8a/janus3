@@ -1,33 +1,41 @@
+<%@ page import="seguridad.Persona" %>
 <table class="table table-bordered table-striped table-hover table-condensed" id="tabla">
     <thead>
     <tr>
-        <th style="width: 10%">Estado</th>
-        <th style="width: 15%">Usuario</th>
-        <th style="width: 25%">Nombre</th>
-        <th style="width: 25%">Apellido</th>
-        <th style="width: 10%">Departamento</th>
-        <th style="width: 15%">Perfiles</th>
+        <th style="width: 5%">Estado</th>
+        <th style="width: 8%">Usuario</th>
+        <th style="width: 20%">Nombre</th>
+        <th style="width: 20%">Apellido</th>
+        <th style="width: 27%">Departamento</th>
+        <th style="width: 20%">Perfiles</th>
     </tr>
     </thead>
 </table>
 
-<div class="" style="width: 99.7%;height: 430px; overflow-y: auto;float: right;">
+<div class="" style="width: 99.7%;height: 530px; overflow-y: auto;float: right;">
     <table class="table-bordered table-condensed table-hover" style="width: 100%">
         <g:each in="${data}" var="dt" status="i">
+            <g:set var="usuario" value="${dt.prsn__id}"/>
             <tr data-id="${dt.prsn__id}">
-                <td style="width: 10%">
+                <td style="width: 5%; text-align: center">
                     <g:if test="${dt.prsnactv == 1}">
-                        <i class="fa fa-user text-info"></i>
+                        <i class="fa fa-user text-success"></i>
                     </g:if>
                     <g:if test="${dt.prsnactv == 0}">
                         <i class="fa fa-user text-muted"></i>
                     </g:if>
-                <td style="width: 15%">${dt.prsnlogn}</td>
-                <td style="width: 25%">${dt.prsnnmbr}</td>
-                <td style="width: 25%">${dt.prsnapll}</td>
-                <td style="width: 10%">${janus.Departamento.get(dt.dpto__id).descripcion}</td>
-                <td style="width: 14%"></td>
-%{--                <td style="width: 1%">${janus.seguridad.Prfl.findAllBy}</td>--}%
+                <td style="width: 8%">${dt.prsnlogn}</td>
+                <td style="width: 20%">${dt.prsnnmbr}</td>
+                <td style="width: 20%">${dt.prsnapll}</td>
+                <td style="width: 27%">${janus.Departamento.get(dt.dpto__id).descripcion}</td>
+                <td style="width: 19%">
+                <ul>
+                    <g:each in="${seguridad.Sesn.findAllByUsuario(seguridad.Persona.get(dt.prsn__id))}" var="perfiles">
+                            <li>${perfiles?.perfil?.descripcion ?: ''}</li>
+                    </g:each>
+                </ul>
+                </td>
+                <td style="width: 1%"></td>
             </tr>
         </g:each>
     </table>

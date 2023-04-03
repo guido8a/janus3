@@ -30,17 +30,6 @@
             <i class="fa fa-user"></i> Nuevo Usuario
         </g:link>
     </div>
-
-    %{--    <div class="btn-group pull-right col-md-3">--}%
-    %{--        <div class="input-group">--}%
-    %{--            <input type="text" class="form-control span2 input-search" placeholder="Buscar" value="${params.search}">--}%
-    %{--            <span class="input-group-btn">--}%
-    %{--                <g:link action="list" class="btn btn-primary btn-search">--}%
-    %{--                    <i class="fas fa-search"></i>;--}%
-    %{--                </g:link>--}%
-    %{--            </span>--}%
-    %{--        </div><!-- /input-group -->--}%
-    %{--    </div>--}%
 </div>
 
 
@@ -48,28 +37,39 @@
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
-                <label class="col-md-2 control-label text-info">
-                    Buscar Por
-                </label>
-                <span class="col-md-3">
+                <span class="col-md-2">
+                    <label class="control-label text-info">Buscar Por</label>
                     <g:select name="buscarPor" class="buscarPor col-md-12 form-control" from="${[1: 'Usuario', 2: 'Nombre', 3 : 'Apellido']}" optionKey="key"
                               optionValue="value"/>
                 </span>
-                <label class="col-md-1 control-label text-info">
-                    Criterio
-                </label>
-                <span class="col-md-4">
+                <span class="col-md-3">
+                    <label class="control-label text-info">Criterio</label>
                     <g:textField name="buscarCriterio" id="criterioCriterio" class="form-control"/>
                 </span>
+                <span class="col-md-2">
+                    <label class="control-label text-info">Estado</label>
+                    <g:select name="estado" class="estado form-control" from="${[1: 'Todos', 2: 'Activo', 3: 'Inactivo']}" optionKey="key"
+                              optionValue="value"/>
+                </span>
+                <span class="col-md-2">
+                    <label class="control-label text-info">Perfil</label>
+                    <g:select name="perfil" class="form-control" from="${seguridad.Prfl.list()}" optionKey="id"
+                              optionValue="descripcion"/>
+                </span>
+                <span class="col-md-2">
+                    <label class="control-label text-info">Departamento</label>
+                    <g:select name="departamento" class="form-control" from="${janus.Departamento.list()}" optionKey="id"
+                              optionValue="descripcion"/>
+                </span>
             </span>
-            <div class="col-md-1" style="margin-top: 1px">
+            <div class="col-md-1" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscarUsuarios"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </fieldset>
 
     <fieldset class="borde" style="border-radius: 4px">
-        <div id="divTablaUsuarios" style="height: 460px; overflow: auto; margin-top: 5px">
+        <div id="divTablaUsuarios" style="height: 560px; overflow: auto; margin-top: 5px">
         </div>
     </fieldset>
 </div>

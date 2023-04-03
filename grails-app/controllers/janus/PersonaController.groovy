@@ -587,7 +587,7 @@ class PersonaController {
 
         def select = "select * from prsn"
         def txwh = " where dpto__id != 13 and $bsca ilike '%${params.criterio}%'"
-        sqlTx = "${select} ${txwh} order by prsnapll limit 30 ".toString()
+        sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
