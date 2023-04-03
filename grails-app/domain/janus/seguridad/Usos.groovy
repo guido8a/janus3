@@ -1,6 +1,8 @@
 package janus.seguridad
 
+import seguridad.Accn
 import seguridad.Persona
+import seguridad.Prfl
 
 
 class Usos implements Serializable{

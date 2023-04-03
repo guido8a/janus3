@@ -1,6 +1,6 @@
 package janus
 
-import janus.seguridad.Prfl
+import seguridad.Prfl
 
 
 //import com.linuxense.javadbf.DBFField

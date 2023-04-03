@@ -1,7 +1,7 @@
 package janus
 
-import janus.seguridad.Prfl
-import janus.seguridad.Sesn
+import seguridad.Prfl
+import seguridad.Sesn
 import seguridad.Persona
 
 import org.springframework.dao.DataIntegrityViolationException
@@ -391,7 +391,7 @@ class PersonaController {
             def perfil = janus.seguridad.Prfl.get(it)
             def ses = janus.seguridad.Sesn.findByUsuarioAndPerfil(personaInstance, perfil)
             if (!ses) {
-                ses = new janus.seguridad.Sesn([usuario: personaInstance, perfil: perfil])
+                ses = new seguridad.Sesn([usuario: personaInstance, perfil: perfil])
                 println "grabando " + it
                 ses.save(flush: true)
             }
