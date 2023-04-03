@@ -8,6 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class PersonaController {
 
+    def dbConnectionService
+
     def checkUniqueUser() {
 //        println params
         if (params.id) {
@@ -208,28 +210,28 @@ class PersonaController {
         return
     }
 
-
     def list() {
+        println("params list " + params)
 
-        def perfil = Prfl.get(4);
+//        def perfil = Prfl.get(4);
 
         /* departamento de OFERENTES: id = 13 */
         def departamento = Departamento.get(13)
-        def personaList = Persona.findAllByDepartamentoNotEqual(departamento, [sort: 'apellido'])
-//        def personaList = Persona.findAll([sort: 'apellido'])
+        def personaList = Persona.findAllByDepartamentoNotEqual(departamento,[sort: 'apellido'])
 
-        println "personas: ${personaList.size()}"
-        [personaInstanceList: personaList, personaInstanceTotal: Persona.count(), params: params]
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [personaInstanceList: Persona.list(params), personaInstanceCount: personaList.size(), params: params]
+
+
+//        [aseguradoraInstanceList: Aseguradora.list(params), aseguradoraTotal: Aseguradora.count(), params: params]
+
+
     } //list
 
     def listOferente() {
         def perfil = Prfl.findByCodigo("OFRT")
-//        println perfil
-//        println Sesn.findAllByPerfil(perfil)
         [params: params, sesion: Sesn.findAllByPerfil(perfil)]
-        //list
     }
-
 
     def form_ajax() {
 
@@ -247,6 +249,18 @@ class PersonaController {
         } //es edit
         return [personaInstance: personaInstance, perfilOferente: perfilOferente]
     } //form_ajax
+
+    def formUsuario_ajax() {
+        def personaInstance = new Persona(params)
+        if (params.id) {
+            personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+                notFound_ajax()
+                return
+            }
+        }
+        return [personaInstance: personaInstance]
+    }
 
 
     def formOferente() {
@@ -557,5 +571,27 @@ class PersonaController {
             redirect(action: "list")
         }
     } //delete
+
+    def tablaUsuarios_ajax(){
+        println("params " + params)
+        def datos;
+        def sqlTx = ""
+        def departamento = Departamento.get(13)
+        def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
+        def bsca
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+
+        def select = "select * from prsn"
+        def txwh = " where dpto__id != 13 and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by prsnapll limit 30 ".toString()
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        [data: datos, tipo: params.tipo]
+    }
 
 } //fin controller

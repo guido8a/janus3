@@ -11,7 +11,7 @@
     </div>
 </div>
 
-<div id="divTabla" style="height: 630px; width: 100%; overflow-x: hidden; overflow-y: auto;">
+<div id="divTabla" style="height: 400px; width: 100%; overflow-x: hidden; overflow-y: auto;">
     <table class="table table-striped table-bordered table-hover table-condensed" id="tablaPrecios">
         <thead>
         <tr>
