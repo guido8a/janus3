@@ -2291,18 +2291,18 @@ itemId: item.id
             def usu = Persona.get(session.usuario.id)
             if (params.auto.toString().encodeAsMD5() != usu.autorizacion) {
                 ok = false
-                render "Ha ocurrido un error en la autorización."
+                render "no_Ha ocurrido un error en la autorización."
             }
         }
         if (ok) {
             try {
                 def vaeItems = VaeItems.get(params.id);
                 vaeItems.delete(flush: true)
-                render "OK"
+                render "ok_Borrado correctamente"
             }
             catch (DataIntegrityViolationException e) {
-                println "mantenimiento items controller l 903: " + e
-                render "No se pudo eliminar el vae."
+                println ("error al borrar el vae " + e)
+                render "no_No se pudo eliminar el vae."
             }
         }
     }
