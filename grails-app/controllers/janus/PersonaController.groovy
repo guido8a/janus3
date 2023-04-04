@@ -588,12 +588,13 @@ class PersonaController {
             bsca = listaItems[0]
         }
 
-        def select = "select prsn.* from prsn, sesn"
+        def select = "select distinct prsn.* from prsn, sesn"
         def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
                 "sesn.prfl__id::text ilike '${perfil}' and sesn.prsn__id = prsn.prsn__id and " +
-                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
+                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' and " +
+                "sesnfcfn is null "
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
-//        println "sql: $sqlTx"
+        println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         [data: datos, tipo: params.tipo]
