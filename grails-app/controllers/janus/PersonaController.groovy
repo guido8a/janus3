@@ -573,22 +573,27 @@ class PersonaController {
     } //delete
 
     def tablaUsuarios_ajax(){
-        println("params " + params)
+        println "tablaUsuarios_ajax params $params"
         def datos;
         def sqlTx = ""
-        def departamento = Departamento.get(13)
         def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
+        def estados = ['%', '1', '0']
         def bsca
+        def perfil = params.perfil == 'null'? '%' : params.perfil
+        def dpto = params.departamento == 'null'? '%' : params.departamento
+
         if(params.buscarPor){
             bsca = listaItems[params.buscarPor?.toInteger()-1]
         }else{
             bsca = listaItems[0]
         }
 
-        def select = "select * from prsn"
-        def txwh = " where dpto__id != 13 and $bsca ilike '%${params.criterio}%'"
+        def select = "select prsn.* from prsn, sesn"
+        def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
+                "sesn.prfl__id::text ilike '${perfil}' and sesn.prsn__id = prsn.prsn__id and " +
+                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
-
+//        println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         [data: datos, tipo: params.tipo]
