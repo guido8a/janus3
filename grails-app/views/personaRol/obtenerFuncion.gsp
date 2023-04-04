@@ -1,65 +1,56 @@
 
 <g:each in="${rol}" var="r" status="i" >
-<tr data-id="${r?.funcionId}" data-valor="${r?.funcion?.descripcion}">
-
-<td style="width: 50px">${i+1}</td>
-
-<td style="width: 350px"> ${r?.funcion?.descripcion}</td>
-<td style="width: 20px"> <a href='#' class='btn btn-danger btnBorrar' id="${r.id}"><i class='icon-trash icon-large'></i></a></td>
-
-
-</tr>
+    <tr data-id="${r?.funcionId}" data-valor="${r?.funcion?.descripcion}">
+        <td style="width: 50px">${i+1}</td>
+        <td style="width: 350px"> ${r?.funcion?.descripcion}</td>
+        <td style="width: 20px; text-align: center"> <a href='#' class='btn btn-danger btnBorrar btn-xs' data-id="${r.id}"><i class='fa fa-trash'></i></a></td>
+    </tr>
 </g:each>
-
-
-
-
 
 <script type="text/javascript">
 
     $(".btnBorrar").click(function () {
-        borrar($(this));
-        /*
-        function borrar($btn) {
-            var tr = $btn.parents("tr");
-            var idRol = $btn.attr("id"):
-        }
-         */
-
-        %{--var tr =   $(this).parents("tr");--}%
-        %{--var idRol = $(this).attr("id");--}%
-
-        %{--$.box({--}%
-            %{--imageClass: "box_info",--}%
-            %{--text      : "Esta seguro que desea eliminar esta función de la persona seleccionada?",--}%
-            %{--title     : "Confirmación",--}%
-            %{--iconClose : false,--}%
-            %{--dialog    : {--}%
-                %{--resizable    : false,--}%
-                %{--draggable    : false,--}%
-                %{--closeOnEscape: false,--}%
-                %{--buttons      : {--}%
-                    %{--"Aceptar" : function () {--}%
-                        %{--$.ajax({--}%
-                            %{--type: "POST",--}%
-                            %{--url: "${g.createLink(controller: "personaRol", action: 'delete')}",--}%
-                            %{--data: { id:idRol},--}%
-                            %{--success: function (msg) {--}%
-                                %{--tr.remove();--}%
-                            %{--}--}%
-
-                        %{--});--}%
-                    %{--},--}%
-                    %{--"Cancelar": function () {--}%
-
-
-                    %{--}--}%
-                %{--}--}%
-            %{--}--}%
-        %{--});--}%
-
+        var id = $(this).data("id");
+        deleteRow(id);
     });
 
-
-
+    function deleteRow(itemId) {
+        bootbox.dialog({
+            title   : "<strong>Eliminar</strong> función",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i>" +
+                "<p> ¿Está seguro que desea eliminar la función de la persona seleccionada?.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash'></i> Eliminar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        var ad = cargarLoader("Eliminando");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(controller: 'personaRol', action:'delete')}',
+                            data    : {
+                                id : itemId
+                            },
+                            success : function (msg) {
+                                ad.modal('hide');
+                                var parts = msg.split("_");
+                                if (parts[0] === "ok") {
+                                    log(parts[1], "success");
+                                    cargarFuncion();
+                                }else{
+                                    log(parts[1], "error");
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
 </script>

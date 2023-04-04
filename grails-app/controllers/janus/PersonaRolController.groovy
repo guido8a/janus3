@@ -1,7 +1,7 @@
 package janus
 
-
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class PersonaRolController {
 
@@ -18,78 +18,48 @@ class PersonaRolController {
 
 
     def registroPersonaRol (){
-
         def funciones = Funcion.findAllByCodigoNotLikeAndCodigoNotLike("D","O")
-
         def listaDireccion = Direccion.list()
-
         return[funciones: funciones, listaDireccion: listaDireccion]
-
-
     }
 
-
     def getPersonas () {
-
-//        println(params)
-
-//        def departamento = Departamento.get(params.id)
-
-//        def personas = Persona.findAllByDepartamento(departamento)
-
+//        println("parmas get p " + params)
         def direccion = Direccion.get(params.id)
-
         def departamentos = Departamento.findAllByDireccion(direccion)
-
-        def personas = Persona.findAllByDepartamentoInListAndActivo(departamentos, 1, [sort: 'nombre'])
-
+        def personas
+        if(departamentos.size() > 0){
+            personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }else{
+            personas = []
+        }
         return [personas : personas]
     }
 
-
     def getSeleccionados () {
-
-
         def direccion = Direccion.get(params.id)
-
         def departamentos = Departamento.findAllByDireccion(direccion)
-
-        def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
-
-//        println("personas:" + personas)
-
+        def personas
+        if(departamentos.size() > 0){
+            personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }else{
+            personas = []
+        }
         return [personas: personas]
-
     }
-
 
     def obtenerFuncion (){
-
-
-
         def persona = Persona.get(params.id);
-
         def rol = PersonaRol.findAllByPersona(persona)
-
         return [persona: persona, rol: rol]
-
     }
-
 
     def obtenerFuncionDirector () {
-
         def persona = Persona.get(params.id);
-
         def funcion = Funcion.get(9)
-
         def rol = PersonaRol.findByPersonaOrFuncion(persona, funcion)
-
-
         return [persona: persona, rol: rol]
-
     }
-
-
 
     def grabarFuncion () {
         def personaRol = new PersonaRol()
@@ -175,25 +145,16 @@ class PersonaRolController {
     def delete() {
         def personaRolInstance = PersonaRol.get(params.id)
         if (!personaRolInstance) {
-//            flash.clase = "alert-error"
-//            flash.message = "No se encontró PersonaRol con id " + params.id
-//            redirect(action: "list")
-//            return
-            render "NO"
+            render "no_No se encontró la función"
         }
 
         try {
             personaRolInstance.delete(flush: true)
-//            flash.clase = "alert-success"
-//            flash.message = "Se ha eliminado correctamente PersonaRol " + personaRolInstance.id
-//            redirect(action: "list")
-            render "OK"
+            render "ok_Función borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-//            flash.clase = "alert-error"
-//            flash.message = "No se pudo eliminar PersonaRol " + (personaRolInstance.id ? personaRolInstance.id : "")
-//            redirect(action: "list")
-            render "NO"
+            println("error al borrar la función " + personaRolInstance.errors)
+            render "no_Error al borrar la función"
         }
     } //delete
 
@@ -201,49 +162,17 @@ class PersonaRolController {
     //asignación del director
 
     def asignarDirector () {
-
-
-
         def listaDireccion = Direccion.list()
-
-
-
-
         return [listaDireccion: listaDireccion]
-
-
-
     }
-
 
     def sacarFunciones () {
-
-
         def direccion = Direccion.get(params.id)
-
         def departamentos = Departamento.findAllByDireccion(direccion)
-
         def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
-
-
         def funcion = Funcion.get(9)
-
-
         def roles = PersonaRol.findAllByPersonaInListAndFuncion(personas, funcion )
-
         render roles.size()
-
-//        println("roles" + roles)
-
-//        return [roles: roles]
-
-
-
     }
-
-
-
-
-
 
 } //fin controller
