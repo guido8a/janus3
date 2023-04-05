@@ -1,319 +1,167 @@
 package janus
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class AsignarDirectorController  {
 
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
+    def registroPersonaRol (){
+    }
 
-        static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    def getPersonas () {
+        def departamento = Departamento.get(params.id)
+        def personas = Persona.findAllByDepartamento(departamento)
+        return [personas : personas]
+    }
 
-        def index() {
-            redirect(action: "list", params: params)
-        } //index
-
-        def list() {
-            params.max = Math.min(params.max ? params.int('max') : 10, 100)
-            [personaRolInstanceList: PersonaRol.list(params), personaRolInstanceTotal: PersonaRol.count(), params: params]
-        } //list
-
-
-        def registroPersonaRol (){
-
-
+    def getSeleccionados () {
+        def direccion = Direccion.get(params.id)
+        def departamentos = Departamento.findAllByDireccion(direccion)
+        def personas
+        if(departamentos.size() > 0){
+            personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }else{
+            personas = []
         }
-
-
-        def getPersonas () {
-
-            def departamento = Departamento.get(params.id)
-
-            def personas = Persona.findAllByDepartamento(departamento)
-
-
-            return [personas : personas]
-
-
-
+        def funcionDirector = Funcion.findByCodigo('D')
+        def dptoDireccion = Departamento.findAllByDireccion(direccion)
+        def personalDireccion
+        if(dptoDireccion.size() > 0){
+            personalDireccion = Persona.findAllByDepartamentoInList(dptoDireccion, [sort: 'nombre'])
+        }else{
+            personalDireccion = []
         }
-
-
-        def getSeleccionados () {
-
-
-            def direccion = Direccion.get(params.id)
-
-            def departamentos = Departamento.findAllByDireccion(direccion)
-
-            def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
-
-//           println("personas:" + personas)
-
-            def funcionDirector = Funcion.findByCodigo('D')
-
-            def dptoDireccion = Departamento.findAllByDireccion(direccion)
-
-//            println("dptoDire" + dptoDireccion)
-
-            def personalDireccion = Persona.findAllByDepartamentoInList(dptoDireccion, [sort: 'nombre'])
-
-//            println("personaDireccion" + personalDireccion)
-//
-//            def obtenerDirector = PersonaRol.findByFuncionAndPersonaInList(funcionDirector, personalDireccion)
-//
-//            println("od" + obtenerDirector)
-
-            def obtenerDirector
-
-
-            if(personalDireccion != []){
-
-
-               obtenerDirector = PersonaRol.findByFuncionAndPersonaInList(funcionDirector, personalDireccion)
-
-
-            }else {
-
-
-                obtenerDirector = null
-            }
-
-
-
-
-            return [personas: personas, obtenerDirector: obtenerDirector]
-
+        def obtenerDirector
+        if(personalDireccion != []){
+            obtenerDirector = PersonaRol.findByFuncionAndPersonaInList(funcionDirector, personalDireccion)
+        }else {
+            obtenerDirector = null
         }
-
-
+        return [personas: personas, obtenerDirector: obtenerDirector, id: params.id]
+    }
 
     def mensaje () {
-
-//        println("params" + params)
-
         def direccion = Direccion.get(params.id)
-
-        def personas = []
-        def departamentos = []
-
+        def personas
+        def departamentos
 
         if(direccion){
-
             departamentos = Departamento.findAllByDireccion(direccion)
-
         }else{
-
             departamentos = []
         }
 
-
-
-        if(departamentos){
+        if(departamentos.size() > 0){
             personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
-
         }else{
-         personas = []
-
+            personas = []
         }
 
         def funcionDirector = Funcion.findByCodigo('D')
+        def personalDireccion
 
-
-
-//        def dptoDireccion = Departamento.findAllByDireccion(direccion)
-
-        def personalDireccion = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
-
+        if(departamentos.size() > 0){
+            personalDireccion = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+        }else{
+            personalDireccion = []
+        }
 
         def obtenerDirector
 
-
         if(personalDireccion != []){
-
-
             obtenerDirector = PersonaRol.findByFuncionAndPersonaInList(funcionDirector, personalDireccion)
-
-
         }else {
-
-
             obtenerDirector = null
         }
+        return [personas: personas, obtenerDirector: obtenerDirector, id: params.id]
+    }
 
+    def obtenerFuncion (){
+        def persona = Persona.get(params.id);
+        def rol = PersonaRol.findAllByPersona(persona)
+        return [persona: persona, rol: rol]
+    }
 
-//        println("personas" + personas + "direc" + obtenerDirector)
+    def obtenerFuncionDirector () {
+        def persona = Persona.get(params.id);
+        def funcion = Funcion.findByCodigo('D')
+        def rol = PersonaRol.findByPersonaAndFuncion(persona, funcion)
+        return [persona: persona, rol: rol]
+    }
 
+    def grabarFuncion () {
+        def funcion = Funcion.findByCodigo('D')
 
-        return [personas: personas, obtenerDirector: obtenerDirector]
+        if(params.direccion != '-1'){
+            def direccion = Direccion.get(params.direccion)
+            def departamentos = Departamento.findAllByDireccion(direccion)
 
+            def personas
+            def roles
+            if(departamentos.size() > 0){
+                personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
+            }else{
+                personas = []
+            }
 
+            if(personas.size() > 0){
+                roles = PersonaRol.findAllByPersonaInListAndFuncion(personas, funcion)
+            }else{
+                roles = null
+            }
 
+            if(roles == null){
+                render "no_Seleccione una persona"
+            }else{
+                if(roles.size() > 0){
+                    render "no_La dirección ya posee un director asignado"
+                }else{
+
+                    def personaRol = new PersonaRol()
+                    if(params.id){
+                        personaRol.persona = Persona.get(params.id)
+                    }else{
+                        render "no_Seleccione una persona"
+                        return true
+                    }
+                    personaRol.funcion = funcion
+
+                    if (!personaRol.save([flush: true])) {
+                        render "no_Error al asignar el director"
+                        println "ERROR al asignar el director : "+personaRol.errors
+                    } else {
+                        render "ok_Asignado correctamente"
+                    }
+                }
+            }
+        }else{
+            render "no_Seleccione una dirección"
+        }
     }
 
 
-        def obtenerFuncion (){
-
-
-
-            def persona = Persona.get(params.id);
-
-            def rol = PersonaRol.findAllByPersona(persona)
-
-            return [persona: persona, rol: rol]
-
+    def delete() {
+        def personaRolInstance = PersonaRol.get(params.id)
+        if (!personaRolInstance) {
+            render "no_No se encontró el registro"
         }
 
-
-        def obtenerFuncionDirector () {
-
-            def persona = Persona.get(params.id);
-
-            def funcion = Funcion.findByCodigo('D')
-
-            def rol = PersonaRol.findByPersonaAndFuncion(persona, funcion)
-
-
-            return [persona: persona, rol: rol]
-
+        try {
+            personaRolInstance.delete(flush: true)
+            render "ok_Borrado correctamente"
         }
-
-
-        def grabarFuncion () {
-            println("params" + params)
-            def personaRol = new PersonaRol()
-            if(params.id){
-                personaRol.persona = Persona.get(params.id)
-                personaRol.funcion = Funcion.get(params.rol)
-            }
-
-            if (!personaRol.save([flush: true])) {
-                render "NO"
-                println "ERROR al guardar rolPersona: "+personaRol.errors
-            } else {
-                render "OK_"+personaRol.id
-            }
+        catch (DataIntegrityViolationException e) {
+            render "no_Error al borrar el registro"
         }
+    } //delete
 
-        def form_ajax() {
-            def personaRolInstance = new PersonaRol(params)
-            if (params.id) {
-                personaRolInstance = PersonaRol.get(params.id)
-                if (!personaRolInstance) {
-                    flash.clase = "alert-error"
-                    flash.message = "No se encontró PersonaRol con id " + params.id
-                    redirect(action: "list")
-                    return
-                } //no existe el objeto
-            } //es edit
-            return [personaRolInstance: personaRolInstance]
-        } //form_ajax
+    //asignación del director
 
-        def save() {
-            def personaRolInstance
-            if (params.id) {
-                personaRolInstance = PersonaRol.get(params.id)
-                if (!personaRolInstance) {
-                    flash.clase = "alert-error"
-                    flash.message = "No se encontró PersonaRol con id " + params.id
-                    redirect(action: 'list')
-                    return
-                }//no existe el objeto
-                personaRolInstance.properties = params
-            }//es edit
-            else {
-                personaRolInstance = new PersonaRol(params)
-            } //es create
-            if (!personaRolInstance.save(flush: true)) {
-                flash.clase = "alert-error"
-                def str = "<h4>No se pudo guardar PersonaRol " + (personaRolInstance.id ? personaRolInstance.id : "") + "</h4>"
+    def asignarDirector () {
+        def listaDireccion = Direccion.list()
+        return [listaDireccion: listaDireccion]
+    }
 
-                str += "<ul>"
-                personaRolInstance.errors.allErrors.each { err ->
-                    def msg = err.defaultMessage
-                    err.arguments.eachWithIndex {  arg, i ->
-                        msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                    }
-                    str += "<li>" + msg + "</li>"
-                }
-                str += "</ul>"
-
-                flash.message = str
-                redirect(action: 'list')
-                return
-            }
-
-            if (params.id) {
-                flash.clase = "alert-success"
-                flash.message = "Se ha actualizado correctamente PersonaRol " + personaRolInstance.id
-            } else {
-                flash.clase = "alert-success"
-                flash.message = "Se ha creado correctamente PersonaRol " + personaRolInstance.id
-            }
-            redirect(action: 'list')
-        } //save
-
-        def show_ajax() {
-            def personaRolInstance = PersonaRol.get(params.id)
-            if (!personaRolInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró PersonaRol con id " + params.id
-                redirect(action: "list")
-                return
-            }
-            [personaRolInstance: personaRolInstance]
-        } //show
-
-        def delete() {
-            def personaRolInstance = PersonaRol.get(params.id)
-            if (!personaRolInstance) {
-
-                render "NO"
-            }
-
-            try {
-                personaRolInstance.delete(flush: true)
-
-                render "OK"
-            }
-            catch (DataIntegrityViolationException e) {
-
-                render "NO"
-            }
-        } //delete
-
-
-        //asignación del director
-
-        def asignarDirector () {
-
-            def listaDireccion = Direccion.list()
-
-            return [listaDireccion: listaDireccion]
-
-        }
-
-
-        def sacarFunciones () {
-
-
-            def direccion = Direccion.get(params.id)
-
-            def departamentos = Departamento.findAllByDireccion(direccion)
-
-            def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
-
-
-            def funcion = Funcion.findByCodigo('D')
-
-
-            def roles = PersonaRol.findAllByPersonaInListAndFuncion(personas, funcion )
-
-            render roles.size()
-
-
-        }
-
-
-
-    } //fin controller
-
+} //fin controller

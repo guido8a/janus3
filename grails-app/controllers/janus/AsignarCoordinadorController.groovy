@@ -1,6 +1,7 @@
 package janus
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.Persona
 
 class AsignarCoordinadorController {
 
@@ -8,41 +9,26 @@ class AsignarCoordinadorController {
 
 
     def getDepartamento () {
-
-//        println(params)
-
-     def direccion = Direccion.get(params.id)
-
-     def departamento = Departamento.findAllByDireccion(direccion)
-
+        def direccion = Direccion.get(params.id)
+        def departamento = Departamento.findAllByDireccion(direccion)
         return[departamento: departamento]
-
     }
 
 
     def asignarCoordinador () {
-
-
-
     }
 
 
     def getPersonas () {
+        def departamento = Departamento.get(params.id)
+        def personas
 
-    def departamento = Departamento.get(params.id)
-
-    def personas
-
-    if (departamento != null ){
-        personas = Persona.findAllByDepartamento(departamento)
-    }else {
-        personas = []
-    }
-
-    return [personas: personas]
-
-
-
+        if (departamento != null ){
+            personas = Persona.findAllByDepartamento(departamento)
+        }else {
+            personas = []
+        }
+        return [personas: personas]
     }
 
 

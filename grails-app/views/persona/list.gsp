@@ -77,6 +77,14 @@
 
 <script type="text/javascript">
 
+    $("#btnAsignarCoordinador").click(function () {
+        location.href="${createLink(controller: 'asignarCoordinador', action: 'asignarCoordinador')}"
+    });
+
+    $("#btnAsignarDirector").click(function () {
+        location.href="${createLink(controller: 'asignarDirector', action: 'asignarDirector')}"
+    });
+
     $("#btnColocarRol").click(function () {
         location.href="${createLink(controller: 'personaRol', action: 'registroPersonaRol')}"
     });

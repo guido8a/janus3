@@ -62,14 +62,30 @@ class PersonaRolController {
     }
 
     def grabarFuncion () {
-        def personaRol = new PersonaRol()
-        personaRol.persona = Persona.get(params.id)
-        personaRol.funcion = Funcion.get(params.rol)
-        if (!personaRol.save([flush: true])) {
-            render "NO"
-            println "ERROR al guardar rolPersona: "+personaRol.errors
-        } else {
-            render "OK_"+personaRol.id
+        def persona
+
+        if(params.id){
+           persona = Persona.get(params.id)
+        }else{
+            render "no_Seleccione una persona"
+            return true
+        }
+
+        def rol = Funcion.get(params.rol)
+
+        if(PersonaRol.findAllByPersonaAndFuncion(persona, rol)){
+            render "no_La función seleccionada ya ha sido asignada a la persona"
+        }else{
+            def personaRol = new PersonaRol()
+                personaRol.persona = persona
+                personaRol.funcion = rol
+
+            if (!personaRol.save([flush: true])) {
+                render "NO_Error al asignar la función"
+                println "ERROR al guardar rolPersona: "+personaRol.errors
+            } else {
+                render "OK_Función asignada correctamente"
+            }
         }
     }
 

@@ -12,9 +12,7 @@
     <button class="btn btnRegresar btn-info" id="regresar"><i class="fa fa-arrow-left"></i> Regresar</button>
 </div>
 
-
 <div class="col-md-12">
-
     <div class="col-md-6" style="font-weight: bold">Dirección:
     <g:select name="departamento" class="departamento form-control" from="${janus.Direccion.list([sort: 'nombre'])}" optionValue="nombre"
               optionKey="id"  noSelection="['-1': 'Seleccione la dirección...']"/>
@@ -32,8 +30,6 @@
         <button class="btn btnAdicionar btn-success" id="adicionar"><i class="fa fa-plus"></i> Adicionar</button>
     </div>
 </div>
-
-<hr>
 
 <div class="col-md-6" style="margin-top: 20px">
     <table class="table table-bordered table-striped table-hover table-condensed " id="tablaFuncion">
@@ -56,74 +52,25 @@
     $("#adicionar").click(function () {
 
         var idPersona = $(".persona").val();
-
-        var valorAdicionar = $("#funcion option:selected").attr("class");
-        var idAcicionar = $("#funcion").val();
-
-
-//        console.log("-->" + idAcicionar)
-
-
-        var tbody = $("#funcionPersona");
-        var rows = tbody.children("tr").length;
-        var continuar = true;
-
-        tbody.children("tr").each(function () {
-            var fila = $(this);
-            var id = fila.data("id");
-            var valor = fila.data("valor");
-
-            if (id == idAcicionar || valor == valorAdicionar) {
-                continuar = false;
-            }
-        });
-
-        if (continuar) {
-
-            //AJAX
+        var idAcicionar = $("#funcion option:selected").val();
 
             $.ajax({
                 type: "POST",
                 url: "${g.createLink(controller: "personaRol", action: 'grabarFuncion')}",
-                data: { id: idPersona,
-
+                data: {
+                    id: idPersona,
                     rol: idAcicionar
                 },
                 success: function (msg) {
                     var parts = msg.split("_");
-                    if (parts[0] == "OK") {
-                        var tr = $("<tr>");
-                        var tdNumero = $("<td>");
-                        var tdFuncion = $("<td>");
-                        var tdAccion = $("<td>");
-                        var boton = $("<a href='#' class='btn btn-danger btnBorrar'><i class='icon-trash icon-large'></i></a>");
-                        var id = parts[1];
-                        boton.attr("id", id);
-                        boton.click(function () {
-                            borrar(boton);
-                        });
-                        tdAccion.append(boton);
-
-                        tr.data({
-                            id: idAcicionar,
-                            valor: valorAdicionar
-                        });
-
-                        tdNumero.html(rows + 1);
-                        tdFuncion.html(valorAdicionar);
-                        tr.append(tdNumero).append(tdFuncion).append(tdAccion);
-                        tbody.append(tr);
+                    if(parts[0] === 'OK'){
+                        log(parts[1],"success");
+                        cargarFuncion();
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                     }
                 }
             });
-
-
-        } else {
-            //avisar q ya existe
-
-            alert("La persona ya tiene asignado ese rol!")
-        }
-
     });
 
     $("#regresar").click(function () {

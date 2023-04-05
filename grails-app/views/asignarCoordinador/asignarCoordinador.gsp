@@ -1,84 +1,109 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 11/14/13
-  Time: 3:50 PM
---%>
-
-
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="main">
-    <script type="text/javascript"
-            src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href='${resource(dir: "js/jquery/plugins/box/css", file: "jquery.luz.box.css")}' rel='stylesheet'
-          type='text/css'>
-
     <title>Asignar Coordinador</title>
 </head>
 
 <body>
 
+<div class="col-md-12 btn-group" style="margin-bottom: 10px">
+    <button class="btn btnRegresar btn-info" ><i class="fa fa-arrow-left"></i> Regresar</button>
+</div>
 
-
-
-<div class="span6">
-
-    <div class="span12" id="directorSel"></div>
-
-    <div class="span6">
-
-        <div class="span1" style="font-weight: bold">Dirección:</div>
-        <g:select name="direccion" class="direccion" from="${janus.Direccion.list([sort: 'nombre'])}" optionValue="nombre"
-                  optionKey="id" style="width: 400px" noSelection="['-1': '-Escoja la direccion-']"/>
+<div class="col-md-12">
+    <div class="col-md-6" style="font-weight: bold">Dirección:
+    <g:select name="direccion" class="direccion form-control" from="${janus.Direccion.list([sort: 'nombre'])}" optionValue="nombre"
+              optionKey="id"  noSelection="['-1': 'Seleccione la dirección...']"/>
     </div>
 
+    <div class="col-md-3" id="personasSel"></div>
+</div>
 
-    <div class="span12 " id="departamentoSel"></div>
-
-    <div class="span12" id="confirmacion"></div>
-
-    <hr>
-    <div class="span4" id="funcionDiv" style="margin-top: 10px;">
-        <div class="span2" style="font-weight: bold; margin-left: -10px">Asignar Función:</div>
-        <elm:select name="funcion" id="funcion" from="${janus.Funcion?.findAllById(10)}" optionValue="descripcion" optionKey="id"
-                    optionClass="${{ it?.descripcion }}" style="margin-left: -60px"/>
+<div class="col-md-12">
+    <div class="col-md-3" id="funcionDiv" style="margin-top: 10px;">
+        <div class="span2" style="margin-left: -1px; font-weight: bold">Asignar Función:</div>
+        <g:select name="funcion" from="${janus.Funcion?.findAllById(10)}" optionValue="descripcion" optionKey="id" class="form-control"/>
     </div>
-
-    <div class="span2 btn-group" style="margin-left: -10px; margin-top: 10px;">
-        <button class="btn btnAdicionar" id="adicionar"><i class="icon-plus"></i> Adicionar</button>
-        <button class="btn btnRegresar" id="regresar"><i class="icon-arrow-left"></i> Regresar</button>
-
+    <div class="col-md-1" style="margin-top: 26px;">
+        <button class="btn btn-success" id="btnAdicionar"><i class="fa fa-plus"></i> Asignar</button>
     </div>
+</div>
+
+%{--<div class="span6">--}%
+
+%{--    <div class="span12" id="directorSel"></div>--}%
+
+%{--    <div class="span6">--}%
+
+%{--        <div class="span1" style="font-weight: bold">Dirección:</div>--}%
+%{--        <g:select name="direccion" class="direccion" from="${janus.Direccion.list([sort: 'nombre'])}" optionValue="nombre"--}%
+%{--                  optionKey="id" style="width: 400px" noSelection="['-1': '-Escoja la direccion-']"/>--}%
+%{--    </div>--}%
 
 
-    <div class="span12" style="width: 500px">
+%{--    <div class="span12 " id="departamentoSel"></div>--}%
 
-        <table class="table table-bordered table-striped table-hover table-condensed " id="tablaFuncion">
+%{--    <div class="span12" id="confirmacion"></div>--}%
 
-            <thead>
-            <tr>
-                <th style="width: 50px">N°</th>
-                <th style="width: 250px">Función</th>
-                <th style="width: 20px"><i class="icon-cut"></i></th>
-            </tr>
+%{--    <hr>--}%
+%{--    <div class="span4" id="funcionDiv" style="margin-top: 10px;">--}%
+%{--        <div class="span2" style="font-weight: bold; margin-left: -10px">Asignar Función:</div>--}%
+%{--        <elm:select name="funcion" id="funcion" from="${janus.Funcion?.findAllById(10)}" optionValue="descripcion" optionKey="id"--}%
+%{--                    optionClass="${{ it?.descripcion }}" style="margin-left: -60px"/>--}%
+%{--    </div>--}%
 
-            </thead>
+%{--    <div class="span2 btn-group" style="margin-left: -10px; margin-top: 10px;">--}%
+%{--        <button class="btn btnAdicionar" id="adicionar"><i class="icon-plus"></i> Adicionar</button>--}%
+%{--        <button class="btn btnRegresar" id="regresar"><i class="icon-arrow-left"></i> Regresar</button>--}%
 
-            <tbody id="funcionPersona">
+%{--    </div>--}%
 
-            </tbody>
 
-        </table>
+%{--    <div class="span12" style="width: 500px">--}%
 
-    </div>
+%{--        <table class="table table-bordered table-striped table-hover table-condensed " id="tablaFuncion">--}%
 
+%{--            <thead>--}%
+%{--            <tr>--}%
+%{--                <th style="width: 50px">N°</th>--}%
+%{--                <th style="width: 250px">Función</th>--}%
+%{--                <th style="width: 20px"><i class="icon-cut"></i></th>--}%
+%{--            </tr>--}%
+
+%{--            </thead>--}%
+
+%{--            <tbody id="funcionPersona">--}%
+
+%{--            </tbody>--}%
+
+%{--        </table>--}%
+
+%{--    </div>--}%
+
+%{--</div>--}%
+
+<div class="col-md-6" style="margin-top: 20px">
+    <table class="table table-bordered table-striped table-hover table-condensed " id="tablaFuncion">
+        <thead>
+        <tr>
+            <th style="width: 50px">N°</th>
+            <th style="width: 250px">Función</th>
+            <th style="width: 20px"><i class="fa fa-trash"></i></th>
+        </tr>
+        </thead>
+
+        <tbody id="funcionPersona">
+
+        </tbody>
+    </table>
 </div>
 
 <div class="span6">
-
+    <div class="span12" id="directorSel"></div>
+    <div class="span12" id="departamentoSel"></div>
+    <div class="span12" id="confirmacion"></div>
 </div>
 
 
