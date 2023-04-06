@@ -117,6 +117,7 @@ class AsignarDirectorController  {
             }else{
                 if(roles.size() > 0){
                     render "no_La dirección ya posee un director asignado"
+                    return true
                 }else{
 
                     def personaRol = new PersonaRol()

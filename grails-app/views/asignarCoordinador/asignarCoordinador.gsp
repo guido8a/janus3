@@ -18,7 +18,8 @@
               optionKey="id"  noSelection="['-1': 'Seleccione la dirección...']"/>
     </div>
 
-    <div class="col-md-3" id="personasSel"></div>
+%{--    <div class="col-md-3" id="personasSel"></div>--}%
+    <div class="col-md-6" id="departamentoSel"></div>
 </div>
 
 <div class="col-md-12">
@@ -101,14 +102,40 @@
 </div>
 
 <div class="span6">
+%{--    <div class="span12" id="departamentoSel"></div>--}%
     <div class="span12" id="directorSel"></div>
-    <div class="span12" id="departamentoSel"></div>
     <div class="span12" id="confirmacion"></div>
 </div>
 
 
 
 <script type="text/javascript">
+
+    $("#btnAdicionar").click(function () {
+        var idDireccion = $("#direccion option:selected").val();
+        var idDepartamento = $("#departamento option:selected").val();
+        var idPersona = $(".persona option:selected").val();
+
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: "asignarCoordinador", action: 'grabarFuncion')}",
+            data:{
+                id: idPersona,
+                direccion: idDireccion,
+                departamento: idDepartamento
+            },
+            success: function(msg){
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                    cargarFuncion();
+                    cargarMensaje();
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                }
+            }
+        })
+    });
 
 
     $("#adicionar").click(function () {
@@ -120,125 +147,125 @@
 
             if($(".persona").val() != null){
 
-        var idDepar = $("#departamento").val()
+                var idDepar = $("#departamento").val()
 
 
-        var existe
+                var existe
 
-        $.ajax({
+                $.ajax({
 
-            type:'POST',
-            url: "${g.createLink(controller: "asignarCoordinador", action: 'sacarFunciones')}",
-            data: { id: idDepar
-            },
-            success: function (msg) {
+                    type:'POST',
+                    url: "${g.createLink(controller: "asignarCoordinador", action: 'sacarFunciones')}",
+                    data: { id: idDepar
+                    },
+                    success: function (msg) {
 
-                if(msg == '0' ){
+                        if(msg == '0' ){
 
-                    var idPersona = $(".persona").val();
+                            var idPersona = $(".persona").val();
 
-                    console.log("-->>" + idPersona)
+                            console.log("-->>" + idPersona)
 
-                    var valorAdicionar = $("#funcion option:selected").attr("class");
-                    var idAcicionar = $("#funcion").val();
+                            var valorAdicionar = $("#funcion option:selected").attr("class");
+                            var idAcicionar = $("#funcion").val();
 
 
 //        console.log("-->" + idAcicionar)
 
 
-                    var tbody = $("#funcionPersona");
-                    var rows = tbody.children("tr").length;
-                    var continuar = true;
+                            var tbody = $("#funcionPersona");
+                            var rows = tbody.children("tr").length;
+                            var continuar = true;
 
-                    tbody.children("tr").each(function () {
-                        var fila = $(this);
-                        var id = fila.data("id");
-                        var valor = fila.data("valor");
+                            tbody.children("tr").each(function () {
+                                var fila = $(this);
+                                var id = fila.data("id");
+                                var valor = fila.data("valor");
 
-                        if (id == idAcicionar || valor == valorAdicionar) {
-                            continuar = false;
-                        }
-                    });
-
-                    if (continuar) {
-
-                        //AJAX
-
-                        $.ajax({
-                            type: "POST",
-                            url: "${g.createLink(controller: "asignarCoordinador", action: 'grabarFuncion')}",
-                            data: { id: idPersona,
-
-                                rol: idAcicionar
-                            },
-                            success: function (msg) {
-
-
-                                var confirmacion = $("#confirmacion")
-
-
-                                var comboPersona =  $(".persona option:selected").text()
-
-                                var dir =  $("<div class='span12' id='directorSel' style='font-weight: bold; color: #4f5dff'>Coordinador Seleccionado: "+ comboPersona + "</div>");
-
-                                confirmacion.html(dir)
-
-                                var parts = msg.split("_");
-                                if (parts[0] == "OK") {
-                                    var tr = $("<tr>");
-                                    var tdNumero = $("<td>");
-                                    var tdFuncion = $("<td>");
-                                    var tdAccion = $("<td>");
-                                    var boton = $("<a href='#' class='btn btn-danger btnBorrar'><i class='icon-trash icon-large'></i></a>");
-                                    var id = parts[1];
-                                    boton.attr("id", id);
-                                    boton.click(function () {
-                                        borrar(boton);
-                                    });
-                                    tdAccion.append(boton);
-
-                                    tr.data({
-                                        id: idAcicionar,
-                                        valor: valorAdicionar
-                                    });
-
-                                    tdNumero.html(rows + 1);
-                                    tdFuncion.html(valorAdicionar);
-                                    tr.append(tdNumero).append(tdFuncion).append(tdAccion);
-                                    tbody.append(tr);
+                                if (id == idAcicionar || valor == valorAdicionar) {
+                                    continuar = false;
                                 }
+                            });
+
+                            if (continuar) {
+
+                                //AJAX
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: "${g.createLink(controller: "asignarCoordinador", action: 'grabarFuncion')}",
+                                    data: { id: idPersona,
+
+                                        rol: idAcicionar
+                                    },
+                                    success: function (msg) {
+
+
+                                        var confirmacion = $("#confirmacion")
+
+
+                                        var comboPersona =  $(".persona option:selected").text()
+
+                                        var dir =  $("<div class='span12' id='directorSel' style='font-weight: bold; color: #4f5dff'>Coordinador Seleccionado: "+ comboPersona + "</div>");
+
+                                        confirmacion.html(dir)
+
+                                        var parts = msg.split("_");
+                                        if (parts[0] == "OK") {
+                                            var tr = $("<tr>");
+                                            var tdNumero = $("<td>");
+                                            var tdFuncion = $("<td>");
+                                            var tdAccion = $("<td>");
+                                            var boton = $("<a href='#' class='btn btn-danger btnBorrar'><i class='icon-trash icon-large'></i></a>");
+                                            var id = parts[1];
+                                            boton.attr("id", id);
+                                            boton.click(function () {
+                                                borrar(boton);
+                                            });
+                                            tdAccion.append(boton);
+
+                                            tr.data({
+                                                id: idAcicionar,
+                                                valor: valorAdicionar
+                                            });
+
+                                            tdNumero.html(rows + 1);
+                                            tdFuncion.html(valorAdicionar);
+                                            tr.append(tdNumero).append(tdFuncion).append(tdAccion);
+                                            tbody.append(tr);
+                                        }
+                                    }
+                                });
+
+
+                            } else {
+                                //avisar q ya existe
+
+                                alert("La persona ya tiene asignado el rol de Coordinador!")
                             }
-                        });
 
 
-                    } else {
-                        //avisar q ya existe
+                        }
 
-                        alert("La persona ya tiene asignado el rol de Coordinador!")
+                        else {
+
+                            alert("Ya existe un coordinador asignado!")
+
+                        }
+
                     }
 
 
-                }
 
-                else {
 
-                    alert("Ya existe un coordinador asignado!")
-
-                }
+                });
 
             }
 
+            else {
 
 
-
-        });
-
-    }
-
-        else {
-
-
-        }
+            }
 
         }else {
 
@@ -247,90 +274,43 @@
 
     });
 
-    $("#regresar").click(function () {
-
+    $(".btnRegresar").click(function () {
         location.href = "${createLink(controller: 'persona', action: 'list')}";
-
-
     });
 
     function cargarDepartamento() {
-
         var idDep = $("#direccion").val();
-
-//                        console.log("dep-->>" + idDep)
         $.ajax({
             type: "POST",
             url: "${g.createLink(controller: 'asignarCoordinador', action:'getDepartamento')}",
-            data: {id: idDep
-
+            data: {
+                id: idDep
             },
             success: function (msg) {
-
                 $("#departamentoSel").html(msg);
-
             }
         });
     }
 
     function cargarMensaje () {
-
-
         var idDep = $("#departamento").val();
-
-//                        console.log("dep-->>" + idDep)
         $.ajax({
             type: "POST",
             url: "${g.createLink(controller: 'asignarCoordinador', action:'mensajeCoordinador')}",
-            data: {id: idDep
-
+            data: {
+                id: idDep
             },
             success: function (msg) {
-
                 $("#confirmacion").html(msg);
-
-
             }
         });
-
     }
 
-
     $("#direccion").change(function () {
-
-
-
-        if ($("#direccion").val() != -1) {
+        var valor = $(this).val();
+        if (valor !== -1) {
             cargarDepartamento();
-//            cargarMensaje();
-
-
-        }else {
-
-            var confirmacion = $("#confirmacion")
-
-            var dir = $("<div class='span12' id='directorSel' style='font-weight: bold'> </div>");
-
-            confirmacion.html(dir)
-
-            var comboPersonas = $("#departamentoSel")
-
-            comboPersonas.html(dir)
-
-            var bodyTabla = $("#funcionPersona")
-
-            bodyTabla.html("")
-
-//
-//            $("#departamentoSel").html("")
-//            $("#confirmacion").html("")
-
         }
-
-
-
-
-
     });
 
 </script>

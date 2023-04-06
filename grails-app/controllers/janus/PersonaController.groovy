@@ -264,7 +264,6 @@ class PersonaController {
 
 
     def formOferente() {
-
         println "....123"
         def personaInstance = new Persona(params)
         if (params.id) {
@@ -277,8 +276,6 @@ class PersonaController {
             } //no existe el objeto
         } //es edit
         return [personaInstance: personaInstance]
-
-
     }
 
 

@@ -77,6 +77,10 @@
 
 <script type="text/javascript">
 
+    $("#btnOferentes").click(function () {
+        createEditOferente();
+    });
+
     $("#btnAsignarCoordinador").click(function () {
         location.href="${createLink(controller: 'asignarCoordinador', action: 'asignarCoordinador')}"
     });
@@ -285,6 +289,47 @@
             return false;
         });
     });
+
+
+    function createEditOferente(id) {
+        var title = id ? "Editar " : "Crear ";
+        var data = id ? {id : id} : {};
+
+        $.ajax({
+            type    : "POST",
+            url     :  "${createLink(controller: 'persona', action:'formOferente')}",
+            data    : data,
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEditOF",
+                    class   : "modal-lg",
+                    title   : title + " oferente",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormOferente();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").not(".datepicker").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+
 </script>
 
 </body>
