@@ -291,6 +291,7 @@
     });
 
 
+
     function createEditOferente(id) {
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id} : {};
@@ -328,6 +329,34 @@
             } //success
         }); //ajax
     } //createEdit
+
+    function submitFormOferente() {
+        var $form = $("#frmSave-Oferente");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
 
 
 </script>

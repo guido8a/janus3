@@ -230,7 +230,7 @@ class PersonaController {
 
     def listOferente() {
         def perfil = Prfl.findByCodigo("OFRT")
-        [params: params, sesion: Sesn.findAllByPerfil(perfil)]
+        [params: params, sesion: Sesn.findAllByPerfil(perfil).sort{it.usuario.apellido}]
     }
 
     def form_ajax() {
@@ -269,8 +269,7 @@ class PersonaController {
         if (params.id) {
             personaInstance = Persona.get(params.id)
             if (!personaInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Persona con id " + params.id
+
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -438,12 +437,12 @@ class PersonaController {
         if (params.fechaFin) {
             params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
         }
-        if (params.fechaNacimiento) {
-            params.fechaNacimiento = new Date().parse("dd-MM-yyyy", params.fechaNacimiento)
-        }
-        if (params.fechaPass) {
-            params.fechaPass = new Date().parse("dd-MM-yyyy", params.fechaPass)
-        }
+//        if (params.fechaNacimiento) {
+//            params.fechaNacimiento = new Date().parse("dd-MM-yyyy", params.fechaNacimiento)
+//        }
+//        if (params.fechaPass) {
+//            params.fechaPass = new Date().parse("dd-MM-yyyy", params.fechaPass)
+//        }
         if (params.password) {
             params.password = params.password.encodeAsMD5()
         }
@@ -457,66 +456,46 @@ class PersonaController {
 
         if (params.id) {
             personaInstance = Persona.get(params.id)
-
-            def sesiones = Sesn.findByUsuario(personaInstance)
-
             if (!personaInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Persona con id " + params.id
-                redirect(action: 'listOferente')
+                render "no_No se encontró la persona"
                 return
             }//no existe el objeto
-            personaInstance.properties = params
         }//es edit
         else {
-
             personaInstance = new Persona(params)
+            personaInstance.departamento = Departamento.get(13);
         } //es create
+
+        personaInstance.properties = params
+
+
         if (!personaInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Persona " + (personaInstance.id ? personaInstance.nombre + " " + personaInstance.apellido : "") + "</h4>"
+            println("error al guardar el oferente " + personaInstance.errors)
+            render "no_Error al guardar el oferente"
+        }else{
+            println "Creada la persona: " + personaInstance.login + " (${personaInstance.id})"
 
-            str += "<ul>"
-            personaInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
+            //le asigna perfil oferente si no tiene perfil
+            def perfilOferente = Prfl.findByCodigo("OFRT")
+            println "Asignando perfil " + perfilOferente.codigo + " " + perfilOferente.descripcion + " (${perfilOferente.id})"
+            def sesiones = Sesn.findAllByUsuario(personaInstance)
+            println "La persona tiene ${sesiones.size()} sesiones"
+            if (sesiones.size() == 0) {
+                def sesn = new Sesn()
+                sesn.perfil = perfilOferente
+                sesn.usuario = personaInstance
+                if (!sesn.save(flush: true)) {
+                    println "error al grabar sesn perfil: " + perfilOferente + " persona " + personaInstance.id
+                    render "no_Error al guardar el perfil de oferente"
+                } else {
+                    println "Asignacion OK"
+                    render "ok_Oferente guardado correctamente"
                 }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'listOferente')
-            return
-        }
-
-        println "Creada la persona: " + personaInstance.login + " (${personaInstance.id})"
-
-        //le asigna perfil oferente si no tiene perfil
-        def perfilOferente = Prfl.findByCodigo("OFRT")
-        println "Asignando perfil " + perfilOferente.codigo + " " + perfilOferente.descripcion + " (${perfilOferente.id})"
-        def sesiones = Sesn.findAllByUsuario(personaInstance)
-        println "La persona tiene ${sesiones.size()} sesiones"
-        if (sesiones.size() == 0) {
-            def sesn = new Sesn()
-            sesn.perfil = perfilOferente
-            sesn.usuario = personaInstance
-            if (!sesn.save(flush: true)) {
-                println "error al grabar sesn perfil: " + perfilOferente + " persona " + personaInstance.id
-            } else {
-                println "Asignacion OK"
             }
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente el Oferente " + personaInstance.nombre + " " + personaInstance.apellido
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente el Oferente " + personaInstance.nombre + " " + personaInstance.apellido
-        }
-        redirect(action: 'listOferente')
+
+
     } //save
 
 
