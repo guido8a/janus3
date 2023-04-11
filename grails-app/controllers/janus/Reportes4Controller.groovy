@@ -39,7 +39,6 @@ class Reportes4Controller {
         return ia
     }
 
-
     def registradas () {
         def perfil = session.perfil.id
         return [perfil: perfil]
