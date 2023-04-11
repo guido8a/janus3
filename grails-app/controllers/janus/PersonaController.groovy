@@ -73,20 +73,14 @@ class PersonaController {
     }
 
     def checkUserPass() {
-//        println params
         if (params.id) {
-//            println "EDIT"
             def user = Persona.get(params.id)
             if (user.password == params.passwordAct.trim().encodeAsMD5()) {
-//                println "1"
-//                println true
                 render true
             } else {
-//                println false
                 render false
             }
         } else {
-//            println false
             render false
         }
     }
@@ -118,66 +112,31 @@ class PersonaController {
         [usroInstance: usroInstance]
     } //pass
 
-
     def passOferente() {
-
         def usroInstance = Persona.get(params.id)
         if (!usroInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Persona con id " + params.id
-            redirect(action: "list")
+            redirect(action: "listOferente")
             return
         }
         [usroInstance: usroInstance]
-
-
     }
-
 
     def savePass() {
 //        println params
 
         def user = Persona.get(params.id)
 
-//        println("-->" + user.password.encodeAsMD5())
-
-
         if (params.password.trim() != "") {
             user.password = params.password.trim().encodeAsMD5()
         }
 
-
-        if(params.autorizacion){
-            if (params.autorizacion.trim() != "") {
-                user.autorizacion = params.autorizacion.trim().encodeAsMD5()
-            }
-        }
-
-
-        if (!user.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Persona " + (user.id ? user.login : "") + "</h4>"
-
-            str += "<ul>"
-            user.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
+        if(!user.save(flush: true)) {
+            println("error al actualizar el password de oferentes " + user.errors)
+            render "no_Error al actualizar el password del oferente"
         } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha guardado correctamente Persona " + user.login
+          render "ok_Guardado correctamente"
         }
-        redirect(action: 'list')
     }
-
-
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
         redirect(action: "list", params: params)
@@ -185,47 +144,30 @@ class PersonaController {
 
 
     def cambiarEstado() {
-//         println("params " +params)
         def persona = Persona.get(params.id)
-//          println(persona)
+
         if (persona.activo == 0) {
             persona.activo = 1
         } else {
             persona.activo = 0
         }
-//           println("id: " + persona.id)
-//           println("activo: " + persona.activo)
 
         if (!persona.save(flush: true)) {
-//            println("error")
-//            println(errors)
-            render renderErrors(bean: persona)
-
+            println("Error al cambiar el estado del oferente " + persona.errors)
+            render "no_Error al cambiar el estado del oferente"
         } else {
-//println("ok")
-
-            render "ok"
+            render "ok_Estado cambiando correctamente"
         }
-//        redirect(action: 'list')
-        return
     }
 
     def list() {
         println("params list " + params)
-
-//        def perfil = Prfl.get(4);
-
         /* departamento de OFERENTES: id = 13 */
         def departamento = Departamento.get(13)
         def personaList = Persona.findAllByDepartamentoNotEqual(departamento,[sort: 'apellido'])
 
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [personaInstanceList: Persona.list(params), personaInstanceCount: personaList.size(), params: params]
-
-
-//        [aseguradoraInstanceList: Aseguradora.list(params), aseguradoraTotal: Aseguradora.count(), params: params]
-
-
     } //list
 
     def listOferente() {
@@ -437,12 +379,7 @@ class PersonaController {
         if (params.fechaFin) {
             params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
         }
-//        if (params.fechaNacimiento) {
-//            params.fechaNacimiento = new Date().parse("dd-MM-yyyy", params.fechaNacimiento)
-//        }
-//        if (params.fechaPass) {
-//            params.fechaPass = new Date().parse("dd-MM-yyyy", params.fechaPass)
-//        }
+
         if (params.password) {
             params.password = params.password.encodeAsMD5()
         }
@@ -452,7 +389,6 @@ class PersonaController {
         params.sexo="M"
         def personaInstance
 
-//        println(params.id)
 
         if (params.id) {
             personaInstance = Persona.get(params.id)
@@ -473,13 +409,9 @@ class PersonaController {
             println("error al guardar el oferente " + personaInstance.errors)
             render "no_Error al guardar el oferente"
         }else{
-            println "Creada la persona: " + personaInstance.login + " (${personaInstance.id})"
-
             //le asigna perfil oferente si no tiene perfil
             def perfilOferente = Prfl.findByCodigo("OFRT")
-            println "Asignando perfil " + perfilOferente.codigo + " " + perfilOferente.descripcion + " (${perfilOferente.id})"
             def sesiones = Sesn.findAllByUsuario(personaInstance)
-            println "La persona tiene ${sesiones.size()} sesiones"
             if (sesiones.size() == 0) {
                 def sesn = new Sesn()
                 sesn.perfil = perfilOferente
@@ -491,11 +423,10 @@ class PersonaController {
                     println "Asignacion OK"
                     render "ok_Oferente guardado correctamente"
                 }
+            }else{
+                render "ok_Oferente guardado correctamente"
             }
         }
-
-
-
     } //save
 
 
@@ -512,19 +443,13 @@ class PersonaController {
 
 
     def showOferente() {
-
-
         def personaInstance = Persona.get(params.id)
         if (!personaInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Persona con id " + params.id
-            redirect(action: "list")
+            redirect(action: "listOferente")
             return
         }
         [personaInstance: personaInstance]
-
     }
-
 
     def delete() {
         def personaInstance = Persona.get(params.id)
