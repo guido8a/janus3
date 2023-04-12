@@ -3783,7 +3783,7 @@ class Reportes4Controller {
                 "from cncr, obra where obra.obra__id = cncr.obra__id and " +
                 "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
                 "order by cncr__id desc"
-        println "sql: $sql"
+//        println "sql: $sql"
         def obras = cn.rows(sql)
 
         params.criterio = params.old

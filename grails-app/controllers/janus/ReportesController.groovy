@@ -461,7 +461,7 @@ class ReportesController {
             addEmptyLine(headers, 1);
             headers.add(new Paragraph("" + params.titulo, times12bold));
             addEmptyLine(headers, 1);
-            headers.add(new Paragraph("Babahoyo, al " + printFecha(new Date()).toUpperCase(), times12bold));
+            headers.add(new Paragraph("Quito, al " + printFecha(new Date()).toUpperCase(), times12bold));
             addEmptyLine(headers, 1);
 
             document.add(headers);

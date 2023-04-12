@@ -5,45 +5,10 @@
 
     <meta name="layout" content="main">
 
-
-    <style type="text/css">
-
-    .formato {
-        font-weight : bolder;
-    }
-
-    .titulo {
-        font-size : 20px;
-    }
-
-    .error {
-        background : #c17474;
-    }
-
-    .mover {
-
-    }
-
-    .editable {
-        border-bottom : 1px dashed;
-    }
-
-    .error {
-        background  : inherit !important;
-        border      : solid 2px #C17474;
-        font-weight : bold;
-        padding     : 10px;
-    }
-    </style>
-
     <title>Procesos de contratación</title>
 </head>
 
 <body>
-
-
-
-
 
 <div class="row-fluid">
     <div class="span12">
@@ -75,25 +40,28 @@
     <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
         <thead>
         <tr>
-            <th style="width: 10%;">
+            <th style="width: 8%;">
                 Código
             </th>
-            <th style="width: 25%;">
+            <th style="width: 7%;">
+                Fecha Adjudicación
+            </th>
+            <th style="width: 28%;">
                 Objeto
             </th>
-            <th style="width: 13%;">
+            <th style="width: 26%;">
                 Obra
             </th>
-            <th style="width: 8%">
-                PAC
+            <th style="width: 10%">
+                Código Obra
             </th>
-            <th style="width: 21%">
+            <th style="width: 7%">
                 Monto
             </th>
-            <th style="width: 9%">
+            <th style="width: 5%">
                 Estado
             </th>
-            <th style="width: 9%">
+            <th style="width: 8%">
                 Certificación Presupuestaria
             </th>
             <th style="width: 1%">
@@ -131,6 +99,11 @@
             }
         });
     }
+
+    $("#regresar").click(function () {
+        location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
+    });
+
 
 </script>
 
