@@ -55,7 +55,7 @@
         <g:select name="buscador" from="${[0: 'Código', 1: 'Objeto', 2 : 'Obra', 3 : 'PAC', 4: 'Certificación']}" optionKey="key" optionValue="value" />
         <span id="selOpt"></span>
         <b style="margin-left: 20px">Criterio: </b>
-        <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio_con"/>
+        <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio"/>
         <a href="#" class="btn btn-success" id="buscar">
             <i class="fa fa-search"></i>
             Buscar
@@ -107,6 +107,12 @@
 
 
 <script type="text/javascript">
+
+
+    $("#buscar").click(function () {
+        cargarTabla();
+    });
+
 
     cargarTabla();
 
