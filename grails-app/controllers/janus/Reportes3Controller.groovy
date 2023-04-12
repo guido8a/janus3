@@ -35,16 +35,11 @@ class Reportes3Controller {
         }
     }
 
-
-
-
     def index() {}
 
     def test() {
         return [params: params]
     }
-
-
 
     def _imprimirTablaSub() {
 //        println "imprimir tabla sub "+params

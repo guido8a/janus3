@@ -538,8 +538,6 @@ class Reportes4Controller {
 
     def tablaRegistradas() {
 
-//        println("presu " + params)
-
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
 
@@ -549,7 +547,6 @@ class Reportes4Controller {
         def sql = armaSqlRegistradas(params)
         def obras = cn.rows(sql)
 
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
 
         return [obras: obras, params: params]
@@ -738,9 +735,6 @@ class Reportes4Controller {
 
 
     def tablaPresupuestadas() {
-
-//        println("presu " + params)
-
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasPresupuestadas()
 
@@ -750,7 +744,6 @@ class Reportes4Controller {
         def sql = armaSqlPresupuestadas(params)
         def obras = cn.rows(sql)
 
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
 
         return [obras: obras, params: params]
@@ -770,17 +763,11 @@ class Reportes4Controller {
 
         def sqlOrder = "order by obracdgo"
 
-        println "llega params: $params"
         params.nombre = "Código"
         if(campos.find {it.campo == params.buscador}?.size() > 0) {
             def op = operador.find {it.valor == params.operador}
-//            println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
-//        println "txWhere: $sqlWhere"
-//        println "sql armado: sqlSelect: ${sqlSelect} \n sqlWhere: ${sqlWhere} \n sqlOrder: ${sqlOrder}"
-        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
-        //retorna sql armado:
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
@@ -3787,9 +3774,11 @@ class Reportes4Controller {
 
     }
 
+    def tablaProcesos (){
 
+        println("procesos params " + params)
 
-
+    }
 
 
 }
