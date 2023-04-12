@@ -52,7 +52,7 @@
             Regresar
         </a>
         <b>Buscar Por:</b>
-        <g:select name="buscador" from="${[0: 'Código', 1: 'Objeto', 2 : 'Obra', 3 : 'PAC', 4: 'Certificación']}" optionKey="key" optionValue="value" />
+        <g:select name="buscador" from="${[0: 'Código', 1: 'Objeto', 2: 'Obra', 3: 'Certificación']}" optionKey="key" optionValue="value" />
         <span id="selOpt"></span>
         <b style="margin-left: 20px">Criterio: </b>
         <g:textField name="criterio" style="width: 160px; margin-right: 10px" value="${params.criterio ?: ''}" id="criterio"/>

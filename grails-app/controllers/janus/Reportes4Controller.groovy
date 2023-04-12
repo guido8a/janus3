@@ -3775,9 +3775,19 @@ class Reportes4Controller {
     }
 
     def tablaProcesos (){
+        def campos = ['cncrcdgo', 'cncrobjt', 'obranmbr', 'cncrnmct']
+        println "tablaProcesos params $params"
+        def sql = ""
+        def cn = dbConnectionService.getConnection()
+        sql = "select cncrcdgo, cncrobjt, obracdgo, obranmbr, cncrprrf, cncretdo, cncrnmct, cncrfcad " +
+                "from cncr, obra where obra.obra__id = cncr.obra__id and " +
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+                "order by cncr__id desc"
+        println "sql: $sql"
+        def obras = cn.rows(sql)
 
-        println("procesos params " + params)
-
+        params.criterio = params.old
+        return [data: obras, params: params]
     }
 
 
