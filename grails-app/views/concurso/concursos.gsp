@@ -76,11 +76,17 @@
 
 <script type="text/javascript">
 
+    $("#imprimir").click(function () {
+        location.href = "${g.createLink(controller: 'reportes4', action:'reporteProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+    });
+
+    $("#excel").click(function () {
+        location.href = "${g.createLink(controller: 'reportes4', action:'reporteExcelProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+    });
 
     $("#buscar").click(function () {
         cargarTabla();
     });
-
 
     cargarTabla();
 

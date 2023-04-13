@@ -1,61 +1,44 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 8/27/13
-  Time: 12:02 PM
---%>
 
 
-<g:if test="${flash.message}">
-    <div class="span12" style="height: 35px;margin-bottom: 10px; margin-left: -25px">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status" style="text-align: center">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            <elm:poneHtml textoHtml="${flash.message}"/>
-        </div>
-    </div>
-</g:if>
+%{--<div class="row-fluid">--}%
+%{--    <div class="span12">--}%
+
+%{--        <b>Buscar Por: </b>--}%
+%{--        <g:select name="buscador" from="${['cdgo':'N° Contrato', 'memo': 'Memo', 'fcsb': 'Fecha Suscrip', 'tipo': 'Tipo Contrato', 'cncr': 'Concurso',--}%
+%{--                                           'obra':'Obra', 'nmbr': 'Nombre', 'cntn':'Cantón', 'parr': 'Parroquia', 'clas':'Clase', 'mnto': 'Monto', 'cont': 'Contratista',--}%
+%{--                                           'tppz':'Tipo Plazo', 'inic':'Fecha Inicio', 'fin':'Fecha Fin']}" value="${params.buscador}"--}%
+%{--                  optionKey="key" optionValue="value" id="buscador_tra" style="width: 150px"/>--}%
+%{--        <b>Fecha: </b>--}%
 
 
-<div class="row-fluid">
-    <div class="span12">
+%{--        <g:set var="fechas" value="${['fcsb','inic','fin']}" />--}%
 
-        <b>Buscar Por: </b>
-        <g:select name="buscador" from="${['cdgo':'N° Contrato', 'memo': 'Memo', 'fcsb': 'Fecha Suscrip', 'tipo': 'Tipo Contrato', 'cncr': 'Concurso',
-                                           'obra':'Obra', 'nmbr': 'Nombre', 'cntn':'Cantón', 'parr': 'Parroquia', 'clas':'Clase', 'mnto': 'Monto', 'cont': 'Contratista',
-                                           'tppz':'Tipo Plazo', 'inic':'Fecha Inicio', 'fin':'Fecha Fin']}" value="${params.buscador}"
-                  optionKey="key" optionValue="value" id="buscador_tra" style="width: 150px"/>
-        <b>Fecha: </b>
+%{--        <g:if test="${fechas.contains(params.buscador)}">--}%
+%{--            <elm:datepicker name="fecha" id="fecha_tra" value="${params.fecha}"/>--}%
+%{--            <b>Criterio: </b>--}%
+%{--            <g:textField name="criterio" id="criterio_tra" readonly="readonly" style="width: 250px; margin-right: 10px" value="${params.criterio}"/>--}%
+%{--        </g:if>--}%
+%{--        <g:else>--}%
 
+%{--            <elm:datepicker name="fecha" id="fecha_tra" disabled="disabled" value="${params.fecha}"/>--}%
+%{--            <b>Criterio: </b>--}%
+%{--            <g:textField name="criterio" id="criterio_tra" style="width: 250px; margin-right: 10px" value="${params.criterio}"/>--}%
 
-        <g:set var="fechas" value="${['fcsb','inic','fin']}" />
-
-        <g:if test="${fechas.contains(params.buscador)}">
-            <elm:datepicker name="fecha" id="fecha_tra" value="${params.fecha}"/>
-            <b>Criterio: </b>
-            <g:textField name="criterio" id="criterio_tra" readonly="readonly" style="width: 250px; margin-right: 10px" value="${params.criterio}"/>
-        </g:if>
-        <g:else>
-
-            <elm:datepicker name="fecha" id="fecha_tra" disabled="disabled" value="${params.fecha}"/>
-            <b>Criterio: </b>
-            <g:textField name="criterio" id="criterio_tra" style="width: 250px; margin-right: 10px" value="${params.criterio}"/>
-
-        </g:else>
-        <a href="#" class="btn  " id="buscar">
-            <i class="icon-search"></i>
-            Buscar
-        </a>
-        <a href="#" class="btn hide" id="imprimir">
-            <i class="icon-print"></i>
-            Imprimir
-        </a>
-        <a href="#" class="btn  hide" id="excel">
-            <i class="icon-print"></i>
-            Excel
-        </a>
-    </div>
-
-</div>
+%{--        </g:else>--}%
+%{--        <a href="#" class="btn  " id="buscar">--}%
+%{--            <i class="icon-search"></i>--}%
+%{--            Buscar--}%
+%{--        </a>--}%
+%{--        <a href="#" class="btn hide" id="imprimir">--}%
+%{--            <i class="icon-print"></i>--}%
+%{--            Imprimir--}%
+%{--        </a>--}%
+%{--        <a href="#" class="btn  hide" id="excel">--}%
+%{--            <i class="icon-print"></i>--}%
+%{--            Excel--}%
+%{--        </a>--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 <div style="width: 1100px; height: 500px; overflow-y:auto; overflow-x: auto" >
 
@@ -110,9 +93,9 @@
                 <th style="width: 80px">
                     Fecha Fin
                 </th>
-                <th style="width: 80px">
-                    Plazo
-                </th>
+%{--                <th style="width: 80px">--}%
+%{--                    Plazo--}%
+%{--                </th>--}%
 
 
             </tr>
@@ -141,7 +124,7 @@
                         <td>${cont.nombrecontra}</td>
                         <td><g:formatDate date="${cont.fechainicio}" format="dd-MM-yyyy"/></td>
                         <td><g:formatDate date="${cont.fechafin}" format="dd-MM-yyyy"/></td>
-                        <td>${cont.plazo}</td>
+%{--                        <td>${cont.plazo}</td>--}%
 
                     </tr>
 

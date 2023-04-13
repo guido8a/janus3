@@ -17,15 +17,3 @@
     </table>
 </div>
 
-<script type="text/javascript">
-
-
-    $("#imprimir").click(function () {
-        location.href = "${g.createLink(controller: 'reportes4', action:'reportePresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
-    });
-
-    $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportes4', action:'reporteExcelPresupuestadas' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
-    });
-
-</script>

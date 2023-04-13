@@ -1007,8 +1007,6 @@ class Reportes4Controller {
 
         params.criterio = params.old
 
-        //reporte
-
         def prmsHeaderHoja = [border: Color.WHITE]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
         def prmsHeaderHoja3 = [border: Color.WHITE, colspan: 5]
@@ -1204,7 +1202,6 @@ class Reportes4Controller {
 
     }
 
-
     def reporteExcelPresupuestadas () {
 
         def cn = dbConnectionService.getConnection()
@@ -1296,18 +1293,14 @@ class Reportes4Controller {
         output.write(file.getBytes());
     }
 
-
-
     def contratadas () {
-/*
-        def perfil = session.perfil.id
-        return [perfil: perfil]
-*/
     }
 
-
     def tablaContratadas () {
-//        println "tablaContratadas ok $params , ${reportesService.obrasContratadas()}"
+
+        println("--- " + params)
+
+
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasContratadas()
 
@@ -1317,7 +1310,6 @@ class Reportes4Controller {
         def sql = armaSqlContratadas(params)
         def obras = cn.rows(sql)
 
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
         return [obras: obras, params: params]
     }
@@ -1352,8 +1344,6 @@ class Reportes4Controller {
 
 
     def reporteContratadas () {
-
-//        println("params contratadas " + params)
 
         def prmsHeaderHoja = [border: Color.WHITE]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
@@ -1405,7 +1395,6 @@ class Reportes4Controller {
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
 
-//        document.setMargins(2,2,2,2)
         document.addTitle("ObrasContratadas" + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
         document.addKeywords("documentosObra, janus, presupuesto");
@@ -1419,7 +1408,7 @@ class Reportes4Controller {
         addEmptyLine(headers, 1);
         headers.add(new Paragraph("REPORTE DE OBRAS CONTRATADAS", times12bold));
         addEmptyLine(headers, 1);
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()).toUpperCase(), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
 
@@ -1444,8 +1433,6 @@ class Reportes4Controller {
         def nuevoRes = cn.rows(sql2)
         params.criterio = params.old
 
-        //reporte
-
         nuevoRes.eachWithIndex {i,j->
 
             addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
@@ -1467,11 +1454,9 @@ class Reportes4Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
     def reporteExcelContratadas () {
-
 
         def cn = dbConnectionService.getConnection()
 
@@ -1481,8 +1466,6 @@ class Reportes4Controller {
         def nuevoRes = cn.rows(sql2)
         params.criterio = params.old
 
-
-        //excel
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
 
@@ -1496,8 +1479,6 @@ class Reportes4Controller {
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
 
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
@@ -1508,14 +1489,12 @@ class Reportes4Controller {
         sheet.setColumnView(4, 40)
         sheet.setColumnView(5, 25)
         sheet.setColumnView(8, 20)
-        // inicia textos y numeros para asocias a columnas
 
         def label
         def nmro
         def number
 
         def fila = 6;
-
 
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
@@ -1533,7 +1512,6 @@ class Reportes4Controller {
         label = new Label(7, 4, "Contrato", times16format); sheet.addCell(label);
 
         nuevoRes.eachWithIndex {i, j->
-
             label = new Label(0, fila, i.obracdgo.toString()); sheet.addCell(label);
             label = new Label(1, fila, i?.obranmbr.toString()); sheet.addCell(label);
             label = new Label(2, fila, i?.tpobdscr?.toString()); sheet.addCell(label);
@@ -1543,17 +1521,15 @@ class Reportes4Controller {
             label = new Label(6, fila, i?.dptodscr?.toString()); sheet.addCell(label);
             label = new Label(7, fila, i.cntrcdgo?.toString()); sheet.addCell(label);
             fila++
-
         }
 
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "DocumentosObraExcel.xls";
+        def header = "attachment; filename=" + "obrasContratadas.xls";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
-
     }
 
 
@@ -3776,10 +3752,8 @@ class Reportes4Controller {
 
     def tablaProcesos (){
         def campos = ['cncrcdgo', 'cncrobjt', 'obranmbr', 'cncrnmct']
-        println "tablaProcesos params $params"
-        def sql = ""
         def cn = dbConnectionService.getConnection()
-        sql = "select cncrcdgo, cncrobjt, obracdgo, obranmbr, cncrprrf, cncretdo, cncrnmct, cncrfcad " +
+        def sql = "select cncrcdgo, cncrobjt, obracdgo, obranmbr, cncrprrf, cncretdo, cncrnmct, cncrfcad " +
                 "from cncr, obra where obra.obra__id = cncr.obra__id and " +
                 "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
                 "order by cncr__id desc"
@@ -3790,5 +3764,161 @@ class Reportes4Controller {
         return [data: obras, params: params]
     }
 
+    def reporteProcesosContratacion () {
+
+        def cn = dbConnectionService.getConnection()
+        def campos = ['cncrcdgo', 'cncrobjt', 'obranmbr', 'cncrnmct']
+        def sql = "select cncrcdgo, cncrobjt, obracdgo, obranmbr, cncrprrf, cncretdo, cncrnmct, cncrfcad " +
+                "from cncr, obra where obra.obra__id = cncr.obra__id and " +
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+                "order by cncr__id desc"
+        def obras = cn.rows(sql)
+
+        def prmsCellHead2 = [border: Color.WHITE,
+                             align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+
+        def prmsCellCenter = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
+        def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
+        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
+
+        def baos = new ByteArrayOutputStream()
+        def name = "procesosContratacion" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+        Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
+        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        times8boldWhite.setColor(Color.WHITE)
+        times10boldWhite.setColor(Color.WHITE)
+
+        Document document
+        document = new Document(PageSize.A4.rotate());
+        def pdfw = PdfWriter.getInstance(document, baos);
+        document.open();
+
+        document.addTitle("Procesos de Contratación " + new Date().format("dd_MM_yyyy"));
+        document.addSubject("Generado por el sistema Janus");
+        document.addKeywords("documentosObra, janus, presupuesto");
+        document.addAuthor("Janus");
+        document.addCreator("Tedein SA");
+
+        Paragraph headers = new Paragraph();
+        addEmptyLine(headers, 1);
+        headers.setAlignment(Element.ALIGN_CENTER);
+        headers.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), times18bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("REPORTE DE PROCESOS DE CONTRATACIÓN", times12bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
+        addEmptyLine(headers, 1);
+        document.add(headers);
+
+        PdfPTable tablaRegistradas = new PdfPTable(8);
+        tablaRegistradas.setWidthPercentage(100);
+        tablaRegistradas.setWidths(arregloEnteros([7, 7, 28, 26, 10, 7, 5,9]))
+
+        addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Fecha de Adjudicación", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Objeto", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Obra.", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Código Obra", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Monto", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Estado", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Certificación Presupuestaria", times8bold), prmsCellHead2)
+
+        obras.eachWithIndex {i,j->
+            addCellTabla(tablaRegistradas, new Paragraph(i.cncrcdgo, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i?.cncrfcad?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.cncrobjt, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.cncrprrf.toDouble(), minFractionDigits:
+                    2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times8normal), prmsCellRight)
+            addCellTabla(tablaRegistradas, new Paragraph(i.cncretdo, times8normal), prmsCellRight)
+            addCellTabla(tablaRegistradas, new Paragraph(i.cncrnmct, times8normal), prmsCellCenter)
+        }
+
+        document.add(tablaRegistradas);
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
+    def reporteExcelProcesosContratacion () {
+
+        def cn = dbConnectionService.getConnection()
+
+        def campos = ['cncrcdgo', 'cncrobjt', 'obranmbr', 'cncrnmct']
+        def sql = "select cncrcdgo, cncrobjt, obracdgo, obranmbr, cncrprrf, cncretdo, cncrnmct, cncrfcad " +
+                "from cncr, obra where obra.obra__id = cncr.obra__id and " +
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+                "order by cncr__id desc"
+        def obras = cn.rows(sql)
+
+        WorkbookSettings workbookSettings = new WorkbookSettings()
+        workbookSettings.locale = Locale.default
+
+        def file = File.createTempFile('myExcelDocument', '.xls')
+        file.deleteOnExit()
+
+        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+
+        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+        WritableCellFormat times16format = new WritableCellFormat(times16font);
+        sheet.setColumnView(0, 24)
+        sheet.setColumnView(1, 12)
+        sheet.setColumnView(2, 60)
+        sheet.setColumnView(3, 60)
+        sheet.setColumnView(4, 24)
+        sheet.setColumnView(5, 20)
+        sheet.setColumnView(6, 10)
+        sheet.setColumnView(7, 20)
+
+        def label
+        def number
+
+        def fila = 6;
+
+        NumberFormat nf = new NumberFormat("#.##");
+        WritableCellFormat cf2obj = new WritableCellFormat(nf);
+
+        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+        label = new Label(1, 2, "REPORTE EXCEL DE PROCESOS DE CONTRATACIÓN", times16format); sheet.addCell(label);
+
+        label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
+        label = new Label(1, 4, "Fecha de Adjudicación", times16format); sheet.addCell(label);
+        label = new Label(2, 4, "Objeto", times16format); sheet.addCell(label);
+        label = new Label(3, 4, "Obra", times16format); sheet.addCell(label);
+        label = new Label(4, 4, "Código Obra", times16format); sheet.addCell(label);
+        label = new Label(5, 4, "Monto", times16format); sheet.addCell(label);
+        label = new Label(6, 4, "Estado", times16format); sheet.addCell(label);
+        label = new Label(7, 4, "Certificación Presupuestaria", times16format); sheet.addCell(label);
+
+        obras.eachWithIndex {i, j->
+            label = new Label(0, fila, i.cncrcdgo.toString()); sheet.addCell(label);
+            label = new Label(1, fila, i?.cncrfcad?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
+            label = new Label(2, fila, i?.cncrobjt?.toString()); sheet.addCell(label);
+            label = new Label(3, fila, i?.obranmbr?.toString()); sheet.addCell(label);
+            label = new Label(4, fila, i?.obracdgo?.toString()); sheet.addCell(label);
+            number = new jxl.write.Number(5, fila, i.cncrprrf); sheet.addCell(number);
+            label = new Label(6, fila, i?.cncretdo?.toString()); sheet.addCell(label);
+            label = new Label(7, fila, i?.cncrnmct?.toString()); sheet.addCell(label);
+            fila++
+        }
+
+        workbook.write();
+        workbook.close();
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "procesosContratacionExcel.xls";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        output.write(file.getBytes());
+    }
 
 }
