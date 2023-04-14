@@ -1,16 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 8/26/13
-  Time: 4:25 PM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 8/26/13
-  Time: 12:57 PM
---%>
 
 <%@ page import="janus.Grupo" %>
 <!doctype html>
@@ -20,80 +7,109 @@
     <title>
         Contratistas
     </title>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
-    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
 
-<g:if test="${flash.message}">
-    <div class="span12" style="height: 35px;margin-bottom: 10px;">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            ${flash.message}
-        </div>
-    </div>
-</g:if>
+<div class="row-fluid">
+    <div class="span12">
+        <a href="#" class="btn btn-primary" id="regresar">
+            <i class=" fa fa-arrow-left"></i>
+            Regresar
+        </a>
 
-<div style="width: 99.7%;height: 600px;overflow-y: auto;float: right;" id="detalle"></div>
-<g:if test="${perfil == 2}">
-%{--<a href="#" class="btn  " id="imprimir">--}%
-    %{--<i class="icon-print"></i>--}%
-    %{--Imprimir--}%
-%{--</a>--}%
-%{--<a href="#" class="btn  " id="excel">--}%
-    %{--<i class="icon-table"></i>--}%
-    %{--Excel--}%
-%{--</a>--}%
-    </g:if>
-<a href="#" class="btn" id="regresar">
-    <i class="icon-arrow-left"></i>
-    Regresar
-</a>
+        <b>Buscar Por: </b>
+        <g:select name="buscador" from="${['nmbr':'Nombre', '_ruc': 'Cédula', 'espe': 'Especialidad',]}" value="${params.buscador}"
+                  optionKey="key" optionValue="value" id="buscador_cont" style="width: 150px"/>
+        <b>Criterio: </b>
+        <g:textField name="criterio" id="criterio_cont" style="width: 250px; margin-right: 10px" value="${params.criterio}"/>
+        <a href="#" class="btn btn-success" id="buscar">
+            <i class="fa fa-search"></i>
+            Buscar
+        </a>
+        <a href="#" class="btn btn-info" id="imprimir" >
+            <i class="fa fa-print"></i>
+            Imprimir
+        </a>
+        <a href="#" class="btn btn-success" id="excel" >
+            <i class="fa fa-file-excel"></i>
+            Excel
+        </a>
+    </div>
+
+</div>
+
+<div style="margin-top: 15px; min-height: 300px">
+    <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
+        <thead>
+        <tr>
+            <th style="width: 10%;">
+                Cédula/RUC
+            </th>
+            <th style="width: 10%;">
+                Nombre
+            </th>
+            <th style="width: 10%;">
+                Especialidad
+            </th>
+            <th style="width: 10%;">
+                Contacto
+            </th>
+            <th style="width: 10%;">
+                Dirección
+            </th>
+            <th style="width: 10%;">
+                Teléfono
+            </th>
+            <th style="width: 10%;">
+                Garante
+            </th>
+            <th style="width: 10%;">
+                Fecha Cont.
+            </th>
+            <th style="width: 10%;">
+                Fecha Contrato.
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <div id="detalle">
+    </div>
+</div>
 
 <script type="text/javascript">
 
+    $("#regresar").click(function () {
+        location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
+    });
 
-    function loading(div) {
-        y = 0;
-        $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>")
-        var interval = setInterval(function () {
-            if (y == 30) {
-                $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
-                y = 0
-            }
-            $("#loading").append(".");
-            y++
-        }, 500);
-        return interval
-    }
+    $("#imprimir").click(function () {
+        location.href="${g.createLink(controller: 'reportes4', action:'reporteContratistas' )}?buscador=" + $("#buscador_cont").val() + "&criterio=" + $("#criterio_cont").val()
+    });
+
+    $("#excel").click(function () {
+        location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelContratistas' )}?buscador=" + $("#buscador_cont").val() + "&criterio=" + $("#criterio_cont").val()
+    });
+
+    cargarTabla();
+
     function cargarTabla() {
-        var interval = loading("detalle")
-        var datos = ""
-        datos = "si=${"si"}&buscador=" + $("#buscador_cont").val()
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'reportes4',action:'tablaContratistas')}",
+        var d = cargarLoader("Cargando...");
+        var datos = "si=${"si"}&buscador=" + $("#buscador_cont").val() + "&criterio=" + $("#criterio_cont").val();
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'reportes4',action:'tablaContratistas')}",
             data     : datos,
             success  : function (msg) {
-                clearInterval(interval)
+                d.modal("hide");
                 $("#detalle").html(msg)
             }
         });
     }
 
-
-    $(function () {
-
+    $("#buscar").click(function(){
         cargarTabla();
-
     });
-
-
 
 </script>
 </body>
