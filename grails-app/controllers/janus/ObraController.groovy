@@ -1688,11 +1688,9 @@ class ObraController {
     }
 
     def tablaObrasFinalizadas(){
-        println "tablaObrasFinalizadas params $params"
-//        def campos = [0: 'Código', 1: 'Nombre', 2: 'Descripción',
-//                      3: 'Sitio', 4: 'Parroquia', 5: 'Comunidad', 6: 'Dirección', 7: 'Fecha']
+//        println "tablaObrasFinalizadas params $params"
         def campos = ['obracdgo', 'obranmbr', 'obradscr',
-                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr', 'obrafcin']
+                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr']
         def cn = dbConnectionService.getConnection()
         def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
                 "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
@@ -1701,15 +1699,11 @@ class ObraController {
                 "obrafcin is not null and " +
                 "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
                 "order by obrafcin desc"
-        println "sql: $sql"
+//        println "sql: $sql"
         def obras = cn.rows(sql)
 
         params.criterio = params.old
         return [data: obras, params: params]
-
-
     }
-
-
 
 } //fin controller
