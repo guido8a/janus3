@@ -125,6 +125,7 @@
         }else{
             $("#divCriterio").removeClass("hide");
             $("#divFecha").addClass("hide");
+            $("#fecha_tra").val('');
         }
     });
 

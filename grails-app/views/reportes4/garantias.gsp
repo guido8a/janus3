@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 8/28/13
-  Time: 10:35 AM
---%>
-
 
 <%@ page import="janus.Grupo" %>
 <!doctype html>
@@ -12,90 +5,149 @@
 <head>
     <meta name="layout" content="main">
     <title>
-       Garantías
+        Garantías
     </title>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
-    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
 
-<g:if test="${flash.message}">
-    <div class="span12" style="height: 35px;margin-bottom: 10px;">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            ${flash.message}
-        </div>
+<div class="col-md-12" style="margin-bottom: 10px">
+
+    <a href="#" class="btn btn-primary col-md-1" id="regresar">
+        <i class=" fa fa-arrow-left"></i>
+        Regresar
+    </a>
+
+    <div class="col-md-3">
+        <b>Buscar Por: </b>
+        <g:select name="buscador" from="${['contrato':'N° Contrato', 'cdgo': 'Garantía', 'nmrv': 'Renovación', 'tpgr': 'Tipo de Garantía', 'tdgr': 'Documento',
+                                           'aseguradora':'Aseguradora', 'cont': 'Contratista', 'etdo':'Estado', 'mnto': 'Monto', 'mnda':'Moneda', 'fcin': 'Emisión', 'fcfn': 'Vencimiento',
+                                           'dias':'Días']}" value="${params.buscador}"
+                  optionKey="key" optionValue="value" id="buscador_gar" style="width: 150px"/>
     </div>
-</g:if>
 
-<div style="width: 99.7%;height: 550px;float: right;" id="detalle"></div>
+    <div class="col-md-4 hide" id="divFecha">
+        <b>Fecha: </b>
+        <input aria-label="" name="fecha_gar" id='fecha_gar' type='text' class="input-small" value="${params.fecha?.format("dd-MM-yyyy")}" />
+    </div>
+    <div class="col-md-4" id="divCriterio">
+        <b>Criterio: </b>
+        <g:textField name="criterio" id="criterio_gar" value="${params.criterio}" style="width: 250px;"/>
+    </div>
 
-<div class="row-fluid">
-    <div class="span12">
-%{--<g:if test="${perfil == 2}">--}%
-
-        <a href="#" class="btn  " id="imprimir">
-            <i class="icon-print"></i>
+    <div>
+        <a href="#" class="btn btn-success" id="buscar">
+            <i class="fa fa-search"></i>
+            Buscar
+        </a>
+        <a href="#" class="btn btn-info" id="imprimir" >
+            <i class="fa fa-print"></i>
             Imprimir
         </a>
-        <a href="#" class="btn  " id="excel">
-            <i class="icon-print"></i>
+        <a href="#" class="btn btn-success" id="excel" >
+            <i class="fa fa-file-excel"></i>
             Excel
-        </a>
-    %{--</g:if>--}%
-        <a href="#" class="btn" id="regresar">
-            <i class="icon-arrow-left"></i>
-            Regresar
         </a>
     </div>
 
 </div>
 
+<div style="margin-top: 15px; min-height: 300px">
+    <table class="table table-bordered table-hover table-condensed" style="width: 100%; background-color: #a39e9e">
+        <thead>
+        <tr>
+
+            <th style="width: 9%;">
+                N° Contrato
+            </th>
+            <th style="width: 9%;">
+                N° Garantía
+            </th>
+            <th style="width: 11%">
+                Tipo de Garantía
+            </th>
+            <th style="width: 7%">
+                Documento
+            </th>
+            <th style="width: 19%">
+                Aseguradora
+            </th>
+            <th style="width: 17%">
+                Contratista
+            </th>
+            <th style="width: 7%">
+                Monto
+            </th>
+            <th style="width: 8%">
+                Emisión
+            </th>
+            <th style="width: 8%">
+                Vencimiento
+            </th>
+            <th style="width: 5%">
+                Días
+            </th>
+        </tr>
+        </thead>
+    </table>
+    <div id="detalle">
+    </div>
+</div>
+
+
 <script type="text/javascript">
 
-    $(function () {
-
+    $("#buscar").click(function(){
         cargarTabla();
-
     });
 
-    function loading(div) {
-        y = 0;
-        $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>")
-        var interval = setInterval(function () {
-            if (y == 30) {
-                $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
-                y = 0
-            }
-            $("#loading").append(".");
-            y++
-        }, 500);
-        return interval
-    }
+    $("#regresar").click(function () {
+        location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
+    });
+
+    $("#imprimir").click(function () {
+        location.href="${g.createLink(controller: 'reportes4', action:'reporteGarantias' )}?buscador=" + $("#buscador_gar").val() + "&criterio=" + $("#criterio_gar").val()
+    });
+
+    $("#excel").click(function () {
+        location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelGarantias' )}?buscador=" + $("#buscador_gar").val() + "&criterio=" + $("#criterio_gar").val()
+    });
+
+    $("#buscador_gar").change(function () {
+        var seleccionado = $(this).val();
+        if( ['fcin','fcfn'].includes(seleccionado)){
+            $("#divFecha").removeClass("hide");
+            $("#divCriterio").addClass("hide");
+        }else{
+            $("#divCriterio").removeClass("hide");
+            $("#divFecha").addClass("hide");
+            $("#fecha_gar").val('')
+        }
+    });
+
+    $('#fecha_gar').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
+
+    cargarTabla();
 
     function cargarTabla() {
-        var interval = loading("detalle")
-        var datos = ""
-        datos = "si=${"si"}&buscador=" + $("#buscador_gar").val()
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'reportes4',action:'tablaGarantias')}",
+        var d = cargarLoader("Cargando...");
+        var datos = "si=${"si"}&buscador=" + $("#buscador_gar").val() + "&criterio=" + $("#criterio_gar").val() + "&fecha=" + $("#fecha_gar").val();
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'reportes4',action:'tablaGarantias')}",
             data     : datos,
             success  : function (msg) {
-                clearInterval(interval)
+                d.modal("hide");
                 $("#detalle").html(msg)
             }
         });
     }
-
-
-
-
 
 </script>
 </body>

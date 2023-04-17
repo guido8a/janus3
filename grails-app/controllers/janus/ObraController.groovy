@@ -1687,6 +1687,11 @@ class ObraController {
         return errr
     }
 
+    def tablaObrasFinalizadas(){
+        println("params tof " + params)
+
+    }
+
 
 
 } //fin controller

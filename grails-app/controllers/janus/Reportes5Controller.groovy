@@ -229,30 +229,17 @@ class Reportes5Controller{
             println "op: $op"
             sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
         }
-//        println "txWhere: $sqlWhere"
-//        println "sql armado: sqlSelect: ${sqlSelect} \n sqlWhere: ${sqlWhere} \n sqlOrder: ${sqlOrder}"
-//        println "sql: ${sqlSelect} ${sqlWhere} ${sqlOrder}"
-        //retorna sql armado:
         "$sqlSelect $sqlWhere $sqlOrder".toString()
     }
 
-
-
     def reporteAvance() {
-        println("params-->" + params)
 
         def baos = new ByteArrayOutputStream()
         def name = "avance_obras_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-//            println "name "+name
         Font titleFont = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
         Font titleFont3 = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font titleFont2 = new Font(Font.TIMES_ROMAN, 16, Font.BOLD);
-        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
-        Font catFont = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
-        Font info = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
-        Font small = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
-
         Font fontTh = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font fontTd = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
 
@@ -261,45 +248,38 @@ class Reportes5Controller{
         def pdfw = PdfWriter.getInstance(document, baos);
 
         HeaderFooter footer1 = new HeaderFooter(new Phrase(" ", times8normal), true);
-        // true aqui pone numero de pagina
         footer1.setBorder(Rectangle.NO_BORDER);
-//        footer1.setBorder(Rectangle.TOP);
         footer1.setAlignment(Element.ALIGN_CENTER);
 
         document.setFooter(footer1);
 
         document.open();
-        document.addTitle("Matriz Polinómica " + new Date().format("dd_MM_yyyy"));
+        document.addTitle("avanceObra " + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
         document.addKeywords("reporte, janus,matriz");
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
 
-//        println titulo
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1)
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
         headersTitulo.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), titleFont2));
         addEmptyLine(headersTitulo, 1);
         headersTitulo.add(new Paragraph("REPORTE DE AVANCE DE OBRAS", titleFont));
-        headersTitulo.add(new Paragraph("Babahoyo, " + fechaConFormato(new Date(), "dd MMMM yyyy").toUpperCase(), titleFont3));
+        headersTitulo.add(new Paragraph("Quito, " + fechaConFormato(new Date(), "dd MMMM yyyy").toUpperCase(), titleFont3));
         addEmptyLine(headersTitulo, 1);
         addEmptyLine(headersTitulo, 1);
 
         document.add(headersTitulo)
 
         params.old = params.criterio
-//        params.criterio = cleanCriterio(params.criterio)
         params.criterio = reportesService.limpiaCriterio(params.criterio)
-
-//        def res = filasAvance(params)
 
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasAvance()
         def sql = armaSqlAvance(params)
         def obras = cn.rows(sql)
         params.criterio = params.old
-
 
         def tablaDatos = new PdfPTable(10);
         tablaDatos.setWidthPercentage(100);
@@ -320,16 +300,8 @@ class Reportes5Controller{
         addCellTabla(tablaDatos, new Paragraph("Plazo", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("% Avance", fontTh), paramsHead)
         addCellTabla(tablaDatos, new Paragraph("Avance Físico", fontTh), paramsHead)
-//        addCellTabla(tablaDatos, new Paragraph("Estado", fontTh), paramsHead)
 
         obras.each { fila ->
-//            def estado = ""
-//            if (fila.inicio) {
-//                estado = "Iniciada el " + (fila.inicio.format("dd-MM-yyyy"))
-//                if (fila.recepcion_contratista && fila.recepcion_fisc) {
-//                    estado = "Finalizada el " + (fila.recepcion_fisc.format("dd-MM-yyyy"))
-//                }
-//            }
             addCellTabla(tablaDatos, new Paragraph(fila.obracdgo, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.obranmbr, fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(fila.cntnnmbr + " - " + fila.parrnmbr + " - " + fila.cmndnmbr, fontTd), prmsCellLeft)
@@ -340,7 +312,6 @@ class Reportes5Controller{
             addCellTabla(tablaDatos, new Paragraph(numero(fila.cntrplzo, 0) + " días", fontTd), prmsCellLeft)
             addCellTabla(tablaDatos, new Paragraph(numero( (fila.av_economico) * 100, 2) + "%", fontTd), prmsCellRight)
             addCellTabla(tablaDatos, new Paragraph(numero(fila.av_fisico, 2), fontTd), prmsCellRight)
-//            addCellTabla(tablaDatos, new Paragraph(estado, fontTd), prmsCellLeft)
         }
 
         document.add(tablaDatos)
@@ -354,7 +325,6 @@ class Reportes5Controller{
         response.getOutputStream().write(b)
     }
 
-
     def reporteExcelAvance () {
 
         def cn = dbConnectionService.getConnection()
@@ -365,13 +335,11 @@ class Reportes5Controller{
         def obras = cn.rows(sql)
         params.criterio = params.old
 
-
         //excel
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
 
         def file = File.createTempFile('myExcelDocument', '.xls')
-//        def file = File.createTempFile('myExcelDocument', '.ods')
         file.deleteOnExit()
 
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
@@ -381,8 +349,6 @@ class Reportes5Controller{
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
 
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
@@ -396,7 +362,6 @@ class Reportes5Controller{
         sheet.setColumnView(7, 10)
         sheet.setColumnView(8, 15)
         sheet.setColumnView(9, 15)
-        // inicia textos y numeros para asocias a columnas
 
         def label
         def nmro
@@ -404,13 +369,11 @@ class Reportes5Controller{
 
         def fila = 6;
 
-
         NumberFormat nf = new NumberFormat("#.##");
         WritableCellFormat cf2obj = new WritableCellFormat(nf);
 
         label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
         label = new Label(1, 2, "REPORTE EXCEL AVANCE DE OBRAS", times16format); sheet.addCell(label);
-
         label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
         label = new Label(2, 4, "Cantón-Parroquia-Comunidad", times16format); sheet.addCell(label);
@@ -423,7 +386,6 @@ class Reportes5Controller{
         label = new Label(9, 4, "Avance Físico", times16format); sheet.addCell(label);
 
         obras.eachWithIndex {i, j->
-
             label = new Label(0, fila, i.obracdgo.toString()); sheet.addCell(label);
             label = new Label(1, fila, i?.obranmbr?.toString()); sheet.addCell(label);
             label = new Label(2, fila, i?.cntnnmbr?.toString() + " " + i?.parrnmbr?.toString() + " " + i?.cmndnmbr?.toString()); sheet.addCell(label);
@@ -434,17 +396,13 @@ class Reportes5Controller{
             number = new jxl.write.Number(7, fila, i.cntrplzo); sheet.addCell(number);
             number = new jxl.write.Number(8, fila, (i.av_economico * 100)); sheet.addCell(number);
             number = new jxl.write.Number(9, fila, (i.av_fisico * 100)); sheet.addCell(number);
-
-
             fila++
-
         }
 
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "DocumentosObraExcel.xls";
-//        def header = "attachment; filename=" + "AvancesObraExcel.ods";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());

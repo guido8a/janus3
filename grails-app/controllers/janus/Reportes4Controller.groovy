@@ -2854,25 +2854,14 @@ class Reportes4Controller {
         sql = sqlBase + filtroBuscador
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
-
-//        println(sql)
-
-//        println("res" + res)
-
-
         return [res: res, params:params]
-
-
     }
 
     def reporteGarantias () {
 
-
-
         def sql
         def res
         def cn
-
 
         def sqlBase =  "SELECT\n" +
                 "  g.grnt__id    id,\n" +
@@ -2906,65 +2895,33 @@ class Reportes4Controller {
 
         params.criterio = params.criterio.trim();
 
-        def prmsHeaderHoja = [border: Color.WHITE]
-        def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
-        def prmsHeaderHoja3 = [border: Color.WHITE, colspan: 5]
-        def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
-                          align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-        def prmsHeader2 = [border: Color.WHITE, colspan: 3, bg: new Color(73, 175, 205),
-                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-        def prmsCellHead = [border: Color.WHITE, bg: Color.WHITE,
-                            align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsCellHead2 = [border: Color.WHITE,
                              align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
-        def prmsCellHead3 = [border: Color.WHITE,
-                             align : Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeTop: "1", bordeBot: "1"]
-        def prmsCellHeadRight = [border: Color.WHITE, bg: new Color(73, 175, 205),
-                                 align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-        def prmsCellCenter = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
-        def prmsCellCenterLeft = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT]
         def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
         def prmsCellRight3 = [border: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_CENTER]
-        def prmsCellRight2 = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeTop: "1", bordeBot: "1"]
-        def prmsCellRightTop = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeTop: "1"]
-        def prmsCellRightBot = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT, bordeBot: "1"]
         def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
-        def prmsSubtotal = [border: Color.WHITE, colspan: 6,
-                            align : Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-        def prmsNum = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
-
-        def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
-                    prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum,
-                    prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsCellHead2: prmsCellHead2,
-                    prmsCellRight2: prmsCellRight2, prmsCellRightTop: prmsCellRightTop, prmsCellRightBot: prmsCellRightBot]
 
         def baos = new ByteArrayOutputStream()
-        def name = "contratos_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        def name = "garantias" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
-        Font times10bold = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
         Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
         times8boldWhite.setColor(Color.WHITE)
         times10boldWhite.setColor(Color.WHITE)
-        def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
-                     times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times18bold: times18bold]
 
         Document document
         document = new Document(PageSize.A4.rotate());
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
 
-//        document.setMargins(2,2,2,2)
-        document.addTitle("Contratos" + new Date().format("dd_MM_yyyy"));
+        document.addTitle("Garantias" + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
         document.addKeywords("documentosObra, janus, presupuesto");
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
-
-
 
         Paragraph headers = new Paragraph();
         addEmptyLine(headers, 1);
@@ -2973,13 +2930,12 @@ class Reportes4Controller {
         addEmptyLine(headers, 1);
         headers.add(new Paragraph("REPORTE DE GARANTÍAS", times12bold));
         addEmptyLine(headers, 1);
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()).toUpperCase(), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
 
         PdfPTable tablaRegistradas = new PdfPTable(13);
         tablaRegistradas.setWidthPercentage(100);
-//        tablaRegistradas.setWidths(arregloEnteros([15, 30, 25, 20, 8, 15, 30, 15, 9, 20,15,15,12,10]))
         tablaRegistradas.setWidths(arregloEnteros([15, 30, 25, 20, 8, 30, 15, 9, 20,15,15,12,10]))
 
         addCellTabla(tablaRegistradas, new Paragraph("N° Contrato", times8bold), prmsCellHead2)
@@ -2987,7 +2943,6 @@ class Reportes4Controller {
         addCellTabla(tablaRegistradas, new Paragraph("Tipo de Garantía", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("N° Garantía", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Rnov", times8bold), prmsCellHead2)
-//        addCellTabla(tablaRegistradas, new Paragraph("Original", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Aseguradora", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Documento", times8bold), prmsCellHead2)
         addCellTabla(tablaRegistradas, new Paragraph("Estado", times8bold), prmsCellHead2)
@@ -3027,61 +2982,38 @@ class Reportes4Controller {
                 if(!params.criterio){
                     params.criterio=0
                 }
-
                 filtroBuscador =" where g.grntnmrv = ${params.criterio} "
                 break;
             case "fcin":
-
                 if(params.fecha){
-
-//                    println("---->>>>****" + params.fecha)
-
                     def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
-//                    println("---->>>>" + params.fecha)
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where g.grntfcin = '${dia}' "
                 }
 
                 break;
-
             case "fcfn":
-
                 if(params.fecha){
-
-//                    println("---->>>>****" + params.fecha)
-
                     def fecha =new Date().parse("dd-MM-yyyy", params.fecha)
                     params.fecha = fecha
-//                    println("---->>>>" + params.fecha)
                     def dia = formatDate(date: fecha, format: "yyyy-MM-dd")
                     filtroBuscador = " where g.grntfcfn= '${dia}' "
                 }
-
                 break;
-
         }
 
         sql = sqlBase + filtroBuscador
-
         cn = dbConnectionService.getConnection()
-
         res = cn.rows(sql.toString())
 
-
         res.eachWithIndex {i,j->
-
             addCellTabla(tablaRegistradas, new Paragraph(i.codigocontrato, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.contratista, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.tipogarantia, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.codigo, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.renovacion, minFractionDigits:
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec"), times8normal), prmsCellRight3)
-//            if(i.padre){
-//                addCellTabla(tablaRegistradas, new Paragraph(janus.pac.Garantia.get(i.padre).codigo, times8normal), prmsCellLeft)
-//            }else {
-//                addCellTabla(tablaRegistradas, new Paragraph("", times8normal), prmsCellLeft)
-//            }
             addCellTabla(tablaRegistradas, new Paragraph(i.aseguradora, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.documento, times8normal), prmsCellLeft)
             addCellTabla(tablaRegistradas, new Paragraph(i.estado, times8normal), prmsCellRight3)
@@ -3092,12 +3024,7 @@ class Reportes4Controller {
             addCellTabla(tablaRegistradas, new Paragraph(g.formatNumber(number: i.dias, minFractionDigits:
                     0, maxFractionDigits: 0, format: "##,##0", locale: "ec")+ " Días", times8normal), prmsCellRight)
             addCellTabla(tablaRegistradas, new Paragraph(i.moneda, times8normal), prmsCellLeft)
-
         }
-
-
-
-
 
         document.add(tablaRegistradas);
         document.close();
@@ -3107,19 +3034,13 @@ class Reportes4Controller {
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
-
-
-
     }
-
 
     def reporteExcelGarantias() {
 
         def sql
         def res
         def cn
-
 
         def sqlBase =  "SELECT\n" +
                 "  g.grnt__id    id,\n" +
@@ -3205,8 +3126,6 @@ class Reportes4Controller {
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
 
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
@@ -3223,8 +3142,6 @@ class Reportes4Controller {
         sheet.setColumnView(10, 15)
         sheet.setColumnView(11, 15)
         sheet.setColumnView(12, 15)
-//        sheet.setColumnView(13, 15)
-        // inicia textos y numeros para asocias a columnas
 
         def label
         def nmro
@@ -3243,7 +3160,6 @@ class Reportes4Controller {
         label = new Label(2, 4, "Tipo de Garantía", times16format); sheet.addCell(label);
         label = new Label(3, 4, "N° Garantía", times16format); sheet.addCell(label);
         label = new Label(4, 4, "Rnov", times16format); sheet.addCell(label);
-//        label = new Label(5, 4, "Original", times16format); sheet.addCell(label);
         label = new Label(5, 4, "Aseguradora", times16format); sheet.addCell(label);
         label = new Label(6, 4, "Documento", times16format); sheet.addCell(label);
         label = new Label(7, 4, "Estado", times16format); sheet.addCell(label);
@@ -3253,15 +3169,12 @@ class Reportes4Controller {
         label = new Label(11, 4, "Cancelación", times16format); sheet.addCell(label);
         label = new Label(12, 4, "Moneda", times16format); sheet.addCell(label);
 
-
         res.eachWithIndex {i, j->
-
             label = new Label(0, fila, i?.codigocontrato?.toString()); sheet.addCell(label);
             label = new Label(1, fila, i?.contratista); sheet.addCell(label);
             label = new Label(2, fila, i.tipogarantia.toString()); sheet.addCell(label);
             label = new Label(3, fila, i?.codigo?.toString()); sheet.addCell(label);
             number = new jxl.write.Number(4, fila, i.renovacion); sheet.addCell(number);
-//            label = new Label(5, fila, ""); sheet.addCell(label);
             label = new Label(5, fila, i?.aseguradora?.toString()); sheet.addCell(label);
             label = new Label(6, fila, i?.documento?.toString()); sheet.addCell(label);
             label = new Label(7, fila, i?.estado?.toString()); sheet.addCell(label);
@@ -3270,28 +3183,24 @@ class Reportes4Controller {
             label = new Label(10, fila, i?.vencimiento?.toString()); sheet.addCell(label);
             number = new jxl.write.Number(11, fila, i.dias); sheet.addCell(number);
             label = new Label(12, fila, i?.moneda?.toString()); sheet.addCell(label);
-
             fila++
         }
 
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "ContratosExcel.xls";
+        def header = "attachment; filename=" + "GarantiasExcel.xls";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
     }
 
-
     def presupuestadas () {
         def perfil = session.perfil.id
         return [perfil: perfil]
-
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazoEjecucionMeses": ["Plazo", "number"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "departamento": ["Dirección", "string"], "fechaCreacionObra": ["Fecha", "date"]]
         [campos:campos]
     }
-
 
     def buscarObraPre(){
         println "buscar obra pre"
@@ -3388,8 +3297,6 @@ class Reportes4Controller {
             }
         }
 
-
-//        def extras = " and liquidacion=0 and fechaFin is not null"
         def extras = " and estado='R'"
         if (extraParr.size() > 1)
             extras += " and parroquia in (${extraParr})"
@@ -3398,7 +3305,6 @@ class Reportes4Controller {
         if (extraDep.size() > 1)
             extras += " and departamento in (${extraDep})"
 
-//        println "extas "+extras
         def parr = { p ->
             return p.parroquia?.nombre
         }
@@ -3414,7 +3320,6 @@ class Reportes4Controller {
         funcionJs += 'location.href="' + g.createLink(action: 'registroObra', controller: 'obra') + '?obra="+$(this).attr("regId");'
         funcionJs += '}'
         def numRegistros = 20
-//        println "params " + params.reporte + "  " + params.excel
 
         if (!params.reporte) {
             if (params.excel) {
@@ -3518,7 +3423,6 @@ class Reportes4Controller {
         output.write(file.getBytes());
     }
 
-
     def ingresadas () {
 
     }
@@ -3534,7 +3438,6 @@ class Reportes4Controller {
                 "from cncr, obra where obra.obra__id = cncr.obra__id and " +
                 "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
                 "order by cncr__id desc"
-//        println "sql: $sql"
         def obras = cn.rows(sql)
 
         params.criterio = params.old
