@@ -1694,7 +1694,7 @@ class ObraController {
         def campos = ['obracdgo', 'obranmbr', 'obradscr',
                       'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr', 'obrafcin']
         def cn = dbConnectionService.getConnection()
-        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr, obrafcha, obrasito, parrnmbr, " +
+        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
                 "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
                 "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
                 "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
