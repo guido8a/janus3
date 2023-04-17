@@ -121,12 +121,12 @@
                 </g:link>
                 Listado de garantías registradas de los distintos contratos para obras y cosultoría, detalladas por contrato.
             </li>
-            <li text="trnf" class="item" texto="trnf">
-                <g:link controller="planilla2" action="pagos" file="pagos.pdf" class="btn btn-primary" style="color: #FFFDF4" dialog="dlgVentas">
-                    <i class="fa fa-print"></i> Transferencias y/o cheques pagados:
-                </g:link>
-                Listado de pagos realizados a partir de la solicitud de pagos relativos a las obras.
-            </li>
+%{--            <li text="trnf" class="item" texto="trnf">--}%
+%{--                <g:link controller="planilla2" action="pagos" file="pagos.pdf" class="btn btn-primary" style="color: #FFFDF4" dialog="dlgVentas">--}%
+%{--                    <i class="fa fa-print"></i> Transferencias y/o cheques pagados:--}%
+%{--                </g:link>--}%
+%{--                Listado de pagos realizados a partir de la solicitud de pagos relativos a las obras.--}%
+%{--            </li>--}%
             <li text="avob" class="item" texto="avob">
                 <g:link controller="reportes5" action="avance" file="Estado_Cambios_Patrimonio.pdf" class="btn btn-primary" style="color: #FFFDF4" dialog="dlgVentas">
                     <i class="fa fa-print"></i> Avance de obras:
