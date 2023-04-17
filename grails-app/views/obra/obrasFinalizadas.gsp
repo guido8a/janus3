@@ -48,7 +48,12 @@
 
     <div class="col-md-3">
         <b>Buscar Por:</b>
-        <g:select name="buscador" id="buscador" from="${[0: 'Código', 1: 'Nombre', 2: 'Descripción', 3: 'Memo Ingreso', 4: 'Memo Salida', 5: 'Sitio', 6: 'Parroquia', 7: 'Comunidad' , 8 : 'Dirección' , 9: 'Fecha' ]}" optionKey="key" optionValue="value" />
+        %{--<g:select name="buscador" id="buscador" from="${[0: 'Código', 1: 'Nombre', 2: 'Descripción', --}%
+             %{--3: 'Memo Ingreso', 4: 'Memo Salida', 5: 'Sitio', 6: 'Parroquia', 7: 'Comunidad', 8: 'Dirección',--}%
+             %{--9: 'Fecha']}" optionKey="key" optionValue="value" />--}%
+        <g:select name="buscador" id="buscador" from="${[0: 'Código', 1: 'Nombre', 2: 'Descripción',
+             3: 'Sitio', 4: 'Parroquia', 5: 'Comunidad', 6: 'Dirección', 7: 'Fecha de Inicio']}"
+                  optionKey="key" optionValue="value" />
     </div>
 
     <div class="col-md-4 hide" id="divFecha">

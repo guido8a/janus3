@@ -1688,7 +1688,25 @@ class ObraController {
     }
 
     def tablaObrasFinalizadas(){
-        println("params tof " + params)
+        println "tablaObrasFinalizadas params $params"
+//        def campos = [0: 'Código', 1: 'Nombre', 2: 'Descripción',
+//                      3: 'Sitio', 4: 'Parroquia', 5: 'Comunidad', 6: 'Dirección', 7: 'Fecha']
+        def campos = ['obracdgo', 'obranmbr', 'obradscr',
+                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr', 'obrafcin']
+        def cn = dbConnectionService.getConnection()
+        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr, obrafcha, obrasito, parrnmbr, " +
+                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "obrafcin is not null and " +
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+                "order by obrafcin desc"
+        println "sql: $sql"
+        def obras = cn.rows(sql)
+
+        params.criterio = params.old
+        return [data: obras, params: params]
+
 
     }
 
