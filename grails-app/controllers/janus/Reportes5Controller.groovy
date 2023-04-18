@@ -34,33 +34,6 @@ class Reportes5Controller{
     }
 
     private filasAvance(params) {
-//        def sqlBase = "SELECT\n" +
-//                "  c.cntr__id               id,\n" +
-//                "  b.obracdgo               obra_cod,\n" +
-//                "  b.obranmbr               obra_nmbr,\n" +
-//                "  m.cmndnmbr               comunidad,\n" +
-//                "  a.parrnmbr               parroquia,\n" +
-//                "  k.cntnnmbr               canton,\n" +
-//                "  c.cntrcdgo               num_contrato,\n" +
-//                "  p.prvenmbr               proveedor,\n" +
-//                "  c.cntrmnto               monto,\n" +
-//                "  c.cntrfcsb               fecha,\n" +
-//                "  c.cntrplzo               plazo,\n" +
-//                "  (SELECT\n" +
-//                "  coalesce(sum(plnlmnto), 0)\n" +
-//                "   FROM plnl\n" +
-//                "   WHERE cntr__id = c.cntr__id\n" +
-//                "         AND tppl__id = 3) sum\n" +
-//                "FROM cntr c\n" +
-//                "  INNER JOIN ofrt o ON c.ofrt__id = o.ofrt__id\n" +
-//                "  INNER JOIN cncr n ON o.cncr__id = n.cncr__id\n" +
-//                "  INNER JOIN obra b ON n.obra__id = b.obra__id\n" +
-//                "  INNER JOIN tpob t ON b.tpob__id = t.tpob__id\n" +
-//                "  INNER JOIN prve p ON o.prve__id = p.prve__id\n" +
-//                "  INNER JOIN cmnd m ON b.cmnd__id = m.cmnd__id\n" +
-//                "  INNER JOIN parr a ON m.parr__id = a.parr__id\n" +
-//                "  INNER JOIN cntn k ON a.cntn__id = k.cntn__id"
-
         def sqlBase = "SELECT\n" +
                 "  c.cntr__id               id,\n" +
                 "  b.obracdgo               obra_cod,\n" +
@@ -137,17 +110,9 @@ class Reportes5Controller{
         }
 
         def sql = sqlBase + filtroBuscador
-
-//        println sql
-
         def cn = dbConnectionService.getConnection()
 
-//        println sql
-
         return cn.rows(sql.toString())
-
-
-
     }
 
     def avance() {
@@ -178,17 +143,12 @@ class Reportes5Controller{
             obrasFiltradas = res
         }
 
-
-//        println res
-
-//        println(obrasFiltradas)
         params.criterio = params.old
 
         return [res: obrasFiltradas, params: params]
     }
 
     def tablaAvance() {
-//        println "tablaContratadas ok $params , ${reportesService.obrasContratadas()}"
         def cn = dbConnectionService.getConnection()
         def campos = reportesService.obrasAvance()
 
@@ -199,7 +159,6 @@ class Reportes5Controller{
         println "sql: $sql"
         def obras = cn.rows(sql)
 
-//        println "registro retornados del sql: ${obras.size()}"
         params.criterio = params.old
         return [obras: obras, params: params]
     }
@@ -412,7 +371,6 @@ class Reportes5Controller{
         def meses = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
         def mesesLargo = ["", "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
         def strFecha = ""
-//        println ">>" + fecha + "    " + formato
         if (fecha) {
             switch (formato) {
                 case "MMM-yy":
@@ -432,7 +390,6 @@ class Reportes5Controller{
                     break;
             }
         }
-//        println ">>>>>>" + strFecha
         return strFecha
     }
 
@@ -712,9 +669,7 @@ class Reportes5Controller{
         table.addCell(cell);
     }
 
-
     def reporteFormulaExcel() {
-//        println("params " + params)
         def auxiliar = Auxiliar.get(1)
         def auxiliarFijo = Auxiliar.get(1)
         def obra = Obra.get(params.id)
@@ -966,37 +921,6 @@ class Reportes5Controller{
             sheet.addCell(label);
         }
 
-//        label = new Label(1, salto3 + 14, "", times16format);
-//        sheet.addCell(label);
-
-//        if (cuenta == 3) {
-//            label = new Label(1, salto3 + 13, "______________________________________", times16format);
-//            sheet.addCell(label);
-//            label = new Label(2, salto3 + 13, "______________________________________", times16format);
-//            sheet.addCell(label);
-//            label = new Label(3, salto3 + 13, "______________________________________", times16format);
-//            sheet.addCell(label);
-//            def salto4 = salto3 + 13
-//
-//            firmaFijaFormu.eachWithIndex { f, h ->
-//
-//                if (f != '') {
-//
-//                    firmas = Persona.get(f)
-//
-//                    label = new Label(h + 1, salto4 + 1, firmas?.titulo + " " + firmas?.nombre + " " + firmas?.apellido, times16format);
-//                    sheet.addCell(label);
-//                } else {
-//                    label = new Label(h + 1, salto4 + 1, "Sin asignar,  ", times16format); sheet.addCell(label);
-//                }
-//            }
-//
-//            firmas = Persona.get(firmaFijaFormu[0])
-//            label = new Label(1, salto4 + 2, firmas?.cargo, times16format); sheet.addCell(label);
-//            label = new Label(2, salto4 + 2, "REVISOR", times16format); sheet.addCell(label);
-//            label = new Label(3, salto4 + 2, "ELABORÓ", times16format); sheet.addCell(label);
-//        }
-
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
@@ -1087,11 +1011,7 @@ class Reportes5Controller{
         response.getOutputStream().write(b)
     }
 
-
-
     def reporteVaeExcel () {
-
-//        println("params " + params)
 
         def obra = Obra.get(params.id)
         def detalle
@@ -1192,7 +1112,6 @@ class Reportes5Controller{
         def filaSub = 17
         def ultimaFila
 
-
         //cabecera
         label = new Label(2, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
         label = new Label(2, 4, "DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS", times16format); sheet.addCell(label);
@@ -1221,9 +1140,7 @@ class Reportes5Controller{
         label = new Label(10, 16, "VAE RUBRO", times16format); sheet.addCell(label);
         label = new Label(11, 16, "VAE TOTAL", times16format); sheet.addCell(label);
 
-
         subPres.each {sp->
-
 
             label = new Label(0, filaSub, sp?.descripcion?.toString()); sheet.addCell(label);
 
@@ -1286,8 +1203,6 @@ class Reportes5Controller{
         label = new Label(2, ultimaFila+4, "Elaboró: ", times16format); sheet.addCell(label);
         label = new Label(3, ultimaFila+4, (obra?.responsableObra?.titulo ?: '') + (obra?.responsableObra?.nombre ?: '') + ' ' + (obra?.responsableObra?.apellido ?: ''), times16format); sheet.addCell(label);
 
-
-
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
@@ -1299,7 +1214,6 @@ class Reportes5Controller{
 
 
     def reporteCronogramaNuevoPdf() {
-//        println "reporteCronogramaPdf params: $params"
         def tipo = params.tipo
         def obra = null, contrato = null, lbl = ""
         switch (tipo) {
@@ -1315,7 +1229,6 @@ class Reportes5Controller{
         }
 
         def meses = obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)
-//        def detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
         def detalle = VolumenContrato.findAllByObra(obra, [sort: "volumenOrden"])
 
         def precios = [:]
@@ -1434,11 +1347,9 @@ class Reportes5Controller{
             def cronos
             switch (tipo) {
                 case "obra":
-//                    cronos = Cronograma.findAllByVolumenObra(vol)
                     cronos = Cronograma.findAllByVolumenObra(VolumenesObra.findByItemAndOrdenAndObra(vol.item, vol.volumenOrden, vol.obra))
                     break;
                 case "contrato":
-//                    cronos = CronogramaContrato.findAllByVolumenObra(vol)
                     cronos = CronogramaContratado.findAllByVolumenContrato(vol)
                     break;
             }
@@ -1554,7 +1465,6 @@ class Reportes5Controller{
             }
         }
 
-
         PdfPTable tablaFirmas = new PdfPTable(3);
         tablaFirmas.setWidthPercentage(100);
 
@@ -1619,11 +1529,9 @@ class Reportes5Controller{
         response.setHeader("Content-disposition", "attachment; filename=" + name)
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
-
     }
 
     def contratoFechas () {
-
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from rp_contrato()"
@@ -1643,7 +1551,6 @@ class Reportes5Controller{
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
-
 
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
@@ -1668,7 +1575,6 @@ class Reportes5Controller{
         def number
         def fila = 12;
 
-
         //cabecera
         label = new Label(2, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
         label = new Label(2, 4, "FISCALIZACIÓN", times16format); sheet.addCell(label);
@@ -1692,9 +1598,7 @@ class Reportes5Controller{
         label = new Label(14, 10, "FECHA ACTA PROVISIONAL", times16format); sheet.addCell(label);
         label = new Label(15, 10, "FECHA ACTA DEFINITIVA", times16format); sheet.addCell(label);
 
-
         res.each{ contrato->
-
             label = new Label(0, fila, contrato.cntrcdgo.toString() ?: ''); sheet.addCell(label);
             number = new Number(1, fila, contrato.cntrmnto ?: 0); sheet.addCell(number);
             number = new Number(2, fila, contrato.cntrantc ?: 0); sheet.addCell(number);
@@ -1712,7 +1616,6 @@ class Reportes5Controller{
             label = new Label(13, fila, contrato?.cntrfcfs?.toString() ?: ''); sheet.addCell(label);
             label = new Label(14, fila, contrato?.acprfcha?.toString() ?: ''); sheet.addCell(label);
             label = new Label(15, fila, contrato?.acdffcha?.toString() ?: ''); sheet.addCell(label);
-
             fila++
         }
 
@@ -1826,8 +1729,6 @@ class Reportes5Controller{
         tablaEquipos.setWidthPercentage(100);
         tablaEquipos.setWidths(arregloEnteros([15,37,8,10,10,10,10]))
 
-//        reportesPdfService.addCellTb(tablaEquipos, new Paragraph("EQUIPOS", times12bold), tituloRubro)
-
         reportesPdfService.addCellTb(tablaEquipos, new Paragraph("CÓDIGO", times7bold), celdaCabecera)
         reportesPdfService.addCellTb(tablaEquipos, new Paragraph("ITEM", times7bold), celdaCabecera)
         reportesPdfService.addCellTb(tablaEquipos, new Paragraph("UNIDAD", times7bold), celdaCabecera)
@@ -1902,7 +1803,6 @@ class Reportes5Controller{
         def row = 0
         WritableSheet sheet = workbook.createSheet('MySheet', 0)
 
-
         WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
         sheet.setColumnView(0, 20)
@@ -1925,7 +1825,6 @@ class Reportes5Controller{
         def label
         def number
         def fila = 12;
-
 
         //cabecera
         label = new Label(2, 2, (empresa?.nombre?.toUpperCase() ?: ''), times16format); sheet.addCell(label);
@@ -1966,6 +1865,168 @@ class Reportes5Controller{
         workbook.close();
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "existencias.xls";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        output.write(file.getBytes());
+    }
+
+    def reporteObrasFinalizadas(){
+
+        def cn = dbConnectionService.getConnection()
+        def campos = ['obracdgo', 'obranmbr', 'obradscr',
+                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr']
+        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
+                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "obrafcin is not null and " +
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+                "order by obrafcin desc"
+        def obras = cn.rows(sql)
+
+        def prmsCellHead2 = [border: Color.WHITE,
+                             align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, bordeTop: "1", bordeBot: "1"]
+        def prmsCellRight = [border: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_RIGHT]
+        def prmsCellLeft = [border: Color.WHITE, valign: Element.ALIGN_MIDDLE]
+
+        def baos = new ByteArrayOutputStream()
+        def name = "obrasFinalizadas" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+        Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
+        Font times18bold = new Font(Font.TIMES_ROMAN, 18, Font.BOLD);
+        Font times8bold = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        Font times8normal = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL)
+        Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
+        Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
+        times8boldWhite.setColor(Color.WHITE)
+        times10boldWhite.setColor(Color.WHITE)
+
+        Document document
+        document = new Document(PageSize.A4.rotate());
+        def pdfw = PdfWriter.getInstance(document, baos);
+        document.open();
+
+        document.addTitle("Obras Finalizadas " + new Date().format("dd_MM_yyyy"));
+        document.addSubject("Generado por el sistema Janus");
+        document.addKeywords("documentosObra, janus, presupuesto");
+        document.addAuthor("Janus");
+        document.addCreator("Tedein SA");
+
+        Paragraph headers = new Paragraph();
+        addEmptyLine(headers, 1);
+        headers.setAlignment(Element.ALIGN_CENTER);
+        headers.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), times18bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("REPORTE DE OBRAS FINALIZADAS", times12bold));
+        addEmptyLine(headers, 1);
+        headers.add(new Paragraph("AL " + printFecha(new Date()).toUpperCase(), times12bold));
+        addEmptyLine(headers, 1);
+        document.add(headers);
+
+        PdfPTable tablaRegistradas = new PdfPTable(8);
+        tablaRegistradas.setWidthPercentage(100);
+        tablaRegistradas.setWidths(arregloEnteros([7, 24, 18, 8, 15, 15, 8, 7]))
+
+        addCellTabla(tablaRegistradas, new Paragraph("Código", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Nombre", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Dirección", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Fecha Registro.", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Sitio", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Parroquia -  Comunidad", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Fecha Inicio", times8bold), prmsCellHead2)
+        addCellTabla(tablaRegistradas, new Paragraph("Fecha Fin", times8bold), prmsCellHead2)
+
+        obras.eachWithIndex {i,j->
+            addCellTabla(tablaRegistradas, new Paragraph(i.obracdgo, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.obranmbr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.direccion, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcha?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.obrasito, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i.parrnmbr, times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcin?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+            addCellTabla(tablaRegistradas, new Paragraph(i?.obrafcfn?.format("dd-MM-yyyy"), times8normal), prmsCellLeft)
+        }
+
+        document.add(tablaRegistradas);
+        document.close();
+        pdfw.close()
+        byte[] b = baos.toByteArray();
+        response.setContentType("application/pdf")
+        response.setHeader("Content-disposition", "attachment; filename=" + name)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
+
+    def reporteExcelObrasFinalizadas () {
+
+        def cn = dbConnectionService.getConnection()
+        def campos = ['obracdgo', 'obranmbr', 'obradscr',
+                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr']
+        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
+                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "obrafcin is not null and " +
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+                "order by obrafcin desc"
+        def obras = cn.rows(sql)
+
+        WorkbookSettings workbookSettings = new WorkbookSettings()
+        workbookSettings.locale = Locale.default
+
+        def file = File.createTempFile('myExcelDocument', '.xls')
+        file.deleteOnExit()
+
+        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+
+        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+        WritableCellFormat times16format = new WritableCellFormat(times16font);
+        sheet.setColumnView(0, 24)
+        sheet.setColumnView(1, 60)
+        sheet.setColumnView(2, 60)
+        sheet.setColumnView(3, 12)
+        sheet.setColumnView(4, 24)
+        sheet.setColumnView(5, 20)
+        sheet.setColumnView(6, 10)
+        sheet.setColumnView(7, 20)
+
+        def label
+        def number
+
+        def fila = 6;
+
+        NumberFormat nf = new NumberFormat("#.##");
+        WritableCellFormat cf2obj = new WritableCellFormat(nf);
+
+        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+        label = new Label(1, 2, "REPORTE EXCEL DE OBRAS FINALIZADAS", times16format); sheet.addCell(label);
+
+        label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
+        label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
+        label = new Label(2, 4, "Dirección", times16format); sheet.addCell(label);
+        label = new Label(3, 4, "Fecha Registro", times16format); sheet.addCell(label);
+        label = new Label(4, 4, "Sitio", times16format); sheet.addCell(label);
+        label = new Label(5, 4, "Parroquia - Comunidad", times16format); sheet.addCell(label);
+        label = new Label(6, 4, "Fecha Inicio", times16format); sheet.addCell(label);
+        label = new Label(7, 4, "Fecha Fin", times16format); sheet.addCell(label);
+
+        obras.eachWithIndex {i, j->
+            label = new Label(0, fila, i.obracdgo.toString()); sheet.addCell(label);
+            label = new Label(1, fila, i.obranmbr.toString()); sheet.addCell(label);
+            label = new Label(2, fila, i.direccion.toString()); sheet.addCell(label);
+            label = new Label(3, fila, i?.obrafcha?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
+            label = new Label(4, fila, i?.obrasito?.toString()); sheet.addCell(label);
+            label = new Label(5, fila, i?.parrnmbr?.toString()); sheet.addCell(label);
+            label = new Label(6, fila, i?.obrafcin?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
+            label = new Label(7, fila, i?.obrafcfn?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
+            fila++
+        }
+
+        workbook.write();
+        workbook.close();
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "obrasFinalizadas.xls";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());

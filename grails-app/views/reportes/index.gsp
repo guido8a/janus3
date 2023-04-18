@@ -69,15 +69,15 @@
                 <g:link controller="reportes4" action="registradas" class="btn btn-primary" style="color: #FFFDF4" dialog="dlgContabilidad">
                     <i class="fa fa-print"></i> Obras ingresadas
                 </g:link>
-                Listado de obras que se hallan en el sistema, estas obras están an la fase inicial de estructuración de presupuestos
-                y de documentos precontractuales. Estado = 'N'
+                Listado de obras que se encuentran en el sistema, estas obras están an la fase inicial de  </br>  <span style="margin-left: 130px"> estructuración de presupuestos
+            y de documentos precontractuales. Estado = 'N'</span>
             </li>
             <li text="obraprsp" class="item" texto="obraprsp">
                 <g:link controller="reportes4" action="presuestadasFinal" class="btn btn-primary" style="color: #FFFDF4">
                     <i class="fa fa-print"></i> Obras presupuestadas:
                 </g:link>
-                Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en el proceso de
-                contratación. Estado = 'R'
+                Listado de obras que ya poseen un presupuesto elaborado y se encuentran listas para entrar en </br>  <span style="margin-left: 150px">  el proceso de
+            contratación. Estado = 'R'</span>
             </li>
             <li text="cncr" class="item" texto="cncr">
                 <g:link controller="concurso" action="concursos" file="concursos" class="btn btn-primary" style="color: #FFFDF4"
@@ -121,12 +121,12 @@
                 </g:link>
                 Listado de garantías registradas de los distintos contratos para obras y cosultoría, detalladas por contrato.
             </li>
-%{--            <li text="trnf" class="item" texto="trnf">--}%
-%{--                <g:link controller="planilla2" action="pagos" file="pagos.pdf" class="btn btn-primary" style="color: #FFFDF4" dialog="dlgVentas">--}%
-%{--                    <i class="fa fa-print"></i> Transferencias y/o cheques pagados:--}%
-%{--                </g:link>--}%
-%{--                Listado de pagos realizados a partir de la solicitud de pagos relativos a las obras.--}%
-%{--            </li>--}%
+            %{--            <li text="trnf" class="item" texto="trnf">--}%
+            %{--                <g:link controller="planilla2" action="pagos" file="pagos.pdf" class="btn btn-primary" style="color: #FFFDF4" dialog="dlgVentas">--}%
+            %{--                    <i class="fa fa-print"></i> Transferencias y/o cheques pagados:--}%
+            %{--                </g:link>--}%
+            %{--                Listado de pagos realizados a partir de la solicitud de pagos relativos a las obras.--}%
+            %{--            </li>--}%
             <li text="avob" class="item" texto="avob">
                 <g:link controller="reportes5" action="avance" file="Estado_Cambios_Patrimonio.pdf" class="btn btn-primary" style="color: #FFFDF4" dialog="dlgVentas">
                     <i class="fa fa-print"></i> Avance de obras:
@@ -155,8 +155,8 @@
         <h3>Obras Ingresadas</h3><br>
 
         <p>Listado de obras que están ingresadas al sistema. Estas obras se hallan en la fase inicial de registro de
-           cantidades de obra, elaboración de la matriz de la fórmula polinómica, fórmula polinómica, determinación de
-           plazos y cronograma de ejecución.</p>
+        cantidades de obra, elaboración de la matriz de la fórmula polinómica, fórmula polinómica, determinación de
+        plazos y cronograma de ejecución.</p>
         <p>En esta fase se preparan los documentos precontractuales.</p>
         <p>Estado = 'N'</p>
     </div>
@@ -316,42 +316,42 @@
     $(function () {
 
         $(".link").hover(
-                function () {
-/*
-                    $(this).addClass("linkHover");
-                    $(".notice").hide();
-                    var id = $(this).parent().attr("text");
-                    $("#" + id).show();
-*/
-                },
-                function () {
-/*
-                    $(this).removeClass("linkHover");
-                    $(".notice").hide();
-*/
-                }).click(function () {
-                    %{--var url = $(this).attr("href");--}%
-                    %{--var file = $(this).attr("file");--}%
+            function () {
+                /*
+                                    $(this).addClass("linkHover");
+                                    $(".notice").hide();
+                                    var id = $(this).parent().attr("text");
+                                    $("#" + id).show();
+                */
+            },
+            function () {
+                /*
+                                    $(this).removeClass("linkHover");
+                                    $(".notice").hide();
+                */
+            }).click(function () {
+            %{--var url = $(this).attr("href");--}%
+            %{--var file = $(this).attr("file");--}%
 
-                   %{--var dialog = trim($(this).attr("dialog"));--}%
-                   %{--var cont = trim($(this).text());--}%
+            %{--var dialog = trim($(this).attr("dialog"));--}%
+            %{--var cont = trim($(this).text());--}%
 
 
-                    %{--$("#" + dialog).dialog("option", "title", cont);--}%
-                    %{--$("#" + dialog).dialog("open");--}%
+            %{--$("#" + dialog).dialog("option", "title", cont);--}%
+            %{--$("#" + dialog).dialog("open");--}%
 
-                    %{--actionUrl = "${createLink(controller:'pdf',action:'pdfLink')}?filename=" + file + "&url=" + url;--}%
+            %{--actionUrl = "${createLink(controller:'pdf',action:'pdfLink')}?filename=" + file + "&url=" + url;--}%
 
-%{--//                            console.log(actionUrl);--}%
+            %{--//                            console.log(actionUrl);--}%
 
-                    %{--<g:link action="pdfLink" controller="pdf" params="[url: g.createLink(controller: 'reportes', action: 'planDeCuentas'), filename: 'Plan_de_Cuentas.pdf']">--}%
-                    %{--plan de cuentas--}%
-                    %{--</g:link>--}%
+            %{--<g:link action="pdfLink" controller="pdf" params="[url: g.createLink(controller: 'reportes', action: 'planDeCuentas'), filename: 'Plan_de_Cuentas.pdf']">--}%
+            %{--plan de cuentas--}%
+            %{--</g:link>--}%
 
-%{--//                            console.log(url, file);--}%
+            %{--//                            console.log(url, file);--}%
 
-                    %{--return false;--}%
-                });
+            %{--return false;--}%
+        });
 
         $("#contP").change(function () {
             updatePeriodo();

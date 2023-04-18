@@ -18,7 +18,7 @@
     <div class="col-md-3">
         <b>Buscar Por:</b>
         <g:select name="buscador" id="buscador" from="${[0: 'Código', 1: 'Nombre', 2: 'Descripción',
-             3: 'Sitio', 4: 'Parroquia', 5: 'Comunidad', 6: 'Dirección']}"
+                                                         3: 'Sitio', 4: 'Parroquia', 5: 'Comunidad', 6: 'Dirección']}"
                   optionKey="key" optionValue="value" />
     </div>
 
@@ -60,7 +60,7 @@
                 Fecha Reg.
             </th>
             <th style="width: 15%;">
-               Sitio
+                Sitio
             </th>
             <th style="width: 13%;">
                 Parroquia -  Comunidad
@@ -79,6 +79,18 @@
 </div>
 
 <script  type="text/javascript">
+
+    $("#regresar").click(function () {
+        location.href = "${g.createLink(controller: 'reportes', action: 'index')}"
+    });
+
+    $("#imprimir").click(function () {
+        location.href = "${g.createLink(controller: 'reportes5', action:'reporteObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+    });
+
+    $("#excel").click(function () {
+        location.href = "${g.createLink(controller: 'reportes5', action:'reporteExcelObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+    });
 
     cargarTabla();
 
@@ -100,21 +112,6 @@
         cargarTabla();
     })
 
-
-
 </script>
-
-
-
-
-
-%{--<fieldset class="borde" style="position: relative; height: 600px;float: left">--}%
-%{--    <g:hiddenField name="id" value="${obra?.id}"/>--}%
-%{--    <div class="span12" style="margin-top: 15px" align="center">--}%
-%{--    </div>--}%
-%{--    <div style="width: 1150px;margin: auto;overflow: auto">--}%
-%{--        <bsc:buscador name="obras" value="" accion="buscarObraFin" controlador="obra" campos="${campos}" label="Obra" tipo="lista"/>--}%
-%{--    </div>--}%
-%{--</fieldset>--}%
 </body>
 </html>
