@@ -1201,6 +1201,14 @@
         buscaContratos();
     });
 
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            buscaContratos();
+            return false;
+        }
+    });
+
     function buscaContratos() {
         var buscarPor = $("#buscarPor").val();
         var tipo = $("#buscarTipo").val();

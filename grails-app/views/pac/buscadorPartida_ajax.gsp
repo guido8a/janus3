@@ -52,4 +52,12 @@
         });
     }
 
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            buscarPP();
+            return false;
+        }
+    });
+
 </script>

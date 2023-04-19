@@ -8,20 +8,6 @@
     <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
     <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
 
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/editable/bootstrap-editable/js', file: 'bootstrap-editable.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/editable/bootstrap-editable/css', file: 'bootstrap-editable.css')}"--}%
-    %{--rel="stylesheet"/>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/editable/inputs-ext/coords', file: 'coords.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/editable/inputs-ext/coords', file: 'coords.css')}" rel="stylesheet"/>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
-
     <style type="text/css">
 
     .formato {
@@ -86,14 +72,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
 
 <div class="col-md-6 btn-group" role="navigation" style="margin-left: 0px;width: 100%;float: left;height: 35px;">
-    <button class="btn" id="lista"><i class="fa fa-list"></i> Lista</button>
+    <button class="btn btn-info" id="lista"><i class="fa fa-list"></i> Lista</button>
     <button class="btn" id="nuevo"><i class="fa fa-plus"></i> Nuevo</button>
 
     <g:if test="${persona?.departamento?.codigo != 'UTFPU'}">
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null}">
-                <button class="btn" id="btn-aceptar"><i class="fa fa-save"></i> Grabar
+                <button class="btn btn-success" id="btn-aceptar"><i class="fa fa-save"></i> Grabar
                 </button>
             </g:if>
         </g:if>
@@ -143,7 +129,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         <g:if test="${obra?.estado != 'R'}">
             <g:if test="${duenoObra == 1 || obra?.id == null}">
-                <button class="btn" id="btn-aceptar"><i class="fa fa-save"></i> Grabar</button>
+                <button class="btn btn-success" id="btn-aceptar"><i class="fa fa-save"></i> Grabar</button>
             </g:if>
         </g:if>
 
@@ -197,8 +183,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
     </g:else>
 
-    <g:if test="${obra?.estado != 'R'}">
-        <button class="btn" id="revisarPrecios"><i class="fa fa-list"></i> Precios 0</button>
+    <g:if test="${obra?.id}">
+        <g:if test="${obra?.estado != 'R'}">
+            <button class="btn" id="revisarPrecios"><i class="fa fa-list"></i> Precios 0</button>
+        </g:if>
     </g:if>
 
 </div>
@@ -334,7 +322,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         %{--</fieldset>--}%
     </div>
 
-    <div style="width: 100%; float:left; border: 1px solid black;padding-left: 0px; margin-top: 0px; height: auto";>
+    <div style="width: 100%; float:left; border: 1px solid black;padding-left: 0px; margin-top: 0px; height: auto">
 
         <g:if test="${obra?.tipo == 'D'}">
             <div class="col-md-12" style="margin-top: 15px" align="center">
@@ -626,9 +614,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                             optionValue="value"/></div>
         </div>
 
-        <div class="col-md-2" style="margin-left: -10px"><button class="btn btn-info" id="btn-consultar-geo"><i
-                class="icon-check"></i> Consultar
-        </button></div>
+        <div class="col-md-2" style="margin-left: -10px">
+            <button class="btn btn-info" id="btn-consultar-geo"><i
+                    class="fa fa-search"></i> Buscar
+            </button>
+        </div>
 
     </fieldset>
 
@@ -664,7 +654,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
         <div class="col-md-2" style="margin-left: 10px; margin-top: 10px">
             <button class="btn btn-info" id="btn-consultar_CPC"><i
-                    class="icon-check"></i> Consultar
+                    class="fa fa-search"></i> Buscar
             </button>
         </div>
     </fieldset>
@@ -742,14 +732,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     it.nombre + ' ' + it.apellido
                 }}"/>
             </div>
-        </div>
-    </fieldset>
-</div>
-
-<div id="dlgVerificacion">
-    <fieldset>
-        <div class="col-md-3">
-            No se puede generar la Verificación de Precios, porque la obra no cuenta con la Matriz!
         </div>
     </fieldset>
 </div>
@@ -939,7 +921,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                       optionValue="value"/>
             </div>
             <div class="col-md-2" style="margin-top: 6px">
-                <button class="btn btn-info" id="cnsl-rubros"><i class="fa fa-search"></i> Consultar</button>
+                <button class="btn btn-info" id="cnsl-rubros"><i class="fa fa-search"></i> Buscar</button>
             </div>
         </div>
     </fieldset>
@@ -1016,7 +998,16 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         buscaObras();
     });
 
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            buscaObras();
+            return false;
+        }
+    });
+
     function buscaObras() {
+        var d = cargarLoader("Cargando...");
         var buscarPor = $("#buscarPor").val();
         var tipo = $("#buscarTipo").val();
         var criterio = $("#criterioCriterio").val();
@@ -1031,6 +1022,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 ordenar: ordenar
             },
             success: function (msg) {
+                d.modal("hide");
                 $("#divTablaRbro").html(msg);
             }
         });
@@ -1162,10 +1154,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     id: idP,
                     idDep: idDep1,
                     obra: idObra
-
                 },
                 success: function (msg) {
-
                     $("#filaPersonas").html(msg);
                 }
             });
@@ -1603,13 +1593,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         });
 
         $("#btnVeri").click(function () {
-            if (${verifOK == true}) {
-                location.href = "${g.createLink(controller: 'verificacionPrecios', action: 'verificacion', id: obra?.id)}"
-            }
-            else {
-                $("#dlgVerificacion").dialog("open");
-                $(".ui-dialog-titlebar-close").html("x")
-            }
+            <g:if test="${verifOK}">
+            location.href = "${g.createLink(controller: 'verificacionPrecios', action: 'verificacion', id: obra?.id)}";
+            </g:if>
+            <g:else>
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se puede generar la Verificación de Precios, la obra no cuenta con una Matriz" + '</strong>');
+            </g:else>
         });
 
         $("#btn-aceptar").click(function () {
@@ -1873,6 +1862,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             busqueda_CPC();
         });
 
+        $(".criterio_CPC").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                ev.preventDefault();
+                busqueda_CPC();
+                return false;
+            }
+        });
+
         $("#btnImprimir").click(function () {
             $("#dlgLoad").dialog("open");
             $(".ui-dialog-titlebar-close").html("x");
@@ -2030,7 +2027,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             modal: true,
             draggable: false,
             width: 800,
-            height: 500,
+            height: 600,
             position: 'center',
             title: 'Datos de Situación Geográfica'
         });
@@ -2494,28 +2491,20 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             }
         });
 
-        $("#dlgVerificacion").dialog({
-            autoOpen: false,
-            resizable: false,
-            modal: true,
-            draggable: false,
-            width: 350,
-            height: 220,
-            position: 'center',
-            title: 'No se ha generado la Matriz!',
-            buttons: {
-                "Aceptar": function () {
-                    $("#dlgVerificacion").dialog("close");
-                }
-            }
+        $("#revisarPrecios").click(function () {
+            <g:if test="${verifOK}">
+            location.href = "${g.createLink(controller: 'verificacionPrecios', action: 'preciosCero', id: obra?.id)}";
+            </g:if>
+            <g:else>
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se puede generar la Verificación de Precios, la obra no cuenta con una Matriz" + '</strong>');
+            </g:else>
         });
 
-        $("#revisarPrecios").click(function () {
-            if(${verifOK == true}){
-                location.href = "${g.createLink(controller: 'verificacionPrecios', action: 'preciosCero', id: obra?.id)}"
-            }else{
-                $("#dlgVerificacion").dialog("open");
-                $(".ui-dialog-titlebar-close").html("x")
+        $("#criterio-geo").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                ev.preventDefault();
+                busqueda();
+                return false;
             }
         });
 
@@ -2530,7 +2519,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     buscarPor: buscarPor,
                     criterio: criterio,
                     ordenar: ordenar
-
                 },
                 success: function (msg) {
                     $("#divTabla").html(msg);

@@ -42,8 +42,11 @@
 
             <div class="col-md-3">
                 <b>Partida presupuestaria:</b>
-                <input type="text" style="width: 200px;font-size: 12px" id="item_presupuesto">
-                <input type="hidden" style="width: 60px" id="item_prsp">
+                <input type="text" style="width: 170px;font-size: 12px" id="item_presupuesto" readonly >
+                <input type="hidden" id="item_prsp">
+                <a href="#" class="btn btn-xs btn-info" title="Buscar presupuesto" style="margin-top: -5px" id="btnBuscarPresupuesto">
+                    <i class="fa fa-search"></i>
+                </a>
                 <a href="#" class="btn btn-xs btn-warning" title="Crear nueva partida" style="margin-top: -5px" id="item_agregar_prsp">
                     <i class="fa fa-edit"></i>
                 </a>
@@ -91,8 +94,8 @@
 
             <div class="col-md-4">
                 <b>Código C.P.:</b>
-                <input type="text" style="width: 154px;;font-size: 12px" id="item_codigo" readonly>
-                <input type="hidden" style="width: 60px" id="item_cpac">
+                <input type="text" style="width: 154px;font-size: 12px" id="item_codigo" readonly>
+                <input type="hidden" id="item_cpac">
                 <a href="#" class="btn btn-xs btn-info" title="buscar código CP" style="margin-top: -5px" id="btnBuscadorCPC">
                     <i class="fa fa-search"></i>
                 </a>
@@ -155,30 +158,6 @@
     </div>
 </div>
 
-%{--<div class="modal grande hide fade" id="modal-ccp" style="overflow: hidden;">--}%
-%{--    <div class="modal-header btn-info">--}%
-%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-%{--        <h3 id="modalTitle"></h3>--}%
-%{--    </div>--}%
-
-%{--    <div class="modal-body" id="modalBody">--}%
-%{--        <bsc:buscador name="pac.buscador.id" value="" accion="buscaCpac" controlador="pac" campos="${campos}" label="cpac" tipo="lista"/>--}%
-%{--    </div>--}%
-
-%{--    <div class="modal-footer" id="modalFooter">--}%
-%{--    </div>--}%
-%{--</div>--}%
-
-%{--<div id="modal-presupuesto" style="width: 780px">--}%
-
-%{--    <div class="modal-body" id="modalBody-presupuesto">--}%
-%{--    </div>--}%
-
-%{--    <div class="modal-footer" id="modalFooter-presupuesto">--}%
-%{--    </div>--}%
-%{--</div>--}%
-
 <script type="text/javascript">
 
     var bcpc;
@@ -210,6 +189,14 @@
     });
 
     $("#item_presupuesto").dblclick(function () {
+        buscarPresupuesto();
+    });
+
+    $("#btnBuscarPresupuesto").click(function () {
+        buscarPresupuesto();
+    });
+
+    function buscarPresupuesto (){
         $.ajax({
             type    : "POST",
             url: "${createLink(controller: 'pac', action:'buscadorPartida_ajax')}",
@@ -230,7 +217,7 @@
                 }); //dialog
             } //success
         }); //ajax
-    });
+    }
 
     function cerrarBuscadorCPC(){
         bcpc.modal("hide")
@@ -366,26 +353,6 @@
                 return false;
             }
         }
-
-        // $("#item_codigo").dblclick(function () {
-        //     var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        //     $("#modalTitle").html("Código compras públicas");
-        //     $("#modalFooter").html("").append(btnOk);
-        //     $(".contenidoBuscador").html("");
-        //     $("#modal-ccp").modal("show");
-        //     $("#buscarDialog").unbind("click");
-        //     $("#buscarDialog").bind("click", enviar)
-        // });
-
-        // $("#item_presupuesto").dblclick(function () {
-        //     var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        //     $("#modalTitle").html("Partidas presupuestarias");
-        //     $("#modalFooter").html("").append(btnOk);
-        //     $(".contenidoBuscador").html("");
-        //     $("#modal-ccp").modal("show");
-        //     $("#buscarDialog").unbind("click");
-        //     $("#buscarDialog").bind("click", enviarPrsp)
-        // });
 
         cargarTabla();
 

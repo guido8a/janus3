@@ -71,7 +71,7 @@
         </g:if>
         <g:else>
 
-            <div class="col-md-1">Resp. de las Cantidades3</div>
+            <div class="col-md-1">Resp. de las Cantidades</div>
 
             <g:hiddenField name="inspector.id" id="hiddenInspector" value="${obra?.inspector?.id}"/>
             <div class="col-md-3"><g:textField name="inspector" class="inspector required" value="${obra?.inspector?.nombre + " " + obra?.inspector?.apellido}" readonly="readonly" title="Persona para Inspección de la Obra"/></div>

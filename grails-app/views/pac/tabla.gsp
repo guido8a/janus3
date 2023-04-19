@@ -133,12 +133,14 @@
     });
 
     $("#ver_todos").click(function(){
+        var d = cargarLoader("Guardando...");
         if($(this).hasClass("active")){
             cargarTabla()
         }else{
             $.ajax({type : "POST", url : "${g.createLink(controller: 'pac',action:'tabla')}",
                 data     : "todos=1",
                 success  : function (msg) {
+                d.modal("hide");
                     $("#detalle").html(msg)
                 }
             });

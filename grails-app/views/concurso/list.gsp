@@ -162,6 +162,14 @@
 
     $(function () {
 
+        $("#criterio_con").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                ev.preventDefault();
+                cargarBusqueda();
+                return false;
+            }
+        });
+
         $("#modal-pac").dialog({
             autoOpen: false,
             resizable: true,
@@ -276,6 +284,7 @@
         $(function () {
             $("#limpiaBuscar").click(function () {
                 $("#buscar").val('');
+                cargarBusqueda();
             });
         });
 
@@ -333,6 +342,8 @@
         });
 
     });
+
+
 
 </script>
 

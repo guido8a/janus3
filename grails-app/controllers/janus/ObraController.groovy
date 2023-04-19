@@ -1032,42 +1032,26 @@ class ObraController {
 
     def getPersonas2() {
 
-//        println("getPersonas2 --->" + params)
-
         def obra = Obra.get(params.obra)
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
-
-
         def rolUsuario = PersonaRol.findByPersona(persona)
-
         def direccion
         def departamentos
+
         if(params.id){
             direccion = Direccion.get(params.id)
             departamentos = Departamento.findAllByDireccion(direccion)
         } else {
-//            println "dueño--> departamento: ${params.idDep}"
             departamentos = [Departamento.get(params.idDep)]
-
         }
-
-//        println("depar " + departamentos)
 
         def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
 
         if(!personas) {
-            println ".. no hay personas"
             departamentos = Departamento.findAllByDireccion(departamentos.first().direccion)
             personas =  Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
         }
-
-//        def personas = Persona.findAllByDepartamento(departamentos)
-
-//        def personas = Persona.findAllByDepartamento(Departamento.get(params.idDep))
-
-//        println("personas " + personas)
-
         /* si no hay personas del dpto, se carga de la dirección*/
 
         def funcionInsp = Funcion.findByCodigo('I')
@@ -1079,29 +1063,11 @@ class ObraController {
         def personasRolRevi = PersonaRol.findAllByFuncionAndPersonaInList(funcionRevi, personas)
         def personasRolResp = PersonaRol.findAllByFuncionAndPersonaInList(funcionResp, personas)
         def personasRolElab = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personas)
-
         def personasUtfpu1 = Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
-
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, personasUtfpu1)
-
 
         def responsableObra
         def duenoObra = 0
-
-//        println("---->>" + personasRolResp)
-//        println("---->>" + personas)
-
-//        println(personasRolInsp)
-//        println(personasRolRevi)
-//        println(personasRolResp)
-//        println(personasRolElab)
-////
-//        println(personasRolInsp.persona)
-//        println(personasRolRevi.persona)
-//        println(personasRolResp.persona)
-
-//        println(personas)
-
 
         if (obra) {
             responsableObra = obra?.responsableObra
@@ -1119,23 +1085,8 @@ class ObraController {
             } else {
 
             }
-
-
         } else {
-
-//            responsableObra = obra?.responsableObra
-//
-//            personasUtfpu.each{
-//                if(it.id == responsableObra){
-//                    duenoObra = 1
-//                }else {
-//
-//                }
-//            }
-
-
             duenoObra = 0
-
         }
         
 //        println "presonas utfpu: ${personasUtfpu.persona}"

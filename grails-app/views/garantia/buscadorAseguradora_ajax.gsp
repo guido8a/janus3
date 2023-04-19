@@ -36,6 +36,14 @@
         buscarASG();
     });
 
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            buscarASG();
+            return false;
+        }
+    });
+
     function buscarASG() {
         var buscarPor = $("#buscarPor option:selected").val();
         var criterio = $("#criterioCriterio").val();

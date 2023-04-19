@@ -18,7 +18,7 @@
             <td style="width: 15%;">${codigo.cpacnmro}</td>
             <td style="width: 75%;">${codigo.cpacdscr}</td>
             <td style="width: 10%; text-align: center">
-                <a href="#" class="btn btn-xs btn-info btnSelCPC" rel="tooltip" title="Seleccionar Código CPC" data-id="${codigo.cpac__id}" data-nombre="${codigo.cpacdscr}" data-numero="${codigo.cpacnmro}">
+                <a href="#" class="btn btn-xs btn-success btnSelCPC" title="Seleccionar Código CPC" data-id="${codigo.cpac__id}" data-nombre="${codigo.cpacdscr}" data-numero="${codigo.cpacnmro}">
                     <i class="fa fa-check"></i>
                 </a>
             </td>

@@ -53,4 +53,12 @@
         });
     }
 
+    $("#criterioCriterio").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            buscarCPC();
+            return false;
+        }
+    });
+
 </script>

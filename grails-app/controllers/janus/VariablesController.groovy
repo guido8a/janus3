@@ -186,7 +186,6 @@ class VariablesController {
     }
 
     def composicionVae() {
-//        println(params)
 
         if (!params.tipo) {
             params.tipo = "-1"
@@ -210,14 +209,11 @@ class VariablesController {
                              "g.grpo__id, g.grpodscr, v.tpbnpcnt " +
                   "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
-//        println "composicion" + sql
-
         def cn = dbConnectionService.getConnection()
-
         def res = cn.rows(sql.toString())
+
         return [res: res, obra: obra, tipo: params.tipo]
     }
-
 
     def actualizaVae() {
         def cn = dbConnectionService.getConnection()

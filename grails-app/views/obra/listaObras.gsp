@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 27/09/21
-  Time: 11:32
---%>
-
 
 <table class="table table-bordered table-striped table-hover table-condensed" id="tabla">
     <thead>
@@ -42,10 +35,10 @@
 
 <script type="text/javascript">
     $(".selecciona").click(function () {
+        var d = cargarLoader("Cargando...");
         var id = $(this).data("id");
         $("#listaObra").dialog("close");
-        $("#spinner").removeClass("hide");
+        // $("#spinner").removeClass("hide");
         location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}" + "?obra=" + id
     });
-
 </script>
