@@ -51,25 +51,24 @@
                         </g:link>
                     </div>
 
-                    <div class="btn-group" data-toggle="buttons-radio" style="margin-left: 80px">
-                        <a href="#" id="btnTodos" class="btn btn-info ${tipo.toString().contains(",") ? 'activo' : ''} -1">
+                    <div class="btn-group" style="margin-left: 80px">
+                        <a href="#" id="btnTodos" class="btn btn-info ${tipo.toString().contains(",") ? 'active' : ''} -1">
                             <i class="fa fa-cogs"></i>
                             Todos
                         </a>
-                        <a href="#" id="btnMateriales" class="btn btn-info ${tipo.toString() == '1' ? 'activo' : ''} 1">
+                        <a href="#" id="btnMateriales" class="btn btn-info ${tipo.toString() == '1' ? 'active' : ''} 1">
                             <i class="fa fa-briefcase"></i>
                             Materiales
                         </a>
-                        <a href="#" id="btnManoObra" class="btn btn-info ${tipo.toString() == '2' ? 'activo' : ''} 2">
+                        <a href="#" id="btnManoObra" class="btn btn-info ${tipo.toString() == '2' ? 'active' : ''} 2">
                             <i class="fa fa-users"></i>
                             Mano de obra
                         </a>
-                        <a href="#" id="btnEquipos" class="btn btn-info ${tipo.toString() == '3' ? 'activo' : ''} 3">
+                        <a href="#" id="btnEquipos" class="btn btn-info ${tipo.toString() == '3' ? 'active' : ''} 3">
                             <i class="fa fa-truck"></i>
                             Equipos
                         </a>
                     </div>
-
 
                     <div class="btn-group">
                         <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
@@ -104,18 +103,12 @@
                     </div>
 
                     <div class="btn-group">
-                        %{--<g:link action="composicion" id="${obra?.id}" params="[tipo: tipo, rend: 'pdf']" class="btn btn-print btnPdf">--}%
-                        %{--<i class="icon-print"></i>--}%
-                        %{--Pdf--}%
-                        %{--</g:link>--}%
-                        %{--<g:link action="composicion" id="${obra.id}" params="[tipo: tipo, rend: 'xls']" class="btn btn-print btnExcel"> </g:link>--}%
-
-                        <a href="#" class="btn  " id="imprimirPdf">
-                            <i class="icon-print"></i>
+                        <a href="#" class="btn  btn-info" id="imprimirPdf">
+                            <i class="fa fa-print"></i>
                             PDF
                         </a>
                         <g:link controller="reportes2" action="reporteExcelComposicion" class="btn btn-print btnExcel" id="${obra?.id}" params="[sp: sub, tipo: tipo]">
-                            <i class="icon-table"></i> Excel
+                            <i class="fa fa-file-excel"></i> Excel
                         </g:link>
                         <g:link controller="reportes2" action="reporteExcelComposicionTotales" class="btn btn-print btnExcel" id="${obra?.id}" params="[sp: sub, tipo: tipo]" title="Exportar a excel para definir las cantidades reales de Materiales, M.O. y Equipos">
                             <i class="icon-table"></i> Adm. Directa
@@ -124,7 +117,7 @@
                 </div>
             </g:if>
 
-            <div class="body">
+            <div class="body" style="margin-top: 5px">
                 <table class="table table-bordered table-condensed table-hover table-striped" id="tbl">
                     <thead>
                         <tr>

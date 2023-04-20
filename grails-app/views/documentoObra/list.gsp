@@ -1,19 +1,16 @@
 <%@ page import="janus.pac.DocumentoProceso" contentType="text/html;charset=UTF-8" %>
-%{--<!doctype html>--}%
 <html>
 <head>
     <meta name="layout" content="main">
     <title>
         Biblioteca de la Obra
     </title>
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 </head>
 
 <body>
 
 <div class="tituloTree">
-    Documentos de <span style="font-weight: bold; font-style: italic;">${obra.descripcion}</span>
+    Documentos de la obra: <strong> <span style="font-weight: bold; font-style: italic;">${obra.descripcion}</span></strong>
 </div>
 
 <g:if test="${flash.message}">
@@ -28,13 +25,13 @@
 </g:if>
 
 <div class="row">
-    <div class="col-md-9 btn-group" role="navigation">
+    <div class="col-md-9 btn-group" role="navigation" style="margin-bottom: 10px">
         <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
-           class="btn" id="atras" title="Regresar a la obra">
+           class="btn btn-info" id="atras" title="Regresar a la obra">
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
-        <a href="#" class="btn btn-ajax btn-new">
+        <a href="#" class="btn btn-success btn-new">
             <i class="fa fa-file"></i>
             Nuevo Documento
         </a>
@@ -126,12 +123,6 @@
     $(function () {
         $('[rel=tooltip]').tooltip();
 
-//        $(".paginate").paginate({
-//            maxRows        : 10,
-//            searchPosition : $("#busca"),
-//            float          : "right"
-//        });
-
         $("#modal-DocumentoProceso").dialog({
             autoOpen: false,
             resizable: false,
@@ -151,8 +142,8 @@
                     obra : ${obra.id}
                 },
                 success : function (msg) {
-                    var btnCancel = $('<a href="#" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+                    var btnCancel = $('<a href="#" class="btn btn-info"><i class="fa fa-times"></i> Cancelar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
 
                     btnCancel.click(function () {
                         $("#modal-DocumentoProceso").dialog("close");
@@ -228,8 +219,8 @@
             var obraId = "${obra?.id}";
             $("#id").val(id);
             $("#obra_id").val(obraId);
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-            var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
+            var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-info"><i class="fa fa-times"></i> Cancelar</a>');
+            var btnDelete = $('<a href="#" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</a>');
 
             btnDelete.click(function () {
                 btnDelete.replaceWith(spinner);
@@ -242,7 +233,7 @@
             $("#modalBody").html("<p>¿Está seguro de querer eliminar este Documento Obra?</p>");
             $("#modalFooter").html("").append(btnOk).append(btnDelete);
             $("#modal-DocumentoProceso").dialog("open");
-            $(".ui-dialog-titlebar-close").html("x")
+            $(".ui-dialog-titlebar-close").html("x");
             return false;
         });
 

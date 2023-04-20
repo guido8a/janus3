@@ -64,40 +64,39 @@
                         <thead>
                         <tr>
                             <g:if test="${tipo.contains(",") || tipo == '1'}">
-                                <th>Código</th>
-                                <th style="width: 500px">Item</th>
-                                <th>U</th>
-                                <th>Cantidad</th>
-                                <th>P. Unitario</th>
-                                <th>Transporte</th>
-                                <th>Costo</th>
-                                <th>Total</th>
+                                <th style="width: 8%;">Código</th>
+                                <th style="width: 26%;">Item</th>
+                                <th style="width: 4%;">U</th>
+                                <th style="width: 8%;">Cantidad</th>
+                                <th style="width: 8%;">P. Unitario</th>
+                                <th style="width: 8%;">Transporte</th>
+                                <th style="width: 10%;">Costo</th>
+                                <th style="width: 10%;">Total</th>
                                 <g:if test="${tipo.contains(",")}">
-                                    <th>Tipo</th>
+                                    <th style="width: 10%;">Tipo</th>
                                 </g:if>
-                                <th>VAE (%)</th>
+                                <th style="width: 10%;">VAE (%)</th>
                             </g:if>
                             <g:elseif test="${tipo == '2'}">
-                                <th>Código</th>
-                                <th>Mano de obra</th>
-                                <th>U</th>
-                                <th>Horas hombre</th>
-                                <th>Sal. / hora</th>
-                                <th>Costo</th>
-                                <th>Total</th>
-                                <th>VAE (%)</th>
+                                <th style="width: 8%;">Código</th>
+                                <th style="width: 22%;">Mano de obra</th>
+                                <th style="width: 4%;">U</th>
+                                <th style="width: 7%;">Horas hombre</th>
+                                <th style="width: 7%;">Sal. / hora</th>
+                                <th style="width: 9%;">Costo</th>
+                                <th style="width: 9%;">Total</th>
+                                <th style="width: 9%;">VAE (%)</th>
                             </g:elseif>
                             <g:elseif test="${tipo == '3'}">
-                                <th>Código</th>
-                                <th>Equipo</th>
-                                <th>U</th>
-                                <th>Cantidad</th>
-                                <th>Tarifa</th>
-                                <th>Costo</th>
-                                <th>Total</th>
-                                <th>VAE (%)</th>
+                                <th style="width: 8%;">Código</th>
+                                <th style="width: 22%;">Equipo</th>
+                                <th style="width: 4%;">U</th>
+                                <th style="width: 7%;">Cantidad</th>
+                                <th style="width: 7%;">Tarifa</th>
+                                <th style="width: 9%;">Costo</th>
+                                <th style="width: 9%;">Total</th>
+                                <th style="width: 9%;">VAE (%)</th>
                             </g:elseif>
-
                         </tr>
                         </thead>
                     </table>
@@ -115,28 +114,28 @@
                     <g:set var="sumaVaeMo" value="${0}"/>
                     <g:each in="${res}" var="r">
                         <tr>
-                            <td class="">${r.codigo}</td>
-                            <td class="">${r.item}</td>
-                            <td>${r.unidad}</td>
-                            <td class="numero">
+                            <td style="width: 8%;">${r.codigo}</td>
+                            <td style="width: 26%;">${r.item}</td>
+                            <td style="width: 4%;">${r.unidad}</td>
+                            <td class="numero" style="width: 8%;">
                                 <g:formatNumber number="${r.cantidad}" minFractionDigits="3" maxFractionDigits="3"
                                                 format="##,##0" locale="ec"/>
                             </td>
-                            <td class="numero">
+                            <td class="numero" style="width: 8%;">
                                 <g:formatNumber number="${r.punitario}" minFractionDigits="3" maxFractionDigits="3"
                                                 format="##,##0" locale="ec"/>
                             </td>
                             <g:if test="${tipo.contains(",") || tipo == '1'}">
-                                <td class="numero">
+                                <td class="numero" style="width: 8%;">
                                     <g:formatNumber number="${r.transporte}" minFractionDigits="4" maxFractionDigits="4"
                                                     format="##,##0" locale="ec"/>
                                 </td>
                             </g:if>
-                            <td class="numero">
+                            <td class="numero" style="width: 10%;">
                                 <g:formatNumber number="${r.costo}" minFractionDigits="4" maxFractionDigits="4" format="##,##0"
                                                 locale="ec"/>
                             </td>
-                            <td class="numero">
+                            <td class="numero" style="width: 10%;">
                                 <g:formatNumber number="${r?.total}" minFractionDigits="2" maxFractionDigits="2" format="##,##0" locale="ec"/>
                                 <g:if test="${r?.grid == 1}">
                                     <g:if test="${r?.total == null}">
@@ -171,10 +170,15 @@
                                 </g:elseif>
                             </td>
                             <g:if test="${tipo.contains(",")}">
-                                <td>${r?.grupo}</td>
+                                <td style="width: 10%;">${r?.grupo}</td>
                             </g:if>
-                            <td class="editable numero cantidad texto" data-original="${r?.tpbnpcnt}"
-                                data-id="${r?.item__id}" data-valor="${r?.tpbnpcnt}">${r?.tpbnpcnt}
+                            <td class="editable numero cantidad texto" style="width: 10%;" data-original="${r?.tpbnpcnt}" data-id="${r?.item__id}" data-valor="${r?.tpbnpcnt}">
+                                ${r?.tpbnpcnt}
+                                <div style="float: right">
+                                    <a href="#" class="btn btn-xs btn-success btnEditar" title="Editar valor" data-id="${r?.item__id}" data-obra="${obra?.id}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     </g:each>
@@ -237,7 +241,7 @@
                 </table>
             </div>
 
-            <input type='text' id='txt' style='height:20px;width:110px;margin: 0px;padding: 0px;padding-right:2px;text-align: right !important;display: none;'>
+%{--            <input type='text' id='txt' style='height:20px;width:110px;margin: 0px;padding: 0px;padding-right:2px;text-align: right !important;display: none;'>--}%
         </g:if>
         <g:else>
             <div class="alert alert-info" style="text-align: center"><i class="fa fa-exclamation-triangle text-warning fa-2x"></i> No existe registros</div>
@@ -246,15 +250,78 @@
     </div>
 </div>
 
-%{--<div id="dlgLoad" class="ui-helper-hidden" title="CARGANDO..." style="text-align:center;">--}%
-%{--    Guardando datos .....Por favor espere......<br/><br/>--}%
-%{--    <img src="${resource(dir: 'images', file: 'spinner64.gif')}" alt=""/>--}%
-%{--</div>--}%
 
 <script type="text/javascript">
-    function doEdit() {
 
+
+    $(".btnEditar").click(function () {
+        var id = $(this).data("id");
+        var obra = $(this).data("obra");
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'valorIndice_ajax')}",
+            data    : {
+                item: id,
+                obra: obra
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgEditarIndices",
+                    title   : "Editar valor del índice",
+                    class   : "modal-sm",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormValorIndices();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+
+    function submitFormValorIndices() {
+        var $form = $("#frmSave-ValorIndice");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
     }
+
+
+
 
     $(function () {
 
@@ -282,64 +349,64 @@
         });
 
 
-        function stopEditing() {
-            var valor = $("#txt").val();
-            $("#txt").val("");
-            $("#txt").hide();
-            var padre = $("td.editando");
-            padre.addClass("changed");
-            padre.html(valor);
-            padre.addClass("texto");
-            padre.removeClass("editando");
-        }
+        // function stopEditing() {
+        //     var valor = $("#txt").val();
+        //     $("#txt").val("");
+        //     $("#txt").hide();
+        //     var padre = $("td.editando");
+        //     padre.addClass("changed");
+        //     padre.html(valor);
+        //     padre.addClass("texto");
+        //     padre.removeClass("editando");
+        // }
 
-        var txt = $("#txt")
+        // var txt = $("#txt")
 
-        $(".cantidad").click(function () {
-            if ($(this).hasClass("texto")) {
-                stopEditing();
-                txt.width($(this).innerWidth() - 25);
-                var valor = $(this).html().trim();
-                $(this).html("");
-                txt.val(valor);
-                $(this).append(txt);
-                txt.show();
-                $(this).removeClass("texto");
-                txt.focus();
-                $(this).addClass("editando");
-                txt.keyup(function (ev) {
-                    if (ev.keyCode == 13) {
-                        stopEditing();
-                    }
-                });
-
-            }
-        });
+        // $(".cantidad").click(function () {
+        //     if ($(this).hasClass("texto")) {
+        //         stopEditing();
+        //         txt.width($(this).innerWidth() - 25);
+        //         var valor = $(this).html().trim();
+        //         $(this).html("");
+        //         txt.val(valor);
+        //         $(this).append(txt);
+        //         txt.show();
+        //         $(this).removeClass("texto");
+        //         txt.focus();
+        //         $(this).addClass("editando");
+        //         txt.keyup(function (ev) {
+        //             if (ev.keyCode == 13) {
+        //                 stopEditing();
+        //             }
+        //         });
+        //
+        //     }
+        // });
 
         $(".btn-actualizar").click(function () {
 
-            var data = "";
-            var existe = 0
-
-            $(".editando").each(function () {
-                existe = 1
-            });
-
-            if(existe == 0){
-                $("#dlgLoad").dialog("open");
-                $(".editable").each(function () {
-                    var id = $(this).data("id");
-                    var valor = $(this).html().trim();
-                    var data1 = $(this).data("original");
-
-                    if ((parseFloat(data1) != parseFloat(valor))) {
-                        if (data != "") {
-                            data += "&";
-                        }
-                        var val = valor ? valor : data1;
-                        data += "item=" + id + "_" + valor;
-                    }
-                });
+            // var data = "";
+            // var existe = 0
+            //
+            // $(".editando").each(function () {
+            //     existe = 1
+            // });
+            //
+            // if(existe == 0){
+            //     $("#dlgLoad").dialog("open");
+            //     $(".editable").each(function () {
+            //         var id = $(this).data("id");
+            //         var valor = $(this).html().trim();
+            //         var data1 = $(this).data("original");
+            //
+            //         if ((parseFloat(data1) != parseFloat(valor))) {
+            //             if (data != "") {
+            //                 data += "&";
+            //             }
+            //             var val = valor ? valor : data1;
+            //             data += "item=" + id + "_" + valor;
+            //         }
+            //     });
 
 
                 $.ajax({
@@ -359,13 +426,13 @@
                                 $tdChk.html('<i class="icon-ok"></i>');
                             }
                         });
-                        doHighlight({elem : $(ok), clase : "ok"});
-                        doHighlight({elem : $(no), clase : "no"});
+                        // doHighlight({elem : $(ok), clase : "ok"});
+                        // doHighlight({elem : $(no), clase : "no"});
                     }
                 });
-            }else{
-                bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se puede guardar, primero cierre el campo que se encuentra en edición actualmente! <br> * Use la tecla Enter sobre el campo en edición" + '</strong>');
-            }
+            // }else{
+            //     bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se puede guardar, primero cierre el campo que se encuentra en edición actualmente! <br> * Use la tecla Enter sobre el campo en edición" + '</strong>');
+            // }
         });
     });
 </script>
