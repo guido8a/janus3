@@ -7,10 +7,6 @@
     <asset:javascript src="/jquery/plugins/box/css/jquery.luz.box.css"/>
     <asset:stylesheet src="/apli/cronograma.css"/>
 
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
-
     <title>Cronograma</title>
 
     <style type="text/css">
@@ -28,7 +24,6 @@
 <body>
 <g:set var="meses" value="${obra.plazoEjecucionMeses + (obra.plazoEjecucionDias > 0 ? 1 : 0)}"/>
 <g:set var="plazoOk" value="${detalle.findAll { it.dias > 0 }.size() > 0}"/>
-%{--<g:set var="plazoOk" value="${(obra.plazoEjecucionMeses + obra.plazoEjecucionDias) > 0}"/>--}%
 <g:set var="matrizOk" value="${tieneMatriz}"/>
 <g:set var="sum" value="${0}"/>
 
@@ -37,7 +32,7 @@
 <div class="btn-toolbar">
     <div class="btn-group">
         <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
-           class="btn btn-ajax btn-new" id="atras" title="Regresar a la obra">
+           class="btn btn-primary btn-new" id="atras" title="Regresar a la obra">
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
@@ -285,15 +280,15 @@
             </div>
         </g:if>
         <g:elseif test="${!plazoOk}">
-            <div class="alert alert-error" style="border-style: solid; border-width: 1px; border-color: #0A246A">
+            <div class="alert alert-error" style="border-style: solid; border-width: 1px; border-color: #0A246A; margin-top: 5px">
                 <i class="icon-warning-sign icon-2x pull-left"></i>
                 <h4>Error</h4>
-                <p>
+                <p style="font-size: 14px">
                     No se ha calculado el plazo de la obra.
                 </p>
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1)}">
                     <p>
-                        <g:link controller="obra" action="calculaPlazo" id="${obra.id}" class="btn btn-danger"><i class="icon-cog"></i> Calcular</g:link>
+                        <g:link controller="obra" action="calculaPlazo" id="${obra.id}" class="btn btn-danger"><i class="fa fa-cog"></i> Calcular</g:link>
                     </p>
                 </g:if>
             </div>
@@ -311,10 +306,6 @@
 </g:else>
 
 <div id="modal-cronograma">
-    %{--<div class="modal-header">--}%
-        %{--<button type="button" class="close" data-dismiss="modal">×</button>--}%
-        %{--<h3 id="modalTitle"></h3>--}%
-    %{--</div>--}%
 
     <div class="modal-body" id="modalBody">
         <form class="form-horizontal" id="frmRubro">
@@ -526,19 +517,19 @@
             log("Ingrese el periodo inicial");
             return false;
         }
-        if (periodoFin == "") {
+        if (periodoFin === "") {
             log("Ingrese el periodo final");
             return false;
         }
-        if (cant == "") {
+        if (cant === "") {
             log("Ingrese la cantidad, porcentaje o precio");
             return false;
         }
-        if (prct == "") {
+        if (prct === "") {
             log("Ingrese el porcentaje, cantidad o precio");
             return false;
         }
-        if (prec == "") {
+        if (prec === "") {
             log("Ingrese el precio, cantidad o porcentaje");
             return false;
         }
@@ -576,7 +567,6 @@
             }
 
         } catch (e) {
-//                    ////console.log(e);
             return false;
         }
         return true;
@@ -623,7 +613,6 @@
             }
 
         } catch (e) {
-//                    ////console.log(e);
             return false;
         }
         return true;
@@ -677,7 +666,6 @@
 
         <g:if test="${obra.estado!='R'}">
         $("#tabla_material").children("tr").click(function () {
-            //                    $(".rowSelected").removeClass("rowSelected");
 
             if ($(this).hasClass("rowSelected")) {
                 $(this).removeClass("rowSelected");
@@ -827,7 +815,6 @@
                             $("#tf_precio").val(dol).data("val", dol);
                         }
                     } catch (e) {
-//                                ////console.log(e);
                     }
                 }
             }
@@ -853,8 +840,6 @@
                 $tr = $tr.prev().prev();
             }
 
-            //                    ////console.log($tr);
-
             var mes = $celda.data("mes");
             var tipo = $celda.data("tipo");
             var valor = $celda.data("valor");
@@ -862,9 +847,6 @@
 
             $("#periodosDesde").val(mes);
             $("#periodosHasta").val("${meses}");
-
-            //                    ////console.log($celda, mes, tipo, valor, rubro);
-            //                    ////console.log($totalFila, $totalParcial, $prctParcial, $prctAcumulado);
 
             $("#divRubro").hide();
             $("#frmRubro").show();
@@ -920,8 +902,6 @@
             $(".spUnidad").text(unidad);
 
             var $btnCancel = $('<a href="#" class="btn">Cerrar</a>');
-
-
             var $btnOk = $('<a href="#" class="btn btn-success">Aceptar</a>');
 
             $btnCancel.click(function () {
@@ -993,7 +973,6 @@
                                 updateTotales();
                                 $("#modal-cronograma").dialog("close");
                             } else {
-                                ////console.log("ERROR");
                             }
                             $(".rowSelected").removeClass("rowSelected");
                         }

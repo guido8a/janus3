@@ -1727,7 +1727,7 @@ class Reportes2Controller {
 
     def reporteExcelComposicion() {
 
-        println("!!!" + params)
+//        println("params reporte excel comp " + params)
 
         if (!params.tipo) {
             params.tipo = "-1"
@@ -1747,7 +1747,6 @@ class Reportes2Controller {
         }
 
         def obra = Obra.get(params.id)
-//        params.tipo = "1,2,3"
 
         def sql = "SELECT\n" +
                 "  v.voit__id                            id,\n" +
@@ -1775,14 +1774,10 @@ class Reportes2Controller {
                 "WHERE v.obra__id = ${params.id} \n" + wsp +
                 "ORDER BY v.sbpr__id, grid ASC, i.itemnmbr"
 
-//        println sql
-
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
 
-//        println("--->>" + res)
         def errores = ""
-//        if (res.size() != 0) {
 
         //excel
         WorkbookSettings workbookSettings = new WorkbookSettings()
@@ -1797,9 +1792,6 @@ class Reportes2Controller {
 
         def row = 0
         WritableSheet sheet = workbook.createSheet('Composicion', 0)
-        WritableSheet sheet1 = workbook.createSheet('Materiales', 0)
-        WritableSheet sheet2 = workbook.createSheet('Mano de obra', 0)
-        WritableSheet sheet3 = workbook.createSheet('Equipos', 0)
 
         WritableFont times16font = new WritableFont(WritableFont.ARIAL, 11, WritableFont.BOLD, false);
         WritableCellFormat times16format = new WritableCellFormat(times16font);
@@ -1829,11 +1821,7 @@ class Reportes2Controller {
 
         label = new jxl.write.Label(1, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
         label = new jxl.write.Label(1, 4, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
-//            label = new jxl.write.Label(1, 6, obra?.departamento?.direccion?.nombre, times16format);
-//            sheet.addCell(label);
         label = new jxl.write.Label(1, 8, "CÓDIGO: " + obra?.codigo, times16format); sheet.addCell(label);
-//            label = new jxl.write.Label(1, 10, "DOC. REFERENCIA: " + obra?.oficioIngreso, times16format);
-//            sheet.addCell(label);
         label = new jxl.write.Label(1, 12, "FECHA: " + printFecha(obra?.fechaCreacionObra), times16format);
         sheet.addCell(label);
         label = new jxl.write.Label(1, 14, "FECHA ACT.PRECIOS: " + printFecha(obra?.fechaPreciosRubros), times16format);
@@ -1918,7 +1906,7 @@ class Reportes2Controller {
             sheet.addCell(number);
 
             label = new jxl.write.Label(6, ultimaFila + 4, "TOTAL Indirecto: ", times16format); sheet.addCell(label);
-            number = new jxl.write.Number(7, ultimaFila + 4, (obra?.valor ? obra?.valor - totalDirecto : 0)?.round(2) ?: 0);
+            number = new jxl.write.Number(7, ultimaFila + 4, (obra?.valor ? obra?.valor - totalDirecto : 0));
             sheet.addCell(number);
 
             label = new jxl.write.Label(6, ultimaFila + 5, "TOTAL: ", times16format); sheet.addCell(label);
@@ -1933,9 +1921,7 @@ class Reportes2Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
-
     }
-
 
     def reporteExcelComposicionPartes() {
 
@@ -1959,36 +1945,7 @@ class Reportes2Controller {
         }
 
         def obra = Obra.get(params.id)
-//        params.tipo = "1,2,3"
 
-/*
-        def principal = "SELECT v.voit__id id, i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, " +
-                "sum(v.voitcntd) cantidad, v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + " +
-                "v.voittrnp costo, (v.voitpcun + v.voittrnp)*v.voitcntd  total, d.dprtdscr departamento, " +
-                "s.sbgrdscr subgrupo, g.grpodscr grupo, g.grpo__id grid " +
-                "v.sbpr__id sp b.sbprdscr subpresupuesto " +
-                "FROM vlobitem v\n" +
-                "LEFT JOIN item i ON v.item__id = i.item__id\n" +
-                "LEFT JOIN undd u ON i.undd__id = u.undd__id\n" +
-                "LEFT JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-                "LEFT JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-                "LEFT JOIN sbpr b ON v.sbpr__id = b.sbpr__id\n" +
-                "LEFT JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN"
-*/
-
-//        def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
-//                "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
-//                "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid \n" +
-//                "FROM vlobitem v INNER JOIN item i ON v.item__id = i.item__id\n" +
-//                "INNER JOIN undd u ON i.undd__id = u.undd__id\n" +
-//                "INNER JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-//                "INNER JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-//                "INNER JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo}) \n" +
-//                "WHERE v.obra__id = ${params.id} and v.voitcntd >0 \n" + wsp +
-//                "group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, \n" +
-//                "g.grpo__id, g.grpodscr " +
-//                "ORDER BY g.grpo__id ASC, i.itemcdgo"
-//
         def principal = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, " +
                   "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, " +
                   "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid " +
@@ -1996,10 +1953,6 @@ class Reportes2Controller {
                   "WHERE v.obra__id = ${params.id} and v.voitcntd > 0 and " +
                   "v.item__id = i.item__id and i.undd__id = u.undd__id and i.dprt__id = d.dprt__id and " +
                   "d.sbgr__id = s.sbgr__id and s.grpo__id = g.grpo__id AND g.grpo__id IN "
-//                  "group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, " +
-//                  "g.grpo__id, g.grpodscr " +
-//                  "ORDER BY g.grpo__id ASC, i.itemcdgo"
-
 
         def extra = " (1,2,3) group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, " +
                   "g.grpo__id, g.grpodscr " +
@@ -2018,7 +1971,7 @@ class Reportes2Controller {
                 "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
         def sql = principal + extra
-        println "sql: $sql"
+//        println "sql: $sql"
         def sqlMat = principal + extra1
         def sqlMano = principal + extra2
         def sqlE = principal + extra3
@@ -2044,11 +1997,8 @@ class Reportes2Controller {
 
         parteComposicion(sql, sheet, obra, 0)
         parteComposicion(sqlMat, sheet1, obra, 1)
-//        parteComposicion(sql, sheet1, obra, 1)
         parteComposicion(sqlMano, sheet2, obra, 2)
-//        parteComposicion(sql, sheet2, obra, 2)
         parteComposicion(sqlE, sheet3, obra, 3)
-//        parteComposicion(sql, sheet3, obra, 3)
 
         workbook.write();
         workbook.close();
@@ -2057,7 +2007,6 @@ class Reportes2Controller {
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
-
     }
 
     def parteComposicion(sql, sheet, obra, tipo){

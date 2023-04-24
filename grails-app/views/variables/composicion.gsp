@@ -18,6 +18,10 @@
                 font-weight: bold;
             }
 
+                tbody{
+                    margin-top: -10px;
+                }
+
             </style>
 
     </head>
@@ -40,11 +44,11 @@
                 <div class="btn-toolbar" style="margin-top: 15px;">
                     <div class="btn-group">
                         <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}"
-                           class="btn " title="Regresar a la obra">
+                           class="btn btn-primary" title="Regresar a la obra">
                             <i class="fa fa-arrow-left"></i>
                             Regresar
                         </a>
-                        <g:link action="validacion" id="${obra?.id}" controller="composicion" class="btn"
+                        <g:link action="validacion" id="${obra?.id}" controller="composicion" class="btn btn-success"
                                 title="Cantidades reales de Materiales, M.O. y Equipos">
                             <i class="fa fa-list"></i>
                             Adm. Directa
@@ -104,14 +108,13 @@
 
                     <div class="btn-group">
                         <a href="#" class="btn  btn-info" id="imprimirPdf">
-                            <i class="fa fa-print"></i>
-                            PDF
+                            <i class="fa fa-print"></i> PDF
                         </a>
-                        <g:link controller="reportes2" action="reporteExcelComposicion" class="btn btn-print btnExcel" id="${obra?.id}" params="[sp: sub, tipo: tipo]">
+                        <g:link controller="reportes2" action="reporteExcelComposicion" class="btn btn-print btnExcel btn-success" id="${obra?.id}" params="[sp: sub, tipo: tipo]">
                             <i class="fa fa-file-excel"></i> Excel
                         </g:link>
-                        <g:link controller="reportes2" action="reporteExcelComposicionTotales" class="btn btn-print btnExcel" id="${obra?.id}" params="[sp: sub, tipo: tipo]" title="Exportar a excel para definir las cantidades reales de Materiales, M.O. y Equipos">
-                            <i class="icon-table"></i> Adm. Directa
+                        <g:link controller="reportes2" action="reporteExcelComposicionTotales" class="btn btn-success" id="${obra?.id}" params="[sp: sub, tipo: tipo]" title="Exportar a excel para definir las cantidades reales de Materiales, M.O. y Equipos">
+                            <i class="fa fa-file-excel"></i> Adm. Directa Excel
                         </g:link>
                     </div>
                 </div>
@@ -271,29 +274,20 @@
                     });
 
                     $("#imprimirPdf").click(function () {
-
-//                       console.log("-->" + $(".pdf.activo").attr("class"))
-//                       console.log("-->" + $(".pdf.activo").hasClass('2'))
-
-                        if ($(".pdf.activo").hasClass("1") == true) {
-
-                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"
-                        } else {
-                        }
-                        if ($(".pdf.activo").hasClass("2") == true) {
-                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"
-                        } else {
-
-                        }
-                        if ($(".pdf.activo").hasClass("3") == true) {
-                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"
-
-                        } else {
-
-                        }
-                        if ($(".pdf.activo").hasClass("-1") == true) {
-
+                        if($("#btnTodos").hasClass("active")){
                             location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicion',id: obra?.id)}?sp=${sub}"
+                        }
+
+                        if($("#btnMateriales").hasClass("active")){
+                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"
+                        }
+
+                        if($("#btnManoObra").hasClass("active")){
+                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"
+                        }
+
+                        if($("#btnEquipos").hasClass("active")){
+                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"
                         }
                     });
 

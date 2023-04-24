@@ -250,12 +250,9 @@ class ComposicionController {
             params.tipo = [ params.tipo.toInteger()]
         }
 
-//        def lista = params.tipo.split(',')
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
-//        println "tipo: ${lista[0].class}"
         def grupos = Grupo.findAllByIdInList(params.tipo)
-        println "grupos: ${grupos}"
-//        def res = Composicion.findAll("from Composicion where obra=${params.id} and grupo in (${params.tipo})")
+//        println "grupos: ${grupos}"
         def res = Composicion.findAllByObraAndGrupoInList(obra, grupos)
         res.sort { it.item.codigo }
 
@@ -266,10 +263,9 @@ class ComposicionController {
             tieneMatriz = d.cuenta > 0
         }
 
-        println "--> $params"
+//        println "--> $params"
         return [res: res, obra: obra, tipo: params.tipo, rend: params.rend, campos: campos, duenoObra: duenoObra,
                 persona: persona, tieneMatriz: tieneMatriz]
-
     }
 
     def formArchivo() {

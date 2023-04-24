@@ -8,11 +8,6 @@
     <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/css/jquery.dataTables.css"/>
     <asset:javascript src="/jquery/plugins/box/css/jquery.luz.box.css"/>
 
-    %{--<script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
     <title>Composición de la obra</title>
 
     <style>
@@ -33,7 +28,8 @@
 
 <body>
 <div class="hoja">
-    <div class="tituloChevere">Valores para la obra: ${obra?.descripcion}</div>
+%{--    <div class="tituloChevere"> ${obra?.descripcion}</div>--}%
+    <div class="span12" style="color: #1a7031; font-size: 18px; margin-bottom: 10px">Valores para la obra: <strong>${obra?.descripcion}</strong> </div>
 
     <g:if test="${flash.message}">
         <div class="col-md-12">
@@ -46,12 +42,12 @@
 
     <div class="btn-toolbar" style="margin-top: 15px;">
         <div class="btn-group">
-            <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn "
+            <a href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}" class="btn btn-primary"
                title="Regresar a la obra">
                 <i class="fa fa-arrow-left"></i>
                 Regresar Obra
             </a>
-            <a href="${g.createLink(controller: 'variables', action: 'composicion', params: [id: obra?.id])}" class="btn "
+            <a href="${g.createLink(controller: 'variables', action: 'composicion', params: [id: obra?.id])}" class="btn btn-info"
                title="Regresar a la obra">
                 <i class="fa fa-arrow-left"></i>
                 Regresar Composición
@@ -61,32 +57,31 @@
         <div class="btn-group">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id &&
                     duenoObra == 1 && obra?.estado != 'R')}">
-                <a href="${g.createLink(action:'formArchivo')}" class="btn" id="${obra.id}">
+                <a href="${g.createLink(action:'formArchivo')}" class="btn btn-success" id="${obra.id}">
                     <i class="fa fa-upload"></i> Cargar Excel
                 </a>
-                <a href="#" class="btn recargarComp" title="Recargar Composición" id="${obra.id}">
+                <a href="#" class="btn recargarComp btn-info" title="Recargar Composición" id="${obra.id}">
                     <i class="fa fa-upload"></i>
                     Recargar Composición
                 </a>
             </g:if>
         </div>
 
-        %{--tipo: ${tipo}--}%
         <div class="btn-group" data-toggle="buttons-radio" style="margin-left: 80px">
             <a href="#" id="btnTodos" class="btn btn-info toggle pdf ${tipo.toString().contains(",") ? 'active' : ''} -1">
-                <i class="icon-cogs"></i>
+                <i class="fa fa-cogs"></i>
                 Todos
             </a>
             <a href="#" id="btnMateriales" class="btn btn-info toggle pdf ${tipo.toString() == '[1]' ? 'active' : ''} 1">
-                <i class="icon-briefcase"></i>
+                <i class="fa fa-briefcase"></i>
                 Materiales
             </a>
             <a href="#" id="btnManoObra" class="btn btn-info toggle pdf ${tipo.toString() == '[2]' ? 'active' : ''} 2">
-                <i class="icon-group"></i>
+                <i class="fa fa-users"></i>
                 Mano de obra
             </a>
             <a href="#" id="btnEquipos" class="btn btn-info toggle pdf ${tipo.toString() == '[3]' ? 'active' : ''} 3">
-                <i class="icon-truck"></i>
+                <i class="fa fa-truck"></i>
                 Equipos
             </a>
         </div>
@@ -131,13 +126,13 @@
             <div class="col-md-1" style="padding-top:30px">
                 <input type="hidden" value="" id="vol_id">
                 <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1 && obra?.estado != 'R')}">
-                    <a href="#" class="btn btn-xs btn-primary" title="agregar" style="margin-top: -25px" id="item_agregar">
+                    <a href="#" class="btn btn-xs btn-success" title="agregar" style="margin-top: -25px" id="item_agregar">
                         <i class="fa fa-plus"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-small btn-primary hidden" title="Guardar" style="margin-top: -25px" id="guardarEdicion">
+                    <a href="#" class="btn btn-xs btn-small btn-success hidden" title="Guardar" style="margin-top: -25px" id="guardarEdicion">
                         <i class="fa fa-save"></i>
                     </a>
-                    <a href="#" class="btn btn-xs btn-small btn-primary hidden" title="Cancelar" style="margin-top: -25px" id="cancelar">
+                    <a href="#" class="btn btn-xs btn-small btn-warning hidden" title="Cancelar" style="margin-top: -25px" id="cancelar">
                         <i class="fa fa-ban"></i>
                     </a>
                 </g:if>
@@ -227,7 +222,7 @@
                         <td>${r?.grupo}</td>
                     </g:if>
                     <td style="text-align: center; width: 75px" class="col_delete">
-                        <a class="btn btn-xs btn-primary editarItem" href="#" rel="tooltip" title="Editar"
+                        <a class="btn btn-xs btn-success editarItem" href="#" rel="tooltip" title="Editar"
                            data-id="${r.id}" data-precio="${r.precio}" data-cant="${r.cantidad}"
                            data-uni="${r.item.unidad.codigo}" data-cod="${r.item.codigo}" data-nom="${r.item.nombre}" data-item="${r.item.id}">
                             <i class="fa fa-edit"></i>
@@ -447,62 +442,47 @@
         $("#item_nombre").val('');
         $("#item_codigo").val('');
         $("#cancelar").addClass("hidden");
-        $("#guardarEdicion").addClass("hidden")
+        $("#guardarEdicion").addClass("hidden");
         $("#item_agregar").removeClass("hidden")
     }
 
     $(".borrarItem").click(function (){
         var id = $(this).data("id");
-        $.box({
-            imageClass: "box_info",
-            text: "Está seguro de eliminar este item de la composición?",
-            title: "Eliminar Item",
-            dialog: {
-                resizable: false,
-                draggable: false,
-                width: 340,
-                height: 180,
-                buttons: {
-                    "Aceptar": function () {
-                        $("#dlgLoad").dialog("open");
-                        $.ajax({
-                            type: 'POST',
-                            url: '${createLink(controller: 'composicion', action: 'borrarItem_ajax')}',
-                            data:{
-                                id: id
-                            },
-                            success: function (msg) {
-                                $("#dlgLoad").dialog("close");
-                                if(msg == 'ok'){
-                                    $.box({
-                                        imageClass: "box_info",
-                                        text: "Item eliminado correctamente",
-                                        title: "Alerta",
-                                        iconClose: false,
-                                        dialog: {
-                                            resizable: false,
-                                            draggable: false,
-                                            buttons: {
-                                                "Aceptar": function () {
-                                                    location.reload(true)
-                                                }
-                                            }
-                                        }
-                                    });
-                                }else{
-                                    caja("Error al eliminar el item","Error")
-                                }
-                            }
-                        })
-                    },
-                    "Cancelar": function () {
 
-                    }
+        bootbox.confirm({
+            title: "Eliminar item",
+            message: "Está seguro de querer eliminar este item de la composición? Esta acción no puede deshacerse",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    $.ajax({
+                        type    : "POST",
+                        url     : "${createLink(controller: 'composicion', action: 'borrarItem_ajax')}",
+                        data    : {
+                            id : id
+                        },
+                        success : function (msg) {
+                            if (msg === "ok") {
+                                reset();
+                                log("Item borrado correctamente", "success");
+                            } else {
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al borrar el item" + '</strong>');
+                            }
+                        }
+                    });
                 }
             }
         });
     });
-
 
     function caja(texto, titulo){
         return $.box({
