@@ -1,6 +1,8 @@
 package janus
 
-class SubgrupoItems implements Serializable {
+import audita.Auditable
+
+class SubgrupoItems implements Auditable {
 
     Grupo grupo
     String codigo

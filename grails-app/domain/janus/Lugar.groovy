@@ -1,8 +1,10 @@
 package janus
 
+import audita.Auditable
+
 //import janus.construye.Empresa
 
-class Lugar implements Serializable {
+class Lugar implements Auditable {
     int codigo
     String descripcion
     String tipo

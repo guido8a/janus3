@@ -1,6 +1,8 @@
 package janus
 
-class ClaseObra implements Serializable {
+import audita.Auditable
+
+class ClaseObra implements Auditable {
     int codigo
     String descripcion
     String tipo

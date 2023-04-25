@@ -1,8 +1,9 @@
 package janus
 
+import audita.Auditable
 import janus.pac.Anio
 
-class Presupuesto implements Serializable {
+class Presupuesto implements Auditable {
     Anio anio;
     FuenteFinanciamiento fuente;
     String numero

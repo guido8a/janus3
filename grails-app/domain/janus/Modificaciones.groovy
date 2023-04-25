@@ -1,6 +1,8 @@
 package janus
 
-class Modificaciones implements Serializable {
+import audita.Auditable
+
+class Modificaciones implements Auditable {
 
     Obra obra
     String tipo

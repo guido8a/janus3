@@ -1,6 +1,8 @@
 package janus
 
-class Provincia implements Serializable {
+import audita.Auditable
+
+class Provincia implements Auditable {
     String numero
     String nombre
     double longitud

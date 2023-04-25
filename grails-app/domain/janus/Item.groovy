@@ -1,10 +1,12 @@
 package janus
 
+import audita.Auditable
+
 //import janus.construye.Empresa
 import janus.pac.CodigoComprasPublicas
 import seguridad.Persona
 
-class Item implements Serializable {
+class Item implements Auditable {
     Persona responsable
     Unidad unidad
     TipoItem tipoItem

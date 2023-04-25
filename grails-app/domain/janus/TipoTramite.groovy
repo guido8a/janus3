@@ -1,6 +1,8 @@
 package janus
 
-class TipoTramite implements Serializable {
+import audita.Auditable
+
+class TipoTramite implements Auditable {
     TipoTramite padre
     String codigo
     int tiempo

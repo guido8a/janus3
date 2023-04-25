@@ -1,6 +1,8 @@
 package janus
 
-class Nota implements Serializable {
+import audita.Auditable
+
+class Nota implements Auditable {
 
     String obraTipo
 

@@ -1,6 +1,8 @@
 package janus
 
-class DepartamentoItem implements Serializable {
+import audita.Auditable
+
+class DepartamentoItem implements Auditable {
 
     SubgrupoItems subgrupo
     Transporte transporte

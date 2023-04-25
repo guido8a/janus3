@@ -1,6 +1,8 @@
 package janus
 
-class Programacion implements Serializable {
+import audita.Auditable
+
+class Programacion implements Auditable {
     String descripcion
     Date fechaInicio
     Date fechaFin

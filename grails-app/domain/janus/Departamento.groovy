@@ -1,6 +1,8 @@
 package janus
 
-class Departamento implements Serializable {
+import audita.Auditable
+
+class Departamento implements Auditable {
     String descripcion
     Direccion direccion
     String permisos

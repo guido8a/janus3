@@ -1,6 +1,8 @@
 package janus
 
-class Cronograma implements Serializable {
+import audita.Auditable
+
+class Cronograma implements Auditable {
 
     VolumenesObra volumenObra
     Integer periodo

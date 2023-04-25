@@ -1,5 +1,6 @@
 package janus
 
+import audita.Auditable
 import janus.ejecucion.PeriodosInec
 import janus.pac.Oferta
 import janus.pac.Proveedor
@@ -7,7 +8,7 @@ import janus.pac.TipoContrato
 import janus.pac.TipoPlazo
 import seguridad.Persona
 
-class Contrato implements Serializable {
+class Contrato implements Auditable {
 
     Oferta oferta
     TipoContrato tipoContrato

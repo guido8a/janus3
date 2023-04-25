@@ -1,6 +1,8 @@
 package janus
 
-class VaeItems implements Serializable {
+import audita.Auditable
+
+class VaeItems implements Auditable {
     Item item
     Date fecha
     double porcentaje

@@ -1,6 +1,8 @@
 package janus
 
-class RolTramite implements Serializable{
+import audita.Auditable
+
+class RolTramite implements Auditable{
 
     String codigo
     String descripcion

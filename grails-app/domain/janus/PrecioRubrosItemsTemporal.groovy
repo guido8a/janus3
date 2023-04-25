@@ -1,6 +1,8 @@
 package janus
 
-class PrecioRubrosItemsTemporal implements Serializable {
+import audita.Auditable
+
+class PrecioRubrosItemsTemporal implements Auditable {
     Item item
     Lugar lugar
     Date fecha

@@ -1,11 +1,12 @@
 package janus.seguridad
 
+import audita.Auditable
 import seguridad.Accn
 import seguridad.Persona
 import seguridad.Prfl
 
 
-class Usos implements Serializable{
+class Usos implements Auditable{
 
     Persona persona
     Prfl perfil

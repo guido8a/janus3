@@ -1,6 +1,8 @@
 package janus.ejecucion
 
-class DescuentoTipoPlanilla implements Serializable {
+import audita.Auditable
+
+class DescuentoTipoPlanilla implements Auditable {
 
      TipoPlanilla tipoPlanilla
      TipoDescuentoPlanilla tipoDescuentoPlanilla

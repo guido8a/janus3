@@ -1,6 +1,8 @@
 package janus
 
-class Indice implements Serializable {
+import audita.Auditable
+
+class Indice implements Auditable {
     TipoIndice tipoIndice
     String codigo
     String descripcion

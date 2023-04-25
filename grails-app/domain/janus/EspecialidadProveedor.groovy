@@ -1,6 +1,8 @@
 package janus
 
-class EspecialidadProveedor implements Serializable {
+import audita.Auditable
+
+class EspecialidadProveedor implements Auditable {
     String descripcion
     static auditable = true
     static mapping = {

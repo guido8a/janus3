@@ -1,7 +1,9 @@
 package seguridad
 
+import audita.Auditable
 
-class Sesn {
+
+class Sesn implements Auditable {
     static auditable = true
     Persona usuario
     Prfl perfil

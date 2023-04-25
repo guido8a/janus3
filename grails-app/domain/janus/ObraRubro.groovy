@@ -1,6 +1,8 @@
 package janus
 
-class ObraRubro implements Serializable {
+import audita.Auditable
+
+class ObraRubro implements Auditable {
     String codigo
     String rubro
     String unidad

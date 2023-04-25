@@ -1,6 +1,8 @@
 package janus
 
-class SubPresupuesto implements Serializable {
+import audita.Auditable
+
+class SubPresupuesto implements Auditable {
     String descripcion
     String tipo
     Grupo grupo

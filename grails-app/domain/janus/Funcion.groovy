@@ -1,6 +1,8 @@
 package janus
 
-class Funcion implements Serializable {
+import audita.Auditable
+
+class Funcion implements Auditable {
     String codigo
     String descripcion
     static auditable = true

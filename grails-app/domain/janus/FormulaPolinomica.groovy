@@ -1,6 +1,8 @@
 package janus
 
-class FormulaPolinomica implements Serializable {
+import audita.Auditable
+
+class FormulaPolinomica implements Auditable {
     Obra obra
     Indice indice
     String numero

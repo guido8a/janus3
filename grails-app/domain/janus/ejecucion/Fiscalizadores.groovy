@@ -1,9 +1,10 @@
 package janus.ejecucion
 
+import audita.Auditable
 import janus.Contrato
 import seguridad.Persona
 
-class Fiscalizadores implements Serializable {
+class Fiscalizadores implements Auditable {
 
      Persona persona
      Contrato contrato

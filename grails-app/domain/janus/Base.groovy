@@ -1,8 +1,9 @@
 package janus
 
+import audita.Auditable
 import janus.pac.Proveedor
 
-class Base implements Serializable {
+class Base implements Auditable {
     Proveedor precioVenta
     Concurso2 concurso
     Date fecha

@@ -1,6 +1,8 @@
 package janus
 
-class Tramite implements Serializable {
+import audita.Auditable
+
+class Tramite implements Auditable {
     janus.ejecucion.Planilla planilla
     Obra obra
     TipoTramite tipoTramite

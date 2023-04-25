@@ -1,6 +1,8 @@
 package janus
 
-class Grupo implements Serializable {
+import audita.Auditable
+
+class Grupo implements Auditable {
 
     String codigo
     String descripcion

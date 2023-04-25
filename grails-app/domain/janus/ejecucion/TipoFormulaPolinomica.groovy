@@ -1,6 +1,8 @@
 package janus.ejecucion
 
-class TipoFormulaPolinomica implements Serializable {
+import audita.Auditable
+
+class TipoFormulaPolinomica implements Auditable {
 
     String codigo
     String descripcion

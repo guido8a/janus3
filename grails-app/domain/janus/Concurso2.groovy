@@ -1,6 +1,8 @@
 package janus
 
-class Concurso2 implements Serializable {
+import audita.Auditable
+
+class Concurso2 implements Auditable {
 
     Obra obra
     TipoCuenta tipoCuenta

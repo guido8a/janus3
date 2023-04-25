@@ -1,8 +1,9 @@
 package janus.apus
 
+import audita.Auditable
 import janus.Item
 
-class ArchivoEspecificacion implements Serializable {
+class ArchivoEspecificacion implements Auditable {
     Item item
     String codigo
     String ruta

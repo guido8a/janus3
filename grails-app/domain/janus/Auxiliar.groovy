@@ -1,6 +1,8 @@
 package janus
 
-class Auxiliar implements Serializable {
+import audita.Auditable
+
+class Auxiliar implements Auditable {
 //    String sbdr
 //    String prcr
 //    String drtr

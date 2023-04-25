@@ -1,6 +1,8 @@
 package janus
 
-class TipoItem implements Serializable {
+import audita.Auditable
+
+class TipoItem implements Auditable {
     String codigo
     String descripcion
     static auditable = true

@@ -1,8 +1,9 @@
 package janus
 
+import audita.Auditable
 import seguridad.Persona
 
-class Parametros implements Serializable {
+class Parametros implements Auditable {
     //int indicador
     String codigo
     String nombre

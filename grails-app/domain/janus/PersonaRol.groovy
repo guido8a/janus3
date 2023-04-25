@@ -1,8 +1,9 @@
 package janus
 
+import audita.Auditable
 import seguridad.Persona
 
-class PersonaRol implements Serializable {
+class PersonaRol implements Auditable {
     Persona persona
     Funcion funcion
     static mapping = {

@@ -1,8 +1,9 @@
 package janus
 
+import audita.Auditable
 import seguridad.Persona
 
-class PersonasTramite implements Serializable{
+class PersonasTramite implements Auditable{
     Tramite tramite
     RolTramite rolTramite
     Persona persona

@@ -1,8 +1,9 @@
 package janus.ejecucion
 
+import audita.Auditable
 import janus.SubPresupuesto
 
-class FormulaSubpresupuesto implements Serializable {
+class FormulaSubpresupuesto implements Auditable {
 
     SubPresupuesto subPresupuesto
     FormulaPolinomicaReajuste reajuste

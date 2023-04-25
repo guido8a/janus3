@@ -1,6 +1,8 @@
 package janus
 
-class VolumenesObra implements Serializable {
+import audita.Auditable
+
+class VolumenesObra implements Auditable {
     SubPresupuesto subPresupuesto
     Item item
     Obra obra

@@ -1,6 +1,8 @@
 package janus.ejecucion
 
-class EstadoPlanilla implements Serializable{
+import audita.Auditable
+
+class EstadoPlanilla implements Auditable{
 
       String codigo
       String nombre

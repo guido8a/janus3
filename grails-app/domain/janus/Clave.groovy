@@ -1,6 +1,8 @@
 package janus
 
-class Clave implements Serializable {
+import audita.Auditable
+
+class Clave implements Auditable {
     String clave
     String dlgd
     static auditable = true

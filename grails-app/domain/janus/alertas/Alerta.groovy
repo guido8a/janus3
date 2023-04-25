@@ -1,8 +1,9 @@
 package janus.alertas
 
+import audita.Auditable
 import seguridad.Persona
 
-class Alerta implements Serializable{
+class Alerta implements Auditable{
 
     Persona from
     Persona usro

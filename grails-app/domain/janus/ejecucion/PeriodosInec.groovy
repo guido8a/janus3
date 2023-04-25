@@ -1,8 +1,9 @@
 package janus.ejecucion
 
+import audita.Auditable
 import org.codehaus.groovy.runtime.DateGroovyMethods
 
-class PeriodosInec implements Serializable {
+class PeriodosInec implements Auditable {
     String descripcion
     Date fechaInicio
     Date fechaFin

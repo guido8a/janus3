@@ -1,6 +1,8 @@
 package janus
 
-class ObraVolumenes implements Serializable {
+import audita.Auditable
+
+class ObraVolumenes implements Auditable {
     String columnaCodigo
     String codigo
     double valor

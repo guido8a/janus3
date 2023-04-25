@@ -1,9 +1,10 @@
 package janus.ejecucion
 
+import audita.Auditable
 import janus.Contrato
 import janus.Indice
 
-class FormulaPolinomicaContractual implements Serializable {
+class FormulaPolinomicaContractual implements Auditable {
 
     Contrato contrato
     TipoFormulaPolinomica tipoFormulaPolinomica

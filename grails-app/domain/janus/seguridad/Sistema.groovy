@@ -1,6 +1,8 @@
 package janus.seguridad
 
-class Sistema implements Serializable{
+import audita.Auditable
+
+class Sistema implements Auditable{
     String nombre
     String descripcion
     

@@ -1,11 +1,12 @@
 package janus
 
+import audita.Auditable
 import janus.pac.CodigoComprasPublicas
 import seguridad.Persona
 
 //import janus.construye.Empresa
 
-class Obra implements Serializable {
+class Obra implements Auditable {
     Persona responsableObra
     Persona revisor
     Persona inspector

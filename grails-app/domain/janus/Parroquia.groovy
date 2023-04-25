@@ -1,6 +1,8 @@
 package janus
 
-class Parroquia implements Serializable {
+import audita.Auditable
+
+class Parroquia implements Auditable {
     Canton canton
     String codigo
     String nombre

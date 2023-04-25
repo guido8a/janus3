@@ -1,6 +1,8 @@
 package janus
 
-class Transporte implements Serializable {
+import audita.Auditable
+
+class Transporte implements Auditable {
     String codigo
     String descripcion
     static auditable = true

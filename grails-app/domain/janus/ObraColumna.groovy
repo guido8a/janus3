@@ -1,6 +1,8 @@
 package janus
 
-class ObraColumna implements Serializable {
+import audita.Auditable
+
+class ObraColumna implements Auditable {
     String descripcion
     String tipo
     String extn

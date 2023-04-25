@@ -1,6 +1,8 @@
 package janus
 
-class TipoObra implements Serializable {
+import audita.Auditable
+
+class TipoObra implements Auditable {
     String codigo
     String descripcion
     Grupo grupo

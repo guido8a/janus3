@@ -1,6 +1,8 @@
 package janus
 
-class Comunidad implements Serializable {
+import audita.Auditable
+
+class Comunidad implements Auditable {
     Parroquia parroquia
     String numero
     String nombre

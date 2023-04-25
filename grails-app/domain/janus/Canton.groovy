@@ -1,6 +1,8 @@
 package janus
 
-class Canton implements Serializable {
+import audita.Auditable
+
+class Canton implements Auditable {
     Provincia provincia
     String numero
     String nombre

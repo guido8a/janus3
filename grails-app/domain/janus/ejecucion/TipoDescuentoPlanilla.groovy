@@ -1,6 +1,8 @@
 package janus.ejecucion
 
-class TipoDescuentoPlanilla implements Serializable{
+import audita.Auditable
+
+class TipoDescuentoPlanilla implements Auditable{
 
      String nombre
      double porcentaje

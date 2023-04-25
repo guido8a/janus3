@@ -1,6 +1,8 @@
 package janus
 
-class Administracion implements Serializable {
+import audita.Auditable
+
+class Administracion implements Auditable {
     String nombrePrefecto
     String descripcion
     Date fechaInicio

@@ -1,6 +1,8 @@
 package janus
 
-class ItemsFormulaPolinomica implements Serializable {
+import audita.Auditable
+
+class ItemsFormulaPolinomica implements Auditable {
     FormulaPolinomica formulaPolinomica
     Item item
     Double valor
