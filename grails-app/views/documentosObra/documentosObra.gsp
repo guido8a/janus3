@@ -602,23 +602,21 @@
                     <g:hiddenField name="obra" value="${obra?.id}"/>
 
                     <div class="col-md-12">
-                        Título
+                        <label>Título</label>
                         <g:textField name="titulo" class="form-control" value="${auxiliarFijo?.titulo}" style="width: 560px"
                                      disabled="true"/>
                     </div>
 
                     <div class="col-md-12">
-                        Base de Contratos
-                        <g:textArea name="baseCont" value="${auxiliarFijo?.baseCont}" rows="4" cols="4"
-                                    style="width: 665px; height: 35px; resize: none;" disabled="true"/>
+                        <label>Base de Contratos</label>
+                        <g:textArea name="baseCont" class="form-control" value="${auxiliarFijo?.baseCont}" rows="4" cols="4"
+                                    style="width: 665px; height: 40px; resize: none;" disabled="true"/>
                     </div>
 
                     <div class="col-md-12">
-                        Presupuesto Referencial
-
+                        <label>Presupuesto Referencial</label>
                         <g:textArea name="presupuestoRef" class="form-control" value="${auxiliarFijo?.presupuestoRef}"
                                     rows="4" cols="4" style="width: 665px; height: 35px; resize: none;" disabled="true"/>
-
                     </div>
                 </g:form>
                 <div class="row btn-group" style="margin-left: 280px; margin-bottom: 10px">
@@ -640,7 +638,7 @@
                         NOTA (15 líneas aproximadamente)
                         <div class="col-md-12">
                             <g:textArea name="notaAuxiliar" class="form-control" value="${auxiliarFijo?.notaAuxiliar}" rows="4"
-                                        cols="4" style="width: 665px; height: 280px; resize: none;" disabled="true"/></div>
+                                        cols="4" style="width: 665px; height: 260px; resize: none;" disabled="true"/></div>
                     </div>
                 </g:form>
 
@@ -812,9 +810,7 @@
                     <div class="col-md-8">TOTAL:</div>
                     <div class="col-md-2" style="margin-left: 0px"><g:textField name="totalMemoPresu" style="width: 100px" disabled="true"/></div>
                 </div>
-
             </fieldset>
-
         </div>
 
 
@@ -1403,10 +1399,9 @@
                     firmasFijasMemo = "";
                 }
 
-                if (tipoClickMemo === 1) {
+                if (tipoClickMemo === '1') {
                     $("#reajusteMemoDialog").dialog("open")
-                }
-                else {
+                }else {
                     var tipoReporte = tipoClickMemo;
 
                     $.ajax({

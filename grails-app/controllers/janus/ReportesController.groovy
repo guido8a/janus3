@@ -6977,7 +6977,7 @@ class ReportesController {
         def indi = obra.totales
         WorkbookSettings workbookSettings = new WorkbookSettings()
         workbookSettings.locale = Locale.default
-        def file = File.createTempFile('matrizFP' + obra.codigo, '.xls')
+        def file = File.createTempFile('matrizFP' + obra.codigo, '.xlsx')
         file.deleteOnExit()
         WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
 
@@ -7023,7 +7023,6 @@ class ReportesController {
         // crea columnas
 
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by  1"
-//        println "sql desc " + sql
         def subSql = ""
         def sqlVl = ""
         def clmn = 0
@@ -7044,14 +7043,12 @@ class ReportesController {
         }
         fila++
         def sqlRb = "SELECT orden, codigo, rubro, unidad, cantidad from mfrb where obra__id = ${obra.id} order by orden"
-//        println "sql desc " + sqlRb
         def number
         cn.eachRow(sqlRb.toString()) { r ->
             4.times {
                 label = new Label(it, fila, r[it]?.toString() ?: "", times08format); sheet.addCell(label);
             }
             number = new Number(4, fila, r.cantidad?.toDouble()?.round(3) ?: 0, times08format); sheet.addCell(number);
-
             fila++
         }
 
@@ -7064,9 +7061,7 @@ class ReportesController {
                 if (r.clmntipo != "R") {
                     subSql = "select valor from mfvl where clmncdgo = ${r.clmncdgo} and codigo='${rb.codigo.trim()}' and " +
                             "obra__id = ${obra.id}"
-                    //println subSql
                     cn2.eachRow(subSql.toString()) { v ->
-//                        label = new Label(clmn++, fila, v.valor.toString(), times08format); sheet.addCell(label);
                         number = new Number(clmn++, fila, v.valor?.toDouble()?.round(5) ?: 0.00000, times08format); sheet.addCell(number);
                     }
                 }
@@ -7078,7 +7073,7 @@ class ReportesController {
         workbook.write();
         workbook.close();
         def output = response.getOutputStream()
-        def header = "attachment; filename=" + "matriz.xls";
+        def header = "attachment; filename=" + "matriz.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());

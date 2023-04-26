@@ -14,8 +14,8 @@
 
     <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
     <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
-    <asset:javascript src="/jquery/plugins/editable/bootstrap-editable/js/bootstrap-editable.js"/>
-    <asset:javascript src="/jquery/plugins/editable/inputs-ext/coords/coords.js"/>
+%{--    <asset:javascript src="/jquery/plugins/editable/bootstrap-editable/js/bootstrap-editable.js"/>--}%
+%{--    <asset:javascript src="/jquery/plugins/editable/inputs-ext/coords/coords.js"/>--}%
     <asset:javascript src="/jquery/plugins/jgrowl/jquery.jgrowl.js"/>
 
     <asset:javascript src="/jquery/plugins/jstree/jstreegrid.js"/>
