@@ -143,37 +143,42 @@ class ReportesExcelController {
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
         Row row0 = sheet.createRow(1)
-        row0.createCell(2).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
         Row rowT = sheet.createRow(2)
-        rowT.createCell(2).setCellValue("")
+        rowT.createCell(1).setCellValue("")
         Row rowT3 = sheet.createRow(3)
-        rowT3.createCell(2).setCellValue(obra?.departamento?.direccion?.nombre ?: '')
+        rowT3.createCell(1).setCellValue(obra?.departamento?.direccion?.nombre ?: '')
         Row rowT4 = sheet.createRow(4)
-        rowT4.createCell(2).setCellValue("Matriz de la Fórmula Polinómica")
+        rowT4.createCell(1).setCellValue("Matriz de la Fórmula Polinómica")
         Row rowT5 = sheet.createRow(5)
-        rowT5.createCell(2).setCellValue("")
+        rowT5.createCell(1).setCellValue("")
         Row rowT6 = sheet.createRow(6)
-        rowT6.createCell(2).setCellValue("Obra: ${obra.nombre ?: ''}")
+        rowT6.createCell(1).setCellValue("Obra: ${obra.nombre ?: ''}")
         Row rowT7 = sheet.createRow(7)
-        rowT7.createCell(2).setCellValue("Código: ${obra.codigo ?: ''}")
+        rowT7.createCell(1).setCellValue("Código: ${obra.codigo ?: ''}")
         Row rowT8 = sheet.createRow(8)
-        rowT8.createCell(2).setCellValue("Memo Cant. Obra: ${obra.memoCantidadObra}")
+        rowT8.createCell(1).setCellValue("Memo Cant. Obra: ${obra.memoCantidadObra}")
         Row rowT9 = sheet.createRow(9)
-        rowT9.createCell(2).setCellValue("Doc. Referencia: ${obra.oficioIngreso}")
+        rowT9.createCell(1).setCellValue("Doc. Referencia: ${obra.oficioIngreso}")
         Row rowT10 = sheet.createRow(10)
-        rowT10.createCell(2).setCellValue("Fecha: ${obra?.fechaCreacionObra?.format("dd-MM-yyyy")}")
+        rowT10.createCell(1).setCellValue("Fecha: ${obra?.fechaCreacionObra?.format("dd-MM-yyyy")}")
         Row rowT11 = sheet.createRow(11)
-        rowT11.createCell(2).setCellValue("Fecha Act. Precios: ${obra?.fechaPreciosRubros?.format("dd-MM-yyyy")}")
+        rowT11.createCell(1).setCellValue("Fecha Act. Precios: ${obra?.fechaPreciosRubros?.format("dd-MM-yyyy")}")
         Row rowT12 = sheet.createRow(12)
-        rowT12.createCell(2).setCellValue("")
+        rowT12.createCell(1).setCellValue("")
 
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by  1"
         def subSql = ""
         def sqlVl = ""
         def clmn = 0
         def col = ""
+        def columna = 0
+        def columna1 = 0
+        def columna2 = 5
+        def fila = 0
+
+        Row row1 = sheet.createRow(13)
         cn.eachRow(sql.toString()) { r ->
-            Row row1 = sheet.createRow(13)
             col = r[1]
             if (r[2] != "R") {
                 def parts = r[1].split("_")
@@ -185,9 +190,41 @@ class ReportesExcelController {
                 }
                 col += " " + parts[1]?.replaceAll("T", " Total")?.replaceAll("U", " Unitario")
             }
-            row1.createCell(0).setCellValue("${col}")
+            row1.createCell(columna).setCellValue("${col}")
+            columna ++
         }
 
+        def sqlRb = "SELECT orden, codigo, rubro, unidad, cantidad from mfrb where obra__id = ${obra.id} order by orden"
+//        cn.eachRow(sqlRb.toString()) { r ->
+//            Row row2 = sheet.createRow(columna1 + 14)
+//            4.times {
+//                row2.createCell(it).setCellValue(r[it].toString() ?: "")
+//            }
+//            row2.createCell(4).setCellValue(r?.cantidad?.toDouble()?.round(3) ?: 0)
+//            columna1++
+//        }
+
+//        sql = "SELECT clmncdgo, clmntipo from mfcl where obra__id = ${obra.id} order by  1"
+        cn.eachRow(sqlRb.toString()) { rb ->
+            Row row3 = sheet.createRow(fila + 14)
+
+            4.times {
+                row3.createCell(it).setCellValue(rb[it]?.toString() ?: "")
+            }
+            row3.createCell(4).setCellValue(rb?.cantidad?.toDouble()?.round(3) ?: 0)
+
+            cn1.eachRow(sql.toString()) { r ->
+                if (r.clmntipo != "R") {
+                    subSql = "select valor from mfvl where clmncdgo = ${r.clmncdgo} and codigo='${rb.codigo.trim()}' and " +
+                            "obra__id = ${obra.id}"
+                    cn2.eachRow(subSql.toString()) { v ->
+                        row3.createCell(columna2++).setCellValue(v.valor?.toDouble()?.round(5) ?: 0.00000)
+                    }
+                }
+            }
+            columna2 = 5
+            fila++
+        }
 
 
 //        Row row1 = sheet.createRow(3)
