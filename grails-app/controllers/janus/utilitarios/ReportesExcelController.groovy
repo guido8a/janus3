@@ -4,9 +4,14 @@ import janus.Auxiliar
 import janus.Item
 import janus.Obra
 import janus.VolumenesObra
+import org.apache.poi.hssf.usermodel.HSSFCellStyle
+import org.apache.poi.hssf.usermodel.HSSFFont
+import org.apache.poi.hssf.usermodel.HSSFWorkbook
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 class ReportesExcelController {
@@ -133,6 +138,10 @@ class ReportesExcelController {
         preciosService.ac_rbroObra(obra.id)
 
         XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
 
         VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i ->
 
@@ -146,35 +155,40 @@ class ReportesExcelController {
             def fila = 10
             def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rubro.id)
             Sheet sheet = wb.createSheet(rubro.codigo)
-//            rubroAExcel(sheet, res, rubro, fecha, indi)
 
             Row row = sheet.createRow(0)
             row.createCell(0).setCellValue("")
             Row row0 = sheet.createRow(1)
             row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+            row0.setRowStyle(style)
             Row row1 = sheet.createRow(2)
             row1.createCell(1).setCellValue("DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS")
+            row1.setRowStyle(style)
             Row row2 = sheet.createRow(3)
             row2.createCell(1).setCellValue("ANÁLISIS DE PRECIOS UNITARIOS")
+            row2.setRowStyle(style)
             Row row3 = sheet.createRow(4)
             row3.createCell(1).setCellValue("")
             Row row4 = sheet.createRow(5)
             row4.createCell(1).setCellValue("Fecha: " + new Date().format("dd-MM-yyyy"))
-            row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 2));
-            row4.createCell(4).setCellValue("Fecha Act. P.U: " + fecha?.format("dd-MM-yyyy"))
-            row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 4, 5));
+            row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 1, 3));
+            row4.createCell(5).setCellValue("Fecha Act. P.U: " + fecha?.format("dd-MM-yyyy"))
+            row4.sheet.addMergedRegion(new CellRangeAddress(5, 5, 5, 7));
+            row4.setRowStyle(style)
             Row row5 = sheet.createRow(6)
             row5.createCell(1).setCellValue("Código: " + rubro.codigo)
-            row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 1, 2));
-            row5.createCell(4).setCellValue("Unidad: " + rubro.unidad?.codigo)
-            row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 4, 5));
+            row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 1, 3));
+            row5.createCell(5).setCellValue("Unidad: " + rubro.unidad?.codigo)
+            row5.sheet.addMergedRegion(new CellRangeAddress(6, 6, 5, 7));
+            row5.setRowStyle(style)
             Row row6 = sheet.createRow(7)
             row6.createCell(1).setCellValue("Descripción: " + rubro.nombre)
-            row6.sheet.addMergedRegion(new CellRangeAddress(7, 7, 1, 4));
+            row6.setRowStyle(style)
 
             Row rowT1 = sheet.createRow(9)
             rowT1.createCell(0).setCellValue("Equipos")
-            rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 1, 2));
+            rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2));
+            rowT1.setRowStyle(style)
 
             res.each { r ->
                 if (r["grpocdgo"] == 3) {
@@ -188,6 +202,7 @@ class ReportesExcelController {
                         rowC1.createCell(5).setCellValue("Costo")
                         rowC1.createCell(6).setCellValue("Rendimiento")
                         rowC1.createCell(7).setCellValue("C.Total")
+                        rowC1.setRowStyle(style)
                         fila++
                     }
                     band = 1
@@ -214,7 +229,8 @@ class ReportesExcelController {
                         fila++
                         Row rowT2 = sheet.createRow(fila)
                         rowT2.createCell(0).setCellValue("Mano de obra")
-                        rowT2.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 1, 2));
+                        rowT2.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+                        rowT2.setRowStyle(style)
                         fila++
                         Row rowC2 = sheet.createRow(fila)
                         rowC2.createCell(0).setCellValue("Código")
@@ -225,6 +241,7 @@ class ReportesExcelController {
                         rowC2.createCell(5).setCellValue("Costo")
                         rowC2.createCell(6).setCellValue("Rendimiento")
                         rowC2.createCell(7).setCellValue("C.Total")
+                        rowC2.setRowStyle(style)
                         fila++
                     }
                     band = 2
@@ -252,7 +269,8 @@ class ReportesExcelController {
                         fila++
                         Row rowT3 = sheet.createRow(fila)
                         rowT3.createCell(0).setCellValue("Materiales")
-                        rowT3.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 1, 2));
+                        rowT3.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+                        rowT3.setRowStyle(style)
                         fila++
                         Row rowC3 = sheet.createRow(fila)
                         rowC3.createCell(0).setCellValue("Código")
@@ -261,6 +279,7 @@ class ReportesExcelController {
                         rowC3.createCell(3).setCellValue("Cantidad")
                         rowC3.createCell(4).setCellValue("Unitario")
                         rowC3.createCell(7).setCellValue("C.Total")
+                        rowC3.setRowStyle(style)
                         fila++
                     }
                     band = 3
@@ -293,7 +312,8 @@ class ReportesExcelController {
                     fila++
                     Row rowT4 = sheet.createRow(fila)
                     rowT4.createCell(0).setCellValue("Transporte")
-                    rowT4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 1, 2));
+                    rowT4.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+                    rowT4.setRowStyle(style)
                     fila++
                     Row rowC4 = sheet.createRow(fila)
                     rowC4.createCell(0).setCellValue("Código")
@@ -304,6 +324,7 @@ class ReportesExcelController {
                     rowC4.createCell(5).setCellValue("Distancia")
                     rowC4.createCell(6).setCellValue("Unitario")
                     rowC4.createCell(7).setCellValue("C.Total")
+                    rowC4.setRowStyle(style)
                     fila++
                     rowsTrans.each { rt ->
                         def tra = rt["parcial_t"]
@@ -331,12 +352,14 @@ class ReportesExcelController {
                 fila++
                 Row rowT5 = sheet.createRow(fila)
                 rowT5.createCell(0).setCellValue("Costos Indirectos")
-                rowT5.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 1, 2));
+                rowT5.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+                rowT5.setRowStyle(style)
                 fila++
                 Row rowC5 = sheet.createRow(fila)
                 rowC5.createCell(0).setCellValue("Descripción")
                 rowC5.createCell(6).setCellValue("Porcentaje")
                 rowC5.createCell(7).setCellValue("Valor")
+                rowC5.setRowStyle(style)
                 fila++
                 def totalRubro = total + totalHer + totalMan + totalMat
                 def totalIndi = totalRubro * indi / 100
@@ -350,18 +373,22 @@ class ReportesExcelController {
                 Row rowP6 = sheet.createRow(fila)
                 rowP6.createCell(4).setCellValue("Costo unitario directo")
                 rowP6.createCell(7).setCellValue(totalRubro)
+                rowP6.setRowStyle(style)
 
                 Row rowP7 = sheet.createRow(fila + 1)
                 rowP7.createCell(4).setCellValue("Costos indirectos")
                 rowP7.createCell(7).setCellValue(totalIndi)
+                rowP7.setRowStyle(style)
 
                 Row rowP8 = sheet.createRow(fila + 2)
                 rowP8.createCell(4).setCellValue("Costo total del rubro")
                 rowP8.createCell(7).setCellValue(totalRubro + totalIndi)
+                rowP8.setRowStyle(style)
 
                 Row rowP9 = sheet.createRow(fila + 3)
                 rowP9.createCell(4).setCellValue("Precio unitario")
                 rowP9.createCell(7).setCellValue((totalRubro + totalIndi).toDouble().round(2))
+                rowP9.setRowStyle(style)
 
         }
 
