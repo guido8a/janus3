@@ -1712,7 +1712,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                         location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
                                     },
                                     "Exportar Rubros a Excel": function () {
-                                        var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
+                                        %{--var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";--}%
+                                        var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
                                         url += "1";
                                         location.href = url;
                                     },
@@ -1801,7 +1802,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                         location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
                                     },
                                     "Exportar Rubros a Excel": function () {
-                                        var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
+                                        %{--var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";--}%
+                                        var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
                                         url += "1";
                                         location.href = url;
                                     },
