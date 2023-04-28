@@ -145,10 +145,6 @@
                 </g:link>
                 Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas
             </li>
-            <a href="${g.createLink(controller: 'reportes5', action: 'excelPlan')}" class="btn btn-ajax btn-new" id="excelReporte" title="Exportar matriz a Excel">
-                <i class="fa fa-file-excel"></i>
-                Excel
-            </a>
         </ul>
     </div>
 

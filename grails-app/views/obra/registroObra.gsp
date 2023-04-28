@@ -1793,32 +1793,28 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                                     "Con desglose de Trans.": function () {
                                         url += "1";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
                                         location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';
                                     },
                                     "Sin desglose de Trans.": function () {
                                         url += "0";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
                                         location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
                                     },
                                     "Exportar Rubros a Excel": function () {
-                                        %{--var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";--}%
                                         var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
                                         url += "1";
                                         location.href = url;
                                     },
                                     "VAE con desglose de Trans.": function () {
                                         urlVae += "1";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae--}%
                                         location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';
                                     },
                                     "VAE sin desglose de Trans.": function () {
                                         urlVae += "0";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae--}%
                                         location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
                                     },
                                     "Exportar VAE a Excel": function () {
                                         var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";
+                                        %{--var urlVaeEx = "${createLink(controller:'reportesExcel', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";--}%
                                         urlVaeEx += "1";
                                         location.href = urlVaeEx;
                                     },

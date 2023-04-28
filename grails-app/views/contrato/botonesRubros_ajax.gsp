@@ -41,7 +41,8 @@
     });
 
     $("#btnReporteVenceran").click(function () {
-        var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
+        %{--var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";--}%
+        var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
         url += "1";
         location.href = url;
     });
@@ -55,7 +56,7 @@
     });
 
     $("#btnExpVaeExcel").click(function () {
-        var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
+        var urlVaeEx = "${createLink(controller:'reportesExcel', action:'imprimirRubrosVaeExcel')}?obra=${contrato?.oferta?.concurso?.obra?.id}&transporte=";
         urlVaeEx += "1";
         location.href = urlVaeEx;
     });
