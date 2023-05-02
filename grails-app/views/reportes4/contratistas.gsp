@@ -88,7 +88,7 @@
     });
 
     $("#excel").click(function () {
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelContratistas' )}?buscador=" + $("#buscador_cont").val() + "&criterio=" + $("#criterio_cont").val()
+        location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelContratistas' )}?buscador=" + $("#buscador_cont").val() + "&criterio=" + $("#criterio_cont").val()
     });
 
     cargarTabla();

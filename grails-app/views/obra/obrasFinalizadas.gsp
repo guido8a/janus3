@@ -89,7 +89,7 @@
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportes5', action:'reporteExcelObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelObrasFinalizadas' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
     });
 
     cargarTabla();

@@ -140,7 +140,7 @@
                 Listado de obras finalizadas.
             </li>
             <li text="cnfc" class="item" texto="cnfc">
-                <g:link controller="reportes5" style="color: #FFFDF4" action="contratoFechas" file="" class="btn btn-primary btn-xs">
+                <g:link controller="reportesExcel" style="color: #FFFDF4" action="contratoFechas" file="" class="btn btn-primary btn-xs">
                     <i class="fa fa-print"></i> Detalle de Contratos y Obras contratadas
                 </g:link>
                 Reporte en Excel de los contratos y obras contratadas inluyendo valores planillados y fechas de las actas

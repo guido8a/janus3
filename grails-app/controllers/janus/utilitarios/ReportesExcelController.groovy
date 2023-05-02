@@ -16,6 +16,7 @@ class ReportesExcelController {
 
     def dbConnectionService
     def preciosService
+    def reportesService
 
     def matrizExcel() {
 
@@ -776,4 +777,640 @@ class ReportesExcelController {
         response.setHeader("Content-Disposition", header);
         wb.write(output)
     }
+
+    def contratoFechas () {
+
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from rp_contrato()"
+        def res =  cn.rows(sql.toString())
+
+        def fila = 5;
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("Fechas")
+        sheet.setColumnWidth(0, 20 * 256);
+        sheet.setColumnWidth(1, 15 * 256);
+        sheet.setColumnWidth(2, 20 * 256);
+        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(4, 10 * 256);
+        sheet.setColumnWidth(5, 20 * 256);
+        sheet.setColumnWidth(6, 50 * 256);
+        sheet.setColumnWidth(7, 20 * 256);
+        sheet.setColumnWidth(8, 20 * 256);
+        sheet.setColumnWidth(9, 20 * 256);
+        sheet.setColumnWidth(10, 20 * 256);
+        sheet.setColumnWidth(11, 20 * 256);
+        sheet.setColumnWidth(12, 20 * 256);
+        sheet.setColumnWidth(13, 20 * 256);
+        sheet.setColumnWidth(14, 20 * 256);
+        sheet.setColumnWidth(15, 20 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("FISCALIZACIÓN")
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue("CONTRATOS")
+        row2.setRowStyle(style)
+        fila++
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("CÓDIGO CONTRATO")
+        rowC1.createCell(1).setCellValue("MONTO")
+        rowC1.createCell(2).setCellValue("ANTICIPO PAGADO")
+        rowC1.createCell(3).setCellValue("TOTAL PLANILLADO")
+        rowC1.createCell(4).setCellValue("PLAZO")
+        rowC1.createCell(5).setCellValue("CÓDIGO OBRA")
+        rowC1.createCell(6).setCellValue("NOMBRE OBRA")
+        rowC1.createCell(7).setCellValue("CANTÓN")
+        rowC1.createCell(8).setCellValue("PARROQUIA")
+        rowC1.createCell(9).setCellValue("FECHA DE SUBSCRIPCIÓN")
+        rowC1.createCell(10).setCellValue("FECHA INICIO OBRA")
+        rowC1.createCell(11).setCellValue("F ADMINISTRADOR")
+        rowC1.createCell(12).setCellValue("F PIDE PAGO ANTC")
+        rowC1.createCell(13).setCellValue("FECHA FINALIZACIÓN")
+        rowC1.createCell(14).setCellValue("FECHA ACTA PROVISIONAL")
+        rowC1.createCell(15).setCellValue("FECHA ACTA DEFINITIVA")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.each{ contrato->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(contrato.cntrcdgo.toString() ?: '')
+            rowF1.createCell(1).setCellValue(contrato.cntrmnto ?: 0)
+            rowF1.createCell(2).setCellValue(contrato.cntrantc ?: 0)
+            rowF1.createCell(3).setCellValue(contrato.plnltotl ?: 0)
+            rowF1.createCell(4).setCellValue(contrato.cntrplzo ?: 0)
+            rowF1.createCell(5).setCellValue(contrato?.obracdgo?.toString() ?: '')
+            rowF1.createCell(6).setCellValue(contrato?.obranmbr?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(contrato?.cntnnmbr?.toString() ?: '')
+            rowF1.createCell(8).setCellValue(contrato?.parrnmbr?.toString() ?: '')
+            rowF1.createCell(9).setCellValue(contrato?.cntrfcsb?.toString() ?: '')
+            rowF1.createCell(10).setCellValue(contrato?.obrafcin?.toString() ?: '')
+            rowF1.createCell(11).setCellValue(contrato?.fchaadmn?.toString() ?: '')
+            rowF1.createCell(12).setCellValue(contrato?.fchapdpg?.toString() ?: '')
+            rowF1.createCell(13).setCellValue(contrato?.cntrfcfs?.toString() ?: '')
+            rowF1.createCell(14).setCellValue(contrato?.acprfcha?.toString() ?: '')
+            rowF1.createCell(15).setCellValue(contrato?.acdffcha?.toString() ?: '')
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "contratoFechas.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
+    def reporteExcelObrasFinalizadas () {
+
+        def cn = dbConnectionService.getConnection()
+        def campos = ['obracdgo', 'obranmbr', 'obradscr',
+                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr']
+        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
+                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
+                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+                "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
+                "obrafcin is not null and " +
+                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+                "order by obrafcin desc"
+        def obras = cn.rows(sql)
+
+        def fila = 5;
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("ObrasFin")
+        sheet.setColumnWidth(0, 20 * 256);
+        sheet.setColumnWidth(1, 50 * 256);
+        sheet.setColumnWidth(2, 50 * 256);
+        sheet.setColumnWidth(3, 15 * 256);
+        sheet.setColumnWidth(4, 30 * 256);
+        sheet.setColumnWidth(5, 30 * 256);
+        sheet.setColumnWidth(6, 15 * 256);
+        sheet.setColumnWidth(7, 15 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL DE OBRAS FINALIZADAS")
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue("CONTRATOS")
+        row2.setRowStyle(style)
+        fila++
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Código")
+        rowC1.createCell(1).setCellValue("Nombre")
+        rowC1.createCell(2).setCellValue("Dirección")
+        rowC1.createCell(3).setCellValue("Fecha Registro")
+        rowC1.createCell(4).setCellValue("Sitio")
+        rowC1.createCell(5).setCellValue("Parroquia - Comunidad")
+        rowC1.createCell(6).setCellValue("Fecha Inicio")
+        rowC1.createCell(7).setCellValue("Fecha Fin")
+        rowC1.setRowStyle(style)
+        fila++
+
+        obras.eachWithIndex {i, j->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i.obracdgo.toString() ?: '')
+            rowF1.createCell(1).setCellValue(i.obranmbr.toString() ?: '')
+            rowF1.createCell(2).setCellValue(i.direccion.toString() ?: '')
+            rowF1.createCell(3).setCellValue(i?.obrafcha?.format("dd-MM-yyyy")?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i?.obrasito?.toString() ?: '')
+            rowF1.createCell(5).setCellValue(i?.parrnmbr?.toString() ?: '')
+            rowF1.createCell(6).setCellValue(i?.obrafcin?.format("dd-MM-yyyy")?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(i?.obrafcfn?.format("dd-MM-yyyy")?.toString() ?: '')
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "obrasFinalizadas.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
+    def reporteExcelAvance () {
+
+        def cn = dbConnectionService.getConnection()
+        def campos = reportesService.obrasAvance()
+        params.old = params.criterio
+        params.criterio = reportesService.limpiaCriterio(params.criterio)
+        def sql = armaSqlAvance(params)
+        def obras = cn.rows(sql)
+        params.criterio = params.old
+
+        def fila = 4;
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("Avance")
+        sheet.setColumnWidth(0, 20 * 256);
+        sheet.setColumnWidth(1, 50 * 256);
+        sheet.setColumnWidth(2, 30 * 256);
+        sheet.setColumnWidth(3, 15 * 256);
+        sheet.setColumnWidth(4, 30 * 256);
+        sheet.setColumnWidth(5, 15 * 256);
+        sheet.setColumnWidth(6, 15 * 256);
+        sheet.setColumnWidth(7, 10 * 256);
+        sheet.setColumnWidth(8, 15 * 256);
+        sheet.setColumnWidth(9, 15 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL AVANCE DE OBRAS")
+        row1.setRowStyle(style)
+        fila++
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Código")
+        rowC1.createCell(1).setCellValue("Nombre")
+        rowC1.createCell(2).setCellValue("Cantón-Parroquia-Comunidad")
+        rowC1.createCell(3).setCellValue("Num. Contrato")
+        rowC1.createCell(4).setCellValue("Contratista")
+        rowC1.createCell(5).setCellValue("Monto")
+        rowC1.createCell(6).setCellValue("Fecha suscripción")
+        rowC1.createCell(7).setCellValue("Plazo")
+        rowC1.createCell(8).setCellValue("% Avance")
+        rowC1.createCell(9).setCellValue("Avance Físico")
+         rowC1.setRowStyle(style)
+        fila++
+
+        obras.eachWithIndex {i, j->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i.obracdgo.toString() ?: '')
+            rowF1.createCell(1).setCellValue(i?.obranmbr?.toString() ?: '')
+            rowF1.createCell(2).setCellValue(i?.cntnnmbr?.toString() + " " + i?.parrnmbr?.toString() + " " + i?.cmndnmbr?.toString())
+            rowF1.createCell(3).setCellValue(i?.cntrcdgo?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i?.prvenmbr?.toString() ?: '')
+            rowF1.createCell(5).setCellValue( i.cntrmnto ?: 0)
+            rowF1.createCell(6).setCellValue( i?.cntrfcsb?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(i.cntrplzo?.toString() ?: '')
+            rowF1.createCell(8).setCellValue((i.av_economico * 100) ?: 0)
+            rowF1.createCell(9).setCellValue((i.av_fisico * 100) ?: 0)
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "avanceObras.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
+    def armaSqlAvance(params){
+        def campos = reportesService.obrasAvance()
+        def operador = reportesService.operadores()
+
+        def sqlSelect = "select obra.obra__id, obracdgo, obranmbr, cntnnmbr, parrnmbr, cmndnmbr, c.cntrcdgo, " +
+                "c.cntrmnto, c.cntrfcsb, prvenmbr, c.cntrplzo, obrafcin, cntrfcfs," +
+                "(select(coalesce(sum(plnlmnto), 0)) / cntrmnto av_economico " +
+                "from plnl where cntr__id = c.cntr__id and tppl__id > 1), " +
+                "(select(coalesce(max(plnlavfs), 0)) av_fisico " +
+                "from plnl where cntr__id = c.cntr__id and tppl__id > 1) " +  // no cuenta el anticipo
+                "from obra, cntn, parr, cmnd, cncr, ofrt, cntr c, dpto, prve "
+        def sqlWhere = "where cmnd.cmnd__id = obra.cmnd__id and " +
+                "parr.parr__id = obra.parr__id and cntn.cntn__id = parr.cntn__id and " +
+                "cncr.obra__id = obra.obra__id and ofrt.cncr__id = cncr.cncr__id and " +
+                "c.ofrt__id = ofrt.ofrt__id and dpto.dpto__id = obra.dpto__id and " +
+                "prve.prve__id = c.prve__id"
+        def sqlOrder = "order by obracdgo"
+
+        params.nombre = "Código"
+        if(campos.find {it.campo == params.buscador}?.size() > 0) {
+            def op = operador.find {it.valor == params.operador}
+            sqlWhere += " and ${params.buscador} ${op.operador} ${op.strInicio}${params.criterio}${op.strFin}";
+        }
+        "$sqlSelect $sqlWhere $sqlOrder".toString()
+    }
+
+    def reporteExcelGarantias() {
+
+        def sql
+        def res
+        def cn
+
+        def sqlBase =  "SELECT\n" +
+                "  g.grnt__id    id,\n" +
+                "  g.grntcdgo    codigo, \n" +
+                "  g.grntnmrv    renovacion,\n" +
+                "  c.cntrcdgo    codigocontrato,\n" +
+                "  t.tpgrdscr    tipogarantia,\n" +
+                "  q.tdgrdscr    documento,\n" +
+                "  a.asgrnmbr    aseguradora,\n" +
+                "  s.prvenmbr    contratista,\n" +
+                "  g.grntetdo    estado,\n" +
+                "  g.grntmnto    monto,\n" +
+                "  m.mndacdgo    moneda,\n" +
+                "  g.grntfcin    emision,\n" +
+                "  g.grntfcfn    vencimiento,\n" +
+                "  g.grntdias    dias\n" +
+                "FROM grnt g\n" +
+                "  LEFT JOIN cntr c ON g.cntr__id = c.cntr__id\n" +
+                "  LEFT JOIN ofrt o ON c.ofrt__id = o.ofrt__id\n" +
+                "  LEFT JOIN tpgr t ON g.tpgr__id = t.tpgr__id\n" +
+                "  LEFT JOIN tdgr q ON g.tdgr__id = q.tdgr__id\n" +
+                "  LEFT JOIN asgr a ON g.asgr__id = a.asgr__id\n" +
+                "  LEFT JOIN prve s ON o.prve__id = s.prve__id\n" +
+                "  LEFT JOIN mnda m ON g.mnda__id = m.mnda__id\n"
+
+
+        def filtroBuscador = ""
+        def buscador = ""
+
+        params.criterio = params.criterio.trim();
+
+        switch (params.buscador) {
+            case "cdgo":
+            case "etdo":
+            case "mnto":
+            case "dias":
+                buscador = "grnt"+params.buscador
+                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                break;
+            case "contrato":
+                filtroBuscador = " where c.cntrcdgo ILIKE ('%${params.criterio}%') "
+                break;
+            case "tpgr":
+                filtroBuscador = " where t.tpgrdscr ILIKE ('%${params.criterio}%') "
+                break;
+            case "tdgr":
+                filtroBuscador = " where q.tdgrdscr ILIKE ('%${params.criterio}%') "
+                break;
+            case "aseguradora":
+                filtroBuscador = " where a.asgrnmbr ILIKE ('%${params.criterio}%') "
+                break;
+            case "cont":
+                filtroBuscador = " where s.prvenmbr ILIKE ('%${params.criterio}%') "
+                break;
+            case "nmrv":
+                if(!params.criterio){
+                    params.criterio=0
+                }
+                filtroBuscador =" where g.grntnmrv = ${params.criterio} "
+                break;
+            case "mnda":
+                filtroBuscador = " where m.mndacdgo ILIKE ('%${params.criterio}%') "
+                break;
+            case "fcin":
+            case "fcfn":
+                break;
+
+        }
+
+        sql = sqlBase + filtroBuscador
+        cn = dbConnectionService.getConnection()
+        res = cn.rows(sql.toString())
+
+        def fila = 4;
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle()
+        XSSFFont font = wb.createFont()
+        font.setBold(true)
+        style.setFont(font)
+
+        Sheet sheet = wb.createSheet("Garantias")
+        sheet.setColumnWidth(0, 15 * 256)
+        sheet.setColumnWidth(1, 35 * 256)
+        sheet.setColumnWidth(2, 20 * 256)
+        sheet.setColumnWidth(3, 15 * 256)
+        sheet.setColumnWidth(4, 10 * 256)
+        sheet.setColumnWidth(5, 30 * 256)
+        sheet.setColumnWidth(6, 10 * 256)
+        sheet.setColumnWidth(7, 10 * 256)
+        sheet.setColumnWidth(8, 15 * 256)
+        sheet.setColumnWidth(9, 15 * 256)
+        sheet.setColumnWidth(10, 15 * 256)
+        sheet.setColumnWidth(11, 15 * 256)
+        sheet.setColumnWidth(12, 10 * 256)
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL GARANTÍAS REGISTRADAS")
+        row1.setRowStyle(style)
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("N° Contrato")
+        rowC1.createCell(1).setCellValue("Contratista")
+        rowC1.createCell(2).setCellValue("Tipo de Garantía")
+        rowC1.createCell(3).setCellValue("N° Garantía")
+        rowC1.createCell(4).setCellValue("Rnov")
+        rowC1.createCell(5).setCellValue("Aseguradora")
+        rowC1.createCell(6).setCellValue("Documento")
+        rowC1.createCell(7).setCellValue("Estado")
+        rowC1.createCell(8).setCellValue("Monto")
+        rowC1.createCell(9).setCellValue("Emisión")
+        rowC1.createCell(10).setCellValue("Vencimiento")
+        rowC1.createCell(11).setCellValue("Cancelación")
+        rowC1.createCell(12).setCellValue("Moneda")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.eachWithIndex {i, j->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i?.codigocontrato?.toString() ?: '')
+            rowF1.createCell(1).setCellValue( i?.contratista ?: '')
+            rowF1.createCell(2).setCellValue(i.tipogarantia.toString() ?: '')
+            rowF1.createCell(3).setCellValue(i?.codigo?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i.renovacion ?: 0)
+            rowF1.createCell(5).setCellValue(i?.aseguradora?.toString() ?: '')
+            rowF1.createCell(6).setCellValue(i?.documento?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(i?.estado?.toString() ?: '')
+            rowF1.createCell(8).setCellValue(i.monto ?: 0)
+            rowF1.createCell(9).setCellValue(i?.emision?.format("dd-MM-yyy")?.toString() ?: '')
+            rowF1.createCell(10).setCellValue(i?.vencimiento?.format("dd-MM-yyy")?.toString() ?: '')
+            rowF1.createCell(11).setCellValue(i.dias ?: 0)
+            rowF1.createCell(12).setCellValue(i?.moneda?.toString() ?: '')
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "garantias.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
+    def reporteExcelAseguradoras() {
+
+        def sql
+        def cn
+        def res
+
+        def sqlBase =  "SELECT\n" +
+                "  a.asgr__id    id,\n" +
+                "  a.asgrfaxx    fax, \n" +
+                "  a.asgrtelf    telefono,\n" +
+                "  a.asgrnmbr    nombre,\n" +
+                "  a.asgrdire    direccion,\n" +
+                "  a.asgrrspn    contacto,\n" +
+                "  a.asgrobsr    observaciones,\n" +
+                "  a.asgrfeccn    fecha,\n" +
+                "  t.tpasdscr    tipoaseguradora\n" +
+                "FROM asgr a\n" +
+                "  LEFT JOIN tpas t ON a.tpas__id = t.tpas__id\n"
+
+        def filtroBuscador = ""
+        def buscador=""
+
+        params.criterio = params.criterio.trim();
+
+        switch (params.buscador) {
+            case "nmbr":
+            case "telf":
+            case "faxx":
+            case "rspn":
+            case "dire":
+                buscador = "asgr"+params.buscador
+                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                break;
+            case "tipo":
+                filtroBuscador = " where t.tpasdscr ILIKE ('%${params.criterio}%') "
+                break;
+        }
+
+        sql = sqlBase + filtroBuscador
+        cn = dbConnectionService.getConnection()
+        res = cn.rows(sql.toString())
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle()
+        XSSFFont font = wb.createFont()
+        font.setBold(true)
+        style.setFont(font)
+
+        Sheet sheet = wb.createSheet("Aseguradoras")
+        sheet.setColumnWidth(0, 10 * 256)
+        sheet.setColumnWidth(1, 30 * 256)
+        sheet.setColumnWidth(2, 30 * 256)
+        sheet.setColumnWidth(3, 15 * 256)
+        sheet.setColumnWidth(4, 25 * 256)
+        sheet.setColumnWidth(5, 15 * 256)
+        sheet.setColumnWidth(6, 30 * 256)
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL ASEGURADORAS")
+        row1.setRowStyle(style)
+
+        def fila = 4;
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Tipo")
+        rowC1.createCell(1).setCellValue("Nombre")
+        rowC1.createCell(2).setCellValue("Dirección")
+        rowC1.createCell(3).setCellValue("Teléfono")
+        rowC1.createCell(4).setCellValue("Contacto")
+        rowC1.createCell(5).setCellValue("Fecha Contacto")
+        rowC1.createCell(6).setCellValue("Observaciones")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.eachWithIndex {i, j->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i?.tipoaseguradora?.toString() ?: '')
+            rowF1.createCell(1).setCellValue(i?.nombre?.toString() ?: '')
+            rowF1.createCell(2).setCellValue(i?.direccion?.toString() ?: '')
+            rowF1.createCell(3).setCellValue(i?.telefono?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i?.contacto?.toString() ?: '')
+            rowF1.createCell(5).setCellValue(i?.fecha?.format("dd-MM-yyyy")?.toString() ?: '')
+            rowF1.createCell(6).setCellValue(i?.observaciones?.toString() ?: '')
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "aseguradoras.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
+    def reporteExcelContratistas() {
+
+        def sql
+        def cn
+        def res
+
+        def sqlBase =  "SELECT\n" +
+                "  p.prve__id    id,\n" +
+                "  p.prve_ruc    ruc, \n" +
+                "  p.prvesgla    sigla,\n" +
+                "  p.prvettlr    titulo,\n" +
+                "  p.prvenmbr    nombre,\n" +
+                "  e.espcdscr    especialidad,\n" +
+                "  p.prvecmra    camara,\n" +
+                "  p.prvedire    direccion,\n" +
+                "  p.prvetelf    telefono,\n" +
+                "  p.prvefaxx    fax,\n" +
+                "  p.prvegrnt    garante,\n" +
+                "  p.prvenbct    nombrecon,\n" +
+                "  p.prveapct    apellidocon,\n" +
+                "  p.prvefccn    fecha,\n" +
+                "  f.cntrfcsb    fechacontrato\n" +
+                "FROM prve p\n" +
+                "  LEFT JOIN espc e ON p.espc__id = e.espc__id\n"+
+                "  LEFT JOIN ofrt o ON p.prve__id = o.prve__id\n"+
+                "  LEFT JOIN cntr f ON o.ofrt__id = f.ofrt__id\n"
+
+        def filtroBuscador = ""
+        def buscador=""
+
+        params.criterio = params.criterio.trim();
+
+        switch (params.buscador) {
+            case "cdgo":
+            case "nmbr":
+            case "_ruc":
+                buscador = "prve"+params.buscador
+                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+                break;
+            case "espe":
+                filtroBuscador = " where e.espcdscr ILIKE ('%${params.criterio}%') "
+                break;
+        }
+
+        sql = sqlBase + filtroBuscador
+        cn = dbConnectionService.getConnection()
+        res = cn.rows(sql.toString())
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle()
+        XSSFFont font = wb.createFont()
+        font.setBold(true)
+        style.setFont(font)
+
+        Sheet sheet = wb.createSheet("Contratistas")
+        sheet.setColumnWidth(0, 30 * 256)
+        sheet.setColumnWidth(1, 15 * 256)
+        sheet.setColumnWidth(2, 10 * 256)
+        sheet.setColumnWidth(3, 10 * 256)
+        sheet.setColumnWidth(4, 30 * 256)
+        sheet.setColumnWidth(5, 30 * 256)
+        sheet.setColumnWidth(6, 10 * 256)
+        sheet.setColumnWidth(7, 25 * 256)
+        sheet.setColumnWidth(8, 15 * 256)
+        sheet.setColumnWidth(9, 15 * 256)
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE EXCEL CONTRATISTAS")
+        row1.setRowStyle(style)
+
+        def fila = 4;
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Nombre")
+        rowC1.createCell(1).setCellValue("Cédula/RUC")
+        rowC1.createCell(2).setCellValue("Título")
+        rowC1.createCell(3).setCellValue("Especialidad")
+        rowC1.createCell(4).setCellValue("Contacto")
+        rowC1.createCell(5).setCellValue("Dirección")
+        rowC1.createCell(6).setCellValue("Teléfono")
+        rowC1.createCell(7).setCellValue("Garante")
+        rowC1.createCell(8).setCellValue("Fecha Cont.")
+        rowC1.createCell(9).setCellValue("Fecha Contrato")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.eachWithIndex {i, j->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(i.nombre.toString() ?: '')
+            rowF1.createCell(1).setCellValue(i?.ruc?.toString() ?: '')
+            rowF1.createCell(2).setCellValue(i?.titulo?.toString() ?: '')
+            rowF1.createCell(3).setCellValue(i?.especialidad?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(i?.nombrecon?.toString() + " " + i?.apellidocon?.toString())
+            rowF1.createCell(5).setCellValue(i?.direccion?.toString() ?: '')
+            rowF1.createCell(6).setCellValue(i?.telefono?.toString() ?: '')
+            rowF1.createCell(7).setCellValue(i?.garante?.toString() ?: '')
+            rowF1.createCell(8).setCellValue(i?.fecha?.format("dd-MM-yyyy")?.toString() ?: '')
+            rowF1.createCell(9).setCellValue(i?.fechacontrato?.format("dd-MM-yyyy")?.toString() ?: '')
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "contratistas.xlsx"
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header)
+        wb.write(output)
+    }
+
 }

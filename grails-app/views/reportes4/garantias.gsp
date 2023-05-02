@@ -110,7 +110,7 @@
     });
 
     $("#excel").click(function () {
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelGarantias' )}?buscador=" + $("#buscador_gar").val() + "&criterio=" + $("#criterio_gar").val()
+        location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelGarantias' )}?buscador=" + $("#buscador_gar").val() + "&criterio=" + $("#criterio_gar").val()
     });
 
     $("#buscador_gar").change(function () {

@@ -1719,115 +1719,115 @@ class Reportes4Controller {
     }
 
 
-    def reporteExcelAseguradoras() {
-
-        def obras = []
-        def sql
-        def cn
-        def res
-
-        def sqlBase =  "SELECT\n" +
-                "  a.asgr__id    id,\n" +
-                "  a.asgrfaxx    fax, \n" +
-                "  a.asgrtelf    telefono,\n" +
-                "  a.asgrnmbr    nombre,\n" +
-                "  a.asgrdire    direccion,\n" +
-                "  a.asgrrspn    contacto,\n" +
-                "  a.asgrobsr    observaciones,\n" +
-                "  a.asgrfeccn    fecha,\n" +
-                "  t.tpasdscr    tipoaseguradora\n" +
-                "FROM asgr a\n" +
-                "  LEFT JOIN tpas t ON a.tpas__id = t.tpas__id\n"
-
-        def filtroBuscador = ""
-        def buscador=""
-
-        params.criterio = params.criterio.trim();
-
-        switch (params.buscador) {
-            case "nmbr":
-            case "telf":
-            case "faxx":
-            case "rspn":
-            case "dire":
-                buscador = "asgr"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
-                break;
-            case "tipo":
-                filtroBuscador = " where t.tpasdscr ILIKE ('%${params.criterio}%') "
-                break;
-        }
-
-        sql = sqlBase + filtroBuscador
-        cn = dbConnectionService.getConnection()
-        res = cn.rows(sql.toString())
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 12)
-        sheet.setColumnView(1, 40)
-        sheet.setColumnView(2, 25)
-        sheet.setColumnView(3, 25)
-        sheet.setColumnView(4, 20)
-        sheet.setColumnView(5, 25)
-        sheet.setColumnView(6, 20)
-        sheet.setColumnView(7, 20)
-
-        def label
-        def nmro
-        def number
-        def fila = 6;
-
-        NumberFormat nf = new NumberFormat("#.##");
-        WritableCellFormat cf2obj = new WritableCellFormat(nf);
-
-        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL ASEGURADORAS", times16format); sheet.addCell(label);
-
-        label = new Label(0, 4, "Tipo: ", times16format); sheet.addCell(label);
-        label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
-        label = new Label(2, 4, "Dirección", times16format); sheet.addCell(label);
-        label = new Label(3, 4, "Teléfono", times16format); sheet.addCell(label);
-        label = new Label(4, 4, "Fax", times16format); sheet.addCell(label);
-        label = new Label(5, 4, "Contacto", times16format); sheet.addCell(label);
-        label = new Label(6, 4, "Fecha Contacto", times16format); sheet.addCell(label);
-        label = new Label(7, 4, "Observaciones", times16format); sheet.addCell(label);
-
-        res.eachWithIndex {i, j->
-            label = new Label(0, fila, i?.tipoaseguradora?.toString()); sheet.addCell(label);
-            label = new Label(1, fila, i?.nombre?.toString()); sheet.addCell(label);
-            label = new Label(2, fila, i?.direccion?.toString()); sheet.addCell(label);
-            label = new Label(3, fila, i?.telefono?.toString()); sheet.addCell(label);
-            label = new Label(4, fila, i?.fax?.toString()); sheet.addCell(label);
-            label = new Label(5, fila, i?.contacto?.toString()); sheet.addCell(label);
-            label = new Label(6, fila, i?.fecha?.toString()); sheet.addCell(label);
-            label = new Label(7, fila, i?.observaciones?.toString()); sheet.addCell(label);
-            fila++
-        }
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "Aseguradoras.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
+//    def reporteExcelAseguradoras() {
+//
+//        def obras = []
+//        def sql
+//        def cn
+//        def res
+//
+//        def sqlBase =  "SELECT\n" +
+//                "  a.asgr__id    id,\n" +
+//                "  a.asgrfaxx    fax, \n" +
+//                "  a.asgrtelf    telefono,\n" +
+//                "  a.asgrnmbr    nombre,\n" +
+//                "  a.asgrdire    direccion,\n" +
+//                "  a.asgrrspn    contacto,\n" +
+//                "  a.asgrobsr    observaciones,\n" +
+//                "  a.asgrfeccn    fecha,\n" +
+//                "  t.tpasdscr    tipoaseguradora\n" +
+//                "FROM asgr a\n" +
+//                "  LEFT JOIN tpas t ON a.tpas__id = t.tpas__id\n"
+//
+//        def filtroBuscador = ""
+//        def buscador=""
+//
+//        params.criterio = params.criterio.trim();
+//
+//        switch (params.buscador) {
+//            case "nmbr":
+//            case "telf":
+//            case "faxx":
+//            case "rspn":
+//            case "dire":
+//                buscador = "asgr"+params.buscador
+//                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "tipo":
+//                filtroBuscador = " where t.tpasdscr ILIKE ('%${params.criterio}%') "
+//                break;
+//        }
+//
+//        sql = sqlBase + filtroBuscador
+//        cn = dbConnectionService.getConnection()
+//        res = cn.rows(sql.toString())
+//
+//        WorkbookSettings workbookSettings = new WorkbookSettings()
+//        workbookSettings.locale = Locale.default
+//
+//        def file = File.createTempFile('myExcelDocument', '.xls')
+//        file.deleteOnExit()
+//
+//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+//
+//        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
+//        WritableCellFormat formatXls = new WritableCellFormat(font)
+//
+//        def row = 0
+//        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+//
+//
+//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+//        WritableCellFormat times16format = new WritableCellFormat(times16font);
+//        sheet.setColumnView(0, 12)
+//        sheet.setColumnView(1, 40)
+//        sheet.setColumnView(2, 25)
+//        sheet.setColumnView(3, 25)
+//        sheet.setColumnView(4, 20)
+//        sheet.setColumnView(5, 25)
+//        sheet.setColumnView(6, 20)
+//        sheet.setColumnView(7, 20)
+//
+//        def label
+//        def nmro
+//        def number
+//        def fila = 6;
+//
+//        NumberFormat nf = new NumberFormat("#.##");
+//        WritableCellFormat cf2obj = new WritableCellFormat(nf);
+//
+//        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+//        label = new Label(1, 2, "REPORTE EXCEL ASEGURADORAS", times16format); sheet.addCell(label);
+//
+//        label = new Label(0, 4, "Tipo: ", times16format); sheet.addCell(label);
+//        label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
+//        label = new Label(2, 4, "Dirección", times16format); sheet.addCell(label);
+//        label = new Label(3, 4, "Teléfono", times16format); sheet.addCell(label);
+//        label = new Label(4, 4, "Fax", times16format); sheet.addCell(label);
+//        label = new Label(5, 4, "Contacto", times16format); sheet.addCell(label);
+//        label = new Label(6, 4, "Fecha Contacto", times16format); sheet.addCell(label);
+//        label = new Label(7, 4, "Observaciones", times16format); sheet.addCell(label);
+//
+//        res.eachWithIndex {i, j->
+//            label = new Label(0, fila, i?.tipoaseguradora?.toString()); sheet.addCell(label);
+//            label = new Label(1, fila, i?.nombre?.toString()); sheet.addCell(label);
+//            label = new Label(2, fila, i?.direccion?.toString()); sheet.addCell(label);
+//            label = new Label(3, fila, i?.telefono?.toString()); sheet.addCell(label);
+//            label = new Label(4, fila, i?.fax?.toString()); sheet.addCell(label);
+//            label = new Label(5, fila, i?.contacto?.toString()); sheet.addCell(label);
+//            label = new Label(6, fila, i?.fecha?.toString()); sheet.addCell(label);
+//            label = new Label(7, fila, i?.observaciones?.toString()); sheet.addCell(label);
+//            fila++
+//        }
+//
+//        workbook.write();
+//        workbook.close();
+//        def output = response.getOutputStream()
+//        def header = "attachment; filename=" + "Aseguradoras.xls";
+//        response.setContentType("application/octet-stream")
+//        response.setHeader("Content-Disposition", header);
+//        output.write(file.getBytes());
+//    }
 
     def contratistas () {
         def perfil = session.perfil.id
@@ -2045,149 +2045,149 @@ class Reportes4Controller {
     }
 
 
-    def reporteExcelContratistas() {
-
-        def sql
-        def cn
-        def res
-
-
-        def sqlBase =  "SELECT\n" +
-                "  p.prve__id    id,\n" +
-                "  p.prve_ruc    ruc, \n" +
-                "  p.prvesgla    sigla,\n" +
-                "  p.prvettlr    titulo,\n" +
-                "  p.prvenmbr    nombre,\n" +
-                "  e.espcdscr    especialidad,\n" +
-                "  p.prvecmra    camara,\n" +
-                "  p.prvedire    direccion,\n" +
-                "  p.prvetelf    telefono,\n" +
-                "  p.prvefaxx    fax,\n" +
-                "  p.prvegrnt    garante,\n" +
-                "  p.prvenbct    nombrecon,\n" +
-                "  p.prveapct    apellidocon,\n" +
-                "  p.prvefccn    fecha,\n" +
-                "  f.cntrfcsb    fechacontrato\n" +
-                "FROM prve p\n" +
-                "  LEFT JOIN espc e ON p.espc__id = e.espc__id\n"+
-                "  LEFT JOIN ofrt o ON p.prve__id = o.prve__id\n"+
-                "  LEFT JOIN cntr f ON o.ofrt__id = f.ofrt__id\n"
-
-        def filtroBuscador = ""
-        def buscador=""
-
-
-        params.criterio = params.criterio.trim();
-
-
-        switch (params.buscador) {
-            case "cdgo":
-            case "nmbr":
-            case "_ruc":
-                buscador = "prve"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
-                break;
-            case "espe":
-                filtroBuscador = " where e.espcdscr ILIKE ('%${params.criterio}%') "
-                break;
-
-
-        }
-
-
-        sql = sqlBase + filtroBuscador
-
-        cn = dbConnectionService.getConnection()
-
-        res = cn.rows(sql.toString())
-
-
-        //excel
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 35)
-        sheet.setColumnView(1, 20)
-        sheet.setColumnView(2, 10)
-        sheet.setColumnView(3, 10)
-        sheet.setColumnView(4, 15)
-        sheet.setColumnView(5, 15)
-        sheet.setColumnView(6, 35)
-        sheet.setColumnView(7, 35)
-        sheet.setColumnView(8, 15)
-        sheet.setColumnView(9, 30)
-        sheet.setColumnView(10, 20)
-        sheet.setColumnView(11, 20)
-        // inicia textos y numeros para asocias a columnas
-
-        def label
-        def nmro
-        def number
-
-        def fila = 6;
-
-
-        NumberFormat nf = new NumberFormat("#.##");
-        WritableCellFormat cf2obj = new WritableCellFormat(nf);
-
-        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL CONTRATISTAS", times16format); sheet.addCell(label);
-
-        label = new Label(0, 4, "Nombre: ", times16format); sheet.addCell(label);
-        label = new Label(1, 4, "Cédula/RUC", times16format); sheet.addCell(label);
-        label = new Label(2, 4, "Siglas", times16format); sheet.addCell(label);
-        label = new Label(3, 4, "Título", times16format); sheet.addCell(label);
-        label = new Label(4, 4, "Especialidad", times16format); sheet.addCell(label);
-        label = new Label(5, 4, "Cámara", times16format); sheet.addCell(label);
-        label = new Label(6, 4, "Contacto", times16format); sheet.addCell(label);
-        label = new Label(7, 4, "Dirección", times16format); sheet.addCell(label);
-        label = new Label(8, 4, "Teléfono", times16format); sheet.addCell(label);
-        label = new Label(9, 4, "Garante", times16format); sheet.addCell(label);
-        label = new Label(10, 4, "Fecha Cont.", times16format); sheet.addCell(label);
-        label = new Label(11, 4, "Fecha Contrato", times16format); sheet.addCell(label);
-
-
-        res.eachWithIndex {i, j->
-            label = new Label(0, fila, i.nombre.toString()); sheet.addCell(label);
-            label = new Label(1, fila, i?.ruc.toString()); sheet.addCell(label);
-            label = new Label(2, fila, i?.sigla?.toString()); sheet.addCell(label);
-            label = new Label(3, fila, i?.titulo.toString()); sheet.addCell(label);
-            label = new Label(4, fila, i?.especialidad?.toString()); sheet.addCell(label);
-            label = new Label(5, fila, i?.camara?.toString()); sheet.addCell(label);
-            label = new Label(6, fila, i?.nombrecon?.toString() + " " + i?.apellidocon?.toString()); sheet.addCell(label);
-            label = new Label(7, fila, i?.direccion?.toString()); sheet.addCell(label);
-            label = new Label(8, fila, i?.telefono?.toString()); sheet.addCell(label);
-            label = new Label(9, fila, i?.garante?.toString()); sheet.addCell(label);
-            label = new Label(10, fila, i?.fecha?.toString()); sheet.addCell(label);
-            label = new Label(11, fila, i?.fechacontrato?.toString()); sheet.addCell(label);
-
-            fila++
-        }
-
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "ContratistasExcel.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
+//    def reporteExcelContratistas() {
+//
+//        def sql
+//        def cn
+//        def res
+//
+//
+//        def sqlBase =  "SELECT\n" +
+//                "  p.prve__id    id,\n" +
+//                "  p.prve_ruc    ruc, \n" +
+//                "  p.prvesgla    sigla,\n" +
+//                "  p.prvettlr    titulo,\n" +
+//                "  p.prvenmbr    nombre,\n" +
+//                "  e.espcdscr    especialidad,\n" +
+//                "  p.prvecmra    camara,\n" +
+//                "  p.prvedire    direccion,\n" +
+//                "  p.prvetelf    telefono,\n" +
+//                "  p.prvefaxx    fax,\n" +
+//                "  p.prvegrnt    garante,\n" +
+//                "  p.prvenbct    nombrecon,\n" +
+//                "  p.prveapct    apellidocon,\n" +
+//                "  p.prvefccn    fecha,\n" +
+//                "  f.cntrfcsb    fechacontrato\n" +
+//                "FROM prve p\n" +
+//                "  LEFT JOIN espc e ON p.espc__id = e.espc__id\n"+
+//                "  LEFT JOIN ofrt o ON p.prve__id = o.prve__id\n"+
+//                "  LEFT JOIN cntr f ON o.ofrt__id = f.ofrt__id\n"
+//
+//        def filtroBuscador = ""
+//        def buscador=""
+//
+//
+//        params.criterio = params.criterio.trim();
+//
+//
+//        switch (params.buscador) {
+//            case "cdgo":
+//            case "nmbr":
+//            case "_ruc":
+//                buscador = "prve"+params.buscador
+//                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "espe":
+//                filtroBuscador = " where e.espcdscr ILIKE ('%${params.criterio}%') "
+//                break;
+//
+//
+//        }
+//
+//
+//        sql = sqlBase + filtroBuscador
+//
+//        cn = dbConnectionService.getConnection()
+//
+//        res = cn.rows(sql.toString())
+//
+//
+//        //excel
+//        WorkbookSettings workbookSettings = new WorkbookSettings()
+//        workbookSettings.locale = Locale.default
+//
+//        def file = File.createTempFile('myExcelDocument', '.xls')
+//        file.deleteOnExit()
+//
+//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+//
+//        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
+//        WritableCellFormat formatXls = new WritableCellFormat(font)
+//
+//        def row = 0
+//        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+//        // fija el ancho de la columna
+//        // sheet.setColumnView(1,40)
+//
+//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+//        WritableCellFormat times16format = new WritableCellFormat(times16font);
+//        sheet.setColumnView(0, 35)
+//        sheet.setColumnView(1, 20)
+//        sheet.setColumnView(2, 10)
+//        sheet.setColumnView(3, 10)
+//        sheet.setColumnView(4, 15)
+//        sheet.setColumnView(5, 15)
+//        sheet.setColumnView(6, 35)
+//        sheet.setColumnView(7, 35)
+//        sheet.setColumnView(8, 15)
+//        sheet.setColumnView(9, 30)
+//        sheet.setColumnView(10, 20)
+//        sheet.setColumnView(11, 20)
+//        // inicia textos y numeros para asocias a columnas
+//
+//        def label
+//        def nmro
+//        def number
+//
+//        def fila = 6;
+//
+//
+//        NumberFormat nf = new NumberFormat("#.##");
+//        WritableCellFormat cf2obj = new WritableCellFormat(nf);
+//
+//        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+//        label = new Label(1, 2, "REPORTE EXCEL CONTRATISTAS", times16format); sheet.addCell(label);
+//
+//        label = new Label(0, 4, "Nombre: ", times16format); sheet.addCell(label);
+//        label = new Label(1, 4, "Cédula/RUC", times16format); sheet.addCell(label);
+//        label = new Label(2, 4, "Siglas", times16format); sheet.addCell(label);
+//        label = new Label(3, 4, "Título", times16format); sheet.addCell(label);
+//        label = new Label(4, 4, "Especialidad", times16format); sheet.addCell(label);
+//        label = new Label(5, 4, "Cámara", times16format); sheet.addCell(label);
+//        label = new Label(6, 4, "Contacto", times16format); sheet.addCell(label);
+//        label = new Label(7, 4, "Dirección", times16format); sheet.addCell(label);
+//        label = new Label(8, 4, "Teléfono", times16format); sheet.addCell(label);
+//        label = new Label(9, 4, "Garante", times16format); sheet.addCell(label);
+//        label = new Label(10, 4, "Fecha Cont.", times16format); sheet.addCell(label);
+//        label = new Label(11, 4, "Fecha Contrato", times16format); sheet.addCell(label);
+//
+//
+//        res.eachWithIndex {i, j->
+//            label = new Label(0, fila, i.nombre.toString()); sheet.addCell(label);
+//            label = new Label(1, fila, i?.ruc.toString()); sheet.addCell(label);
+//            label = new Label(2, fila, i?.sigla?.toString()); sheet.addCell(label);
+//            label = new Label(3, fila, i?.titulo.toString()); sheet.addCell(label);
+//            label = new Label(4, fila, i?.especialidad?.toString()); sheet.addCell(label);
+//            label = new Label(5, fila, i?.camara?.toString()); sheet.addCell(label);
+//            label = new Label(6, fila, i?.nombrecon?.toString() + " " + i?.apellidocon?.toString()); sheet.addCell(label);
+//            label = new Label(7, fila, i?.direccion?.toString()); sheet.addCell(label);
+//            label = new Label(8, fila, i?.telefono?.toString()); sheet.addCell(label);
+//            label = new Label(9, fila, i?.garante?.toString()); sheet.addCell(label);
+//            label = new Label(10, fila, i?.fecha?.toString()); sheet.addCell(label);
+//            label = new Label(11, fila, i?.fechacontrato?.toString()); sheet.addCell(label);
+//
+//            fila++
+//        }
+//
+//
+//        workbook.write();
+//        workbook.close();
+//        def output = response.getOutputStream()
+//        def header = "attachment; filename=" + "ContratistasExcel.xls";
+//        response.setContentType("application/octet-stream")
+//        response.setHeader("Content-Disposition", header);
+//        output.write(file.getBytes());
+//    }
 
 
     def contratos (){
@@ -3036,164 +3036,164 @@ class Reportes4Controller {
         response.getOutputStream().write(b)
     }
 
-    def reporteExcelGarantias() {
-
-        def sql
-        def res
-        def cn
-
-        def sqlBase =  "SELECT\n" +
-                "  g.grnt__id    id,\n" +
-                "  g.grntcdgo    codigo, \n" +
-                "  g.grntnmrv    renovacion,\n" +
-                "  c.cntrcdgo    codigocontrato,\n" +
-                "  t.tpgrdscr    tipogarantia,\n" +
-                "  q.tdgrdscr    documento,\n" +
-                "  a.asgrnmbr    aseguradora,\n" +
-                "  s.prvenmbr    contratista,\n" +
-                "  g.grntetdo    estado,\n" +
-                "  g.grntmnto    monto,\n" +
-                "  m.mndacdgo    moneda,\n" +
-                "  g.grntfcin    emision,\n" +
-                "  g.grntfcfn    vencimiento,\n" +
-                "  g.grntdias    dias\n" +
-                "FROM grnt g\n" +
-                "  LEFT JOIN cntr c ON g.cntr__id = c.cntr__id\n" +
-                "  LEFT JOIN ofrt o ON c.ofrt__id = o.ofrt__id\n" +
-                "  LEFT JOIN tpgr t ON g.tpgr__id = t.tpgr__id\n" +
-                "  LEFT JOIN tdgr q ON g.tdgr__id = q.tdgr__id\n" +
-                "  LEFT JOIN asgr a ON g.asgr__id = a.asgr__id\n" +
-                "  LEFT JOIN prve s ON o.prve__id = s.prve__id\n" +
-                "  LEFT JOIN mnda m ON g.mnda__id = m.mnda__id\n"
-
-
-        def filtroBuscador = ""
-        def buscador = ""
-
-        params.criterio = params.criterio.trim();
-
-        switch (params.buscador) {
-            case "cdgo":
-            case "etdo":
-            case "mnto":
-            case "dias":
-                buscador = "grnt"+params.buscador
-                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
-                break;
-            case "contrato":
-                filtroBuscador = " where c.cntrcdgo ILIKE ('%${params.criterio}%') "
-                break;
-            case "tpgr":
-                filtroBuscador = " where t.tpgrdscr ILIKE ('%${params.criterio}%') "
-                break;
-            case "tdgr":
-                filtroBuscador = " where q.tdgrdscr ILIKE ('%${params.criterio}%') "
-                break;
-            case "aseguradora":
-                filtroBuscador = " where a.asgrnmbr ILIKE ('%${params.criterio}%') "
-                break;
-            case "cont":
-                filtroBuscador = " where s.prvenmbr ILIKE ('%${params.criterio}%') "
-                break;
-            case "nmrv":
-                if(!params.criterio){
-                    params.criterio=0
-                }
-                filtroBuscador =" where g.grntnmrv = ${params.criterio} "
-                break;
-            case "mnda":
-                filtroBuscador = " where m.mndacdgo ILIKE ('%${params.criterio}%') "
-                break;
-            case "fcin":
-            case "fcfn":
-                break;
-
-        }
-
-        sql = sqlBase + filtroBuscador
-        cn = dbConnectionService.getConnection()
-        res = cn.rows(sql.toString())
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 20)
-        sheet.setColumnView(1, 35)
-        sheet.setColumnView(2, 25)
-        sheet.setColumnView(3, 15)
-        sheet.setColumnView(4, 15)
-        sheet.setColumnView(5, 15)
-        sheet.setColumnView(6, 40)
-        sheet.setColumnView(7, 25)
-        sheet.setColumnView(8, 15)
-        sheet.setColumnView(9, 15)
-        sheet.setColumnView(10, 15)
-        sheet.setColumnView(11, 15)
-        sheet.setColumnView(12, 15)
-
-        def label
-        def nmro
-        def number
-
-        def fila = 6;
-
-        NumberFormat nf = new NumberFormat("#.##");
-        WritableCellFormat cf2obj = new WritableCellFormat(nf);
-
-        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL REGISTRADAS", times16format); sheet.addCell(label);
-
-        label = new Label(0, 4, "N° Contrato: ", times16format); sheet.addCell(label);
-        label = new Label(1, 4, "Contratista", times16format); sheet.addCell(label);
-        label = new Label(2, 4, "Tipo de Garantía", times16format); sheet.addCell(label);
-        label = new Label(3, 4, "N° Garantía", times16format); sheet.addCell(label);
-        label = new Label(4, 4, "Rnov", times16format); sheet.addCell(label);
-        label = new Label(5, 4, "Aseguradora", times16format); sheet.addCell(label);
-        label = new Label(6, 4, "Documento", times16format); sheet.addCell(label);
-        label = new Label(7, 4, "Estado", times16format); sheet.addCell(label);
-        label = new Label(8, 4, "Monto", times16format); sheet.addCell(label);
-        label = new Label(9, 4, "Emisión", times16format); sheet.addCell(label);
-        label = new Label(10, 4, "Vencimiento", times16format); sheet.addCell(label);
-        label = new Label(11, 4, "Cancelación", times16format); sheet.addCell(label);
-        label = new Label(12, 4, "Moneda", times16format); sheet.addCell(label);
-
-        res.eachWithIndex {i, j->
-            label = new Label(0, fila, i?.codigocontrato?.toString()); sheet.addCell(label);
-            label = new Label(1, fila, i?.contratista); sheet.addCell(label);
-            label = new Label(2, fila, i.tipogarantia.toString()); sheet.addCell(label);
-            label = new Label(3, fila, i?.codigo?.toString()); sheet.addCell(label);
-            number = new jxl.write.Number(4, fila, i.renovacion); sheet.addCell(number);
-            label = new Label(5, fila, i?.aseguradora?.toString()); sheet.addCell(label);
-            label = new Label(6, fila, i?.documento?.toString()); sheet.addCell(label);
-            label = new Label(7, fila, i?.estado?.toString()); sheet.addCell(label);
-            number = new jxl.write.Number(8, fila, i.monto); sheet.addCell(number);
-            label = new Label(9, fila, i?.emision?.toString()); sheet.addCell(label);
-            label = new Label(10, fila, i?.vencimiento?.toString()); sheet.addCell(label);
-            number = new jxl.write.Number(11, fila, i.dias); sheet.addCell(number);
-            label = new Label(12, fila, i?.moneda?.toString()); sheet.addCell(label);
-            fila++
-        }
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "GarantiasExcel.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
+//    def reporteExcelGarantias() {
+//
+//        def sql
+//        def res
+//        def cn
+//
+//        def sqlBase =  "SELECT\n" +
+//                "  g.grnt__id    id,\n" +
+//                "  g.grntcdgo    codigo, \n" +
+//                "  g.grntnmrv    renovacion,\n" +
+//                "  c.cntrcdgo    codigocontrato,\n" +
+//                "  t.tpgrdscr    tipogarantia,\n" +
+//                "  q.tdgrdscr    documento,\n" +
+//                "  a.asgrnmbr    aseguradora,\n" +
+//                "  s.prvenmbr    contratista,\n" +
+//                "  g.grntetdo    estado,\n" +
+//                "  g.grntmnto    monto,\n" +
+//                "  m.mndacdgo    moneda,\n" +
+//                "  g.grntfcin    emision,\n" +
+//                "  g.grntfcfn    vencimiento,\n" +
+//                "  g.grntdias    dias\n" +
+//                "FROM grnt g\n" +
+//                "  LEFT JOIN cntr c ON g.cntr__id = c.cntr__id\n" +
+//                "  LEFT JOIN ofrt o ON c.ofrt__id = o.ofrt__id\n" +
+//                "  LEFT JOIN tpgr t ON g.tpgr__id = t.tpgr__id\n" +
+//                "  LEFT JOIN tdgr q ON g.tdgr__id = q.tdgr__id\n" +
+//                "  LEFT JOIN asgr a ON g.asgr__id = a.asgr__id\n" +
+//                "  LEFT JOIN prve s ON o.prve__id = s.prve__id\n" +
+//                "  LEFT JOIN mnda m ON g.mnda__id = m.mnda__id\n"
+//
+//
+//        def filtroBuscador = ""
+//        def buscador = ""
+//
+//        params.criterio = params.criterio.trim();
+//
+//        switch (params.buscador) {
+//            case "cdgo":
+//            case "etdo":
+//            case "mnto":
+//            case "dias":
+//                buscador = "grnt"+params.buscador
+//                filtroBuscador =" where ${buscador} ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "contrato":
+//                filtroBuscador = " where c.cntrcdgo ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "tpgr":
+//                filtroBuscador = " where t.tpgrdscr ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "tdgr":
+//                filtroBuscador = " where q.tdgrdscr ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "aseguradora":
+//                filtroBuscador = " where a.asgrnmbr ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "cont":
+//                filtroBuscador = " where s.prvenmbr ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "nmrv":
+//                if(!params.criterio){
+//                    params.criterio=0
+//                }
+//                filtroBuscador =" where g.grntnmrv = ${params.criterio} "
+//                break;
+//            case "mnda":
+//                filtroBuscador = " where m.mndacdgo ILIKE ('%${params.criterio}%') "
+//                break;
+//            case "fcin":
+//            case "fcfn":
+//                break;
+//
+//        }
+//
+//        sql = sqlBase + filtroBuscador
+//        cn = dbConnectionService.getConnection()
+//        res = cn.rows(sql.toString())
+//
+//        WorkbookSettings workbookSettings = new WorkbookSettings()
+//        workbookSettings.locale = Locale.default
+//
+//        def file = File.createTempFile('myExcelDocument', '.xls')
+//        file.deleteOnExit()
+//
+//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+//        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
+//        WritableCellFormat formatXls = new WritableCellFormat(font)
+//
+//        def row = 0
+//        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+//
+//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+//        WritableCellFormat times16format = new WritableCellFormat(times16font);
+//        sheet.setColumnView(0, 20)
+//        sheet.setColumnView(1, 35)
+//        sheet.setColumnView(2, 25)
+//        sheet.setColumnView(3, 15)
+//        sheet.setColumnView(4, 15)
+//        sheet.setColumnView(5, 15)
+//        sheet.setColumnView(6, 40)
+//        sheet.setColumnView(7, 25)
+//        sheet.setColumnView(8, 15)
+//        sheet.setColumnView(9, 15)
+//        sheet.setColumnView(10, 15)
+//        sheet.setColumnView(11, 15)
+//        sheet.setColumnView(12, 15)
+//
+//        def label
+//        def nmro
+//        def number
+//
+//        def fila = 6;
+//
+//        NumberFormat nf = new NumberFormat("#.##");
+//        WritableCellFormat cf2obj = new WritableCellFormat(nf);
+//
+//        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+//        label = new Label(1, 2, "REPORTE EXCEL REGISTRADAS", times16format); sheet.addCell(label);
+//
+//        label = new Label(0, 4, "N° Contrato: ", times16format); sheet.addCell(label);
+//        label = new Label(1, 4, "Contratista", times16format); sheet.addCell(label);
+//        label = new Label(2, 4, "Tipo de Garantía", times16format); sheet.addCell(label);
+//        label = new Label(3, 4, "N° Garantía", times16format); sheet.addCell(label);
+//        label = new Label(4, 4, "Rnov", times16format); sheet.addCell(label);
+//        label = new Label(5, 4, "Aseguradora", times16format); sheet.addCell(label);
+//        label = new Label(6, 4, "Documento", times16format); sheet.addCell(label);
+//        label = new Label(7, 4, "Estado", times16format); sheet.addCell(label);
+//        label = new Label(8, 4, "Monto", times16format); sheet.addCell(label);
+//        label = new Label(9, 4, "Emisión", times16format); sheet.addCell(label);
+//        label = new Label(10, 4, "Vencimiento", times16format); sheet.addCell(label);
+//        label = new Label(11, 4, "Cancelación", times16format); sheet.addCell(label);
+//        label = new Label(12, 4, "Moneda", times16format); sheet.addCell(label);
+//
+//        res.eachWithIndex {i, j->
+//            label = new Label(0, fila, i?.codigocontrato?.toString()); sheet.addCell(label);
+//            label = new Label(1, fila, i?.contratista); sheet.addCell(label);
+//            label = new Label(2, fila, i.tipogarantia.toString()); sheet.addCell(label);
+//            label = new Label(3, fila, i?.codigo?.toString()); sheet.addCell(label);
+//            number = new jxl.write.Number(4, fila, i.renovacion); sheet.addCell(number);
+//            label = new Label(5, fila, i?.aseguradora?.toString()); sheet.addCell(label);
+//            label = new Label(6, fila, i?.documento?.toString()); sheet.addCell(label);
+//            label = new Label(7, fila, i?.estado?.toString()); sheet.addCell(label);
+//            number = new jxl.write.Number(8, fila, i.monto); sheet.addCell(number);
+//            label = new Label(9, fila, i?.emision?.toString()); sheet.addCell(label);
+//            label = new Label(10, fila, i?.vencimiento?.toString()); sheet.addCell(label);
+//            number = new jxl.write.Number(11, fila, i.dias); sheet.addCell(number);
+//            label = new Label(12, fila, i?.moneda?.toString()); sheet.addCell(label);
+//            fila++
+//        }
+//
+//        workbook.write();
+//        workbook.close();
+//        def output = response.getOutputStream()
+//        def header = "attachment; filename=" + "GarantiasExcel.xls";
+//        response.setContentType("application/octet-stream")
+//        response.setHeader("Content-Disposition", header);
+//        output.write(file.getBytes());
+//    }
 
     def presupuestadas () {
         def perfil = session.perfil.id

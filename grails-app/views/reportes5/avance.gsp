@@ -99,7 +99,7 @@
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportes5', action:'reporteExcelAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelAvance' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
     });
 
     $("#imprimirGrafico").click(function () {

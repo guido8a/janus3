@@ -285,88 +285,88 @@ class Reportes5Controller{
         response.getOutputStream().write(b)
     }
 
-    def reporteExcelAvance () {
-
-        def cn = dbConnectionService.getConnection()
-        def campos = reportesService.obrasAvance()
-        params.old = params.criterio
-        params.criterio = reportesService.limpiaCriterio(params.criterio)
-        def sql = armaSqlAvance(params)
-        def obras = cn.rows(sql)
-        params.criterio = params.old
-
-        //excel
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 12)
-        sheet.setColumnView(1, 60)
-        sheet.setColumnView(2, 30)
-        sheet.setColumnView(3, 20)
-        sheet.setColumnView(4, 40)
-        sheet.setColumnView(5, 15)
-        sheet.setColumnView(6, 17)
-        sheet.setColumnView(7, 10)
-        sheet.setColumnView(8, 15)
-        sheet.setColumnView(9, 15)
-
-        def label
-        def nmro
-        def number
-
-        def fila = 6;
-
-        NumberFormat nf = new NumberFormat("#.##");
-        WritableCellFormat cf2obj = new WritableCellFormat(nf);
-
-        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL AVANCE DE OBRAS", times16format); sheet.addCell(label);
-        label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
-        label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
-        label = new Label(2, 4, "Cantón-Parroquia-Comunidad", times16format); sheet.addCell(label);
-        label = new Label(3, 4, "Num. Contrato", times16format); sheet.addCell(label);
-        label = new Label(4, 4, "Contratista", times16format); sheet.addCell(label);
-        label = new Label(5, 4, "Monto", times16format); sheet.addCell(label);
-        label = new Label(6, 4, "Fecha suscripción", times16format); sheet.addCell(label);
-        label = new Label(7, 4, "Plazo", times16format); sheet.addCell(label);
-        label = new Label(8, 4, "% Avance", times16format); sheet.addCell(label);
-        label = new Label(9, 4, "Avance Físico", times16format); sheet.addCell(label);
-
-        obras.eachWithIndex {i, j->
-            label = new Label(0, fila, i.obracdgo.toString()); sheet.addCell(label);
-            label = new Label(1, fila, i?.obranmbr?.toString()); sheet.addCell(label);
-            label = new Label(2, fila, i?.cntnnmbr?.toString() + " " + i?.parrnmbr?.toString() + " " + i?.cmndnmbr?.toString()); sheet.addCell(label);
-            label = new Label(3, fila, i?.cntrcdgo?.toString()); sheet.addCell(label);
-            label = new Label(4, fila, i?.prvenmbr?.toString()); sheet.addCell(label);
-            number = new jxl.write.Number(5, fila, i.cntrmnto); sheet.addCell(number);
-            label = new Label(6, fila, i?.cntrfcsb?.toString()); sheet.addCell(label);
-            number = new jxl.write.Number(7, fila, i.cntrplzo); sheet.addCell(number);
-            number = new jxl.write.Number(8, fila, (i.av_economico * 100)); sheet.addCell(number);
-            number = new jxl.write.Number(9, fila, (i.av_fisico * 100)); sheet.addCell(number);
-            fila++
-        }
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "DocumentosObraExcel.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
+//    def reporteExcelAvance () {
+//
+//        def cn = dbConnectionService.getConnection()
+//        def campos = reportesService.obrasAvance()
+//        params.old = params.criterio
+//        params.criterio = reportesService.limpiaCriterio(params.criterio)
+//        def sql = armaSqlAvance(params)
+//        def obras = cn.rows(sql)
+//        params.criterio = params.old
+//
+//        //excel
+//        WorkbookSettings workbookSettings = new WorkbookSettings()
+//        workbookSettings.locale = Locale.default
+//
+//        def file = File.createTempFile('myExcelDocument', '.xls')
+//        file.deleteOnExit()
+//
+//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+//
+//        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
+//        WritableCellFormat formatXls = new WritableCellFormat(font)
+//
+//        def row = 0
+//        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+//
+//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+//        WritableCellFormat times16format = new WritableCellFormat(times16font);
+//        sheet.setColumnView(0, 12)
+//        sheet.setColumnView(1, 60)
+//        sheet.setColumnView(2, 30)
+//        sheet.setColumnView(3, 20)
+//        sheet.setColumnView(4, 40)
+//        sheet.setColumnView(5, 15)
+//        sheet.setColumnView(6, 17)
+//        sheet.setColumnView(7, 10)
+//        sheet.setColumnView(8, 15)
+//        sheet.setColumnView(9, 15)
+//
+//        def label
+//        def nmro
+//        def number
+//
+//        def fila = 6;
+//
+//        NumberFormat nf = new NumberFormat("#.##");
+//        WritableCellFormat cf2obj = new WritableCellFormat(nf);
+//
+//        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+//        label = new Label(1, 2, "REPORTE EXCEL AVANCE DE OBRAS", times16format); sheet.addCell(label);
+//        label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
+//        label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
+//        label = new Label(2, 4, "Cantón-Parroquia-Comunidad", times16format); sheet.addCell(label);
+//        label = new Label(3, 4, "Num. Contrato", times16format); sheet.addCell(label);
+//        label = new Label(4, 4, "Contratista", times16format); sheet.addCell(label);
+//        label = new Label(5, 4, "Monto", times16format); sheet.addCell(label);
+//        label = new Label(6, 4, "Fecha suscripción", times16format); sheet.addCell(label);
+//        label = new Label(7, 4, "Plazo", times16format); sheet.addCell(label);
+//        label = new Label(8, 4, "% Avance", times16format); sheet.addCell(label);
+//        label = new Label(9, 4, "Avance Físico", times16format); sheet.addCell(label);
+//
+//        obras.eachWithIndex {i, j->
+//            label = new Label(0, fila, i.obracdgo.toString()); sheet.addCell(label);
+//            label = new Label(1, fila, i?.obranmbr?.toString()); sheet.addCell(label);
+//            label = new Label(2, fila, i?.cntnnmbr?.toString() + " " + i?.parrnmbr?.toString() + " " + i?.cmndnmbr?.toString()); sheet.addCell(label);
+//            label = new Label(3, fila, i?.cntrcdgo?.toString()); sheet.addCell(label);
+//            label = new Label(4, fila, i?.prvenmbr?.toString()); sheet.addCell(label);
+//            number = new jxl.write.Number(5, fila, i.cntrmnto); sheet.addCell(number);
+//            label = new Label(6, fila, i?.cntrfcsb?.toString()); sheet.addCell(label);
+//            number = new jxl.write.Number(7, fila, i.cntrplzo); sheet.addCell(number);
+//            number = new jxl.write.Number(8, fila, (i.av_economico * 100)); sheet.addCell(number);
+//            number = new jxl.write.Number(9, fila, (i.av_fisico * 100)); sheet.addCell(number);
+//            fila++
+//        }
+//
+//        workbook.write();
+//        workbook.close();
+//        def output = response.getOutputStream()
+//        def header = "attachment; filename=" + "DocumentosObraExcel.xls";
+//        response.setContentType("application/octet-stream")
+//        response.setHeader("Content-Disposition", header);
+//        output.write(file.getBytes());
+//    }
 
     private String fechaConFormato(fecha, formato) {
         def meses = ["", "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
@@ -1532,111 +1532,111 @@ class Reportes5Controller{
         response.getOutputStream().write(b)
     }
 
-    def contratoFechas () {
-
-        def cn = dbConnectionService.getConnection()
-        def sql = "select * from rp_contrato()"
-        def res =  cn.rows(sql.toString())
-
-        //excel
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 20)
-        sheet.setColumnView(1, 20)
-        sheet.setColumnView(2, 20)
-        sheet.setColumnView(3, 20)
-        sheet.setColumnView(4, 15)
-        sheet.setColumnView(5, 20)
-        sheet.setColumnView(6, 45)
-        sheet.setColumnView(7, 20)
-        sheet.setColumnView(8, 20)
-        sheet.setColumnView(9, 15)
-        sheet.setColumnView(10, 15)
-        sheet.setColumnView(11, 15)
-        sheet.setColumnView(12, 15)
-        sheet.setColumnView(13, 15)
-        sheet.setColumnView(14, 15)
-        sheet.setColumnView(15, 15)
-
-        def label
-        def number
-        def fila = 12;
-
-        //cabecera
-        label = new Label(2, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new Label(2, 4, "FISCALIZACIÓN", times16format); sheet.addCell(label);
-        label = new Label(2, 6, "CONTRATOS", times16format); sheet.addCell(label);
-
-        //columnas
-        label = new Label(0, 10, "CÓDIGO CONTRATO", times16format); sheet.addCell(label);
-        label = new Label(1, 10, "MONTO", times16format); sheet.addCell(label);
-        label = new Label(2, 10, "ANTICIPO PAGADO", times16format); sheet.addCell(label);
-        label = new Label(3, 10, "TOTAL PLANILLADO", times16format); sheet.addCell(label);
-        label = new Label(4, 10, "PLAZO", times16format); sheet.addCell(label);
-        label = new Label(5, 10, "CÓDIGO OBRA", times16format); sheet.addCell(label);
-        label = new Label(6, 10, "NOMBRE OBRA", times16format); sheet.addCell(label);
-        label = new Label(7, 10, "CANTÓN", times16format); sheet.addCell(label);
-        label = new Label(8, 10, "PARROQUIA", times16format); sheet.addCell(label);
-        label = new Label(9, 10, "FECHA DE SUBSCRIPCIÓN", times16format); sheet.addCell(label);
-        label = new Label(10, 10, "FECHA INICIO OBRA", times16format); sheet.addCell(label);
-        label = new Label(11, 10, "F ADMINISTRADOR", times16format); sheet.addCell(label);
-        label = new Label(12, 10, "F PIDE PAGO ANTC", times16format); sheet.addCell(label);
-        label = new Label(13, 10, "FECHA FINALIZACIÓN", times16format); sheet.addCell(label);
-        label = new Label(14, 10, "FECHA ACTA PROVISIONAL", times16format); sheet.addCell(label);
-        label = new Label(15, 10, "FECHA ACTA DEFINITIVA", times16format); sheet.addCell(label);
-
-        res.each{ contrato->
-            label = new Label(0, fila, contrato.cntrcdgo.toString() ?: ''); sheet.addCell(label);
-            number = new Number(1, fila, contrato.cntrmnto ?: 0); sheet.addCell(number);
-            number = new Number(2, fila, contrato.cntrantc ?: 0); sheet.addCell(number);
-            number = new Number(3, fila, contrato.plnltotl ?: 0); sheet.addCell(number);
-            number = new Number(4, fila, contrato.cntrplzo ?: 0); sheet.addCell(number);
-            label = new Label(5, fila, contrato?.obracdgo?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(6, fila, contrato?.obranmbr?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(7, fila, contrato?.cntnnmbr?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(8, fila, contrato?.parrnmbr?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(9, fila, contrato?.cntrfcsb?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(10, fila, contrato?.obrafcin?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(11, fila, contrato?.fchaadmn?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(12, fila, contrato?.fchapdpg?.toString() ?: ''); sheet.addCell(label);
-
-            label = new Label(13, fila, contrato?.cntrfcfs?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(14, fila, contrato?.acprfcha?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(15, fila, contrato?.acdffcha?.toString() ?: ''); sheet.addCell(label);
-            fila++
-        }
-
-
-/*Para dropdown*/
-//        WritableCellFeatures cellFeatures = new WritableCellFeatures();
-//        cellFeatures.setComment("Seleccione:", 5, 2);
-//        cellFeatures.setDataValidationList([1,2,3]);
-//        jxl.write.Label dropDown = new jxl.write.Label(2, 5, "Select");
-//        dropDown.setCellFeatures(cellFeatures);
-//        sheet.addCell(dropDown);
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "contratos.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
+//    def contratoFechas () {
+//
+//        def cn = dbConnectionService.getConnection()
+//        def sql = "select * from rp_contrato()"
+//        def res =  cn.rows(sql.toString())
+//
+//        //excel
+//
+//        WorkbookSettings workbookSettings = new WorkbookSettings()
+//        workbookSettings.locale = Locale.default
+//
+//        def file = File.createTempFile('myExcelDocument', '.xls')
+//        file.deleteOnExit()
+//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+//
+//        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
+//        WritableCellFormat formatXls = new WritableCellFormat(font)
+//
+//        def row = 0
+//        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+//
+//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+//        WritableCellFormat times16format = new WritableCellFormat(times16font);
+//        sheet.setColumnView(0, 20)
+//        sheet.setColumnView(1, 20)
+//        sheet.setColumnView(2, 20)
+//        sheet.setColumnView(3, 20)
+//        sheet.setColumnView(4, 15)
+//        sheet.setColumnView(5, 20)
+//        sheet.setColumnView(6, 45)
+//        sheet.setColumnView(7, 20)
+//        sheet.setColumnView(8, 20)
+//        sheet.setColumnView(9, 15)
+//        sheet.setColumnView(10, 15)
+//        sheet.setColumnView(11, 15)
+//        sheet.setColumnView(12, 15)
+//        sheet.setColumnView(13, 15)
+//        sheet.setColumnView(14, 15)
+//        sheet.setColumnView(15, 15)
+//
+//        def label
+//        def number
+//        def fila = 12;
+//
+//        //cabecera
+//        label = new Label(2, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+//        label = new Label(2, 4, "FISCALIZACIÓN", times16format); sheet.addCell(label);
+//        label = new Label(2, 6, "CONTRATOS", times16format); sheet.addCell(label);
+//
+//        //columnas
+//        label = new Label(0, 10, "CÓDIGO CONTRATO", times16format); sheet.addCell(label);
+//        label = new Label(1, 10, "MONTO", times16format); sheet.addCell(label);
+//        label = new Label(2, 10, "ANTICIPO PAGADO", times16format); sheet.addCell(label);
+//        label = new Label(3, 10, "TOTAL PLANILLADO", times16format); sheet.addCell(label);
+//        label = new Label(4, 10, "PLAZO", times16format); sheet.addCell(label);
+//        label = new Label(5, 10, "CÓDIGO OBRA", times16format); sheet.addCell(label);
+//        label = new Label(6, 10, "NOMBRE OBRA", times16format); sheet.addCell(label);
+//        label = new Label(7, 10, "CANTÓN", times16format); sheet.addCell(label);
+//        label = new Label(8, 10, "PARROQUIA", times16format); sheet.addCell(label);
+//        label = new Label(9, 10, "FECHA DE SUBSCRIPCIÓN", times16format); sheet.addCell(label);
+//        label = new Label(10, 10, "FECHA INICIO OBRA", times16format); sheet.addCell(label);
+//        label = new Label(11, 10, "F ADMINISTRADOR", times16format); sheet.addCell(label);
+//        label = new Label(12, 10, "F PIDE PAGO ANTC", times16format); sheet.addCell(label);
+//        label = new Label(13, 10, "FECHA FINALIZACIÓN", times16format); sheet.addCell(label);
+//        label = new Label(14, 10, "FECHA ACTA PROVISIONAL", times16format); sheet.addCell(label);
+//        label = new Label(15, 10, "FECHA ACTA DEFINITIVA", times16format); sheet.addCell(label);
+//
+//        res.each{ contrato->
+//            label = new Label(0, fila, contrato.cntrcdgo.toString() ?: ''); sheet.addCell(label);
+//            number = new Number(1, fila, contrato.cntrmnto ?: 0); sheet.addCell(number);
+//            number = new Number(2, fila, contrato.cntrantc ?: 0); sheet.addCell(number);
+//            number = new Number(3, fila, contrato.plnltotl ?: 0); sheet.addCell(number);
+//            number = new Number(4, fila, contrato.cntrplzo ?: 0); sheet.addCell(number);
+//            label = new Label(5, fila, contrato?.obracdgo?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(6, fila, contrato?.obranmbr?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(7, fila, contrato?.cntnnmbr?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(8, fila, contrato?.parrnmbr?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(9, fila, contrato?.cntrfcsb?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(10, fila, contrato?.obrafcin?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(11, fila, contrato?.fchaadmn?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(12, fila, contrato?.fchapdpg?.toString() ?: ''); sheet.addCell(label);
+//
+//            label = new Label(13, fila, contrato?.cntrfcfs?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(14, fila, contrato?.acprfcha?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(15, fila, contrato?.acdffcha?.toString() ?: ''); sheet.addCell(label);
+//            fila++
+//        }
+//
+//
+///*Para dropdown*/
+////        WritableCellFeatures cellFeatures = new WritableCellFeatures();
+////        cellFeatures.setComment("Seleccione:", 5, 2);
+////        cellFeatures.setDataValidationList([1,2,3]);
+////        jxl.write.Label dropDown = new jxl.write.Label(2, 5, "Select");
+////        dropDown.setCellFeatures(cellFeatures);
+////        sheet.addCell(dropDown);
+//
+//        workbook.write();
+//        workbook.close();
+//        def output = response.getOutputStream()
+//        def header = "attachment; filename=" + "contratos.xls";
+//        response.setContentType("application/octet-stream")
+//        response.setHeader("Content-Disposition", header);
+//        output.write(file.getBytes());
+//    }
 
     def reporteExistencias() {
         println("params " + params)
@@ -1958,80 +1958,80 @@ class Reportes5Controller{
     }
 
 
-    def reporteExcelObrasFinalizadas () {
-
-        def cn = dbConnectionService.getConnection()
-        def campos = ['obracdgo', 'obranmbr', 'obradscr',
-                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr']
-        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
-                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
-                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
-                "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
-                "obrafcin is not null and " +
-                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
-                "order by obrafcin desc"
-        def obras = cn.rows(sql)
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 24)
-        sheet.setColumnView(1, 60)
-        sheet.setColumnView(2, 60)
-        sheet.setColumnView(3, 12)
-        sheet.setColumnView(4, 24)
-        sheet.setColumnView(5, 20)
-        sheet.setColumnView(6, 10)
-        sheet.setColumnView(7, 20)
-
-        def label
-        def number
-
-        def fila = 6;
-
-        NumberFormat nf = new NumberFormat("#.##");
-        WritableCellFormat cf2obj = new WritableCellFormat(nf);
-
-        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new Label(1, 2, "REPORTE EXCEL DE OBRAS FINALIZADAS", times16format); sheet.addCell(label);
-
-        label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
-        label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
-        label = new Label(2, 4, "Dirección", times16format); sheet.addCell(label);
-        label = new Label(3, 4, "Fecha Registro", times16format); sheet.addCell(label);
-        label = new Label(4, 4, "Sitio", times16format); sheet.addCell(label);
-        label = new Label(5, 4, "Parroquia - Comunidad", times16format); sheet.addCell(label);
-        label = new Label(6, 4, "Fecha Inicio", times16format); sheet.addCell(label);
-        label = new Label(7, 4, "Fecha Fin", times16format); sheet.addCell(label);
-
-        obras.eachWithIndex {i, j->
-            label = new Label(0, fila, i.obracdgo.toString()); sheet.addCell(label);
-            label = new Label(1, fila, i.obranmbr.toString()); sheet.addCell(label);
-            label = new Label(2, fila, i.direccion.toString()); sheet.addCell(label);
-            label = new Label(3, fila, i?.obrafcha?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(4, fila, i?.obrasito?.toString()); sheet.addCell(label);
-            label = new Label(5, fila, i?.parrnmbr?.toString()); sheet.addCell(label);
-            label = new Label(6, fila, i?.obrafcin?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
-            label = new Label(7, fila, i?.obrafcfn?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
-            fila++
-        }
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "obrasFinalizadas.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
+//    def reporteExcelObrasFinalizadas () {
+//
+//        def cn = dbConnectionService.getConnection()
+//        def campos = ['obracdgo', 'obranmbr', 'obradscr',
+//                      'obrasito', 'parrnmbr', 'cmndnmbr', 'diredscr']
+//        def sql = "select obracdgo, obranmbr, diredscr||' - '||dptodscr direccion, obrafcha, obrasito, parrnmbr, " +
+//                "cmndnmbr, obrafcin, obrafcfn from obra, dpto, dire, parr, cmnd " +
+//                "where dpto.dpto__id = obra.dpto__id and dire.dire__id = dpto.dire__id and " +
+//                "parr.parr__id = obra.parr__Id and cmnd.cmnd__id = obra.cmnd__id and " +
+//                "obrafcin is not null and " +
+//                "${campos[params.buscador.toInteger()]} ilike '%${params.criterio}%' " +
+//                "order by obrafcin desc"
+//        def obras = cn.rows(sql)
+//
+//        WorkbookSettings workbookSettings = new WorkbookSettings()
+//        workbookSettings.locale = Locale.default
+//
+//        def file = File.createTempFile('myExcelDocument', '.xls')
+//        file.deleteOnExit()
+//
+//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
+//        WritableSheet sheet = workbook.createSheet('MySheet', 0)
+//
+//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
+//        WritableCellFormat times16format = new WritableCellFormat(times16font);
+//        sheet.setColumnView(0, 24)
+//        sheet.setColumnView(1, 60)
+//        sheet.setColumnView(2, 60)
+//        sheet.setColumnView(3, 12)
+//        sheet.setColumnView(4, 24)
+//        sheet.setColumnView(5, 20)
+//        sheet.setColumnView(6, 10)
+//        sheet.setColumnView(7, 20)
+//
+//        def label
+//        def number
+//
+//        def fila = 6;
+//
+//        NumberFormat nf = new NumberFormat("#.##");
+//        WritableCellFormat cf2obj = new WritableCellFormat(nf);
+//
+//        label = new Label(1, 1, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
+//        label = new Label(1, 2, "REPORTE EXCEL DE OBRAS FINALIZADAS", times16format); sheet.addCell(label);
+//
+//        label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
+//        label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
+//        label = new Label(2, 4, "Dirección", times16format); sheet.addCell(label);
+//        label = new Label(3, 4, "Fecha Registro", times16format); sheet.addCell(label);
+//        label = new Label(4, 4, "Sitio", times16format); sheet.addCell(label);
+//        label = new Label(5, 4, "Parroquia - Comunidad", times16format); sheet.addCell(label);
+//        label = new Label(6, 4, "Fecha Inicio", times16format); sheet.addCell(label);
+//        label = new Label(7, 4, "Fecha Fin", times16format); sheet.addCell(label);
+//
+//        obras.eachWithIndex {i, j->
+//            label = new Label(0, fila, i.obracdgo.toString()); sheet.addCell(label);
+//            label = new Label(1, fila, i.obranmbr.toString()); sheet.addCell(label);
+//            label = new Label(2, fila, i.direccion.toString()); sheet.addCell(label);
+//            label = new Label(3, fila, i?.obrafcha?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(4, fila, i?.obrasito?.toString()); sheet.addCell(label);
+//            label = new Label(5, fila, i?.parrnmbr?.toString()); sheet.addCell(label);
+//            label = new Label(6, fila, i?.obrafcin?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
+//            label = new Label(7, fila, i?.obrafcfn?.format("dd-MM-yyyy")?.toString() ?: ''); sheet.addCell(label);
+//            fila++
+//        }
+//
+//        workbook.write();
+//        workbook.close();
+//        def output = response.getOutputStream()
+//        def header = "attachment; filename=" + "obrasFinalizadas.xls";
+//        response.setContentType("application/octet-stream")
+//        response.setHeader("Content-Disposition", header);
+//        output.write(file.getBytes());
+//    }
 
 
 
