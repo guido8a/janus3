@@ -29,24 +29,24 @@
             <i class="fa fa-copy"></i>
             Copiar Rubros
         </a>
-        <a href="#" class="btn btn-sm  " id="imprimir_sub">
+        <a href="#" class="btn btn-sm btn-info" id="imprimir_sub">
             <i class="fa fa-print"></i>
             Impr. Subpre.
         </a>
-        <a href="#" class="btn btn-sm  " id="imprimir_excel" style="margin-left:0px">
+        <a href="#" class="btn btn-sm btn-success" id="imprimir_excel" style="margin-left:0px">
             <i class="fa fa-file-excel"></i>
             Excel
         </a>
 
-        <a href="#" class="btn btn-sm  " id="imprimir_sub_vae">
+        <a href="#" class="btn btn-sm btn-info" id="imprimir_sub_vae">
             <i class="fa fa-print"></i>
             Subpre. VAE
         </a>
-        <a href="#" class="btn btn-sm  " id="imprimir_vae_excel">
+        <a href="#" class="btn btn-sm  btn-success" id="imprimir_vae_excel">
             <i class="fa fa-file-excel"></i>
             VAE Excel
         </a>
-        <a href="#" class="btn btn-sm  " id="imprimir_desglose_excel">
+        <a href="#" class="btn btn-sm  btn-success" id="imprimir_desglose_excel">
             <i class="fa fa-file-excel"></i>
             Desglose
         </a>
@@ -339,23 +339,9 @@
 
     });
 
-
     $("#imprimir_excel").click(function () {
-        $("#dlgLoad").dialog("open");
-
-        $.ajax({
-            type: 'POST',
-            url: "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra')}",
-            data: {
-                id: '${obra?.id}'
-            },
-            success: function (msg) {
-                location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',id: obra?.id)}?sub=" + $("#subPres_desc").val();
-                $("#dlgLoad").dialog("close");
-            }
-        });
+        location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteExcelVolObra')}?id=" + ${obra?.id} + "&sub=" + $("#subPres_desc").val();
     });
-
 
     $("#imprimir_desglose_excel").click(function () {
         $("#dlgLoad").dialog("open");

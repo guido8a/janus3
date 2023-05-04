@@ -61,7 +61,7 @@ th, td {
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportes4', action:'reporteRegistradasExcel' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteRegistradasExcel' )}?buscador=" + $("#buscador_con").val() + "&criterio=" + $("#criterio_con").val() + "&operador=" + $("#oprd").val()
     });
 
     $("#buscador_con").change(function(){

@@ -10,7 +10,7 @@
             <i class="fa fa-print"></i>
             Imprimir
         </a>
-        <a href="#" class="btn  btn-info" id="excel">
+        <a href="#" class="btn  btn-success" id="excel">
             <i class="fa fa-file-excel"></i>
             Excel
         </a>
@@ -129,15 +129,18 @@
                 datos="anio="+$("#item_anio").val()
             }
         }
-        location.href="${createLink(controller: 'reportes',action: 'pacExcel')}?"+datos
+        location.href="${createLink(controller: 'reportesExcel',action: 'pacExcel')}?"+datos
     });
 
     $("#ver_todos").click(function(){
         var d = cargarLoader("Guardando...");
         if($(this).hasClass("active")){
+            d.modal("hide");
             cargarTabla()
         }else{
-            $.ajax({type : "POST", url : "${g.createLink(controller: 'pac',action:'tabla')}",
+            $.ajax({
+                type : "POST",
+                url : "${g.createLink(controller: 'pac',action:'tabla')}",
                 data     : "todos=1",
                 success  : function (msg) {
                 d.modal("hide");

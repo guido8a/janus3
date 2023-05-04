@@ -7,7 +7,6 @@
     <title>
         Contratos
     </title>
-
 </head>
 
 <body>
@@ -114,7 +113,7 @@
     });
 
     $("#excel").click(function () {
-        location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val()
+        location.href="${g.createLink(controller: 'reportesExcel', action:'reporteExcelContratos' )}?buscador=" + $("#buscador_tra").val() + "&criterio=" + $("#criterio_tra").val()
     });
 
     $("#buscador_tra").change(function () {

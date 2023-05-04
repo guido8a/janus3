@@ -81,7 +81,7 @@
     });
 
     $("#excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportes4', action:'reporteExcelProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
+        location.href = "${g.createLink(controller: 'reportesExcel', action:'reporteExcelProcesosContratacion' )}?buscador=" +$("#buscador option:selected").val() + "&criterio=" + $("#criterio").val()
     });
 
     $("#buscar").click(function () {

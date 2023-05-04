@@ -14,10 +14,7 @@ import jxl.write.*
 import java.awt.*
 
 import seguridad.Persona
-//import java.awt.Label
 
-
-//class ReportesController extends Shield {
 class ReportesController {
 
     def index() {
@@ -92,10 +89,7 @@ class ReportesController {
                         tmp.add(v[0])
                     }
                 }
-
             }
-//            println "fila  "+tmp
-//            println("col" + columnas)
             filas.add(tmp)
             cont++
         }
@@ -561,109 +555,6 @@ class ReportesController {
         renderPdf(template:'/reportes/pac', model: [pac: pac, todos: params.todos, dep: dep, anio: anio], filename: 'pac.pdf')
     }
 
-    def pacExcel() {
-//        println "params REPORTE " + params
-        def pac
-        def dep
-        def anio
-        if (!params.todos) {
-            anio = janus.pac.Anio.get(params.anio)
-            if (params.dpto) {
-                dep = Departamento.get(params.dpto)
-                pac = janus.pac.Pac.findAllByDepartamentoAndAnio(dep, anio, [sort: "id"])
-                dep = dep.descripcion
-                anio = anio.anio
-            } else {
-                pac = janus.pac.Pac.findAllByAnio(janus.pac.Anio.get(params.anio), [sort: "id"])
-                dep = "Todos"
-                anio = anio.anio
-            }
-        } else {
-            dep = "Todos"
-            anio = "Todos"
-            pac = janus.pac.Pac.list([sort: "id"])
-        }
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, true);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        WritableFont times10Font = new WritableFont(WritableFont.TIMES, 10, WritableFont.NO_BOLD, true);
-        WritableCellFormat times10 = new WritableCellFormat(times10Font);
-        def fila = 6
-
-        WritableSheet sheet = workbook.createSheet("PAC", 0)
-
-        sheet.setColumnView(0, 5)
-        sheet.setColumnView(1, 10)
-        sheet.setColumnView(2, 50)
-        sheet.setColumnView(3, 15)
-        sheet.setColumnView(4, 15)
-        sheet.setColumnView(5, 50)
-        sheet.setColumnView(6, 10)
-        sheet.setColumnView(7, 5)
-        sheet.setColumnView(8, 10)
-        sheet.setColumnView(9, 10)
-        sheet.setColumnView(10, 5)
-        sheet.setColumnView(11, 5)
-        sheet.setColumnView(12, 5)
-
-        def label = new Label(0, 1, (Auxiliar.get(1)?.titulo ?: '').toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 2, "Departamento de compras públicas".toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 3, "Plan anual de compras".toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 4, "Departamento: ${dep}".toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 5, "Año: ${anio}".toUpperCase(), times16format); sheet.addCell(label);
-
-        label = new Label(0, fila, "#", times16format); sheet.addCell(label);
-        label = new Label(1, fila, "Año", times16format); sheet.addCell(label);
-        label = new Label(2, fila, "Partida", times16format); sheet.addCell(label);
-        label = new Label(3, fila, "CPP", times16format); sheet.addCell(label);
-        label = new Label(4, fila, "Tipo compra", times16format); sheet.addCell(label);
-        label = new Label(5, fila, "Descripción", times16format); sheet.addCell(label);
-        label = new Label(6, fila, "Cantidad", times16format); sheet.addCell(label);
-        label = new Label(7, fila, "Unidad", times16format); sheet.addCell(label);
-        label = new Label(8, fila, "Unitario", times16format); sheet.addCell(label);
-        label = new Label(9, fila, "Total", times16format); sheet.addCell(label);
-        label = new Label(10, fila, "C1", times16format); sheet.addCell(label);
-        label = new Label(11, fila, "C2", times16format); sheet.addCell(label);
-        label = new Label(12, fila, "C3", times16format); sheet.addCell(label);
-        fila++
-        def total = 0
-        pac.eachWithIndex { p, i ->
-            label = new Label(0, fila, "${i + 1}", times10); sheet.addCell(label);
-            label = new Label(1, fila, p.anio.anio, times10); sheet.addCell(label);
-            label = new Label(2, fila, p.presupuesto.numero, times10); sheet.addCell(label);
-            label = new Label(3, fila, p.cpp?.numero, times10); sheet.addCell(label);
-            label = new Label(4, fila, p.tipoCompra.descripcion, times10); sheet.addCell(label);
-            label = new Label(5, fila, p.descripcion, times10); sheet.addCell(label);
-            def number = new Number(6, fila, p.cantidad); sheet.addCell(number);
-            label = new Label(7, fila, p.unidad.codigo, times10); sheet.addCell(label);
-            number = new Number(8, fila, p.costo); sheet.addCell(number);
-            number = new Number(9, fila, p.cantidad * p.costo); sheet.addCell(number);
-            label = new Label(10, fila, p.c1, times10); sheet.addCell(label);
-            label = new Label(11, fila, p.c2, times10); sheet.addCell(label);
-            label = new Label(12, fila, p.c3, times10); sheet.addCell(label);
-            total += p.cantidad * p.costo
-            fila++
-
-        }
-        label = new Label(8, fila, "TOTAL", times10); sheet.addCell(label);
-        def number = new Number(9, fila, total); sheet.addCell(number);
-        fila++
-
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "pac.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
-
     def analisisPrecios() {
 
     }
@@ -694,21 +585,17 @@ class ReportesController {
             table.addCell(c1);
         }
         table.setHeaderRows(1);
-//        def tagLib = new BuscadorTagLib()
+
         datos.each { d ->
             campos.eachWithIndex { c, j ->
                 def campo
                 if (funciones) {
-//                    if (funciones[j])
-//                        campo = tagLib.operacion([propiedad: c, funcion: funciones[j], registro: d]).toString()
-//                    else
                         campo = d.properties[c].toString()
                 } else {
                     campo = d.properties[c].toString()
                 }
                 table.addCell(new Phrase(campo, small));
             }
-
         }
         subCatPart.add(table);
     }
@@ -835,253 +722,6 @@ class ReportesController {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
-
-//    def imprimirRubrosExcel() {
-//        def obra = Obra.get(params.obra.toLong())
-//        def lugar = obra.lugar
-//        def fecha = obra.fechaPreciosRubros
-//        def itemsChofer = [obra.chofer]
-//        def itemsVolquete = [obra.volquete]
-//        def indi = obra.totales
-//        WorkbookSettings workbookSettings = new WorkbookSettings()
-//        workbookSettings.locale = Locale.default
-//        def file = File.createTempFile('myExcelDocument', '.xls')
-//        file.deleteOnExit()
-//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-//        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-//        WritableCellFormat formatXls = new WritableCellFormat(font)
-//        def row = 0
-//
-//        preciosService.ac_rbroObra(obra.id)
-//        VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i ->
-//            def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rubro.id)
-//            WritableSheet sheet = workbook.createSheet(rubro.codigo, i)
-//            rubroAExcel(sheet, res, rubro, fecha, indi)
-//        }
-//        workbook.write();
-//        workbook.close();
-//        def output = response.getOutputStream()
-//        def header = "attachment; filename=" + "rubro.xls";
-//        response.setContentType("application/octet-stream")
-//        response.setHeader("Content-Disposition", header);
-//        output.write(file.getBytes());
-//
-//    }
-
-
-//    def rubroAExcel(sheet, res, rubro, fecha, indi) {
-//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-//        WritableCellFormat times16format = new WritableCellFormat(times16font);
-//        WritableFont times10Font = new WritableFont(WritableFont.TIMES, 10, WritableFont.NO_BOLD, false);
-//        WritableCellFormat times10 = new WritableCellFormat(times10Font);
-//        sheet.setColumnView(0, 20)
-//        sheet.setColumnView(1, 50)
-//        sheet.setColumnView(2, 15)
-//        sheet.setColumnView(3, 15)
-//        sheet.setColumnView(4, 15)
-//        sheet.setColumnView(5, 15)
-//        sheet.setColumnView(6, 15)
-//
-//        def label = new Label(0, 1, (Auxiliar.get(1)?.titulo ?: '').toUpperCase(), times16format); sheet.addCell(label);
-//        label = new Label(0, 2, "DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS".toUpperCase(), times16format); sheet.addCell(label);
-//        label = new Label(0, 3, "Análisis de precios unitarios".toUpperCase(), times16format); sheet.addCell(label);
-//
-//        sheet.mergeCells(0, 1, 1, 1)
-//        sheet.mergeCells(0, 2, 1, 2)
-//        sheet.mergeCells(0, 3, 1, 3)
-//        label = new Label(0, 5, "Fecha: " + new Date().format("dd-MM-yyyy"), times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, 5, 1, 5)
-//        label = new Label(0, 6, "Código: " + rubro.codigo, times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, 6, 1, 6)
-//        label = new Label(0, 7, "Descripción: " + rubro.nombre, times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, 7, 1, 7)
-//        label = new Label(5, 5, "Fecha Act. P.U: " + fecha?.format("dd-MM-yyyy"), times16format); sheet.addCell(label);
-//        sheet.mergeCells(5, 5, 6, 5)
-//        label = new Label(5, 6, "Unidad: " + rubro.unidad?.codigo, times16format); sheet.addCell(label);
-//        sheet.mergeCells(5, 6, 6, 6)
-//
-//        def fila = 9
-//        label = new Label(0, fila, "Equipos", times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, fila, 1, fila)
-//        fila++
-//        def number
-//        def totalHer = 0
-//        def totalMan = 0
-//        def totalMat = 0
-//        def total = 0
-//        def band = 0
-//        def rowsTrans = []
-//        res.each { r ->
-//            if (r["grpocdgo"] == 3) {
-//                if (band == 0) {
-//                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//                    label = new Label(2, fila, "Unidad", times16format); sheet.addCell(label);
-//                    label = new Label(3, fila, "Cantidad", times16format); sheet.addCell(label);
-//                    label = new Label(5, fila, "Tarifa", times16format); sheet.addCell(label);
-//                    label = new Label(5, fila, "Costo", times16format); sheet.addCell(label);
-//                    label = new Label(6, fila, "Rendimiento", times16format); sheet.addCell(label);
-//                    label = new Label(7, fila, "C.Total", times16format); sheet.addCell(label);
-//                    fila++
-//                }
-//                band = 1
-//                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-//                label = new Label(2, fila, r["unddcdgo"], times10); sheet.addCell(label);
-//                number = new Number(3, fila, r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(4, fila, r["rbpcpcun"]); sheet.addCell(number);
-//                number = new Number(5, fila, r["rbpcpcun"] * r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(6, fila, r["rndm"]); sheet.addCell(number);
-//                number = new Number(7, fila, r["parcial"]); sheet.addCell(number);
-//                totalHer += r["parcial"]
-//                fila++
-//            }
-//            if (r["grpocdgo"] == 2) {
-//                if (band == 1) {
-//                    label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//                    number = new Number(6, fila, totalHer); sheet.addCell(number);
-//                    fila++
-//                }
-//                if (band != 2) {
-//                    fila++
-//                    label = new Label(0, fila, "Mano de obra", times16format); sheet.addCell(label);
-//                    sheet.mergeCells(0, fila, 1, fila)
-//                    fila++
-//                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//                    label = new Label(2, fila, "Unidad", times16format); sheet.addCell(label);
-//                    label = new Label(3, fila, "Cantidad", times16format); sheet.addCell(label);
-//                    label = new Label(4, fila, "Jornal", times16format); sheet.addCell(label);
-//                    label = new Label(5, fila, "Costo", times16format); sheet.addCell(label);
-//                    label = new Label(6, fila, "Rendimiento", times16format); sheet.addCell(label);
-//                    label = new Label(7, fila, "C.Total", times16format); sheet.addCell(label);
-//                    fila++
-//                }
-//                band = 2
-//                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-//                label = new Label(2, fila, r["unddcdgo"], times10); sheet.addCell(label);
-//                number = new Number(3, fila, r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(4, fila, r["rbpcpcun"]); sheet.addCell(number);
-//                number = new Number(5, fila, r["rbpcpcun"] * r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(6, fila, r["rndm"]); sheet.addCell(number);
-//                number = new Number(7, fila, r["parcial"]); sheet.addCell(number);
-//                totalMan += r["parcial"]
-//                fila++
-//            }
-//
-//            if (r["grpocdgo"] == 1) {
-//                if (band == 2) {
-//                    label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//                    number = new Number(6, fila, totalMan); sheet.addCell(number);
-//                    fila++
-//                }
-//                if (band != 3) {
-//                    fila++
-//                    label = new Label(0, fila, "Materiales", times16format); sheet.addCell(label);
-//                    sheet.mergeCells(0, fila, 1, fila)
-//                    fila++
-//                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//                    label = new Label(2, fila, "Unidad", times16format); sheet.addCell(label);
-//                    label = new Label(3, fila, "Cantidad", times16format); sheet.addCell(label);
-//                    label = new Label(4, fila, "Unitario", times16format); sheet.addCell(label);
-//                    label = new Label(7, fila, "C.Total", times16format); sheet.addCell(label);
-//                    fila++
-//                }
-//                band = 3
-//                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-//                label = new Label(2, fila, r["unddcdgo"], times10); sheet.addCell(label);
-//                number = new Number(3, fila, r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(4, fila, r["rbpcpcun"]); sheet.addCell(number);
-//                number = new Number(7, fila, r["parcial"]); sheet.addCell(number);
-//                totalMat += r["parcial"]
-//                fila++
-//
-//            }
-//            if (r["grpocdgo"] == 1) {
-//                rowsTrans.add(r)
-//                total += r["parcial_t"]
-//            }
-//
-//        }
-//        if (band == 3) {
-//            label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//            number = new Number(7, fila, totalMat); sheet.addCell(number);
-//            fila++
-//        }
-//
-//        /*Tranporte*/
-//        if (rowsTrans.size() > 0) {
-//            fila++
-//            label = new Label(0, fila, "Transporte", times16format); sheet.addCell(label);
-//            sheet.mergeCells(0, fila, 1, fila)
-//            fila++
-//            label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//            label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//            label = new Label(2, fila, "Unidad", times16format); sheet.addCell(label);
-//            label = new Label(3, fila, "Peso/Vol", times16format); sheet.addCell(label);
-//            label = new Label(4, fila, "Cantidad", times16format); sheet.addCell(label);
-//            label = new Label(5, fila, "Distancia", times16format); sheet.addCell(label);
-//            label = new Label(6, fila, "Unitario", times16format); sheet.addCell(label);
-//            label = new Label(7, fila, "C.Total", times16format); sheet.addCell(label);
-//            fila++
-//            rowsTrans.each { rt ->
-//                def tra = rt["parcial_t"]
-//                def tot = 0
-//                if (tra > 0)
-//                    tot = rt["parcial_t"] / (rt["itempeso"] * rt["rbrocntd"] * rt["distancia"])
-//                label = new Label(0, fila, rt["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, rt["itemnmbr"], times10); sheet.addCell(label);
-//                label = new Label(2, fila, rt["unddcdgo"], times10); sheet.addCell(label);
-//                number = new Number(3, fila, rt["itempeso"]); sheet.addCell(number);
-//                number = new Number(4, fila, rt["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(5, fila, rt["distancia"]); sheet.addCell(number);
-//                number = new Number(6, fila, tot); sheet.addCell(number);
-//                number = new Number(7, fila, rt["parcial_t"]); sheet.addCell(number);
-//                fila++
-//            }
-//            label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//            number = new Number(7, fila, total); sheet.addCell(number);
-//            fila++
-//            fila++
-//        }
-//
-//        /*indirectos */
-//
-//        label = new Label(0, fila, "Costos Indirectos", times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, fila, 1, fila)
-//        fila++
-//
-//        label = new Label(0, fila, "Descripción", times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, fila, 1, fila)
-//        label = new Label(5, fila, "Porcentaje", times16format); sheet.addCell(label);
-//        label = new Label(6, fila, "Valor", times16format); sheet.addCell(label);
-//        fila++
-//        def totalRubro = total + totalHer + totalMan + totalMat
-//        def totalIndi = totalRubro * indi / 100
-//        label = new Label(0, fila, "Costos indirectos", times10); sheet.addCell(label);
-//        sheet.mergeCells(0, fila, 1, fila)
-//        number = new Number(5, fila, indi); sheet.addCell(number);
-//        number = new Number(6, fila, totalIndi); sheet.addCell(number);
-//
-//        /*Totales*/
-//        fila += 4
-//        label = new Label(4, fila, "Costo unitario directo", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila, 5, fila)
-//        label = new Label(4, fila + 1, "Costos indirectos", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila + 1, 5, fila + 1)
-//        label = new Label(4, fila + 2, "Costo total del rubro", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila + 2, 5, fila + 2)
-//        label = new Label(4, fila + 3, "Precio unitario", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila + 3, 5, fila + 3)
-//        number = new Number(7, fila, totalRubro); sheet.addCell(number);
-//        number = new Number(7, fila + 1, totalIndi); sheet.addCell(number);
-//        number = new Number(7, fila + 2, totalRubro + totalIndi); sheet.addCell(number);
-//        number = new Number(7, fila + 3, (totalRubro + totalIndi).toDouble().round(2)); sheet.addCell(number);
-//        return sheet
-//    }
 
     def imprimirRubros() {
         println "imprimirRubros... $params"
@@ -5443,140 +5083,6 @@ class ReportesController {
         response.setHeader("Content-Disposition", header);
         output.write(file.getBytes());
     }
-
-
-    def reporteExcelVolObra() {
-
-        def obra = Obra.get(params.id)
-        def detalle
-        detalle = VolumenesObra.findAllByObra(obra, [sort: "orden"])
-        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-
-        def precios = [:]
-        def fecha = obra.fechaPreciosRubros
-        def dsps = obra.distanciaPeso
-        def dsvl = obra.distanciaVolumen
-        def lugar = obra.lugar
-        def prch = 0
-        def prvl = 0
-        def subPre
-        preciosService.ac_rbroObra(obra.id)
-
-//        def valores = preciosService.rbro_pcun_v2(obra.id)
-        def valores
-
-        if (params.sub)
-            if (params.sub == '-1') {
-                valores = preciosService.rbro_pcun_v2(obra.id)
-            } else {
-                valores = preciosService.rbro_pcun_v3(obra.id, params.sub)
-            }
-        else
-            valores = preciosService.rbro_pcun_v2(obra.id)
-
-        if (params.sub == '-1' || params.sub == null) {
-            subPre = subPres?.descripcion
-        } else {
-            subPre = SubPresupuesto.get(params.sub).descripcion
-        }
-
-        def indirecto = obra.totales / 100
-        def c;
-        def total1 = 0;
-        def totales = 0
-        def totalPresupuesto = 0;
-
-        //excel
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-//        println "paso"
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        // fija el ancho de la columna
-        // sheet.setColumnView(1,40)
-
-
-        params.id = params.id.split(",")
-        if (params.id.class == java.lang.String) {
-            params.id = [params.id]
-        }
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 12)
-        sheet.setColumnView(1, 25)
-        sheet.setColumnView(2, 25)
-        sheet.setColumnView(3, 60)
-        sheet.setColumnView(4, 25)
-        sheet.setColumnView(5, 25)
-        sheet.setColumnView(6, 25)
-        sheet.setColumnView(7, 25)
-
-
-        def label
-        def number
-        def nmro
-        def numero = 1;
-
-        def fila = 16;
-
-        def ultimaFila
-
-
-
-        label = new Label(2, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new Label(2, 4, "DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS", times16format); sheet.addCell(label);
-        label = new Label(2, 6, "PRESUPUESTO", times16format); sheet.addCell(label);
-        label = new Label(2, 8, "FECHA: " + obra?.fechaCreacionObra.format("dd-MM-yyyy"), times16format);
-        sheet.addCell(label);
-        label = new Label(2, 9, "FECHA ACT. PRECIOS: " + obra?.fechaPreciosRubros.format("dd-MM-yyyy"), times16format);
-        sheet.addCell(label);
-        label = new Label(2, 10, "NOMBRE: " + obra?.nombre, times16format); sheet.addCell(label);
-        label = new Label(2, 11, "DOC. REFERENCIA: " + (obra?.oficioIngreso ?: '') + "  " + (obra?.referencia ?: ''), times16format); sheet.addCell(label);
-        label = new Label(2, 12, "MEMO CANT. DE OBRA: " + (obra?.memoCantidadObra ?: ''), times16format); sheet.addCell(label);
-        label = new Label(0, 15, "N°", times16format); sheet.addCell(label);
-        label = new Label(1, 15, "CÓDIGO", times16format); sheet.addCell(label);
-        label = new Label(2, 15, "SUBPRESUPUESTO", times16format); sheet.addCell(label);
-        label = new Label(3, 15, "RUBRO", times16format); sheet.addCell(label);
-        label = new Label(4, 15, "UNIDAD", times16format); sheet.addCell(label);
-        label = new Label(5, 15, "CANTIDAD", times16format); sheet.addCell(label);
-        label = new Label(6, 15, "UNITARIO", times16format); sheet.addCell(label);
-        label = new Label(7, 15, "C.TOTAL", times16format); sheet.addCell(label);
-
-        valores.each {
-            number = new Number(0, fila, numero++); sheet.addCell(number);
-            label = new Label(1, fila, it.rbrocdgo.toString()); sheet.addCell(label);
-            label = new Label(2, fila, it.sbprdscr.toString()); sheet.addCell(label);
-            label = new Label(3, fila, it.rbronmbr.toString()); sheet.addCell(label);
-            label = new Label(4, fila, it.unddcdgo.toString()); sheet.addCell(label);
-            number = new Number(5, fila, it.vlobcntd); sheet.addCell(number);
-            number = new Number(6, fila, it.pcun); sheet.addCell(number);
-            number = new Number(7, fila, it.totl); sheet.addCell(number);
-            fila++
-            totales = it.totl
-            totalPresupuesto = (total1 += totales);
-            ultimaFila = fila
-        }
-
-        label = new Label(6, ultimaFila, "TOTAL ", times16format); sheet.addCell(label);
-        number = new Number(7, ultimaFila, totalPresupuesto); sheet.addCell(number);
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "VolObraExcel.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
-
-    def reporteDesgloseExcelVolObra() {
 
         def obra = Obra.get(params.id)
         def detalle
