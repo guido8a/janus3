@@ -231,21 +231,20 @@ class VolumenObraController {
 
     }
 
-
     /** carga tabla de detalle de volúmenes de obra **/
     def tabla() {
-        println "params tabla Vlob---> $params"
+//        println "params tabla Vlob---> $params"
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
-        println "persona $persona ${persona?.departamento?.direccion?.id}"
+//        println "persona $persona ${persona?.departamento?.direccion?.id}"
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
         def grupo = Grupo.findAllByDireccion(direccion)
-        println "grupo --> $grupo"
+//        println "grupo --> $grupo"
         def subPresupuesto1 = []
         if(grupo) subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
-        println "sbpr --> $subPresupuesto1"
+//        println "sbpr --> $subPresupuesto1"
         def obra = Obra.get(params.obra)
-        println "obra --> $obra"
+//        println "obra --> $obra"
 
         def duenoObra = 0
         def valores
@@ -257,22 +256,22 @@ class VolumenObraController {
             orden = 'desc'
         }
 
-        println "...1"
+//        println "...1"
         // actualiza el rendimiento de rubros transporte TR% si la obra no está registrada y herr. menor
         if(obra.estado != 'R') {
-            println "actualiza desalojo y herramienta menor"
+//            println "actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
 
-        println "...2"
+//        println "...2"
 
         if (params.sub && params.sub != "-1") {
             valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
         } else {
             valores = preciosService.rbro_pcun_v4(obra.id, orden)
         }
-        println("-->>" + valores)
+//        println("-->>" + valores)
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
@@ -287,48 +286,24 @@ class VolumenObraController {
     }
 
     def esDuenoObra(obra) {
-//
+
         def dueno = false
         def funcionElab = Funcion.findByCodigo('E')
         def personasUtfpu = PersonaRol.findAllByFuncionAndPersonaInList(funcionElab, Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU')))
         def responsableRol = PersonaRol.findByPersonaAndFuncion(obra?.responsableObra, funcionElab)
         def persona = Persona.get(session.usuario.id)
-//
-//        if(responsableRol) {
-////            println personasUtfpu
-//            dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
-//        }
-
-//        println "responsable" + responsableRol + " dueño " + dueno
-//                dueno = session.usuario.departamento.id == obra?.responsableObra?.departamento?.id || dueno
 
         if (responsableRol) {
-//            println "..................."
             println "${obra?.responsableObra?.departamento?.id} ==== ${Persona.get(session.usuario.id).departamento?.id}"
-//            println "${Persona.get(session.usuario.id)}"
-/*
-            if (obra?.responsableObra?.departamento?.direccion?.id == Persona.get(session.usuario.id).departamento?.direccion?.id) {
-                dueno = true
-            } else {
-                dueno = personasUtfpu.contains(responsableRol) && session.usuario.departamento.codigo == 'UTFPU'
-            }
-*/
+
             if (personasUtfpu.contains(responsableRol) && persona.departamento.codigo == 'UTFPU') {
                 dueno = true
             } else if (obra?.responsableObra?.departamento?.direccion?.id == persona.departamento?.direccion?.id) {
                 dueno = true
             }
         }
-
-
-//        println(" usuarioDep " + Persona.get(session.usuario.id).departamento?.direccion?.id + " respDep " + obra?.responsableObra?.departamento?.direccion?.id + " dueño " + dueno)
-
-//        println ">>>>responsable" + responsableRol + " dueño " + dueno + " usuario " + session.usuario.departamento.id + " respDep " + obra?.responsableObra?.departamento?.id
-//        println ">>>>responsable" + responsableRol + " dueño " + dueno + " usuario " + Persona.get(session.usuario.id).departamento?.direccion?.id + " respDep " + obra?.responsableObra?.departamento?.direccion?.id
-
         dueno
     }
-
 
     def eliminarRubro() {
         println "elm rubro " + params
@@ -376,7 +351,6 @@ class VolumenObraController {
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
         def grupo = Grupo.findAllByDireccion(direccion)
          println "grupo: $grupo"
-//        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
 
         def obra = Obra.get(params.obra)
 
@@ -405,8 +379,6 @@ class VolumenObraController {
 
         [precios: precios, subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl,
          indirectos: indirecto * 100, valores: valores]
-
-
     }
 
 
@@ -437,39 +409,28 @@ class VolumenObraController {
     }
 
     def eliminarSubpre () {
-        println("params eliminar sub " + params)
+//        println("params eliminar sub " + params)
         def subpresupuesto = SubPresupuesto.get(params.sub)
         def obra = Obra.get(params.obra)
         def volumenes = VolumenesObra.findAllBySubPresupuestoAndObra(subpresupuesto, obra)
-//        println("vols " + volumenes)
         def cronogramas = Cronograma.findAllByVolumenObraInList(volumenes)
         def errores = 0
 
         if(cronogramas){
-//            println("Existe vlob en crono")
             render "NO_No se puede borrar el subpresupuesto, uno o mas rubros ya se encuentran en el cronograma!"
         }else{
             volumenes.each {v->
-//                v.delete(flush: true)
                 if(!v.delete(flush:true)){
                     errores += v.errors.getErrorCount()
                 }
             }
-            println("errores " + errores)
+//            println("errores " + errores)
             if(errores == 0){
-//                if(!subpresupuesto.delete(flush:true)){
-//                render "NO_Error al borrar el subpresupuesto"
-//                }else{
                  render "OK_Subpresupuesto borrado correctamente"
-//                }
             }else{
                 render "NO_Error al borrar el subpresupuesto"
             }
         }
-
-
-//        println("cronos " + cronogramas)
-
     }
 
     def listaRubros(){
@@ -493,9 +454,6 @@ class VolumenObraController {
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
-//        println "data: ${datos[0]}"
         [data: datos]
-
     }
-
 }

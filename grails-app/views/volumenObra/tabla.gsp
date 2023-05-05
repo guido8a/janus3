@@ -305,38 +305,11 @@
     });
 
     $("#imprimir_vae_excel").click(function () {
-        var valorSub = $("#subPres_desc").val()
-        if ($("#subPres_desc").val() != '') {
-            $("#dlgLoad").dialog("open");
-            $.ajax({
-                type: 'POST',
-                url: "${g.createLink(controller: 'reportes5',action: 'reporteVaeExcel')}",
-                data: {
-                    id: '${obra?.id}',
-                    sub: valorSub
-                },
-                success: function (msg) {
-                    location.href = "${g.createLink(controller: 'reportes5',action: 'reporteVaeExcel',id: obra?.id)}?sub=" + $("#subPres_desc").val();
-                    $("#dlgLoad").dialog("close");
-                }
-            });
+        if ($("#subPres_desc").val() !== '') {
+            location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteVaeExcel')}?id=" + ${obra?.id} + "&sub=" + $("#subPres_desc").val();
         } else {
-            $.box({
-                imageClass: "box_info",
-                text: "Seleccione un subpresupuesto",
-                title: "Alerta",
-                iconClose: false,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function () {
-                        }
-                    }
-                }
-            });
+            bootbox.alert("Seleccione un subpresupuesto")
         }
-
     });
 
     $("#imprimir_excel").click(function () {
@@ -344,19 +317,16 @@
     });
 
     $("#imprimir_desglose_excel").click(function () {
-        $("#dlgLoad").dialog("open");
-
-        $.ajax({
-            type: 'POST',
-            url: "${g.createLink(controller: 'reportes',action: 'reporteDesgloseExcelVolObra')}",
-            data: {
-                id: '${obra?.id}'
-            },
-            success: function (msg) {
-                location.href = "${g.createLink(controller: 'reportes',action: 'reporteDesgloseExcelVolObra',id: obra?.id)}?sub=" + $("#subPres_desc").val();
-                $("#dlgLoad").dialog("close");
-            }
-        });
+        %{--$.ajax({--}%
+        %{--    type: 'POST',--}%
+        %{--    url: "${g.createLink(controller: 'reportes',action: 'reporteDesgloseExcelVolObra')}",--}%
+        %{--    data: {--}%
+        %{--        id: '${obra?.id}'--}%
+        %{--    },--}%
+        %{--    success: function (msg) {--}%
+                location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteDesgloseExcelVolObra')}?id=" + ${obra?.id} +  "&sub=" + $("#subPres_desc").val();
+        //     }
+        // });
     });
 
     $("#subPres_desc").change(function () {
