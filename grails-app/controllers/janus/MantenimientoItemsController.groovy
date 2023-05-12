@@ -2185,7 +2185,21 @@ itemId: item.id
 
     def savePrecioCantones_ajax(){
         println("sv " + params)
-        return "ok"
+        def cn = dbConnectionService.getConnection()
+        def fcha = params.fecha[0..9]
+        def mnsj = ""
+        def sql="update rbpc set rbpcpcun = ${params.precioUnitario} " +
+                "where rbpcfcha = '${fcha}' and lgar__id in (${params.lugares}) and " +
+                "item__id = ${params.item.id} "
+        println "sql: $sql"
+        try {
+            cn.execute(sql.toString())
+            mnsj = "ok"
+        }
+        catch (e) {
+            mnsj = "Error al actualizar los precios"
+        }
+        return mnsj
     }
 
 
