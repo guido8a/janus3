@@ -259,6 +259,7 @@
                     id    : "dlgCreateEditP",
                     title : title + " precio para los cantones",
                     message : msg,
+                    class: 'modal-sm',
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
