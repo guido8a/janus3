@@ -28,33 +28,47 @@ class ReportesExcelController {
 
         XSSFWorkbook wb = new XSSFWorkbook()
         Sheet sheet = wb.createSheet("Matriz")
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
         Row row0 = sheet.createRow(1)
         row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
         Row rowT = sheet.createRow(2)
         rowT.createCell(1).setCellValue("")
         Row rowT3 = sheet.createRow(3)
         rowT3.createCell(1).setCellValue(obra?.departamento?.direccion?.nombre ?: '')
+        rowT3.setRowStyle(style)
         Row rowT4 = sheet.createRow(4)
         rowT4.createCell(1).setCellValue("Matriz de la Fórmula Polinómica")
+        rowT4.setRowStyle(style)
         Row rowT5 = sheet.createRow(5)
         rowT5.createCell(1).setCellValue("")
         Row rowT6 = sheet.createRow(6)
         rowT6.createCell(1).setCellValue("Obra: ${obra.nombre ?: ''}")
+        rowT6.setRowStyle(style)
         Row rowT7 = sheet.createRow(7)
         rowT7.createCell(1).setCellValue("Código: ${obra.codigo ?: ''}")
+        rowT7.setRowStyle(style)
         Row rowT8 = sheet.createRow(8)
-        rowT8.createCell(1).setCellValue("Memo Cant. Obra: ${obra.memoCantidadObra}")
+        rowT8.createCell(1).setCellValue("Memo Cant. Obra: ${obra.memoCantidadObra ?: ''}")
+        rowT8.setRowStyle(style)
         Row rowT9 = sheet.createRow(9)
-        rowT9.createCell(1).setCellValue("Doc. Referencia: ${obra.oficioIngreso}")
+        rowT9.createCell(1).setCellValue("Doc. Referencia: ${obra.oficioIngreso ?: ''}")
+        rowT9.setRowStyle(style)
         Row rowT10 = sheet.createRow(10)
         rowT10.createCell(1).setCellValue("Fecha: ${obra?.fechaCreacionObra?.format("dd-MM-yyyy")}")
+        rowT10.setRowStyle(style)
         Row rowT11 = sheet.createRow(11)
         rowT11.createCell(1).setCellValue("Fecha Act. Precios: ${obra?.fechaPreciosRubros?.format("dd-MM-yyyy")}")
+        rowT11.setRowStyle(style)
         Row rowT12 = sheet.createRow(12)
         rowT12.createCell(1).setCellValue("")
+        rowT12.setRowStyle(style)
 
         def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra.id} order by  1"
         def subSql = ""
@@ -80,6 +94,7 @@ class ReportesExcelController {
                 col += " " + parts[1]?.replaceAll("T", " Total")?.replaceAll("U", " Unitario")
             }
             row1.createCell(columna).setCellValue("${col}")
+            row1.setRowStyle(style)
             columna ++
         }
 
@@ -90,6 +105,7 @@ class ReportesExcelController {
 
             4.times {
                 row3.createCell(it).setCellValue(rb[it]?.toString() ?: "")
+
             }
             row3.createCell(4).setCellValue(rb?.cantidad?.toDouble()?.round(3) ?: 0)
 

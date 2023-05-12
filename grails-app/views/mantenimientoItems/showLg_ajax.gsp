@@ -37,11 +37,11 @@
         <thead>
         <tr style="width: 100%">
             <g:if test="${lgar}">
-                <th style="width: 35%">Lugar</th>
+                <th style="width: 30%">Lugar</th>
             </g:if>
             <th style="width: 20%">Fecha</th>
-            <th class="precio" style="width: 19%">Precio</th>
-            <th class="delete" style="width: 25%"></th>
+            <th class="precio" style="width: 20%">Precio</th>
+            <th class="delete" style="width: 29%"></th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -49,7 +49,7 @@
         <g:each in="${precios}" var="precio" status="i">
             <tr style="width: 100%">
                 <g:if test="${lgar}">
-                    <td style="width: 35%">
+                    <td style="width: 30%">
                         ${precio.lugar.descripcion}
                     </td>
                 </g:if>
@@ -57,13 +57,18 @@
                     <g:formatDate date="${precio.fecha}" format="dd-MM-yyyy"/>
                 </td>
                 <g:if test="${session.perfil.codigo == 'CSTO'}">
-                    <td class="precio textRight " style="width: 19%" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
+                    <td class="precio textRight " style="width: 20%" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
                         <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
                     </td>
-                    <td class="delete" style="width: 25%">
+                    <td class="delete" style="width: 29%">
                         <g:if test="${precio?.registrado != 'R'}">
                             <a href="#" class="btn btn-info btn-xs btnEditar" title="Editar valor" data-id="${precio.id}">
                                 <i class="fa fa-edit"></i>
+                            </a>
+                        </g:if>
+                        <g:if test="${precio?.registrado != 'R'}">
+                            <a href="#" class="btn btn-success btn-xs btnEditarCantones" title="Editar valor para todos los cantones" data-id="${precio.id}">
+                                <i class="fa fa-map-marker"></i>
                             </a>
                         </g:if>
                         <a href="#" class="btn btn-danger btn-xs ${precio.registrado != 'R' ? 'btnDelete' : 'btnDeleteReg'}" rel="tooltip" title="Borrar precio" id="${precio.id}">
@@ -100,11 +105,6 @@
 </div>
 
 <div class="modal hide fade" id="modal-tree1">
-    %{--    <div class="modal-header" id="modal-header-tree1">--}%
-    %{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-    %{--        <h3 id="modalTitle-tree1"></h3>--}%
-    %{--    </div>--}%
 
     <div class="modal-body" id="modalBody-tree1">
     </div>
@@ -114,11 +114,6 @@
 </div>
 
 <div id="modal-tree2">
-    %{--    <div class="modal-header" id="modal-header-tree2">--}%
-    %{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-    %{--        <h3 id="modalTitle-tree2"></h3>--}%
-    %{--    </div>--}%
 
     <div class="modal-body" id="modalBody-tree2" style="width: 970px;">
     </div>
@@ -157,6 +152,12 @@
     $("#btnNew").click(function () {
         createEditPrecio();
     });
+
+    $(".btnEditarCantones").click(function () {
+        var id = $(this).data("id");
+        createEditPrecioCantones(id);
+    });
+
 
     function createEditPrecio(precio) {
         var title = precio ? "Editar" : "Nuevo";
@@ -238,6 +239,91 @@
             return false;
         }
     }
+
+    function createEditPrecioCantones(precio) {
+        var title = precio ? "Editar" : "Nuevo";
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink( action:'formPreciosCantones_ajax')}",
+            data    : {
+                item        : "${item.id}",
+                lugar       : "${lugarId}",
+                nombreLugar : "${lugarNombre}",
+                fecha       : "${fecha}",
+                all         : "${params.all}",
+                ignore      : "${params.ignore}",
+                id: precio
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id    : "dlgCreateEditP",
+                    title : title + " precio para los cantones",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                // chequeados();
+                                submitFormPrecioC();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+
+    function submitFormPrecioC() {
+        var $form = $("#frmSaveCantones");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var lugares = chequeados();
+
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data + "&lugares=" + lugares,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'OK'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(tipoSeleccionado === 1){
+                                cargarMateriales();
+                                recargarMateriales();
+                            }else if(tipoSeleccionado === 2){
+                                cargarMano();
+                                recargaMano();
+                            }else{
+                                cargarEquipo();
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
 
     $(".btnDelete").click(function () {
         var id = $(this).attr("id");
@@ -462,9 +548,7 @@
 
             },
             "Cancelar" : function () {
-
                 $("#imprimirDialog").dialog("close");
-
             }
         }
     })

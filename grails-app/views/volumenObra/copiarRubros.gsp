@@ -6,71 +6,107 @@
     <title>
         Copiar Rubros
     </title>
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.ui.position.js')}" type="text/javascript"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.js')}" type="text/javascript"></script>--}%
-    %{--<link href="${resource(dir: 'js/jquery/plugins/jQuery-contextMenu-gh-pages/src', file: 'jquery.contextMenu.css')}" rel="stylesheet" type="text/css"/>--}%
 </head>
 
 <body>
 
-<g:if test="${flash.message}">
-    <div class="span12" style="height: 35px;margin-bottom: 10px;">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            ${flash.message}
-        </div>
-    </div>
-</g:if>
 
-<div style="width: 99.7%;height: 600px;overflow-y: auto;float: right;" id="detalle"></div>
+<div class="col-md-12">
+    <a href="#" class="btn btn-info" id="regresar">
+        <i class="fa fa-arrow-left"></i>
+        Regresar
+    </a>
+</div>
+
+<div class="btn-group" style="margin-left: 0px; margin-top: 20px">
+    <div class="col-md-6">
+        <b>Subpresupuesto de origen:</b>
+        <g:select name="subpresupuestoOrg" from="${subPres}" class="form-control" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"
+                  noSelection="['' : 'TODOS']"
+                  style="width: 300px;font-size: 10px;" id="subPres_desc" />
+    </div>
+    <div class="col-md-6">
+        <b>Subpresupuesto de destino:</b>
+        <g:select name="subpresupuestoDes" from="${subPres}" class="form-control" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"
+                  style="width: 300px;font-size: 10px;" id="subPres_destino"
+                  noSelection="['' : ' - Seleccione un subpresupuesto - ']" />
+    </div>
+</div>
+<div class="col-md-6" style="margin-top: 20px; margin-bottom: 10px">
+    <a href="#" class="btn  btn-info" id="copiar_todos">
+        <i class="fa fa-list"></i>
+        Copiar Todos los Rubros
+    </a>
+    <a href="#" class="btn  btn-success" id="copiar_sel">
+        <i class="fa fa-check"></i>
+        Copiar rubros seleccionados
+    </a>
+</div>
+
+<table class="table table-bordered table-striped table-condensed table-hover" id="tabla" style="margin-top: 10px">
+    <thead>
+    <tr>
+        <th style="width: 5%;">
+            *
+        </th>
+        <th style="width: 5%;">
+            #
+        </th>
+        <th style="width: 20%;">
+            Subpresupuesto
+        </th>
+        <th style="width: 7%;">
+            Código
+        </th>
+        <th style="width: 50px;">
+            Rubro
+        </th>
+        <th style="width: 5%" class="col_unidad">
+            Unidad
+        </th>
+        <th style="width: 8%">
+            Cantidad
+        </th>
+    </tr>
+    </thead>
+</table>
+
+
+<div style="width: 99.7%;height: 600px;overflow-y: auto;float: right; margin-top: -20px" id="detalle"></div>
 
 <script type="text/javascript">
 
+    cargarTabla();
 
-    function loading(div) {
-        y = 0;
-        $("#" + div).html("<div class='tituloChevere' id='loading'>Sistema Janus - Cargando, Espere por favor</div>")
-        var interval = setInterval(function () {
-            if (y == 30) {
-                $("#detalle").html("<div class='tituloChevere' id='loading'>Cargando, Espere por favor</div>")
-                y = 0
-            }
-            $("#loading").append(".");
-            y++
-        }, 500);
-        return interval
-    }
+    $("#regresar").click(function () {
+        location.href = "${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"
+    });
+
+    $("#subPres_desc").change(function () {
+        cargarTabla();
+    });
+
     function cargarTabla() {
-        var interval = loading("detalle")
-        var datos = ""
-        if ($("#subPres_desc").val() * 1 > 0) {
-            datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val()
-        } else {
-            datos = "obra=${obra.id}"
-        }
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'tablaCopiarRubro')}",
-            data     : datos,
+        var d = cargarLoader("Cargando...");
+        var subOrigen = $("#subPres_desc option:selected").val();
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'volumenObra',action:'tablaCopiarRubro')}",
+            data     : {
+                obra: '${obra?.id}',
+                sub: subOrigen
+            },
             success  : function (msg) {
-                clearInterval(interval)
+                d.modal("hide");
                 $("#detalle").html(msg)
             }
         });
     }
 
 
-    $(function () {
-
-
-
-        cargarTabla();
-
+    $("#copiar_sel").click(function () {
+        copiar();
     });
-
 
 
 </script>

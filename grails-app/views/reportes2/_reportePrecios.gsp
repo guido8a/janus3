@@ -88,7 +88,7 @@
 
     <body>
         <div class="hoja">
-            <h1 style="font-size: 16px">G.A.D. LOS RÍOS</h1>
+            <h1 style="font-size: 16px">G.A.D. PROVINCIA DE PICHINCHA</h1>
 
             <h2>REPORTE DE COSTOS DE ${grupo?.descripcion?.toUpperCase()}</h2>
 
@@ -129,6 +129,16 @@
                                 FECHA ACT.
                             </th>
                         </g:if>
+                        <g:if test="${cols?.contains('r')}">
+                            <th>
+                                # RUBROS
+                            </th>
+                        </g:if>
+                        <g:if test="${cols?.contains('o')}">
+                            <th>
+                                # OBRAS
+                            </th>
+                        </g:if>
                     </tr>
                     </thead>
                     <tbody>
@@ -166,6 +176,16 @@
                             <g:if test="${cols?.contains('f')}">
                                 <td class="tright">
                                     <g:formatDate date="${precio?.fecha}" format="dd-MM-yyyy"/>
+                                </td>
+                            </g:if>
+                            <g:if test="${cols?.contains('r')}">
+                                <td class="tright">
+                                    ${rubros[i].count ?: '0'}
+                                </td>
+                            </g:if>
+                            <g:if test="${cols?.contains('o')}">
+                                <td class="tright">
+                                    ${numeros[i].count ?: '0'}
                                 </td>
                             </g:if>
                         </tr>

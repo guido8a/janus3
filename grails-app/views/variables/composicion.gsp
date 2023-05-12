@@ -4,9 +4,6 @@
         <g:if test="${rend == 'screen'}">
             <meta name="layout" content="main">
             <asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/js/jquery.dataTables.min.js"/>
-            %{--<asset:javascript src="/jquery/plugins/DataTables-1.9.4/media/css/jquery.dataTables.css"/>--}%
-            %{--<script src="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/js', file: 'jquery.dataTables.min.js')}"></script>--}%
-            %{--<link href="${resource(dir: 'js/jquery/plugins/DataTables-1.9.4/media/css', file: 'jquery.dataTables.css')}" rel="stylesheet">--}%
         </g:if>
         <title>Composición de la obra</title>
 
@@ -28,7 +25,6 @@
 
     <body>
         <div class="hoja">
-            %{--<div class="tituloChevere">Composición de la obra: ${obra?.descripcion}</div>--}%
             <div class="span12" style="color: #1a7031; font-size: 18px; margin-bottom: 10px"><strong>Composición de la obra:</strong> ${obra?.descripcion}</div>
 
             <g:if test="${flash.message}">
@@ -110,10 +106,10 @@
                         <a href="#" class="btn  btn-info" id="imprimirPdf">
                             <i class="fa fa-print"></i> PDF
                         </a>
-                        <g:link controller="reportes2" action="reporteExcelComposicion" class="btn btn-print btnExcel btn-success" id="${obra?.id}" params="[sp: sub, tipo: tipo]">
+                        <g:link controller="reportesExcel2" action="reporteExcelComposicion" class="btn btn-print btnExcel btn-success" id="${obra?.id}" params="[sp: sub, tipo: tipo]">
                             <i class="fa fa-file-excel"></i> Excel
                         </g:link>
-                        <g:link controller="reportes2" action="reporteExcelComposicionTotales" class="btn btn-success" id="${obra?.id}" params="[sp: sub, tipo: tipo]" title="Exportar a excel para definir las cantidades reales de Materiales, M.O. y Equipos">
+                        <g:link controller="reportesExcel2" action="reporteExcelComposicionTotales" class="btn btn-success" id="${obra?.id}" params="[sp: sub, tipo: tipo]" title="Exportar a excel para definir las cantidades reales de Materiales, M.O. y Equipos">
                             <i class="fa fa-file-excel"></i> Adm. Directa Excel
                         </g:link>
                     </div>
@@ -311,9 +307,5 @@
 
             </script>
         </g:if>
-
-
-
-
     </body>
 </html>

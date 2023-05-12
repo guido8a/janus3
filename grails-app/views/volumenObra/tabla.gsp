@@ -148,7 +148,6 @@
             }
 
             if (key == "foto") {
-                %{--var child = window.open('${createLink(controller:"rubro",action:"showFoto")}/'+$(this).attr("item"), 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
                 var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("cdgo") +
                     '?tipo=il', 'GADLR', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
                 if (child.opener == null)
@@ -173,10 +172,6 @@
                 ${obra.distanciaVolumen}
                 var clickImprimir = $(this).attr("id");
                 var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}';
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObra')}" + datos--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-
                 var datos = "fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida1 + "&desglose=" + '0';
                 location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVolumen')}?" + datos;
             }
@@ -188,10 +183,6 @@
                 ${obra.distanciaVolumen}
                 var clickImprimir = $(this).attr("id");
                 var fechaSalida2 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}';
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "Wdesglose=${1}" + "WfechaSalida=" + fechaSalida2--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObra')}" + datos--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-
                 var datos = "fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida2 + "&desglose=" + '1';
                 location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVolumen')}?" + datos;
             }
@@ -203,10 +194,6 @@
                 ${obra.distanciaVolumen}
                 var clickImprimir = $(this).attr("id");
                 var fechaSalida1 = '${obra?.fechaOficioSalida?.format('dd-MM-yyyy')}';
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1;--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObraVae')}" + datos;--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-
                 var datos = "fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida1 + "&desglose=" + '0';
                 location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeVolumen')}?" + datos;
             }
@@ -218,10 +205,6 @@
                 ${obra.distanciaVolumen}
                 var clickImprimir = $(this).attr("id");
                 var fechaSalida2 = '${obra?.fechaOficioSalida?.format('dd-MM-yyyy')}';
-                %{--var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "Wdesglose=${1}" + "WfechaSalida=" + fechaSalida2;--}%
-                %{--var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObraVae')}" + datos;--}%
-                %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-
                 var datos = "fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida2 + "&desglose=" + '1';
                 location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeVolumen')}?" + datos;
             }
@@ -248,10 +231,6 @@
             ${obra.distanciaPeso}
             var dsvs =
             ${obra.distanciaVolumen}
-            %{--var volqueta = ${precioVol}--}%
-            %{--var chofer = ${precioChof}--}%
-            %{--var datos = "?dsps="+dsps+"&dsvs="+dsvs+"&prvl="+volqueta+"&prch="+chofer+"&fecha="+$("#fecha_precios").val()+"&id=${rubro?.id}&lugar="+$("#ciudad").val()--}%
-            %{--location.href="${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}"+datos--}%
             var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val()
             var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos
             location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
@@ -280,11 +259,8 @@
             ${obra.distanciaPeso}
             var dsvs =
             ${obra.distanciaVolumen}
-            %{--var volqueta = ${precioVol}--}%
-            %{--var chofer = ${precioChof}--}%
             var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val()
             var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos
-            // console.log(url)
             location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
         } else {
             $.box({
@@ -317,16 +293,7 @@
     });
 
     $("#imprimir_desglose_excel").click(function () {
-        %{--$.ajax({--}%
-        %{--    type: 'POST',--}%
-        %{--    url: "${g.createLink(controller: 'reportes',action: 'reporteDesgloseExcelVolObra')}",--}%
-        %{--    data: {--}%
-        %{--        id: '${obra?.id}'--}%
-        %{--    },--}%
-        %{--    success: function (msg) {--}%
-                location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteDesgloseExcelVolObra')}?id=" + ${obra?.id} +  "&sub=" + $("#subPres_desc").val();
-        //     }
-        // });
+        location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteDesgloseExcelVolObra')}?id=" + ${obra?.id} +  "&sub=" + $("#subPres_desc").val();
     });
 
     $("#subPres_desc").change(function () {
@@ -363,11 +330,6 @@
         $("#item_orden").val($(this).data("orden"));
         $("#item_nombre").val($(this).data("nom"));
         $("#item_cantidad").val($(this).data("can"));
-
-
-        // $("#item_nombre").val($(".item_row").find(".nombre").html());
-        // $("#item_cantidad").val($(".item_row").find(".cant").html().toString().trim());
-        // $("#item_orden").val($(".item_row").find(".orden").html());
 
         $.ajax({
             type: "POST",
@@ -443,8 +405,7 @@
     });
 
     $("#copiar_rubros").click(function () {
-        location.href = "${createLink(controller: 'volumenObra', action: 'copiarRubros', id: obra?.id)}?obra=" +
-        ${obra?.id}
+        location.href = "${createLink(controller: 'volumenObra', action: 'copiarRubros')}?obra=" + ${obra?.id};
     });
 
     $("#ordenarAsc").click(function () {

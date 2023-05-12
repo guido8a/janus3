@@ -29,19 +29,32 @@ fieldset {
             <a href="#" id="f" class="col btn">
                 Fecha de Act.
             </a>
+            <a href="#" id="r" class="col btn">
+                Rubros
+            </a>
+            <a href="#" id="o" class="col btn">
+                Obras
+            </a>
         </div>
     </fieldset>
     <fieldset>
-        <legend>Orden de impresión</legend>
+        <legend>Orden de impresión - Activos/Inactivos</legend>
 
-        <div class="btn-group" data-toggle="buttons-radio">
-            <a href="#" id="a" class="orden btn active">
-                Alfabético
-            </a>
-            <a href="#" id="n" class="orden btn">
-                Numérico
-            </a>
+        <div class="btn-group col-md-12" data-toggle="buttons-radio">
+            <div class="col-md-5">
+                <a href="#" id="a" class="orden btn active">
+                    Alfabético
+                </a>
+                <a href="#" id="n" class="orden btn">
+                    Numérico
+                </a>
+                %{--            <input class="form-check-input revisar" type="checkbox" value="option1" checked="checked">--}%
+            </div>
+            <div class="col-md-4">
+                <g:select name="revisar" class="form-control col-md-2" from="${[true: 'Activos', false : 'Inactivos']}" optionKey="key" optionValue="value"/>
+            </div>
         </div>
+
     </fieldset>
     <fieldset class="form-inline">
         <legend>Lugar y fecha de referencia</legend>
@@ -54,14 +67,16 @@ fieldset {
             <g:select name="lugarRep" from="${janus.Lugar.findAllByTipoListaInList(tipoMQ, [sort: 'descripcion'])}" optionKey="id" optionValue="descripcion"/>
         </g:else>
 
-        <input aria-label="" name="fechaRep" id='datetimepickerPrecios' type='text' class="form-control" value="${new Date().format("dd-MM-yyyy")}" />
+        <input aria-label="" name="fechaRep" id='fechaRep' type='text' class="form-control" value="${new Date().format("dd-MM-yyyy")}" />
 
     </fieldset>
 </g:form>
 
 <script type="text/javascript">
 
-    $('#datetimepickerPrecios').datetimepicker({
+    // $.switcher('input[type=checkbox]');
+
+    $('#fechaRep').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
         sideBySide: true,

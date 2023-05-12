@@ -119,235 +119,10 @@ class MantenimientoItemsController {
                 }
             }
         }
-//        println "arbol: $tree"
         return tree
     }
 
 
-//    String makeBasicTree(params) {
-//
-//        println "makeTreeNode.. $params"
-//        def id = params.id
-//        def tipo = ""
-//        def liId = ""
-//        def ico = ""
-//
-//        if(id.contains("_")) {
-//            id = params.id.split("_")[1]
-//            tipo = params.id.split("_")[0]
-//        }
-//
-//        if (!params.order) {
-//            params.order = "asc"
-//        }
-//
-//        String tree = "", clase = "", rel = ""
-//        def padre
-//        def hijos = []
-//
-//
-//
-////        println "PARAMS  "+params
-////
-////        def id = params.id
-////        def tipo = params.tipo
-////        def precios = params.precios
-////        def all = params.all ? params.all.toBoolean() : false
-////        def ignore = params.ignore ? params.ignore.toBoolean() : false
-////        def vae = params.vae
-////
-////        def hijos = []
-//
-//        switch (tipo) {
-//            case "grupo_manoObra":
-//            case "grupo_consultoria":
-//                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
-//                break;
-//            case "grupo_material":
-//            case "grupo_equipo":
-//                hijos = SubgrupoItems.findAllByGrupo(Grupo.get(id), [sort: 'codigo'])
-//                break;
-//            case "subgrupo_manoObra":
-//            case "subgrupo_consultoria":
-//                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
-//                break;
-//            case "subgrupo_material":
-//            case "subgrupo_equipo":
-//                hijos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(id), [sort: 'codigo'])
-//                break;
-//            case "departamento_manoObra":
-//            case "departamento_consultoria":
-//            case "departamento_material":
-//            case "departamento_equipo":
-//                hijos = Item.findAllByDepartamento(DepartamentoItem.get(id), [sort: 'codigo'])
-//                break;
-//            case "item_manoObra":
-//            case "item_consultoria":
-//            case "item_material":
-//            case "item_equipo":
-//                def tipoLista = Item.get(id).tipoLista
-//                if (precios) {
-//                    println "....2 tipoLista: ${tipoLista.id}"
-//                    if (ignore) {
-//                        hijos = ["Todos"]
-//                    } else {
-//                        hijos = []
-//                        if (tipoLista) {
-//                            hijos = Lugar.findAllByTipoListaAndTipo(tipoLista, 'B')
-//                        }
-//                    }
-//                } else if(vae){
-//                    hijos = VaeItems.findAllByItem(Item.get(params.id),[max:1])
-//                }
-//                break;
-//        }
-//
-////        String tree = "", clase = "", rel = "", extra = ""
-//
-//        println "....3 hijos: ${hijos.size()}"
-////        tree += "<ul>"
-//
-//        hijos.each { hijo ->
-////            def hijosH, desc, liId
-//            def hijosH, desc
-//            println "hijo ... "+tipo
-//            switch (tipo) {
-//                case "grupo_manoObra":
-//                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
-//                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
-//                    def parts = tipo.split("_")
-//                    rel = "departamento_" + parts[1]
-//                    liId = "dp" + "_" + hijo.id
-//                    break;
-//                case "grupo_material":
-//                case "grupo_equipo":
-//                    hijosH = DepartamentoItem.findAllBySubgrupo(hijo, [sort: 'codigo'])
-//                    desc = hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
-//                    def parts = tipo.split("_")
-//                    rel = "subgrupo_" + parts[1]
-//                    liId = "sg" + "_" + hijo.id
-//                    break;
-//                case "subgrupo_manoObra":
-//                    break;
-//                case "subgrupo_material":
-//                case "subgrupo_equipo":
-//                    hijosH = Item.findAllByDepartamento(hijo, [sort: 'codigo'])
-//                    desc = hijo.subgrupo.codigo.toString().padLeft(3, '0') + '.' + hijo.codigo.toString().padLeft(3, '0') + " " + hijo.descripcion
-//                    def parts = tipo.split("_")
-//                    rel = "departamento_" + parts[1]
-//                    liId = "dp" + "_" + hijo.id
-//                    break;
-//                case "departamento_manoObra":
-//                    hijosH = []
-//                    def tipoLista = hijo.tipoLista
-//                    if (precios) {
-//                        if (ignore) {
-//                            hijosH = ["Todos"]
-//                        } else {
-//                            if (tipoLista) {
-//                                hijosH = Lugar.findAllByTipoLista(tipoLista)
-//                            }
-//                        }
-//                    } else if(vae){
-//                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
-//                    }
-//                    desc = hijo.codigo + " " + hijo.nombre
-//                    def parts = tipo.split("_")
-//                    rel = "item_" + parts[1]
-//                    liId = "it" + "_" + hijo.id
-//                    break;
-//                case "departamento_material":
-//                case "departamento_equipo":
-//                    hijosH = []
-//                    def tipoLista = hijo.tipoLista
-//                    if (precios) {
-//                        if (ignore) {
-//                            hijosH = ["Todos"]
-//                        } else {
-//                            if (tipoLista) {
-//                                hijosH = Lugar.findAllByTipoLista(tipoLista)
-//                            }
-//                        }
-//                    } else if(vae){
-//                        hijosH = VaeItems.findAllByItem(hijo,[max:1])
-//                    }
-//                    desc = hijo.codigo + " " + hijo.nombre
-//                    def parts = tipo.split("_")
-//                    rel = "item_" + parts[1]
-//                    liId = "it" + "_" + hijo.id
-//                    break;
-//                case "item_manoObra":
-//                    hijosH = []
-//                    if (precios) {
-//                        hijosH = []
-//                        if (ignore) {
-//                            desc = "mo4  " + "Todos los lugares"
-//                            rel = "lugar_all"
-//                            liId = "lg_" + id + "_all"
-//                        } else {
-//                            if (all) {
-//                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
-//                            } else {
-//                                desc = hijo.descripcion
-//                            }
-//                            rel = "lugar"
-//                            liId = "lg_" + id + "_" + hijo.id
-//
-//                            def obras = Obra.countByLugar(hijo)
-//                            extra = "data-obras='${obras}'"
-//                        }
-//                    } else if(vae && hijo){
-//                        hijosH = []
-//                        desc = "VAE"
-//                        rel = "vae"
-//                        liId = "vae_"+id+"_"+hijo.id
-//                    }
-//                    break;
-//                case "item_material":
-//                case "item_equipo":
-//                    println "....2"
-//                    if (precios) {
-//                        hijosH = []
-//                        if (ignore) {
-//                            desc = "Todos los lugares"
-//                            rel = "lugar_all"
-//                            liId = "lg_" + id + "_all"
-//                        } else {
-//                            if (all) {
-//                                desc = hijo.descripcion + " (" + hijo.tipo + ")"
-//                            } else {
-//                                desc = hijo.descripcion
-//                            }
-//                            rel = "lugar"
-//                            liId = "lg_" + id + "_" + hijo.id
-//
-//                            def obras = Obra.countByLugar(hijo)
-//                            extra = "data-obras='${obras}'"
-//                        }
-//                    }  else if(vae){
-//                        hijosH = []
-//                        desc = "VAE"
-//                        rel = "vae"
-//                        liId = "vae_"+id+"_"+hijo.id
-//                    }
-//                    break;
-//            }
-//
-//            if (!hijosH) {
-//                hijosH = []
-//            }
-//            clase = (hijosH?.size() > 0) ? "jstree-closed hasChildren" : ""
-//
-//            tree += "<li id='" + liId + "' class='" + clase + "' rel='" + rel + "' " + extra + ">"
-//            tree += "<a href='#' class='label_arbol'>" + desc + "</a>"
-//            tree += "</li>"
-//
-////            println "hijos: ${hijos}, \n hijosH: ${hijosH}"
-//        }
-////        tree += "</ul>"
-//
-//        return tree
-//    }
 
     def makeTreeNode(params) {
 //        println "makeTreeNode.. $params"
@@ -581,8 +356,7 @@ class MantenimientoItemsController {
                             tree += "</li>"
                         }else{
                             hijos.each { h ->
-                                clase = ""
-                                tree += "<li id='" + liId + h.id + "_" + id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"lugar"}\" ${ico}}'>"
+                                tree += "<li id='" + liId + h.id + "_" + id + "' class='" + "" + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"lugar"}\" ${ico}}'>"
                                 tree += "<a href='#' class='label_arbol'>" + h.descripcion + "</a>"
                                 tree += "</li>"
                             }
@@ -2355,10 +2129,8 @@ itemId: item.id
         def sql4 = "delete from item where item__id = "
         def sql = ""
         def res = true
-        println "borrarItem: $params"
-        //item=145629_0.12601_true&item=478_0.11000_true&item=650_0.29000_false
-        //      idRubroPrecio_precio_registrado
-        //          0           1       2
+//        println "borrarItem: $params"
+
         if (params.item instanceof java.lang.String) {
             params.item = [params.item]
         }
@@ -2374,11 +2146,6 @@ itemId: item.id
                 println "borrado id: $it"
                 flash.clase = "alert-success"
                 flash.message = "Se ha borrado el item con éxito"
-//                println "$sql1 ${it.toInteger()};"
-//                println "$sql2 ${it.toInteger()};"
-//                println "$sql3 ${it.toInteger()};"
-//                println "$sql4 ${it.toInteger()};"
-//                cn.execute("rollback")
                 cn.execute("commit")
             } catch (e) {
                 println "error: $e"
@@ -2387,6 +2154,38 @@ itemId: item.id
             }
         }
         render "ok_"
+    }
+
+    def formPreciosCantones_ajax(){
+
+        println "formPrecio_ajax" + params
+        def item = Item.get(params.item)
+        def lugar = null
+
+        if (params.lugar != "all") {
+            lugar = Lugar.get(params.lugar)
+        }
+
+        def cantones = Lugar.findAllByTipoLista(item.tipoLista, [sort: 'codigo'])
+
+        def precioRubrosItemsInstance
+
+        if(params.id){
+            precioRubrosItemsInstance = PrecioRubrosItems.get(params.id)
+        }else{
+            precioRubrosItemsInstance = new PrecioRubrosItems()
+            precioRubrosItemsInstance.item = item
+            if (lugar) {
+                precioRubrosItemsInstance.lugar = lugar
+            }
+        }
+
+        return [precioRubrosItemsInstance: precioRubrosItemsInstance, lugar: lugar, lugarNombre: params.nombreLugar, fecha: params.fecha, params: params, cantones: cantones]
+    }
+
+    def savePrecioCantones_ajax(){
+        println("sv " + params)
+        return "ok"
     }
 
 

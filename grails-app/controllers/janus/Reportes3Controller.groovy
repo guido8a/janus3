@@ -75,22 +75,10 @@ class Reportes3Controller {
 
         nombres.each {
             def text = (it ?: '')
-//        println "--------------------------------------------------------------"
-//        println text
-//            text = text.replaceAll("&lt;", "*lt*")
-//            text = text.replaceAll("&gt;", "*gt*")
             text = text.decodeHTML()
             text = text.replaceAll(/</, /&lt;/);
             text = text.replaceAll(/>/, /&gt;/);
             text = text.replaceAll(/"/, /&quot;/);
-//        println "--------------------------------------------------------------"
-//        text = util.clean(str: text)
-//            text = text.decodeHTML()
-//            text = text.replaceAll("\\*lt\\*", "&lt;")
-//            text = text.replaceAll("\\*gt\\*", "&gt;")
-//            text = text.replaceAll(/&lt;/, /</)
-//            text = text.replaceAll(/&gt;/,/>/ )
-
              corregidos += text
         }
 
@@ -108,15 +96,11 @@ class Reportes3Controller {
         preciosService.ac_rbroObra(obra.id)
 
         renderPdf(template:'/reportes3/imprimirTablaSub', model: [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos, auxiliar: auxiliar], filename: 'presupuesto.pdf')
-
-//        [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos, auxiliar: auxiliar]
     }
 
     def imprimirTablaSubVae () {
-        //        println "imprimir tabla sub "+params
         def obra = Obra.get(params.obra)
 
-//        println(obra?.fechaCreacionObra)
         def detalle
         def valores
         def subPre
@@ -146,27 +130,12 @@ class Reportes3Controller {
         }
 
         nombres.each {
-
             def text = (it ?: '')
-//        println "--------------------------------------------------------------"
-//        println text
-//            text = text.replaceAll("&lt;", "*lt*")
-//            text = text.replaceAll("&gt;", "*gt*")
-
             text = text.decodeHTML()
             text = text.replaceAll(/</, /&lt;/);
             text = text.replaceAll(/>/, /&gt;/);
             text = text.replaceAll(/"/, /&quot;/);
-//        println "--------------------------------------------------------------"
-//        text = util.clean(str: text)
-//            text = text.decodeHTML()
-//            text = text.replaceAll("\\*lt\\*", "&lt;")
-//            text = text.replaceAll("\\*gt\\*", "&gt;")
-//            text = text.replaceAll(/&lt;/, /</)
-//            text = text.replaceAll(/&gt;/,/>/ )
-
             corregidos += text
-
         }
 
 
@@ -177,11 +146,6 @@ class Reportes3Controller {
         valores.each {
             prueba += it.rbronmbr
         }
-
-//
-//        println("nombres" + nombres)
-//        println("corregidos" + corregidos)
-//        println("prueba" + prueba)
 
         println("valores " + valores)
 
@@ -194,8 +158,7 @@ class Reportes3Controller {
     }
 
     def imprimirRubroVolObra() {
-//        println "----->>>>" + params
-//        def rubro = Item.get(params.id)
+
         def obra = Obra.get(params.obra)
         def fecha1
         def fecha2
@@ -209,8 +172,7 @@ class Reportes3Controller {
             fecha2 = new Date().parse("dd-MM-yyyy", params.fechaSalida)
         }else {
         }
-//        def fechaSalida = printFecha(fecha2)
-//        def fecha = printFecha(fecha1)
+
         def fechaPal = printFecha(new Date());
         def vol1 = VolumenesObra.get(params.id)
         def rubro = Item.get(vol1.item.id)
@@ -377,8 +339,7 @@ class Reportes3Controller {
 
 
     def imprimirRubroVolObraVae() {
-//        println "----->>>>" + params
-//        def rubro = Item.get(params.id)
+
         def obra = Obra.get(params.obra)
 
         def fecha1
@@ -629,255 +590,6 @@ class Reportes3Controller {
 
     }
 
-    def imprimirRubroExcel() {
-//        println "imprimir rubro excel "+params
-        def rubro = Item.get(params.id)
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        def lugar = params.lugar
-        def indi = params.indi
-        def listas = params.listas
-
-        try {
-            indi = indi.toDouble()
-        } catch (e) {
-            println "error parse " + e
-            indi = 21.5
-        }
-
-//        def parametros = ""+params.id+","+params.lugar+",'"+fecha.format("yyyy-MM-dd")+"',"+params.dsps.toDouble()+","+params.dsvs.toDouble()+","+rendimientos["rdps"]+","+rendimientos["rdvl"]
-        def parametros = "" + rubro.id + ",'" + fecha.format("yyyy-MM-dd") + "'," + listas + "," + params.dsp0 + "," + params.dsp1 + "," + params.dsv0 + "," + params.dsv1 + "," + params.dsv2 + "," + params.chof + "," + params.volq
-        preciosService.ac_rbroV2(params.id, fecha.format("yyyy-MM-dd"), params.lugar)
-        def res = preciosService.rb_precios(parametros, "order by grpocdgo desc")
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-        WritableFont font = new WritableFont(WritableFont.TIMES, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('MySheet', 0)
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        WritableFont times10Font = new WritableFont(WritableFont.TIMES, 10, WritableFont.NO_BOLD, false);
-        WritableCellFormat times10 = new WritableCellFormat(times10Font);
-        sheet.setColumnView(0, 20)
-        sheet.setColumnView(1, 50)
-        sheet.setColumnView(2, 15)
-        sheet.setColumnView(3, 15)
-        sheet.setColumnView(4, 15)
-        sheet.setColumnView(5, 15)
-        sheet.setColumnView(6, 15)
-
-//        sheet.setColumnView(4, 30)
-//        sheet.setColumnView(8, 20)
-        def label = new Label(0, 1, (Auxiliar.get(1)?.titulo ?: '').toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 2, "DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS".toUpperCase(), times16format); sheet.addCell(label);
-        label = new Label(0, 3, "ANÁLISIS DE PRECIOS UNITARIOS".toUpperCase(), times16format); sheet.addCell(label);
-
-        sheet.mergeCells(0, 1, 1, 1)
-        sheet.mergeCells(0, 2, 1, 2)
-        sheet.mergeCells(0, 3, 1, 3)
-        label = new Label(0, 5, "Fecha: " + new Date().format("dd-MM-yyyy"), times16format); sheet.addCell(label);
-        sheet.mergeCells(0, 5, 1, 5)
-        label = new Label(0, 6, "Código: " + rubro.codigo, times16format); sheet.addCell(label);
-        sheet.mergeCells(0, 6, 1, 6)
-        label = new Label(0, 7, "Descripción: " + rubro.nombre, times16format); sheet.addCell(label);
-        sheet.mergeCells(0, 7, 1, 7)
-        label = new Label(5, 5, "Fecha Act. P.U: " + fecha?.format("dd-MM-yyyy"), times16format); sheet.addCell(label);
-        sheet.mergeCells(5, 5, 6, 5)
-        label = new Label(5, 6, "Unidad: " + rubro.unidad?.codigo, times16format); sheet.addCell(label);
-        sheet.mergeCells(5, 6, 6, 6)
-
-        def fila = 9
-        label = new Label(0, fila, "Equipos", times16format); sheet.addCell(label);
-        sheet.mergeCells(0, fila, 1, fila)
-        fila++
-        def number
-        def totalHer = 0
-        def totalMan = 0
-        def totalMat = 0
-        def total = 0
-        def band = 0
-        def rowsTrans = []
-        res.each { r ->
-//            println "r "+r
-            if (r["grpocdgo"] == 3) {
-                if (band == 0) {
-                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-                    label = new Label(2, fila, "Cantidad", times16format); sheet.addCell(label);
-                    label = new Label(3, fila, "Tarifa(\$/hora)", times16format); sheet.addCell(label);
-                    label = new Label(4, fila, "Costo(\$)", times16format); sheet.addCell(label);
-                    label = new Label(5, fila, "Rendimiento", times16format); sheet.addCell(label);
-                    label = new Label(6, fila, "C.Total(\$)", times16format); sheet.addCell(label);
-                    fila++
-                }
-                band = 1
-                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-                number = new Number(2, fila, r["rbrocntd"], times10); sheet.addCell(number);
-                number = new Number(3, fila, r["rbpcpcun"], times10); sheet.addCell(number);
-                number = new Number(4, fila, r["rbpcpcun"] * r["rbrocntd"], times10); sheet.addCell(number);
-                number = new Number(5, fila, r["rndm"], times10); sheet.addCell(number);
-                number = new Number(6, fila, r["parcial"], times10); sheet.addCell(number);
-                totalHer += r["parcial"]
-                fila++
-            }
-            if (r["grpocdgo"] == 2) {
-                if (band == 1) {
-                    label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-                    number = new Number(6, fila, totalHer, times10); sheet.addCell(number);
-                    fila++
-                }
-                if (band != 2) {
-                    fila++
-                    label = new Label(0, fila, "Mano de obra", times16format); sheet.addCell(label);
-                    sheet.mergeCells(0, fila, 1, fila)
-                    fila++
-                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-                    label = new Label(2, fila, "Cantidad", times16format); sheet.addCell(label);
-                    label = new Label(3, fila, "Jornal(\$/hora)", times16format); sheet.addCell(label);
-                    label = new Label(4, fila, "Costo(\$)", times16format); sheet.addCell(label);
-                    label = new Label(5, fila, "Rendimiento", times16format); sheet.addCell(label);
-                    label = new Label(6, fila, "C.Total(\$)", times16format); sheet.addCell(label);
-                    fila++
-                }
-                band = 2
-                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-                number = new Number(2, fila, r["rbrocntd"], times10); sheet.addCell(number);
-                number = new Number(3, fila, r["rbpcpcun"], times10); sheet.addCell(number);
-                number = new Number(4, fila, r["rbpcpcun"] * r["rbrocntd"], times10); sheet.addCell(number);
-                number = new Number(5, fila, r["rndm"], times10); sheet.addCell(number);
-                number = new Number(6, fila, r["parcial"], times10); sheet.addCell(number);
-                totalMan += r["parcial"]
-                fila++
-            }
-            if (r["grpocdgo"] == 1) {
-                if (band == 2) {
-                    label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-                    number = new Number(6, fila, totalMan); sheet.addCell(number);
-                    fila++
-                }
-                if (band != 3) {
-                    fila++
-                    label = new Label(0, fila, "Materiales", times16format); sheet.addCell(label);
-                    sheet.mergeCells(0, fila, 1, fila)
-                    fila++
-
-                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-                    label = new Label(2, fila, "Unidad", times16format); sheet.addCell(label);
-                    label = new Label(3, fila, "Cantidad", times16format); sheet.addCell(label);
-                    label = new Label(4, fila, "Unitario", times16format); sheet.addCell(label);
-
-                    label = new Label(6, fila, "C.Total(\$)", times16format); sheet.addCell(label);
-                    fila++
-                }
-                band = 3
-
-                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-
-                label = new Label(2, fila, r["unddcdgo"], times10); sheet.addCell(label);
-                number = new Number(3, fila, r["rbrocntd"], times10); sheet.addCell(number);
-                number = new Number(4, fila, r["rbpcpcun"], times10); sheet.addCell(number);
-
-                number = new Number(6, fila, r["parcial"], times10); sheet.addCell(number);
-                totalMat += r["parcial"]
-                fila++
-
-            }
-            if (r["grpocdgo"] ==1) {
-                rowsTrans.add(r)
-                total += r["parcial_t"]
-            }
-
-        }
-        if (band == 3) {
-            label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-            number = new Number(6, fila, totalMat); sheet.addCell(number);
-            fila++
-        }
-
-        /*Tranporte*/
-        if (rowsTrans.size() > 0) {
-            fila++
-            label = new Label(0, fila, "Transporte", times16format); sheet.addCell(label);
-            sheet.mergeCells(0, fila, 1, fila)
-            fila++
-            label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-            label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-            label = new Label(2, fila, "Peso/Vol", times16format); sheet.addCell(label);
-            label = new Label(3, fila, "Cantidad", times16format); sheet.addCell(label);
-            label = new Label(4, fila, "Distancia", times16format); sheet.addCell(label);
-            label = new Label(5, fila, "Unitario", times16format); sheet.addCell(label);
-            label = new Label(6, fila, "C.Total(\$)", times16format); sheet.addCell(label);
-            fila++
-            rowsTrans.each { rt ->
-                label = new Label(0, fila, rt["itemcdgo"], times10); sheet.addCell(label);
-                label = new Label(1, fila, rt["itemnmbr"], times10); sheet.addCell(label);
-                number = new Number(2, fila, rt["itempeso"], times10); sheet.addCell(number);
-                number = new Number(3, fila, rt["rbrocntd"], times10); sheet.addCell(number);
-                number = new Number(4, fila, rt["distancia"], times10); sheet.addCell(number);
-                number = new Number(5, fila, rt["tarifa"], times10); sheet.addCell(number);
-                number = new Number(6, fila, rt["parcial_t"], times10); sheet.addCell(number);
-                fila++
-            }
-            label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-            number = new Number(6, fila, total); sheet.addCell(number);
-            fila++
-            fila++
-        }
-
-        /*indirectos */
-
-        label = new Label(0, fila, "Costos Indirectos", times16format); sheet.addCell(label);
-        sheet.mergeCells(0, fila, 1, fila)
-        fila++
-
-        label = new Label(0, fila, "Descripción", times16format); sheet.addCell(label);
-        sheet.mergeCells(0, fila, 1, fila)
-        label = new Label(5, fila, "Porcentaje", times16format); sheet.addCell(label);
-        label = new Label(6, fila, "Valor", times16format); sheet.addCell(label);
-        fila++
-        def totalRubro = total + totalHer + totalMan + totalMat
-        def totalIndi = totalRubro * indi / 100
-        label = new Label(0, fila, "Costos indirectos", times10); sheet.addCell(label);
-        sheet.mergeCells(0, fila, 1, fila)
-        number = new Number(5, fila, indi, times10); sheet.addCell(number);
-        number = new Number(6, fila, totalIndi, times10); sheet.addCell(number);
-
-        /*Totales*/
-        fila += 4
-        label = new Label(4, fila, "Costo unitario directo", times16format); sheet.addCell(label);
-        sheet.mergeCells(4, fila, 5, fila)
-        label = new Label(4, fila + 1, "Costos indirectos", times16format); sheet.addCell(label);
-        sheet.mergeCells(4, fila + 1, 5, fila + 1)
-        label = new Label(4, fila + 2, "Costo total del rubro", times16format); sheet.addCell(label);
-        sheet.mergeCells(4, fila + 2, 5, fila + 2)
-        label = new Label(4, fila + 3, "Precio unitario(\$USD)", times16format); sheet.addCell(label);
-        sheet.mergeCells(4, fila + 3, 5, fila + 3)
-        number = new Number(6, fila, totalRubro.toDouble().round(5), times10); sheet.addCell(number);
-        number = new Number(6, fila + 1, (totalIndi).toDouble().round(5), times10); sheet.addCell(number);
-        number = new Number(6, fila + 2, (totalRubro + totalIndi).toDouble().round(5), times10); sheet.addCell(number);
-        number = new Number(6, fila + 3, (totalRubro + totalIndi).toDouble().round(2), times10); sheet.addCell(number);
-
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "rubro.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-
-
-    }
-
     def imprimirRubro() {
 //        println "imprimir rubro "+params
 
@@ -1065,10 +777,7 @@ class Reportes3Controller {
 
         if (total == 0 || params.trans == "no")
             tablaTrans = ""
-//        if (totalMan == 0)
-//            tablaMano = ""
-//        if (totalMat == 0)
-//            tablaMat = ""
+
         [rubro: rubro, fechaPrecios: fecha, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band: band, tablaMat2: tablaMat2, bandMat: bandMat, bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
                 tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obra, fechaPala: fecha1]
     }
@@ -1080,9 +789,6 @@ class Reportes3Controller {
         println "imprimir rubro "+params
 
         def rubro = Item.get(params.id)
-
-//        println("rubro " + rubro)
-
         def corregido
         def text = (rubro.nombre ?: '')
         text = text.decodeHTML()
@@ -1290,10 +996,7 @@ class Reportes3Controller {
                 tablaTrans2 += "<td style='width: 45px;text-align: right'></td>"
                 tablaTrans2 += "<td style='width: 45px;text-align: right'></td>"
                 tablaTrans2 += "</tr>"
-
             }
-
-
         }
 
         tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td> <td style='width: 50px;text-align: right'>" +
@@ -1329,10 +1032,6 @@ class Reportes3Controller {
 
         if (total == 0 || params.trans == "no")
             tablaTrans = ""
-//        if (totalMan == 0)
-//            tablaMano = ""
-//        if (totalMat == 0)
-//            tablaMat = ""
         [rubro: rubro, fechaPrecios: fecha, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band: band, tablaMat2: tablaMat2, bandMat: bandMat, bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
          tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obra, fechaPala: fecha1, totalRelativo: totalRelativo, totalVae: totalVae]
     }
@@ -1394,11 +1093,7 @@ class Reportes3Controller {
             j.nombre = corregidos[i]
         }
 
-//        println("nomnbres " + rubros?.nombre)
-
-
         rubros.each { rubro ->
-//            def nombre = rubro.nombre.replaceAll('<', '(menor)').replaceAll('>', '(mayor)')
             def header, tablas, footer, nota
             def tablaHer, tablaMano, tablaMat, tablaTrans, tablaIndi
 
@@ -1453,13 +1148,8 @@ class Reportes3Controller {
 
 
             def parametros = "" + rubro.id + ",'" + fecha.format("yyyy-MM-dd") + "'," + listas + "," + params.dsp0 + "," + params.dsp1 + "," + params.dsv0 + "," + params.dsv1 + "," + params.dsv2 + "," + params.chof + "," + params.volq
-//            println parametros
-//            println lugar
             preciosService.ac_rbroV2(rubro.id, fecha.format("yyyy-MM-dd"), params.lugar)
             def res = preciosService.rb_precios(parametros, "")
-
-//            println("res" + res)
-
 
             tablaHer = '<table class=""> '
             tablaMano = '<table class=""> '
@@ -1477,27 +1167,19 @@ class Reportes3Controller {
                 obra = Obra.get(params.obra)
             }
 
-
             tablaTrans += "<thead><tr><th colspan='8' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='8' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot' >CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>PES/VOL</th><th>CANTIDAD</th><th>DISTANCIA</th><th>TARIFA</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='8' class='theaderup'></th></tr> </thead><tbody>"
             tablaHer += "<thead><tr><th colspan='7' class='tituloHeader'>EQUIPOS</th></tr><tr><th colspan='7' class='theader'></th></tr><tr><th style='width: 80px' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>CANTIDAD</th><th style='width:70px'>TARIFA(\$/H)</th><th>COSTO(\$)</th><th>RENDIMIENTO</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='7' class='theaderup'></th></tr> </thead><tbody>"
             tablaMano += "<thead><tr><th colspan='7' class='tituloHeader'>MANO DE OBRA</th></tr><tr><th colspan='7' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>CANTIDAD</th><th style='width:70px'>JORNAL(\$/H)</th><th>COSTO(\$)</th><th>RENDIMIENTO</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='7' class='theaderup'></th></tr> </thead><tbody>"
 
             if(params.trans == 'no'){
-
                 tablaMat += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES INCLUIDO TRANSPORTE</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
-
             }else{
-
                 tablaMat += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
-
             }
             tablaMat2 += "<thead><tr><th colspan='6' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='6' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>CANTIDAD</th><th>UNITARIO(\$)</th><th>C.TOTAL(\$)</th></tr> <tr><th colspan='6' class='theaderup'></th></tr> </thead><tbody>"
             tablaTrans2 += "<thead><tr><th colspan='8' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='8' class='theader'></th></tr><tr><th style='width: 80px;' class='padTopBot'>CÓDIGO</th><th style='width:610px'>DESCRIPCIÓN</th><th>UNIDAD</th><th>PES/VOL</th><th>CANTIDAD</th><th>DISTANCIA</th><th>TARIFA</th><th>C.TOTAL(\$)</th></tr>  <tr><th colspan='8' class='theaderup'></th></tr> </thead><tbody>"
 
-
-
             res.each { r ->
-//            println "res "+res
                 if (r["grpocdgo"] == 3) {
                     tablaHer += "<tr>"
                     tablaHer += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
@@ -1533,23 +1215,16 @@ class Reportes3Controller {
                         tablaMat += "<td style='width: 50px;text-align: center'>${r['unddcdgo']}</td>"
                         tablaMat += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                         tablaMat += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
-//                    tablaMat+="<td style='width: 50px;text-align: center'>${r['unddcdgo']}</td>"
-//                    tablaMat += "<td style='width: 50px;text-align: right'>${r['itempeso']}</td>"
-//                    tablaMat += "<td style='width: 50px;text-align: right'></td>"
                         tablaMat += "<td style='width: 50px;text-align: right'>" + r["parcial"] + "</td>"
                         totalMat += r["parcial"]
                     }
                     if(params.trans == 'no'){
-
-                        println("entro false")
-
                         tablaMat += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
                         tablaMat += "<td>" + r["itemnmbr"] + "</td>"
                         tablaMat += "<td style='width: 50px;text-align: center'>${r['unddcdgo']}</td>"
                         tablaMat += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                         tablaMat += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: (r["rbpcpcun"] + r["parcial_t"] / r["rbrocntd"]), format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                         tablaMat += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: (r["parcial"] + r["parcial_t"]), format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
-
                         totalMat += r["parcial"] + r["parcial_t"]
                     }
                     tablaMat += "</tr>"
@@ -1561,18 +1236,13 @@ class Reportes3Controller {
                     if(r["tplscdgo"].trim() =='P' || r["tplscdgo"].trim() =='P1' ){
                         tablaTrans += "<td style='width: 50px;text-align: right'>" + "ton-km" + "</td>"
                     } else{
-
                         if(r["tplscdgo"].trim() =='V' || r["tplscdgo"].trim() =='V1' || r["tplscdgo"].trim() =='V2'){
-
                             tablaTrans += "<td style='width: 50px;text-align: right'>" + "m3-km" + "</td>"
                         }
                         else {
-
                             tablaTrans += "<td style='width: 50px;text-align: right'>" + r["unddcdgo"] + "</td>"
                         }
-
                     }
-//                tablaTrans += "<td style='width: 50px;text-align: right'>" + r["unddcdgo"] + "</td>"
                     tablaTrans += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["itempeso"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                     tablaTrans += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                     tablaTrans += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["distancia"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1582,12 +1252,8 @@ class Reportes3Controller {
                     tablaTrans += "</tr>"
                 }
                 else {
-
                 }
-
-
             }
-
 
             tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
             tablaTrans += "</tbody></table>"
@@ -1607,23 +1273,10 @@ class Reportes3Controller {
                 totalRubro = totalHer + totalMan + totalMat
             }
             def totalIndi = totalRubro * indi / 100
-//            tablaIndi += "<thead><tr><th colspan='3'>Costos indirectos</th></tr><tr><th style='width:550px'>Descripción</th><th>Porcentaje</th><th>Valor</th></tr></thead>"
-//            tablaIndi += "<tbody><tr><td>Costos indirectos</td><td style='text-align:right'>${indi}%</td><td style='text-align:right'>${g.formatNumber(number: totalIndi, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5")}</td></tr></tbody>"
-//            tablaIndi += "</table>"
 
             tablaIndi += "<thead><tr><th class='tituloHeader'>COSTOS INDIRECTOS</th></tr><tr><th colspan='3' class='theader'></th></tr><tr><th style='width:550px' class='padTopBot'>DESCRIPCIÓN</th><th style='width:130px'>PORCENTAJE</th><th>VALOR</th></tr>    <tr><th colspan='3' class='theaderup'></th></tr>  </thead>"
             tablaIndi += "<tbody><tr><td>COSTOS INDIRECTOS</td><td style='text-align:center'>${indi}%</td><td style='text-align:right'>${g.formatNumber(number: totalIndi, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5")}</td></tr></tbody>"
             tablaIndi += "</table>"
-
-//            if (total == 0 || params.trans == 'no')
-//                tablaTrans = ""
-//            if (totalHer == 0)
-//                tablaHer = ""
-//            if (totalMan == 0)
-//                tablaMano = ""
-//            if (totalMat == 0)
-//                tablaMat = ""
-
             tablas = "<div style=\"width: 100%;margin-top: 10px;\">"
 
             if (params.trans == 'no'){
@@ -1678,12 +1331,10 @@ class Reportes3Controller {
         }
 
         [html: html]
-
     }
 
 
     def imprimirRubrosVae () {
-        //        println "imprimir rubros " + params
 
         def rubros = []
         def parts = params.id.split("_")
@@ -1772,7 +1423,6 @@ class Reportes3Controller {
                             "\n" +
                             "                <div class=\"row-fluid\">\n" +
                             "                    <div class=\"span12\">\n" +
-//                    "                        <b>Descripción:</b> ${nombre}\n" +
                             "                        <b>Descripción:</b> ${rubro.nombre}\n" +
                             "                    </div>\n" +
                             "                </div>\n" +
@@ -1793,7 +1443,6 @@ class Reportes3Controller {
 
             def tablaMat2 = '<table class="marginTop" style="width:950px"> '
             def tablaTrans2 = '<table class="marginTop" style="width:950px"> '
-//            def total = 0, totalHer = 0, totalMan = 0, totalMat = 0
             def total = 0, totalHer = 0, totalMan = 0, totalMat = 0, totalHerRel = 0, totalHerVae = 0, totalManRel = 0, totalManVae = 0, totalMatRel = 0, totalMatVae = 0, totalTRel=0, totalTVae=0
 
             def band = 0
@@ -1926,8 +1575,6 @@ class Reportes3Controller {
                     totalTRel += r["relativo_t"]
                     totalTVae += r["vae_vlor_t"]
                     tablaTrans += "</tr>"
-
-
                 }
                 else {
                     tablaTrans2 += "<tr>"
@@ -2124,13 +1771,7 @@ class Reportes3Controller {
         table.addCell(cell);
     }
 
-
-
-
     def imprimirCalculoValor () {
-
-
-//        println("params" + params)
 
         def anio = new Date().format("yyyy").toInteger()
         def u = ValoresAnuales.findByAnio(anio).sueldoBasicoUnificado
@@ -2148,9 +1789,6 @@ class Reportes3Controller {
 
         def item = Item.get(params.id)
         def obra = Obra.get(params.id)
-
-
-
         def auxiliar = Auxiliar.get(1)
         def prmsHeaderHoja = [border: Color.WHITE]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
@@ -2291,8 +1929,6 @@ class Reportes3Controller {
 
     def imprimirValorHoraEquipos () {
 
-//        println("params" + params)
-
         def item = Item.get(params.id)
         def obra = Obra.get(params.id)
         def auxiliar = Auxiliar.get(1)
@@ -2330,8 +1966,6 @@ class Reportes3Controller {
         Font times10boldWhite = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font times8boldWhite = new Font(Font.TIMES_ROMAN, 8, Font.BOLD)
 
-//        times8boldWhite.setColour(Color.WHITE)
-//        times10boldWhite.setColour(Color.WHITE)
         def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
                 times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times10normal: times10normal]
 
@@ -2346,7 +1980,6 @@ class Reportes3Controller {
         document.addCreator("Tedein SA");
 
         Paragraph headers = new Paragraph();
-//        addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
 
         headers.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''),times18bold ))
@@ -2650,8 +2283,6 @@ class Reportes3Controller {
 
         def garantias =  janus.pac.Garantia.list();
 
-//        println("-->>" + garantias)
-
         def auxiliar = Auxiliar.get(1)
         def prmsHeaderHoja = [border: Color.WHITE]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
@@ -2716,7 +2347,6 @@ class Reportes3Controller {
         headers.add(new Paragraph("REPORTE DE GARANTÍAS", times14bold ))
         headers.add(new Paragraph(" "))
         headers.add(new Paragraph("Quito, " + printFecha(new Date()), times12bold));
-//        headers.add(new Paragraph("QUITO, " + new Date().format("dd-MM-yyyy"), times12bold));
         headers.add(new Paragraph(" ", times10bold));
 
         PdfPTable tablaGarantia = new PdfPTable(13);
@@ -2767,8 +2397,6 @@ class Reportes3Controller {
 
 
     def reporteGarantiasVenceran () {
-
-//        println("-->>" + params)
 
         def fechaHasta = new Date().parse("dd-MM-yyyy",params.hasta)
         def fechaDesde = new Date().parse("dd-MM-yyyy",params.desde)
@@ -2854,30 +2482,24 @@ class Reportes3Controller {
         addCellTabla(tablaGarantia, new Paragraph("Contratista", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Tipo de Garantía", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("N° Garantía", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Rnov", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Original", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Aseguradora", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Documento", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Estado", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Monto", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Emisión", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Vencimiento", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Cancelación", times8bold), prmsCellHead2)
 
         garantias.each {
             addCellTabla(tablaGarantia, new Paragraph(it?.contrato?.codigo, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.contrato?.oferta?.proveedor?.nombre, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.tipoGarantia?.descripcion, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.codigo, times8normal), prmsCellHead4)
-//            addCellTabla(tablaGarantia, new Paragraph(g.formatNumber(number: it?.numeroRenovaciones, format: "###,###", locale: "ec", maxFractionDigits: 0, minFractionDigits: 0), times8normal), prmsCellHead3)
             addCellTabla(tablaGarantia, new Paragraph(it?.padre?.codigo, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.aseguradora?.nombre, times8normal), prmsCellHead4)
             addCellTabla(tablaGarantia, new Paragraph(it?.tipoDocumentoGarantia?.descripcion, times8normal), prmsCellHead3)
-//            addCellTabla(tablaGarantia, new Paragraph(it?.estado?.descripcion, times8normal), prmsCellHead3)
             addCellTabla(tablaGarantia, new Paragraph(g.formatNumber(number: it?.monto, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8normal), prmsCellHead5)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaInicio.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaFinalizacion.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
-//            addCellTabla(tablaGarantia, new Paragraph(it?.cancelada?.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
         }
 
         document.add(headers)
@@ -3161,23 +2783,15 @@ class Reportes3Controller {
             def html = ""
 
             rubros = VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique()
-
-//        println rubros.size()
-//        println("rubros " + rubros)
-
             rubros.eachWithIndex {rubro, indice ->
-//            println indice+" "+rubro.nombre
                 def nombre = rubro.nombre.decodeHTML()
-//                def nombre = rubro.nombre.encodeAsHTML4()
 
                 nombre = nombre.replaceAll(/</, /&lt;/)
                 nombre = nombre.replaceAll(/&/, /&amp;/)
                 nombre = nombre.replaceAll(/'/, /&apos;/)
                 nombre = nombre.replaceAll(/"/, /&quot;/)
                 nombre = nombre.replaceAll(/>/, /&gt;/)
-//                nombre = "TEST"
-//            println "\t"+nombre
-//                println("codigo " + rubro.unidad.codigo)
+
 
                 def header, tablas, footer, nota, salto
                 def tablaHer, tablaMano, tablaMat, tablaTrans, tablaIndi
@@ -3252,8 +2866,6 @@ class Reportes3Controller {
 
                         "            </div>"
 
-
-
                 preciosService.ac_rbroObra(obra.id)
                 def res = preciosService.precioUnitarioVolumenObraAsc("*", obra.id, rubro.id)
                 def vae = preciosService.vae_rb(obra.id,rubro.id)
@@ -3282,14 +2894,7 @@ class Reportes3Controller {
                 tablaTrans2 += "<thead><tr><th colspan='13' class='tituloHeader'>TRANSPORTE</th></tr><tr><th colspan='13' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th style='width: 60px;'>UNIDAD</th><th style='width: 60px;'>PES/VOL</th><th style='width: 60px;'>CANTIDAD</th><th style='width: 60px;'>DISTANCIA</th><th style='width: 60px;'>TARIFA</th><th style='width: 50px;'>C.TOTAL(\$)</th><th style='width: 60px;text-align: center'>PESO RELAT(%)</th><th style='width: 60px; text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='13' class='theaderup'></th></tr> </thead><tbody>"
                 tablaMat2 += "<thead><tr><th colspan='12' class='tituloHeader'>MATERIALES</th></tr><tr><th colspan='12' class='theader'></th></tr><tr><th style='width: 100px;' class='padTopBot'>CÓDIGO</th><th style='width:420px'>DESCRIPCIÓN</th><th></th><th style='width: 45px;'>UNIDAD</th><th style='width: 45px;'>CANTIDAD</th><th style='width: 45px;'>UNITARIO(\$)</th><th style='width: 45px;'>C.TOTAL(\$)</th><th style='width: 45px;text-align: center'>PESO RELAT(%)</th><th style='width: 45px; text-align: center'>CPC</th><th style='width: 45px;text-align: center'>NP/EP/  ND</th><th style='width: 45px;text-align: right'>VAE(%)</th><th style='width: 45px; text-align: center'>VAE(%) ELEMENTO</th></tr> <tr><th colspan='12' class='theaderup'></th></tr></thead><tbody>"
 
-
-//                println("-->" + vae)
-
                 vae.eachWithIndex { r, i ->
-//            println "res "+r
-
-
-
 
                     if (r["grpocdgo"] == 3) {
 
@@ -3302,7 +2907,6 @@ class Reportes3Controller {
 
                         tablaHer += "<tr>"
                         tablaHer += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
-//                        tablaHer += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
                         tablaHer += "<td style='width: 420px;'>" + nombreVaeH + "</td>"
                         tablaHer += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                         tablaHer += "<td style='width: 65px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -3330,7 +2934,6 @@ class Reportes3Controller {
 
                         tablaMano += "<tr>"
                         tablaMano += "<td style='width: 140px;'>" + r["itemcdgo"] + "</td>"
-//                        tablaMano += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
                         tablaMano += "<td style='width: 420px;'>" + nombreVaeM  + "</td>"
                         tablaMano += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                         tablaMano += "<td style='width: 65px;text-align: right'>" + g.formatNumber(number: r["rbpcpcun"], format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -3349,8 +2952,6 @@ class Reportes3Controller {
                     }
                     if (r["grpocdgo"] == 1) {
 
-
-
                         def nombreVae = r["itemnmbr"].decodeHTML()
                         nombreVae = nombreVae.replaceAll(/</, /&lt;/)
                         nombreVae = nombreVae.replaceAll(/&/, /&amp;/)
@@ -3358,14 +2959,11 @@ class Reportes3Controller {
                         nombreVae = nombreVae.replaceAll(/"/, /&quot;/)
                         nombreVae = nombreVae.replaceAll(/>/, /&gt;/)
 
-//                        println("nombre Vae " + nombreVae)
-
                         bandMat = 1
 
                         tablaMat += "<tr>"
                         if (params.desglose != '0') {
                             tablaMat += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
-//                            tablaMat += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
                             tablaMat += "<td style='width: 420px;'>" + nombreVae + "</td>"
                             tablaMat += "<td style='width: 50px;'>" + '' +  "</td>"
                             tablaMat += "<td style='width: 65px;text-align: center'>" + r["unddcdgo"] + "</td>"
@@ -3390,10 +2988,7 @@ class Reportes3Controller {
                             nombreVaeZ = nombreVaeZ.replaceAll(/"/, /&quot;/)
                             nombreVaeZ = nombreVaeZ.replaceAll(/>/, /&gt;/)
 
-//                            println("nombre Vae Z " + nombreVaeZ)
-
                             tablaMat += "<td style='width: 120px;'>" + r["itemcdgo"] + "</td>"
-//                            tablaMat += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
                             tablaMat += "<td style='width: 420px;'>" + nombreVaeZ + "</td>"
                             tablaMat += "<td style='width: 50px;text-align: right'></td>"
                             tablaMat += "<td style='width: 65px;text-align: center'>" + r["unddcdgo"] + "</td>"
@@ -3421,10 +3016,8 @@ class Reportes3Controller {
                         nombreVaeT = nombreVaeT.replaceAll(/"/, /&quot;/)
                         nombreVaeT = nombreVaeT.replaceAll(/>/, /&gt;/)
 
-
                         tablaTrans += "<tr>"
                         tablaTrans += "<td style='width: 140px;'>" + r["itemcdgo"] + "</td>"
-//                        tablaTrans += "<td style='width: 420px;'>" + r["itemnmbr"] + "</td>"
                         tablaTrans += "<td style='width: 420px;'>" + nombreVaeT +"</td>"
 
                         if(r["tplscdgo"].trim() =='P' || r["tplscdgo"].trim() =='P1' ){
@@ -3503,7 +3096,6 @@ class Reportes3Controller {
 
                 if (params.desglose == '0') {
                     tablas += tablaHer + tablaMano + tablaMat + tablaIndi
-
                 } else {
                     tablas += tablaHer + tablaMano + tablaMat + tablaTrans + tablaIndi
                 }
@@ -3511,7 +3103,6 @@ class Reportes3Controller {
                 tablas += "</div>"
 
                 footer =
-//                        " <div style='display:inline-block; float:right'><table class=\"table table-bordered table-striped table-condensed table-hover\" style=\"margin-top: 15px;width: 600px;float: right;  border-top: 1px solid #000000;  border-bottom: 1px solid #000000;\">\n" +
                         " <table style='border-top: 1px solid #000000; border-bottom:1px solid #000000; float:right; margin-top:15px'>\n" +
                                 "                    <tbody>\n" +
                                 "                        <tr>\n" +
@@ -3580,372 +3171,12 @@ class Reportes3Controller {
                     footer += "<div style='margin-top:40px'><b>Nota:</b> Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales</div>"
                 }
 
-
-//                html += "<div class='divRubro'>" + header + tablas + footer + "</div>"
                 html += "<div class='divRubro'>" + header + tablas + footer + "</div>"
             }
             [html: html]
     }
 
-//    def rubroAExcel(sheet, res, rubro, fecha, indi, vae) {
-//        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-//        WritableCellFormat times16format = new WritableCellFormat(times16font);
-//        WritableFont times10Font = new WritableFont(WritableFont.TIMES, 10, WritableFont.NO_BOLD, false);
-//        WritableCellFormat times10 = new WritableCellFormat(times10Font);
-//        sheet.setColumnView(0, 20)
-//        sheet.setColumnView(1, 50)
-//        sheet.setColumnView(2, 15)
-//        sheet.setColumnView(3, 15)
-//        sheet.setColumnView(4, 15)
-//        sheet.setColumnView(5, 15)
-//        sheet.setColumnView(6, 15)
-//        sheet.setColumnView(7, 15)
-//        sheet.setColumnView(8, 15)
-//        sheet.setColumnView(9, 15)
-//        sheet.setColumnView(10, 15)
-//        sheet.setColumnView(11, 15)
-//
-//        def label = new Label(0, 1, (Auxiliar.get(1)?.titulo ?: '').toUpperCase(), times16format); sheet.addCell(label);
-//        label = new Label(0, 2, "DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS".toUpperCase(), times16format); sheet.addCell(label);
-//        label = new Label(0, 3, "Análisis de precios unitarios".toUpperCase(), times16format); sheet.addCell(label);
-//
-//        sheet.mergeCells(0, 1, 1, 1)
-//        sheet.mergeCells(0, 2, 1, 2)
-//        sheet.mergeCells(0, 3, 1, 3)
-//        label = new Label(0, 5, "Fecha: " + new Date().format("dd-MM-yyyy"), times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, 5, 1, 5)
-//        label = new Label(0, 6, "Código: " + rubro.codigo, times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, 6, 1, 6)
-//        label = new Label(0, 7, "Descripción: " + rubro.nombre, times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, 7, 1, 7)
-//        label = new Label(5, 5, "Fecha Act. P.U: " + fecha?.format("dd-MM-yyyy"), times16format); sheet.addCell(label);
-//        sheet.mergeCells(5, 5, 6, 5)
-//        label = new Label(5, 6, "Unidad: " + rubro.unidad?.codigo, times16format); sheet.addCell(label);
-//        sheet.mergeCells(5, 6, 6, 6)
-//        label = new Label(5, 7, "Código Especificacion: " + (rubro?.codigoEspecificacion ?: ''), times16format); sheet.addCell(label);
-//        sheet.mergeCells(5, 7, 7, 7)
-//
-//        def fila = 10
-//
-//        fila++
-//        def number
-//        def number2
-//        def totalHer = 0
-//        def totalMan = 0
-//        def totalManRel = 0
-//        def totalManVae = 0
-//        def totalMat = 0
-//        def totalMatRel = 0
-//        def totalMatVae = 0
-//        def totalHerRel = 0
-//        def totalHerVae = 0
-//        def totalTRel = 0
-//        def totalTVae = 0
-//        def total = 0
-//        def band = 25
-//        def flag = 0
-//        def rowsTrans = []
-//
-//        vae.eachWithIndex { r, i ->
-//
-//            if (r["grpocdgo"] == 3) {
-//                if (band != 0) {
-//                    fila++
-//                    label = new Label(0, fila, "Equipos", times16format); sheet.addCell(label);
-//                    sheet.mergeCells(0, fila, 1, fila)
-//                    fila++
-//                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//                    label = new Label(2, fila, "Cantidad", times16format); sheet.addCell(label);
-//                    label = new Label(3, fila, "Tarifa", times16format); sheet.addCell(label);
-//                    label = new Label(4, fila, "Costo", times16format); sheet.addCell(label);
-//                    label = new Label(5, fila, "Rendimiento", times16format); sheet.addCell(label);
-//                    label = new Label(6, fila, "C.Total", times16format); sheet.addCell(label);
-//                    label = new Label(7, fila, "Peso Relat(%)", times16format); sheet.addCell(label);
-//                    label = new Label(8, fila, "CPC", times16format); sheet.addCell(label);
-//                    label = new Label(9, fila, "NP/EP/ND", times16format); sheet.addCell(label);
-//                    label = new Label(10, fila, "VAE(%)", times16format); sheet.addCell(label);
-//                    label = new Label(11, fila, "VAE(%) Elemento", times16format); sheet.addCell(label);
-//                    fila++
-//                }
-//                band = 0
-//                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-//                number = new Number(2, fila, r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(3, fila, r["rbpcpcun"]); sheet.addCell(number);
-//                number = new Number(4, fila, r["rbpcpcun"] * r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(5, fila, r["rndm"]); sheet.addCell(number);
-//                number = new Number(6, fila, r["parcial"]); sheet.addCell(number);
-//                number = new Number(7, fila, r["relativo"]); sheet.addCell(number);
-//                label = new Label(8, fila, r.itemcpac); sheet.addCell(label);
-//                label = new Label(9, fila, r.tpbncdgo); sheet.addCell(label);
-//                number = new Number(10, fila, r["vae"]); sheet.addCell(number);
-//                number = new Number(11, fila, r["vae_vlor"]); sheet.addCell(number);
-//
-//                totalHer += r["parcial"]
-//                totalHerRel += r["relativo"]
-//                totalHerVae += r["vae_vlor"]
-//                fila++
-//            }
-//            if (r["grpocdgo"] == 2) {
-//                if (band == 0) {
-//                    label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//                    number = new Number(6, fila, totalHer); sheet.addCell(number);
-//                    number = new Number(7, fila, totalHerRel); sheet.addCell(number);
-//                    number = new Number(11, fila, totalHerVae); sheet.addCell(number);
-//                    fila++
-//                }
-//
-//                if (band != 2) {
-//                    fila++
-//                    label = new Label(0, fila, "Mano de obra", times16format); sheet.addCell(label);
-//                    sheet.mergeCells(0, fila, 1, fila)
-//                    fila++
-//                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//                    label = new Label(2, fila, "Cantidad", times16format); sheet.addCell(label);
-//                    label = new Label(3, fila, "Jornal", times16format); sheet.addCell(label);
-//                    label = new Label(4, fila, "Costo", times16format); sheet.addCell(label);
-//                    label = new Label(5, fila, "Rendimiento", times16format); sheet.addCell(label);
-//                    label = new Label(6, fila, "C.Total", times16format); sheet.addCell(label);
-//                    label = new Label(7, fila, "Peso Relat(%)", times16format); sheet.addCell(label);
-//                    label = new Label(8, fila, "CPC", times16format); sheet.addCell(label);
-//                    label = new Label(9, fila, "NP/EP/ND", times16format); sheet.addCell(label);
-//                    label = new Label(10, fila, "VAE(%)", times16format); sheet.addCell(label);
-//                    label = new Label(11, fila, "VAE(%) Elemento", times16format); sheet.addCell(label);
-//                    fila++
-//                }
-//                band = 2
-//                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-//                number = new Number(2, fila, r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(3, fila, r["rbpcpcun"]); sheet.addCell(number);
-//                number = new Number(4, fila, r["rbpcpcun"] * r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(5, fila, r["rndm"]); sheet.addCell(number);
-//                number = new Number(6, fila, r["parcial"]); sheet.addCell(number);
-//                number = new Number(7, fila, r["relativo"]); sheet.addCell(number);
-//                label = new Label(8, fila, r.itemcpac); sheet.addCell(label);
-//                label = new Label(9, fila, r.tpbncdgo); sheet.addCell(label);
-//                number = new Number(10, fila, r["vae"]); sheet.addCell(number);
-//                number = new Number(11, fila, r["vae_vlor"]); sheet.addCell(number);
-//
-//                totalMan += r["parcial"]
-//                totalManRel += r["relativo"]
-//                totalManVae += r["vae_vlor"]
-//                fila++
-//
-//            }
-//
-//            if(r["grpocdgo"] != 2){
-//                if (band == 2) {
-//                    label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//                    number = new Number(6, fila, totalMan); sheet.addCell(number);
-//                    number = new Number(7, fila, totalManRel); sheet.addCell(number);
-//                    number = new Number(11, fila, totalManVae); sheet.addCell(number);
-//                    fila++
-//                }
-//            }
-//
-//
-//            if (r["grpocdgo"] == 1) {
-//                if (band != 3) {
-//                    fila++
-//                    label = new Label(0, fila, "Materiales", times16format); sheet.addCell(label);
-//                    sheet.mergeCells(0, fila, 1, fila)
-//                    fila++
-//                    label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//                    label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//                    label = new Label(2, fila, "Cantidad", times16format); sheet.addCell(label);
-//                    label = new Label(3, fila, "Unitario", times16format); sheet.addCell(label);
-//                    label = new Label(6, fila, "C.Total", times16format); sheet.addCell(label);
-//                    label = new Label(7, fila, "Peso Relat(%)", times16format); sheet.addCell(label);
-//                    label = new Label(8, fila, "CPC", times16format); sheet.addCell(label);
-//                    label = new Label(9, fila, "NP/EP/ND", times16format); sheet.addCell(label);
-//                    label = new Label(10, fila, "VAE(%)", times16format); sheet.addCell(label);
-//                    label = new Label(11, fila, "VAE(%) Elemento", times16format); sheet.addCell(label);
-//                    fila++
-//                }
-//                band = 3
-//                flag = 1
-//                label = new Label(0, fila, r["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, r["itemnmbr"], times10); sheet.addCell(label);
-//                number = new Number(2, fila, r["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(3, fila, r["rbpcpcun"]); sheet.addCell(number);
-//                number = new Number(6, fila, r["parcial"]); sheet.addCell(number);
-//                number = new Number(7, fila, r["relativo"]); sheet.addCell(number);
-//                label = new Label(8, fila, r.itemcpac); sheet.addCell(label);
-//                label = new Label(9, fila, r.tpbncdgo); sheet.addCell(label);
-//                number = new Number(10, fila, r["vae"]); sheet.addCell(number);
-//                number = new Number(11, fila, r["vae_vlor"]); sheet.addCell(number);
-//
-//                totalMat += r["parcial"]
-//                totalMatRel += r["relativo"]
-//                totalMatVae += r["vae_vlor"]
-//                fila++
-//
-//            }
-//
-//            if (r["grpocdgo"] == 1) {
-//                rowsTrans.add(r)
-//                total += r["parcial_t"]
-//                totalTRel += r["relativo_t"]
-//                totalTVae += r["vae_vlor_t"]
-//            }
-//        }
-//
-//        if (band == 2 && flag != 1) {
-//            label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//            number = new Number(6, fila, totalMan); sheet.addCell(number);
-//            number = new Number(7, fila, totalManRel); sheet.addCell(number);
-//            number = new Number(11, fila, totalManVae); sheet.addCell(number);
-//            fila++
-//        }
-//
-//        if (band == 3) {
-//            label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//            number = new Number(6, fila, totalMat); sheet.addCell(number);
-//            number = new Number(7, fila, totalMatRel); sheet.addCell(number);
-//            number = new Number(11, fila, totalMatVae); sheet.addCell(number);
-//            fila++
-//        }
-//
-//        /*Tranporte*/
-//        if (rowsTrans.size() > 0) {
-//            fila++
-//            label = new Label(0, fila, "Transporte", times16format); sheet.addCell(label);
-//            sheet.mergeCells(0, fila, 1, fila)
-//            fila++
-//            label = new Label(0, fila, "Código", times16format); sheet.addCell(label);
-//            label = new Label(1, fila, "Descripción", times16format); sheet.addCell(label);
-//            label = new Label(2, fila, "Peso/Vol", times16format); sheet.addCell(label);
-//            label = new Label(3, fila, "Cantidad", times16format); sheet.addCell(label);
-//            label = new Label(4, fila, "Distancia", times16format); sheet.addCell(label);
-//            label = new Label(5, fila, "Unitario", times16format); sheet.addCell(label);
-//            label = new Label(6, fila, "C.Total", times16format); sheet.addCell(label);
-//            label = new Label(7, fila, "Peso Relat(%)", times16format); sheet.addCell(label);
-//            label = new Label(8, fila, "CPC", times16format); sheet.addCell(label);
-//            label = new Label(9, fila, "NP/EP/ND", times16format); sheet.addCell(label);
-//            label = new Label(10, fila, "VAE(%)", times16format); sheet.addCell(label);
-//            label = new Label(11, fila, "VAE(%) Elemento", times16format); sheet.addCell(label);
-//            fila++
-//
-//            rowsTrans.eachWithIndex { rt, j ->
-//                def tra = rt["parcial_t"]
-//                def tot = 0
-//                if (tra > 0)
-//                    tot = rt["parcial_t"] / (rt["itempeso"] * rt["rbrocntd"] * rt["distancia"])
-//                label = new Label(0, fila, rt["itemcdgo"], times10); sheet.addCell(label);
-//                label = new Label(1, fila, rt["itemnmbr"], times10); sheet.addCell(label);
-//                number = new Number(2, fila, rt["itempeso"]); sheet.addCell(number);
-//                number = new Number(3, fila, rt["rbrocntd"]); sheet.addCell(number);
-//                number = new Number(4, fila, rt["distancia"]); sheet.addCell(number);
-//                number = new Number(5, fila, tot); sheet.addCell(number);
-//                number = new Number(6, fila, rt["parcial_t"]); sheet.addCell(number);
-//
-//                number = new Number(7, fila, rt["relativo_t"]); sheet.addCell(number);
-//                label = new Label(8, fila, rt["itemcpac"]); sheet.addCell(label);
-//                label = new Label(9, fila, rt["tpbncdgo"]); sheet.addCell(label);
-//                number = new Number(10, fila, rt["vae_t"]); sheet.addCell(number);
-//                number = new Number(11, fila, rt["vae_vlor_t"]); sheet.addCell(number);
-//                fila++
-//            }
-//            label = new Label(0, fila, "SUBTOTAL", times10); sheet.addCell(label);
-//            number = new Number(6, fila, total); sheet.addCell(number);
-//            number = new Number(7, fila, totalTRel); sheet.addCell(number);
-//            number = new Number(11, fila, totalTVae); sheet.addCell(number);
-//            fila++
-//            fila++
-//        }
-//
-//        /*indirectos */
-//
-//        fila++
-//        label = new Label(0, fila, "Costos Indirectos", times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, fila, 1, fila)
-//        fila++
-//        label = new Label(0, fila, "Descripción", times16format); sheet.addCell(label);
-//        sheet.mergeCells(0, fila, 1, fila)
-//        label = new Label(5, fila, "Porcentaje", times16format); sheet.addCell(label);
-//        label = new Label(6, fila, "Valor", times16format); sheet.addCell(label);
-//        fila++
-//        def totalRubro = total + totalHer + totalMan + totalMat
-//        def totalIndi = totalRubro * indi / 100
-//        def totalRelativo = totalTRel + totalHerRel + totalMatRel + totalManRel
-//        def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
-//        label = new Label(0, fila, "Costos indirectos", times10); sheet.addCell(label);
-//        sheet.mergeCells(0, fila, 1, fila)
-//        number = new Number(5, fila, indi); sheet.addCell(number);
-//        number = new Number(6, fila, totalIndi); sheet.addCell(number);
-//
-//        /*Totales*/
-//        fila += 4
-//        label = new Label(4, fila, "Costo unitario directo", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila, 5, fila)
-//        label = new Label(4, fila + 1, "Costos indirectos", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila + 1, 5, fila + 1)
-//        label = new Label(4, fila + 2, "Costo total del rubro", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila + 2, 5, fila + 2)
-//        label = new Label(4, fila + 3, "Precio unitario", times16format); sheet.addCell(label);
-//        sheet.mergeCells(4, fila + 3, 5, fila + 3)
-//        number = new Number(6, fila, totalRubro); sheet.addCell(number);
-//        number = new Number(6, fila + 1, totalIndi); sheet.addCell(number);
-//        number = new Number(6, fila + 2, totalRubro + totalIndi); sheet.addCell(number);
-//        number = new Number(6, fila + 3, (totalRubro + totalIndi).toDouble().round(2)); sheet.addCell(number);
-//        label = new Label(7, fila+1, "TOTAL", times16format); sheet.addCell(label);
-//        sheet.mergeCells(7, fila+1, 5, fila+1)
-//        label = new Label(7, fila+2, "PESO", times16format); sheet.addCell(label);
-//        sheet.mergeCells(7, fila+2, 5, fila+2)
-//        label = new Label(7, fila+3, "RELATIVO(%)", times16format); sheet.addCell(label);
-//        sheet.mergeCells(7, fila+3, 5, fila+3)
-//        label = new Label(11, fila+1, "TOTAL", times16format); sheet.addCell(label);
-//        sheet.mergeCells(11, fila+1, 5, fila+1)
-//        label = new Label(11, fila+2, "VAE", times16format); sheet.addCell(label);
-//        sheet.mergeCells(11, fila+2, 5, fila+2)
-//        label = new Label(11, fila+3, "(%)", times16format); sheet.addCell(label);
-//        sheet.mergeCells(11, fila+3, 5, fila+3)
-//        number = new Number(7, fila, totalRelativo); sheet.addCell(number);
-//        number = new Number(11, fila, totalVae); sheet.addCell(number);
-//
-//        return sheet
-//    }
-
-//    def imprimirRubrosVaeExcel () {
-//
-//        def obra = Obra.get(params.obra.toLong())
-//        def lugar = obra.lugar
-//        def fecha = obra.fechaPreciosRubros
-//        def itemsChofer = [obra.chofer]
-//        def itemsVolquete = [obra.volquete]
-//        def indi = obra.totales
-//        WorkbookSettings workbookSettings = new WorkbookSettings()
-//        workbookSettings.locale = Locale.default
-//        def file = File.createTempFile('myExcelDocument', '.xls')
-//        file.deleteOnExit()
-//        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-//        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-//        WritableCellFormat formatXls = new WritableCellFormat(font)
-//        def row = 0
-//
-//        preciosService.ac_rbroObra(obra.id)
-//
-//        VolumenesObra.findAllByObra(obra, [sort: "orden"]).item.unique().eachWithIndex { rubro, i ->
-//            def res = preciosService.presioUnitarioVolumenObra("* ", obra.id, rubro.id)
-//            def vae = preciosService.vae_rb(obra.id,rubro.id)
-//            WritableSheet sheet = workbook.createSheet(rubro.codigo, i)
-//            rubroAExcel(sheet, res, rubro, fecha, indi, vae)
-//        }
-//        workbook.write();
-//        workbook.close();
-//        def output = response.getOutputStream()
-//        def header = "attachment; filename=" + "rubro.xls";
-//        response.setContentType("application/octet-stream")
-//        response.setHeader("Content-Disposition", header);
-//        output.write(file.getBytes());
-//    }
-
     def reporteGarantiasVigentes () {
-
-        //        println("-->>" + params)
 
         def estadoRev = EstadoGarantia.get(3)
         def estadoDev = EstadoGarantia.get(6)
@@ -4038,7 +3269,6 @@ class Reportes3Controller {
         addCellTabla(tablaGarantia, new Paragraph("Monto", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Emisión", times8bold), prmsCellHead2)
         addCellTabla(tablaGarantia, new Paragraph("Vencimiento", times8bold), prmsCellHead2)
-//        addCellTabla(tablaGarantia, new Paragraph("Cancelación", times8bold), prmsCellHead2)
 
         garantias.each {
             addCellTabla(tablaGarantia, new Paragraph(it?.contrato?.codigo, times8normal), prmsCellHead4)
@@ -4053,7 +3283,6 @@ class Reportes3Controller {
             addCellTabla(tablaGarantia, new Paragraph(g.formatNumber(number: it?.monto, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2), times8normal), prmsCellHead5)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaInicio.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
             addCellTabla(tablaGarantia, new Paragraph(it?.fechaFinalizacion.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
-//            addCellTabla(tablaGarantia, new Paragraph(it?.cancelada?.format("dd-MM-yyyy"), times8normal), prmsCellHead3)
         }
 
         document.add(headers)

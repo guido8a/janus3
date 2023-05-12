@@ -20,8 +20,6 @@ import seguridad.Persona
 
 import java.awt.*
 
-//import java.awt.*
-
 class Reportes2Controller {
 
     def preciosService
@@ -134,14 +132,6 @@ class Reportes2Controller {
 
         table.addCell(cell);
     }
-
-//    def pagina(PdfContentByte cb, Document document, int pag) {
-//        BaseFont bf = BaseFont.createFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-//        cb.beginText();
-//        cb.setFontAndSize(bf, 9);
-//        cb.showTextAligned(PdfContentByte.ALIGN_CENTER, pag.toString(), (document.right() - 15).toFloat(), (document.bottom() - 10).toFloat(), 0);
-//        cb.endText();
-//    }
 
     private static void infoText(PdfContentByte cb, Document document, String info, int tipo) {
         def posx = 0, posy = 0
@@ -379,7 +369,6 @@ class Reportes2Controller {
     def reporteRubroIlustracion2() {
         def obra = Obra.get(params.id)
         def persona = Persona.get(session.usuario.id)
-//        def rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
         def rubros
         if((tama - 1) >= 101){
@@ -387,9 +376,6 @@ class Reportes2Controller {
         }else{
             rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()[0..(tama - 1)]
         }
-
-
-//        println "rubros: ${rubros.codigo}"
 
         def baos = new ByteArrayOutputStream()
         def name = "rubros_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
@@ -421,7 +407,6 @@ class Reportes2Controller {
         preface.add(new Paragraph("ANEXO DE ESPECIFICACIÓN DE RUBROS DE LA OBRA " + obra.nombre, catFont));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
-//        preface2.add(new Paragraph("Generado por el usuario: " + session.usuario + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
         preface2.add(new Paragraph("Generado por el usuario: " + (persona?.titulo ?: '') + ' ' + (persona?.nombre ?: '') + ' ' + (persona?.apellido ?: '') + "   el: " + new Date().format("dd/MM/yyyy hh:mm"), info))
         addEmptyLine(preface2, 1);
         document.add(preface);
@@ -465,15 +450,11 @@ class Reportes2Controller {
                 }
             }
 
-//            def ares = ArchivoEspecificacion.findByItem(rubro)
             def ares = ArchivoEspecificacion.findByCodigo(rubro.codigoEspecificacion)
-//            if (rubro.especificaciones && tipo.contains("e")) {
             if (ares && tipo.contains("e")) {
-//                extEspecificacion = rubro.especificaciones.split("\\.")
                 extEspecificacion = ares.ruta.split("\\.")
                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
 
-//                pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro?.especificaciones
                 pathEspecificacion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + ares?.ruta
 
                 if (extEspecificacion.toLowerCase() == "pdf") {
@@ -526,14 +507,7 @@ class Reportes2Controller {
                 addCellTabla(tablaRubro, new Paragraph("Ilustración", fontTh), prmsTh)
                 if (extIlustracion.toLowerCase() != "pdf") { //es una imgaen png, jpg...
                     def img = Image.getInstance(pathIlustracion);
-
-//                    println "ilust: $pathIlustracion"
-//                    println "w: ${img.getScaledWidth()}, h: ${img.getScaledHeight()}"
-
-//                    if (img.getScaledWidth() > maxImageSize || img.getScaledHeight() > maxImageSize) {
                     img.scaleToFit(maxImageSize, maxImageSize);
-//                    }
-
                     addCellTabla(tablaRubro, img, prmsEs)
                 } else {
                     def str = "- PDF de ${pagesIlustracion} página${pagesIlustracion == 1 ? '' : 's'} adjunto "
@@ -554,8 +528,6 @@ class Reportes2Controller {
             document.add(tablaRubro)
 
             infoText(cb, document, rubrosText, DOC)
-//            infoText(cb, document, pagAct.toString(), PAG)
-//            pagAct++
 
             if (extEspecificacion == "pdf") {
                 pagesEspecificacion.times {
@@ -584,10 +556,7 @@ class Reportes2Controller {
                 }
                 document.newPage();
             }
-//            document.newPage();
         }
-
-
 
         document.close();
         pdfw.close()
@@ -626,7 +595,6 @@ class Reportes2Controller {
                 extIlustracion = rubro.foto.split("\\.")
                 extIlustracion = extIlustracion[extIlustracion.size() - 1]
 
-//                pathIlustracion = servletContext.getRealPath("/") + "rubros" + File.separatorChar + rubro?.foto
                 pathIlustracion = "/var/janus/" + "rubros" + File.separatorChar + rubro.foto
 
                 arrIl += (rubro?.foto + "*")
@@ -634,17 +602,8 @@ class Reportes2Controller {
                 def il
 
                 if (extIlustracion.toLowerCase() in ["pdf"]) {  //solo pdf se tiene que cargar separadamente los png y jpg se insertan sin problema
-//                    try{
-//                        il = new FileInputStream(pathIlustracion)
-                        render "SI*"
-//                        mensaje += "..ok"
-//                    }
-//                    catch(e){
-//                        arrIl += (rubro?.foto+"*")
-//                        mensaje += " **** no existe"
-//                        error = true
-//                        render "NO*" + arrIl[0]
-//                    }
+                    render "SI*"
+
                 }else{
                     render "NO*" + arrIl[0]
                 }
@@ -665,14 +624,14 @@ class Reportes2Controller {
                 if (extEspecificacion.toLowerCase() in ["pdf"]) {
 //                    try {
 //                        fi = new FileInputStream(pathEspecificacion)
-                        render "SI*"
+                    render "SI*"
 //                        mensaje += "..ok"
 //                    }
 //                    catch (e){
 //                        arrIe += (ares?.ruta + "*")
 //                        mensaje += "********* No existe"
 //                        error = true
-                        render "NO*" + arrIe[0]
+                    render "NO*" + arrIe[0]
 //                    }
                 }
             }
@@ -975,7 +934,6 @@ class Reportes2Controller {
 
 
     def imprimirRubrosConsolidado2() {
-//        println "consolidado 2: $params"
         def rubros = []
 
         def parts = params.id.split("_")
@@ -1038,132 +996,6 @@ class Reportes2Controller {
 
         [datos: datos, fecha: fecha, indi: indi, params: params, nombres: corregidos, lista1: params.lista1, lista2: params.lista2, lista3: params.lista3, lista4: params.lista4, lista5: params.lista5,lista6: params.lista6, res: res]
     }
-
-    def consolidadoExcel () {
-
-//        println "consolidado excel ... $params"
-        def parts = params.id.split("_")
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        def parametros = "" + parts[1] + ",'" + fecha.format("yyyy-MM-dd") + "'," + params.lista1 + "," + params.lista2 + "," +
-                params.lista3 + "," + params.lista4 + "," + params.lista5 + "," + params.lista6 + "," + params.dsp0 + "," +
-                params.dsp1 + "," + params.dsv0 + "," + params.dsv1 + "," + params.dsv2 + "," + params.chof + "," + params.volq +
-                "," + params.indi
-        def res = preciosService.nv_rubros(parametros)
-
-
-        def indi = params.indi
-
-        try {
-            indi = indi.toDouble()
-        } catch (e) {
-            println "error parse " + e
-            indi = 21.5
-        }
-
-        //excel
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('Consolidado', 0)
-
-        WritableFont times16font = new WritableFont(WritableFont.ARIAL, 11, WritableFont.BOLD, false);
-        WritableFont times16 = new WritableFont(WritableFont.ARIAL, 11, WritableFont.NO_BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        WritableCellFormat times16No = new WritableCellFormat(times16);
-        sheet.setColumnView(0, 30)
-        sheet.setColumnView(1, 30)
-        sheet.setColumnView(2, 70)
-        sheet.setColumnView(3, 15)
-        sheet.setColumnView(4, 20)
-        sheet.setColumnView(5, 20)
-        sheet.setColumnView(6, 20)
-
-        def label
-        def number
-        def fila = 18;
-        def ultimaFila
-
-
-        label = new jxl.write.Label(1, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 3, "GESTIÓN DE PRESUPUESTOS", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 4, "ANÁLISIS DE PRECIOS UNITARIOS", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(0, 6, "Fecha Act. P.U.: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 6, fecha.format("dd-MM-yyyy"), times16No); sheet.addCell(label);
-        label = new jxl.write.Label(2, 6, "% costos indirectos: ", times16format); sheet.addCell(label);
-        number = new jxl.write.Number(3, 6, indi.toDouble().round(2) ?: 0); sheet.addCell(number);
-        label = new jxl.write.Label(1, 7, "LISTAS DE PRECIOS Y DISTANCIAS", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(0, 8, "Mano de Obra y Equipos: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 8,  Lugar.get(params.lista6).descripcion, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(0, 9, "Cantón: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 9,  Lugar.get(params.lista1).descripcion, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(2, 9, "Distancia: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 9,  params.dsp0, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(0, 10, "Especial: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 10, Lugar.get(params.lista2).descripcion, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(2, 10, "Distancia: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 10, params.dsp1, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(0, 11, "Petreos Hormigones: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 11,  Lugar.get(params.lista3).descripcion, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(2, 11, "Distancia: ",times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 11,  params.dsv0, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(0, 12, "Mejoramiento: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 12, Lugar.get(params.lista4).descripcion, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(2, 12, "Distancia: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 12, params.dsv1, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(0, 13, "Carpeta Asfáltica: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 13,  Lugar.get(params.lista5).descripcion, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(2, 13, "Distancia: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 13,  params.dsv2, times16No); sheet.addCell(label);
-        label = new jxl.write.Label(0, 14, "Chofer: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 14,  Item.get(params.chof).nombre + " (\$ " + params.prch.toDouble().round(2) + ")", times16No); sheet.addCell(label);
-        label = new jxl.write.Label(2, 14, "Volquete: ", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 14,  Item.get(params.volq).nombre + " (\$ " + params.prvl.toDouble().round(2) + ")", times16No); sheet.addCell(label);
-
-        label = new jxl.write.Label(0, 17, "CODIGO", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 17, "CODIGO ESP", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(2, 17, "NOMBRE", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 17, "UNIDAD", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(4, 17, "PRECIO", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(5, 17, "ESPECIFICACIONES", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(6, 17, "PLANO DE DETALLE", times16format); sheet.addCell(label);
-
-        res.each{ k->
-
-            label = new jxl.write.Label(0, fila, k?.rbrocdgo); sheet.addCell(label);
-            label = new jxl.write.Label(1, fila, janus.Item.get(k?.item__id)?.codigoEspecificacion ?: ''); sheet.addCell(label);
-            label = new jxl.write.Label(2, fila, k?.rbronmbr); sheet.addCell(label);
-            label = new jxl.write.Label(3, fila, k?.unddcdgo); sheet.addCell(label);
-            number = new jxl.write.Number(4, fila, k?.rbropcun ?: 0); sheet.addCell(number);
-            label = new jxl.write.Label(5, fila, k?.rbroespc); sheet.addCell(label);
-            label = new jxl.write.Label(6, fila, k?.rbrofoto); sheet.addCell(label);
-
-            fila++
-
-            ultimaFila = fila
-
-        }
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "consolidadoExcel.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-
-    }
-
-
-
-
-
 
     def tablasPlanilla_bck() {
         def planilla = Planilla.get(params.id)
@@ -1477,18 +1309,27 @@ class Reportes2Controller {
         }
         def lugar = Lugar.get(params.lugar.toLong())
         def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-//        println("fecha:" + fecha)
 
         def items = ""
+
+        def estado
+
+        if(params.estado == 'true'){
+            estado = 'A'
+        }else{
+            estado = 'B'
+        }
+
+
         def lista = Item.withCriteria {
             eq("tipoItem", TipoItem.findByCodigo("I"))
-            eq("estado", "A")
+            eq("estado", estado)
             departamento {
                 subgrupo {
                     eq("grupo", grupo)
                 }
             }
-            eq("estado", "A")
+//            eq("estado", "A")
         }
         lista.id.each {
             if (items != "") {
@@ -1497,7 +1338,8 @@ class Reportes2Controller {
             items += it
         }
         def res = []
-
+        def numeros = []
+        def rubros = []
 
         def tmp
         if(items == [] || items == ''){
@@ -1516,6 +1358,15 @@ class Reportes2Controller {
 
             res.each {
                 nombres += it?.item?.nombre
+
+                def sql2 = "select count(*) from vlobitem where item__id = ${it?.item?.id}"
+                def cn = dbConnectionService.getConnection()
+                numeros += cn.rows(sql2.toString())
+
+                def sql3 = "select count(*) from item it, item rb, rbro where rbro.rbrocdgo = rb.item__id and rbro.item__id = it.item__id and it.item__id = ${it?.item?.id}"
+                def cn2 = dbConnectionService.getConnection()
+                rubros += cn2.rows(sql3.toString())
+
             }
 
             nombres.each {
@@ -1537,391 +1388,9 @@ class Reportes2Controller {
 
         }
 
-//        println("res" + res + "grupo" + grupo)
-
-//        return [lugar: lugar, cols: params.col, precios: res, grupo: grupo]
-
-
-        renderPdf(template:'/reportes2/reportePrecios', model: [lugar: lugar, cols: params.cols, precios: res, grupo: grupo], filename: 'reportePrecios.pdf')
-
+        renderPdf(template:'/reportes2/reportePrecios', model: [lugar: lugar, cols: params.col, precios: res, grupo: grupo, numeros: numeros, rubros: rubros, estado: estado], filename: 'reportePrecios.pdf')
     }
 
-    def reporteExcelComposicionTotales() {
-
-//        println("!!!" + params)
-
-        if (!params.tipo) {
-            params.tipo = "-1"
-        }
-        if (!params.sp) {
-            params.sp = '-1'
-        }
-        if (params.tipo == "-1") {
-            params.tipo = "1,2,3"
-        }
-
-        def wsp = ""
-
-        if (params.sp.toString() != "-1") {
-
-            wsp = "      AND v.sbpr__id = ${params.sp} \n"
-        }
-
-        def obra = Obra.get(params.id)
-//        params.tipo = "1,2,3"
-
-        def sql = "SELECT\n" +
-                "  i.itemcdgo              codigo,\n" +
-                "  i.itemnmbr              item,\n" +
-                "  u.unddcdgo              unidad,\n" +
-                "  sum(v.voitcntd)         cantidad,\n" +
-                "  v.voitpcun              punitario,\n" +
-                "  v.voittrnp              transporte,\n" +
-                "  v.voitpcun + v.voittrnp costo,\n" +
-                "  d.dprtdscr              departamento,\n" +
-                "  s.sbgrdscr              subgrupo,\n" +
-                "  g.grpodscr              grupo,\n" +
-                "  g.grpo__id              grid\n" +
-                "FROM vlobitem v\n" +
-                "  LEFT JOIN item i ON v.item__id = i.item__id\n" +
-                "  LEFT JOIN undd u ON i.undd__id = u.undd__id\n" +
-                "  LEFT JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-                "  LEFT JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-                "  LEFT JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo})\n" +
-                "WHERE v.obra__id = ${params.id} \n" +
-                "GROUP BY i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, d.dprtdscr, s.sbgrdscr, g.grpodscr,\n" +
-                "  g.grpo__id\n" +
-                "ORDER BY grid ASC, i.itemnmbr"
-
-/*
-        def sql = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, \n" +
-                "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, \n" +
-                "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid,\n" +
-                "FROM vlobitem v INNER JOIN item i ON v.item__id = i.item__id\n" +
-                "INNER JOIN undd u ON i.undd__id = u.undd__id\n" +
-                "INNER JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-                "INNER JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-                "INNER JOIN sbpr b ON v.sbpr__id = b.sbpr__id\n" +
-                "INNER JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo}) \n" +
-                "WHERE v.obra__id = ${params.id} and v.voitcntd >0 \n" +
-                "group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, \n" +
-                "g.grpo__id, g.grpodscr " +
-                "ORDER BY g.grpo__id ASC, i.itemcdgo"
-*/
-
-//        println sql
-
-        def cn = dbConnectionService.getConnection()
-
-        def res = cn.rows(sql.toString())
-
-//        println("--->>" + res)
-        def errores = ""
-        if (res.size() != 0) {
-
-            //excel
-            WorkbookSettings workbookSettings = new WorkbookSettings()
-            workbookSettings.locale = Locale.default
-
-            def file = File.createTempFile('myExcelDocument', '.xls')
-            file.deleteOnExit()
-            WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-            WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-            WritableCellFormat formatXls = new WritableCellFormat(font)
-
-            def row = 0
-            WritableSheet sheet = workbook.createSheet('Composicion', 0)
-
-            WritableFont times16font = new WritableFont(WritableFont.ARIAL, 11, WritableFont.BOLD, false);
-            WritableCellFormat times16format = new WritableCellFormat(times16font);
-            sheet.setColumnView(0, 20)
-            sheet.setColumnView(1, 60)
-            sheet.setColumnView(2, 10)
-            sheet.setColumnView(3, 20)
-            sheet.setColumnView(4, 20)
-            sheet.setColumnView(5, 20)
-            sheet.setColumnView(6, 20)
-            sheet.setColumnView(7, 20)
-            sheet.setColumnView(8, 25)
-
-            def label
-            def number
-            def fila = 18;
-            def totalE = 0;
-            def totalM = 0;
-            def totalMO = 0;
-            def ultimaFila
-
-            label = new jxl.write.Label(1, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 4, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 6, obra?.departamento?.direccion?.nombre, times16format);
-            sheet.addCell(label);
-            label = new jxl.write.Label(1, 8, "CÓDIGO: " + obra?.codigo, times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 10, "DOC. REFERENCIA: " + obra?.oficioIngreso, times16format);
-            sheet.addCell(label);
-            label = new jxl.write.Label(1, 12, "FECHA: " + printFecha(obra?.fechaCreacionObra), times16format);
-            sheet.addCell(label);
-            label = new jxl.write.Label(1, 14, "FECHA ACT.PRECIOS: " + printFecha(obra?.fechaPreciosRubros), times16format);
-            sheet.addCell(label);
-
-            label = new jxl.write.Label(0, 16, "CODIGO", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(1, 16, "ITEM", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(2, 16, "UNIDAD", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(3, 16, "CANTIDAD", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(4, 16, "C. REDONDEADA", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(5, 16, "P.UNITARIO", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(6, 16, "TRANSPORTE", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(7, 16, "COSTO", times16format); sheet.addCell(label);
-            label = new jxl.write.Label(8, 16, "TIPO", times16format); sheet.addCell(label);
-
-            res.each {
-                if (it?.item == null) {
-                    it?.item = " "
-                }
-                if (it?.cantidad == null) {
-                    it?.cantidad = 0
-                }
-                if (it?.punitario == null) {
-                    it?.punitario = 0
-                }
-                if (it?.transporte == null) {
-                    it?.transporte = 0
-                }
-                if (it?.costo == null) {
-                    it?.costo = 0
-                }
-
-                label = new jxl.write.Label(0, fila, it?.codigo.toString()); sheet.addCell(label);
-                label = new jxl.write.Label(1, fila, it?.item.toString()); sheet.addCell(label);
-                label = new jxl.write.Label(2, fila, it?.unidad ? it?.unidad.toString() : ""); sheet.addCell(label);
-//                number = new jxl.write.Number(3, fila, it?.cantidad.toDouble().round(3) ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(3, fila, it?.cantidad.toDouble() ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(4, fila,0); sheet.addCell(number);
-                number = new jxl.write.Number(5, fila, it?.punitario.toDouble().round(6) ?: 0); sheet.addCell(number);
-//                number = new jxl.write.Number(6, fila, it?.transporte.toDouble().round(2) ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(6, fila, it?.transporte.toDouble() ?: 0); sheet.addCell(number);
-//                number = new jxl.write.Number(7, fila, it?.costo.toDouble().round(6) ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(7, fila, it?.costo.toDouble() ?: 0); sheet.addCell(number);
-                label = new jxl.write.Label(8, fila, it?.grupo ? it?.grupo.toString() : ""); sheet.addCell(label);
-
-                fila++
-
-                ultimaFila = fila
-            }
-
-//        println ">>>>>>>>>> " + ultimaFila
-
-            workbook.write();
-            workbook.close();
-            def output = response.getOutputStream()
-            def header = "attachment; filename=" + "ComposicionExcelTotales.xls";
-            response.setContentType("application/octet-stream")
-            response.setHeader("Content-Disposition", header);
-            output.write(file.getBytes());
-        } else {
-            flash.message = "Ha ocurrido un error!"
-            redirect(action: "errores")
-        }
-    }
-
-    def reporteExcelComposicion() {
-
-//        println("params reporte excel comp " + params)
-
-        if (!params.tipo) {
-            params.tipo = "-1"
-        }
-
-        if (params.tipo == "-1") {
-            params.tipo = "1,2,3"
-        }
-
-        if (!params.sp) {
-            params.sp = '-1'
-        }
-        def wsp = ""
-
-        if (params.sp.toString() != "-1") {
-            wsp = "      AND v.sbpr__id = ${params.sp} \n"
-        }
-
-        def obra = Obra.get(params.id)
-
-        def sql = "SELECT\n" +
-                "  v.voit__id                            id,\n" +
-                "  i.itemcdgo                            codigo,\n" +
-                "  i.itemnmbr                            item,\n" +
-                "  u.unddcdgo                            unidad,\n" +
-                "  v.voitcntd                            cantidad,\n" +
-                "  v.voitpcun                            punitario,\n" +
-                "  v.voittrnp                            transporte,\n" +
-                "  v.voitpcun + v.voittrnp               costo,\n" +
-                "  (v.voitpcun + v.voittrnp)*v.voitcntd  total,\n" +
-                "  d.dprtdscr                            departamento,\n" +
-                "  s.sbgrdscr                            subgrupo,\n" +
-                "  g.grpodscr                            grupo,\n" +
-                "  g.grpo__id                            grid,\n" +
-                "  v.sbpr__id                            sp,\n" +
-                "  b.sbprdscr                            subpresupuesto\n" +
-                "FROM vlobitem v\n" +
-                "LEFT JOIN item i ON v.item__id = i.item__id\n" +
-                "LEFT JOIN undd u ON i.undd__id = u.undd__id\n" +
-                "LEFT JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
-                "LEFT JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
-                "LEFT JOIN sbpr b ON v.sbpr__id = b.sbpr__id\n" +
-                "LEFT JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo})\n" +
-                "WHERE v.obra__id = ${params.id} \n" + wsp +
-                "ORDER BY v.sbpr__id, grid ASC, i.itemnmbr"
-
-        def cn = dbConnectionService.getConnection()
-        def res = cn.rows(sql.toString())
-
-        def errores = ""
-
-        //excel
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('Composicion', 0)
-
-        WritableFont times16font = new WritableFont(WritableFont.ARIAL, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 20)
-        sheet.setColumnView(1, 60)
-        sheet.setColumnView(2, 10)
-        sheet.setColumnView(3, 20)
-        sheet.setColumnView(4, 20)
-        sheet.setColumnView(5, 20)
-        sheet.setColumnView(6, 20)
-        sheet.setColumnView(7, 20)
-        sheet.setColumnView(8, 20)
-        sheet.setColumnView(9, 25)
-        sheet.setColumnView(10, 20)
-
-        def label
-        def number
-        def fila = 18;
-        def totalE = 0;
-        def totalM = 0;
-        def totalMO = 0;
-        def totalEquipo = 0;
-        def totalManoObra = 0;
-        def totalMaterial = 0;
-        def totalDirecto = 0;
-        def ultimaFila
-
-        label = new jxl.write.Label(1, 2, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 4, "COMPOSICIÓN: " + obra?.nombre, times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 8, "CÓDIGO: " + obra?.codigo, times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 12, "FECHA: " + printFecha(obra?.fechaCreacionObra), times16format);
-        sheet.addCell(label);
-        label = new jxl.write.Label(1, 14, "FECHA ACT.PRECIOS: " + printFecha(obra?.fechaPreciosRubros), times16format);
-        sheet.addCell(label);
-
-        label = new jxl.write.Label(0, 16, "CODIGO", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(1, 16, "ITEM", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(2, 16, "UNIDAD", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(3, 16, "CANTIDAD", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(4, 16, "P.UNITARIO", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(5, 16, "TRANSPORTE", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(6, 16, "COSTO", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(7, 16, "TOTAL", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(8, 16, "TIPO", times16format); sheet.addCell(label);
-        label = new jxl.write.Label(9, 16, "SUBPRESUPUESTO", times16format); sheet.addCell(label);
-
-        if (res.size() > 0) {
-
-            res.each {
-                if (it?.item == null) {
-                    it?.item = " "
-                }
-                if (it?.cantidad == null) {
-                    it?.cantidad = 0
-                }
-                if (it?.punitario == null) {
-                    it?.punitario = 0
-                }
-                if (it?.transporte == null) {
-                    it?.transporte = 0
-                }
-                if (it?.costo == null) {
-                    it?.costo = 0
-                }
-                if (it?.total == null) {
-                    it?.total = 0
-                }
-
-                label = new jxl.write.Label(0, fila, it?.codigo?.toString()); sheet.addCell(label);
-                label = new jxl.write.Label(1, fila, it?.item?.toString()); sheet.addCell(label);
-                label = new jxl.write.Label(2, fila, it?.unidad ? it?.unidad.toString() : ""); sheet.addCell(label);
-                number = new jxl.write.Number(3, fila, it?.cantidad.toDouble() ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(4, fila, it?.punitario.toDouble().round(6) ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(5, fila, it?.transporte.toDouble() ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(6, fila, it?.costo.toDouble() ?: 0); sheet.addCell(number);
-                number = new jxl.write.Number(7, fila, it?.total.toDouble() ?: 0); sheet.addCell(number);
-                label = new jxl.write.Label(8,fila, it?.grupo ? it?.grupo.toString() : ""); sheet.addCell(label);
-                label = new jxl.write.Label(9, fila, it?.subpresupuesto ? it?.subpresupuesto.toString() : "");
-                sheet.addCell(label);
-
-                fila++
-
-                if (it?.grid == 1) {
-                    totalMaterial = (totalM += (it?.total ?: 0))
-                }
-                if (it?.grid == 2) {
-                    totalManoObra = (totalMO += (it?.total ?: 0))
-                }
-                if (it?.grid == 3) {
-                    totalEquipo = (totalE += (it?.total ?: 0))
-                }
-                totalDirecto = totalEquipo + totalManoObra + totalMaterial;
-                ultimaFila = fila
-            }
-
-
-            label = new jxl.write.Label(6, ultimaFila, "Total Materiales: ", times16format); sheet.addCell(label);
-            number = new jxl.write.Number(7, ultimaFila, totalMaterial.toDouble()?.round(2) ?: 0);
-            sheet.addCell(number);
-
-            label = new jxl.write.Label(6, ultimaFila + 1, "Total Mano de Obra: ", times16format);
-            sheet.addCell(label);
-            number = new jxl.write.Number(7, ultimaFila + 1, totalManoObra.toDouble()?.round(2) ?: 0);
-            sheet.addCell(number);
-
-            label = new jxl.write.Label(6, ultimaFila + 2, "Total Equipos: ", times16format); sheet.addCell(label);
-            number = new jxl.write.Number(7, ultimaFila + 2, totalEquipo.toDouble()?.round(2) ?: 0);
-            sheet.addCell(number);
-
-            label = new jxl.write.Label(6, ultimaFila + 3, "TOTAL DIRECTO: ", times16format); sheet.addCell(label);
-            number = new jxl.write.Number(7, ultimaFila + 3, totalDirecto.toDouble()?.round(2) ?: 0);
-            sheet.addCell(number);
-
-            label = new jxl.write.Label(6, ultimaFila + 4, "TOTAL Indirecto: ", times16format); sheet.addCell(label);
-            number = new jxl.write.Number(7, ultimaFila + 4, (obra?.valor ? obra?.valor - totalDirecto : 0));
-            sheet.addCell(number);
-
-            label = new jxl.write.Label(6, ultimaFila + 5, "TOTAL: ", times16format); sheet.addCell(label);
-            number = new jxl.write.Number(7, ultimaFila + 5, obra?.valor?.round(2) ?: 0);
-            sheet.addCell(number);
-        }
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "ComposicionExcel.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
 
     def reporteExcelComposicionPartes() {
 
@@ -1947,16 +1416,16 @@ class Reportes2Controller {
         def obra = Obra.get(params.id)
 
         def principal = "SELECT i.itemcdgo codigo, i.itemnmbr item, u.unddcdgo unidad, sum(v.voitcntd) cantidad, " +
-                  "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, " +
-                  "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid " +
-                  "FROM vlobitem v, item i, undd u, dprt d, sbgr s, grpo g " +
-                  "WHERE v.obra__id = ${params.id} and v.voitcntd > 0 and " +
-                  "v.item__id = i.item__id and i.undd__id = u.undd__id and i.dprt__id = d.dprt__id and " +
-                  "d.sbgr__id = s.sbgr__id and s.grpo__id = g.grpo__id AND g.grpo__id IN "
+                "v.voitpcun punitario, v.voittrnp transporte, v.voitpcun + v.voittrnp  costo, " +
+                "sum((v.voitpcun + v.voittrnp) * v.voitcntd)  total, g.grpodscr grupo, g.grpo__id grid " +
+                "FROM vlobitem v, item i, undd u, dprt d, sbgr s, grpo g " +
+                "WHERE v.obra__id = ${params.id} and v.voitcntd > 0 and " +
+                "v.item__id = i.item__id and i.undd__id = u.undd__id and i.dprt__id = d.dprt__id and " +
+                "d.sbgr__id = s.sbgr__id and s.grpo__id = g.grpo__id AND g.grpo__id IN "
 
         def extra = " (1,2,3) group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, " +
-                  "g.grpo__id, g.grpodscr " +
-                  "ORDER BY g.grpo__id ASC, i.itemcdgo"
+                "g.grpo__id, g.grpodscr " +
+                "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
         def extra1 = " (1) group by i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, v.voitpcun, " +
                 "g.grpo__id, g.grpodscr " +
@@ -2145,115 +1614,8 @@ class Reportes2Controller {
 
     }
 
-    def reportePreciosExcel() {
-//        println("params " + params)
-        def orden = "itemnmbr"
-        if (params.orden == "n") {
-            orden = "itemcdgo"
-        }
-        def grupo = Grupo.get(params.grupo.toLong())
-        def lugar = Lugar.get(params.lugar.toLong())
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        def items = ""
-        def lista = Item.withCriteria {
-            eq("tipoItem", TipoItem.findByCodigo("I"))
-            eq("estado", "A")
-            departamento {
-                subgrupo {
-                    eq("grupo", grupo)
-                }
-            }
-        }
-        lista.id.each {
-            if (items != "") {
-                items += ","
-            }
-            items += it
-        }
-        def res = []
-//        println items
-        def tmp = preciosService.getPrecioRubroItemOrder(fecha, lugar, items, orden, "asc")
-        tmp.each {
-            res.add(PrecioRubrosItems.get(it))
-        }
-
-//        println("excel" + res)
-        //excel
-
-        WorkbookSettings workbookSettings = new WorkbookSettings()
-        workbookSettings.locale = Locale.default
-
-        def file = File.createTempFile('myExcelDocument', '.xls')
-        file.deleteOnExit()
-        WritableWorkbook workbook = Workbook.createWorkbook(file, workbookSettings)
-
-        WritableFont font = new WritableFont(WritableFont.ARIAL, 12)
-        WritableCellFormat formatXls = new WritableCellFormat(font)
-
-        def row = 0
-        WritableSheet sheet = workbook.createSheet('Presupuesto', 0)
-
-        WritableFont times16font = new WritableFont(WritableFont.TIMES, 11, WritableFont.BOLD, false);
-        WritableCellFormat times16format = new WritableCellFormat(times16font);
-        sheet.setColumnView(0, 20)
-        sheet.setColumnView(1, 60)
-        sheet.setColumnView(2, 15)
-        sheet.setColumnView(3, 20)
-        sheet.setColumnView(4, 20)
-        sheet.setColumnView(5, 20)
-        sheet.setColumnView(6, 25)
-
-
-        def label
-        def number
-        def fila = 8;
-
-        label = new jxl.write.Label(2, 1, (Auxiliar.get(1)?.titulo ?: '').toUpperCase(), times16format);
-        sheet.addCell(label);
-        label = new jxl.write.Label(2, 2, "REPORTE COSTOS DE: ${grupo.descripcion.toUpperCase()}", times16format);
-        sheet.addCell(label);
-
-        label = new jxl.write.Label(1, 4, "LISTA DE PRECIOS: " + lugar?.descripcion, times16format);
-        sheet.addCell(label);
-        label = new jxl.write.Label(4, 4, "FECHA DE CONSULTA: " + new Date().format("dd-MM-yyyy"), times16format);
-        sheet.addCell(label);
-
-        def col = 0
-        label = new jxl.write.Label(col, 6, "CODIGO", times16format); sheet.addCell(label); col++;
-        label = new jxl.write.Label(col, 6, grupo.descripcion.toUpperCase(), times16format); sheet.addCell(label);
-        col++;
-        label = new jxl.write.Label(col, 6, "UNIDAD", times16format); sheet.addCell(label); col++;
-        if (grupo.id == 1) {
-            label = new jxl.write.Label(col, 6, "PESO/VOL", times16format); sheet.addCell(label); col++;
-        }
-        label = new jxl.write.Label(col, 6, "COSTO", times16format); sheet.addCell(label); col++;
-        label = new jxl.write.Label(col, 6, "FECHA ACT.", times16format); sheet.addCell(label); col++;
-
-        res.each {
-            col = 0
-            label = new jxl.write.Label(col, fila, it?.item?.codigo.toString()); sheet.addCell(label); col++;
-            label = new jxl.write.Label(col, fila, it?.item?.nombre.toString()); sheet.addCell(label); col++;
-            label = new jxl.write.Label(col, fila, it?.item?.unidad?.codigo.toString()); sheet.addCell(label); col++;
-            if (grupo.id == 1) {
-                number = new jxl.write.Number(col, fila, it?.item?.peso); sheet.addCell(number); col++;
-            }
-            number = new jxl.write.Number(col, fila, it?.precioUnitario); sheet.addCell(number); col++;
-            label = new jxl.write.Label(col, fila, it?.fecha.format("dd-MM-yyyy")); sheet.addCell(label); col++;
-
-            fila++
-        }
-
-        workbook.write();
-        workbook.close();
-        def output = response.getOutputStream()
-        def header = "attachment; filename=" + "MantenimientoPreciosExcel.xls";
-        response.setContentType("application/octet-stream")
-        response.setHeader("Content-Disposition", header);
-        output.write(file.getBytes());
-    }
-
     def reporteCronogramaPdf() {
-//        println "reporteCronogramaPdf params: $params"
+
         def tipo = params.tipo
         def obra = null, contrato = null, lbl = ""
         switch (tipo) {
@@ -3434,94 +2796,10 @@ class Reportes2Controller {
                 2, maxFractionDigits: 2, format: "##,##0"), times10bold), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
-
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Cargos Profesionales", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceProfesionales, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Materiales de consumo y mantenimiento", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosMantenimiento, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Seguridad", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceSeguridad, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph("_______"), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Gastos Administración Central", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceGastosGenerales, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10bold), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Cargos de Campo", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCampo, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Financiamiento", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosCostosFinancieros, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Campamento", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCampamento, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph("_______"), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Gasto Administración de Campo", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceGastoObra, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10bold), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Imprevistos", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.impreso, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Utilidad", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceUtilidad, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph("_______"), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-//
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Costo total de indirectos", times10bold), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceGastosGenerales + obra?.indiceGastoObra + obra?.impreso + obra?.indiceUtilidad, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10bold), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
 
         document.add(tablaDesgloseBody)
         document.close();
@@ -3533,53 +2811,6 @@ class Reportes2Controller {
         response.getOutputStream().write(b1)
 
     }
-
-//    def addCellTabla(table, paragraph, params) {
-//        PdfPCell cell = new PdfPCell(paragraph);
-////        println "params "+params
-//        cell.setBorderColor(Color.BLACK);
-//        if (params.border) {
-//            if (!params.bordeBot)
-//                if (!params.bordeTop)
-//                    cell.setBorderColor(params.border);
-//        }
-//        if (params.bg) {
-//            cell.setBackgroundColor(params.bg);
-//        }
-//        if (params.colspan) {
-//            cell.setColspan(params.colspan);
-//        }
-//        if (params.align) {
-//            cell.setHorizontalAlignment(params.align);
-//        }
-//        if (params.valign) {
-//            cell.setVerticalAlignment(params.valign);
-//        }
-//        if (params.w) {
-//            cell.setBorderWidth(params.w);
-//        }
-//        if (params.bordeTop) {
-//            cell.setBorderWidthTop(1)
-//            cell.setBorderWidthLeft(0)
-//            cell.setBorderWidthRight(0)
-//            cell.setBorderWidthBottom(0)
-//            cell.setPaddingTop(7);
-//
-//        }
-//        if (params.bordeBot) {
-//            cell.setBorderWidthBottom(1)
-//            cell.setBorderWidthLeft(0)
-//            cell.setBorderWidthRight(0)
-//            cell.setPaddingBottom(7)
-//
-//            if (!params.bordeTop) {
-//                cell.setBorderWidthTop(0)
-//            }
-//        }
-//        table.addCell(cell);
-//    }
-
-
 
     def reporteCronogramaEjec() {
 //        println "reporteCronogramaEjec params: $params"
@@ -3863,12 +3094,7 @@ class Reportes2Controller {
         def vocr = VolumenContrato.findAllByContrato(contrato, [sort: 'volumenOrden'])
         def rubros = []
 
-//        vlob.each {
-//            rubros.add([id: it.vlob__id, cdgo: it.rbrocdgo, rbro: it.rbronmbr, undd: it.unddcdgo, cntd: it.vlobcntd, pcun: it.pcun, totl: it.totl])
-//        }
-
         def baos = new ByteArrayOutputStream()
-
         def name = "cronogramaEjecucion_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
 
         Font catFont = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
@@ -3978,16 +3204,12 @@ class Reportes2Controller {
         def sum = 0.0
         def borderWidth = 2
 
-//        rubros.each { rb ->
         vocr.each { rb ->
             def totalDolRow = 0, totalPrcRow = 0, totalCanRow = 0
-//            sum += rb.totl //total por rubro
             sum += rb.volumenSubtotal //total por rubro
             sum += 0
 
-//            addCellTabla(tabla, new Paragraph(rb.cdgo, fontTd), celdaDatoIzq)
             addCellTabla(tabla, new Paragraph(rb.item.codigo, fontTd), celdaDatoIzq)
-//            addCellTabla(tabla, new Paragraph(rb.rbro, fontTd), celdaDatoIzq)
             addCellTabla(tabla, new Paragraph(rb.item.nombre, fontTd), celdaDatoIzq)
             addCellTabla(tabla, new Paragraph(rb.item.unidad.codigo, fontTd), celdaDatoCen)
             addCellTabla(tabla, new Paragraph(numero(rb.volumenCantidad, 2), fontTd), celdaDatoDer)
@@ -3997,7 +3219,6 @@ class Reportes2Controller {
             def i = 0
             def crej
             prej.each { pr ->
-//                crej = CronogramaEjecucion.findByVolumenObraAndPeriodo(VolumenesObra.get(rb.id), pr)
                 crej = CrngEjecucionObra.findByVolumenObraAndPeriodo(VolumenContrato.get(rb.id), pr)
                 totalDolRow += crej?.precio?:0
                 if (!totalMes[i]) {
@@ -4041,7 +3262,6 @@ class Reportes2Controller {
         addCellTabla(tabla, new Paragraph(" ", fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tabla, new Paragraph("T", fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE])
         def acu = 0
-//        println "---- totalMes: $totalMes"
         prej.size().times { i ->
             acu += totalMes[i]
             addCellTabla(tabla, new Paragraph(numero(acu, 2), fontTh), [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
@@ -4135,6 +3355,5 @@ class Reportes2Controller {
         response.getOutputStream().write(b)
 
     }
-
 
 }

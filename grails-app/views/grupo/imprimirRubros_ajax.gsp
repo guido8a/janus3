@@ -337,7 +337,7 @@
             "&lista4=" + lista4 + "&lista5=" + lista5 + "&lista6=" + lista6 + "&principal=" + principal
             + "&chof=" + $("#cmb_chof2").val() +
             "&volq=" + $("#cmb_vol2").val() + "&indi=" + $("#costo_indi2").val() + "&trans=" + trans;
-        location.href = "${g.createLink(controller: 'reportes2',action: 'consolidadoExcel')}?" + datos;
+        location.href = "${g.createLink(controller: 'reportesExcel2',action: 'consolidadoExcel')}?" + datos;
         return false;
     });
 

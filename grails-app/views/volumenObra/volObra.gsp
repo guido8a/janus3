@@ -296,20 +296,20 @@
         });
 
         cargarTabla();
-        $("#vol_id").val("")
+        $("#vol_id").val("");
         $("#calcular").click(function () {
             if ($(this).hasClass("active")) {
-                $(this).removeClass("active")
-                $(".col_delete").show()
-                $(".col_precio").hide()
-                $(".col_total").hide()
+                $(this).removeClass("active");
+                $(".col_delete").show();
+                $(".col_precio").hide();
+                $(".col_total").hide();
                 $("#divTotal").html("")
             } else {
-                $(this).addClass("active")
-                $(".col_delete").hide()
-                $(".col_precio").show()
-                $(".col_total").show()
-                var total = 0
+                $(this).addClass("active");
+                $(".col_delete").hide();
+                $(".col_precio").show();
+                $(".col_total").show();
+                var total = 0;
 
                 $(".total").each(function () {
                     total += parseFloat(str_replace(",", "", $(this).html()))

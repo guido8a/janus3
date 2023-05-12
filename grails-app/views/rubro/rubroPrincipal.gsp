@@ -47,7 +47,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-file"></i>
         Nuevo
     </a>
-    %{--    <g:if test="${rubro?.aprobado != 'R'}">--}%
     <a href="#" class="btn btn-ajax btn-new btn-primary" id="guardar">
         <i class="fa fa-save"></i>
         Guardar
@@ -56,7 +55,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         <i class="fa fa-trash"></i>
         Borrar
     </a>
-    %{--    </g:if>--}%
     <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-ajax btn-new">
         <i class="fa fa-times"></i>
         Cancelar
@@ -135,16 +133,12 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                 <div class="col-md-2" style="margin-left: -10px">
                     Fecha Creación
-                    %{--                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fecha}" disabled="true" id="fechaCreacion"/>--}%
                     <input aria-label="" name="rubro.fechaReg" id='fecha_registro' type='text' class="required input-small" value="${rubro?.fecha ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
                 </div>
 
                 <div class="col-md-1"  style="width: 170px; margin-left: -60px">
                     Fecha Modificación
-                    %{--                    <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fechaModificacion}"--}%
-                    %{--                                    format="dd-MM-yyyy hh:mm" disabled="true" id="fchaMod"/>--}%
-                    <input aria-label="" name="rubro.fechaMod" id='fecha_modificacion' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
-
+                      <input aria-label="" name="rubro.fechaMod" id='fecha_modificacion' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
                 </div>
 
             </div>
@@ -157,27 +151,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 </div>
 
                 <div id="seleccionarGrupo" class="col-md-2" style="width: 310px; margin-left: 10px">
-                    %{--                    Grupo--}%
-                    %{--                    <g:if test="${rubro?.departamento?.subgrupo?.id}">--}%
 
-                    %{--                        <g:select id="selGrupo" name="rubro.suggrupoItem.id" from="${janus.SubgrupoItems.findAllByGrupo(rubro?.departamento?.subgrupo?.grupo)}"--}%
-                    %{--                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.subgrupo?.id}" noSelection="['': '--Seleccione--']"/>--}%
-
-                    %{--                    </g:if>--}%
-                    %{--                    <g:else>--}%
-                    %{--                        <select id="selGrupo" class="col-md-12"></select>--}%
-                    %{--                    </g:else>--}%
                 </div>
 
                 <div class="col-md-3" id="seleccionarSubgrupo" style="width: 200px; margin-left: 10px">
-                    %{--                    Sub grupo--}%
-                    %{--                    <g:if test="${rubro?.departamento?.id}">--}%
-                    %{--                        <g:select name="rubro.departamento.id" id="selSubgrupo" from="${janus.DepartamentoItem.findAllBySubgrupo(rubro?.departamento?.subgrupo)}"--}%
-                    %{--                                  class="col-md-12" optionKey="id" optionValue="descripcion" value="${rubro?.departamento?.id}"/>--}%
-                    %{--                    </g:if>--}%
-                    %{--                    <g:else>--}%
-                    %{--                        <select id="selSubgrupo" class="col-md-12"></select>--}%
-                    %{--                    </g:else>--}%
+
                 </div>
 
                 <div class="col-md-1" style="width: 100px; margin-left: 10px">
@@ -187,18 +165,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                 <div class="col-md-2" style="color: #01a; width: 250px; margin-left: 10px" >
                     <label>Responsable:</label>  <br>
-                    %{--                    <g:if test="${rubro?.aprobado != 'R'}">--}%
                     <input type="hidden" name="rubro.responsable" class="col-md-12" value="${rubro?.responsable?.id?:session.usuario.id}" id="selResponsable">
                     <g:textField name="persona" class="col-md-12" value="${rubro?.responsable?:session.usuario}" id="Responsable" readonly="true" />
-                    %{--                    </g:if>--}%
-                    %{--                    <g:else>--}%
-                    %{--                        <g:textField name="persona_res" value="${rubro?.responsable}" readonly="true" title="${rubro?.responsable}" class="col-md-12"/>--}%
-                    %{--                    </g:else>--}%
+
                 </div>
-                %{--<div class="col-md-1" style="width: 50px; color: #01a">--}%
-                %{--Estado--}%
-                %{--<g:textField name="estadoSuper" value="${rubro?.aprobado == null ? 'N' : 'R'}" readonly="true" title="${rubro?.aprobado == null ? 'Ingresado' : 'Registrado'}" class="col-md-12"/>--}%
-                %{--</div>--}%
             </div>
         </g:form>
     </div>
@@ -292,13 +262,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                              style="text-align: right; color: #44a;"/>
             </div>
 
-            %{--            <g:if test="${rubro?.aprobado != 'R'}">--}%
             <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 16px;margin-left: -10px; width: 90px">
                 <a class="btn btn-xs btn-primary btn-ajax" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
                     <i class="fa fa-plus"></i>
                 </a>
             </div>
-            %{--            </g:if>--}%
         </div>
     </div>
 
@@ -344,11 +312,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
-                            %{--                            <g:if test="${rubro?.aprobado != 'R'}">--}%
                             <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
                                 <i class="fa fa-trash"></i>
                             </a>
-                            %{--                            </g:if>--}%
                         </td>
                     </tr>
                 </g:if>
@@ -392,11 +358,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
-                            %{--                            <g:if test="${rubro?.aprobado != 'R'}">--}%
                             <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
                                 <i class="fa fa-trash"></i>
                             </a>
-                            %{--                            </g:if>--}%
                         </td>
                     </tr>
                 </g:if>
@@ -437,11 +401,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 50px;text-align: center" class="col_delete">
-                            %{--                            <g:if test="${rubro?.aprobado != 'R'}">--}%
                             <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
                                 <i class="fa fa-trash"></i>
                             </a>
-                            %{--                            </g:if>--}%
                         </td>
                     </tr>
                 </g:if>
@@ -458,17 +420,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <div id="modal-rubro" style=";overflow: hidden;">
-    %{--    <div class="modal-body" id="modalBody">--}%
-    %{--        <div id="tipos" class="btn-group" >--}%
-    %{--            <button type="button" class="btn btn-primary tipo active" tipo="3">Equipos</button>--}%
-    %{--            <button type="button" class="btn btn-primary tipo" tipo="2">Mano de obra</button>--}%
-    %{--            <button type="button" class="btn btn-primary tipo" tipo="1">Materiales</button>--}%
-    %{--        </div>--}%
-    %{--        <bsc:buscador name="rubro.buscador.id" value="" accion="buscaRubro" controlador="rubro" campos="${campos}" label="Rubro" tipo="lista"/>--}%
-    %{--    </div>--}%
-
-    %{--    <div class="modal-footer" id="modalFooter">--}%
-    %{--    </div>--}%
 
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid" style="margin-left: 20px">
@@ -505,11 +456,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 </div>
 
 <div id="modal-detalle" style=";overflow: hidden;">
-%{--    <div class="modal-header btn-primary">--}%
-%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-%{--        <h3 id="modalTitle-detalle">Especificaciones</h3>--}%
-%{--    </div>--}%
 
     <div class="modal-body" id="modalBody-detalle">
         Especificaciones:<br>
@@ -523,8 +469,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     </div>
 </div>
 
-%{--<div class="modal large hide fade " id="modal-transporte" style=";overflow: hidden;">--}%
-%{--<div id="modal-transporte" style=";overflow: hidden;">--}%
 <div id="dialTransporte" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px; margin-top: 10px">
         <div class="col-md-2">
@@ -686,13 +630,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             <strong>¿Desea imprimir el reporte desglosando el transporte?</strong>
         </div>
         <div class="col-md-12 table-responsive" style="margin-top: 10px">
-
-            %{--            <input aria-label="" name="rubro.fechaReg" id='fechaCreacion' type='text' class="required input-small" value="${rubro?.fecha ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>--}%
             Se imprime a la Fecha de: <input aria-label="" name="fechaSalida" id='fechaSalidaId' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
-            %{--                <elm:datepicker name="rubro.fechaReg" class="col-md-12" value="${rubro?.fecha}" disabled="true" id="fechaCreacion"/>--}%
-            %{--                <elm:datepicker  name="fechaSalida" class="col-md-8" id="fechaSalidaId" format="dd-MM-yyyy hh:mm"--}%
-            %{--                                 value="${rubro?.fechaModificacion}"--}%
-            %{--                                 style="width: 180px"/>--}%
         </div>
     </fieldset>
 </div>
@@ -1554,8 +1492,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 $("#ciudad").val() + "&listas=" + listas + "&chof=" + $("#cmb_chof").val() + "&volq=" +
                 $("#cmb_vol").val() + "&indi=" + $("#costo_indi").val();
 
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcel')}" + datos;
-            location.href = url
+            location.href = "${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroExcel')}" + datos;
         });
 
         $("#imprimir").click(function (e) {
@@ -2040,42 +1977,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                 }
                             }
                         });
-
-
-
-                        %{--var d =   $.box({--}%
-                        %{--    imageClass : "box_info",--}%
-                        %{--    text       : "Este rubro ya forma parte de la(s) obra(s):" + resp[1] + "Desea crear una nueva versión de este rubro, y hacer una versión histórica?",--}%
-                        %{--    title      : "Alerta",--}%
-                        %{--    iconClose  : false,--}%
-                        %{--    dialog     : {--}%
-                        %{--        resizable : false,--}%
-                        %{--        width: '500px',--}%
-                        %{--        draggable : false,--}%
-                        %{--        buttons   : {--}%
-                        %{--            "Cancelar":function(){--}%
-                        %{--            },--}%
-                        %{--            "Aceptar" : function () {--}%
-                        %{--                $("#dlgLoad").dialog("open");--}%
-                        %{--                $.ajax({--}%
-                        %{--                    type : "POST",--}%
-                        %{--                    url : "${g.createLink(controller: 'rubro',action:'copiaRubro')}",--}%
-                        %{--                    data     : "id=${rubro?.id}",--}%
-                        %{--                    success  : function (msg) {--}%
-                        %{--                        $("#dlgLoad").dialog("close");--}%
-                        %{--                        if(msg==="true"){--}%
-                        %{--                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al generar histórico del rubro, comunique este error al administrador del sistema" + '</strong>');--}%
-                        %{--                        }else{--}%
-                        %{--                            $("#boxHiddenDlg").dialog("close");--}%
-                        %{--                            agregar(msg,"H");--}%
-                        %{--                        }--}%
-                        %{--                    }--}%
-                        %{--                });--}%
-                        %{--            }--}%
-
-                        %{--        }--}%
-                        %{--    }--}%
-                        %{--});--}%
                     }else{
                         agregar('${rubro?.id}',"");
                     }

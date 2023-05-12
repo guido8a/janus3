@@ -1,0 +1,118 @@
+<%@ page import="janus.PrecioRubrosItems" %>
+
+<g:form class="form-horizontal" name="frmSaveCantones" action="savePrecioCantones_ajax">
+    <g:hiddenField name="id" value="${precioRubrosItemsInstance?.id}"/>
+    <g:hiddenField id="lugar" name="lugar.id" value="${lugar ? precioRubrosItemsInstance?.lugar?.id : -1}"/>
+    <g:hiddenField id="item" name="item.id" value="${precioRubrosItemsInstance?.item?.id}"/>
+    <g:hiddenField name="all" value="${params.all}"/>
+    <g:hiddenField name="ignore" value="${params.ignore}"/>
+
+    <legend>
+        Item:  ${precioRubrosItemsInstance.item.nombre} <br>
+        Lista: ${lugarNombre}
+    </legend>
+
+    <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'precioUnitario', 'error')} ">
+        <span class="grupo">
+            <label for="precioUnitario" class="col-md-2 control-label text-info">
+                Precio Unitario
+            </label>
+            <span class="col-md-6">
+                <g:textField name="precioUnitario" class="form-control number required" value="${precioRubrosItemsInstance?.precioUnitario}"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+            Unidad: <span style="font-weight: bold"> ${precioRubrosItemsInstance.item.unidad.codigo} </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'fecha', 'error')} ">
+        <span class="grupo">
+            <label class="col-md-2 control-label text-info">
+                Fecha
+            </label>
+            <span class="col-md-6">
+                <g:if test="${fecha}">
+                    ${fecha}
+                    <g:hiddenField name="fecha" value="${fecha}"/>
+                </g:if>
+                <g:else>
+                    <g:if test="${precioRubrosItemsInstance?.id}">
+                        ${precioRubrosItemsInstance?.fecha?.format("dd-MM-yyyy")}
+                        <g:hiddenField name="fecha" value="${precioRubrosItemsInstance?.fecha}"/>
+                    </g:if>
+                    <g:else>
+                        <input aria-label="" name="fecha" id='datetimepicker3' type='text' class="form-control required"
+                               value="${new Date().format("dd-MM-yyyy")}"/>
+                    </g:else>
+                </g:else>
+            </span>
+        </span>
+    </div>
+</g:form>
+
+<ul class="list-group">
+   <g:each in="${cantones}" var="canton">
+        <li class="list-group-item">
+            <input class="form-check-input me-1 seleccionados" type="checkbox" value="" id="${canton?.id}" data-id="${canton?.id}">
+            <label class="form-check-label" > ${canton?.descripcion}</label>
+        </li>
+    </g:each>
+</ul>
+
+%{--<a href="#" class="btn btn-xs btn-primary" title="Agregar" id="item_agregar">--}%
+%{--    <i class="fa fa-plus"></i></a>--}%
+
+<script type="text/javascript">
+
+    // $("#item_agregar").click(function (){
+    //     chequeados();
+    // });
+
+    function chequeados (){
+        var arregloSel = [];
+        $(".seleccionados:checked").each(function () {
+            arregloSel.push($(this).data("id"));
+        });
+        return arregloSel
+    }
+
+    $('#datetimepicker3').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
+
+    $("#frmSaveCantones").validate({
+        rules          : {
+            fecha : {
+                remote : {
+                    url  : "${createLink(action:'checkFcPr_ajax')}",
+                    type : "post",
+                    data : {
+                        item  : "${precioRubrosItemsInstance.itemId}",
+                        lugar : "${lugar?.id}"
+                    }
+                }
+            }
+        },
+        messages       : {
+            fecha : {
+                remote : "Ya existe un precio para esta fecha"
+            }
+        },
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        },
+        errorClass     : "help-block"
+    });
+</script>

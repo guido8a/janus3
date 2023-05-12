@@ -55,7 +55,7 @@ class VolumenObraController {
 
         [obra: obra, volumenes: volumenes, campos: campos, subPresupuesto1: subPresupuesto1, grupoFiltrado: grupoFiltrado,
          subpreFiltrado: subpreFiltrado, grupos: grupoFiltrado, persona: persona, vmc: valorMenorCuantia, duenoObra: duenoObra,
-        valorLicitacion: valorLicitacion, listaRbro: listaRbro, listaItems: listaItems]
+         valorLicitacion: valorLicitacion, listaRbro: listaRbro, listaItems: listaItems]
     }
 
     def cargarSubpres() {
@@ -164,71 +164,44 @@ class VolumenObraController {
 
     def copiarItem() {
 
-//        println "copiarItem "+params
+        println "copiarItem "+params
+
         def obra = Obra.get(params.obra)
         def rubro = Item.get(params.rubro)
-//        println("rubro " + rubro)
         def sbprDest = SubPresupuesto.get(params.subDest)
         def sbpr = SubPresupuesto.get(params.sub)
-
         def itemVolumen = VolumenesObra.findByItemAndSubPresupuesto(rubro, sbpr)
         def itemVolumenDest = VolumenesObra.findByItemAndSubPresupuestoAndObra(rubro, sbprDest, obra)
-
         def volumen
-
         def volu = VolumenesObra.list()
 
-        if (params.id)
-            volumen = VolumenesObra.get(params.id)
-        else {
             if (itemVolumenDest) {
-
-                flash.clase = "alert-error"
-                flash.message = "No se puede copiar el rubro " + rubro.nombre
-                redirect(action: "tablaCopiarRubro", params: [obra: obra.id])
-                return
-
+                render "no_No se puede copiar el rubro, ya existe en el subpresupuesto de destino"
+                return true
             } else {
                 volumen = VolumenesObra.findByObraAndItemAndSubPresupuesto(obra, rubro, sbprDest)
-
-
                 if (volumen == null)
                     volumen = new VolumenesObra()
-
             }
-        }
 
 
         if(params.canti){
-        volumen.cantidad = params.canti.toDouble()
+            volumen.cantidad = params.canti.toDouble()
         }else{
-        volumen.cantidad = itemVolumen.cantidad.toDouble()
+            volumen.cantidad = itemVolumen.cantidad.toDouble()
         }
-
 
         volumen.orden = (volu.orden.size().toInteger()) + 1
         volumen.subPresupuesto = SubPresupuesto.get(params.subDest)
         volumen.obra = obra
         volumen.item = rubro
         if (!volumen.save(flush: true)) {
-//            println "error volumen obra "+volumen.errors
-
-            flash.clase = "alert-error"
-            flash.message = "Error, no es posible completar la acción solicitada "
-
-            redirect(action: "tablaCopiarRubro", params: [obra: obra.id])
-
-//            render "error"
+            render "no_No se puede copiar el rubro"
         } else {
+            render "ok_Rubro copiado correctamente"
             preciosService.actualizaOrden(volumen, "insert")
 
-            flash.clase = "alert-success"
-            flash.message = "Copiado rubro " + rubro.nombre
-
-            redirect(action: "tablaCopiarRubro", params: [obra: obra.id, sub: volumen.subPresupuesto.id])
         }
-
-
     }
 
     /** carga tabla de detalle de volúmenes de obra **/
@@ -339,38 +312,27 @@ class VolumenObraController {
 
         def obra = Obra.get(params.obra)
         def volumenes = VolumenesObra.findAllByObra(obra)
+        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
-        return [obra: obra, volumenes: volumenes]
+        return [obra: obra, volumenes: volumenes, subPres: subPres]
 
     }
 
     def tablaCopiarRubro() {
         println "params copiar rubro: $params"
-        def usuario = session.usuario.id
-        def persona = Persona.get(usuario)
-        def direccion = Direccion.get(persona?.departamento?.direccion?.id)
-        def grupo = Grupo.findAllByDireccion(direccion)
-         println "grupo: $grupo"
 
         def obra = Obra.get(params.obra)
 
         def valores
         if (params.sub && params.sub != "null") {
             valores = preciosService.rbro_pcun_v3(obra.id, params.sub)
-
         } else {
             valores = preciosService.rbro_pcun_v2(obra.id)
-
         }
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
 
-
         def precios = [:]
-        def fecha = obra.fechaPreciosRubros
-        def dsps = obra.distanciaPeso
-        def dsvl = obra.distanciaVolumen
-        def lugar = obra.lugar
         def prch = 0
         def prvl = 0
         def indirecto = obra.totales / 100
@@ -426,7 +388,7 @@ class VolumenObraController {
             }
 //            println("errores " + errores)
             if(errores == 0){
-                 render "OK_Subpresupuesto borrado correctamente"
+                render "OK_Subpresupuesto borrado correctamente"
             }else{
                 render "NO_Error al borrar el subpresupuesto"
             }

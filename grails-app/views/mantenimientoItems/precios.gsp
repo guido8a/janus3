@@ -34,17 +34,6 @@
         Equipos
     </a>
 
-%{--    <div class="col-md-4">--}%
-%{--        <div class="input-group input-group-sm">--}%
-%{--            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>--}%
-%{--            <span class="input-group-btn">--}%
-%{--                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">--}%
-%{--                    <i class="fa fa-search"></i>&nbsp;--}%
-%{--                </a>--}%
-%{--            </span>--}%
-%{--        </div><!-- /input-group -->--}%
-%{--    </div>--}%
-
     <div class="col-md-1" style="margin-right: 10px">
         <div class="btn-group">
             <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
@@ -79,7 +68,7 @@
         </div>
     </div>
 
-    <div class="col-md-12 btn-group" data-toggle="buttons-radio" style="margin-bottom: 5px; margin-top: 10px">
+    <div class="col-md-12 btn-group"  style="margin-bottom: 5px; margin-top: 10px">
         <a href="#" id="ignore" class="btn btn-warning btnTodosLugares" aria-pressed="true">
             <i class="fa fa-map"></i> Todos los lugares
         </a>
@@ -192,7 +181,7 @@
         location.href="${createLink(controller: 'item', action: 'registrarPrecios')}"
     });
 
-    $(".btnTodosLugares").click(function () {
+    $("#ignore").click(function () {
 
         if($(this).hasClass('active')){
             $(this).removeClass("active");
@@ -887,14 +876,13 @@
         resizable: true,
         modal: true,
         draggable: false,
-        width: 1000,
-        height: 470,
+        width: 600,
+        height: 600,
         position: 'center',
         title: 'Formato de impresión'
     });
 
     $("#btnReporte").click(function () {
-        // var tipo = $.trim($("#" + current).data("reporte")).toLowerCase();
         var tipo = tipoSeleccionado == 1 ? 'materiales' : (tipoSeleccionado == 2 ? 'mano_obra' : 'equipos')
         $.ajax({
             type    : "POST",
@@ -903,31 +891,26 @@
                 grupo : tipoSeleccionado
             },
             success : function (msg) {
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-info ">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-success" data-dismiss="modal"><i class="fa fa-print"></i> PDF </a>');
-                var btnExcel = $('<a href="#" class="btn btnExcel" data-dismiss="modal"><i class="fa fa-file-excel"></i> Excel</a>');
+                var btnOk = $('<a href="#" data-dismiss="modal" class="btn ">Cancelar</a>');
+                var btnSave = $('<a href="#"  class="btn btn-info" data-dismiss="modal"><i class="fa fa-print"></i> PDF </a>');
+                var btnExcel = $('<a href="#" class="btn btnExcel btn-success" data-dismiss="modal"><i class="fa fa-file-excel"></i> Excel</a>');
 
                 btnSave.click(function () {
                     var data = "";
                     data += "orden=" + $(".orden.active").attr("id");
                     data += "&tipo=" + $(".tipo.active").attr("id");
                     data += "&lugar=" + $("#lugarRep").val();
-                    data += "&fecha=" + $("#datetimepickerPrecios").val();
+                    data += "&fecha=" + $("#fechaRep").val();
                     data += "&grupo=" + tipoSeleccionado;
+                    data += "&estado=" + $("#revisar").val();
 
                     $(".col.active").each(function () {
                         data += "&col=" + $(this).attr("id");
                     });
 
-                    %{--var actionUrl = "${createLink(controller:'pdf',action:'pdfLink')}?filename=Reporte_costos_" +--}%
-                    %{--    tipo + ".pdf&url=${createLink(controller: 'reportes2', action: 'reportePrecios')}";--}%
-                    %{--location.href = actionUrl + "?" + data;--}%
-
                     location.href = "${g.createLink(controller: 'reportes2', action: '_reportePrecios')}?" + data;
 
                     var wait = $("<div style='text-align: center;'> Estamos procesando su reporte......Por favor espere......</div>");
-                    // wait.prepend(spinnerBg);
-
                     var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
 
                     $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
@@ -944,9 +927,10 @@
                     var fecha = $("#fechaRep").val();
                     var lugar = $("#lugarRep").val();
                     var grupo = tipoSeleccionado;
+                    var estadoA = $("#revisar option:selected").val();
 
-                    location.href = "${g.createLink(controller: 'reportes2', action: 'reportePreciosExcel')}?fecha=" +
-                        fecha + "&lugar=" + lugar + "&grupo=" + grupo;
+                    location.href = "${g.createLink(controller: 'reportesExcel2', action: 'reportePreciosExcel')}?fecha=" +
+                        fecha + "&lugar=" + lugar + "&grupo=" + grupo + "&estado=" + estadoA;
                 });
 
                 btnOk.click(function () {
