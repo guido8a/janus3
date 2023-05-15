@@ -1470,4 +1470,11 @@ class ReportesExcel2Controller {
         response.setHeader("Content-Disposition", header);
         wb.write(output)
     }
+
+
+    //query para lsitados de todas minas
+    //select itemcdgo, itemnmbr, unddcdgo, itempeso, rbpcpcun, rbpcfcha, lgardscr
+    // from item, undd, rbpc r1, lgar where undd.undd__id = item.undd__id and r1.item__id = item.item__id and
+    // lgar.tpls__id = 4 and r1.rbpcfcha >= '1-jan-2022' and lgar.lgar__id = r1.lgar__id
+    // order by lgardscr, itemcdgo, rbpcfcha;
 }
