@@ -2194,12 +2194,17 @@ itemId: item.id
         println "sql: $sql"
         try {
             cn.execute(sql.toString())
-            mnsj = "ok"
+            mnsj = "ok_Precios actualizados correctamente"
         }
         catch (e) {
-            mnsj = "Error al actualizar los precios"
+            mnsj = "no_Error al actualizar los precios"
         }
-        return mnsj
+
+        render mnsj
+    }
+
+    def impresionMinas_ajax(){
+
     }
 
 

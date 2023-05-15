@@ -99,6 +99,9 @@
                     <i class="fa fa-check"></i> Registrar
                 </a>
             </g:if>
+            <a href="#" id="btnReporteMinas" class="btn btn-ajax">
+                <i class="fa fa-file-excel"></i> Reporte Minas
+            </a>
         </div>
     </div>
 
@@ -944,6 +947,37 @@
                 $("#modal-tree").dialog("open");
             }
         });
+    });
+
+    $("#btnReporteMinas").click(function (){
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'impresionMinas_ajax')}",
+            data    : {},
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgImprimirMinas",
+                    title   : "Imprimir excel de minas",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-print'></i> Imprimir",
+                            className : "btn-success",
+                            callback  : function () {
+                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?fecha=" + $("#fecha1").val() + "&lista=" + $("#lista option:selected").val();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
     });
 
 </script>

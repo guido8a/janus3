@@ -68,7 +68,7 @@
                         </g:if>
                         <g:if test="${precio?.registrado != 'R'}">
                             <a href="#" class="btn btn-success btn-xs btnEditarCantones" title="Editar valor para todos los cantones" data-id="${precio.id}">
-                                <i class="fa fa-map-marker"></i>
+                                <i class="fa fa-list-ul"></i>
                             </a>
                         </g:if>
                         <a href="#" class="btn btn-danger btn-xs ${precio.registrado != 'R' ? 'btnDelete' : 'btnDeleteReg'}" rel="tooltip" title="Borrar precio" id="${precio.id}">
@@ -259,7 +259,6 @@
                     id    : "dlgCreateEditP",
                     title : title + " precio para los cantones",
                     message : msg,
-                    class: 'modal-sm',
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -273,7 +272,7 @@
                             className : "btn-success",
                             callback  : function () {
                                 // chequeados();
-                                submitFormPrecioC();
+                               return submitFormPrecioC();
                             } //callback
                         } //guardar
                     } //buttons
@@ -285,46 +284,49 @@
         }); //ajax
     } //createEdit
 
-
     function submitFormPrecioC() {
         var $form = $("#frmSaveCantones");
         if ($form.valid()) {
             var data = $form.serialize();
             var lugares = chequeados();
 
-            var dialog = cargarLoader("Guardando...");
-            $.ajax({
-                type    : "POST",
-                url     : $form.attr("action"),
-                data    : data + "&lugares=" + lugares,
-                success : function (msg) {
-                    dialog.modal('hide');
-                    var parts = msg.split("_");
-                    if(parts[0] === 'OK'){
-                        log(parts[1], "success");
-                        setTimeout(function () {
-                            if(tipoSeleccionado === 1){
-                                cargarMateriales();
-                                recargarMateriales();
-                            }else if(tipoSeleccionado === 2){
-                                cargarMano();
-                                recargaMano();
-                            }else{
-                                cargarEquipo();
-                                recargaEquipo();
-                            }
-                        }, 1000);
-                    }else{
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-                        return false;
+            if(lugares == ''){
+                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione al menos un lugar" + '</strong>');
+                return false;
+            }else{
+                var dialog = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : data + "&lugares=" + lugares,
+                    success : function (msg) {
+                        dialog.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'ok'){
+                            log(parts[1], "success");
+                            setTimeout(function () {
+                                if(tipoSeleccionado === 1){
+                                    cargarMateriales();
+                                    recargarMateriales();
+                                }else if(tipoSeleccionado === 2){
+                                    cargarMano();
+                                    recargaMano();
+                                }else{
+                                    cargarEquipo();
+                                    recargaEquipo();
+                                }
+                            }, 1000);
+                        }else{
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                            return false;
+                        }
                     }
-                }
-            });
+                });
+            }
         } else {
             return false;
         }
     }
-
 
     $(".btnDelete").click(function () {
         var id = $(this).attr("id");

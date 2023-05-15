@@ -1471,10 +1471,56 @@ class ReportesExcel2Controller {
         wb.write(output)
     }
 
+    def reporteExcelMinas (){
+        println("params rm " + params)
 
-    //query para lsitados de todas minas
-    //select itemcdgo, itemnmbr, unddcdgo, itempeso, rbpcpcun, rbpcfcha, lgardscr
-    // from item, undd, rbpc r1, lgar where undd.undd__id = item.undd__id and r1.item__id = item.item__id and
-    // lgar.tpls__id = 4 and r1.rbpcfcha >= '1-jan-2022' and lgar.lgar__id = r1.lgar__id
-    // order by lgardscr, itemcdgo, rbpcfcha;
+        def lista = TipoLista.get(params.lista)
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+
+        def sql = "select itemcdgo, itemnmbr, unddcdgo, " +
+                "itempeso, rbpcpcun, rbpcfcha, lgardscr from item, undd, rbpc r1, " +
+                "lgar where undd.undd__id = item.undd__id and r1.item__id = item.item__id and lgar.tpls__id = 4 " +
+                "and r1.rbpcfcha >= '1-jan-2022' and lgar.lgar__id = r1.lgar__id order by lgardscr, itemcdgo, rbpcfcha"
+
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("MINAS")
+        sheet.setColumnWidth(0, 15 * 256);
+        sheet.setColumnWidth(1, 30 * 256);
+        sheet.setColumnWidth(2, 50 * 256);
+        sheet.setColumnWidth(3, 15 * 256);
+        sheet.setColumnWidth(4, 15 * 256);
+        sheet.setColumnWidth(5, 15 * 256);
+        sheet.setColumnWidth(6, 20 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("REPORTE PRECIOS DE MATERIALES")
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue("LISTA DE PRECIOS: " + lista.descripcion.toUpperCase())
+        row2.setRowStyle(style)
+        Row row3 = sheet.createRow(4)
+        row3.createCell(1).setCellValue("CONSULTA A LA FECHA: " +  fecha?.format("dd-MM-yyyy"))
+        row3.setRowStyle(style)
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "minas.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+
+    }
+
+
+
 }

@@ -13,60 +13,67 @@
     </legend>
 
     <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'precioUnitario', 'error')} ">
-        <span class="grupo">
-            <label for="precioUnitario" class="col-md-2 control-label text-info">
-                Precio Unitario
-            </label>
-            <span class="col-md-6">
-                <g:textField name="precioUnitario" class="form-control number required" value="${precioRubrosItemsInstance?.precioUnitario}"/>
-                <p class="help-block ui-helper-hidden"></p>
-            </span>
-            Unidad: <span style="font-weight: bold"> ${precioRubrosItemsInstance.item.unidad.codigo} </span>
-        </span>
-    </div>
+        <span class="grupo col-md-12">
 
-    <div class="form-group ${hasErrors(bean: precioRubrosItemsInstance, field: 'fecha', 'error')} ">
-        <span class="grupo">
-            <label class="col-md-2 control-label text-info">
-                Fecha
-            </label>
             <span class="col-md-6">
-                <g:if test="${fecha}">
-                    ${fecha}
-                    <g:hiddenField name="fecha" value="${fecha}"/>
-                </g:if>
-                <g:else>
-                    <g:if test="${precioRubrosItemsInstance?.id}">
-                        ${precioRubrosItemsInstance?.fecha?.format("dd-MM-yyyy")}
-                        <g:hiddenField name="fecha" value="${precioRubrosItemsInstance?.fecha}"/>
-                    </g:if>
-                    <g:else>
-                        <input aria-label="" name="fecha" id='datetimepicker3' type='text' class="form-control required"
-                               value="${new Date().format("dd-MM-yyyy")}"/>
-                    </g:else>
-                </g:else>
+                <span class="col-md-6">
+                    <label for="precioUnitario" class="control-label text-info">
+                        Precio Unitario
+                    </label>
+                </span>
+                <span class="col-md-5">
+                    <g:textField name="precioUnitario" class="form-control number required " value="${precioRubrosItemsInstance?.precioUnitario}"/>
+                    <p class="help-block ui-helper-hidden"></p>
+                </span>
+            </span>
+            <span class="col-md-2">
+                <label class="control-label text-info">Unidad:</label> <span style="font-weight: bold; font-size: 14px"> ${precioRubrosItemsInstance.item.unidad.codigo} </span>
+            </span>
+            <span class="col-md-4">
+                <label class="control-label text-info"> Fecha </label>
+                <strong style="font-size: 14px;"> ${precioRubrosItemsInstance?.fecha?.format("dd-MM-yyyy")}</strong>
+                <g:hiddenField name="fecha" value="${precioRubrosItemsInstance?.fecha}"/>
             </span>
         </span>
     </div>
 </g:form>
 
 <ul class="list-group">
-   <g:each in="${cantones}" var="canton">
-        <li class="list-group-item">
-            <input class="form-check-input me-1 seleccionados" type="checkbox" value="" id="${canton?.id}" data-id="${canton?.id}">
-            <label class="form-check-label" > ${canton?.descripcion}</label>
-        </li>
-    </g:each>
+    <li class="list-group-item">
+        <input class="form-check-input me-1 " type="checkbox" value="" id="chckTodos" data-id="${cantones?.id}">
+        <label class="form-check-label" > TODOS </label>
+    </li>
 </ul>
 
-%{--<a href="#" class="btn btn-xs btn-primary" title="Agregar" id="item_agregar">--}%
-%{--    <i class="fa fa-plus"></i></a>--}%
+<div>
+    <ul class="list-group">
+        <g:each in="${cantones}" var="canton">
+            <li class="list-group-item">
+                <input class="form-check-input me-1 seleccionados " type="checkbox" value="" id="${canton?.id}" data-id="${canton?.id}" >
+                <label class="form-check-label" > ${canton?.descripcion}</label>
+            </li>
+        </g:each>
+    </ul>
+
+</div>
+
 
 <script type="text/javascript">
 
-    // $("#item_agregar").click(function (){
-    //     chequeados();
-    // });
+    $("#chckTodos").click(function () {
+        var checkboxes = document.querySelectorAll(".seleccionados");
+        if($("#chckTodos").is(":checked")){
+            checkboxes.forEach(function (it){
+                it.setAttribute("checked", true)
+            });
+            $(".seleccionados").attr("disabled", true)
+        }else{
+            $(".seleccionados").removeAttr("disabled");
+            checkboxes.forEach(function (it){
+                it.removeAttribute("checked")
+            });
+        }
+    });
 
     function chequeados (){
         var arregloSel = [];
