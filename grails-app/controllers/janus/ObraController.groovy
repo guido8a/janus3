@@ -1424,32 +1424,28 @@ class ObraController {
       //  def copiaObra
         def obra = Obra.get(params.id);
         def nuevoCodigo = params.nuevoCodigo.toUpperCase()
-        def volumenes = VolumenesObra.findAllByObra(obra);
+        def volumenes = VolumenesObra.findAllByObra(obra)
+        def departamento = Persona.get(session.usuario.id).departamento
 
         obraInstance = Obra.get(params.id)
 
         def revisarCodigo = Obra.findByCodigo(nuevoCodigo)
 
         if (revisarCodigo != null) {
-//            println("entro1")
             render "NO_No se puede copiar la Obra " + " " + obra.nombre + " " + "porque posee un codigo ya existente."
-            return
-
         } else {
 //            println("entro2")
             obraInstance = new Obra()
             obraInstance.properties = obra.properties
             obraInstance.codigo = nuevoCodigo
             obraInstance.estado = 'N'
-            obraInstance.departamento = session.usuario.departamento
+            obraInstance.departamento = departamento
             obraInstance.memoSif = null
             obraInstance.fechaInicio = null
             obraInstance.fechaFin = null
 
-//            println "busca direccion de usuario ${session.usuario}"
-
             def persona = Persona.get(session.usuario.id)
-            if(session.usuario.departamento?.codigo != 'UTFPU'){
+            if(departamento?.codigo != 'UTFPU'){
                 def direccion = Direccion.get(persona.departamento.direccion.id)
                 def departamentos = Departamento.findAllByDireccion(direccion)
                 def personas = Persona.findAllByDepartamentoInList(departamentos, [sort: 'nombre'])
@@ -1467,8 +1463,6 @@ class ObraController {
                 obraInstance.responsableObra = persona   // cambia de dueño al usuario que copia de la UTFPU
             }
 
-
-
             if (!obraInstance.save(flush: true)) {
                 flash.clase = "alert-error"
                 def str = "<h4>No se pudo copiar la Obra " + (obraInstance.id ? obraInstance.id : "") + "</h4>"
@@ -1484,14 +1478,11 @@ class ObraController {
                 str += "</ul>"
 
                 render 'NO_' + str
-//            return(action: 'registroObra')
                 return
             }
             volumenes.each { volOr ->
                 volumenInstance = new VolumenesObra()
-//                println("VO:" + volOr)
                 volumenInstance.properties = volOr.properties
-//                println("VI:" + volumenInstance)
                 volumenInstance.obra = obraInstance
                 volumenInstance.save(flush: true)
             }
