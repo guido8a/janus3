@@ -1472,16 +1472,17 @@ class ReportesExcel2Controller {
     }
 
     def reporteExcelMinas (){
-        println("params rm " + params)
 
         def lista = TipoLista.get(params.lista)
         def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
 
         def sql = "select itemcdgo, itemnmbr, unddcdgo, " +
                 "itempeso, rbpcpcun, rbpcfcha, lgardscr from item, undd, rbpc r1, " +
-                "lgar where undd.undd__id = item.undd__id and r1.item__id = item.item__id and lgar.tpls__id = 4 " +
-                "and r1.rbpcfcha >= '1-jan-2022' and lgar.lgar__id = r1.lgar__id order by lgardscr, itemcdgo, rbpcfcha"
+                "lgar where undd.undd__id = item.undd__id and r1.item__id = item.item__id and lgar.tpls__id = ${params.lista} " +
+                "and r1.rbpcfcha >= '${params.fecha}' and lgar.lgar__id = r1.lgar__id order by lgardscr, itemcdgo, rbpcfcha"
 
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString())
 
         XSSFWorkbook wb = new XSSFWorkbook()
         XSSFCellStyle style = wb.createCellStyle();
@@ -1490,13 +1491,13 @@ class ReportesExcel2Controller {
         style.setFont(font);
 
         Sheet sheet = wb.createSheet("MINAS")
-        sheet.setColumnWidth(0, 15 * 256);
-        sheet.setColumnWidth(1, 30 * 256);
-        sheet.setColumnWidth(2, 50 * 256);
-        sheet.setColumnWidth(3, 15 * 256);
-        sheet.setColumnWidth(4, 15 * 256);
-        sheet.setColumnWidth(5, 15 * 256);
-        sheet.setColumnWidth(6, 20 * 256);
+        sheet.setColumnWidth(0, 40 * 256);
+        sheet.setColumnWidth(1, 15 * 256);
+        sheet.setColumnWidth(2, 40 * 256);
+        sheet.setColumnWidth(3, 10 * 256);
+        sheet.setColumnWidth(4, 10 * 256);
+        sheet.setColumnWidth(5, 10 * 256);
+        sheet.setColumnWidth(6, 15 * 256);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
@@ -1513,12 +1514,36 @@ class ReportesExcel2Controller {
         row3.createCell(1).setCellValue("CONSULTA A LA FECHA: " +  fecha?.format("dd-MM-yyyy"))
         row3.setRowStyle(style)
 
+        def fila = 6
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("LUGAR")
+        rowC1.createCell(1).setCellValue("CODIGO")
+        rowC1.createCell(2).setCellValue("NOMBRE")
+        rowC1.createCell(3).setCellValue("UNIDAD")
+        rowC1.createCell(4).setCellValue("PESO")
+        rowC1.createCell(5).setCellValue("PRECIO")
+        rowC1.createCell(6).setCellValue("FECHA")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.each{ k->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(k?.lgardscr ?: '')
+            rowF1.createCell(1).setCellValue(k?.itemcdgo ?: '')
+            rowF1.createCell(2).setCellValue(k?.itemnmbr ?: '')
+            rowF1.createCell(3).setCellValue(k?.unddcdgo ?: '')
+            rowF1.createCell(4).setCellValue(k?.itempeso ?: '')
+            rowF1.createCell(5).setCellValue(k?.rbpcpcun ?: 0)
+            rowF1.createCell(6).setCellValue(k?.rbpcfcha?.format("dd-MM-yyyy"))
+            fila++
+        }
+
         def output = response.getOutputStream()
         def header = "attachment; filename=" + "minas.xlsx";
         response.setContentType("application/octet-stream")
         response.setHeader("Content-Disposition", header);
         wb.write(output)
-
     }
 
 

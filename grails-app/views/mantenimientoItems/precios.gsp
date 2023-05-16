@@ -99,7 +99,7 @@
                     <i class="fa fa-check"></i> Registrar
                 </a>
             </g:if>
-            <a href="#" id="btnReporteMinas" class="btn btn-ajax">
+            <a href="#" id="btnReporteMinas" class="btn btn-success">
                 <i class="fa fa-file-excel"></i> Reporte Minas
             </a>
         </div>
@@ -470,7 +470,6 @@
         $("#alerta1").removeClass('hide');
         $("#alerta2").addClass('hide');
         $("#alerta3").addClass('hide');
-        // $("#info").addClass('hide');
         $("#info").html("");
 
         $("#cargando").removeClass('hide');
@@ -552,7 +551,6 @@
         $("#alerta1").addClass('hide');
         $("#alerta2").removeClass('hide');
         $("#alerta3").addClass('hide');
-        // $("#info").addClass('hide');
         $("#info").html("");
         $("#cargando").removeClass('hide');
 
@@ -661,7 +659,6 @@
         $("#alerta1").addClass('hide');
         $("#alerta2").addClass('hide');
         $("#alerta3").removeClass('hide');
-        // $("#info").addClass('hide');
         $("#info").html("");
         $("#cargando").removeClass('hide');
 
@@ -895,8 +892,8 @@
             },
             success : function (msg) {
                 var btnOk = $('<a href="#" data-dismiss="modal" class="btn ">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-info" data-dismiss="modal"><i class="fa fa-print"></i> PDF </a>');
-                var btnExcel = $('<a href="#" class="btn btnExcel btn-success" data-dismiss="modal"><i class="fa fa-file-excel"></i> Excel</a>');
+                var btnSave = $('<a href="#"  class="btn btn-info"><i class="fa fa-print"></i> PDF </a>');
+                var btnExcel = $('<a href="#" class="btn btnExcel btn-success" ><i class="fa fa-file-excel"></i> Excel</a>');
 
                 btnSave.click(function () {
                     var data = "";
@@ -912,21 +909,9 @@
                     });
 
                     location.href = "${g.createLink(controller: 'reportes2', action: '_reportePrecios')}?" + data;
-
-                    var wait = $("<div style='text-align: center;'> Estamos procesando su reporte......Por favor espere......</div>");
-                    var btnClose = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                    $("#modalTitle").html("Procesando");
-                    $("#modalBody").html(wait);
-                    $("#modal-tree").dialog("close");
-                    $("#modalFooter").html("").append(btnClose);
-
-                    return false;
                 });
 
                 btnExcel.click(function () {
-
                     var fecha = $("#fechaRep").val();
                     var lugar = $("#lugarRep").val();
                     var grupo = tipoSeleccionado;

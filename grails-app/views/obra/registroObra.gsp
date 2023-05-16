@@ -1871,7 +1871,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         $("#btnImprimir").click(function () {
             $("#dlgLoad").dialog("open");
             $(".ui-dialog-titlebar-close").html("x");
-            location.href = "${g.createLink(controller: 'reportes', action: 'reporteRegistro', id: obra?.id)}"
+            location.href = "${g.createLink(controller: 'reportes', action: 'reporteRegistro', id: obra?.id)}";
             $("#dlgLoad").dialog("close")
         });
 
@@ -1883,7 +1883,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             width: 800,
             height: 500,
             position: 'center',
-            title: 'Datos de Situación Geográfica'
+            title: 'Variables'
         });
 
         $("#btnVar").click(function () {
@@ -1895,11 +1895,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 },
                 success: function (msg) {
 
-                    var btnSave = $('<a href="#"  class="btn btn-azul"><i class="icon-ok"></i> Guardar</a>');
-                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn" >Cancelar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-azul"><i class="fa fa-save"></i> Guardar</a>');
+                    var btnCancel = $('<a href="#" class="btn" ><i class="fa fa-times"></i> Cancelar</a>');
 
                     btnSave.click(function () {
-                        console.log('Guardar...');
                         if ($("#frmSave-var").valid()) {
                             btnSave.replaceWith(spinner);
                         }
@@ -1915,6 +1914,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             }
                         });
                         return false;
+                    });
+
+                    btnCancel.click(function () {
+                        $("#modal-var").dialog("close");
                     });
 
                     $("#modal_title_var").html("Variables");

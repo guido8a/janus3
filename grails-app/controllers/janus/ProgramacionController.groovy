@@ -29,18 +29,12 @@ class ProgramacionController {
     } //form_ajax
 
     def form_ext_ajax() {
-
         def grupo = params.grupo
-
         def programacionInstance = new Programacion(params)
 
         if (params.id) {
             programacionInstance = Programacion.get(params.id)
             if (!programacionInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Programacion con id " + params.id
-                redirect(action: "list")
-                return
             } //no existe el objeto
         } //es edit
         return [programacionInstance: programacionInstance, grupo: grupo]
