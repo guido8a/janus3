@@ -2003,12 +2003,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             $("#copiarDialogOfe").dialog("close");
                             var parts = msg.split('_');
                             if (parts[0] === 'NO') {
-                                $("#spanError").html(parts[1]);
-                                $("#divError").show();
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                             } else {
-                                $("#divError").hide();
-                                $("#spanOk").html(parts[1]);
-                                $("#divOk").show();
+                                bootbox.alert('<i class="fa fa-check text-success fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                             }
                         }
                     });
