@@ -240,8 +240,10 @@ class LoginController {
                         def count = borrarAlertas()
                         if (count > 0) {
                             redirect(controller: 'alertas', action: 'list')
-                        } else {// llama a reporte
+                        } else if(perfiles.first().perfil.descripcion != 'Oferente') {// llama a reporte
                             redirect(controller: 'inicio', action: 'index', id: 1)
+                        } else {
+                            redirect(controller: 'inicio', action: 'indexOf', id: 1)
                         }
 
                         return

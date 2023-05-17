@@ -7,95 +7,98 @@ import janus.VolumenesObra
 class ExportController {
 
     def dbConnectionService
-    def oferentesService
 
     def exportObra() {
-        def obra = janus.Obra.get(params.obra)
-        def oferente = Persona.get(params.oferente)
-
-//        def cn = dbConnectionService.getConnectionOferentes()
-//        def r = oferentesService.exportDominio(janus.Persona, "prsnjnid", oferente)
-
-//        1. copiar obra con tipo 'F'
+        def cn = dbConnectionService.getConnection()
+        def obra_id = 0
 
         println ">>>> ${params}"
-//        if(r !=-1) {
-//            def oferenteId = r
-//            def res = oferentesService.exportDominio(janus.Obra, "obrajnid", obra, params.oferente,
-//                    "ofrt__id", r, "ofrt__id", "select * from obra where obrajnid=${obra.id} and ofrt__id=${r}")
-//            if (res !=-1) {
-//                def obraJnId=res
-//                def vols = VolumenesObra.findAllByObra(obra)
-//                def concurso = janus.pac.Concurso.findByObra(obra)
-//                def fechaOferta = concurso.fechaLimiteEntregaOfertas.format("yyyy-MM-dd")
-//                println "sql "+  "update obra set obracdcn=${concurso.codigo}, obrafcof='${fechaOferta}' where obra__id=${obraJnId}"
-//                oferentesService.sqlOferentes("update obra set obracdcn='${concurso.codigo}', obrafcof='${fechaOferta}', " +
-//                        "obraetdo = 'N',indidrob=0,indiprmo=0,indimntn=0,indignrl=0,indiadmn=0,indiimpr=0,indigrnt=0," +
-//                        "indiutil=0,indicsfn=0,indivhcl=0,inditotl=inditmbr where obra__id=${obraJnId}",2)
-//
-//                vols.each {v->
-//                    res = oferentesService.exportDominio(janus.Item, "itemjnid", v.item, oferenteId, "ofrt__id",r,
-//                            "ofrt__id", "select * from item where ofrt__id = ${oferenteId} and itemcdgo = '${v.item.codigo}'")
-//                    println "IT............................ "+res
-//                    if(res!=-1){
-//                        def itemId=res
-//                        res = oferentesService.exportDominioSinReferencia(janus.SubPresupuesto, v.subPresupuesto, false,
-//                                false, "select * from sbpr where sbprdscr='${v.subPresupuesto.descripcion}' " +
-//                                "and grpo__id=${v.subPresupuesto.grupo.id}  ")
-//                        if(res==-1){
-//                            render "NO_Error: ha ocurrido un error al copiar el registro."
-//                            println "-1 ??? sub "+v.subPresupuesto.id
-//                            return
-//                        }
-//                        res = oferentesService.sqlOferentes("insert into vlob (vlob__id, sbpr__id, item__id, " +
-//                                "obra__id, vlobcntd, vlobordn, vlobdias) values (default, ${res}, ${itemId}, " +
-//                                "${obraJnId}, ${v.cantidad}, ${v.orden}, ${v.dias})", 1)
-//                    }else{
-//                        render "NO_Error: ha ocurrido un error al copiar el registro."
-//                        println "-1 ??? item "+ v.item
-//                        return
-//                    }
-//                }
-//                render "OK_Obra exportada correctamente"
-//                return
-//            }else {
-//                render "NO_Error: ha ocurrido un error al copiar el registro."
-//                return
-//            }
-//        } else {
-//            render "NO_Error: No se pudo exportar el oferente para exportar la obra."
-//            return
-//        }
+
+        def sql = """
+insert into obra(prsn__id, obrarvsr, obrainsp, cmnd__id, parr__id, tpob__id,
+prog__id, edob__id, csob__id, lgar__id, obrachfr, obravlqt,
+prsp__id, obracdgo, obranmbr, obradscr, obrafcin, obrafcfn,
+obradsps, obradsvl, obrabfdi, obrabfin, obrabfpt, obraetdo,
+obrarefe, obrafcha, obraofig, obraofsl, obrapz_a, obrapz_m,
+obrapz_d, obraobsr, obratipo, rbpcfcha, obrammco, obrammsl,
+obrafcsl, obraftrd, obravlcd, obracpvl, obraftvl, obraftps,
+obrardtp, obrasito, obrafrpl, obraindi, indignrl, indiimpr,
+indiutil, indicntr, inditotl, obravlor, obrammpr, obraprft,
+obrammfn, obraantc, obrarjst, indidrob, indimntn, indiadmn,
+indigrnt, indicsfn, indivhcl, indiprmo, inditmbr, dpto__id,
+obraplzo, obradsmj, obradsca, obradses, obrabarr, obralong,
+obralatt, lgarps01, lgarvl00, lgarvl01, lgarvl02, lgarlsmq,
+obraplmq, obraplpr, ofrt__id, obradseq, obradsrp, obradscb,
+obradsmc, obradssl, obratrnp, obracrdn, dptodstn, obralqdc,
+obratrcm, obratrac, itemtrcm, itemtrac, obrammio, obraanxo,
+prsnfrio, dircdstn, obraobin, obrafcii, obralgvi, obraanvi,
+obraetsf, obrammsf, obradsda, indialqr, indiprof, indimate,
+indisgro, indicmpo, indicmpm, indigaob, cpac__id
+) select 
+prsn__id, obrarvsr, obrainsp, cmnd__id, parr__id, tpob__id,
+prog__id, edob__id, csob__id, lgar__id, obrachfr, obravlqt,
+prsp__id, obracdgo||'-OF', obranmbr, obradscr, obrafcin, obrafcfn,
+obradsps, obradsvl, obrabfdi, obrabfin, obrabfpt, obraetdo,
+obrarefe, obrafcha, obraofig, obraofsl, obrapz_a, obrapz_m,
+obrapz_d, obraobsr, 'F', rbpcfcha, obrammco, obrammsl,
+obrafcsl, obraftrd, obravlcd, obracpvl, obraftvl, obraftps,
+obrardtp, obrasito, obrafrpl, obraindi, indignrl, indiimpr,
+indiutil, indicntr, inditotl, obravlor, obrammpr, obraprft,
+obrammfn, obraantc, obrarjst, indidrob, indimntn, indiadmn,
+indigrnt, indicsfn, indivhcl, indiprmo, inditmbr, dpto__id,
+obraplzo, obradsmj, obradsca, obradses, obrabarr, obralong,
+obralatt, lgarps01, lgarvl00, lgarvl01, lgarvl02, lgarlsmq,
+obraplmq, obraplpr, ofrt__id, obradseq, obradsrp, obradscb,
+obradsmc, obradssl, obratrnp, obracrdn, dptodstn, obralqdc,
+obratrcm, obratrac, itemtrcm, itemtrac, obrammio, obraanxo,
+prsnfrio, dircdstn, obraobin, obrafcii, obralgvi, obraanvi,
+obraetsf, obrammsf, obradsda, indialqr, indiprof, indimate,
+indisgro, indicmpo, indicmpm, indigaob, cpac__id
+from obra where obra__id = ${params.obra} returning obra__id 
+"""
+        cn.eachRow(sql.toString()) { d ->
+            obra_id = d.obra__id
+        }
+        println " se ha creado la obra en oferentes con id: ${obra_id}"
+
+        sql = "insert into vlof (sbpr__id,  item__id,  obra__id,  vlofcntd,  vlofordn, " +
+                "sbprordn,  vlofpcun,  vlofsbtt,  vlofdias,  vlofrtcr) " +
+                "select sbpr__id,  item__id,  ${obra_id},  vlobcntd,  vlobordn, " +
+                "sbprordn,  vlobpcun,  vlobsbtt,  vlobdias,  vlobrtcr from vlob " +
+                "where obra__id = ${params.obra} "
+        cn.execute(sql.toString())
+
+        sql = "insert into obof (obra__id, prsn__id, oboffcha) " +
+                "values( ${obra_id},  ${params.oferente}, '${new Date().format('yyyy-MM-dd HH:mm:ss')}' )"
+        cn.execute(sql.toString())
+
+
+
         render "OK_Obra exportada correctamente"
     }
 
-    def exportOferentes() {
-//        println "export oferentes " + params
-
-        if (params.id.class == java.lang.String) {
-            params.id = [params.id]
-        }
-
-//        println "export oferentes " + params
-
-        def msg = ""
-
-        params.id.each { id ->
-            def oferente = Persona.get(id)
-            def r = oferentesService.exportDominio(janus.Persona, "prsnjnid", oferente)
-            if (r == true) {
-                msg += "<li>Oferente ${id} exportado OK</li>"
-            } else {
-                if (r == false) {
-                    msg += "<li>Error: ha ocurrido un error al copiar el registro ${id}</li>"
-                } else {
-                    msg += "<li>Error: El registro ${id} ya ha sido exportado al sistema de oferentes.</li>"
-                }
-            }
-        }
-
-        render "<ul>${msg}</ul>"
-    }
+//    def exportOferentes() {
+//        if (params.id.class == java.lang.String) {
+//            params.id = [params.id]
+//        }
+//        def msg = ""
+//
+//        params.id.each { id ->
+//            def oferente = Persona.get(id)
+//            def r = oferentesService.exportDominio(janus.Persona, "prsnjnid", oferente)
+//            if (r == true) {
+//                msg += "<li>Oferente ${id} exportado OK</li>"
+//            } else {
+//                if (r == false) {
+//                    msg += "<li>Error: ha ocurrido un error al copiar el registro ${id}</li>"
+//                } else {
+//                    msg += "<li>Error: El registro ${id} ya ha sido exportado al sistema de oferentes.</li>"
+//                }
+//            }
+//        }
+//
+//        render "<ul>${msg}</ul>"
+//    }
 
 
 }

@@ -157,7 +157,9 @@
             </a>
         </g:if>
 
-        <g:link controller="reportes" action="index" title="Reportes del Sistema">
+        <g:if test="${session.perfil.descripcion != 'Oferente'}">
+            <a href= "${createLink(controller:'reprotes', action: 'index')}" title="Reportes del sistema">
+        </g:if>
             <div class="ui-corner-all  item fuera">
                 <div class="ui-corner-all ui-widget-content item">
                     <div class="imagen">
@@ -168,7 +170,6 @@
                     obras, concursos, contratos, contratistas, avance de obra...</div>
                 </div>
             </div>
-        </g:link>
     %{--<g:link  controller="documento" action="list" title="Documentos de los Proyectos">--}%
         <div class="ui-corner-all  item fuera">
             <div class="ui-corner-all ui-widget-content item">

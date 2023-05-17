@@ -450,5 +450,8 @@ class InicioController {
         return [errores: errores, insertados: insertados, repetidos: repetidos]
     }
 
+    def indexOf() {
+    }
+
 
 }                                                                                                          /**/
