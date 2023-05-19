@@ -69,7 +69,9 @@ class RubroOfController {
         def aux = Parametros.get(1)
         def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
         def obra = Obra.findByOferente(session.usuario)
-//        println "obra "+obra.totales
+        def listaRbro = [1: 'Materiales', 2: 'Mano de obra', 3: 'Equipos']
+        def listaItems = [1: 'Nombre', 2: 'Código']
+
         grupoTransporte.each {
             if (it.transporte.codigo == "H")
                 choferes = Item.findAllByDepartamento(it)
@@ -83,9 +85,9 @@ class RubroOfController {
             rubro = Item.get(params.idRubro)
             def items = Rubro.findAllByRubro(rubro)
             items.sort { it.item.codigo }
-            [campos: campos, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
+            [campos: campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
         } else {
-            [campos: campos, grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
+            [campos: campos, listaRbro: listaRbro, listaItems: listaItems,  grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
         }
     }
 
