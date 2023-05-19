@@ -57,11 +57,11 @@ indisgro, indicmpo, indicmpm, indigaob, cpac__id
 from obra where obra__id = ${params.obra} returning obra__id 
 """
 
-//        cn.eachRow(sql.toString()) { d ->
-//            obra_id = d.obra__id
-//        }
+        cn.eachRow(sql.toString()) { d ->
+            obra_id = d.obra__id
+        }
 
-        obra_id = 4197  //borrar si ya funciona
+//        obra_id = 4197  //borrar si ya funciona
 
         println " se ha creado la obra en oferentes con id: ${obra_id}"
 
@@ -78,32 +78,7 @@ from obra where obra__id = ${params.obra} returning obra__id
         cn.execute(sql.toString())
 
 
-
         render "OK_Obra exportada correctamente"
     }
-
-//    def exportOferentes() {
-//        if (params.id.class == java.lang.String) {
-//            params.id = [params.id]
-//        }
-//        def msg = ""
-//
-//        params.id.each { id ->
-//            def oferente = Persona.get(id)
-//            def r = oferentesService.exportDominio(janus.Persona, "prsnjnid", oferente)
-//            if (r == true) {
-//                msg += "<li>Oferente ${id} exportado OK</li>"
-//            } else {
-//                if (r == false) {
-//                    msg += "<li>Error: ha ocurrido un error al copiar el registro ${id}</li>"
-//                } else {
-//                    msg += "<li>Error: El registro ${id} ya ha sido exportado al sistema de oferentes.</li>"
-//                }
-//            }
-//        }
-//
-//        render "<ul>${msg}</ul>"
-//    }
-
 
 }

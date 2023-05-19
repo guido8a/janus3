@@ -19,14 +19,14 @@ class ObraOferente implements Auditable{
         columns {
             id column: 'obof__id'
             obra column: 'obra__id'
-            persona column: 'prsn__id'
+            oferente column: 'prsn__id'
             fecha column: 'oboffcha'
         }
     }
 
     static constraints = {
         obra(blank: false, nullable: false)
-        persona(blank: false, nullable: false)
+        oferente(blank: false, nullable: false)
         fecha(blank: false, nullable: false)
     }
 }
