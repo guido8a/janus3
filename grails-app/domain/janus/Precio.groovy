@@ -19,7 +19,7 @@ class Precio {
         version false
         columns {
             id column: 'prco__id'
-            persona column: 'prsn__id'
+            oferente column: 'prsn__id'
             item column: 'item__id'
             precio column: 'prcoprco'
             vae column: 'prco_vae'
@@ -29,7 +29,7 @@ class Precio {
 
     static constraints = {
         item(blank: false, nullable: false)
-        persona(blank: false, nullable: false)
+        oferente(blank: false, nullable: false)
         precio(blank: false, nullable: false)
         vae(blank: false, nullable: false)
         fecha(blank: true, nullable: true)

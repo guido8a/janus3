@@ -26,6 +26,7 @@ class RubroOferente {
             fecha column: 'rboffcha'
             cantidad column: 'rbofcntd'
             rendimiento column: 'rbofrndt'
+            oferente column: 'prsn__id'
         }
     }
 
@@ -35,5 +36,6 @@ class RubroOferente {
         rubro(blank: false, nullable: false, attributes: [title: 'rubro'])
         fecha(blank: true, nullable: true, attributes: [title: 'fecha'])
         rendimiento(blank: true, nullable: true)
+        oferente(blank: false, nullable: false)
     }
 }
