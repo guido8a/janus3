@@ -1,12 +1,16 @@
 package janus
 
+import seguridad.Persona
+
 class RubroOferente {
 
     Item rubro
     Item item
+    Persona oferente
     Date fecha
     double cantidad
     double rendimiento = 1
+
     static auditable = true
 
     static mapping = {

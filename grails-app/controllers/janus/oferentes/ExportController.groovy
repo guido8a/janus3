@@ -56,9 +56,13 @@ obraetsf, obrammsf, obradsda, indialqr, indiprof, indimate,
 indisgro, indicmpo, indicmpm, indigaob, cpac__id
 from obra where obra__id = ${params.obra} returning obra__id 
 """
-        cn.eachRow(sql.toString()) { d ->
-            obra_id = d.obra__id
-        }
+
+//        cn.eachRow(sql.toString()) { d ->
+//            obra_id = d.obra__id
+//        }
+
+        obra_id = 4197  //borrar si ya funciona
+
         println " se ha creado la obra en oferentes con id: ${obra_id}"
 
         sql = "insert into vlof (sbpr__id,  item__id,  obra__id,  vlofcntd,  vlofordn, " +
@@ -66,6 +70,7 @@ from obra where obra__id = ${params.obra} returning obra__id
                 "select sbpr__id,  item__id,  ${obra_id},  vlobcntd,  vlobordn, " +
                 "sbprordn,  vlobpcun,  vlobsbtt,  vlobdias,  vlobrtcr from vlob " +
                 "where obra__id = ${params.obra} "
+        println "inserta rbof: $sql"
         cn.execute(sql.toString())
 
         sql = "insert into obof (obra__id, prsn__id, oboffcha) " +

@@ -4,7 +4,7 @@ import seguridad.Persona
 
 class Precio {
 
-    Persona persona
+    Persona oferente
     Item item
     double precio
     double vae

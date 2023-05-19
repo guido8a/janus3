@@ -6,7 +6,7 @@ import seguridad.Persona
 class ObraOferente implements Auditable{
 
     Obra obra
-    Persona persona
+    Persona oferente
     Date fecha
     static auditable = true
 

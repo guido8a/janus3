@@ -9,6 +9,7 @@ class RubroOfController {
 
     def buscadorService
     def preciosService
+    def dbConnectionService
 
     def index() {
         redirect(action: "list", params: params)
@@ -688,6 +689,33 @@ class RubroOfController {
         redirect(action: "showFoto", id: rubro.id)
         return
 
+
+    }
+
+
+    def listaRubros(){
+//        println "listaItems" + params
+        def datos;
+        def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
+        def listaItems = ['itemnmbr', 'itemcdgo']
+
+        def select = "select item.item__id, itemnmbr, itemcdgo, unddcdgo " +
+                "from item, undd, dprt, sbgr, rbof "
+        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+                "sbgr.sbgr__id = dprt.sbgr__id and item.item__id = rbof.rbofcdgo and rbof.prsn__id = ${session.usuario.id}"
+        def sqlTx = ""
+        def item = listaRbro[params.buscarTipo.toInteger()-1]
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def ordn = listaRbro[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by itemnmbr, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos, tipo: params.band, rubro: params.rubro]
 
     }
 
