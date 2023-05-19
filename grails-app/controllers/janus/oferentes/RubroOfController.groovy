@@ -62,6 +62,7 @@ class RubroOfController {
     }
 
     def rubroPrincipalOf() {
+        println("params  " + params)
         def rubro
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
         def grupos = []
@@ -104,9 +105,9 @@ class RubroOfController {
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
         def detalle
-        detalle = Rubro.findByItemAndRubro(item, rubro)
+        detalle = RubroOferente.findByItemAndRubro(item, rubro)
         if (!detalle)
-            detalle = new Rubro()
+            detalle = new RubroOferente()
         detalle.rubro = rubro
         detalle.item = item
         detalle.cantidad = params.cantidad.toDouble()
@@ -131,11 +132,11 @@ class RubroOfController {
         } else {
             rubro.fechaModificacion = new Date()
             rubro.save(flush: true)
-            def precio = Precio.findByItemAndPersona(item, session.usuario)
+            def precio = Precio.findByItemAndOferente(item, session.usuario)
             if (!precio){
                 precio = new Precio()
                 precio.item=item
-                precio.persona= seguridad.Persona.get(session.usuario.id)
+                precio.oferente= seguridad.Persona.get(session.usuario.id)
                 precio.fecha=new Date()
             }
             precio.precio=params.precio.toDouble()
@@ -687,9 +688,6 @@ class RubroOfController {
             flash.message = "Error: Seleccione un archivo JPG, JPEG, GIF, PNG ó PDF"
         }
         redirect(action: "showFoto", id: rubro.id)
-        return
-
-
     }
 
 
@@ -718,7 +716,6 @@ class RubroOfController {
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
         [data: datos, tipo: params.band, rubro: params.rubro]
-
     }
 
 

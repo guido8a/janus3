@@ -38,20 +38,20 @@
     %{--        <i class="icon-table"></i>--}%
     %{--        Calcular--}%
     %{--    </a>--}%
-        <a href="#" class="btn btn-ajax btn-new" id="imprimir" title="Imprimir">
-            <i class="icon-print"></i>
+        <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">
+            <i class="fa fa-print"></i>
             Imprimir
         </a>
-        <a href="#" class="btn btn-ajax btn-new" id="vae" title="Imprimir Vae">
-            <i class="icon-print"></i>
+        <a href="#" class="btn btn-ajax btn-info" id="vae" title="Imprimir Vae">
+            <i class="fa fa-print"></i>
             Imprimir Vae
         </a>
-        <a href="#" class="btn btn-ajax btn-new" id="excel" title="Imprimir">
-            <i class="icon-print"></i>
+        <a href="#" class="btn btn-ajax btn-success" id="excel" title="Imprimir">
+            <i class="fa fa-file-excel"></i>
             Excel
         </a>
-        <a href="#" class="btn btn-ajax btn-new" id="excelVae" title="Imprimir Excel Vae">
-            <i class="icon-print"></i>
+        <a href="#" class="btn btn-ajax btn-success" id="excelVae" title="Imprimir Excel Vae">
+            <i class="fa fa-file-excel"></i>
             Excel Vae
         </a>
     </g:if>
@@ -236,8 +236,8 @@
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 40px;text-align: center" class="col_delete">
-                            <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                <i class="icon-trash"></i></a>
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                <i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 </g:if>
@@ -281,8 +281,8 @@
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 40px;text-align: center" class="col_delete">
-                            <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                <i class="icon-trash"></i></a>
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                <i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 </g:if>
@@ -326,8 +326,8 @@
                         <td class="col_vacio" style="width: 50px;display: none"></td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 40px;text-align: center" class="col_delete">
-                            <a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
-                                <i class="icon-trash"></i></a>
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                                <i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 </g:if>
@@ -514,20 +514,12 @@
     </div>
 
     <div id="imprimirTransporteDialog">
-
         <fieldset>
-
             <div class="span3">
-
                 Desea imprimir el reporte incluido transporte?
-
             </div>
-
         </fieldset>
-
-
     </div>
-
 
     <div id="listaRbro" style="overflow: hidden">
         <fieldset class="borde" style="border-radius: 4px">
@@ -630,11 +622,11 @@
         if ($("#item_id").val() * 1 > 0) {
             if (cant > 0 && precio>0) {
                 var data = "rubro=${rubro?.id}&item=" + $("#item_id").val() + "&cantidad=" + cant + "&rendimiento=" + rend+"&precio="+precio+"&vae="+vae
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'addItem')}",
+                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubroOf',action:'addItem')}",
                     data     : data,
                     success  : function (msg) {
                         if(tipo=="H"){
-                            window.location.href="${g.createLink(action: 'rubroPrincipal')}?idRubro="+id
+                            window.location.href="${g.createLink(action: 'rubroPrincipalOf')}?idRubro="+id
                         }
                         var tr = $("<tr class='item_row'>")
                         var td = $("<td>")

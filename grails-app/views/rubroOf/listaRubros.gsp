@@ -31,9 +31,9 @@
 </div>
 
 <script type="text/javascript">
+
     $(".selecciona").click(function () {
         var ad = $(this).data("id");
-        $("#modal-rubro").dialog("close");
 
         if(${tipo == 'composicion'}){
             bootbox.confirm({
@@ -58,8 +58,10 @@
         }else{
             $("#listaRbro").dialog("close");
             var cd = cargarLoader("Cargando...");
-            location.href = "${g.createLink(controller: 'rubro', action: 'rubroPrincipal')}/" + ad
+            location.href = "${g.createLink(controller: 'rubroOf', action: 'rubroPrincipalOf')}?idRubro=" + ad
         }
+
+        // $("#modal-rubro").dialog("close");
     });
 
 
