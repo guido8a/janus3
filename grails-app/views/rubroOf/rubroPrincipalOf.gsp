@@ -84,22 +84,22 @@
             <div class="row-fluid">
                 <div class="col-md-3">
 
-                       <label> Código </label>
+                    <label> Código </label>
 
 
-                       <g:textField name="rubro.codigo" id="input_codigo" class="form-control"
-                                    value="${rubro?.codigo ?: ''}" readonly="" />
+                    <g:textField name="rubro.codigo" id="input_codigo" class="form-control"
+                                 value="${rubro?.codigo ?: ''}" readonly="" />
 
-%{--                    <input type="text" name="rubro.codigo" class="span24" value="${rubro?.codigo}" id="input_codigo" readonly="">--}%
+                    %{--                    <input type="text" name="rubro.codigo" class="span24" value="${rubro?.codigo}" id="input_codigo" readonly="">--}%
                 </div>
 
                 <div class="col-md-3">
-                        <label> Especificación </label>
+                    <label> Especificación </label>
 
-                        <g:textField name="rubro.codigoEspecificacion" id="input_codigo_es" class="form-control"
-                                     value="${rubro?.codigoEspecificacion ?: ''}" readonly="" />
+                    <g:textField name="rubro.codigoEspecificacion" id="input_codigo_es" class="form-control"
+                                 value="${rubro?.codigoEspecificacion ?: ''}" readonly="" />
 
-%{--                    <input type="text" name="rubro.codigoEspecificacion" class="span1" value="${rubro?.codigoEspecificacion}" id="input_codigo_es" readonly style="width:120px">--}%
+                    %{--                    <input type="text" name="rubro.codigoEspecificacion" class="span1" value="${rubro?.codigoEspecificacion}" id="input_codigo_es" readonly style="width:120px">--}%
                 </div>
                 <div class="col-md-4" >
                     <label>Descripción</label>
@@ -109,13 +109,13 @@
                                  value="${rubro?.nombre ?: ''}" readonly="" />
 
 
-%{--                    <input type="text" name="rubro.nombre" class="span72" value="${rubro?.nombre}" id="input_descripcion"readonly="">--}%
+                    %{--                    <input type="text" name="rubro.nombre" class="span72" value="${rubro?.nombre}" id="input_descripcion"readonly="">--}%
                 </div>
                 <div class="col-md-2">
                     <label>Unidad</label>
                     <g:textField name="unidad.id" class="form-control"
                                  value="${rubro?.unidad?.descripcion ?: ''}" readonly="" />
-%{--                    <input type="text" name="unidad.id" class="span72" value="${rubro?.unidad?.descripcion}" readonly="" style="width:60px;">--}%
+                    %{--                    <input type="text" name="unidad.id" class="span72" value="${rubro?.unidad?.descripcion}" readonly="" style="width:60px;">--}%
                 </div>
             </div>
             <div class="row-fluid">
@@ -139,7 +139,7 @@
                 <g:textField name="unidad.id" id="costo_indi" class="form-control"
                              value="${obra ? obra.totales : '21'}" />
 
-%{--                <input type="text" style="width: 40px; color: #008; text-align: right" id="costo_indi" value="${(obra)?obra.totales:'21'}">--}%
+                %{--                <input type="text" style="width: 40px; color: #008; text-align: right" id="costo_indi" value="${(obra)?obra.totales:'21'}">--}%
             </div>
         </div>
 
@@ -149,41 +149,41 @@
                 <input type="hidden" id="item_id">
                 <input type="hidden" id="item_tipoLista">
                 <g:textField name="item.codigo" id="cdgo_buscar" class="form-control" readonly="" />
-%{--                <input type="text" name="item.codigo" id="cdgo_buscar" style="width: 105px;" readonly="">--}%
+                %{--                <input type="text" name="item.codigo" id="cdgo_buscar" style="width: 105px;" readonly="">--}%
             </div>
 
             <div class="col-md-3">
                 <label>Descripción</label>
                 <g:textField name="item.descripcion" id="item_desc" class="form-control" readonly="" />
-%{--                <input type="text" name="item.descripcion" id="item_desc" style="width: 450px" readonly="">--}%
+                %{--                <input type="text" name="item.descripcion" id="item_desc" style="width: 450px" readonly="">--}%
             </div>
 
             <div class="col-md-1" >
-               <label>Unidad</label>
+                <label>Unidad</label>
                 <g:textField name="item.unidad" id="item_unidad" class="form-control" readonly="" />
-%{--                <input type="text" name="item.unidad" id="item_unidad" class="span8" readonly="">--}%
+                %{--                <input type="text" name="item.unidad" id="item_unidad" class="span8" readonly="">--}%
             </div>
             <div class="col-md-2">
                 <label>Precio incluye transp.</label>
                 <g:textField name="item.precio" id="item_precio" class="form-control" value="1" style="text-align: right" />
-%{--                <input type="text" name="item.precio" class="span12" id="item_precio" value="1" style="text-align: right; width: 120px;">--}%
+                %{--                <input type="text" name="item.precio" class="span12" id="item_precio" value="1" style="text-align: right; width: 120px;">--}%
             </div>
 
             <div class="col-md-1">
                 <label>Cantidad</label>
                 <g:textField name="item.cantidad" id="item_cantidad" class="form-control" value="1" style="text-align: right" />
-%{--                <input type="text" name="item.cantidad" class="span12" id="item_cantidad" value="1" style="text-align: right">--}%
+                %{--                <input type="text" name="item.cantidad" class="span12" id="item_cantidad" value="1" style="text-align: right">--}%
             </div>
 
             <div class="col-md-1">
-               <label> Rendimiento </label>
+                <label> Rendimiento </label>
                 <g:textField name="item.rendimiento" id="item_rendimiento" class="form-control" value="1" style="text-align: right" />
-%{--                <input type="text" name="item.rendimiento" class="span12" id="item_rendimiento" value="1" style="text-align: right;width: 100px;" >--}%
+                %{--                <input type="text" name="item.rendimiento" class="span12" id="item_rendimiento" value="1" style="text-align: right;width: 100px;" >--}%
             </div>
             <div class="col-md-1">
                 <label>VAE (%)</label>
                 <g:textField name="item.vae" id="item_vae" class="form-control" value="100" style="text-align: right" />
-%{--                <input type="text" name="item.vae" class="span12" id="item_vae" value="100" style="text-align: right;width: 60px;" >--}%
+                %{--                <input type="text" name="item.vae" class="span12" id="item_vae" value="100" style="text-align: right;width: 60px;" >--}%
             </div>
 
             <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 22px;margin-left: 15px; width: 35px">
@@ -554,10 +554,8 @@
             </div>
         </fieldset>
     </div>
-
-
-
 </div>
+
 <script type="text/javascript">
 
     $("#cnsl-rubros").click(function () {
@@ -875,12 +873,16 @@
         }
     }
     function getPrecio(){
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'getPrecioOferente')}",
-            data     : "id="+$("#item_id").val(),
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'rubro',action:'getPrecioOferente')}",
+            // data     : "id="+$("#item_id").val(),
+            data:{
+                id: $("#item_id").val()
+            },
             success  : function (msg) {
-//                console.log(msg)
-                $("#item_precio").val(number_format(msg.split('_')[0], 2, ".", ""))
-                $("#item_vae").val(number_format(msg.split('_')[1], 2, ".", ""))
+                $("#item_precio").val(number_format(msg.split('_')[0], 2, ".", ""));
+                $("#item_vae").val(number_format(msg.split('_')[1], 2, ".", ""));
             }
         });
     }
@@ -898,7 +900,9 @@
             data = "tc=" + $("#tipoCampo").val() + "&campos=" + $("#campo :selected").val() + "&operadores=" + $("#operador :selected").val() + "&criterios=" + $("#criterio").val()
         }
         data += "&ordenado=" + $("#campoOrdn :selected").val() + "&orden=" + $("#orden :selected").val();
-        $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'buscaItem')}",
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'rubro',action:'buscaItem')}",
             data     : data,
             success  : function (msg) {
                 $("#spinner").hide();
@@ -906,7 +910,6 @@
                 $(".contenidoBuscador").html(msg).show("slide");
             }
         });
-
     }
 
     function enviarCopiar() {
@@ -933,25 +936,25 @@
     }
 
     function totalEquipos(){
-        var trE=$("<tr id='total_equipo' class='total'>")
-        var equipos = $("#tabla_equipo").children()
-        var totalE= 0
-        var td=$("<td>")
-        td.html("<b>SUBTOTAL</b>")
-        trE.append(td)
+        var trE=$("<tr id='total_equipo' class='total'>");
+        var equipos = $("#tabla_equipo").children();
+        var totalE= 0;
+        var td=$("<td>");
+        td.html("<b>SUBTOTAL</b>");
+        trE.append(td);
         for(i=0;i<5;i++){
-            td=$("<td>")
+            td=$("<td>");
             trE.append(td)
         }
 
         equipos.each(function(){
             totalE+=parseFloat($(this).find(".col_total").html())
-        })
+        });
 
-        td=$("<td class='valor_total'  style='text-align: right;;font-weight: bold'>")
-        td.html(number_format(totalE, 5, ".", ""))
-        trE.append(td)
-        $("#tabla_equipo").append(trE)
+        td=$("<td class='valor_total'  style='text-align: right;;font-weight: bold'>");
+        td.html(number_format(totalE, 5, ".", ""));
+        trE.append(td);
+        $("#tabla_equipo").append(trE);
         tablaIndirectos();
     }
 
@@ -1147,7 +1150,7 @@
                     data     : "id=${rubro?.id}",
                     success  : function (msg) {
                         $("#dlgLoad").dialog("close")
-                        if(msg=="ok"){
+                        if(msg==="ok"){
                             location.href="${createLink(action: 'rubroPrincipal')}"
                         }else{
 //                            console.log(msg)
@@ -1534,13 +1537,15 @@
 
         });
 
+
+
         $(".borrarItem").click(function () {
-            var tr = $(this).parent().parent()
+            var tr = $(this).parent().parent();
             if (confirm("Esta seguro de eliminar este registro? Esta acción es irreversible")) {
                 $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
                     data     : "id=" + $(this).attr("iden"),
                     success  : function (msg) {
-                        if (msg == "Registro eliminado") {
+                        if (msg === "Registro eliminado") {
                             tr.remove()
                         }
 
@@ -1565,34 +1570,68 @@
 
         });
 
+        $("#listaItems").dialog({
+            autoOpen: false,
+            resizable: true,
+            modal: true,
+            draggable: false,
+            width: 1000,
+            height: 500,
+            position: 'center',
+            title: 'Items'
+        });
+
+
         $("#cdgo_buscar").dblclick(function () {
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            $("#modalTitle").html("Lista de items");
-            $("#modalFooter").html("").append(btnOk);
-            $(".contenidoBuscador").html("")
-            $("#modal-rubro").modal("show");
-            $("#buscarDialog").unbind("click")
-            $("#buscarDialog").bind("click", enviarItem)
-            setTimeout( function() { $( '#criterio' ).focus() }, 500 );
+
+            $.ajax({
+                type    : "POST",
+                url: "${createLink(controller: 'rubroOf', action: 'buscadorItemsOferente_ajax')}",
+                data    : {},
+                success : function (msg) {
+                    bcpc = bootbox.dialog({
+                        id      : "dlgBuscarCPC",
+                        title   : "Buscar Código Compras Públicas",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+
+            // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+            // $("#modalTitle").html("Lista de items");
+            // $("#modalFooter").html("").append(btnOk);
+            // $(".contenidoBuscador").html("")
+            // $("#modal-rubro").modal("show");
+            // $("#buscarDialog").unbind("click")
+            // $("#buscarDialog").bind("click", enviarItem)
+            // setTimeout( function() { $( '#criterio' ).focus() }, 500 );
         });
         $("#cdgo_buscar").blur(function(){
 //            console.log($("#item_id").val()=="")
-            if($("#item_id").val()=="" && $("#cdgo_buscar").val()!=""){
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'buscarRubroCodigo')}",
+            if($("#item_id").val()==="" && $("#cdgo_buscar").val()!==""){
+                $.ajax({
+                    type : "POST",
+                    url : "${g.createLink(controller: 'rubro',action:'buscarRubroCodigo')}",
                     data     : "codigo=" + $("#cdgo_buscar").val(),
                     success  : function (msg) {
-                        if (msg !="-1") {
-//                            console.log("msg "+msg)
-                            var parts = msg.split("&&")
-                            $("#item_tipoLista").val(parts[1])
-                            $("#item_id").val(parts[0])
-                            $("#item_desc").val(parts[2])
-                            $("#item_unidad").val(parts[3])
+                        if (msg !== "-1") {
+                            var parts = msg.split("&&");
+                            $("#item_tipoLista").val(parts[1]);
+                            $("#item_id").val(parts[0]);
+                            $("#item_desc").val(parts[2]);
+                            $("#item_unidad").val(parts[3]);
                         }else{
-//                            $("#cdgo_buscar").val("")
-                            $("#item_tipoLista").val("")
-                            $("#item_id").val("")
-                            $("#item_desc").val("")
+                            $("#item_tipoLista").val("");
+                            $("#item_id").val("");
+                            $("#item_desc").val("");
                             $("#item_unidad").val("")
                         }
                     }

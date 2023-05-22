@@ -85,7 +85,7 @@ class RubroOfController {
         grupos.add(Grupo.get(6))
         if (params.idRubro) {
             rubro = Item.get(params.idRubro)
-            def items = Rubro.findAllByRubro(rubro)
+            def items = RubroOferente.findAllByRubro(rubro)
             items.sort { it.item.codigo }
             [campos: campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
         } else {
@@ -102,12 +102,15 @@ class RubroOfController {
     }
 
     def addItem() {
+        println("params " + params)
         def rubro = Item.get(params.rubro)
         def item = Item.get(params.item)
+        def oferente = seguridad.Persona.get(session.usuario.id)
         def detalle
         detalle = RubroOferente.findByItemAndRubro(item, rubro)
         if (!detalle)
             detalle = new RubroOferente()
+        detalle.oferente = oferente
         detalle.rubro = rubro
         detalle.item = item
         detalle.cantidad = params.cantidad.toDouble()
@@ -136,7 +139,7 @@ class RubroOfController {
             if (!precio){
                 precio = new Precio()
                 precio.item=item
-                precio.oferente= seguridad.Persona.get(session.usuario.id)
+                precio.oferente= oferente
                 precio.fecha=new Date()
             }
             precio.precio=params.precio.toDouble()
