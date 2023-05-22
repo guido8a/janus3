@@ -721,5 +721,9 @@ class RubroOfController {
         [data: datos, tipo: params.band, rubro: params.rubro]
     }
 
+    def buscadorItemsOferente_ajax(){
+
+    }
+
 
 } //fin controller

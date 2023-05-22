@@ -34,10 +34,10 @@
         Cancelar
     </a>
     <g:if test="${rubro}">
-    %{--    <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">--}%
-    %{--        <i class="icon-table"></i>--}%
-    %{--        Calcular--}%
-    %{--    </a>--}%
+        <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">
+            <i class="icon-table"></i>
+            Calcular
+        </a>
         <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">
             <i class="fa fa-print"></i>
             Imprimir
