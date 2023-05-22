@@ -38,7 +38,7 @@ indisgro, indicmpo, indicmpm, indigaob, cpac__id
 prsn__id, obrarvsr, obrainsp, cmnd__id, parr__id, tpob__id,
 prog__id, edob__id, csob__id, lgar__id, obrachfr, obravlqt,
 prsp__id, obracdgo||'-OF', obranmbr, obradscr, obrafcin, obrafcfn,
-obradsps, obradsvl, obrabfdi, obrabfin, obrabfpt, obraetdo,
+obradsps, obradsvl, obrabfdi, obrabfin, obrabfpt, 'N',
 obrarefe, obrafcha, obraofig, obraofsl, obrapz_a, obrapz_m,
 obrapz_d, obraobsr, 'F', rbpcfcha, obrammco, obrammsl,
 obrafcsl, obraftrd, obravlcd, obracpvl, obraftvl, obraftps,

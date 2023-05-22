@@ -445,8 +445,8 @@ class RubroOfController {
 //        println "listas " + listas
         parts.each {
             if (it.size() > 0) {
-                def item=Rubro.get(it).item
-                def precio = Precio.findByItemAndPersona(item,session.usuario)
+                def item=RubroOferente.get(it).item
+                def precio = Precio.findByItemAndOferente(item, session.usuario)
                 if (!precio){
                     res+=item.id+";0&"
                 }else{

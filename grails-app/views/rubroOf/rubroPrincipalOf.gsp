@@ -1466,7 +1466,7 @@
                         datos += $(this).attr("id") + "#"
                     });
 
-                    $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'getPrecios')}",
+                    $.ajax({type : "POST", url : "${g.createLink(controller: 'rubroOf',action:'getPrecios')}",
                         data     : datos,
                         success  : function (msg) {
                             var precios = msg.split("&")
