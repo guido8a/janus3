@@ -428,6 +428,8 @@ class PreciosService {
         return result
     }
 
+
+
     def ac_rbroObra(obra) {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from ac_rbro_hr_v2(" + obra + ") "
@@ -749,6 +751,33 @@ class PreciosService {
         return dias?:0
 //        cn.close()
     }
+
+    def rb_preciosV3(parametros) {
+        def cn3 = dbConnectionService.getConnection()
+//        def sql = "select * from rb_precios_ofrb(" + rubro + ",'" + oferente + "') "
+        def sql = "select * from rb_precios_ofrb(" + parametros + ") "
+
+//        println "sql ac_rbroV3 -->>"+sql
+        def result = []
+        cn3.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn3.close()
+        return result
+    }
+
+    def ac_rbroV2(rubro, oferente) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from ac_rbro_hr1_of(" + rubro + ",'" + oferente + "') "
+//        println "sql ac rubro "+sql
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
+
 
 
 }

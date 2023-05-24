@@ -168,7 +168,8 @@
             <b>NOMBRE DEL OFERENTE: ${oferente?.nombre.toUpperCase() + " " + oferente?.apellido.toUpperCase()}</b>
         </p>
         <p style="font-size: 12pt; text-align: center">
-            <b>PROCESO: ${obra?.codigoConcurso}</b>
+            %{--<b>PROCESO: ${obra?.codigoConcurso}</b>--}%
+            <b>PROCESO: Concurso</b>
         </p>
         <p style="font-size: 12pt; text-align: left">
             <b>ANÁLISIS DE PRECIOS UNITARIOS</b>

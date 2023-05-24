@@ -8,6 +8,7 @@ class ObraOferente implements Auditable{
     Obra obra
     Persona oferente
     Date fecha
+    int idJanus
     static auditable = true
 
     static mapping = {
@@ -18,6 +19,7 @@ class ObraOferente implements Auditable{
         version false
         columns {
             id column: 'obof__id'
+            idJanus column: 'obrajnid'
             obra column: 'obra__id'
             oferente column: 'prsn__id'
             fecha column: 'oboffcha'
