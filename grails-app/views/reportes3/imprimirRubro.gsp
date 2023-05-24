@@ -1,26 +1,11 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 11/22/12
-  Time: 12:59 PM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
         <title>Rubro :${rubro.codigo}</title>
-        %{--<link href="../../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/custom.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../../css/font-awesome.css" rel="stylesheet" type="text/css"/>--}%
-        %{--<link href="../css/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css"/>--}%
-        <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>
-        <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>
-        <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
-        <link href="../css/font-awesome.css" rel="stylesheet" type="text/css"/>
+%{--        <link href="../font/open/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
+%{--        <link href="../font/tulpen/stylesheet.css" rel="stylesheet" type="text/css"/>--}%
+%{--        <link href="../css/custom.css" rel="stylesheet" type="text/css"/>--}%
+%{--        <link href="../css/font-awesome.css" rel="stylesheet" type="text/css"/>--}%
         <style type="text/css">
         @page {
             size   : 21cm 29.7cm;  /*width height */
@@ -33,7 +18,6 @@
         }
 
         .hoja {
-            /*background  : #e6e6fa;*/
             height      : 20.7cm !important; /*29.7-(1.5*2)*/
             font-family : serif;
             font-size   : 10px;
@@ -43,13 +27,9 @@
         .tituloPdf {
             height        : 100px;
             font-size     : 11px;
-            /*font-weight   : bold;*/
             text-align    : center;
             margin-bottom : 5px;
             width         : 95%;
-
-            /*font-family       : 'Tulpen One', cursive !important;*/
-            /*font-family : "Open Sans Condensed" !important;*/
         }
 
         .grande{
@@ -150,7 +130,7 @@
 
             <div class="tituloPdf tituloHeader">
                 <p class="grande">
-                    <b>G.A.D. LOS RÍOS</b>
+                    <b>G.A.D. PICHINCHA</b>
                 </p>
 
                 <p style="font-size: 14px">
@@ -199,8 +179,6 @@
 
                 <div class="row-fluid">
                     <div class="span12">
-                        %{--<g:set var="nombre" value="${rubro.nombre.replaceAll('<', '(menor)')}"></g:set>--}%
-                        %{--<g:set var="nombre" value="${rubro.nombre.replaceAll('<', '(mayor)')}"></g:set>--}%
                         <b>Descripción:</b> ${rubro.nombre}
                     </div>
                 </div>

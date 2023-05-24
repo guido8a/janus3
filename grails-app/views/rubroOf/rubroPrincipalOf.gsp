@@ -6,53 +6,23 @@
     <title>
         Rubros
     </title>
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 </head>
 
 <body>
 
-<div class="span12">
-    <g:if test="${flash.message}">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-            <a class="close" data-dismiss="alert" href="#">×</a>
-            ${flash.message}
-        </div>
-    </g:if>
-</div>
-
-<div class="span12 btn-group" role="navigation">
+<div class="span6 btn-group" role="navigation">
     <a href="#" class="btn  btn-primary" id="btn_lista">
         <i class="fa fa-list"></i>
         Lista
     </a>
-    <a href="${g.createLink(action: 'rubroPrincipal')}" class="btn btn-info btn-new">
+    <a href="${g.createLink(action: 'rubroPrincipalOf')}" class="btn btn-info btn-new">
         <i class="fa fa-times"></i>
         Cancelar
     </a>
     <g:if test="${rubro}">
-        <a href="#" class="btn btn-ajax btn-new" id="calcular" title="Calcular precios">
-            <i class="icon-table"></i>
+        <a href="#" class="btn btn-success btn-new" id="calcular" title="Calcular precios">
+            <i class="fa fa-table"></i>
             Calcular
-        </a>
-        <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">
-            <i class="fa fa-print"></i>
-            Imprimir
-        </a>
-        <a href="#" class="btn btn-ajax btn-info" id="vae" title="Imprimir Vae">
-            <i class="fa fa-print"></i>
-            Imprimir Vae
-        </a>
-        <a href="#" class="btn btn-ajax btn-success" id="excel" title="Imprimir">
-            <i class="fa fa-file-excel"></i>
-            Excel
-        </a>
-        <a href="#" class="btn btn-ajax btn-success" id="excelVae" title="Imprimir Excel Vae">
-            <i class="fa fa-file-excel"></i>
-            Excel Vae
         </a>
     </g:if>
 %{--    <g:if test="${rubro}">--}%
@@ -72,6 +42,28 @@
 </div>
 
 
+<div class="span6 btn-group" role="navigation">
+    <g:if test="${rubro}">
+        <a href="#" class="btn btn-ajax btn-info" id="imprimir" title="Imprimir">
+            <i class="fa fa-print"></i>
+            Imprimir
+        </a>
+        <a href="#" class="btn btn-ajax btn-info" id="vae" title="Imprimir Vae">
+            <i class="fa fa-print"></i>
+            Imprimir Vae
+        </a>
+        <a href="#" class="btn btn-ajax btn-success" id="excel" title="Imprimir">
+            <i class="fa fa-file-excel"></i>
+            Excel
+        </a>
+        <a href="#" class="btn btn-ajax btn-success" id="excelVae" title="Imprimir Excel Vae">
+            <i class="fa fa-file-excel"></i>
+            Excel Vae
+        </a>
+    </g:if>
+</div>
+
+
 <div id="list-grupo" class="col-md-12" role="main" style="margin-top: 10px;margin-left: -10px">
     <div style="border-bottom: 1px solid black;padding-left: 50px;position: relative;">
         <g:form name="frmRubro" action="save" style="height: 80px;">
@@ -83,39 +75,25 @@
 
             <div class="row-fluid">
                 <div class="col-md-3">
-
                     <label> Código </label>
-
-
                     <g:textField name="rubro.codigo" id="input_codigo" class="form-control"
                                  value="${rubro?.codigo ?: ''}" readonly="" />
-
-                    %{--                    <input type="text" name="rubro.codigo" class="span24" value="${rubro?.codigo}" id="input_codigo" readonly="">--}%
                 </div>
 
                 <div class="col-md-3">
                     <label> Especificación </label>
-
                     <g:textField name="rubro.codigoEspecificacion" id="input_codigo_es" class="form-control"
                                  value="${rubro?.codigoEspecificacion ?: ''}" readonly="" />
-
-                    %{--                    <input type="text" name="rubro.codigoEspecificacion" class="span1" value="${rubro?.codigoEspecificacion}" id="input_codigo_es" readonly style="width:120px">--}%
                 </div>
                 <div class="col-md-4" >
                     <label>Descripción</label>
-
-
                     <g:textField name="rubro.nombre" id="input_descripcion" class="form-control"
                                  value="${rubro?.nombre ?: ''}" readonly="" />
-
-
-                    %{--                    <input type="text" name="rubro.nombre" class="span72" value="${rubro?.nombre}" id="input_descripcion"readonly="">--}%
                 </div>
                 <div class="col-md-2">
                     <label>Unidad</label>
                     <g:textField name="unidad.id" class="form-control"
                                  value="${rubro?.unidad?.descripcion ?: ''}" readonly="" />
-                    %{--                    <input type="text" name="unidad.id" class="span72" value="${rubro?.unidad?.descripcion}" readonly="" style="width:60px;">--}%
                 </div>
             </div>
             <div class="row-fluid">
@@ -134,12 +112,8 @@
                 Porcentaje de costos indirectos
             </div>
             <div class="col-md-1">
-
-
                 <g:textField name="unidad.id" id="costo_indi" class="form-control"
                              value="${obra ? obra.totales : '21'}" />
-
-                %{--                <input type="text" style="width: 40px; color: #008; text-align: right" id="costo_indi" value="${(obra)?obra.totales:'21'}">--}%
             </div>
         </div>
 
@@ -149,49 +123,39 @@
                 <input type="hidden" id="item_id">
                 <input type="hidden" id="item_tipoLista">
                 <g:textField name="item.codigo" id="cdgo_buscar" class="form-control" readonly="" />
-                %{--                <input type="text" name="item.codigo" id="cdgo_buscar" style="width: 105px;" readonly="">--}%
             </div>
-
             <div class="col-md-3">
                 <label>Descripción</label>
                 <g:textField name="item.descripcion" id="item_desc" class="form-control" readonly="" />
-                %{--                <input type="text" name="item.descripcion" id="item_desc" style="width: 450px" readonly="">--}%
             </div>
-
             <div class="col-md-1" >
                 <label>Unidad</label>
                 <g:textField name="item.unidad" id="item_unidad" class="form-control" readonly="" />
-                %{--                <input type="text" name="item.unidad" id="item_unidad" class="span8" readonly="">--}%
             </div>
             <div class="col-md-2">
                 <label>Precio incluye transp.</label>
                 <g:textField name="item.precio" id="item_precio" class="form-control" value="1" style="text-align: right" />
-                %{--                <input type="text" name="item.precio" class="span12" id="item_precio" value="1" style="text-align: right; width: 120px;">--}%
             </div>
-
             <div class="col-md-1">
                 <label>Cantidad</label>
                 <g:textField name="item.cantidad" id="item_cantidad" class="form-control" value="1" style="text-align: right" />
-                %{--                <input type="text" name="item.cantidad" class="span12" id="item_cantidad" value="1" style="text-align: right">--}%
             </div>
-
             <div class="col-md-1">
                 <label> Rendimiento </label>
                 <g:textField name="item.rendimiento" id="item_rendimiento" class="form-control" value="1" style="text-align: right" />
-                %{--                <input type="text" name="item.rendimiento" class="span12" id="item_rendimiento" value="1" style="text-align: right;width: 100px;" >--}%
             </div>
             <div class="col-md-1">
                 <label>VAE (%)</label>
                 <g:textField name="item.vae" id="item_vae" class="form-control" value="100" style="text-align: right" />
-                %{--                <input type="text" name="item.vae" class="span12" id="item_vae" value="100" style="text-align: right;width: 60px;" >--}%
             </div>
 
-            <div class="col-md-1" style="border: 0px solid black;height: 45px;padding-top: 22px;margin-left: 15px; width: 35px">
-                <a class="btn btn-sm btn-primary" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
-                    <i class="fa fa-plus"></i>
-                </a>
-            </div>
-
+            <g:if test="${rubro?.id}">
+                <div class="col-md-1" style="height: 45px;padding-top: 22px;margin-left: 15px; width: 35px">
+                    <a class="btn btn-sm btn-primary" href="#" rel="tooltip" title="Agregar" id="btn_agregarItem">
+                        <i class="fa fa-plus"></i>
+                    </a>
+                </div>
+            </g:if>
         </div>
     </div>
 
@@ -236,7 +200,7 @@
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 40px;text-align: center" class="col_delete">
-                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}" data-id="${rub.id}">
                                 <i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
@@ -281,7 +245,7 @@
                         </td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 40px;text-align: center" class="col_delete">
-                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}" data-id="${rub.id}">
                                 <i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
@@ -326,7 +290,7 @@
                         <td class="col_vacio" style="width: 50px;display: none"></td>
                         <td class="col_total" style="display: none;text-align: right"></td>
                         <td style="width: 40px;text-align: center" class="col_delete">
-                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="${rub.id}">
+                            <a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar material" iden="${rub.id}" data-id="${rub.id}">
                                 <i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
@@ -341,20 +305,6 @@
 
 </div>
 
-<div class="modal grande hide fade " id="modal-rubro" style=";overflow: hidden;">
-    <div class="modal-header btn-info">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-
-        <h3 id="modalTitle"></h3>
-    </div>
-
-    <div class="modal-body" id="modalBody">
-        <bsc:buscador name="rubro.buscador.id" value="" accion="buscaRubro" controlador="rubro" campos="${campos}" label="Rubro" tipo="lista"/>
-    </div>
-
-    <div class="modal-footer" id="modalFooter">
-    </div>
-</div>
 <div class="modal large hide fade " id="modal-detalle" style=";overflow: hidden;">
     <div class="modal-header btn-info">
         <button type="button" class="close" data-dismiss="modal">×</button>
@@ -388,7 +338,7 @@
                 Volquete
             </div>
             <div class="span5">
-                <g:select name="volquetes" from="${volquetes}" optionKey="id" optionValue="nombre" id="cmb_vol" noSelection="${['-1':'Seleccione']}" value="${aux.volquete.id}"></g:select>
+                <g:select name="volquetes" from="${volquetes}" optionKey="id" optionValue="nombre" id="cmb_vol" noSelection="${['-1':'Seleccione']}" value="${aux.volquete.id}"/>
             </div>
             <div class="span2">
                 Costo
@@ -402,7 +352,7 @@
                 Chofer
             </div>
             <div class="span5">
-                <g:select name="volquetes" from="${choferes}" optionKey="id" optionValue="nombre" id="cmb_chof" style="" noSelection="${['-1':'Seleccione']}" value="${aux.chofer.id}" ></g:select>
+                <g:select name="volquetes" from="${choferes}" optionKey="id" optionValue="nombre" id="cmb_chof" style="" noSelection="${['-1':'Seleccione']}" value="${aux.chofer.id}" />
             </div>
             <div class="span2">
                 Costo
@@ -414,11 +364,9 @@
         <div class="row-fluid" style="border-bottom: 1px solid black;margin-bottom: 10px">
             <div class="span6">
                 <b>Distancia peso</b>
-                %{--<input type="text" style="width: 50px;" id="dist_peso" value="0.00">--}%
             </div>
             <div class="span5" style="margin-left: 30px;">
                 <b>Distancia volumen</b>
-                %{--<input type="text" style="width: 50px;" id="dist_vol" value="0.00">--}%
             </div>
         </div>
 
@@ -556,7 +504,69 @@
     </div>
 </div>
 
+<div id="busqueda" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+            <div class="col-md-2">Grupo
+            <g:select name="buscarGrupo_name"  id="buscarGrupo"
+                      from="['1': 'Materiales', '2': 'Mano de Obra', '3': 'Equipos']"
+                      optionKey="key" optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Buscar Por
+            <g:select name="buscarPor" class="buscarPor" from="${[1: 'Nombre', 2: 'Código']}"
+                      style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Criterio
+            <g:textField name="criterio" class="criterio" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+            <g:select name="ordenar" class="ordenar" from="${[1: 'Nombre', 2: 'Código']}"
+                      style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="btn-consultar"><i
+                        class="fa fa-search"></i> Consultar
+                </button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde">
+        <div id="divTabla" style="height: 460px; overflow-y:auto; overflow-x: auto;">
+        </div>
+    </fieldset>
+</div>
+
 <script type="text/javascript">
+
+    $("#btn-consultar").click(function () {
+        busqueda();
+    });
+
+    function busqueda() {
+        var buscarPor = $("#buscarPor").val();
+        var criterio = $(".criterio").val();
+        var ordenar = $("#ordenar").val();
+        var grupo = $("#buscarGrupo").val();
+        $.ajax({
+            type: "POST",
+            url: "${createLink(controller: 'rubro', action:'listaItem')}",
+            data: {
+                buscarPor: buscarPor,
+                criterio: criterio,
+                ordenar: ordenar,
+                grupo: grupo
+            },
+            success: function (msg) {
+                $("#divTabla").html(msg);
+            }
+        });
+    }
 
     $("#cnsl-rubros").click(function () {
         buscaRubros(null);
@@ -589,294 +599,278 @@
         });
     }
 
-
     function agregar(id,tipo){
-        var tipoItem=$("#item_id").attr("tipo")
-        var cant = $("#item_cantidad").val()
-        if (cant == "")
-            cant = 0
+        var tipoItem=$("#item_id").attr("tipo");
+        var cant = $("#item_cantidad").val();
+        if (cant === "")
+            cant = 0;
         if (isNaN(cant))
-            cant = 0
+            cant = 0;
         if(tipoItem*1>1){
             if(cant>0){
-                var c = Math.ceil(cant)
-//                console.log(c)
+                var c = Math.ceil(cant);
                 if(c>cant){
                     cant=0
                 }
             }
         }
-        var rend = $("#item_rendimiento").val()
+        var rend = $("#item_rendimiento").val();
         if (isNaN(rend))
-            rend = 1
-        var precio = $("#item_precio").val()
+            rend = 1;
+        var precio = $("#item_precio").val();
         if (isNaN(precio))
-            precio = 0
-
-        var vae = $("#item_vae").val()
+            precio = 0;
+        var vae = $("#item_vae").val();
         if (isNaN(vae))
-            vae = 0
+            vae = 0;
 
         if ($("#item_id").val() * 1 > 0) {
             if (cant > 0 && precio>0) {
-                var data = "rubro=${rubro?.id}&item=" + $("#item_id").val() + "&cantidad=" + cant + "&rendimiento=" + rend+"&precio="+precio+"&vae="+vae
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubroOf',action:'addItem')}",
+                var g = cargarLoader("Guardando...");
+                var data = "rubro=${rubro?.id}&item=" + $("#item_id").val() + "&cantidad=" + cant + "&rendimiento=" + rend+"&precio="+precio+"&vae="+vae;
+                $.ajax({
+                    type : "POST",
+                    url : "${g.createLink(controller: 'rubroOf',action:'addItem')}",
                     data     : data,
                     success  : function (msg) {
-                        if(tipo=="H"){
-                            window.location.href="${g.createLink(action: 'rubroPrincipalOf')}?idRubro="+id
-                        }
-                        var tr = $("<tr class='item_row'>")
-                        var td = $("<td>")
-                        var band = true
-                        var parts = msg.split(";")
-                        tr.attr("id", parts[1])
-                        tr.attr("tipoLista", parts[5])
-                        var a
-                        td.addClass("cdgo")
-                        td.html($("#cdgo_buscar").val())
-                        tr.append(td)
-                        td = $("<td>")
-                        td.html($("#item_desc").val())
-                        tr.append(td)
-
-                        if (parts[0] == "1") {
-                            $("#tabla_material").children().find(".cdgo").each(function () {
-//                                    ////console.log($(this))
-                                if ($(this).html() == $("#cdgo_buscar").val()) {
-                                    var tdCant = $(this).parent().find(".cant")
-                                    var tdRend = $(this).parent().find(".rend")
-                                    tdCant.html(number_format(parts[3], 5, ".", ""))
-                                    tdRend.html(number_format(parts[4], 7, ".", ""))
-                                    tdRend.attr("valor", parts[4]);
-                                    band = false
-                                }
-                            });
-                            if (band) {
-                                td = $("<td style='text-align: center' class='col_unidad'>")
-                                td.html($("#item_unidad").val())
-                                tr.append(td)
-                                td = $("<td style='text-align: right' class='cant'>")
-                                td.html(number_format($("#item_cantidad").val(), 5, ".", ""))
-                                tr.append(td)
-                                td = $('<td class="col_precioUnit" style="display: none;text-align: right"></td>');
-                                td.attr("id", "i_" + parts[2])
-                                tr.append(td)
-                                td = $('<td class="col_vacio" style="width: 40px;display: none"></td>');
-                                tr.append(td)
-                                td = $('<td class="col_vacio" style="width: 40px;display: none"></td>');
-                                tr.append(td)
-                                td = $('<td class="col_total" style="display: none;text-align: right"></td>');
-                                tr.append(td)
-                                td = $('<td  style="width: 40px;text-align: center" class="col_delete">')
-                                a = $('<a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="' + parts[1] + '"><i class="icon-trash"></i></a>')
-                                td.append(a)
-                                tr.append(td)
-                                $("#tabla_material").append(tr)
-                            }
-
-                        } else {
-                            if (parts[0] == "2") {
-
-                                $("#tabla_mano").children().find(".cdgo").each(function () {
-//                                        ////console.log("mano de obra ",parts)
-                                    if ($(this).html() == $("#cdgo_buscar").val()) {
-                                        var tdCant = $(this).parent().find(".cant")
-                                        var tdRend = $(this).parent().find(".rend")
-                                        tdCant.html(number_format(parts[3], 5, ".", ""))
-                                        tdRend.html(number_format(parts[4], 7, ".", ""))
-                                        tdRend.attr("valor", parts[4]);
-                                        band = false
-                                    }
-                                });
-                                if (band) {
-                                    td = $("<td style='text-align: right' class='cant'>")
-                                    td.html(number_format(parts[3], 5, ".", ""))
-                                    tr.append(td)
-                                    td = $('<td class="col_jornal" style="display: none;text-align: right"></td>');
-                                    td.attr("id", "i_" + parts[2])
-                                    tr.append(td)
-                                    td = $('<td class="col_hora" style="display: none;text-align: right"></td>');
-                                    tr.append(td)
-                                    td = $("<td style='text-align: right' class='col_rend rend'>")
-                                    td.attr("valor", parts[4]);
-                                    td.html(number_format(parts[4], 5, ".", ""))
-                                    tr.append(td)
-                                    td = $('<td class="col_total" style="display: none;text-align: right"></td>');
-                                    tr.append(td)
-                                    td = $('<td  style="width: 40px;text-align: center" class="col_delete">')
-                                    a = $('<a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="' + parts[1] + '"><i class="icon-trash"></i></a>')
-                                    td.append(a)
-                                    tr.append(td)
-                                    $("#tabla_mano").append(tr)
-                                }
-
-                            } else {
-                                $("#tabla_equipo").children().find(".cdgo").each(function () {
-                                    if ($(this).html() == $("#cdgo_buscar").val()) {
-
-                                        var tdCant = $(this).parent().find(".cant")
-                                        var tdRend = $(this).parent().find(".rend")
-                                        tdCant.html(number_format(parts[3], 5, ".", ""))
-                                        tdRend.html(number_format(parts[4], 7, ".", ""))
-                                        tdRend.attr("valor", parts[4]);
-                                        band = false
-                                    }
-                                });
-
-                                if (band) {
-                                    td = $("<td style='text-align: right' class='cant'>")
-                                    td.html(number_format(parts[3], 5, ".", ""))
-                                    tr.append(td)
-                                    td = $('<td class="col_tarifa" style="display: none;text-align: right"></td>');
-                                    td.attr("id", "i_" + parts[2])
-                                    tr.append(td)
-                                    td = $('<td class="col_hora" style="display: none;text-align: right"></td>');
-                                    tr.append(td)
-                                    td = $("<td style='text-align: right' class='col_rend rend'>");
-                                    td.attr("valor", parts[4]);
-                                    td.html(number_format(parts[4], 5, ".", ""))
-                                    tr.append(td)
-                                    td = $('<td class="col_total" style="display: none;text-align: right"></td>');
-                                    tr.append(td)
-                                    td = $('<td  style="width: 40px;text-align: center" class="col_delete">')
-                                    a = $('<a class="btn btn-small btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" iden="' + parts[1] + '"><i class="icon-trash"></i></a>')
-                                    td.append(a)
-                                    tr.append(td)
-                                    $("#tabla_equipo").append(tr)
-                                }
-                            }
-                        }
-
-                        tr.bind("dblclick", function () {
-                            var row = $(this)
-                            var hijos = row.children()
-                            var desc = $(hijos[1]).html()
-                            var cant
-                            var codigo = $(hijos[0]).html()
-                            var unidad
-                            var rendimiento
-                            var item
-                            var tipo = row.attr("tipo")
-                            for (i = 2; i < hijos.length; i++) {
-
-                                if ($(hijos[i]).hasClass("cant"))
-                                    cant = $(hijos[i]).html()
-                                if ($(hijos[i]).hasClass("col_unidad"))
-                                    unidad = $(hijos[i]).html()
-                                if ($(hijos[i]).hasClass("col_rend"))
-                                    rendimiento = $(hijos[i]).attr("valor")
-                                if ($(hijos[i]).hasClass("col_tarifa"))
-                                    item = $(hijos[i]).attr("id")
-                                if ($(hijos[i]).hasClass("col_precioUnit"))
-                                    item = $(hijos[i]).attr("id")
-                                if ($(hijos[i]).hasClass("col_jornal"))
-                                    item = $(hijos[i]).attr("id")
-
-                            }
-                            item = item.replace("i_", "")
-                            $("#item_cantidad").val(cant.toString().trim())
-                            if (rendimiento)
-                                $("#item_rendimiento").val(rendimiento.toString().trim())
-                            $("#item_id").val(item)
-                            $("#item_id").attr("tipo",tipo)
-                            $("#cdgo_buscar").val(codigo)
-                            $("#item_desc").val(desc)
-                            $("#item_unidad").val(unidad)
-                            $("#item_vae").val(vae)
-                            getPrecio();
-
-
-                        })
-
-                        if (a) {
-                            a.bind("click", function () {
-                                var tr = $(this).parent().parent()
-                                if (confirm("Esta seguro de eliminar este registro? Esta acción es irreversible")) {
-                                    $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
-                                        data     : "id=" + $(this).attr("iden"),
-                                        success  : function (msg) {
-                                            if (msg == "Registro eliminado") {
-                                                tr.remove()
-                                            }
-
-                                            $.box({
-                                                imageClass : "box_info",
-                                                text       : msg,
-                                                title      : "Alerta",
-                                                iconClose  : false,
-                                                dialog     : {
-                                                    resizable : false,
-                                                    draggable : false,
-                                                    buttons   : {
-                                                        "Aceptar" : function () {
-                                                        }
-                                                    }
-                                                }
-                                            });
-
-                                        }
-                                    });
-                                }
-
-                            });
-                        }
-
-                        $("#item_desc").val("")
-                        $("#item_id").val("")
-                        $("#item_cantidad").val("1")
-                        $("#cdgo_buscar").val("")
-                        $("#item_unidad").val("")
-//                        $("#item_rendimiento").val("1")
-                        $("#item_precio").val("1")
-                        $("#item_vae").val("100")
-
+                        g.modal("hide");
+                        $("#item_desc").val("");
+                        $("#item_id").val("");
+                        $("#item_cantidad").val("1");
+                        $("#cdgo_buscar").val("");
+                        $("#item_unidad").val("");
+                        $("#item_precio").val("1");
+                        $("#item_vae").val("100");
                         $("#cdgo_buscar").focus()
-//                            $("#item_rendimiento").val("1")
+                        location.reload();
+                        %{--if(tipo==="H"){--}%
+                        %{--    window.location.href="${g.createLink(action: 'rubroPrincipalOf')}?idRubro="+id--}%
+                        %{--}--}%
+                        %{--var tr = $("<tr class='item_row'>");--}%
+                        %{--var td = $("<td>");--}%
+                        %{--var band = true;--}%
+                        %{--var parts = msg.split(";");--}%
+                        %{--tr.attr("id", parts[1]);--}%
+                        %{--tr.attr("tipoLista", parts[5]);--}%
+                        %{--var a;--}%
+                        %{--td.addClass("cdgo");--}%
+                        %{--td.html($("#cdgo_buscar").val());--}%
+                        %{--tr.append(td);--}%
+                        %{--td = $("<td>");--}%
+                        %{--td.html($("#item_desc").val());--}%
+                        %{--tr.append(td);--}%
+
+                        %{--if (parts[0] === "1") {--}%
+                        %{--    $("#tabla_material").children().find(".cdgo").each(function () {--}%
+                        %{--        if ($(this).html() === $("#cdgo_buscar").val()) {--}%
+                        %{--            var tdCant = $(this).parent().find(".cant");--}%
+                        %{--            var tdRend = $(this).parent().find(".rend");--}%
+                        %{--            tdCant.html(number_format(parts[3], 5, ".", ""));--}%
+                        %{--            tdRend.html(number_format(parts[4], 7, ".", ""));--}%
+                        %{--            tdRend.attr("valor", parts[4]);--}%
+                        %{--            band = false--}%
+                        %{--        }--}%
+                        %{--    });--}%
+                        %{--    if (band) {--}%
+                        %{--        td = $("<td style='text-align: center' class='col_unidad'>");--}%
+                        %{--        td.html($("#item_unidad").val());--}%
+                        %{--        tr.append(td);--}%
+                        %{--        td = $("<td style='text-align: right' class='cant'>");--}%
+                        %{--        td.html(number_format($("#item_cantidad").val(), 5, ".", ""));--}%
+                        %{--        tr.append(td);--}%
+                        %{--        td = $('<td class="col_precioUnit" style="display: none;text-align: right"></td>');--}%
+                        %{--        td.attr("id", "i_" + parts[2]);--}%
+                        %{--        tr.append(td);--}%
+                        %{--        td = $('<td class="col_vacio" style="width: 40px;display: none"></td>');--}%
+                        %{--        tr.append(td);--}%
+                        %{--        td = $('<td class="col_vacio" style="width: 40px;display: none"></td>');--}%
+                        %{--        tr.append(td);--}%
+                        %{--        td = $('<td class="col_total" style="display: none;text-align: right"></td>');--}%
+                        %{--        tr.append(td);--}%
+                        %{--        td = $('<td  style="width: 40px;text-align: center" class="col_delete">');--}%
+                        %{--        a = $('<a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" data-id="' + parts[1] + '"><i class="fa fa-trash"></i></a>');--}%
+                        %{--        td.append(a);--}%
+                        %{--        tr.append(td);--}%
+                        %{--        $("#tabla_material").append(tr)--}%
+                        %{--    }--}%
+
+                        %{--} else {--}%
+                        %{--    if (parts[0] === "2") {--}%
+
+                        %{--        $("#tabla_mano").children().find(".cdgo").each(function () {--}%
+                        %{--            if ($(this).html() === $("#cdgo_buscar").val()) {--}%
+                        %{--                var tdCant = $(this).parent().find(".cant");--}%
+                        %{--                var tdRend = $(this).parent().find(".rend");--}%
+                        %{--                tdCant.html(number_format(parts[3], 5, ".", ""));--}%
+                        %{--                tdRend.html(number_format(parts[4], 7, ".", ""));--}%
+                        %{--                tdRend.attr("valor", parts[4]);--}%
+                        %{--                band = false--}%
+                        %{--            }--}%
+                        %{--        });--}%
+                        %{--        if (band) {--}%
+                        %{--            td = $("<td style='text-align: right' class='cant'>");--}%
+                        %{--            td.html(number_format(parts[3], 5, ".", ""));--}%
+                        %{--            tr.append(td);--}%
+                        %{--            td = $('<td class="col_jornal" style="display: none;text-align: right"></td>');--}%
+                        %{--            td.attr("id", "i_" + parts[2]);--}%
+                        %{--            tr.append(td);--}%
+                        %{--            td = $('<td class="col_hora" style="display: none;text-align: right"></td>');--}%
+                        %{--            tr.append(td);--}%
+                        %{--            td = $("<td style='text-align: right' class='col_rend rend'>");--}%
+                        %{--            td.attr("valor", parts[4]);--}%
+                        %{--            td.html(number_format(parts[4], 5, ".", ""));--}%
+                        %{--            tr.append(td);--}%
+                        %{--            td = $('<td class="col_total" style="display: none;text-align: right"></td>');--}%
+                        %{--            tr.append(td);--}%
+                        %{--            td = $('<td  style="width: 40px;text-align: center" class="col_delete">');--}%
+                        %{--            a = $('<a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" data-id="' + parts[1] + '"><i class="fa fa-trash"></i></a>');--}%
+                        %{--            td.append(a);--}%
+                        %{--            tr.append(td);--}%
+                        %{--            $("#tabla_mano").append(tr)--}%
+                        %{--        }--}%
+
+                        %{--    } else {--}%
+                        %{--        $("#tabla_equipo").children().find(".cdgo").each(function () {--}%
+                        %{--            if ($(this).html() === $("#cdgo_buscar").val()) {--}%
+                        %{--                var tdCant = $(this).parent().find(".cant");--}%
+                        %{--                var tdRend = $(this).parent().find(".rend");--}%
+                        %{--                tdCant.html(number_format(parts[3], 5, ".", ""));--}%
+                        %{--                tdRend.html(number_format(parts[4], 7, ".", ""));--}%
+                        %{--                tdRend.attr("valor", parts[4]);--}%
+                        %{--                band = false--}%
+                        %{--            }--}%
+                        %{--        });--}%
+
+                        %{--        if (band) {--}%
+                        %{--            td = $("<td style='text-align: right' class='cant'>")--}%
+                        %{--            td.html(number_format(parts[3], 5, ".", ""))--}%
+                        %{--            tr.append(td)--}%
+                        %{--            td = $('<td class="col_tarifa" style="display: none;text-align: right"></td>');--}%
+                        %{--            td.attr("id", "i_" + parts[2])--}%
+                        %{--            tr.append(td)--}%
+                        %{--            td = $('<td class="col_hora" style="display: none;text-align: right"></td>');--}%
+                        %{--            tr.append(td)--}%
+                        %{--            td = $("<td style='text-align: right' class='col_rend rend'>");--}%
+                        %{--            td.attr("valor", parts[4]);--}%
+                        %{--            td.html(number_format(parts[4], 5, ".", ""))--}%
+                        %{--            tr.append(td)--}%
+                        %{--            td = $('<td class="col_total" style="display: none;text-align: right"></td>');--}%
+                        %{--            tr.append(td)--}%
+                        %{--            td = $('<td  style="width: 40px;text-align: center" class="col_delete">');--}%
+                        %{--            a = $('<a class="btn btn-xs btn-danger borrarItem" href="#" rel="tooltip" title="Eliminar" data-id="' + parts[1] + '"><i class="fa fa-trash"></i></a>');--}%
+                        %{--            td.append(a);--}%
+                        %{--            tr.append(td);--}%
+                        %{--            $("#tabla_equipo").append(tr)--}%
+                        %{--        }--}%
+                        %{--    }--}%
+                        %{--}--}%
+
+                        %{--tr.bind("dblclick", function () {--}%
+                        %{--    var row = $(this)--}%
+                        %{--    var hijos = row.children()--}%
+                        %{--    var desc = $(hijos[1]).html()--}%
+                        %{--    var cant--}%
+                        %{--    var codigo = $(hijos[0]).html()--}%
+                        %{--    var unidad--}%
+                        %{--    var rendimiento--}%
+                        %{--    var item--}%
+                        %{--    var tipo = row.attr("tipo")--}%
+                        %{--    for (i = 2; i < hijos.length; i++) {--}%
+
+                        %{--        if ($(hijos[i]).hasClass("cant"))--}%
+                        %{--            cant = $(hijos[i]).html()--}%
+                        %{--        if ($(hijos[i]).hasClass("col_unidad"))--}%
+                        %{--            unidad = $(hijos[i]).html()--}%
+                        %{--        if ($(hijos[i]).hasClass("col_rend"))--}%
+                        %{--            rendimiento = $(hijos[i]).attr("valor")--}%
+                        %{--        if ($(hijos[i]).hasClass("col_tarifa"))--}%
+                        %{--            item = $(hijos[i]).attr("id")--}%
+                        %{--        if ($(hijos[i]).hasClass("col_precioUnit"))--}%
+                        %{--            item = $(hijos[i]).attr("id")--}%
+                        %{--        if ($(hijos[i]).hasClass("col_jornal"))--}%
+                        %{--            item = $(hijos[i]).attr("id")--}%
+
+                        %{--    }--}%
+                        %{--    item = item.replace("i_", "")--}%
+                        %{--    $("#item_cantidad").val(cant.toString().trim())--}%
+                        %{--    if (rendimiento)--}%
+                        %{--        $("#item_rendimiento").val(rendimiento.toString().trim())--}%
+                        %{--    $("#item_id").val(item)--}%
+                        %{--    $("#item_id").attr("tipo",tipo)--}%
+                        %{--    $("#cdgo_buscar").val(codigo)--}%
+                        %{--    $("#item_desc").val(desc)--}%
+                        %{--    $("#item_unidad").val(unidad)--}%
+                        %{--    $("#item_vae").val(vae)--}%
+                        %{--    getPrecio();--}%
+                        %{--});--}%
+
+                        %{--if (a) {--}%
+                        %{--    a.bind("click", function () {--}%
+                        %{--        var tr = $(this).parent().parent();--}%
+
+                        %{--        bootbox.confirm({--}%
+                        %{--            title: "Eliminar Rubro",--}%
+                        %{--            message: "Esta seguro de eliminar este registro? Esta acción es irreversible",--}%
+                        %{--            buttons: {--}%
+                        %{--                cancel: {--}%
+                        %{--                    label: '<i class="fa fa-times"></i> Cancelar',--}%
+                        %{--                    className: 'btn-primary'--}%
+                        %{--                },--}%
+                        %{--                confirm: {--}%
+                        %{--                    label: '<i class="fa fa-trash"></i> Borrar',--}%
+                        %{--                    className: 'btn-danger'--}%
+                        %{--                }--}%
+                        %{--            },--}%
+                        %{--            callback: function (result) {--}%
+                        %{--                if(result){--}%
+                        %{--                    var g = cargarLoader("Borrando...");--}%
+                        %{--                    $.ajax({--}%
+                        %{--                        type : "POST",--}%
+                        %{--                        url : "${g.createLink(controller: 'rubroOf',action:'eliminarRubroDetalle')}",--}%
+                        %{--                        data:{--}%
+                        %{--                            id: tr.data("id")--}%
+                        %{--                        },--}%
+                        %{--                        success  : function (msg) {--}%
+                        %{--                            g.modal("hide");--}%
+                        %{--                            if (msg === "Registro eliminado correctamente") {--}%
+                        %{--                                log(msg, "success");--}%
+                        %{--                                tr.remove()--}%
+                        %{--                            }else{--}%
+                        %{--                                log(msg, "error");--}%
+                        %{--                            }--}%
+                        %{--                        }--}%
+                        %{--                    });--}%
+                        %{--                }--}%
+                        %{--            }--}%
+                        %{--        });--}%
+                        %{--    });--}%
+                        %{--}--}%
+
+                        %{--$("#item_desc").val("");--}%
+                        %{--$("#item_id").val("");--}%
+                        %{--$("#item_cantidad").val("1");--}%
+                        %{--$("#cdgo_buscar").val("");--}%
+                        %{--$("#item_unidad").val("");--}%
+                        %{--$("#item_precio").val("1");--}%
+                        %{--$("#item_vae").val("100");--}%
+                        %{--$("#cdgo_buscar").focus()--}%
                     }
                 });
             } else {
-                var msg = "La cantidad debe ser un número positivo."
+                var msg = "La cantidad debe ser un número positivo.";
                 if(tipoItem*1>1){
                     msg="Para mano de obra y equipos, la cantidad debe ser un número entero positivo."
                 }
-                $.box({
-                    imageClass : "box_info",
-                    text       : msg,
-                    title      : "Alerta",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        }
-                    }
-                });
+                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  msg +  "</strong>");
             }
         } else {
-            $.box({
-                imageClass : "box_info",
-                text       : "Seleccione un item",
-                title      : "Alerta",
-                iconClose  : false,
-                dialog     : {
-                    resizable : false,
-                    draggable : false,
-                    buttons   : {
-                        "Aceptar" : function () {
-                        }
-                    }
-                }
-            });
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Seleccione un item" +  "</strong>");
         }
     }
     function getPrecio(){
         $.ajax({
             type : "POST",
             url : "${g.createLink(controller: 'rubro',action:'getPrecioOferente')}",
-            // data     : "id="+$("#item_id").val(),
             data:{
                 id: $("#item_id").val()
             },
@@ -1089,10 +1083,10 @@
         });
         $("#save-espc").click(function(){
             if($("#especificaciones").val().trim().length<1024){
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'saveEspc')}",
+                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubroOf',action:'saveEspc')}",
                     data     : "id=${rubro?.id}&espc="+$("#especificaciones").val().trim(),
                     success  : function (msg) {
-                        if(msg=="ok"){
+                        if(msg==="ok"){
                             $("#modal-detalle").modal("hide");
                         }else{
                             $.box({
@@ -1114,28 +1108,12 @@
                     }
                 });
             }else{
-                $.box({
-                    imageClass : "box_info",
-                    text       : "Error",
-                    title      : "Error: Las especificaciones deben tener un máximo de 1024 caracteres",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        },
-                        width     : 500
-                    }
-                });
+                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'>" +  "Las especificaciones deben tener un máximo de 1024 caracteres" +  "</strong>");
             }
-
         });
 
         $("#foto").click(function () {
             var child = window.open('${createLink(controller:"rubro",action:"showFoto",id: rubro?.id, params:[tipo:"il"])}', 'Mies', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
-
             if (child.opener == null)
                 child.opener = self;
             window.toolbar.visible = false;
@@ -1145,30 +1123,15 @@
         $("#borrar").click(function(){
             <g:if test="${rubro}">
             if(confirm("Esta Seguro?")){
-                $("#dlgLoad").dialog("open")
+                var g = cargarLoader("Borrando...");
                 $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'borrarRubro')}",
                     data     : "id=${rubro?.id}",
                     success  : function (msg) {
-                        $("#dlgLoad").dialog("close")
+                        g.modal("hide");
                         if(msg==="ok"){
                             location.href="${createLink(action: 'rubroPrincipal')}"
                         }else{
-//                            console.log(msg)
-                            $.box({
-                                imageClass : "box_info",
-                                text       : "Error: el rubro seleccionado no se pudo eliminar. Esta referenciado en las siguientes obras: <br>"+msg,
-                                title      : "Alerta",
-                                iconClose  : false,
-                                dialog     : {
-                                    resizable : false,
-                                    draggable : false,
-                                    buttons   : {
-                                        "Aceptar" : function () {
-                                        }
-                                    },
-                                    width     : 700
-                                }
-                            });
+                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'>" +  "El rubro seleccionado no se pudo eliminar. Esta referenciado en las siguientes obras: <br>"+msg, +  "</strong>");
                         }
                     }
                 });
@@ -1179,186 +1142,149 @@
         <g:if test="${!rubro?.departamento?.subgrupo?.grupo?.id}">
         $("#selClase").val("");
         </g:if>
+
         $("#costo_indi").blur(function(){
-            var indi = $(this).val()
+            var indi = $(this).val();
             if(isNaN(indi) || indi*1<0){
-                $.box({
-                    imageClass : "box_info",
-                    text       : "El porcentaje de costos indirectos debe ser un número positvo",
-                    title      : "Alerta",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        },
-                        width     : 500
-                    }
-                });
+                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger'></i>" + "<strong style='font-size: 14px'>" +  "El porcentaje de costos indirectos debe ser un número positvo" +  "</strong>");
                 $("#costo_indi").val("21")
             }
         });
 
         $("#excel").click(function(){
-            var dsp0=$("#dist_p1").val()
-            var dsp1=$("#dist_p2").val()
-            var dsv0=$("#dist_v1").val()
-            var dsv1=$("#dist_v2").val()
-            var dsv2=$("#dist_v3").val()
-            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val()
-            var volqueta=$("#costo_volqueta").val()
-            var chofer=$("#costo_chofer").val()
-
-            datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}"
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcel')}?"+datos
-            location.href=url
+            // var dsp0=$("#dist_p1").val();
+            // var dsp1=$("#dist_p2").val();
+            // var dsv0=$("#dist_v1").val();
+            // var dsv1=$("#dist_v2").val();
+            // var dsv2=$("#dist_v3").val();
+            // var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+            // var volqueta=$("#costo_volqueta").val();
+            // var chofer=$("#costo_chofer").val();
+            datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
+            location.href="${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcel')}?"+datos;
         });
 
         $("#imprimir").click(function(){
 
-            var dsp0=$("#dist_p1").val()
-            var dsp1=$("#dist_p2").val()
-            var dsv0=$("#dist_v1").val()
-            var dsv1=$("#dist_v2").val()
-            var dsv2=$("#dist_v3").val()
-            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val()
-            var volqueta=$("#costo_volqueta").val()
-            var chofer=$("#costo_chofer").val()
+            var dsp0=$("#dist_p1").val();
+            var dsp1=$("#dist_p2").val();
+            var dsv0=$("#dist_v1").val();
+            var dsv1=$("#dist_v2").val();
+            var dsv2=$("#dist_v3").val();
+            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+            var volqueta=$("#costo_volqueta").val();
+            var chofer=$("#costo_chofer").val();
 
-            datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+"Wprch="+chofer+"Woferente=${session.usuario.id}Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+"Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+$("#cmb_vol").val()+"Windi="+$("#costo_indi").val()+"Wobra2=${obra?.id}"
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos
-            location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url
+            datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+"&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+"&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
+            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentes')}?"+datos;
+            %{--location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url--}%
 
         });
 
-
         $("#vae").click(function () {
-            var dsp0=$("#dist_p1").val()
-            var dsp1=$("#dist_p2").val()
-            var dsv0=$("#dist_v1").val()
-            var dsv1=$("#dist_v2").val()
-            var dsv2=$("#dist_v3").val()
-            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val()
-            var volqueta=$("#costo_volqueta").val()
-            var chofer=$("#costo_chofer").val()
+            var dsp0=$("#dist_p1").val();
+            var dsp1=$("#dist_p2").val();
+            var dsv0=$("#dist_v1").val();
+            var dsv1=$("#dist_v2").val();
+            var dsv2=$("#dist_v3").val();
+            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+            var volqueta=$("#costo_volqueta").val();
+            var chofer=$("#costo_chofer").val();
 
-            datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+"Wprch="+chofer+"Woferente=${session.usuario.id}Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+"Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+$("#cmb_vol").val()+"Windi="+$("#costo_indi").val()+"Wobra2=${obra?.id}"
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVae')}?"+datos
-            location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url
+            datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+"&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+"&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
+            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentesVae')}?"+datos;
+            %{--location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url--}%
         });
 
         $("#excelVae").click(function(){
-            var dsp0=$("#dist_p1").val()
-            var dsp1=$("#dist_p2").val()
-            var dsv0=$("#dist_v1").val()
-            var dsv1=$("#dist_v2").val()
-            var dsv2=$("#dist_v3").val()
-            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val()
-            var volqueta=$("#costo_volqueta").val()
-            var chofer=$("#costo_chofer").val()
+            var dsp0=$("#dist_p1").val();
+            var dsp1=$("#dist_p2").val();
+            var dsv0=$("#dist_v1").val();
+            var dsv1=$("#dist_v2").val();
+            var dsv2=$("#dist_v3").val();
+            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+            var volqueta=$("#costo_volqueta").val();
+            var chofer=$("#costo_chofer").val();
 
-            datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}"
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcelVae')}?"+datos
-            location.href=url
+            datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
+            location.href= "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcelVae')}?"+datos
         });
-
 
         $("#transporte").click(function(){
             if ($("#fecha_precios").val().length < 8) {
-                $.box({
-                    imageClass : "box_info",
-                    text       : "Seleccione una fecha para determinar la lista de precios",
-                    title      : "Alerta",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        },
-                        width     : 500
-                    }
-                });
+                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Seleccione una fecha para determinar la lista de precios" +  "</strong>");
                 $(this).removeClass("active")
             }else{
                 $("#modal-transporte").modal("show");
             }
-        })
+        });
 
         $("#cmb_vol").change(function(){
-            if($("#cmb_vol").val()!="-1"){
-                var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&ids="+$("#cmb_vol").val()
+            if($("#cmb_vol").val() !== "-1"){
+                var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val() + "&ids="+$("#cmb_vol").val();
                 $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'getPreciosTransporte')}",
                     data     : datos,
                     success  : function (msg) {
-                        var precios = msg.split("&")
-
+                        var precios = msg.split("&");
                         for(i=0;i<precios.length;i++){
-                            var parts = precios[i].split(";")
+                            var parts = precios[i].split(";");
                             if(parts.length>1)
                                 $("#costo_volqueta").val(parts[1].trim())
-
-
                         }
                     }
                 });
             }else{
                 $("#costo_volqueta").val("0.00")
             }
+        });
 
-        })
         $("#cmb_chof").change(function(){
-            if($("#cmb_chof").val()!="-1"){
-                var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val()  + "&ids="+$("#cmb_chof").val()
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'getPreciosTransporte')}",
+            if($("#cmb_chof").val() !== "-1"){
+                var datos = "fecha=" + $("#fecha_precios").val() + "&ciudad=" + $("#ciudad").val()  + "&ids="+$("#cmb_chof").val();
+                $.ajax({
+                    type : "POST",
+                    url : "${g.createLink(controller: 'rubro',action:'getPreciosTransporte')}",
                     data     : datos,
                     success  : function (msg) {
-                        var precios = msg.split("&")
+                        var precios = msg.split("&");
                         for(i=0;i<precios.length;i++){
-                            var parts = precios[i].split(";")
+                            var parts = precios[i].split(";");
                             if(parts.length>1)
                                 $("#costo_chofer").val(parts[1].trim())
-
-
                         }
                     }
                 });
             }else{
                 $("#costo_chofer").val("0.00")
             }
-
-        })
+        });
 
         $(".item_row").dblclick(function(){
-            var hijos = $(this).children()
-            var desc=$(hijos[1]).html()
-            var cant
-            var codigo=$(hijos[0]).html()
-            var unidad
-            var rendimiento
-            var item
+            var hijos = $(this).children();
+            var desc=$(hijos[1]).html();
+            var cant;
+            var codigo=$(hijos[0]).html();
+            var unidad;
+            var rendimiento;
+            var item;
             for(i=2;i<hijos.length;i++){
 
                 if($(hijos[i]).hasClass("cant"))
-                    cant=$(hijos[i]).html()
+                    cant=$(hijos[i]).html();
                 if($(hijos[i]).hasClass("col_unidad"))
-                    unidad=$(hijos[i]).html()
+                    unidad=$(hijos[i]).html();
                 if($(hijos[i]).hasClass("col_rend"))
-                    rendimiento=$(hijos[i]).attr("valor")
-                if($(hijos[i]).hasClass("col_tarifa"))
-                    item=$(hijos[i]).attr("id")
-                if($(hijos[i]).hasClass("col_precioUnit"))
-                    item=$(hijos[i]).attr("id")
+                    rendimiento=$(hijos[i]).attr("valor");
+                if($(hijos[i]).hasClass("col_tarifa"));
+                    item=$(hijos[i]).attr("id");
+                if($(hijos[i]).hasClass("col_precioUnit"));
+                    item=$(hijos[i]).attr("id");
                 if($(hijos[i]).hasClass("col_jornal"))
                     item=$(hijos[i]).attr("id")
 
             }
-            item=item.replace("i_","")
-//            $("#item_cantidad").val(1.22852)
-            $("#item_cantidad").val(cant.toString().trim())
+            item=item.replace("i_","");
+            $("#item_cantidad").val(cant.toString().trim());
 
             if(rendimiento)
                 $("#item_rendimiento").val(rendimiento.toString().trim())
@@ -1368,9 +1294,7 @@
             $("#item_desc").val(desc)
             $("#item_unidad").val(unidad)
             getPrecio();
-
-
-        })
+        });
 
         $("#selClase").change(function () {
             var clase = $(this).val();
@@ -1387,6 +1311,7 @@
                 }
             });
         });
+
         $("#selGrupo").change(function () {
             var grupo = $(this).val();
             $.ajax({
@@ -1401,110 +1326,90 @@
             });
         });
 
-        $(".tipoPrecio").click(function () {
-            if (!$(this).hasClass("active")) {
-                var tipo = $(this).attr("id");
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(action:'ciudadesPorTipo')}",
-                    data    : {
-                        id : tipo
-                    },
-                    success : function (msg) {
-                        $("#ciudad").replaceWith(msg);
-                    }
-                });
-            }
-        });
+        %{--$(".tipoPrecio").click(function () {--}%
+        %{--    if (!$(this).hasClass("active")) {--}%
+        %{--        var tipo = $(this).attr("id");--}%
+        %{--        $.ajax({--}%
+        %{--            type    : "POST",--}%
+        %{--            url     : "${createLink(action:'ciudadesPorTipo')}",--}%
+        %{--            data    : {--}%
+        %{--                id : tipo--}%
+        %{--            },--}%
+        %{--            success : function (msg) {--}%
+        %{--                $("#ciudad").replaceWith(msg);--}%
+        %{--            }--}%
+        %{--        });--}%
+        %{--    }--}%
+        %{--});--}%
 
         $("#calcular").click(function () {
             if ($(this).hasClass("active")) {
-                $(this).removeClass("active")
-                $(".col_delete").show()
-                $(".col_unidad").show()
-                $(".col_tarifa").hide()
-                $(".col_hora").hide()
-                $(".col_total").hide()
-                $(".col_jornal").hide()
-                $(".col_precioUnit").hide()
-                $(".col_vacio").hide()
-                $(".total").remove()
-                $("#tabla_indi").html("")
-                $("#tabla_costos").html("")
+                $(this).removeClass("active");
+                $(".col_delete").show();
+                $(".col_unidad").show();
+                $(".col_tarifa").hide();
+                $(".col_hora").hide();
+                $(".col_total").hide();
+                $(".col_jornal").hide();
+                $(".col_precioUnit").hide();
+                $(".col_vacio").hide();
+                $(".total").remove();
+                $("#tabla_indi").html("");
+                $("#tabla_costos").html("");
                 $("#tabla_transporte").html("")
             } else {
-                $(this).addClass("active")
-
-
-                var items = $(".item_row")
+                $(this).addClass("active");
+                var items = $(".item_row");
                 if (items.size() < 1) {
-                    $.box({
-                        imageClass : "box_info",
-                        text       : "Añada items a la composición del rubro antes de calcular los precios",
-                        title      : "Alerta",
-                        iconClose  : false,
-                        dialog     : {
-                            resizable : false,
-                            draggable : false,
-                            buttons   : {
-                                "Aceptar" : function () {
-                                }
-                            },
-                            width     : 500
-                        }
-                    });
+                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Añada items a la composición del rubro antes de calcular los precios" +  "</strong>");
                     $(this).removeClass("active")
                 } else {
-                    var tipo = "C"
+                    var tipo = "C";
                     if ($("#V").hasClass("active"))
-                        tipo = "V"
-                    var listas =""
-                    listas+=$("#lista_1").val()+"#"+$("#lista_2").val()+"#"+$("#lista_3").val()+"#"+$("#lista_4").val()+"#"+$("#lista_5").val()+"#"+$("#ciudad").val()
+                        tipo = "V";
+                    var listas ="";
+                    listas+=$("#lista_1").val()+"#"+$("#lista_2").val()+"#"+$("#lista_3").val()+"#"+$("#lista_4").val()+"#"+$("#lista_5").val()+"#"+$("#ciudad").val();
 
-                    var datos = "tipo=" + tipo+"&listas="+listas+"&ids="
+                    var datos = "tipo=" + tipo+"&listas="+listas+"&ids=";
                     $.each(items, function () {
                         datos += $(this).attr("id") + "#"
                     });
 
-                    $.ajax({type : "POST", url : "${g.createLink(controller: 'rubroOf',action:'getPrecios')}",
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'rubroOf',action:'getPrecios')}",
                         data     : datos,
                         success  : function (msg) {
-                            var precios = msg.split("&")
+                            var precios = msg.split("&");
                             for(i=0;i<precios.length;i++){
-                                var parts = precios[i].split(";")
-                                var celda =$("#i_"+parts[0])
-                                celda.html(number_format(parts[1], 5, ".", ""))
-                                var padre = celda.parent()
-                                var celdaRend = padre.find(".col_rend")
-                                var celdaTotal = padre.find(".col_total")
-                                var celdaCant = padre.find(".cant")
-                                var celdaHora =  padre.find(".col_hora")
-                                var rend = 1
+                                var parts = precios[i].split(";");
+                                var celda =$("#i_"+parts[0]);
+                                celda.html(number_format(parts[1], 5, ".", ""));
+                                var padre = celda.parent();
+                                var celdaRend = padre.find(".col_rend");
+                                var celdaTotal = padre.find(".col_total");
+                                var celdaCant = padre.find(".cant");
+                                var celdaHora =  padre.find(".col_hora");
+                                var rend = 1;
                                 if(celdaHora.hasClass("col_hora")){
                                     celdaHora.html(number_format(parseFloat(celda.html())*parseFloat(celdaCant.html()), 5, ".", ""))
                                 }
                                 if (celdaRend.html()) {
                                     rend = celdaRend.attr("valor") * 1
-//                                            console.log("rend ",celdaRend,rend)
                                 }
                                 celdaTotal.html(number_format(parseFloat(celda.html())*parseFloat(celdaCant.html())*parseFloat(rend), 5, ".", ""))
-
                             }
                             calcularTotales()
-
                         }
                     });
-
-                    $(".col_delete").hide()
-//                        $(".col_unidad").hide()
-                    $(".col_tarifa").show()
-                    $(".col_hora").show()
-                    $(".col_total").show()
-                    $(".col_jornal").show()
-                    $(".col_precioUnit").show()
-                    $(".col_vacio").show()
+                    $(".col_delete").hide();
+                    $(".col_tarifa").show();
+                    $(".col_hora").show();
+                    $(".col_total").show();
+                    $(".col_jornal").show();
+                    $(".col_precioUnit").show();
+                    $(".col_vacio").show();
                 }
-
             }
         });
 
@@ -1513,66 +1418,61 @@
                 var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
                 $("#modalTitle").html("Lista de rubros");
                 $("#modalFooter").html("").append(btnOk);
-                $(".contenidoBuscador").html("")
+                $(".contenidoBuscador").html("");
                 $("#modal-rubro").modal("show");
-                $("#buscarDialog").unbind("click")
+                $("#buscarDialog").unbind("click");
                 $("#buscarDialog").bind("click", enviarCopiar)
             } else {
-                $.box({
-                    imageClass : "box_info",
-                    text       : "Primero guarde el rubro o seleccione uno para editar",
-                    title      : "Alerta",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        },
-                        width     : 500
-                    }
-                });
+                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
             }
-
         });
-
-
 
         $(".borrarItem").click(function () {
             var tr = $(this).parent().parent();
-            if (confirm("Esta seguro de eliminar este registro? Esta acción es irreversible")) {
-                $.ajax({type : "POST", url : "${g.createLink(controller: 'rubro',action:'eliminarRubroDetalle')}",
-                    data     : "id=" + $(this).attr("iden"),
-                    success  : function (msg) {
-                        if (msg === "Registro eliminado") {
-                            tr.remove()
-                        }
-
-                        $.box({
-                            imageClass : "box_info",
-                            text       : msg,
-                            title      : "Alerta",
-                            iconClose  : false,
-                            dialog     : {
-                                resizable : false,
-                                draggable : false,
-                                buttons   : {
-                                    "Aceptar" : function () {
-                                    }
+            var id = $(this).data("id");
+            bootbox.confirm({
+                title: "Eliminar Rubro",
+                message: "Esta seguro de eliminar este registro? Esta acción es irreversible",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-trash"></i> Borrar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        var g = cargarLoader("Borrando...");
+                        $.ajax({
+                            type : "POST",
+                            url : "${g.createLink(controller: 'rubroOf',action:'eliminarRubroDetalle')}",
+                            data:{
+                                id: id
+                            },
+                            success  : function (msg) {
+                                g.modal("hide");
+                                if (msg === "Registro eliminado correctamente") {
+                                    log(msg, "success");
+                                    setTimeout(function () {
+                                        location.reload();
+                                    }, 800);
+                                    // tr.remove()
+                                }else{
+                                    log(msg, "error");
                                 }
                             }
                         });
-
                     }
-                });
-            }
-
+                }
+            });
         });
 
-        $("#listaItems").dialog({
+        $("#busqueda").dialog({
             autoOpen: false,
-            resizable: true,
+            resizable: false,
             modal: true,
             draggable: false,
             width: 1000,
@@ -1581,41 +1481,13 @@
             title: 'Items'
         });
 
-
         $("#cdgo_buscar").dblclick(function () {
-
-            $.ajax({
-                type    : "POST",
-                url: "${createLink(controller: 'rubroOf', action: 'buscadorItemsOferente_ajax')}",
-                data    : {},
-                success : function (msg) {
-                    bcpc = bootbox.dialog({
-                        id      : "dlgBuscarCPC",
-                        title   : "Buscar Código Compras Públicas",
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            }
-                        } //buttons
-                    }); //dialog
-                } //success
-            }); //ajax
-
-            // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            // $("#modalTitle").html("Lista de items");
-            // $("#modalFooter").html("").append(btnOk);
-            // $(".contenidoBuscador").html("")
-            // $("#modal-rubro").modal("show");
-            // $("#buscarDialog").unbind("click")
-            // $("#buscarDialog").bind("click", enviarItem)
-            // setTimeout( function() { $( '#criterio' ).focus() }, 500 );
+            $("#busqueda").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x");
+            return false;
         });
+
         $("#cdgo_buscar").blur(function(){
-//            console.log($("#item_id").val()=="")
             if($("#item_id").val()==="" && $("#cdgo_buscar").val()!==""){
                 $.ajax({
                     type : "POST",
@@ -1638,35 +1510,21 @@
                 });
             }
         });
-        $("#cdgo_buscar").keydown(function(ev){
 
-            if(ev.keyCode*1!=9 && (ev.keyCode*1<37 || ev.keyCode*1>40)){
-                $("#item_tipoLista").val("")
-                $("#item_id").val("")
-                $("#item_desc").val("")
+        $("#cdgo_buscar").keydown(function(ev){
+            if(ev.keyCode*1!==9 && (ev.keyCode*1<37 || ev.keyCode*1>40)){
+                $("#item_tipoLista").val("");
+                $("#item_id").val("");
+                $("#item_desc").val("");
                 $("#item_unidad").val("")
             }else{
-//                console.log("no reset")
             }
-
-
         });
-        $("#btn_lista").click(function () {
 
+        $("#btn_lista").click(function () {
             $("#listaRbro").dialog("open");
             $(".ui-dialog-titlebar-close").html("x")
-
-            // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            // $("#modalTitle").html("Lista de rubros");
-            // $("#modalFooter").html("").append(btnOk);
-            // $(".contenidoBuscador").html("")
-            // $("#modal-rubro").modal("show");
-            // $("#buscarDialog").unbind("click")
-            // $("#buscarDialog").bind("click", enviar)
-            // setTimeout( function() { $( '#criterio' ).focus() }, 500 );
-
         }); //click btn new
-
 
         $("#listaRbro").dialog({
             autoOpen: false,
@@ -1678,8 +1536,6 @@
             position: 'center',
             title: 'Rubros'
         });
-
-
 
         $("#rubro_registro").click(function () {
             if ($(this).hasClass("active")) {
@@ -1698,85 +1554,40 @@
 
         $("#guardar").click(function () {
 
-            var cod = $("#input_codigo").val()
-            var desc = $("#input_descripcion").val()
-            var subGr = $("#selSubgrupo").val()
-            var msg =""
-//            console.log(desc,desc.trim(),desc.trim().length)
+            var cod = $("#input_codigo").val();
+            var desc = $("#input_descripcion").val();
+            var subGr = $("#selSubgrupo").val();
+            var msg ="";
             if(cod.trim().length>20 || cod.trim().length<1){
                 msg="<br>Error: La propiedad código debe tener entre 1 y 20 caracteres."
             }
 
             if(desc.trim().length>160 || desc.trim().length<1){
-                if(msg=="")
+                if(msg==="")
                     msg="<br>Error: La propiedad descripción debe tener entre 1 y 160 caracteres."
                 else
                     msg+="<br>La propiedad descripción debe tener entre 1 y 160 caracteres."
             }
 
-            if(msg==""){
+            if(msg===""){
                 $(".frmRubro").submit()
             }else{
-                $.box({
-                    imageClass : "box_info",
-                    text       : msg,
-                    title      : "Errores de validación",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        width      :600,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        }
-                    }
-                });
+                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  msg +  "</strong>");
             }
         });
 
         <g:if test="${rubro}">
         $("#btn_agregarItem").click(function () {
             if ($("#calcular").hasClass("active")){
-                $.box({
-                    imageClass : "box_info",
-                    text       : "Antes de agregar items, por favor desactive la opción calcular precios en el menú superior.",
-                    title      : "Alerta",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable : false,
-                        draggable : false,
-                        buttons   : {
-                            "Aceptar" : function () {
-                            }
-                        }
-                    }
-                });
+                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Antes de agregar items, por favor desactive la opción calcular precios en el menú superior." +  "</strong>");
                 return false
             }
-
             agregar(${rubro?.id},"");
-
         });
         </g:if>
         <g:else>
         $("#btn_agregarItem").click(function () {
-            $.box({
-                imageClass : "box_info",
-                text       : "Primero guarde el rubro o seleccione uno para editar",
-                title      : "Alerta",
-                iconClose  : false,
-                dialog     : {
-                    resizable : false,
-                    draggable : false,
-                    buttons   : {
-                        "Aceptar" : function () {
-                        }
-                    },
-                    width     : 500
-                }
-            });
-
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
         });
         </g:else>
 
@@ -1792,47 +1603,38 @@
             title: 'Imprimir con o sin transporte',
             buttons: {
                 "Si" : function () {
-                    var dsp0=$("#dist_p1").val()
-                    var dsp1=$("#dist_p2").val()
-                    var dsv0=$("#dist_v1").val()
-                    var dsv1=$("#dist_v2").val()
-                    var dsv2=$("#dist_v3").val()
-                    var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val()
-                    var volqueta=$("#costo_volqueta").val()
-                    var chofer=$("#costo_chofer").val()
+                    var dsp0=$("#dist_p1").val();
+                    var dsp1=$("#dist_p2").val();
+                    var dsv0=$("#dist_v1").val();
+                    var dsv1=$("#dist_v2").val();
+                    var dsv2=$("#dist_v3").val();
+                    var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+                    var volqueta=$("#costo_volqueta").val();
+                    var chofer=$("#costo_chofer").val();
 
                     datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+"Wprch="+chofer+"Woferente=${session.usuario.id}Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+"Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+$("#cmb_vol").val()+"Windi="+$("#costo_indi").val()
-                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos
-                    location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos;
+                    location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url;
                     $("#imprimirTransporteDialog").dialog("close");
                 },
                 "No" : function () {
-                    var dsp0=$("#dist_p1").val()
-                    var dsp1=$("#dist_p2").val()
-                    var dsv0=$("#dist_v1").val()
-                    var dsv1=$("#dist_v2").val()
-                    var dsv2=$("#dist_v3").val()
-                    var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val()
-                    var volqueta=$("#costo_volqueta").val()
-                    var chofer=$("#costo_chofer").val()
+                    var dsp0=$("#dist_p1").val();
+                    var dsp1=$("#dist_p2").val();
+                    var dsv0=$("#dist_v1").val();
+                    var dsv1=$("#dist_v2").val();
+                    var dsv2=$("#dist_v3").val();
+                    var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+                    var volqueta=$("#costo_volqueta").val();
+                    var chofer=$("#costo_chofer").val();
 
                     datos="dsp0="+dsp0+"Wdsp1="+dsp1+"Wdsv0="+dsv0+"Wdsv1="+dsv1+"Wdsv2="+dsv2+"Wprvl="+volqueta+"Wprch="+chofer+"Wfecha="+$("#fecha_precios").val()+"Wid=${rubro?.id}Wlugar="+$("#ciudad").val()+"Wlistas="+listas+"Wchof="+$("#cmb_chof").val()+"Wvolq="+$("#cmb_vol").val()+"Windi="+$("#costo_indi").val()+"Wtrans=no"
-                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos
-                    location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url
+                    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubro')}?"+datos;
+                    location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url;
                     $("#imprimirTransporteDialog").dialog("close");
                 }
-
-
-
             }
-
-
-
         });
-
-
     });
 </script>
-
 </body>
 </html>

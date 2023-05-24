@@ -591,7 +591,7 @@ class Reportes3Controller {
     }
 
     def imprimirRubro() {
-//        println "imprimir rubro "+params
+        println "imprimir rubro "+params
 
         def rubro = Item.get(params.id)
         def corregido
@@ -780,8 +780,10 @@ class Reportes3Controller {
 
         [rubro: rubro, fechaPrecios: fecha, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band: band, tablaMat2: tablaMat2, bandMat: bandMat, bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
                 tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obra, fechaPala: fecha1]
-    }
 
+//        renderPdf(template:'/reportes3/imprimirRubro', model: [rubro: rubro, fechaPrecios: fecha, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band: band, tablaMat2: tablaMat2, bandMat: bandMat, bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
+//                                                                  tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obra, fechaPala: fecha1], filename: 'rubrosOferentes.pdf')
+    }
 
     //VAE
 

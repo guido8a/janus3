@@ -373,10 +373,10 @@ class RubroOfController {
     def eliminarRubroDetalle() {
 //        println "eliminarRubroDetalle "+params
         if (request.method == "POST") {
-            def rubro = Rubro.get(params.id)
+            def rubro = RubroOferente.get(params.id)
             try {
                 rubro.delete(flush: true)
-                render "Registro eliminado"
+                render "Registro eliminado correctamente"
             }
             catch (DataIntegrityViolationException e) {
                 render "No se pudo eliminar el rubro"
@@ -384,9 +384,7 @@ class RubroOfController {
         } else {
             response.sendError(403)
         }
-
     }
-
 
     def borrarRubro() {
 //        println "borrar rubro "+params
@@ -442,11 +440,10 @@ class RubroOfController {
         def items = []
         def parts = params.ids.split("#")
         def res =""
-//        println "listas " + listas
         parts.each {
             if (it.size() > 0) {
                 def item=RubroOferente.get(it).item
-                def precio = Precio.findByItemAndOferente(item, session.usuario)
+                def precio = Precio.findByItemAndOferente(item,session.usuario)
                 if (!precio){
                     res+=item.id+";0&"
                 }else{
@@ -454,54 +451,13 @@ class RubroOfController {
                 }
             }
         }
-
-
-
-//        println "precios final " + res
-//        println "--------------------------------------------------------------------------"
         render res
     }
 
     def getPreciosItem() {
-//        println "get precios item " + params
-
-//        def tipo = params.tipo
-//        def items = []
-//        def parts = params.ids.split("#")
-//        def listas = []
-//        def conLista = []
-//        listas = params.listas.split("#")
-////        println "listas " + listas
-//        parts.each {
-//            if (it.size() > 0) {
-//                def item = Item.get(it)
-//                if (item.tipoLista) {
-//                    conLista.add(item)
-////                    println "con lista "+item.tipoLista
-//                } else {
-//                    items.add(item)
-//                }
-//
-//            }
-//
-//        }
-//        def precios = ""
-////        println "items " + items + "  con lista " + conLista
-//        if (items.size() > 0) {
-//            precios = preciosService.getPrecioItemsString(fecha, lugar, items)
-//        }
-////        println "precios "+precios
-//
-//
-//        conLista.each {
-////            println "tipo "+ it.tipoLista.id.toInteger()
-//            precios += preciosService.getPrecioItemStringListaDefinida(fecha, listas[it.tipoLista.id.toInteger() - 1], it.id)
-//        }
-
         def items = []
         def parts = params.ids.split("#")
         def res =""
-//        println "listas " + listas
         parts.each {
             if (it.size() > 0) {
                 def item=Item.get(it)
@@ -513,9 +469,6 @@ class RubroOfController {
                 }
             }
         }
-
-//        println "precios final item " + res
-//        println "--------------------------------------------------------------------------"
         render res
     }
 

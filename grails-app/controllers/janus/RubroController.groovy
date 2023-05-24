@@ -579,7 +579,7 @@ class RubroController {
     } //delete
 
     def getPrecios() {
-//        println "get precios " + params.fecha
+        println "get precios " + params.fecha
         def lugar = Lugar.get(params.ciudad)
 //        println ".........1"
         def fecha = new Date().parse('dd-MM-yyyy', params.fecha)
