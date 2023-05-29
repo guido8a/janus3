@@ -1076,18 +1076,6 @@ class Reportes6Controller {
 
 //        println("--->>" + obra2?.idJanus)
 
-        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus}"
-//        def sql = "SELECT * FROM cncr WHERE obra__id=${obra2?.idJanus}"
-
-//        println("sql:" + sql)
-
-//        def cn = dbConnectionService.getConnection()
-//        def conc = cn.rows(sql.toString())
-//        def cncrId
-//
-//        conc.each {
-//            cncrId = it?.cncr__id
-//        }
 
         def concurso = obraOferente.concurso
 //        def fechaOferta = printFecha(obraOferente?.fechaOferta)

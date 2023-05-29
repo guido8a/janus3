@@ -13,8 +13,13 @@ class ExportController {
         def obra_id = 0
 
         println ">>>> ${params}"
+        def sql = "select cncr__id from cncr where obra__id = ${params.obra}"
+        println("sql:" + sql)
 
-        def sql = """
+        def concurso = cn.rows(sql.toString())[0].cncr__id
+        println "concurso: $concurso"
+
+        sql = """
 insert into obra(prsn__id, obrarvsr, obrainsp, cmnd__id, parr__id, tpob__id,
 prog__id, edob__id, csob__id, lgar__id, obrachfr, obravlqt,
 prsp__id, obracdgo, obranmbr, obradscr, obrafcin, obrafcfn,
@@ -23,7 +28,6 @@ obrarefe, obrafcha, obraofig, obraofsl, obrapz_a, obrapz_m,
 obrapz_d, obraobsr, obratipo, rbpcfcha, obrammco, obrammsl,
 obrafcsl, obraftrd, obravlcd, obracpvl, obraftvl, obraftps,
 obrardtp, obrasito, obrafrpl, obraindi, indignrl, indiimpr,
-indiutil, indicntr, inditotl, obravlor, obrammpr, obraprft,
 indiutil, indicntr, inditotl, obravlor, obrammpr, obraprft,
 obrammfn, obraantc, obrarjst, indidrob, indimntn, indiadmn,
 indigrnt, indicsfn, indivhcl, indiprmo, inditmbr, dpto__id,
@@ -62,7 +66,7 @@ from obra where obra__id = ${params.obra} returning obra__id
             obra_id = d.obra__id
         }
 
-//        obra_id = 4197  //borrar si ya funciona
+//        obra_id = 4199  //borrar si ya funciona
 
         println " se ha creado la obra en oferentes con id: ${obra_id}"
 
@@ -71,11 +75,13 @@ from obra where obra__id = ${params.obra} returning obra__id
                 "select sbpr__id,  item__id,  ${obra_id},  vlobcntd,  vlobordn, " +
                 "sbprordn,  vlobpcun,  vlobsbtt,  vlobdias,  vlobrtcr from vlob " +
                 "where obra__id = ${params.obra} "
-        println "inserta rbof: $sql"
+        println "inserta vlof: $sql"
         cn.execute(sql.toString())
 
         sql = "insert into obof (obra__id, prsn__id, oboffcha, obrajnid, cncr__id) " +
-                "values( ${obra_id},  ${params.oferente}, '${new Date().format('yyyy-MM-dd HH:mm:ss')}' )"
+                "values( ${obra_id},  ${params.oferente}, '${new Date().format('yyyy-MM-dd HH:mm:ss')}', " +
+                "${params.obra}, ${concurso} )"
+        println "inserta obof: $sql"
         cn.execute(sql.toString())
 
 
