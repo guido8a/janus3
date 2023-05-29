@@ -548,8 +548,8 @@ class ReportesExcelController {
                         Row rowP1 = sheet.createRow(fila)
                         rowP1.createCell(0).setCellValue("SUBTOTAL")
                         rowP1.createCell(6).setCellValue(totalHer)
-                        rowP1.createCell(7).setCellValue(totalHer)
-                        rowP1.createCell(11).setCellValue(totalHer)
+                        rowP1.createCell(7).setCellValue(totalHerRel)
+                        rowP1.createCell(11).setCellValue(totalHerVae)
                         fila++
                     }
 

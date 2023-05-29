@@ -1070,11 +1070,8 @@ class Reportes6Controller {
     def _imprimirRubroOferentes() {
 //        println "imprimir rubro "+params
         def rubro = Item.get(params.id)
-
         def oferente = Persona.get(params.oferente)
-
         def obraOferente = ObraOferente.findByOferente(oferente)
-
         def obra2 = Obra.get(obraOferente.idJanus)
 
 //        println("--->>" + obra2?.idJanus)
@@ -1085,9 +1082,7 @@ class Reportes6Controller {
 //        println("sql:" + sql)
 
         def cn = dbConnectionService.getConnection()
-
         def conc = cn.rows(sql.toString())
-
         def cncrId
 
         conc.each {
@@ -1098,7 +1093,6 @@ class Reportes6Controller {
 //        def fechaOferta = printFecha(obraOferente?.fechaOferta)
         def fechaOferta = printFecha(new Date())
         def firma = Persona.get(params.oferente).firma
-
         def lugar = params.lugar
         def indi = params.indi
         def listas = params.listas
@@ -1117,7 +1111,7 @@ class Reportes6Controller {
 //        def fechaEntregaOferta = printFecha(obraOferente?.fechaOferta)
         def fechaEntregaOferta = printFecha(new Date())
         def parametros = ""+rubro.id+","+oferente.id
-        preciosService.ac_rbroV2(rubro?.id, oferente?.id)
+        preciosService.rubros_oferentes(rubro?.id, oferente?.id)
         def res = preciosService.rb_preciosV3(parametros)
 
         def tablaHer = '<table class=""> '
@@ -1240,20 +1234,16 @@ class Reportes6Controller {
 
         renderPdf(template:'/reportes6/imprimirRubroOferentes', model:  [rubro: rubro, tablaTrans: tablaTrans, band: band, bandMat: bandMat, tablaMat2: tablaMat2,
              bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
-//             tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obraOferente, oferente: oferente,
              tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obra2, oferente: oferente,
              fechaOferta: fechaOferta, obraOferente: obraOferente, concurso: concurso, fechaEntregaOFerta: fechaEntregaOferta,
              firma: firma], filename: 'rubrosOferentes.pdf')
-
-
-
     }
 
     def _imprimirRubroOferentesVae() {
 
         def rubro = Item.get(params.id)
         def oferente = Persona.get(params.oferente)
-        def obraOferente = Obra.findByOferente(oferente)
+        def obraOferente = ObraOferente.findByOferente(oferente)
         def obra2 = Obra.get(params.obra2.toLong())
 
         def text = (rubro.nombre ?: '')
@@ -1262,7 +1252,7 @@ class Reportes6Controller {
         text = text.replaceAll(/>/, /&gt;/);
         rubro.nombre = text
 
-        def sql = "SELECT * FROM cncr WHERE obra__id=${obra2?.idJanus}"
+        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus}"
 
         def cn = dbConnectionService.getConnection()
         def conc = cn.rows(sql.toString())
@@ -1271,7 +1261,7 @@ class Reportes6Controller {
             cncrId = it?.cncr__id
         }
         def concurso = janus.pac.Concurso.get(cncrId)
-        def fechaOferta = printFecha(obraOferente?.fechaOferta)
+//        def fechaOferta = printFecha(obraOferente?.fechaOferta)
         def firma = Persona.get(params.oferente).firma
 
         def lugar = params.lugar
@@ -1302,10 +1292,10 @@ class Reportes6Controller {
             obra = Obra.get(params.obra)
         }
 
-        def fechaEntregaOferta = printFecha(obraOferente?.fechaOferta)
-
+//        def fechaEntregaOferta = printFecha(obraOferente?.fechaOferta)
+        def fechaEntregaOferta = printFecha(new Date())
         def parametros = ""+rubro.id+","+oferente.id
-        preciosService.ac_rbroV2(rubro?.id, oferente?.id)
+        preciosService.rubros_oferentes(rubro?.id?.toInteger(), oferente?.id?.toInteger())
         def res = preciosService.rb_preciosV3(parametros)
         def vae = preciosService.vae_rubros(rubro.id, oferente.id)
 

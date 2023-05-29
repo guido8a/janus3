@@ -1152,16 +1152,8 @@
         });
 
         $("#excel").click(function(){
-            // var dsp0=$("#dist_p1").val();
-            // var dsp1=$("#dist_p2").val();
-            // var dsv0=$("#dist_v1").val();
-            // var dsv1=$("#dist_v2").val();
-            // var dsv2=$("#dist_v3").val();
-            // var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
-            // var volqueta=$("#costo_volqueta").val();
-            // var chofer=$("#costo_chofer").val();
             datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
-            location.href="${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcel')}?"+datos;
+            location.href="${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroOferentesExcel')}?"+datos;
         });
 
         $("#imprimir").click(function(){
@@ -1177,8 +1169,6 @@
 
             datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+"&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+"&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
             location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentes')}?"+datos;
-            %{--location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url--}%
-
         });
 
         $("#vae").click(function () {
@@ -1193,21 +1183,20 @@
 
             datos="dsp0="+dsp0+"&dsp1="+dsp1+"&dsv0="+dsv0+"&dsv1="+dsv1+"&dsv2="+dsv2+"&prvl="+volqueta+"&prch="+chofer+"&oferente=${session.usuario.id}&id=${rubro?.id}&lugar="+$("#ciudad").val()+"&listas="+listas+"&chof="+$("#cmb_chof").val()+"&volq="+$("#cmb_vol").val()+"&indi="+$("#costo_indi").val()+"&obra2=${obra?.id}";
             location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroOferentesVae')}?"+datos;
-            %{--location.href="${g.createLink(controller: 'pdf',action: 'pdfLink')}?url="+url--}%
         });
 
         $("#excelVae").click(function(){
-            var dsp0=$("#dist_p1").val();
-            var dsp1=$("#dist_p2").val();
-            var dsv0=$("#dist_v1").val();
-            var dsv1=$("#dist_v2").val();
-            var dsv2=$("#dist_v3").val();
-            var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
-            var volqueta=$("#costo_volqueta").val();
-            var chofer=$("#costo_chofer").val();
+            // var dsp0=$("#dist_p1").val();
+            // var dsp1=$("#dist_p2").val();
+            // var dsv0=$("#dist_v1").val();
+            // var dsv1=$("#dist_v2").val();
+            // var dsv2=$("#dist_v3").val();
+            // var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
+            // var volqueta=$("#costo_volqueta").val();
+            // var chofer=$("#costo_chofer").val();
 
             datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
-            location.href= "${g.createLink(controller: 'reportes3',action: 'imprimirRubroExcelVae')}?"+datos
+            location.href= "${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroOferentesExcelVae')}?"+datos
         });
 
         $("#transporte").click(function(){

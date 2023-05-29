@@ -266,30 +266,6 @@ class PreciosService {
 //        rdps = (pcuncfr + pcunvlqt) / rdps;
     }
 
-
-//    def rendimientoTransporteLuz(Obra obra, precioUnitChofer, precioUnitVolquete) {
-//
-//        def dsps = obra.distanciaPeso
-//        def dsvl = obra.distanciaVolumen
-//
-//        def ftrd = obra.factorReduccion
-//        def vlcd = obra.factorVelocidad
-//        def cpvl = obra.capacidadVolquete
-//        def ftvl = obra.factorVolumen
-//        def rdtp = obra.factorReduccionTiempo
-//        def ftps = obra.factorPeso
-//        def pcunchfr = precioUnitChofer
-//        def pcunvlqt = precioUnitVolquete
-//
-//        def rdvl = (ftrd * vlcd * cpvl * ftvl * dsvl) / (vlcd + (rdtp * dsvl))
-//        rdvl = (pcunchfr + pcunvlqt) / rdvl;
-//        def rdps = (ftrd * vlcd * cpvl * ftvl * dsps * ftps) / (vlcd + (rdtp * dsps))
-//        rdps = (pcunchfr + pcunvlqt) / rdps
-//        return ["rdvl": rdvl, "rdps": rdps]
-//
-//    }
-
-
     def rb_precios(parametros, condicion) {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from rb_precios_v2(" + parametros + ") " + condicion
@@ -766,10 +742,11 @@ class PreciosService {
         return result
     }
 
-    def ac_rbroV2(rubro, oferente) {
+
+    def rubros_oferentes(rubro,oferente) {
         def cn = dbConnectionService.getConnection()
-        def sql = "select * from ac_rbro_hr1_of(" + rubro + ",'" + oferente + "') "
-//        println "sql ac rubro "+sql
+        def sql = "select * from ac_rbro_hr1_of(" + rubro + ", ' " + oferente + " ') "
+        println "sql ac rubro "+sql
         def result = []
         cn.eachRow(sql.toString()) { r ->
             result.add(r.toRowResult())
@@ -777,6 +754,20 @@ class PreciosService {
         cn.close()
         return result
     }
+
+    def vae_rubros(rubro, persona){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from vae_rb_precios_ofrb("+ rubro + ","+ persona +") order by grpocdgo desc "
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+
+        return result
+
+    }
+
 
 
 
