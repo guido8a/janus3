@@ -1,6 +1,5 @@
 package janus.ejecucion
 
-
 import org.springframework.dao.DataIntegrityViolationException
 
 class DetallePlanillaAdminController {

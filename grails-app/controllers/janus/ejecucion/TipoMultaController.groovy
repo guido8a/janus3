@@ -1,6 +1,5 @@
 package janus.ejecucion
 
-
 import org.springframework.dao.DataIntegrityViolationException
 
 class TipoMultaController {
@@ -12,7 +11,7 @@ class TipoMultaController {
     } //index
 
     def list() {
-        [tipoMultaInstanceList: TipoMulta.list([sort: 'descripcion']), params: params]
+        [tipoMultaInstanceList: TipoMulta.list(), params: params]
 
     } //list
 
@@ -21,6 +20,8 @@ class TipoMultaController {
         if(params.id) {
             tipoMultaInstance = TipoMulta.get(params.id)
             if(!tipoMultaInstance) {
+                flash.clase = "alert-error"
+                flash.message =  "No se encontró Tipo Multa con id " + params.id
                 redirect(action:  "list")
                 return
             } //no existe el objeto
@@ -33,7 +34,9 @@ class TipoMultaController {
         if(params.id) {
             tipoMultaInstance = TipoMulta.get(params.id)
             if(!tipoMultaInstance) {
-                render "no_No se encontró el registro"
+                flash.clase = "alert-error"
+                flash.message = "No se encontró Tipo Multa con id " + params.id
+                redirect(action: 'list')
                 return
             }//no existe el objeto
             tipoMultaInstance.properties = params
@@ -42,25 +45,64 @@ class TipoMultaController {
             tipoMultaInstance = new TipoMulta(params)
         } //es create
         if (!tipoMultaInstance.save(flush: true)) {
-            render "no_Error al guardar el tipo"
-        }else{
-            render "ok_Tipo guardado correctamente"
+            flash.clase = "alert-error"
+            def str = "<h4>No se pudo guardar Tipo Multa " + (tipoMultaInstance.id ? tipoMultaInstance.id : "") + "</h4>"
+
+            str += "<ul>"
+            tipoMultaInstance.errors.allErrors.each { err ->
+                def msg = err.defaultMessage
+                err.arguments.eachWithIndex {  arg, i ->
+                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
+                }
+                str += "<li>" + msg + "</li>"
+            }
+            str += "</ul>"
+
+            flash.message = str
+            redirect(action: 'list')
+            return
         }
+
+        if(params.id) {
+            flash.clase = "alert-success"
+            flash.message = "Se ha actualizado correctamente Tipo Multa " + tipoMultaInstance.id
+        } else {
+            flash.clase = "alert-success"
+            flash.message = "Se ha creado correctamente Tipo Multa " + tipoMultaInstance.id
+        }
+        redirect(action: 'list')
     } //save
+
+    def show_ajax() {
+        def tipoMultaInstance = TipoMulta.get(params.id)
+        if (!tipoMultaInstance) {
+            flash.clase = "alert-error"
+            flash.message =  "No se encontró Tipo Multa con id " + params.id
+            redirect(action: "list")
+            return
+        }
+        [tipoMultaInstance: tipoMultaInstance]
+    } //show
 
     def delete() {
         def tipoMultaInstance = TipoMulta.get(params.id)
         if (!tipoMultaInstance) {
-            render "no_No se encontró el registro"
+            flash.clase = "alert-error"
+            flash.message =  "No se encontró Tipo Multa con id " + params.id
+            redirect(action: "list")
             return
         }
 
         try {
             tipoMultaInstance.delete(flush: true)
-            render "ok_Tipo borrado correctamente"
+            flash.clase = "alert-success"
+            flash.message =  "Se ha eliminado correctamente Tipo Multa " + tipoMultaInstance.id
+            redirect(action: "list")
         }
         catch (DataIntegrityViolationException e) {
-            render "no_Error al borrar el tipo"
+            flash.clase = "alert-error"
+            flash.message =  "No se pudo eliminar Tipo Multa " + (tipoMultaInstance.id ? tipoMultaInstance.id : "")
+            redirect(action: "list")
         }
     } //delete
 } //fin controller

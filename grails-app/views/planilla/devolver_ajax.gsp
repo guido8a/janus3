@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <elm:poneHtml textoHtml="${nombres}"/>
+        ${nombres}
 
         %{--<g:if test="${tipo == '4'}">--}%
         %{--<div class="row">--}%

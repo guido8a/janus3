@@ -24,6 +24,7 @@ obrapz_d, obraobsr, obratipo, rbpcfcha, obrammco, obrammsl,
 obrafcsl, obraftrd, obravlcd, obracpvl, obraftvl, obraftps,
 obrardtp, obrasito, obrafrpl, obraindi, indignrl, indiimpr,
 indiutil, indicntr, inditotl, obravlor, obrammpr, obraprft,
+indiutil, indicntr, inditotl, obravlor, obrammpr, obraprft,
 obrammfn, obraantc, obrarjst, indidrob, indimntn, indiadmn,
 indigrnt, indicsfn, indivhcl, indiprmo, inditmbr, dpto__id,
 obraplzo, obradsmj, obradsca, obradses, obrabarr, obralong,
@@ -73,7 +74,7 @@ from obra where obra__id = ${params.obra} returning obra__id
         println "inserta rbof: $sql"
         cn.execute(sql.toString())
 
-        sql = "insert into obof (obra__id, prsn__id, oboffcha) " +
+        sql = "insert into obof (obra__id, prsn__id, oboffcha, obrajnid, cncr__id) " +
                 "values( ${obra_id},  ${params.oferente}, '${new Date().format('yyyy-MM-dd HH:mm:ss')}' )"
         cn.execute(sql.toString())
 

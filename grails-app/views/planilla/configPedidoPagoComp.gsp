@@ -1,15 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 12/9/13
-  Time: 11:59 AM
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
-        <title>Config. Pedido de pago del anticipo</title>
+        <title>Config. Pedido de pago planilla</title>
         <meta name="layout" content="main"/>
 
         <style type="text/css">
@@ -22,13 +14,17 @@
             text-align : right;
             width      : 75px;
         }
+        .aviso {
+            font-size: larger;
+            font-weight: bold;
+        }
         </style>
 
     </head>
 
     <body>
         <div class="tituloTree">
-            Pedido de pago del anticipo de la obra ${obra.descripcion}
+            Pedido de pago de planilla de la obra ${obra.descripcion}
         </div>
 
         <div class="row" style="margin-bottom: 15px;">
@@ -41,12 +37,7 @@
                     <i class="icon-arrow-left"></i>
                     Planillas
                 </g:link>
-            %{--<g:link action="form" class="btn" params="[contrato: contrato.id]">--}%
-            %{--<i class="icon-file"></i>--}%
-            %{--Nueva planilla--}%
-            %{--</g:link>--}%
             </div>
-
         </div>
 
         <g:if test="${flash.message}">
@@ -60,16 +51,17 @@
             </div>
         </g:if>
         <g:if test="${textos.size() > 0}">
-            <g:form action="savePedidoPagoAnticipo" id="${planilla.id}" name="frmInicio" style="width: 1000px;">
+            <g:form action="savePedidoPagoComp" id="${planilla.id}" name="frmInicio" style="width: 1000px;">
                 <div class="alert alert-info info">
                     <i class="icon icon-info-sign icon-5x pull-left"></i>
 
                     <p>
-                        No se ha configurado el pedido de pago del anticipo. A continuación se presenta el texto por defecto. Realice las modifcaciones necesarias y haga cilck en el botón Guardar.
+                        No se ha configurado el pedido de pago de la planilla. A continuación se presenta el texto por
+                        defecto. Realice las modifcaciones necesarias y haga cilck en el botón Guardar.
                     </p>
 
                     <p>
-                        <span style="font-size: larger; font-weight: bold;">Tenga en cuenta que una vez guardado no se podrá modificar.</span>
+                        <span class="aviso">Tenga en cuenta que una vez guardado no se podrá modificar.</span>
                     </p>
                 </div>
 
@@ -79,7 +71,8 @@
                         <p style="margin-bottom: 30px;">
                             <g:each in="${parrafo}" var="elem">
                                 <g:if test="${elem.tipo == 'E'}">
-                                    <g:textArea class="elem" name="edit_${j + 1}_${i}" value="${elem.string}" style="width: ${elem.w}; height: ${elem.h};"/>
+                                    <g:textArea class="elem" name="edit_${j + 1}_${i}" value="${elem.string}"
+                                                style="width: ${elem.w}; height: ${elem.h};"/>
                                     <g:set var="i" value="${i + 1}"/>
                                 </g:if>
                                 <g:else>
@@ -90,13 +83,6 @@
                     </g:each>
 
                     <g:textArea name="extra" value="" style="width: 940px; height: 80px;"/>
-                    <div class="row" style="margin-left: 5px">
-                        <div style="width:80px;float: left">CC:</div>
-
-                        <div style="width:300px;float: left">
-                            <input type="text" name="copia" class="form-control ">
-                        </div>
-                    </div>
 
                 </div>
 
@@ -110,10 +96,7 @@
         <g:else>
             <div class="alert alert-info">
                 <i class="icon icon-info-sign icon-3x pull-left"></i>
-
-                <p>
-                    El pedido de pago del anticipo ya se ha configurado por lo que no podrá ser modificado.
-                </p>
+                <p>El pedido de pago de la planilla ya se ha configurado por lo que no podrá ser modificado.</p>
             </div>
 
             <div class="well">

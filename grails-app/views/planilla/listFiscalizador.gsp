@@ -42,11 +42,11 @@
 <div class="row">
     <div class="span9" role="navigation">
         <div class="btn-group">
-            <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn"
-                    title="Regresar al contrato">
+            <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn" title="Regresar al contrato">
                 <i class="icon-arrow-left"></i>
                 Contrato
             </g:link>
+        %{--/** todo: validar que se haya iniciado la obra para planillas de avance **/--}%
             <g:if test="${anticipo >= 0}">
                 <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
                 %{--<g:link action="form" class="btn" params="[contrato: contrato?.id]">--}%
@@ -258,24 +258,22 @@
                         </g:if>
                     </g:if>
 
-%{--
                     <g:if test="${planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
                         <g:link controller="reportePlanillas3" action="reportePlanillaNuevo" id="${planillaInstance.id}"
                                 class="btn btnPrint  btn-small btn-ajax" rel="tooltip" title="Imprimir Anticipo">
                             <i class="icon-print"></i>
                         </g:link>
                     </g:if>
---}%
                     <g:if test="${planillaInstance.tipoPlanilla.codigo != 'C' && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
-                        <g:link controller="reportePlanillas3" action="reportePlanillaNuevo" id="${planillaInstance.id}"
-                                class="btn btnPrint  btn-small btn-ajax" rel="tooltip" title="Imprimir Nuevo">
+                        <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
+                                class="btn btnPrint  btn-small btn-ajax" rel="tooltip" title="Imprimir Nuevo2">
                             <i class="icon-print"></i>
                         </g:link>
                     </g:if>
 
-                    <g:if test="${planillaInstance.planillaCmpl && janus.ejecucion.DetallePlanillaEjecucion.countByPlanilla(planillaInstance) > 0}">
-                        <g:link controller="reportePlanillas3" action="reportePlanillaTotal" id="${planillaInstance.id}"
-                                class="btn btnPrint  btn-small btn-ajax" rel="tooltip" title="ImprimirTotal">
+                    <g:if test="${planillaInstance.planillaCmpl && janus.ejecucion.DetallePlanillaEjecucion.countByPlanilla(planillaInstance) >= 0}">
+                        <g:link controller="reportePlanillas4" action="reportePlanillaTotal1f" id="${planillaInstance.id}"
+                                class="btn btnPrint  btn-small btn-ajax" rel="tooltip" title="Imprimir Total">
                             <i class="icon-copy"></i>
                         </g:link>
                     </g:if>
@@ -290,37 +288,29 @@
                     <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q']  && planillaInstance.id in adicionales}">
                     %{--comentar esto nicio--}%
 
-%{--
                         <a href="#" class="btn btn-small btn-info btnOrdenCambio" title="Orden de Cambio" data-id="${planillaInstance?.id}">
                             <i class="icon-calendar"></i>
                         </a>
---}%
 
                     %{--comentar esto fin--}%
-%{--
                         <g:link controller="reportes6" action="reporteOrdenCambio" params="[id: contrato.id, planilla: planillaInstance?.id]"
                                 class="btn btn-small btn-info btn-ajax" rel="tooltip" title="Imprimir Orden de Cambio">
                             <i class="icon-print"></i>
                         </g:link>
---}%
                     </g:if>
                     <g:if test="${planillaInstance.tipoPlanilla.codigo in ['C']}">
                     %{--comentar esto nicio--}%
 
-%{--
                         <a href="#" class="btn btn-small btn-warning btnOrdenTrabajo" title="Orden de Trabajo" data-id="${planillaInstance?.id}">
                             <i class="icon-calendar"></i>
                         </a>
---}%
 
                     %{--comentar esto fin--}%
 
-%{--
                         <g:link controller="reportes6" action="reporteOrdenDeTrabajo" params="[id: contrato.id, planilla: planillaInstance?.id]"
                                 class="btn btn-small btn-warning btn-ajax" rel="tooltip" title="Imprimir Orden de Trabajo">
                             <i class="icon-print"></i>
                         </g:link>
---}%
                     </g:if>
                 </td>
 

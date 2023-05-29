@@ -14,7 +14,7 @@
 
     <body>
         <div class="alert alert-error alert-block">
-            ${raw(flash.message)}
+            ${flash.message}
 
             <br/><br/>${params.link ?: ""}
         </div>

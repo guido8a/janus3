@@ -1072,7 +1072,7 @@ class Reportes6Controller {
         def rubro = Item.get(params.id)
         def oferente = Persona.get(params.oferente)
         def obraOferente = ObraOferente.findByOferente(oferente)
-        def obra2 = Obra.get(obraOferente.idJanus)
+        def obra2 = Obra.get(obraOferente.idJanus.id)
 
 //        println("--->>" + obra2?.idJanus)
 
@@ -1081,15 +1081,15 @@ class Reportes6Controller {
 
 //        println("sql:" + sql)
 
-        def cn = dbConnectionService.getConnection()
-        def conc = cn.rows(sql.toString())
-        def cncrId
+//        def cn = dbConnectionService.getConnection()
+//        def conc = cn.rows(sql.toString())
+//        def cncrId
+//
+//        conc.each {
+//            cncrId = it?.cncr__id
+//        }
 
-        conc.each {
-            cncrId = it?.cncr__id
-        }
-
-        def concurso = janus.pac.Concurso.get(cncrId)
+        def concurso = obraOferente.concurso
 //        def fechaOferta = printFecha(obraOferente?.fechaOferta)
         def fechaOferta = printFecha(new Date())
         def firma = Persona.get(params.oferente).firma
@@ -1252,15 +1252,15 @@ class Reportes6Controller {
         text = text.replaceAll(/>/, /&gt;/);
         rubro.nombre = text
 
-        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus}"
-
-        def cn = dbConnectionService.getConnection()
-        def conc = cn.rows(sql.toString())
-        def cncrId
-        conc.each {
-            cncrId = it?.cncr__id
-        }
-        def concurso = janus.pac.Concurso.get(cncrId)
+//        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus}"
+//
+//        def cn = dbConnectionService.getConnection()
+//        def conc = cn.rows(sql.toString())
+//        def cncrId
+//        conc.each {
+//            cncrId = it?.cncr__id
+//        }
+        def concurso = obraOferente.concurso
 //        def fechaOferta = printFecha(obraOferente?.fechaOferta)
         def firma = Persona.get(params.oferente).firma
 

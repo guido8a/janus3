@@ -121,7 +121,7 @@
             <b>NOMBRE DEL OFERENTE: ${oferente?.nombre?.toUpperCase() + " " + oferente?.apellido?.toUpperCase()}</b>
         </p>
         <p style="font-size: 10pt; text-align: center">
-            <b>PROCESO: Concurso</b>
+            <b>PROCESO: ${concurso.codigo}</b>
 %{--            <b>PROCESO: ${obra?.codigoConcurso}</b>--}%
         </p>
         <p style="font-size: 10pt; text-align: left">

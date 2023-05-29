@@ -1,6 +1,7 @@
 package janus
 
 import audita.Auditable
+import janus.pac.Concurso
 import seguridad.Persona
 
 class ObraOferente implements Auditable{
@@ -8,7 +9,9 @@ class ObraOferente implements Auditable{
     Obra obra
     Persona oferente
     Date fecha
-    int idJanus
+    Obra idJanus
+    Concurso concurso
+
     static auditable = true
 
     static mapping = {
@@ -23,6 +26,7 @@ class ObraOferente implements Auditable{
             obra column: 'obra__id'
             oferente column: 'prsn__id'
             fecha column: 'oboffcha'
+            concurso column: 'cncr__id'
         }
     }
 

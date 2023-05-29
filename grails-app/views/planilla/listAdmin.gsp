@@ -39,15 +39,16 @@
         </g:link>
 
         %{--cambio junio-2017--}%
-
+%{--
         <g:if test="${anticipo == 0}">
             <g:if test="${contrato?.administrador?.id == session.usuario.id}">
                 <g:link action="form" class="btn" params="[contrato: contrato.id]">
                     <i class="icon-file"></i>
-                    Generar Anticipo
+                    Nueva planilla
                 </g:link>
             </g:if>
         </g:if>
+--}%
 
 
     %{--<g:link action="form" class="btn" params="[contrato: contrato.id]">--}%
@@ -71,7 +72,7 @@
 </div>
 
 <div class="row">
-    <div class="span12" role="navigation">
+    <div class="span4" role="navigation">
         <g:if test="${obra.fechaInicio}">
             <a href="#" class="btn  " id="imprimir">
                 <i class="icon-print"></i>
@@ -79,6 +80,22 @@
             </a>
         </g:if>
     </div>
+    <div class="span5" role="navigation">
+    <g:if test="${contrato.administrador.id == session.usuario.id}">
+        <g:link controller="acta" action="form" class="btn btn-info" params="[contrato: contrato.id, tipo: 'P']">
+            <i class="icon-stackexchange"></i>
+            Acta de recepción provisional
+        </g:link>
+        <g:set var="actaProvisional" value="${janus.actas.Acta.findAllByContratoAndTipo(contrato, 'P')}"/>
+        <g:if test="${actaProvisional.size() == 1 && actaProvisional[0].registrada == 1}">
+            <g:link controller="acta" action="form" class="btn btn-info" params="[contrato: contrato.id, tipo: 'D']">
+                <i class="icon-stackexchange"></i>
+                Acta de recepción definitiva
+            </g:link>
+        </g:if>
+    </g:if>
+    </div>
+
 </div>
 
 <g:form action="delete" name="frmDelete-Planilla">
@@ -86,7 +103,7 @@
 </g:form>
 
 <div id="list-Planilla" role="main" style="margin-top: 10px;">
-%{--${session.usuario.id.toInteger()}--}%
+
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
@@ -145,6 +162,7 @@
                 %{--<i class="icon-zoom-in icon-large"></i>--}%
                 %{--</a>--}%
                     %{--cambio junio-2017--}%
+%{--
                     <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo == 'A'}">
                         <g:link action="form" class="btn btn-small" rel="tooltip" title="Editar"
                                 params="[contrato: contrato.id]" id="${planillaInstance.id}">
@@ -156,6 +174,7 @@
                             </div>
                         </g:if>
                     </g:if>
+--}%
 
                     <g:if test="${planillaInstance.tipoPlanilla.codigo == 'P'}">
                         <g:link action="detalle" id="${planillaInstance.id}" params="[contrato: contrato.id]"
@@ -221,42 +240,29 @@
                             <i class="icon-print"></i>
                         </g:link>
                     </g:if>
-
-                %{--pago    --}%
                 %{--<g:if test="${!planillaInstance.fechaOrdenPago}">--}%
+                %{--<g:link action="ordenPago" class="btn btn-small btn-success btn-ajax" rel="tooltip" title="Ordenar pago" id="${planillaInstance.id}">--}%
+                %{--<i class="icon-money icon-large"></i>--}%
+                %{--</g:link>--}%
+                %{--</g:if>--}%
+                %{--<g:else>--}%
                 %{--<g:if test="${!planillaInstance.fechaPago}">--}%
-                <g:if test="${!obra.fechaInicio}">
-                    <a href="#" class="btn btn-small btn-ajax btn-success" id="inicioObra" title="Iniciar Obra">
-                        <i class="icon-money icon-large"> Inicio Obra</i>
-                    </a>
-%{--
-                    <g:link action="ordenPago" class="btn btn-small btn-success btn-ajax" rel="tooltip" title="Ordenar pago"
-                        id="${planillaInstance.id}">
-                        <i class="icon-money icon-large"></i>
-                    </g:link>
---}%
-                </g:if>
-%{--
-                <g:else>
-                    <g:if test="${!planillaInstance.fechaPago}">
-                        <g:link action="pagar" class="btn btn-small btn-ajax" rel="tooltip" title="Pagar" id="${planillaInstance.id}">
-                            <i class="icon-money icon-large"></i>
-                        </g:link>
-                    </g:if>
-                    <g:else>
-                        <g:link action="pagar" class="btn btn-small btn-ajax" rel="tooltip" title="Ver pago" id="${planillaInstance.id}">
-                            <i class="icon-money icon-large"></i>
-                        </g:link>
-                    </g:else>
-                </g:else>
---}%
+                %{--<g:link action="pagar" class="btn btn-small btn-ajax" rel="tooltip" title="Pagar" id="${planillaInstance.id}">--}%
+                %{--<i class="icon-money icon-large"></i>--}%
+                %{--</g:link>--}%
+                %{--</g:if>--}%
+                %{--<g:else>--}%
+                %{--<g:link action="pagar" class="btn btn-small btn-ajax" rel="tooltip" title="Ver pago" id="${planillaInstance.id}">--}%
+                %{--<i class="icon-money icon-large"></i>--}%
+                %{--</g:link>--}%
+                %{--</g:else>--}%
+                %{--</g:else>--}%
                 %{--<a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${planillaInstance.id}">--}%
                 %{--<i class="icon-pencil icon-large"></i>--}%
                 %{--</a>--}%
                 %{--<a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${planillaInstance.id}">--}%
                 %{--<i class="icon-trash icon-large"></i>--}%
                 %{--</a>--}%
-
 
                 </td>
                 <td style="text-align: center;">
@@ -294,17 +300,12 @@
                                 %{--<g:set var="lblBtn" value="${3}"/>--}%
                                 <g:if test="${garantia >= planillaInstance.fechaFin}">
 
-                                    %{--<g:if test="${(contrato.administrador.id == session.usuario.id) && ((janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0) || (planillaInstance.tipoPlanilla.codigo == 'C'))}">--}%
-                                    <g:if test="${(session.usuario.id.toInteger() in [69, 317]) && ((janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0) || (planillaInstance.tipoPlanilla.codigo == 'C'))}">
-                                    %{--<g:if test="${(session.usuario.id.toInteger() in [317]) && ((janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0) || (planillaInstance.tipoPlanilla.codigo == 'C'))}">--}%
+                                    <g:if test="${(contrato.administrador.id == session.usuario.id) && ((janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0) || (planillaInstance.tipoPlanilla.codigo == 'C'))}">
                                         <a href="#" class="btn btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
                                            data-tipo="${lblBtn}">
                                             Pedir pago
                                         </a>
                                     </g:if>
-                                    <g:else>
-                                        Pedir el pago
-                                    </g:else>
                                 </g:if>
                                 <g:else>
                                     No se ha ingresado la garantía de este contrato, no es posible pedir el pago
@@ -323,7 +324,7 @@
                                 Informar pago
                             </g:if>
                             <g:if test="${lblBtn == 5}">
-                                <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A' && contrato.administrador.id == session.usuario.id}">
+                                <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A'}">
                                     <a href="#" class="btn btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
                                        data-tipo="${lblBtn}">
                                         Iniciar Obra
@@ -341,17 +342,33 @@
                         <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A' && Math.abs(lblBtn) > 3}">
                             <g:if test="${planillaInstance?.valor > 0}">
                                 <a href="#" class="btn btn-small btnPedidoPagoAnticipo"
-                                   title="Imprimir memo de pedido de pago" data-id="${planillaInstance.id}">
+                                   title="Imprimir memorando de pedido de pago" data-id="${planillaInstance.id}">
                                     <i class="icon-print"></i>
                                 </a>
                             </g:if>
                         </g:if>
-                        <g:if test="${(planillaInstance.tipoPlanilla.codigo in ['O', 'P', 'Q', 'L']) && Math.abs(lblBtn) > 3}">
-                            <a href="#" class="btn btn-small btnPedidoPago" title="Imprimir memorandum de pedido de pago"
+                        %{--<g:if test="${(planillaInstance.tipoPlanilla.codigo in ['O', 'P', 'Q', 'L']) && Math.abs(lblBtn) > 3}">--}%
+                        %{--${Math.abs(cmpl)}--}%
+                        <g:if test="${(cmpl > 0) && (Math.abs(lblBtn?:0) > 3) && (planillaInstance.tipoPlanilla.codigo in ['O', 'P', 'Q', 'L'])}">
+                            <a href="#" class="btn btn-small btnPedidoPagoC btn-info" title="Pedido de pago Complementarios"
                                data-id="${planillaInstance.id}">
                                 <i class="icon-print"></i>
                             </a>
+                            <g:if test="${(planillaInstance.tipoPlanilla.codigo in ['O', 'P', 'Q', 'L']) && Math.abs(lblBtn) > 3}">
+                                <a href="#" class="btn btn-small btnPedidoPago" title="Imprimir memorandum de pedido de pago"
+                                   data-id="${planillaInstance.id}">
+                                    <i class="icon-print"></i>
+                                </a>
+                            </g:if>
                         </g:if>
+                        <g:else>
+                            <g:if test="${(planillaInstance.tipoPlanilla.codigo in ['O', 'P', 'Q', 'L']) && Math.abs(lblBtn) > 3}">
+                                <a href="#" class="btn btn-small btnPedidoPago text-info" title="Imprimir memorandum de pedido de pago"
+                                   data-id="${planillaInstance.id}">
+                                    <i class="icon-print"></i>
+                                </a>
+                            </g:if>
+                        </g:else>
                 </td>
             </tr>
         </g:each>
@@ -383,30 +400,6 @@
         </div>
     </fieldset>
 </div>
-
-
-<div class="modal hide fade mediumModal" id="modal-var" style="overflow: hidden">
-    <div class="modal-header btn-primary">
-        <button type="button" class="close" data-dismiss="modal">x</button>
-
-        <h3 id="modal_tittle_var">
-
-        </h3>
-
-    </div>
-
-    <div class="modal-body" id="modal_body_var">
-
-    </div>
-
-    <div class="modal-footer" id="modal_footer_var">
-        registro
-    </div>
-
-</div>
-
-
-
 
 <script type="text/javascript">
     var url = "${resource(dir:'images', file:'spinner_24.gif')}";
@@ -444,6 +437,13 @@
             %{--var url = "${createLink(controller: 'reportes',action: 'anticipoReporte')}/" + $(this).data("id");--}%
             %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=Memo_pedido_pago_" + "${new Date().format('ddMMyyyy_hhmm')}" + ".pdf";--}%
             location.href = "${g.createLink(controller: 'reportesPlanillas',action: 'memoPedidoPago')}/" + $(this).data("id");
+            return false;
+        });
+
+        $(".btnPedidoPagoC").click(function () {
+            %{--var url = "${createLink(controller: 'reportes',action: 'anticipoReporte')}/" + $(this).data("id");--}%
+            %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url + "&filename=Memo_pedido_pago_" + "${new Date().format('ddMMyyyy_hhmm')}" + ".pdf";--}%
+            location.href = "${g.createLink(controller: 'reportesPlanillas',action: 'memoPedidoPagoComp')}/" + $(this).data("id");
             return false;
         });
 
@@ -656,49 +656,6 @@
             }
 
         });
-
-        $("#inicioObra").click(function () {
-            $.ajax({
-                type    : "POST",
-                url     : "${g.createLink(controller: 'planilla', action:'iniObraNoReajuste')}",
-                data    : {
-                    id : "${contrato?.id}"
-                },
-                success : function (msg) {
-                    var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');
-                    var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                    $btnSave.click(function () {
-                        $(this).replaceWith(spinner);
-                        var fcha = $("#fecha").val()
-                        var memo = $("#memo").val()
-                        console.log('...va inicio',fcha, memo)
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(controller: 'planilla', action:'iniciarObra')}",
-                            data    : {
-                                cntr  : "${contrato?.id}",
-                                fecha  : fcha,
-                                memo  : memo
-                            },
-                            success : function (msg) {
-                                if(msg == "ok") {
-                                    location.reload(true);
-                                } else {
-                                    log("Un error ha ocurrido al iniciar la obra", success)
-                                }
-                            }
-                        });
-                    });
-                    $("#modal_tittle_var").text("Proceso de Inicio de Obra");
-                    $("#modal_body_var").html(msg);
-                    $("#modal_footer_var").html($btnCerrar).append($btnSave);
-                    $("#modal-var").modal("show");
-                }
-            });
-            return false;
-        });
-
-
     });
 
 </script>

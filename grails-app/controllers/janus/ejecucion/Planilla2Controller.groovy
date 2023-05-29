@@ -5,7 +5,6 @@ import janus.FormulaPolinomica
 import janus.Obra
 import janus.pac.PeriodoEjecucion
 
-
 class Planilla2Controller {
 
     def buscadorService
@@ -2287,7 +2286,7 @@ class Planilla2Controller {
         return perNuevo
     }
 
-    def verificaIndicesAvance(pcs, per, i,Date inicio,Date fin,contrato) {
+    def verificaIndicesAvance(pcs, per, i, Date inicio, Date fin, contrato) {
         println "verificaIndicesAvance: pcs: $pcs, per: $per, inicio: ${inicio.format('dd-MM-yyyy')}, fin: $fin"
         if(inicio.date != 1){
             inicio = new Date().parse('dd-MM-yyyy', '1-' + (inicio.month + 1) + '-' + (inicio.year + 1900))

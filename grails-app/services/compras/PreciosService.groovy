@@ -3,12 +3,12 @@ package compras
 import grails.gorm.transactions.Transactional
 import janus.VolumenesObra
 
-@Transactional
+//@Transactional
 
 class PreciosService {
 
     def dbConnectionService
-    boolean transactional = true
+//    boolean transactional = true
 
     def getPrecioItems(fecha, lugar, items) {
         def cn = dbConnectionService.getConnection()
@@ -743,9 +743,10 @@ class PreciosService {
     }
 
 
-    def rubros_oferentes(rubro,oferente) {
+    def rubros_oferentes(rubro, oferente) {
         def cn = dbConnectionService.getConnection()
-        def sql = "select * from ac_rbro_hr1_of(" + rubro + ", ' " + oferente + " ') "
+        println "llega: rubro: $rubro, oferente: $oferente"
+        def sql = "select * from ac_rbro_hr1_of(${rubro} , ${oferente})"
         println "sql ac rubro "+sql
         def result = []
         cn.eachRow(sql.toString()) { r ->

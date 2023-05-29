@@ -165,8 +165,7 @@
             var anterior = 0;
 
             function initRows() {
-                %{--var rows = ${detalles};--}%
-                var rows = <elm:poneHtml textoHtml="${detalles}"/>;
+                var rows = ${detalles};
                 for (var i = 0; i < rows.length; i++) {
                     var data = rows[i];
                     addRow(data, false);
@@ -245,7 +244,7 @@
 
             function updateVal(tipo) {
 //                var indi = parseInt($("#thIndirectos").data("indi")) / 100;
-                var indi = ${contrato?.indirectos?:20}/100
+                var indi = ${contrato?.indirectos?:21}/100
                 var valorNoIva = parseFloat($.trim($("#txtValor").val()));
 
                 var valorIva = valorNoIva + (valorNoIva * iva);

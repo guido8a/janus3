@@ -13,9 +13,7 @@ import janus.pac.CrngEjecucionObra
 import janus.pac.CronogramaEjecucion
 import janus.pac.PeriodoEjecucion
 
-import javax.imageio.ImageIO
 import java.awt.*
-import java.awt.image.BufferedImage
 import java.text.SimpleDateFormat
 
 class ReportesPlanillasController {

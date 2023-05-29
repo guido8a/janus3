@@ -199,7 +199,7 @@
                             </div>
 
                             <div class="span4">
-                                <g:textField name="numero" maxlength="30" class="span3 required allCaps"
+                                <g:textField name="numero" maxlength="28" class="span3 required allCaps"
                                              value="${fieldValue(bean: planillaInstance, field: 'numero')}"/>
                                 <p class="help-block ui-helper-hidden"></p>
                             </div>
@@ -452,21 +452,12 @@
                                     Valor
                                 </div>
 
-                                <div class="span2">
-                                    <input type="text" name="noPagoValor" value="${planillaInstance?.noPagoValor}" class="span2">
+                                <div class="span3">
+                                    <input type="text" name="noPagoValor" value="${planillaInstance?.noPagoValor}">
                                 </div>
                             </div>
 
-                        <div class="row" style="margin-bottom: 10px;" id="divNoPago">
-                            <div class='span2 formato'>
-                                Coordenadas de la vía terminada
-                            </div>
 
-                            <div class="span8">
-                                <g:textArea maxlength="255" name="coordenadasVia" class="span9"
-                                            value="${planillaInstance?.coordenadasVia}"/>
-                            </div>
-                        </div>
                     </fieldset>
                 </g:form>
             </g:if>

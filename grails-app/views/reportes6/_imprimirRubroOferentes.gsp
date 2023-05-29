@@ -117,7 +117,7 @@
         </p>
         <p style="font-size: 10pt; text-align: center">
             %{--<b>PROCESO: ${obra?.codigoConcurso}</b>--}%
-            <b>PROCESO: Concurso</b>
+            <b>PROCESO: ${concurso.codigo}</b>
         </p>
         <p style="font-size: 10pt; text-align: left">
             <b>ANÁLISIS DE PRECIOS UNITARIOS</b>

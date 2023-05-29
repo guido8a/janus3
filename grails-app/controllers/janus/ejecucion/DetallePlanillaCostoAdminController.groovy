@@ -3,7 +3,6 @@ package janus.ejecucion
 import groovy.json.JsonBuilder
 import janus.Contrato
 import janus.Parametros
-
 import org.springframework.dao.DataIntegrityViolationException
 
 class DetallePlanillaCostoAdminController {
