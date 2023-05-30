@@ -1835,10 +1835,8 @@ class PlanillaController {
         if (!pla) {
             esAnticipo = false
         } else {
-//            if (pla.fechaMemoPagoPlanilla) {
             anticipoPagado = true
             tiposPlanilla -= pla.tipoPlanilla
-//            }
         }
 
         def cPlanillas = Planilla.findAllByContrato(contrato, [sort: 'fechaInicio']).size()
@@ -1884,17 +1882,7 @@ class PlanillaController {
                     }
                 }
             }
-
-/*
-            def poa = Planilla.findByContratoAndTipoPlanilla(contrato, obrasAdicionales)
-            if (poa) {
-                tiposPlanilla -= poa.tipoPlanilla
-            }
-*/
         }
-
-//        println "pasa filtros...: ${tiposPlanilla.codigo}, .. planillasAvance: ${planillasAvance.size()}"
-//        println "contrato: $contrato"
 
         def periodosEjec
         if (planillasAvance.size() == 0) {
