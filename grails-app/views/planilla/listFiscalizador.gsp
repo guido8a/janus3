@@ -155,21 +155,21 @@
                     <td class="numero" style="width: 8%">
                         <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                     </td>
-                    <td style="width: 8%">
+                    <td style="width: 8%; text-align: center">
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
-                            <g:link action="form" class="btn btn-xs btn-primary" rel="tooltip" title="Editar"
+                            <g:link action="form" class="btn btn-xs btn-success" rel="tooltip" title="Editar"
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
                                 <i class="fa fa-edit"></i>
                             </g:link>
                             <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
                                 <div data-id="${planillaInstance.id}" rel="tooltip" title="Procesar" class="btn btn-xs btn-success btnProcesa">
-                                    <i class="fa fa-gear"></i>
+                                    <i class="fa fa-cog"></i>
                                 </div>
                             </g:if>
                         </g:if>
 
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['E']}">
-                            <g:link action="sinAnticipo" class="btn btn-xs btn-primary" rel="tooltip" title="Editar Entrega"
+                            <g:link action="sinAnticipo" class="btn btn-xs btn-success" rel="tooltip" title="Editar Entrega"
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
                                 <i class="fa fa-edit"></i>
                             </g:link>
@@ -177,7 +177,7 @@
 
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q', 'O', 'C', 'L', 'R'] && !planillaInstance.fechaMemoSalidaPlanilla && contrato?.fiscalizador?.id == session.usuario.id}">
                             <g:link controller="planilla" action="form" params="[id: planillaInstance.id, contrato: planillaInstance.contrato.id]"
-                                    rel="tooltip" title="Editar" class="btn btn-xs btn-primary">
+                                    rel="tooltip" title="Editar" class="btn btn-xs btn-success">
                                 <i class="fa fa-edit"></i>
                             </g:link>
                         </g:if>
@@ -192,7 +192,7 @@
                                 <g:if test="${!planillaInstance.fechaMemoSalidaPlanilla}">
                                     <div data-id="${planillaInstance.id}" rel="tooltip" title="Procesar"
                                          class="btn btn-xs btn-success btnProcesaQ">
-                                        <i class="fa fa-gear"></i>
+                                        <i class="fa fa-cog"></i>
                                     </div>
                                 </g:if>
                             </g:if>
@@ -207,7 +207,7 @@
                                 <g:if test="${!planillaInstance.fechaMemoSalidaPlanilla}">
                                     <div data-id="${planillaInstance.id}" rel="tooltip" title="Procesar Entrega"
                                          class="btn btn-xs btn-success btnProcesaE">
-                                        <i class="fa fa-gear"></i>
+                                        <i class="fa fa-cog"></i>
                                     </div>
                                 </g:if>
                             </g:if>
@@ -234,19 +234,19 @@
                             </g:link>
                         </g:if>
 
-                        <g:if test="${planillaInstance.planillaCmpl && janus.ejecucion.DetallePlanillaEjecucion.countByPlanilla(planillaInstance) >= 0}">
+%{--                        <g:if test="${planillaInstance.planillaCmpl && janus.ejecucion.DetallePlanillaEjecucion.countByPlanilla(planillaInstance) >= 0}">--}%
                             <g:link controller="reportePlanillas4" action="reportePlanillaTotal1f" id="${planillaInstance.id}"
                                     class="btn btnPrint btn-xs btn-primary btn-ajax" rel="tooltip" title="Imprimir Total">
-                                <i class="fa fa-copy"></i>
+                                <i class="fa fa-print"></i>
                             </g:link>
-                        </g:if>
+%{--                        </g:if>--}%
 
-                        <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C' && janus.ejecucion.DetallePlanillaCosto.countByPlanilla(planillaInstance) > 0}">
+%{--                        <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C' && janus.ejecucion.DetallePlanillaCosto.countByPlanilla(planillaInstance) > 0}">--}%
                             <g:link controller="reportesPlanillas" action="reportePlanillaCosto" id="${planillaInstance.id}"
                                     class="btn btnPrint btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir">
                                 <i class="fa fa-print"></i>
                             </g:link>
-                        </g:if>
+%{--                        </g:if>--}%
 
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q']  && planillaInstance.id in adicionales}">
 
@@ -293,7 +293,7 @@
                             <g:if test="${lblBtn > 0}">
                                 <g:if test="${lblBtn == 2}">
                                     <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
-                                        <a href="#" class="btn btn-success btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}" data-tipo="${lblBtn}">
+                                        <a href="#" class="btn btn-xs btn-success btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}" data-tipo="${lblBtn}">
                                             Enviar planilla
                                         </a>
                                     </g:if>
@@ -392,21 +392,13 @@
 
 <script type="text/javascript">
 
-
     $("#btnNuevaPlanilla").click(function () {
         <g:if test="${Planilla.findByContratoAndTipoPlanilla(janus.Contrato.get(contrato?.id), TipoPlanilla.findByCodigo('A'))}">
         <g:if test="${contrato?.obra?.fechaInicio}">
         location.href = "${g.createLink(controller: 'planilla', action: 'form')}?contrato=" + ${contrato?.id};
         </g:if>
         <g:else>
-
         bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Sin Inicio de Obra </br> La obra perteneciente a este contrato no ha sido iniciada, no se puede crear planillas" + '</strong>');
-
-        // var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-        // $("#modal_tittle_var").text("Sin Inicio de Obra");
-        // $("#modal_body_var").html("La obra perteneciente a este contrato no ha sido iniciada, no se puede crear planillas");
-        // $("#modal_footer_var").html($btnCerrar);
-        // $("#modal-var").modal("show");
         </g:else>
         </g:if>
         <g:else>
@@ -452,7 +444,7 @@
                         url: "${createLink(controller: 'planilla', action:'saveOrdenCambio')}",
                         data: $("#frmSave-OrdenCambio").serialize(),
                         success: function (msg) {
-                            if (msg != 'no') {
+                            if (msg !== 'no') {
                                 alert('Orden de Cambio Guardada!')
                             } else {
                                 alert('No se pudo guardar la orden de cambio')
@@ -656,6 +648,7 @@
 
         $(".btnProcesa").click(function () {
             var id = $(this).data("id");
+            var g = cargarLoader("Procesando...");
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'procesarLq')}",
@@ -664,6 +657,7 @@
                 },
                 success : function (msg) {
                     location.reload();
+                    g.modal("hide");
                 }
             });
             return false;
@@ -671,6 +665,7 @@
 
         $(".btnProcesaQ").click(function () {
             var id = $(this).data("id");
+            var g = cargarLoader("Procesando...");
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'procesarLq')}",
@@ -678,9 +673,9 @@
                     id : id
                 },
                 success : function (msg) {
+                    g.modal("hide");
                     if (msg === 'fechas') {
-                        location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" +
-                        ${contrato?.id}
+                        location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" + ${contrato?.id};
                     } else {
                         location.reload();
                     }
@@ -691,6 +686,7 @@
 
         $(".btnProcesaE").click(function () {
             var id = $(this).data("id");
+            var g = cargarLoader("Procesando...");
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'procEntrega')}",
@@ -698,9 +694,9 @@
                     id : id
                 },
                 success : function (msg) {
+                    g.modal("hide");
                     if (msg === 'fechas') {
-                        location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" +
-                        ${contrato?.id}
+                        location.href = "${g.createLink(controller: 'contrato', action: 'fechasPedidoRecepcion' )}?id=" + ${contrato?.id};
                     } else {
                         location.reload();
                     }

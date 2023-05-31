@@ -2080,41 +2080,31 @@ class PlanillaController {
             }
         }
 
-        println "params.formulaPolinomicaReajuste.id:" + params."formulaPolinomicaReajuste.id"
+//        println "params.formulaPolinomicaReajuste.id:" + params."formulaPolinomicaReajuste.id"
 
-//        println "avance físico: ${params.avanceFisico}"
         // liquidación
         if (tipo.codigo in ['L', 'R']) {
             def contrato = Contrato.get(params.contrato.id)
             def tipoAvance = TipoPlanilla.findAllByCodigoInList(['P', 'Q'])
-//            println "tipoAvance: $tipoAvance, contrato: ${contrato.id}"
             def planillasAvance = Planilla.findAllByContratoAndTipoPlanillaInList(contrato, tipoAvance, [sort: "id", order: "asc"])
-//            println "... $planillasAvance"
             def ultimaAvance = planillasAvance.last()
             params.avanceFisico = ultimaAvance.avanceFisico
             fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaOficioEntradaPlanilla)
         }
 
-        println "fecha inicio: ${params.fechaInicio}"
+//        println "fecha inicio: ${params.fechaInicio}"
 
         if (!params.diasMultaDisposiciones) params.diasMultaDisposiciones = 0
-
         if (params.fechaPresentacion) params.fechaPresentacion = new Date().parse("dd-MM-yyyy", params.fechaPresentacion)
-
         if (params.fechaIngreso) params.fechaIngreso = new Date().parse("dd-MM-yyyy", params.fechaIngreso)
-
         if (params.fechaOficioSalida) params.fechaOficioSalida = new Date().parse("dd-MM-yyyy", params.fechaOficioSalida)
-
         if (params.fechaMemoSalida) params.fechaMemoSalida = new Date().parse("dd-MM-yyyy", params.fechaMemoSalida)
-
         if (params.fechaOficioEntradaPlanilla) params.fechaOficioEntradaPlanilla = new Date().parse("dd-MM-yyyy", params.fechaOficioEntradaPlanilla)
-
         if (params.fechaInicio && !fechaInicio) {
             params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio)
         } else if (fechaInicio) {
             params.fechaInicio = fechaInicio
         }
-
         if (params.fechaFin) {
             params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
         } else if (tipo.codigo == 'R') {
@@ -2128,10 +2118,7 @@ class PlanillaController {
         if (params.numero) params.numero = params.numero.toString().toUpperCase()
 
         def planillaInstance
-//        session.override = false
         if (params.id) {
-//            println("entro")
-//            params.fechaPresentacion = params.fechaIngreso
 
             if (!params.fechaPresentacion) {
                 params.fechaPresentacion = params.fechaIngreso
@@ -2240,27 +2227,29 @@ class PlanillaController {
 
         //tipoContrato
 
-
         if (!planillaInstance.save(flush: true)) {
             println planillaInstance.errors
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Planilla " + (planillaInstance.id ? planillaInstance.id : "") + "</h4>"
-
-            str += g.renderErrors(bean: planillaInstance)
-
-            flash.message = str
-            params.contrato = params.contrato.id
-            redirect(action: 'form', params: params)
-            return
+//            flash.clase = "alert-error"
+//            def str = "<h4>No se pudo guardar Planilla " + (planillaInstance.id ? planillaInstance.id : "") + "</h4>"
+//
+//            str += g.renderErrors(bean: planillaInstance)
+//
+//            flash.message = str
+//            params.contrato = params.contrato.id
+//            redirect(action: 'form', params: params)
+//            return
+//
+            render "no_Error al guardar la planilla"
+//            return true
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Planilla " + planillaInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Planilla " + planillaInstance.id
-        }
+//        if (params.id) {
+//            flash.clase = "alert-success"
+//            flash.message = "Se ha actualizado correctamente Planilla " + planillaInstance.id
+//        } else {
+//            flash.clase = "alert-success"
+//            flash.message = "Se ha creado correctamente Planilla " + planillaInstance.id
+//        }
 
         if (generaCmpl) {
             def plnlCmpl = new Planilla()
@@ -2271,13 +2260,13 @@ class PlanillaController {
             plnlCmpl.numero += '-C'
             plnlCmpl.descripcion += "Contrato Complementario"
             plnlCmpl.formulaPolinomicaReajuste = fp
-//            plnlCmpl.save(flush: true)
             if (!plnlCmpl.save(flush: true)) {
                 println "Error al crear plnlCmpl: ${plnlCmpl.errors}"
             } else {
                 plnlCmpl.refresh()
                 planillaInstance.planillaCmpl = plnlCmpl
                 planillaInstance.save(flush: true)
+//                render "ok_Planilla guardada correctamente"
             }
         }
 
@@ -2286,7 +2275,6 @@ class PlanillaController {
                 redirect(controller: 'planilla', action: 'listAdmin', id: planillaInstance.contrato.id)
                 break;
             case 'L':
-//                redirect(controller: 'planilla2', action: 'liquidacion', id: planillaInstance.id)
                 redirect(action: 'listFiscalizador', id: planillaInstance.contrato.id)
                 break;
             case ['P', 'Q', 'O']:  //avance, liquidación y obras adicionales
@@ -2303,8 +2291,6 @@ class PlanillaController {
             default:
                 redirect(action: 'list', id: planillaInstance.contratoId)
         }
-
-
     }
 
     def saveSinAntc() {  /* guarda planilla */

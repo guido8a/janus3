@@ -5,11 +5,12 @@ import com.lowagie.text.Element
 import com.lowagie.text.PageSize
 import com.lowagie.text.Paragraph
 import com.lowagie.text.pdf.*
+import com.lowagie.text.Font
 import janus.Contrato
 import janus.Parametros
 
-import java.awt.*
-
+import java.awt.Image
+import java.awt.Color
 //import com.itextpdf.text.Document;
 //import com.itextpdf.text.Element;
 //import com.itextpdf.text.Phrase;
@@ -570,16 +571,14 @@ class ReportePlanillas4Controller {
         def contrato = planilla.contrato
         def reajustesPlanilla = ReajustePlanilla.findAllByPlanillaAndFpReajuste(planilla, fpReajuste, [sort: "periodo", order: "asc"])
         def rjpl = reajustesPlanilla.first()
-//        println "reajustesPlanilla: $reajustesPlanilla, Po: ${reajustesPlanilla.valorPo}"
 
         /* crea el PDF */
         def baos = new ByteArrayOutputStream()
-//        def name = "planilla_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
-        Font fontTituloGad = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
-        Font info = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL)
-        Font fontTitle = new Font(Font.TIMES_ROMAN, 14, Font.BOLD);
-        Font fontTh = new Font(Font.TIMES_ROMAN, 7, Font.BOLD);
-        Font fontTd = new Font(Font.TIMES_ROMAN, 8, Font.NORMAL);
+        com.lowagie.text.Font fontTituloGad = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 12, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font info = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 10, com.lowagie.text.Font.NORMAL)
+        com.lowagie.text.Font fontTitle = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 14, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font fontTh = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 7, com.lowagie.text.Font.BOLD);
+        com.lowagie.text.Font fontTd = new com.lowagie.text.Font(com.lowagie.text.Font.TIMES_ROMAN, 8, com.lowagie.text.Font.NORMAL);
 
         Document document
         document = new Document(PageSize.A4.rotate());
@@ -607,7 +606,7 @@ class ReportePlanillas4Controller {
 //        headerPlanilla([size: 10])
         /* ---------------------- Fin Header planilla --------------------------*/
 
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -701,7 +700,7 @@ class ReportePlanillas4Controller {
 
         document.newPage()
 //        headerPlanilla([size: 10, espacio: 2])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -774,7 +773,7 @@ class ReportePlanillas4Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //        headerPlanilla([size: 10, espacio: 1])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -976,7 +975,7 @@ class ReportePlanillas4Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -1060,7 +1059,7 @@ class ReportePlanillas4Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -1153,7 +1152,7 @@ class ReportePlanillas4Controller {
             document.setPageSize(PageSize.A4);
             document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-            document.add(titlLogo())
+//            document.add(titlLogo())
             document.add(titlInst(1, planilla, obra));
             document.add(titlSbtt(planilla.fechaIngreso));
             document.add(encabezado(2, 10, planilla, tipo))

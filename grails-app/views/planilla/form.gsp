@@ -731,10 +731,11 @@
         sideBySide: true,
         icons: {
         }
-    }).on('changeDate', function (selected) {
-        console.log("--- " + selected)
-        var minDate = new Date(selected.date.valueOf());
-        $('#fechaPresentacion').datetimepicker('setStartDate', minDate);
+    }).on('dp.change', function(e){
+        var minDate = new Date(e.date);
+        // if ($.trim($("#fechaPresentacion").val()) === "") {
+            $('#fechaPresentacion').data("DateTimePicker").date(moment(minDate).format('DD/MM/YYYY'));
+        // }
     });
 
     function validarNum(ev) {
@@ -820,12 +821,6 @@
         }
     }
 
-    function fechas() {
-        if ($.trim($("#fechaPresentacion").val()) === "") {
-            $("#fechaPresentacion").val($("#fechaIngreso").val());
-        }
-    }
-
     $(function () {
         checkPeriodo();
         cargarAsociada();
@@ -849,7 +844,40 @@
             if ($("#frmSave-Planilla").valid()) {
                 $("#frmSave-Planilla").submit();
             }
+            // return submitFormPlanilla();
         });
+
+
+
+        // function submitFormPlanilla() {
+        //     var $form = $("#frmSave-Planilla");
+        //     if ($form.valid()) {
+        //         var data = $form.serialize();
+        //         var dialog = cargarLoader("Guardando...");
+        //         $.ajax({
+        //             type    : "POST",
+        //             url     : $form.attr("action"),
+        //             data    : data,
+        //             success : function (msg) {
+        //                 console.log("msg " + msg)
+        //                 dialog.modal('hide');
+        //                 var parts = msg.split("_");
+        //                 if(parts[0] === 'ok'){
+        //                     log(parts[1], "success");
+        //                     setTimeout(function () {
+        //                         location.reload();
+        //                     }, 800);
+        //                 }else{
+        //                     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+        //                     return false;
+        //                 }
+        //             }
+        //         });
+        //     } else {
+        //         return false;
+        //     }
+        // }
+
 
         $("#tipoPlanilla").change(function () {
             var tp = $(this).val();
@@ -867,7 +895,6 @@
                     tipo: tipo
                 },
                 success: function (msg){
-                    console.log(msg);
                     $("#divAnticipo").html(msg)
                 }
             });

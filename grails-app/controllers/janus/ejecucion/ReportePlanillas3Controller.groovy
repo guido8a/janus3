@@ -1829,41 +1829,34 @@ class ReportePlanillas3Controller {
         rjpl.each {rj ->
             reajustes.add([planilla: rj.planilla, reajuste: rj.fpReajuste])
         }
-//        println "reajustes: $reajustes"
         reajustes.unique()
-//        println "reajustes unique: $reajustes"
 
         /* todo: hacer que se imprima el reporteTablas tantas veces como fprj hayan
         * crear nuevas FP en el contrato 24, igual que en la BD janus_prdc para probar */
 
-
         if(planilla.contrato.aplicaReajuste == 1) {
             //** genera B0, P0 y Fr de la planilla **
-//        println "reajustes: ${reajustes}"
             reajustes.each {
                 pl = reporteTablas(it.planilla, it.reajuste)
                 pdfs.add(pl.toByteArray())
                 contador++
             }
             if(planilla.tipoPlanilla.codigo == 'A') {
-                println "invoca a resumen... planilla"
+//                println "invoca a resumen... planilla"
                 pl = resumenAnticipo(planilla)
                 pdfs.add(pl.toByteArray())
                 contador++
             }
         }
         if(planilla.tipoPlanilla.codigo in ['P', 'Q', 'R', 'L']) {
-            println "invoca multas"
+//            println "invoca multas"
             pl = multas(planilla, "")
             if(pl) {
                 pdfs.add(pl.toByteArray())
                 contador++
             }
 
-            println "invoca detalle"
-//            pl = detalle(planilla, planilla.tipoContrato)
             pl = detalleTodo(planilla, planilla.tipoContrato)  //varias firmas
-//            pl = detalleAdicional(planilla, planilla.tipoContrato)  /* columna adicional */
 
             pdfs.add(pl.toByteArray())
             contador++
@@ -2225,7 +2218,7 @@ class ReportePlanillas3Controller {
 //        headerPlanilla([size: 10])
         /* ---------------------- Fin Header planilla --------------------------*/
 
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2319,7 +2312,7 @@ class ReportePlanillas3Controller {
 
         document.newPage()
 //        headerPlanilla([size: 10, espacio: 2])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2392,7 +2385,7 @@ class ReportePlanillas3Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //        headerPlanilla([size: 10, espacio: 1])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2595,7 +2588,7 @@ class ReportePlanillas3Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2679,7 +2672,7 @@ class ReportePlanillas3Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-        document.add(titlLogo())
+//        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2772,7 +2765,7 @@ class ReportePlanillas3Controller {
             document.setPageSize(PageSize.A4);
             document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-            document.add(titlLogo())
+//            document.add(titlLogo())
             document.add(titlInst(1, planilla, obra));
             document.add(titlSbtt(planilla.fechaIngreso));
             document.add(encabezado(2, 10, planilla, tipo))
