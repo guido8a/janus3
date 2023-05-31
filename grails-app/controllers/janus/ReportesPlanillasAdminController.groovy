@@ -43,7 +43,7 @@ class ReportesPlanillasAdminController {
         Font fontTdTiny = new Font(Font.TIMES_ROMAN, 7, Font.NORMAL);
         Font fontTdTiny2 = new Font(Font.TIMES_ROMAN, 5, Font.NORMAL);
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_reportes.png"
+        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
@@ -55,8 +55,7 @@ class ReportesPlanillasAdminController {
         def pdfw = PdfWriter.getInstance(document, baos);
 
         // headers and footers must be added before the document is opened
-//        HeaderFooter footer1 = new HeaderFooter(new Phrase("Manuel Larrea N. 13-45 y Antonio Ante / Teléfonos troncal: (593-2)252 7077 - 254 9222 - 254 9020 - 254 9163 / www.pichincha.gob.ec", fontFooter), false);
-        HeaderFooter footer1 = new HeaderFooter(new Phrase("Dirección Calle N. 123 / Teléfonos troncal: 0000 0000 - 000 000 / www.prueba.gob.ec", fontFooter), false);
+        HeaderFooter footer1 = new HeaderFooter(new Phrase("Manuel Larrea N. 13-45 y Antonio Ante / Teléfonos troncal: (593-2)252 7077 - 254 9222 - 254 9020 - 254 9163 / www.pichincha.gob.ec", fontFooter), false);
         // true aqui pone numero de pagina
         footer1.setBorder(Rectangle.NO_BORDER);
         footer1.setBorder(Rectangle.TOP);
@@ -93,7 +92,7 @@ class ReportesPlanillasAdminController {
             addCellTabla(tablaHeaderDetalles, new Paragraph(obra.nombre, fontTdTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 10])
 
             addCellTabla(tablaHeaderDetalles, new Paragraph("Lugar", fontThTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaHeaderDetalles, new Paragraph((obra?.sitio ?: ""), fontTdTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 6])
+            addCellTabla(tablaHeaderDetalles, new Paragraph((obra.lugar?.descripcion ?: ""), fontTdTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 6])
             addCellTabla(tablaHeaderDetalles, new Paragraph("Planilla", fontThTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaHeaderDetalles, new Paragraph(planilla.numero, fontTdTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 4])
 //            addCellTabla(tablaHeaderDetalles, new Paragraph(" ", fontTdTiny), [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
@@ -346,7 +345,7 @@ class ReportesPlanillasAdminController {
         Font fontThHeader = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
         Font fontTdHeader = new Font(Font.TIMES_ROMAN, 12, Font.NORMAL);
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_reportes.png"
+        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
@@ -358,7 +357,7 @@ class ReportesPlanillasAdminController {
         def pdfw = PdfWriter.getInstance(document, baos);
 
         // headers and footers must be added before the document is opened
-        HeaderFooter footer1 = new HeaderFooter(new Phrase("Dirección Calle N. 123 / Teléfonos troncal: 0000 0000 - 000 000 / www.prueba.gob.ec", fontFooter), false);
+        HeaderFooter footer1 = new HeaderFooter(new Phrase("Manuel Larrea N. 13-45 y Antonio Ante / Teléfonos troncal: (593-2)252 7077 - 254 9222 - 254 9020 - 254 9163 / www.pichincha.gob.ec", fontFooter), false);
         // true aqui pone numero de pagina
         footer1.setBorder(Rectangle.NO_BORDER);
         footer1.setBorder(Rectangle.TOP);
@@ -376,7 +375,7 @@ class ReportesPlanillasAdminController {
         Paragraph preface = new Paragraph();
         addEmptyLine(preface, 1);
         preface.setAlignment(Element.ALIGN_CENTER);
-        preface.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), fontTituloGad));
+        preface.add(new Paragraph("SEP - G.A.D. PROVINCIA DE PICHINCHA", fontTituloGad));
         preface.add(new Paragraph("Planilla de materiales de " + obra.nombre, fontTituloGad));
         addEmptyLine(preface, 1);
 //        Paragraph preface2 = new Paragraph();
@@ -399,7 +398,7 @@ class ReportesPlanillasAdminController {
         addCellTabla(tablaDatosObra, new Paragraph(obra.nombre, fontTdHeader), [bg: bgObra, border: bgObra, bct: brObra, bwt: 0.1, bcr: brObra, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 4])
 
         addCellTabla(tablaDatosObra, new Paragraph("Lugar", fontThHeader), [bg: bgObra, border: bgObra, bcl: brObra, bwl: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
-        addCellTabla(tablaDatosObra, new Paragraph((obra?.sitio ?: ""), fontTdHeader), [bg: bgObra, border: bgObra, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
+        addCellTabla(tablaDatosObra, new Paragraph((obra.lugar?.descripcion ?: ""), fontTdHeader), [bg: bgObra, border: bgObra, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaDatosObra, new Paragraph("", fontThHeader), [bg: bgObra, border: bgObra, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaDatosObra, new Paragraph("Planilla", fontThHeader), [bg: bgObra, border: bgObra, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
         addCellTabla(tablaDatosObra, new Paragraph(planilla.numero, fontTdHeader), [bg: bgObra, border: bgObra, bcr: brObra, bwr: 0.1, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE])
