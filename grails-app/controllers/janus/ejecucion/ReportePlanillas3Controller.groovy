@@ -2218,7 +2218,7 @@ class ReportePlanillas3Controller {
 //        headerPlanilla([size: 10])
         /* ---------------------- Fin Header planilla --------------------------*/
 
-//        document.add(titlLogo())
+        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2312,7 +2312,7 @@ class ReportePlanillas3Controller {
 
         document.newPage()
 //        headerPlanilla([size: 10, espacio: 2])
-//        document.add(titlLogo())
+        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2385,7 +2385,7 @@ class ReportePlanillas3Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //        headerPlanilla([size: 10, espacio: 1])
-//        document.add(titlLogo())
+        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2588,7 +2588,7 @@ class ReportePlanillas3Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-//        document.add(titlLogo())
+        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2672,7 +2672,7 @@ class ReportePlanillas3Controller {
         document.setPageSize(PageSize.A4);
         document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-//        document.add(titlLogo())
+        document.add(titlLogo())
         document.add(titlInst(1, planilla, obra));
         document.add(titlSbtt(planilla.fechaIngreso));
         document.add(encabezado(2, 10, planilla, ""))
@@ -2765,7 +2765,7 @@ class ReportePlanillas3Controller {
             document.setPageSize(PageSize.A4);
             document.newPage();
 //            headerPlanilla([size: 10, espacio: 2])
-//            document.add(titlLogo())
+            document.add(titlLogo())
             document.add(titlInst(1, planilla, obra));
             document.add(titlSbtt(planilla.fechaIngreso));
             document.add(encabezado(2, 10, planilla, tipo))
@@ -4974,7 +4974,8 @@ class ReportePlanillas3Controller {
 
 
     def titlLogo() {
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52,52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)

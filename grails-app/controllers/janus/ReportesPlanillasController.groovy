@@ -2878,7 +2878,8 @@ class ReportesPlanillasController {
         def centrado  = [border: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def prmsTablaNum = [border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)

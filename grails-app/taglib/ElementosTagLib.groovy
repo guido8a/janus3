@@ -1,3 +1,5 @@
+import janus.Obra
+import janus.ejecucion.Planilla
 import org.springframework.beans.SimpleTypeConverter
 import org.springframework.context.MessageSourceResolvable
 import org.springframework.web.servlet.support.RequestContextUtils
@@ -1015,6 +1017,119 @@ class ElementosTagLib {
         }
         output += num
         out << output
+    }
+
+    Closure headerPlanilla = { attrs ->
+        def str = ""
+        Planilla planilla = attrs.planilla
+        Obra obra = planilla.contrato.oferta.concurso.obra
+
+        str += "<div class='well'>"
+
+        str += "<div class='row'>"
+        str += "<div class='span1 bold'>Obra</div>"
+        str += "<div class='span10'>" + obra.nombre + "</div>"
+        str += "</div>"
+
+        str += "<div class='row'>"
+        str += "<div class='span1 bold'>Descripción</div>"
+        str += "<div class='span10'>" + obra?.descripcion + "</div>"
+        str += "</div>"
+
+        str += "<div class='row'>"
+        str += "<div class='span1 bold'>Lugar</div>"
+        str += "<div class='span5'>" + (obra.lugar?.descripcion ?: "") + "</div>"
+        str += "<div class='span2 bold'>Planilla</div>"
+        str += "<div class='span3'>" + planilla.numero + "</div>"
+        str += "</div>"
+
+        str += "<div class='row'>"
+        str += "<div class='span1 bold'>Ubicación</div>"
+        str += "<div class='span5'>Parroquia " + obra.parroquia?.nombre + " - Cantón " + obra.parroquia?.canton?.nombre + "</div>"
+        str += "<div class='span2 bold'>Monto contrato</div>"
+        str += "<div class='span3'>" + formatNumber(number: planilla.contrato.monto, format: "##,##0", locale: "ec", minFractionDigits: 2, maxFractionDigits: 2) + "</div>"
+        str += "</div>"
+
+        str += "<div class='row'>"
+        str += "<div class='span1 bold'>Contratista</div>"
+        str += "<div class='span5'>" + planilla.contrato.oferta.proveedor.nombre + "</div>"
+        str += "<div class='span2 bold'>Periodo</div>"
+        str += "<div class='span3'>"
+        if (planilla.tipoPlanilla.codigo == "A") {
+            str += 'Anticipo (' + planilla?.periodoIndices?.descripcion + ")"
+        } else {
+            if (planilla.tipoPlanilla.codigo == "L") {
+                str += "Liquidación del reajuste (${planilla.fechaPresentacion.format('dd-MM-yyyy')})"
+            } else {
+                str += 'del ' + planilla?.fechaInicio?.format('dd-MM-yyyy') + ' al ' + planilla?.fechaFin?.format('dd-MM-yyyy')
+            }
+        }
+
+        str += "</div>"
+        str += "</div>"
+
+        str += "<div class='row'>"
+        str += "<div class='span1 bold'>Plazo</div>"
+        str += "<div class='span5'>" + formatNumber(number: planilla.contrato.plazo, minFractionDigits: 0, maxFractionDigits: 0, locale: "ec") + " días</div>"
+        str += "<div class='span2 bold'>Fecha pres. planilla</div>"
+        str += "<div class='span3'>" + planilla.fechaPresentacion.format("dd-MM-yyyy") + "</div>"
+        str += "</div>"
+
+        str += "</div>"
+
+        out << str
+    }
+
+    Closure numero = { attrs ->
+//        println "numero: $attrs"
+        if (attrs.debug == "true" || attrs.debug == true) {
+            println "AQUI: " + attrs
+        }
+        if (!attrs.decimales) {
+            if (!attrs["format"]) {
+                attrs["format"] = "##,##0"
+            }
+            if (!attrs.minFractionDigits) {
+                attrs.minFractionDigits = 2
+            }
+            if (!attrs.maxFractionDigits) {
+                attrs.maxFractionDigits = 2
+            }
+        } else {
+            def dec = attrs.remove("decimales").toInteger()
+
+            attrs["format"] = "##,##0"
+            if (dec > 0) {
+                attrs["format"] += "."
+            }
+            dec.times {
+                attrs["format"] += "#"
+            }
+
+            attrs.maxFractionDigits = dec
+            attrs.minFractionDigits = dec
+        }
+        if (!attrs.locale) {
+            attrs.locale = "ec"
+        }
+        if (attrs.debug == "true" || attrs.debug == true) {
+            println attrs
+            println g.formatNumber(attrs)
+            println g.formatNumber(number: attrs.number, maxFractionDigits: 3, minFractionDigits: 3, format: "##.###", locale: "ec")
+            println g.formatNumber(number: attrs.number, maxFractionDigits: 3, minFractionDigits: 3, format: "##,###.###", locale: "ec")
+        }
+        if (attrs.cero == "false" || attrs.cero == false || attrs.cero == "hide") {
+            if (attrs.number) {
+                if (attrs.number.toDouble() == 0.toDouble()) {
+                    out << ""
+                    return
+                }
+            } else {
+                out << ""
+                return
+            }
+        }
+        out << g.formatNumber(attrs)
     }
 
 }

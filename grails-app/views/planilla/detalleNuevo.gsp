@@ -2,8 +2,8 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+%{--        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+%{--        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
         <title>Detalle de planilla</title>
 
         <style type="text/css">
@@ -95,10 +95,23 @@
                 <g:set var="sp" value="null"/>
                 <g:each in="${detalle}" var="vol">
                     <g:set var="det" value="${janus.ejecucion.DetallePlanillaEjecucion.findByPlanillaAndVolumenContrato(planilla, vol)}"/>
-                    <g:set var="anteriores" value="${janus.ejecucion.DetallePlanillaEjecucion.findAllByPlanillaInListAndVolumenContrato(planillasAnteriores, vol)}"/>
+%{--                    <g:set var="anteriores" value="${janus.ejecucion.DetallePlanillaEjecucion.findAllByPlanillaInListAndVolumenContrato(planillasAnteriores, vol)}"/>--}%
 
-                    <g:set var="cantAnt" value="${anteriores.sum { it.cantidad } ?: 0}"/>
-                    <g:set var="valAnt" value="${anteriores.sum { it.monto } ?: 0}"/>
+
+                    <g:if test="${planillasAnteriores.size() > 0}">
+                        <g:set var="anteriores" value="${janus.ejecucion.DetallePlanilla.findAllByPlanillaInListAndVolumenObra(planillasAnteriores, vol)}"/>
+                        <g:set var="cantAnt" value="${anteriores.sum { it.cantidad } ?: 0}"/>
+                        <g:set var="valAnt" value="${anteriores.sum { it.monto } ?: 0}"/>
+                    </g:if>
+                    <g:else>
+                        <g:set var="cantAnt" value="${0}"/>
+                        <g:set var="valAnt" value="${0}"/>
+                    </g:else>
+
+
+
+%{--                    <g:set var="cantAnt" value="${anteriores.sum { it.cantidad } ?: 0}"/>--}%
+%{--                    <g:set var="valAnt" value="${anteriores.sum { it.monto } ?: 0}"/>--}%
                     <g:set var="cant" value="${det?.cantidad ?: 0}"/>
                     <g:set var="val" value="${det?.monto ?: 0}"/>
 

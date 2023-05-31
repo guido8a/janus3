@@ -3412,8 +3412,6 @@ class PlanillaController {
 
         redirect(action: "detalleNuevo", params: params)
 
-//        if(cmpl) redirect (action: "detalleNuevo", params: params)
-
         def obra = contrato.obra
         def detalle = [:]
         def obrasAdicionales = 1.25
@@ -3454,10 +3452,11 @@ class PlanillaController {
             }
         }
 
+        println("planillas anterioers " + planillasAnteriores)
+
         def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
 
         if (!respaldo) obrasAdicionales = 0
-//        obrasAdicionales = 0
 
         println "adicionales: $obrasAdicionales"
         println "planillasAnteriores: ${planillasAnteriores.id}"
@@ -3512,7 +3511,6 @@ class PlanillaController {
         def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
 
         if (!respaldo) obrasAdicionales = 0
-//        obrasAdicionales = 0
 
         println "adicionales: $obrasAdicionales, complementario: $cmpl"
         return [planilla           : planilla, detalle: detalle, precios: precios, obra: obra, adicionales: obrasAdicionales,

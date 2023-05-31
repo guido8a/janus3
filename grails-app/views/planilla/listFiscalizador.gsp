@@ -115,11 +115,11 @@
             <th style="width: 15%">#</th>
             <th style="width: 15%">Tipo</th>
             <th style="width: 8%">Fecha Presentación</th>
-            <th style="width: 8%">Fecha Inicio</th>
-            <th style="width: 8%">Fecha Fin</th>
+            <th style="width: 7%">Fecha Inicio</th>
+            <th style="width: 7%">Fecha Fin</th>
             <th style="width: 22%">Descripción</th>
             <th style="width: 8%">Valor</th>
-            <th style="width: 8%">Acciones</th>
+            <th style="width: 10%">Acciones</th>
             <th style="width: 8%">Pagos</th>
         </tr>
         </thead>
@@ -145,17 +145,17 @@
                     <td style="width: 8%">
                         <g:formatDate date="${planillaInstance.fechaPresentacion}" format="dd-MM-yyyy"/>
                     </td>
-                    <td style="width: 8%">
+                    <td style="width: 7%">
                         <g:formatDate date="${planillaInstance.fechaInicio}" format="dd-MM-yyyy"/>
                     </td>
-                    <td style="width: 8%">
+                    <td style="width: 7%">
                         <g:formatDate date="${planillaInstance.fechaFin}" format="dd-MM-yyyy"/>
                     </td>
                     <td style="width: 22%">${planillaInstance?.id} ${fieldValue(bean: planillaInstance, field: "descripcion")}</td>
                     <td class="numero" style="width: 8%">
                         <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                     </td>
-                    <td style="width: 8%; text-align: center">
+                    <td style="width: 10%; text-align: center">
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
                             <g:link action="form" class="btn btn-xs btn-success" rel="tooltip" title="Editar"
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
@@ -234,19 +234,19 @@
                             </g:link>
                         </g:if>
 
-%{--                        <g:if test="${planillaInstance.planillaCmpl && janus.ejecucion.DetallePlanillaEjecucion.countByPlanilla(planillaInstance) >= 0}">--}%
+                        <g:if test="${planillaInstance.planillaCmpl && janus.ejecucion.DetallePlanillaEjecucion.countByPlanilla(planillaInstance) >= 0}">
                             <g:link controller="reportePlanillas4" action="reportePlanillaTotal1f" id="${planillaInstance.id}"
                                     class="btn btnPrint btn-xs btn-primary btn-ajax" rel="tooltip" title="Imprimir Total">
                                 <i class="fa fa-print"></i>
                             </g:link>
-%{--                        </g:if>--}%
+                        </g:if>
 
-%{--                        <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C' && janus.ejecucion.DetallePlanillaCosto.countByPlanilla(planillaInstance) > 0}">--}%
+                        <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C' && janus.ejecucion.DetallePlanillaCosto.countByPlanilla(planillaInstance) > 0}">
                             <g:link controller="reportesPlanillas" action="reportePlanillaCosto" id="${planillaInstance.id}"
                                     class="btn btnPrint btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir">
                                 <i class="fa fa-print"></i>
                             </g:link>
-%{--                        </g:if>--}%
+                        </g:if>
 
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q']  && planillaInstance.id in adicionales}">
 
