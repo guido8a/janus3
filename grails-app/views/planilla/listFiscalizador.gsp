@@ -218,15 +218,15 @@
                             </g:if>
                         </g:if>
 
-                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
-                            <g:link controller="reportePlanillas3" action="reportePlanillaNuevo" id="${planillaInstance.id}"
-                                    class="btn btnPrint  btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir Anticipo">
-                                <i class="fa fa-print"></i>
-                            </g:link>
-                        </g:if>
+                        %{--<g:if test="${planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">--}%
+                            %{--<g:link controller="reportePlanillas3" action="reportePlanillaNuevo" id="${planillaInstance.id}"--}%
+                                    %{--class="btn btnPrint  btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir Anticipo">--}%
+                                %{--<i class="fa fa-print"></i>--}%
+                            %{--</g:link>--}%
+                        %{--</g:if>--}%
                         <g:if test="${planillaInstance.tipoPlanilla.codigo != 'C' && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
                             <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
-                                    class="btn btn-info btnPrint btn-xs btn-ajax" rel="tooltip" title="Imprimir Nuevo2">
+                                    class="btn btn-info btnPrint btn-xs btn-ajax" rel="tooltip" title="Imprimir planilla">
                                 <i class="fa fa-print"></i>
                             </g:link>
                         </g:if>

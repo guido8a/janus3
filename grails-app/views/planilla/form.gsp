@@ -114,12 +114,13 @@
 
                             <g:if test="${!planillaInstance?.id && !(tipos.find { it.codigo == 'A' })}">
                                 <span class="grupo">
-                                    <label class="col-md-2 control-label text-info formato periodo hide">
+                                    <div class="col-md-1"></div>
+                                    <label class="col-md-2 control-label text-info formato periodo">
                                         Período
                                     </label>
-                                    <span class="col-md-4 periodo hide">
+                                    <span class="col-md-4 periodo">
                                         <g:select id="periodoPlanilla" name="periodoPlanilla" from="${periodos}"
-                                                  optionKey="key" class="many-to-one span3"
+                                                  optionKey="key" class="many-to-one form-control"
                                                   optionValue="value"/>
                                     </span>
                                 </span>
@@ -151,6 +152,7 @@
                                 </span>
                             </span>
                             <span class="grupo">
+                                <div class="col-md-1"></div>
                                 <label class="col-md-2 control-label text-info formato">
                                     Fiscalizador
                                 </label>
@@ -177,6 +179,7 @@
                                 </span>
                             </span>
                             <span class="grupo">
+                                <div class="col-md-1"></div>
                                 <label class="col-md-2 control-label text-info formato">
                                     Fecha de
                                     <g:if test="${tipos.find { it.codigo == 'A' }}">
@@ -202,6 +205,7 @@
                                 </span>
                             </span>
                             <span class="grupo">
+                                <div class="col-md-1"></div>
                                 <label class="col-md-2 control-label text-info formato">
                                     Fecha Presentacion
                                 </label>
@@ -257,20 +261,23 @@
                                     <label class="col-md-2 control-label text-info formato">
                                         Multa por no acatar las disposiciones del fiscalizador
                                     </label>
-                                    <span class="col-md-4">
+                                    <span class="col-md-2">
                                         <g:textField type="number" name="diasMultaDisposiciones"
                                                      class="form-control required digits"
-                                                     value="${planillaInstance.diasMultaDisposiciones}" maxlength="3"/> días
+                                                     value="${planillaInstance.diasMultaDisposiciones}" maxlength="3"/>
                                     </span>
+                                    <div class="col-md-1">días</div>
                                 </span>
+                                <div class="col-md-1"> </div>
                                 <span class="grupo">
                                     <label class="col-md-2 control-label text-info formato">
                                         Avance físico
                                     </label>
-                                    <span class="col-md-4">
+                                    <span class="col-md-2">
                                         <g:field type="number" name="avanceFisico" class="form-control required number"
-                                                 value="${planillaInstance.avanceFisico}" max="100"/> %
+                                                 value="${planillaInstance.avanceFisico}" max="100"/>
                                     </span>
+                                    <div class="col-md-1">%</div>
                                 </span>
                             </div>
                         </g:if>
@@ -301,22 +308,22 @@
                         </div>
 
                         <g:if test="${!esAnticipo}">
-                            <div class="form-group col-md-12 hide" id="divMulta">
+                            <div class="form-group col-md-12" id="divMulta">
                                 <span class="grupo">
                                     <label class="col-md-2 control-label text-info formato">
                                         Multa
                                     </label>
-                                    <span class="col-md-4" >
+                                    <span class="col-md-6" >
                                         <g:textField type="text" name="descripcionMulta" class="form-control"
                                                      value="${planillaInstance?.descripcionMulta}" style="width: 100%"/>
 
                                     </span>
                                 </span>
                                 <span class="grupo">
-                                    <label class="col-md-2 control-label text-info formato">
+                                    <label class="col-md-1 control-label text-info formato">
                                         Monto
                                     </label>
-                                    <span class="col-md-4" >
+                                    <span class="col-md-2" >
                                         <g:textField type="text" name="multaEspecial" class="form-control"
                                                      value="${planillaInstance?.multaEspecial}" style="width: 100%"/>
 
