@@ -179,7 +179,8 @@ class ReportesPlanillasController {
 
         def formatoFechasTabla = "dd-MM-yyyy"
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -731,7 +732,8 @@ class ReportesPlanillasController {
 
         def formatoFechasTabla = "dd-MM-yyyy"
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -1153,7 +1155,8 @@ class ReportesPlanillasController {
 
         def formatoFechasTabla = "dd-MM-yyyy"
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -1545,7 +1548,8 @@ class ReportesPlanillasController {
 
         def formatoFechasTabla = "dd-MM-yyyy"
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -1979,7 +1983,8 @@ class ReportesPlanillasController {
             document.add(tablaFirmas)
         }
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -3261,7 +3266,8 @@ class ReportesPlanillasController {
 
         def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -3564,7 +3570,8 @@ class ReportesPlanillasController {
 
         def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -3850,7 +3857,8 @@ class ReportesPlanillasController {
 
         def prmsTdNoBorder = [border: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE]
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
         Image logo = Image.getInstance(logoPath);
         logo.scaleToFit(52, 52)
         logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
@@ -4118,7 +4126,8 @@ class ReportesPlanillasController {
 
             def tipoPlanilla = TipoPlanilla.findByCodigoIlike("A");
             def planillaDesc = Planilla.findByContratoAndTipoPlanilla(contrato, tipoPlanilla)
-            def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//            def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+            def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
             Image logo = Image.getInstance(logoPath);
             logo.scaleToFit(52, 52)
             logo.setAlignment(Image.LEFT | Image.TEXTWRAP)

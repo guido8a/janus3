@@ -103,9 +103,6 @@
     </div>
 </div>
 
-%{--<g:form action="delete" name="frmDelete-Planilla">--}%
-%{--    <g:hiddenField name="id"/>--}%
-%{--</g:form>--}%
 
 <div id="list-Planilla" role="main" style="margin-top: 10px;">
 

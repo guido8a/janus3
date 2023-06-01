@@ -4,16 +4,18 @@
 <head>
     <meta name="layout" content="main">
 
-    <script src="${resource(dir: 'js/jquery/plugins/ckeditor', file: 'ckeditor.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+    <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>
 
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+%{--    <script src="${resource(dir: 'js/jquery/plugins/ckeditor', file: 'ckeditor.js')}"></script>--}%
+%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>
-    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>
+%{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+%{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
+
+%{--    <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
+%{--    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
+%{--    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
 
     <title>Acta</title>
 
@@ -123,12 +125,12 @@
     <div class="span9" role="navigation">
         <div class="btn-group">
             <g:if test="${actaInstance.contrato}">
-                <g:link controller="contrato" action="verContrato" id="${actaInstance.contratoId}" class="btn" title="Regresar al contrato">
-                    <i class="icon-arrow-left"></i>
+                <g:link controller="contrato" action="verContrato" id="${actaInstance.contratoId}" class="btn  btn-primary" title="Regresar al contrato">
+                    <i class="fa fa-arrow-left"></i>
                     Contrato
                 </g:link>
-                <g:link controller="planilla" action="list" class="btn" id="${actaInstance.contratoId}">
-                    <i class="icon-file"></i>
+                <g:link controller="planilla" action="list" class="btn btn-info" id="${actaInstance.contratoId}">
+                    <i class="fa fa-arrow-left"></i>
                     Planillas
                 </g:link>
             </g:if>
@@ -136,20 +138,19 @@
 
         <div class="btn-group">
             <g:if test="${!actaInstance?.id || editable}">
-                <a href="#" id="btnSave" class="btn btn-success"><i class="icon-save"></i> Guardar</a>
+                <a href="#" id="btnSave" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>
             </g:if>
             <g:if test="${actaInstance?.id}">
-                <a href="#" class="btn" id="btnPrint"><i class="icon-print"></i> Imprimir</a>
+                <a href="#" class="btn btn-info" id="btnPrint"><i class="fa fa-print"></i> Imprimir</a>
                 <g:if test="${editable}">
-                    <a href="#" class="btn " id="btnRegistro"><i class="icon-lock"></i> Registrar</a>
+                    <a href="#" class="btn btn-warning" id="btnRegistro"><i class="fa fa-lock"></i> Registrar</a>
                 </g:if>
-                <a href="#" class="btn text-info" id="btnPrintCmpl"><i class="icon-print text-info"></i> Impr. Complementario</a>
+                <a href="#" class="btn btn-info" id="btnPrintCmpl"><i class="fa fa-print"></i> Impr. Complementario</a>
             </g:if>
         </div>
-
     </div>
-
 </div>
+
 <g:form class="form-horizontal" name="frmSave-Acta" action="save">
     <g:if test="${editable}">
         <g:hiddenField name="id" value="${actaInstance?.id}"/>
@@ -688,7 +689,7 @@
                                 },
                                 success : function (msg) {
                                     var p = msg.split("_");
-                                    if (p[0] == "OK") {
+                                    if (p[0] === "OK") {
                                         log(p[1], false);
                                         $del.remove();
                                         numerosParrafos($div.parents(".seccion"));
@@ -742,10 +743,8 @@
         var $btnEliminarSeccion = $('<a href="#" class="btn btn-danger btn-mini pull-right" style="margin-left: 10px;"><i class="icon-minus"></i> Eliminar sección</a>');
 
         var $btnSubir = $('<a href="#" class="btn btn-bajar btn-mini"><i class="icon-arrow-up"></i></a>');
-//                var $btnBajar = $('<a href="#" class="btn btn-bajar btn-mini"><i class="icon-arrow-down"></i></a>');
 
         var $botones = $("<div class='botones'></div>");
-//                $botones.append($btnSubir).append($btnBajar);
         $botones.append($btnSubir);
 
         $btnSubir.click(function () {
@@ -762,7 +761,7 @@
                     },
                     success : function (msg) {
                         var p = msg.split("_");
-                        if (p[0] == "OK") {
+                        if (p[0] === "OK") {
                             $prev.before($seccion);
                             numerosSecciones();
                         } else {
@@ -773,30 +772,6 @@
             }
             return false;
         });
-        %{--$btnBajar.click(function () {--}%
-        %{--var $next = $seccion.next();--}%
-        %{--if ($next) {--}%
-        %{--$.ajax({--}%
-        %{--type    : "POST",--}%
-        %{--url     : "${createLink(controller:'seccion', action: 'updateNumeros')}",--}%
-        %{--data    : {--}%
-        %{--acta   : "${actaInstance.id}",--}%
-        %{--id     : data.id,--}%
-        %{--numero : $seccion.data("numero") + 1--}%
-        %{--},--}%
-        %{--success : function (msg) {--}%
-        %{--var p = msg.split("_");--}%
-        %{--if (p[0] == "OK") {--}%
-        %{--$next.after($seccion);--}%
-        %{--numerosSeccionesBajar();--}%
-        %{--} else {--}%
-        %{--log(p[1], true);--}%
-        %{--}--}%
-        %{--}--}%
-        %{--});--}%
-        %{--}--}%
-        %{--return false;--}%
-        %{--});--}%
 
         if (!data.parrafos) {
             data.parrafos = [];
@@ -934,11 +909,6 @@
             var data = $("#frmSave-Acta").serialize();
             $("#frmSave-Acta").submit();
             numerosSecciones();
-//                    var data = $("#frmSave-Acta").serialize();
-//                    data += "&descripcion=" + CKEDITOR.instances.descripcion.getData();
-//                    var secc = getSecciones();
-//                    data += secc != "" ? "&" + secc : "";
-//                    console.log(data);
         }
     }
 
@@ -1024,7 +994,7 @@
         console.log('initsecciones');
         initSecciones();
 
-        $('[rel=tooltip]').tooltip();
+        // $('[rel=tooltip]').tooltip();
 
         $(".editable").each(function () {
             editable($(this));
@@ -1042,15 +1012,11 @@
         $("#btnPrint").click(function () {
             location.href ="${createLink(controller: 'pdf', action: 'pdfLink')}?url=${createLink(controller:
                       'reportesPlanillas', action: 'actaRecepcion', id:actaInstance.id)}";
-            %{--location.href="${createLink(controller: 'reportesRubros', action: 'reporteActaRecepcionProvisional')}?id=" + ${actaInstance?.id}--}%
-
         });
 
         $("#btnPrintCmpl").click(function () {
-            var url = "${createLink(controller: 'pdf', action: 'pdfLink')}?url=${createLink(controller:
+            location.href = "${createLink(controller: 'pdf', action: 'pdfLink')}?url=${createLink(controller:
                       'reportesPlanillas', action: 'actaRecepcionTotl', id:actaInstance.id)}";
-//                    console.log(url);
-            location.href = url;
         });
 
         $("#btnRegistro").click(function () {
@@ -1078,7 +1044,7 @@
 
         $("#btnAddSeccion").click(function () {
             var id = "${actaInstance.id}";
-            if (id == "") {
+            if (id === "") {
                 $.box({
                     imageClass : "box_info",
                     text       : "Por favor guarde el acta para insertar secciones y párrafos",
@@ -1136,13 +1102,7 @@
             }
         });
 
-//                $("input").keyup(function (ev) {
-//                    if (ev.keyCode == 13) {
-//                        submitForm($(".btn-success"));
-//                    }
-//                });
     });
 </script>
-
 </body>
 </html>
