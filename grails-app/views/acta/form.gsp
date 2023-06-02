@@ -6,17 +6,6 @@
 
     <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>
 
-%{--    <script src="${resource(dir: 'js/jquery/plugins/ckeditor', file: 'ckeditor.js')}"></script>--}%
-%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-%{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-%{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-%{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-
-%{--    <script src="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.js')}"></script>--}%
-%{--    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.css')}" rel="stylesheet"/>--}%
-%{--    <link href="${resource(dir: 'js/jquery/plugins/jgrowl', file: 'jquery.jgrowl.customThemes.css')}" rel="stylesheet"/>--}%
-
     <title>Acta</title>
 
     <style>
@@ -59,8 +48,10 @@
     .botones {
         width    : 31px;
         position : absolute;
-        right    : -35px;
-        top      : 0;
+        /*float: right;*/
+        /*right    : -15px;*/
+        margin-left: 1px;
+        top      : 1px;
     }
 
     .seccion .span9 {
@@ -68,21 +59,23 @@
     }
 
     .lvl2 {
-        margin-left : 85px !important;
+        margin-left : 20px !important;
     }
 
     .lblSeccion {
-        width : 900px;
+        width : 800px;
     }
 
     .contParrafo {
-        width : 875px;
+        width : 800px;
+        margin-left : 10px !important;
     }
 
     .tablas {
-        margin     : 0 0 10px 120px !important;
-        background : rgba(100, 100, 100, 0.4);
+        /*margin     : 0 0 10px 120px !important;*/
+        /*background : rgba(100, 100, 100, 0.4);*/
         width      : 900px;
+        margin-left : 85px !important;
     }
 
     .tablas .table {
@@ -158,50 +151,61 @@
         <g:hiddenField id="txtDescripcion" name="descripcion" value="${actaInstance?.descripcion}"/>
     </g:if>
 
-    <div class="titulo bold">
-        Acta de
-        <g:if test="${editable}">
-            <g:textField name="nombre" maxlength="20" class=" required input-small" value="${actaInstance?.nombre ?: actaProv ? actaProv.nombre : 'recepción'}"/>
-        </g:if>
-        <g:else>
-            ${actaInstance?.nombre}
-        </g:else>
-        <g:if test="${editable}">
-            <g:select name="tipo" from="${tipos}" class=" required input-medium" value="${actaInstance?.tipo}" valueMessagePrefix="acta.tipo"/>
-        </g:if>
-        <g:else>
-            <g:message code="acta.tipo.${actaInstance.tipo}"/>
-        </g:else>
-        N.
-        <g:if test="${editable}">
-            <g:textField name="numero" maxlength="20" class=" required allCaps input-medium" style="width: 170px;" value="${actaInstance?.numero}"/>
-        </g:if>
-        <g:else>
-            ${actaInstance.numero}
-        </g:else>
-        efectuada el
-        <g:if test="${editable}">
-        %{--<elm:datepicker name="fecha" class=" input-small required" value="${actaInstance?.fecha}"--}%
-        %{--minDate="new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0)"--}%
-        %{--maxDate="new Date()"/>--}%
-            <elm:datepicker name="fecha" class=" input-small required" value="${actaInstance?.fecha}"
-                            minDate="new Date(${contrato.fechaPedidoRecepcionFiscalizador.format('yyyy')},${contrato.fechaPedidoRecepcionFiscalizador.format('MM').toInteger() - 1},
-                                    ${contrato.fechaPedidoRecepcionFiscalizador.format('dd')},0,0,0,0)"
-                            maxDate=""/>
+    <div class="titulo bold col-md-12">
 
+        <div class="col-md-3">
+            Acta de
+            <g:if test="${editable}">
+                <g:textField name="nombre" maxlength="20" class="form-control required" value="${actaInstance?.nombre ?: actaProv ? actaProv.nombre : 'recepción'}"/>
+            </g:if>
+            <g:else>
+                ${actaInstance?.nombre}
+            </g:else>
+        </div>
+        <div class="col-md-3">
+            &nbsp;
+            <g:if test="${editable}">
+                <g:select name="tipo" from="${tipos}" class="form-control required" value="${actaInstance?.tipo}" valueMessagePrefix="acta.tipo"/>
+            </g:if>
+            <g:else>
+                <g:message code="acta.tipo.${actaInstance.tipo}"/>
+            </g:else>
+        </div>
+        <div class="col-md-1">
+            N.
+            <g:if test="${editable}">
+                <g:textField name="numero" maxlength="20" class="form-control required allCaps" value="${actaInstance?.numero}"/>
+            </g:if>
+            <g:else>
+                ${actaInstance.numero}
+            </g:else>
+        </div>
+        <div class="col-md-5">
+            efectuada el
+            <g:if test="${editable}">
+                <input aria-label="" name="fecha" id='fecha' type='text' class="form-control required" style="width: 150px" value="${actaInstance?.fecha?.format("dd-MM-yyyy")}" />
+            </g:if>
+            <g:else>
+                <g:formatDate date="${actaInstance.fecha}" format="dd-MM-yyyy"/>
+                y registrada el:
+                <g:if test="${actaInstance.fechaRegistro}">
+                    <g:formatDate date="${actaInstance.fechaRegistro}" format="dd-MM-yyyy"/>
+                </g:if>
+                <g:else>
+                    (No registrada)
+                </g:else>
+            </g:else>
+        </div>
 
-
-        </g:if>
-        <g:else>
-            <g:formatDate date="${actaInstance.fecha}" format="dd-MM-yyyy"/>
-            y registrada el
-            <g:formatDate date="${actaInstance.fechaRegistro}" format="dd-MM-yyyy"/>
-        </g:else>
-
-        <span style="margin-left:100px"> Insertar espacios Extra:
-        <g:textField name="espacios" maxlength="1" class="input-medium" style="width: 30px;" value="${actaInstance?.espacios}"/>
-        </span>
-
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-9"></div>
+        <div class="col-md-2 text-info bold">
+            Insertar espacios Extra:
+        </div>
+        <div class="col-md-1">
+            <g:textField name="espacios" maxlength="1" class="form-control" value="${actaInstance?.espacios}"/>
+        </div>
     </div>
 
     <g:if test="${!actaInstance.id && actaInstance.tipo == 'D'}">
@@ -217,57 +221,50 @@
     <g:set var="garantias" value="${janus.pac.Garantia.findAllByContrato(actaInstance.contrato)}"/>
     <g:set var="obra" value="${actaInstance.contrato.oferta.concurso.obra}"/>
     <g:set var="fisc" value="${janus.ejecucion.Planilla.findAllByContrato(actaInstance.contrato, [sort: "id", order: "desc"]).first().fiscalizador}"/>
-    <div class="well">
-        <div class='row'>
-            <div class="bold span1">Contrato N.</div>
-
-            <div class="span10">${actaInstance.contrato.codigo}</div>
+    <div class="well" style="height: 220px;">
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Contrato N.</div>
+            <div class="col-md-10">${actaInstance.contrato.codigo}</div>
         </div>
 
-        <div class='row'>
-            <div class="bold span1">Garantías N.</div>
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Garantías N.</div>
 
-            <div class="span10">
+            <div class="col-md-10">
                 <g:each in="${garantias}" var="gar" status="i">
                     ${gar.tipoDocumentoGarantia.descripcion} N. ${gar.codigo} - ${gar.aseguradora.nombre} ${i < garantias.size() - 1 ? "," : ""}
                 </g:each>
             </div>
         </div>
 
-        <div class='row'>
-            <div class="bold span1">Objeto</div>
-
-            <div class="span10">${actaInstance.contrato.objeto}</div>
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Objeto</div>
+            <div class="col-md-10">${actaInstance.contrato.objeto}</div>
         </div>
 
-        <div class='row'>
-            <div class="bold span1">Lugar</div>
-
-            <div class="span10">${obra.sitio}</div>
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Lugar</div>
+            <div class="col-md-10">${obra.sitio}</div>
         </div>
 
-        <div class='row'>
-            <div class="bold span1">Ubicación</div>
-
-            <div class="span10">Parroquia ${obra.parroquia.nombre} - Cantón ${obra.parroquia.canton.nombre}</div>
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Ubicación</div>
+            <div class="col-md-10">Parroquia ${obra.parroquia.nombre} - Cantón ${obra.parroquia.canton.nombre}</div>
         </div>
 
-        <div class='row'>
-            <div class="bold span1">Monto $.</div>
-
-            <div class="span10">${actaInstance.contrato.monto}</div>
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Monto $.</div>
+            <div class="col-md-10">${actaInstance.contrato.monto}</div>
         </div>
 
-        <div class='row'>
-            <div class="bold span1">Contratista</div>
-
-            <div class="span10">${actaInstance.contrato.oferta.proveedor.nombre}</div>
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Contratista</div>
+            <div class="col-md-10">${actaInstance.contrato.oferta.proveedor.nombre}</div>
         </div>
 
-        <div class='row'>
-            <div class="bold span1">Fiscalizador</div>
-
-            <div class="span10">${fisc.titulo} ${fisc.nombre} ${fisc.apellido}</div>
+        <div class='col-md-12'>
+            <div class="bold col-md-1">Fiscalizador</div>
+            <div class="col-md-10">${fisc.titulo} ${fisc.nombre} ${fisc.apellido}</div>
         </div>
 
     </div> %{-- well contrato --}%
@@ -277,8 +274,8 @@
     </div>
 
     <g:if test="${editable && actaInstance.id}">
-        <a href="#" class="btn btn-primary btn-small" style="margin-bottom: 10px;" id="btnAddSeccion">
-            <i class="icon-plus"></i> Agregar sección
+        <a href="#" class="btn btn-primary btn-xs" style="margin-bottom: 10px;" id="btnAddSeccion">
+            <i class="fa fa-plus"></i> Agregar sección
         </a>
     </g:if>
 
@@ -307,48 +304,41 @@
     var secciones = 1;
     var $btnSaveActa = $("#btnSave");
 
-    $(document ).ready(function() {
-        console.log( "ready!" );
+
+    $('#fecha').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        minDate: new Date(${contrato.fechaPedidoRecepcionFiscalizador.format('yyyy')},${contrato.fechaPedidoRecepcionFiscalizador.format('MM').toInteger() - 1},
+            ${contrato.fechaPedidoRecepcionFiscalizador.format('dd')},0,0,0,0),
+        sideBySide: true,
+        icons: {
+        }
     });
 
 
-    $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
+    // $(document ).ready(function() {
+    //     console.log( "ready!" );
+    // });
+    //
+    //
+    // $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
 
 
-
-    function log(msg, error) {
-        var sticky = false;
-        var theme = "success";
-        if (error) {
-            sticky = true;
-            theme = "error";
-        }
-        $.jGrowl(msg, {
-            speed      : 'slow',
-            sticky     : sticky,
-            theme      : theme,
-            themeState : ''
-        });
-
-//                console.log(error, message);
-//                if (error) {
-//                    $.box({
-//                        imageClass : "box_info",
-//                        text       : error,
-//                        title      : "Error",
-//                        iconClose  : false,
-//                        dialog     : {
-//                            resizable     : false,
-//                            draggable     : false,
-//                            closeOnEscape : false,
-//                            buttons       : {
-//                                "Aceptar" : function () {
-//                                }
-//                            }
-//                        }
-//                    });
-//                }
-    }
+    //
+    // function log(msg, error) {
+    //     var sticky = false;
+    //     var theme = "success";
+    //     if (error) {
+    //         sticky = true;
+    //         theme = "error";
+    //     }
+    //     $.jGrowl(msg, {
+    //         speed      : 'slow',
+    //         sticky     : sticky,
+    //         theme      : theme,
+    //         themeState : ''
+    //     });
+    // }
 
     function submitFormSeccion(btn) {
         var $form = $("#frmSave");
@@ -362,7 +352,7 @@
                 success : function (msg) {
                     if (msg.startsWith("NO")) {
                         var p = msg.split("_");
-                        log(p[1], true);
+                        log(p[1], "error");
                     } else {
                         var $sec = addSeccion($.parseJSON(msg), true);
                         if ($sec) {
@@ -371,7 +361,7 @@
                                 scrollTop : $sec.offset().top
                             }, 2000);
                         }
-                        log("Elemento creado existosamente", false);
+                        log("Elemento creado existosamente", "success");
                     }
                 }
             });
@@ -391,7 +381,7 @@
                 success : function (msg) {
                     if (msg.startsWith("NO")) {
                         var p = msg.split("_");
-                        log(p[1], true);
+                        log(p[1], "error");
                     } else {
                         var $sec;
                         if (add) {
@@ -401,7 +391,7 @@
                                     scrollTop : $div.parents(".seccion").offset().top
                                 }, 2000);
                             }
-                            log("Elemento creado existosamente", false);
+                            log("Elemento creado existosamente", "success");
                         } else {
                             $sec = addParrafo($.parseJSON(msg), num, $div, $replace);
                         }
@@ -420,12 +410,12 @@
             var $sec = $(this);
             var num = $sec.data("numero");
             var titulo = $sec.data("titulo");
-            if (str != "") {
+            if (str !== "") {
                 str += "&";
             }
             str += "seccion=" + num + "**" + titulo;
             var parrafos = getParrafos($sec);
-            str += parrafos != "" ? "&" + parrafos : "";
+            str += parrafos !== "" ? "&" + parrafos : "";
         });
         return str;
     }
@@ -436,7 +426,7 @@
             var $p = $(this);
             var num = $p.data("numero");
             var cont = $p.data("contenido");
-            if (str != "") {
+            if (str !== "") {
                 str += "&";
             }
             str += "parrafos" + $seccion.data("numero") + "=" + num + "**" + cont;
@@ -455,7 +445,7 @@
             var num = $.trim($num.text());
             num = $.trim(str_replace(".-", "", num));
 
-            if (parseInt(num) != cont) {
+            if (parseInt(num) !== cont) {
                 num = cont;
                 $num.text(num + ".-");
             }
@@ -481,11 +471,9 @@
             var $num = $titulo.find(".numero");
             var num = $.trim($num.text());
             num = $.trim(str_replace(".-", "", num));
-            console.log("num " + num)
 
-            if (parseInt(num) != cont) {
+            if (parseInt(num) !== cont) {
                 num = cont;
-                console.log("num " + num)
                 $num.text(num + ".-");
             }
 
@@ -500,13 +488,11 @@
         });
     }
 
-
-
     function tipoTabla(tipo, $div) {
         var $tabla = $("<table class='table table-bordered table-condensed'></table>");
         var $thead = $("<thead></thead>").appendTo($tabla);
         var $tr = $("<tr></tr>").appendTo($thead);
-        var $cont = $("<div class='span8 tablas lvl2 ui-corner-all'></div>");
+        var $cont = $("<div class='col-md-9 tablas lvl2 ui-corner-all'></div>");
 
         switch (tipo) {
             case "RBR": //Rubros (4.1),
@@ -593,7 +579,6 @@
         var cont = 1;
 
         var numSec = $seccion.data("numero");
-//                console.log("numero par " + numSec )
         $seccion.find(".parrafo").each(function () {
             var $par = $(this);
 
@@ -604,7 +589,7 @@
             var parts = num.split(".");
             num = parts[1];
 
-            if (parseInt(num) != cont || parseInt(parts[0]) != numSec) {
+            if (parseInt(num) !== cont || parseInt(parts[0]) !== numSec) {
                 num = cont;
                 $num.text(numSec + "." + num + ".-");
             }
@@ -617,11 +602,10 @@
             });
             cont++;
         });
-
     }
 
     function addParrafo(data, num, $div, $replace, isEditable) {
-        if (data.contenido == "null" || data.contenido == null) {
+        if (data.contenido === "null" || data.contenido == null) {
             data.contenido = "";
         }
 
@@ -631,15 +615,15 @@
             contentEditable = "";
         }
 
-        var $parr = $("<div class='parrafo'></div>");
-        var $titulo = $("<div class='row tituloParrafo '></div>");
-        $("<div class='span1 numero lvl2 bold'>" + num + "." + data.numero + ".-</div>").appendTo($titulo);
-        var $edit = $("<div class='span9 contParrafo " + clase + " ui-corner-all' id='parrafo_" + data.id + "' " + contentEditable + ">" + data.contenido + "</div>").appendTo($titulo);
+        var $parr = $("<div class='col-md-12 parrafo'></div>");
+        var $titulo = $("<div class='col-md-12 tituloParrafo '></div>");
+        $("<div class='col-md-1 numero lvl2 bold'>" + num + "." + data.numero + ".-</div>").appendTo($titulo);
+        var $edit = $("<div class='col-md-9 contParrafo " + clase + " ui-corner-all' id='parrafo_" + data.id + "' " + contentEditable + ">" + data.contenido + "</div>").appendTo($titulo);
         if (data.tipoTabla) {
             tipoTabla(data.tipoTabla, $titulo);
         }
-        var $btnTabla = $('<a href="#" class="btn btn-mini" style="margin-left: 10px;">Modificar tabla</a>');
-        var $btnEliminarParrafo = $('<a href="#" class="btn btn-delete btn-mini" style="margin-left: 10px;"><i class="icon-minus"></i> Eliminar párrafo</a>');
+        var $btnTabla = $('<a href="#" class="btn btn-xs btn-info" style="margin-left: 10px;"><i class="fa fa-edit"></i> Modificar tabla</a>');
+        var $btnEliminarParrafo = $('<a href="#" class="btn btn-delete btn-xs btn-danger" style="margin-left: 10px;"><i class="fa fa-minus"></i> Eliminar párrafo</a>');
 
         $btnTabla.click(function () {
             $.ajax({
@@ -690,11 +674,11 @@
                                 success : function (msg) {
                                     var p = msg.split("_");
                                     if (p[0] === "OK") {
-                                        log(p[1], false);
+                                        log(p[1], "error");
                                         $del.remove();
                                         numerosParrafos($div.parents(".seccion"));
                                     } else {
-                                        log(p[1], true);
+                                        log(p[1], "success");
                                     }
                                 }
                             });
@@ -727,10 +711,9 @@
     }
 
     function addSeccion(data, isEditable) {
-        console.log(data)
         var $seccion = $("<div class='seccion ui-corner-all'></div>");
-        var $titulo = $("<div class='row tituloSeccion'></div>");
-        $("<div class='span1 numero lvl1 bold'>" + data.numero + ".-</div>").appendTo($titulo);
+        var $titulo = $("<div class='col-md-12 tituloSeccion'></div>");
+        $("<div class='col-md-1 numero lvl1 bold'>" + data.numero + ".-</div>").appendTo($titulo);
 
         var clase = "editable", contentEditable = "contenteditable='true'";
         if (!isEditable) {
@@ -738,11 +721,11 @@
             contentEditable = "";
         }
 
-        var $edit = $("<div class='span9 lblSeccion " + clase + " ui-corner-all' id='seccion_" + data.id + "' " + contentEditable + ">" + data.titulo + "</div>").appendTo($titulo);
-        var $btnAddParrafo = $('<a href="#" class="btn btn-show btn-mini pull-right" style="margin-left: 10px;"><i class="icon-plus"></i> Agregar párrafo</a>');
-        var $btnEliminarSeccion = $('<a href="#" class="btn btn-danger btn-mini pull-right" style="margin-left: 10px;"><i class="icon-minus"></i> Eliminar sección</a>');
+        var $edit = $("<div class='col-md-7 lblSeccion " + clase + " ui-corner-all' id='seccion_" + data.id + "' " + contentEditable + ">" + data.titulo + "</div>").appendTo($titulo);
+        var $btnAddParrafo = $('<a href="#" class="btn btn-show btn-info btn-xs pull-right" style="margin-left: 10px;"><i class="fa fa-plus"></i> Agregar párrafo</a>');
+        var $btnEliminarSeccion = $('<a href="#" class="btn btn-danger btn-xs pull-right" style="margin-left: 10px;"><i class="fa fa-minus"></i> Eliminar sección</a>');
 
-        var $btnSubir = $('<a href="#" class="btn btn-bajar btn-mini"><i class="icon-arrow-up"></i></a>');
+        var $btnSubir = $('<a href="#" class="btn btn-bajar btn-xs btn-info"><i class="fa fa-arrow-up"></i></a>');
 
         var $botones = $("<div class='botones'></div>");
         $botones.append($btnSubir);
@@ -765,7 +748,7 @@
                             $prev.before($seccion);
                             numerosSecciones();
                         } else {
-                            log(p[1], true);
+                            log(p[1], "error");
                         }
                     }
                 });
@@ -790,15 +773,15 @@
                 },
                 url     : "${createLink(controller: 'parrafo', action:'form_ext_ajax')}",
                 success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn"><i class="fa fa-times"></i> Cancelar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
 
                     btnSave.click(function () {
                         submitFormParrafo(btnSave, data.numero, $parr, true);
                         return false;
                     });
 
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+                    $("#modalHeader").removeClass("btn-edit btn-show btn-success btn-delete");
                     $("#modalTitle").html("Crear Párrafo");
                     $("#modalBody").html(msg);
                     $("#modalFooter").html("").append(btnOk).append(btnSave);
@@ -828,12 +811,12 @@
                                 },
                                 success : function (msg) {
                                     var p = msg.split("_");
-                                    if (p[0] == "OK") {
-                                        log(p[1], false);
+                                    if (p[0] === "OK") {
+                                        log(p[1], "success");
                                         $del.remove();
                                         numerosSecciones();
                                     } else {
-                                        log(p[1], true);
+                                        log(p[1], "error");
                                     }
                                 }
                             });
@@ -875,8 +858,8 @@
         secciones++;
         if (isEditable) {
             editable($edit);
-            for (var i = 0; i < parrafosAdded.length; i++) {
-                editable(parrafosAdded[i].find(".editable"));
+            for (var j = 0; j < parrafosAdded.length; j++) {
+                editable(parrafosAdded[j].find(".editable"));
             }
         }
         return $seccion;
@@ -884,7 +867,6 @@
 
     function initSecciones() {
         var secciones = <elm:poneHtml textoHtml="${secciones}"/>
-        // console.log('secciones', secciones.length())
         for (var i = 0; i < secciones.length; i++) {
             addSeccion(secciones[i], ${editable});
         }
@@ -972,8 +954,8 @@
                             data    : datos,
                             success : function (msg) {
                                 var p = msg.split("_");
-                                if (p[0] == "NO") {
-                                    log(p[1], p[0] == "NO");
+                                if (p[0] === "NO") {
+                                    log(p[1], p[0] === "NO");
                                 }
                             }
                         });
@@ -982,7 +964,6 @@
                 }
             });
         } catch (e) {
-//                    console.log(e);
         }
     }
 
@@ -993,8 +974,6 @@
 
         console.log('initsecciones');
         initSecciones();
-
-        // $('[rel=tooltip]').tooltip();
 
         $(".editable").each(function () {
             editable($(this));
