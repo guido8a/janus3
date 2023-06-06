@@ -1,5 +1,7 @@
 package compras
 
+import janus.DiaLaborable
+
 class DiasLaborablesService {
 
     /**

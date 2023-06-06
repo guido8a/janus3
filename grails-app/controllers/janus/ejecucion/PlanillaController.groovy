@@ -4401,7 +4401,7 @@ class PlanillaController {
         def anio = new Date().format("yyyy").toInteger()
         anio -= 1
         def diciembre31 = new Date().parse("dd-MM-yyyy", "31-12-" + anio)
-//        println "fcfm: $fcfm, diciembre31: $diciembre31"
+        println "fcfm: $fcfm, diciembre31: $diciembre31"
 
         if (plnl.tipoPlanilla.codigo == 'Q') {
             fcfm = plnl.fechaFin
@@ -4409,10 +4409,12 @@ class PlanillaController {
             fcfm = preciosService.ultimoDiaDelMes(plnl.fechaFin)
         }
 
+        println "fcfm: $fcfm"
         if (fcfm == diciembre31) {
             fcfm++
             diasMax--
         }
+        println "fcfm: $fcfm, diasMax: $diasMax"
         def res = diasLaborablesService.diasLaborablesDesde(fcfm, diasMax)
         println "No presentación de planilla --> fcfm: $fcfm, multas: $res, diasMax: ${diasMax}"
         /* si hay error, res[0] = false */
@@ -5095,7 +5097,7 @@ class PlanillaController {
             println "dias planillados: $diasPlanillados, fchaFinPlanillado: $fchaFinPlanillado, periodo: $prdo, plnl: ${plnl.id}"
             println "antes del while total: $totalCr"
             total = totalCr
-            while (fchaFinPlanillado < plnl.fechaFin) {
+            while (fchaFinPlanillado <= plnl.fechaFin) {
                 prdo++
                 if (pl) println "fchaFinPlanillado: ${fchaFinPlanillado.format('yyyy-MMM-dd')} periodo: $prdo, pl: ${pl?.last()?.id}"
                 else println "fchaFinPlanillado: ${fchaFinPlanillado.format('yyyy-MMM-dd')} periodo: $prdo"
@@ -5171,7 +5173,7 @@ class PlanillaController {
                     println "**fecha fin Planillado: $fchaFinPlanillado, esteMes: $esteMes, plAcumulado: $plAcumulado, cr: $parcial -- $total, prdo: $prdo"
                     registraRjpl(prdo, esteMes, plAcumulado, plnl.contrato, plnl, fchaFinPlanillado, plnl.fechaFin, parcial, total, true)
 
-                    fchaFinPlanillado = plnl.fechaFin
+                    fchaFinPlanillado = plnl.fechaFin + 1
                 }
             }
         }
