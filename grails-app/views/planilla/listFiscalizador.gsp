@@ -6,8 +6,6 @@
     <title>
         Lista de Planillas
     </title>
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
     <style type="text/css">
     .cmplcss {
@@ -19,16 +17,6 @@
 
 <body>
 
-%{--<g:if test="${flash.message}">--}%
-%{--    <div class="row">--}%
-%{--        <div class="span12">--}%
-%{--            <div class="alert ${flash.clase ?: 'alert-info'}" role="status">--}%
-%{--                <a class="close" data-dismiss="alert" href="#">×</a>--}%
-%{--                ${flash.message}--}%
-%{--            </div>--}%
-%{--        </div>--}%
-%{--    </div>--}%
-%{--</g:if>--}%
 
 <g:set var="cont" value="${1}"/>
 <g:set var="prej" value="${janus.pac.PeriodoEjecucion.findAllByObra(obra, [sort: 'fechaFin', order: 'desc'])}"/>
@@ -54,12 +42,12 @@
                     </a>
                     <g:link controller="documentoProceso" action="list" params="[id: contrato?.oferta?.concurso?.id, contrato: contrato?.id]"
                             class="btn btn-info" title="Cargar Docuemnto de repaldo para Obras adicionales">
-                        <i class="fa fa-building"></i>
+                        <i class="fa fa-folder"></i>
                         Doc. respaldo Obras Adicionales
                     </g:link>
                     <g:link controller="documentoProceso" action="list" params="[id: contrato?.oferta?.concurso?.id, contrato: contrato?.id]"
                             class="btn btn-info" title="Cargar Docuemnto de repaldo para Obras adicionales">
-                        <i class="fa fa-table"></i>
+                        <i class="fa fa-folder"></i>
                         Doc. respaldo Costo + %
                     </g:link>
                 </g:if>
@@ -80,8 +68,8 @@
                         <i class="fa fa-list-ul"></i>
                         Reporte de diferencias
                     </g:link>
-                    <g:link controller="acta" action="form" class="btn btn-info" params="[contrato: contrato.id, tipo: 'P']">
-                        <i class="fa fa-check"></i>
+                    <g:link controller="acta" action="form" class="btn btn-success" params="[contrato: contrato.id, tipo: 'P']">
+                        <i class="fa fa-table"></i>
                         Acta de recepción provisional
                     </g:link>
                     <g:set var="actaProvisional" value="${janus.actas.Acta.findAllByContratoAndTipo(contrato, 'P')}"/>
@@ -110,13 +98,13 @@
         <thead>
         <tr style="width: 100%">
             <th style="width: 15%">#</th>
-            <th style="width: 15%">Tipo</th>
+            <th style="width: 13%">Tipo</th>
             <th style="width: 8%">Fecha Presentación</th>
             <th style="width: 7%">Fecha Inicio</th>
             <th style="width: 7%">Fecha Fin</th>
             <th style="width: 22%">Descripción</th>
             <th style="width: 8%">Valor</th>
-            <th style="width: 10%">Acciones</th>
+            <th style="width: 12%">Acciones</th>
             <th style="width: 8%">Pagos</th>
         </tr>
         </thead>
@@ -130,7 +118,7 @@
 
                 <tr style="font-size: 10px" class="${planillaInstance.tipoContrato == 'C' ? 'cmplcss' : ''}">
                     <td style="width: 15%">${fieldValue(bean: planillaInstance, field: "numero")}</td>
-                    <td style="width: 15%">
+                    <td style="width: 13%">
                         ${planillaInstance.tipoPlanilla.nombre}
                         <g:if test="${planillaInstance.tipoPlanilla.codigo == 'P'}">
                             <g:if test="${cont == prej.size() && planillaInstance.fechaFin >= prej[0].fechaFin}">
@@ -152,7 +140,7 @@
                     <td class="numero" style="width: 8%">
                         <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                     </td>
-                    <td style="width: 10%; text-align: center">
+                    <td style="width: 12%; text-align: center">
                         <g:if test="${eliminable && planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">
                             <g:link action="form" class="btn btn-xs btn-success" rel="tooltip" title="Editar"
                                     params="[contrato: contrato.id]" id="${planillaInstance.id}">
@@ -245,27 +233,25 @@
                             </g:link>
                         </g:if>
 
-                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q']  && planillaInstance.id in adicionales}">
+%{--                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q']  && planillaInstance.id in adicionales}">--}%
+%{--                            <a href="#" class="btn btn-xs btn-warning btnOrdenCambio" title="Orden de Cambio" data-id="${planillaInstance?.id}">--}%
+%{--                                <i class="fa fa-calendar"></i>--}%
+%{--                            </a>--}%
+%{--                            <g:link controller="reportes6" action="reporteOrdenCambio" params="[id: contrato.id, planilla: planillaInstance?.id]"--}%
+%{--                                    class="btn btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir Orden de Cambio">--}%
+%{--                                <i class="fa fa-print"></i>--}%
+%{--                            </g:link>--}%
+%{--                        </g:if>--}%
+%{--                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['C']}">--}%
+%{--                            <a href="#" class="btn btn-xs btn-warning btnOrdenTrabajo" title="Orden de Trabajo" data-id="${planillaInstance?.id}">--}%
+%{--                                <i class="fa fa-calendar"></i>--}%
+%{--                            </a>--}%
 
-                            <a href="#" class="btn btn-xs btn-warning btnOrdenCambio" title="Orden de Cambio" data-id="${planillaInstance?.id}">
-                                <i class="fa fa-calendar"></i>
-                            </a>
-
-                            <g:link controller="reportes6" action="reporteOrdenCambio" params="[id: contrato.id, planilla: planillaInstance?.id]"
-                                    class="btn btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir Orden de Cambio">
-                                <i class="fa fa-print"></i>
-                            </g:link>
-                        </g:if>
-                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['C']}">
-                            <a href="#" class="btn btn-xs btn-warning btnOrdenTrabajo" title="Orden de Trabajo" data-id="${planillaInstance?.id}">
-                                <i class="fa fa-calendar"></i>
-                            </a>
-
-                            <g:link controller="reportes6" action="reporteOrdenDeTrabajo" params="[id: contrato.id, planilla: planillaInstance?.id]"
-                                    class="btn btn-xs btn-warning btn-ajax" rel="tooltip" title="Imprimir Orden de Trabajo">
-                                <i class="fa fa-print"></i>
-                            </g:link>
-                        </g:if>
+%{--                            <g:link controller="reportes6" action="reporteOrdenDeTrabajo" params="[id: contrato.id, planilla: planillaInstance?.id]"--}%
+%{--                                    class="btn btn-xs btn-warning btn-ajax" rel="tooltip" title="Imprimir Orden de Trabajo">--}%
+%{--                                <i class="fa fa-print"></i>--}%
+%{--                            </g:link>--}%
+%{--                        </g:if>--}%
                     </td>
 
                     <td style="text-align: center;width: 8%">
@@ -297,11 +283,11 @@
                                 </g:if>
 
                                 <g:if test="${lblBtn == 3}">
-                                    <i class="fa fa-money-bill text-warning fa-2x" title="Pedir pago"></i> Pedir pago
+                                     Pedir pago
                                 </g:if>
 
                                 <g:if test="${lblBtn == 4}">
-                                    <i class="fa fa-money-bill text-info fa-2x" title="Informar pago"></i> Informar pago
+                                    Informar pago
                                 </g:if>
                                 <g:if test="${lblBtn == 5}">
                                     <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A'}">

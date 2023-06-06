@@ -305,19 +305,17 @@
                             var val = $row.data("val");
                             var id = $row.data("id");
 
-//                            console.log('vol:' + vol, 'cant:' + cant)
-
                             if (vol !== undefined && cant !== undefined) {
                                 data += "d=" + vol + "_" + cant + "_" + val;
-                                if (id != "nuevo") {
+                                if (id !== "nuevo") {
                                     data += "_" + id;
                                 }
                                 data += "&";
                             }
                         });
-                        if (data == "") {
+                        if (data === "") {
                             $("#dlgLoad").dialog("close");
-                            alert("LLene el detalle de la planilla")
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Ingrese el detalle de la planilla" + '</strong>');
                         } else {
                             $(this).replaceWith(spinner);
                             data += "id=${planilla.id}&total=" + $(".totalAct").data("valor");

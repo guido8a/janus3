@@ -26,7 +26,7 @@
     }
 
     .editable {
-        background : url(${resource(dir:'images', file:'edit.gif')}) right no-repeat rgba(245, 245, 245, 0.5);
+        background : right no-repeat rgba(245, 245, 245, 0.5);
         border     : solid 1px #efefef;
         padding    : 3px 20px 0 3px;
         margin     : 10px 0;
@@ -72,8 +72,6 @@
     }
 
     .tablas {
-        /*margin     : 0 0 10px 120px !important;*/
-        /*background : rgba(100, 100, 100, 0.4);*/
         width      : 900px;
         margin-left : 85px !important;
     }
@@ -315,35 +313,9 @@
         }
     });
 
-
-    // $(document ).ready(function() {
-    //     console.log( "ready!" );
-    // });
-    //
-    //
-    // $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
-
-
-    //
-    // function log(msg, error) {
-    //     var sticky = false;
-    //     var theme = "success";
-    //     if (error) {
-    //         sticky = true;
-    //         theme = "error";
-    //     }
-    //     $.jGrowl(msg, {
-    //         speed      : 'slow',
-    //         sticky     : sticky,
-    //         theme      : theme,
-    //         themeState : ''
-    //     });
-    // }
-
-    function submitFormSeccion(btn) {
+    function submitFormSeccion() {
         var $form = $("#frmSave");
         if ($form.valid()) {
-            btn.replaceWith(spinner);
             var url = $form.attr("action");
             $.ajax({
                 type    : "POST",
@@ -356,23 +328,23 @@
                     } else {
                         var $sec = addSeccion($.parseJSON(msg), true);
                         if ($sec) {
-                            $("#modal").modal("hide");
                             $('html, body').animate({
                                 scrollTop : $sec.offset().top
                             }, 2000);
                         }
-                        log("Elemento creado existosamente", "success");
+                        log("Sección creada correctamente", "success");
                     }
                 }
             });
         }
+        else {
+            return false;
+        }
     }
 
-    function submitFormParrafo(btn, num, $div, add, $replace) {
+    function submitFormParrafo(num, $div, add, $replace) {
         var $form = $("#frmSave");
         if ($form.valid()) {
-            btn.replaceWith(spinner);
-
             var url = $form.attr("action");
             $.ajax({
                 type    : "POST",
@@ -391,16 +363,22 @@
                                     scrollTop : $div.parents(".seccion").offset().top
                                 }, 2000);
                             }
-                            log("Elemento creado existosamente", "success");
+                            log("Párrafo agregado correctamente", "success");
+                            setTimeout(function () {
+                                location.reload()
+                            }, 800);
                         } else {
                             $sec = addParrafo($.parseJSON(msg), num, $div, $replace);
+                            setTimeout(function () {
+                                location.reload()
+                            }, 800);
                         }
-                        $("#modal").modal("hide");
                         editable($sec.find(".editable"));
                     }
-                    location.reload();
                 }
             });
+        }else{
+            return false
         }
     }
 
@@ -628,62 +606,75 @@
         $btnTabla.click(function () {
             $.ajax({
                 type    : "POST",
+                url: "${createLink(controller: 'parrafo', action:'form_ext_ajax')}",
                 data    : {
                     id : data.id
                 },
-                url     : "${createLink(controller: 'parrafo', action:'form_ext_ajax')}",
                 success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitFormParrafo(btnSave, data.numero, $parr, false, $parr);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                    $("#modalTitle").html("Modificar Párrafo");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal").modal("show");
-                }
-            });
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditP",
+                        title   : " Párrafo",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return  submitFormParrafo(data.numero, $parr, false, $parr);
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
             return false;
         });
 
         $btnEliminarParrafo.click(function () {
             var $del = $(this).parents(".parrafo");
-            $.box({
-                imageClass : "box_info",
-                text       : "Está seguro de eliminar este párrafo? Esta acción no se puede deshacer...",
-                title      : "Confirmación",
-                iconClose  : false,
-                dialog     : {
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : false,
-                    buttons       : {
-                        "Aceptar"  : function () {
 
+            bootbox.dialog({
+                title   : "Alerta",
+                message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este párrafo? Esta acción no se puede deshacer.</p>",
+                buttons : {
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
+                        }
+                    },
+                    eliminar : {
+                        label     : "<i class='fa fa-trash'></i> Eliminar",
+                        className : "btn-danger",
+                        callback  : function () {
+                            var v = cargarLoader("Eliminando...");
                             $.ajax({
                                 type    : "POST",
-                                url     : "${createLink(controller: 'parrafo', action: 'delete_ext')}",
+                                url     : '${createLink(controller: 'parrafo', action: 'delete_ext')}',
                                 data    : {
                                     id : data.id
                                 },
                                 success : function (msg) {
-                                    var p = msg.split("_");
-                                    if (p[0] === "OK") {
-                                        log(p[1], "error");
-                                        $del.remove();
+                                    v.modal("hide");
+                                    var parts = msg.split("_");
+                                    if(parts[0] === 'OK'){
+                                        log(parts[1],"success");
                                         numerosParrafos($div.parents(".seccion"));
-                                    } else {
-                                        log(p[1], "success");
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 1000);
+                                    }else{
+                                        log(parts[1],"error")
                                     }
                                 }
                             });
-                        },
-                        "Cancelar" : function () {
                         }
                     }
                 }
@@ -709,6 +700,7 @@
         });
         return $parr;
     }
+
 
     function addSeccion(data, isEditable) {
         var $seccion = $("<div class='seccion ui-corner-all'></div>");
@@ -765,63 +757,79 @@
         var $parr = $("<div class='row parrafos'></div>");
 
         $btnAddParrafo.click(function () {
+
             $.ajax({
                 type    : "POST",
+                url: "${createLink(controller: 'parrafo', action:'form_ext_ajax')}",
                 data    : {
                     seccion : data.id,
-                    numero  : parrafos + 1
+                   numero  : parrafos + 1
                 },
-                url     : "${createLink(controller: 'parrafo', action:'form_ext_ajax')}",
                 success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn"><i class="fa fa-times"></i> Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitFormParrafo(btnSave, data.numero, $parr, true);
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-success btn-delete");
-                    $("#modalTitle").html("Crear Párrafo");
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal").modal("show");
-                }
-            });
-            return false;
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditP",
+                        title   : " Párrafo",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormParrafo(data.numero, $parr, true);
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
         });
+
+
         $btnEliminarSeccion.click(function () {
             var $del = $(this).parents(".seccion");
-            $.box({
-                imageClass : "box_info",
-                text       : "Está seguro de eliminar esta sección? Se eliminarán también sus párrafos y esta acción no se puede deshacer...",
-                title      : "Confirmación",
-                iconClose  : false,
-                dialog     : {
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : false,
-                    buttons       : {
-                        "Aceptar"  : function () {
+
+            bootbox.dialog({
+                title   : "Alerta",
+                message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar esta sección? Esta acción no se puede deshacer.</p>",
+                buttons : {
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
+                        }
+                    },
+                    eliminar : {
+                        label     : "<i class='fa fa-trash'></i> Eliminar",
+                        className : "btn-danger",
+                        callback  : function () {
+                            var v = cargarLoader("Eliminando...");
                             $.ajax({
                                 type    : "POST",
-                                url     : "${createLink(controller: 'seccion', action: 'delete_ext')}",
+                                url     : '${createLink(controller: 'seccion', action: 'delete_ext')}',
                                 data    : {
                                     id : data.id
                                 },
                                 success : function (msg) {
-                                    var p = msg.split("_");
-                                    if (p[0] === "OK") {
-                                        log(p[1], "success");
-                                        $del.remove();
+                                    v.modal("hide");
+                                    var parts = msg.split("_");
+                                    if(parts[0] === 'OK'){
+                                        log(parts[1],"success");
                                         numerosSecciones();
-                                    } else {
-                                        log(p[1], "error");
+                                        setTimeout(function () {
+                                            location.reload()
+                                        }, 1000);
+                                    }else{
+                                        log(parts[1],"error")
                                     }
                                 }
                             });
-                        },
-                        "Cancelar" : function () {
                         }
                     }
                 }
@@ -874,23 +882,14 @@
 
     function doSave() {
         if ($("#frmSave-Acta").valid()) {
-            $.box({
-                imageClass : "box_info",
-                text       : "Por favor espere",
-                title      : "Espere...",
-                iconClose  : false,
-                dialog     : {
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : false,
-                    buttons       : null
-                }
-            });
-
+            var v = cargarLoader("Guardando...");
             $("#txtDescripcion").val(CKEDITOR.instances.descripcion.getData());
-            var data = $("#frmSave-Acta").serialize();
+            $("#frmSave-Acta").serialize();
             $("#frmSave-Acta").submit();
             numerosSecciones();
+            setTimeout(function () {
+                location.reload();
+            }, 800);
         }
     }
 
@@ -972,50 +971,54 @@
 
         CKEDITOR.disableAutoInline = true;
 
-        console.log('initsecciones');
         initSecciones();
 
         $(".editable").each(function () {
             editable($(this));
         });
 
-//                CKEDITOR.inline('editable', {
-//                    on : {
-//                        blur : function (event) {
-//                            var data = event.editor.getData();
-//                            console.log(data);
-//                        }
-//                    }
-//                });
-
         $("#btnPrint").click(function () {
-            location.href ="${createLink(controller: 'pdf', action: 'pdfLink')}?url=${createLink(controller:
-                      'reportesPlanillas', action: 'actaRecepcion', id:actaInstance.id)}";
+            location.href ="${createLink(controller:'reportesPlanillas', action: '_actaRecepcion', id:actaInstance.id)}";
         });
 
         $("#btnPrintCmpl").click(function () {
-            location.href = "${createLink(controller: 'pdf', action: 'pdfLink')}?url=${createLink(controller:
-                      'reportesPlanillas', action: 'actaRecepcionTotl', id:actaInstance.id)}";
+            location.href = "${createLink(controller:'reportesPlanillas', action: '_actaRecepcionTotl', id:actaInstance.id)}";
         });
 
         $("#btnRegistro").click(function () {
-            $.box({
-                imageClass : "box_info",
-                text       : "<span class='warning'>Por favor verifique que el acta que va a registrar sea la que fue firmada, " +
-                    "pues <span class='strongWarning'>una vez registrada el acta NO se puede modificar y el registro es definitivo y NO se puede deshacer.</span>",
-                title      : "Alerta",
-                iconClose  : false,
-                dialog     : {
-                    width         : 450,
-                    resizable     : false,
-                    draggable     : false,
-                    closeOnEscape : false,
-                    buttons       : {
-                        "Registrar" : function () {
-                            location.href = "${createLink(action:'registrar', id:actaInstance.id)}";
-                        },
-                        "Cancelar"  : function () {
-                        }
+            bootbox.confirm({
+                title: "Registrar",
+                message: "Verifique que el acta ha ser registrada sea la que fue firmada, una vez registrada el acta NO puede ser modificada y el registro es definitivo y NO se puede deshacer. ",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Registrar',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        $.ajax({
+                            type : "POST",
+                            url : location.href = "${createLink(action:'registrar')}",
+                            data     : {
+                                id: ${actaInstance?.id}
+                            },
+                            success  : function (msg) {
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    setTimeout(function () {
+                                        location.href = "${createLink(controller:'planilla', action: 'list', id: actaInstance.contrato.id)}"
+                                    }, 800);
+                                }else{
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                }
+                            }
+                        });
                     }
                 }
             });
@@ -1024,49 +1027,48 @@
         $("#btnAddSeccion").click(function () {
             var id = "${actaInstance.id}";
             if (id === "") {
-                $.box({
-                    imageClass : "box_info",
-                    text       : "Por favor guarde el acta para insertar secciones y párrafos",
-                    title      : "Alerta",
-                    iconClose  : false,
-                    dialog     : {
-                        resizable     : false,
-                        draggable     : false,
-                        closeOnEscape : false,
-                        buttons       : {
-                            "Aceptar" : function () {
-                            }
-                        }
-                    }
-                });
+                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Guarde el acta antes de insertar secciones y párrafos" + '</strong>');
             } else {
-                $.ajax({
-                    type    : "POST",
-                    data    : {
-                        acta   : "${actaInstance.id}",
-                        numero : secciones
-                    },
-                    url     : "${createLink(controller: 'seccion', action:'form_ext_ajax')}",
-                    success : function (msg) {
-                        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                        var btnSave = $('<a href="#" id="btnSaveSeccion" class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                        btnSave.click(function () {
-                            submitFormSeccion(btnSave);
-                            return false;
-                        });
-
-                        $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                        $("#modalTitle").html("Crear Sección");
-                        $("#modalBody").html(msg);
-                        $("#modalFooter").html("").append(btnOk).append(btnSave);
-                        $("#modal").modal("show");
-                        $("#titulo").focus();
-                    }
-                });
+                createEditSeccion(null, id, secciones);
             }
             return false;
         });
+
+        function createEditSeccion(id, acta, numero) {
+            var title = id ? "Editar " : "Crear ";
+            var data = id ? {id : id, numero: numero} : {acta: acta, numero: numero};
+            $.ajax({
+                type    : "POST",
+                url: "${createLink(controller: 'seccion', action:'form_ext_ajax')}",
+                data    : data,
+                success : function (msg) {
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEdit",
+                        title   : title + " Sección",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormSeccion();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+        } //createEdit
+
+
+
 
         $("#btnSave").click(function () {
             doSave();

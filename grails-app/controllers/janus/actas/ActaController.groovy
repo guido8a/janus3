@@ -517,13 +517,12 @@ class ActaController {
         acta.registrada = 1
         acta.fechaRegistro = new Date()
         if (acta.save(flush: true)) {
-            flash.clase = "alert-success"
-            flash.message = "El acta ha sido registrada exitosamente"
+            render "ok_Acta registrada exitosamente"
         } else {
-            flash.clase = "alert-error"
-            flash.message = "Ha ocurrido un error al registrar el acta: " + g.renderErrors(bean: acta)
+            println("error al registrar el acta " + acta.errors)
+            render "no_Error al registrar el acta"
         }
-        redirect(controller: "planilla", action: "list", id: acta.contrato.id)
+//        redirect(controller: "planilla", action: "list", id: acta.contrato.id)
     }
 
     def save() {

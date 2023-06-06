@@ -1240,16 +1240,7 @@ class Reportes6Controller {
         text = text.replaceAll(/>/, /&gt;/);
         rubro.nombre = text
 
-//        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus}"
-//
-//        def cn = dbConnectionService.getConnection()
-//        def conc = cn.rows(sql.toString())
-//        def cncrId
-//        conc.each {
-//            cncrId = it?.cncr__id
-//        }
         def concurso = obraOferente.concurso
-//        def fechaOferta = printFecha(obraOferente?.fechaOferta)
         def firma = Persona.get(params.oferente).firma
 
         def lugar = params.lugar

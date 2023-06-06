@@ -145,14 +145,13 @@ class SeccionController {
         def seccionInstance = Seccion.get(params.id)
         def acta = seccionInstance.acta
         if (!seccionInstance) {
-            message = "NO_No se encontró Seccion con id " + params.id
-            render message
+            render("NO_No se encontró Seccion con id ")
             return
         }
 
         try {
             seccionInstance.delete(flush: true)
-            message = "OK_Se ha eliminado correctamente Seccion " + seccionInstance.titulo
+            message = "OK_Sección eliminada correctamente"
 
             def cont = 1
             Seccion.findAllByActa(acta).each { sec ->

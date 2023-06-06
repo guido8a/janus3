@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 8/6/13
-  Time: 4:03 PM
-  To change this template use File | Settings | File Templates.
---%>
+
 
 <%@ page import="janus.ejecucion.Planilla; janus.pac.Garantia" contentType="text/html;charset=UTF-8" %>
 <html>
@@ -13,7 +7,6 @@
         <style type="text/css">
         @page {
             size   : 21cm 29.7cm ;  /*width height */
-            /*size   : A4 portrait;*/
             margin : 1.5cm;
         }
 
@@ -34,20 +27,13 @@
 
         .hoja {
             width      : 17.5cm;
-            /* si es hoja vertical */
-            /*width      : 25.5cm; *//* si es hoja horizontal */
-            /*background : #ffebcd;*/
-            /*border     : solid 1px black;*/
             min-height : 200px;
         }
 
         @page {
-            /*@bottom-center {*/
             @bottom-left {
-                %{--content   : 'Acta de ${actaInstance?.nombre} ${actaInstance?.tipo == 'P' ? 'Provisional' : 'Definitiva'} N. ${actaInstance?.numero} pág.' counter(page) ' de ' counter(pages);--}%
                 content   : 'Página ' counter(page) ' de ' counter(pages);
                 font-size : 8pt;
-                /*color     : #777;*/
                 color     : #000;
             }
         }
@@ -131,8 +117,7 @@
             min-height : 15px;
         }
 
-        .span10, .span9, .span1 {
-            /*float : left;*/
+        .span10, .span9, .span1, .span4, .span6 {
             display : inline-block;
         }
 
@@ -142,6 +127,14 @@
 
         .span10 {
             width : 575px;
+        }
+
+        .span4{
+            width: 170px;
+        }
+
+        .span6{
+            width: 400px;
         }
 
         .numero {
@@ -159,7 +152,6 @@
 
         .tablas {
             margin : 0 0 10px 120px !important;
-            /*background : rgba(100, 100, 100, 0.4);*/
             width  : 900px;
         }
 
@@ -174,8 +166,6 @@
         .table {
             border-collapse : collapse;
             width           : 640px;
-            /*margin-left     : 30px;*/
-            /*margin-bottom   : 10px;*/
             margin          : 10px 0 25px 10px;
         }
 
@@ -192,7 +182,6 @@
             line-height    : 20px;
             text-align     : left;
             vertical-align : top;
-            /*border-top     : 1px solid #dddddd;*/
         }
 
         .table th {
@@ -210,14 +199,11 @@
 
         .table-bordered {
             border          : 1px solid #dddddd;
-            /*border-collapse       : separate;*/
             border-collapse : collapse;
-            /*border-left     : 0;*/
         }
 
         .table-bordered th,
         .table-bordered td {
-            /*border-left : 1px solid #dddddd;*/
         }
 
         th, td {
@@ -244,8 +230,6 @@
             margin-bottom     : 0;
             width             : 100%;
             page-break-inside : avoid;
-            /*position          : absolute;*/
-            /*bottom            : 15px;*/
         }
 
         .sumilla {
@@ -271,47 +255,47 @@
             page-break-inside : avoid;
         }
 
-        /*#sumillas {*/
-        /*color    : red;*/
-        /*position : fixed;*/
-        /*bottom   : 0;*/
-        /*}*/
         </style>
     </head>
 
     <body>
         <div class="hoja">
             <div class="tac">
-                %{--<img src="${resource(dir: 'images', file: 'logo_reportes.png')}"/>--}%
             </div>
 
             <div class="titulo bold tac">
-                G.A.D. LOS RÍOS
+                G.A.D LOS RÍOS
             </div>
 
             <div class="titulo bold tac upper">
                 Acta de ${actaInstance?.nombre} ${actaInstance?.tipo == 'P' ? 'Provisional' : 'Definitiva'} N. ${actaInstance?.numero}
             </div>
 
-            <elm:poneHtml textoHtml="${espacios}"/>
+            ${espacios}
             <div class="tituloChevere bold upper">
-                <elm:poneHtml textoHtml="${espacios}"/>
+                ${espacios}
                 Datos generales
             </div>
             <g:set var="garantias" value="${Garantia.findAllByContrato(actaInstance.contrato)}"/>
             <g:set var="obra" value="${actaInstance.contrato.oferta.concurso.obra}"/>
             <g:set var="fisc" value="${Planilla.findAllByContrato(actaInstance.contrato, [sort: "id", order: "desc"]).first().fiscalizador}"/>
             <div class="well">
-                <div class='row'>
-                    <div class="bold span1">Contrato N.</div>
+                <div class="span12">
+                    <div class="bold span4">Contrato Principal N°</div>
 
-                    <div class="span10">${actaInstance.contrato.codigo}</div>
+                    <div class="span6">${actaInstance.contrato.codigo}</div>
+                </div>
+
+                <div class="span12">
+                    <div class="bold span4">Contrato Complementario N°</div>
+
+                    <div class="span6">${cmpl?.codigo ?: ''}</div>
                 </div>
 
                 <div class='row'>
-                    <div class="bold span1">Garantías N.</div>
+                    <div class="bold span4">Garantías N°</div>
 
-                    <div class="span10">
+                    <div class="span6">
                         <g:each in="${garantias}" var="gar" status="i">
                             ${gar.tipoDocumentoGarantia.descripcion} N. ${gar.codigo} - ${gar.aseguradora.nombre} ${i < garantias.size() - 1 ? "," : ""}
                         </g:each>
@@ -319,50 +303,66 @@
                 </div>
 
                 <div class='row'>
-                    <div class="bold span1">Objeto</div>
+                    <div class="bold span4">Objeto</div>
 
-                    <div class="span10">${actaInstance.contrato.objeto}</div>
+                    <div class="span6">${actaInstance.contrato.objeto}</div>
                 </div>
 
                 <div class='row'>
-                    <div class="bold span1">Lugar</div>
+                    <div class="bold span4">Lugar</div>
 
-                    <div class="span10">${obra.sitio}</div>
+                    <div class="span6">${obra.sitio}</div>
                 </div>
 
                 <div class='row'>
-                    <div class="bold span1">Ubicación</div>
+                    <div class="bold span4">Ubicación</div>
 
-                    <div class="span10">Parroquia ${obra.parroquia.nombre} - Cantón ${obra.parroquia.canton.nombre}</div>
+                    <div class="span6">Parroquia ${obra.parroquia.nombre} - Cantón ${obra.parroquia.canton.nombre}</div>
                 </div>
 
                 <div class='row'>
-                    <div class="bold span1">Monto $.</div>
-
-                    <div class="span10"><acta:numero numero="${actaInstance.contrato.monto}"/></div>
+                    <div class="bold span4">Monto contrato principal $.</div>
+                    <div class="span6">
+                        <acta:numero numero="${actaInstance.contrato.monto}"/>
+                    </div>
                 </div>
 
                 <div class='row'>
-                    <div class="bold span1">Contratista</div>
-
-                    <div class="span10">${actaInstance.contrato.oferta.proveedor.nombre}</div>
+                    <div class="bold span4">Monto contrato complementario $.
+                    </div>
+                    <div class="span6">
+                        <acta:numero numero="${cmpl?.monto ?: 0}"/>
+                    </div>
+                </div>
+                <div class='row'>
+                    <div class="bold span4">Monto total $.
+                    </div>
+                    <div class="span6">
+                        <acta:numero numero="${total}"/>
+                    </div>
                 </div>
 
                 <div class='row'>
-                    <div class="bold span1">Fiscalizador</div>
+                    <div class="bold span4">Contratista</div>
 
-                    <div class="span10">${fisc.titulo} ${fisc.nombre} ${fisc.apellido}</div>
+                    <div class="span6">${actaInstance.contrato.oferta.proveedor.nombre}</div>
+                </div>
+
+                <div class='row'>
+                    <div class="bold span4">Fiscalizador</div>
+
+                    <div class="span6">${fisc.titulo} ${fisc.nombre} ${fisc.apellido}</div>
                 </div>
 
             </div> %{-- well contrato --}%
-            <elm:poneHtml textoHtml="${espacios}"/>
+            ${espacios}
             <div class="well">
                 <acta:clean str="${actaInstance.descripcion}"/>
             </div>
-            <elm:poneHtml textoHtml="${espacios}"/>
+            ${espacios}
             <div id="secciones">
                 <g:each in="${actaInstance.secciones}" var="seccion">
-                    <elm:poneHtml textoHtml="${espacios}"/>
+                    ${espacios}
                     <div class="seccion ui-corner-all">
                         <div class="row tituloSeccion">
                             <div class="span1 numero lvl1 bold">${seccion.numero}.-</div>
@@ -398,7 +398,6 @@
                     <div class="firma">
                         <g:if test="${actaInstance.contrato.administrador}">
                             ${actaInstance.contrato.administrador.titulo?.toUpperCase() ?: ""} ${actaInstance.contrato.administrador.nombre} ${actaInstance.contrato.administrador.apellido}
-                        %{--${actaInstance.contrato.delegadoPrefecto.titulo ?: ""} ${actaInstance.contrato.delegadoPrefecto.nombre} ${actaInstance.contrato.delegadoPrefecto.apellido}--}%
                         </g:if>
                         <br/>
                         DELEGADO ADMINISTRADOR POR EL SR. PREFECTO PROVINCIAL
@@ -406,8 +405,6 @@
 
                     <div class="firma">
                         <g:if test="${directorDeFiscalizacion}">
-                        %{--${actaInstance.contrato.delegadoPrefecto.titulo ?: ""} ${actaInstance.contrato.delegadoPrefecto.nombre} ${actaInstance.contrato.delegadoPrefecto.apellido}--}%
-                        %{--${actaInstance.contrato.fiscalizadorContrato.fiscalizador.titulo ?: ""} ${actaInstance.contrato.fiscalizadorContrato.fiscalizador.nombre} ${actaInstance.contrato.fiscalizadorContrato.fiscalizador.apellido}--}%
                             ${directorDeFiscalizacion.titulo?.toUpperCase() ?: ""} ${directorDeFiscalizacion.nombre} ${directorDeFiscalizacion.apellido}
                         </g:if>
                         <br/>
@@ -428,22 +425,6 @@
                     </div>
                 </div>
 
-%{--
-                <div id="sumillas">
-                    <div class="left">
-                        <div class="row" style="height: 20px; margin-top: 20px;">
-                            <div class="sumilla">
-                                Elaborado por:
-                                ${actaInstance.contrato.fiscalizadorContrato.fiscalizador.titulo ?: ""} ${actaInstance.contrato.fiscalizadorContrato.fiscalizador.nombre}
-                                ${actaInstance.contrato.fiscalizadorContrato.fiscalizador.apellido} (FISCALIZADOR)
-                            </div>
-                        </div>
-                    </div>
-                    <div class="left" style="margin-top: 20px">
-                        <div class="firma"></div>
-                    </div>
-                </div>
---}%
 
             </div>
         </div>

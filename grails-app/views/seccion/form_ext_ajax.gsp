@@ -6,57 +6,55 @@
         <g:hiddenField name="acta.id" value="${seccionInstance?.actaId}"/>
         <g:hiddenField name="numero" value="${seccionInstance?.numero}"/>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Número
-                </span>
-            </div>
 
-            <div class="controls">
-                ${fieldValue(bean: seccionInstance, field: 'numero')}
-            </div>
+        <div class="form-group">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
+                    Número
+                </label>
+                <span class="col-md-8">
+                    ${fieldValue(bean: seccionInstance, field: 'numero')}
+                </span>
+            </span>
         </div>
 
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+
+        <div class="form-group ${hasErrors(bean: seccionInstance, field: 'titulo', 'error')} ">
+            <span class="grupo">
+                <label for="titulo" class="col-md-2 control-label text-info">
                     Título
+                </label>
+                <span class="col-md-8">
+                    <g:textField name="titulo" maxlength="511" class="inputSeccion required form-control" value="${seccionInstance?.titulo}"/>
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <g:textField name="titulo" maxlength="511" class="inputSeccion required" value="${seccionInstance?.titulo}"/>
-                <span class="mandatory">*</span>
-
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
     </g:form>
 </div>
 <script type="text/javascript">
-    $("#titulo").focus();
 
     $("#frmSave").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
 
-    $("input").keydown(function (ev) {
-        if (ev.keyCode == 13) {
-            submitFormSeccion($("#btnSaveSeccion"));
-            ev.preventDefault();
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormSeccion();
             return false;
         }
+        return true;
     });
 
 </script>

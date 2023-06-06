@@ -9,8 +9,13 @@ import com.lowagie.text.Font
 import janus.Contrato
 import janus.Parametros
 
+import javax.imageio.ImageIO
 import java.awt.Image
 import java.awt.Color
+import java.awt.MediaTracker
+import java.awt.Toolkit
+import java.awt.image.BufferedImage
+
 //import com.itextpdf.text.Document;
 //import com.itextpdf.text.Element;
 //import com.itextpdf.text.Phrase;
@@ -1829,9 +1834,21 @@ class ReportePlanillas4Controller {
 
 //        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
         def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
-        Image logo = Image.getInstance(logoPath);
+//        Image logo = Image.getInstance(logoPath);
+
+//        logo.scaleToFit(52,52)
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+
+
+        java.awt.Image awtImage =
+                Toolkit.getDefaultToolkit().createImage(logoPath);
+//         com.itextpdf.text.Image logo = com.itextpdf.text.Image.getInstance(awtImage, null);
+
+        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(awtImage, null)
+
         logo.scaleToFit(52,52)
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+//        logo.setAlignment(com.lowagie.text.Image.LEFT | com.lowagie.text.Image.TEXTWRAP)
+
 
         PdfPTable tablaDetalles = null
         def borderWidth = 1

@@ -45,7 +45,7 @@ class ParrafoController {
     }
 
     def form_ext_ajax() {
-//        println params
+        println params
         def message
         def parrafoInstance = new Parrafo(params)
         if (params.id) {
@@ -122,14 +122,13 @@ class ParrafoController {
         def parrafoInstance = Parrafo.get(params.id)
         def seccion = parrafoInstance.seccion
         if (!parrafoInstance) {
-            message = "NO_No se encontró Parrafo con id " + params.id
-            render message
+            render ("NO_No se encontró Parrafo con id ")
             return
         }
 
         try {
             parrafoInstance.delete(flush: true)
-            message = "OK_Se ha eliminado correctamente Parrafo " + seccion.numero + "." + parrafoInstance.numero
+            message = "OK_Párrafo eliminado correctamente "
 
             def cont = 1
             Parrafo.findAllBySeccion(seccion).each { par ->
@@ -145,8 +144,7 @@ class ParrafoController {
             render message
         }
         catch (DataIntegrityViolationException e) {
-            message = "NO_No se pudo eliminar Parrafo " + (parrafoInstance.id ? seccion.numero + "." + parrafoInstance.numero : "")
-            render message
+            render("NO_Error al eliminar el párrafo")
         }
     } //delete_ext
 
