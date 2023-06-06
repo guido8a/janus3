@@ -23,7 +23,7 @@
 <g:set var="anticipo" value="${Planilla.countByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('A'))}"/>
 
 <div class="alert alert-info">
-    Planillas del contrato de la obra: <strong>${contrato?.codigo + " " + obra?.descripcion}</strong>
+    Planillas del contrato: <strong>${contrato?.codigo + " - " + obra?.descripcion}</strong>
 </div>
 
 <div class="row">
