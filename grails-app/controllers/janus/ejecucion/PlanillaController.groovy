@@ -4,6 +4,7 @@ import groovy.json.JsonBuilder
 import janus.*
 import janus.actas.Acta
 import janus.pac.*
+import seguridad.Persona
 
 import java.text.DecimalFormat
 
@@ -539,18 +540,15 @@ class PlanillaController {
         texto.fecha = new Date()
         def reajuste = ReajustePlanilla.findByPlanilla(planilla).valorReajustado
 
-//        def numerosALetras = NumberToLetterConverter.convertNumberToLetter(planilla?.valor + planilla?.reajuste)
         def numerosALetras = NumberToLetterConverter.convertNumberToLetter(planilla?.valor + reajuste)
-//        def numerosALetras = NumberToLetterConverter.convertNumberToLetter(numero(planilla.valor + planilla.reajuste, 2).replaceAll(',','').toDouble())
 
         def strParrafo1 = "De acuerdo al Contrato N° ${contrato?.codigo}, suscrito el ${fechaConFormato(contrato?.fechaSubscripcion, 'dd-MM-yyyy')}, por el valor de " +
                 "USD ${numero(contrato?.monto, 2)}  sin incluir IVA, para realizar ${contrato?.objeto}, " +
                 "ubicada en el Barrio ${contrato?.oferta?.concurso?.obra?.barrio}, Parroquia ${contrato?.oferta?.concurso?.obra?.parroquia}, " +
                 "Cantón ${contrato?.oferta?.concurso?.obra?.parroquia?.canton}, de la Provincia de ${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.provincia?.nombre}"
 
-//        def strParrafo2 = "Sírvase disponer el trámite respectivo para el pago del ${numero(contrato?.porcentajeAnticipo, 0)}% del anticipo, a favor de ${nombrePersona(contrato?.oferta?.proveedor, 'prov')} "
         def strParrafo2 = "Sírvase disponer el trámite respectivo para el pago del ${numero(contrato?.porcentajeAnticipo, 0)}% del " +
-                "anticipo, a favor de ${contrato?.oferta?.proveedor.pagarNombre} "
+                "anticipo, a favor de ${contrato?.oferta?.proveedor?.pagarNombre} "
 
         def strParrafo3 = "Son ${numerosALetras}"
 
@@ -563,7 +561,6 @@ class PlanillaController {
                 params["edit_2_1"]
         ]
         textos[2] = [
-                // tabla
         ]
         textos[3] = [
                 strParrafo3
@@ -580,13 +577,10 @@ class PlanillaController {
         texto.copia = params.copia
 
         if (texto.save([flush: true])) {
-            flash.clase = "alert-success"
-            flash.message = "Pedido de pago del anticipo guardado exitosamente."
+            render "ok_Pedido de pago del anticipo guardado correctamente"
         } else {
-            flash.clase = "alert-error"
-            flash.message = "Ha ocurrido un error al guardar el pedido de pago del anticipo."
+            render "no_Error al al guardar el pedido de pago del anticipo."
         }
-        redirect(action: "configPedidoPagoAnticipo", id: planilla.id)
     }
 
     def savePedidoPago() {

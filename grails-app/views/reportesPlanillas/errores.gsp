@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: luz
-  Date: 9/9/13
-  Time: 11:43 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
     <head>
@@ -14,9 +7,8 @@
 
     <body>
         <div class="alert alert-error alert-block">
-            ${flash.message}
-
-            <br/><br/>${params.link ?: ""}
+            <elm:poneHtml textoHtml="${flash.message}" />
+            <br/><br/> <elm:poneHtml textoHtml="${params.link ?: ""}" />
         </div>
     </body>
 </html>

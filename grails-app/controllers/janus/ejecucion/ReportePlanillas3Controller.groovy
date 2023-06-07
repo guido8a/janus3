@@ -3426,11 +3426,6 @@ class ReportePlanillas3Controller {
         document.resetHeader()
         document.resetFooter()
 
-//        HeaderFooterPageEvent event = new HeaderFooterPageEvent();
-//        pdfw.setPageEvent(event);
-
-//        graficarFooter(pdfw,planilla)
-
         document.open();
         document.addTitle("Planillas de la obra " + obra.nombre + " " + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
@@ -3438,10 +3433,15 @@ class ReportePlanillas3Controller {
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
 
-        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
-        Image logo = Image.getInstance(logoPath);
+//        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        Image logo = Image.getInstance(logoPath);
+//        logo.scaleToFit(52,52)
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
+        java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(logoPath);
+        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(awtImage, null)
         logo.scaleToFit(52,52)
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
         PdfPTable tablaDetalles = null
         def borderWidth = 1

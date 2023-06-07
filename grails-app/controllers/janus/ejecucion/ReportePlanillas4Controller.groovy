@@ -1382,10 +1382,15 @@ class ReportePlanillas4Controller {
         document.addCreator("Tedein SA");
 
 //        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
+//        Image logo = Image.getInstance(logoPath);
+//        logo.scaleToFit(52, 52)
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+
         def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
-        Image logo = Image.getInstance(logoPath);
-        logo.scaleToFit(52, 52)
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+        java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(logoPath);
+        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(awtImage, null)
+        logo.scaleToFit(52,52)
 
         PdfPTable tablaDetalles = null
         def borderWidth = 0.3
@@ -1833,22 +1838,13 @@ class ReportePlanillas4Controller {
         document.addCreator("Tedein SA");
 
 //        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
-        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
 //        Image logo = Image.getInstance(logoPath);
-
 //        logo.scaleToFit(52,52)
 //        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
-
-
-        java.awt.Image awtImage =
-                Toolkit.getDefaultToolkit().createImage(logoPath);
-//         com.itextpdf.text.Image logo = com.itextpdf.text.Image.getInstance(awtImage, null);
-
+        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
+        java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(logoPath);
         com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(awtImage, null)
-
         logo.scaleToFit(52,52)
-//        logo.setAlignment(com.lowagie.text.Image.LEFT | com.lowagie.text.Image.TEXTWRAP)
-
 
         PdfPTable tablaDetalles = null
         def borderWidth = 1
@@ -2251,10 +2247,15 @@ class ReportePlanillas4Controller {
         document.addCreator("Tedein SA");
 
 //        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
+//        Image logo = Image.getInstance(logoPath);
+//        logo.scaleToFit(52,52)
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+
         def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
-        Image logo = Image.getInstance(logoPath);
+        java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(logoPath);
+        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(awtImage, null)
         logo.scaleToFit(52,52)
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
         PdfPTable tablaDetalles = null
         def borderWidth = 1
@@ -2632,9 +2633,14 @@ class ReportePlanillas4Controller {
         document.addCreator("Tedein SA");
 
 //        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
+//        Image logo = Image.getInstance(logoPath);
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+
         def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
-        Image logo = Image.getInstance(logoPath);
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+        java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(logoPath);
+        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(awtImage, null)
+        logo.scaleToFit(52,52)
 
         PdfPTable tablaDetalles = null
         def borderWidth = 1
@@ -2950,10 +2956,15 @@ class ReportePlanillas4Controller {
 
     def titlLogo() {
 //        def logoPath = servletContext.getRealPath("/") + "images/logo_gadpp_reportes.png"
+//        def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
+//        Image logo = Image.getInstance(logoPath);
+//        logo.scaleToFit(52,52)
+//        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
+
         def logoPath = "/var/janus/images/logo_gadpp_reportes.png"
-        Image logo = Image.getInstance(logoPath);
+        java.awt.Image awtImage = Toolkit.getDefaultToolkit().createImage(logoPath);
+        com.lowagie.text.Image logo = com.lowagie.text.Image.getInstance(awtImage, null)
         logo.scaleToFit(52,52)
-        logo.setAlignment(Image.LEFT | Image.TEXTWRAP)
 
         return logo
     }
