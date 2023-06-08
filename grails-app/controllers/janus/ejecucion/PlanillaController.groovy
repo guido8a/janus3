@@ -16,13 +16,6 @@ class PlanillaController {
     def dbConnectionService
     def planillasService
 
-/*
-    def tests() {
-        println rep.capitalize(string: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-        println rep.capitalize { "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
-    }
-*/
-
     def configPedidoPagoAnticipo() {
         def planilla = Planilla.get(params.id)
         def contrato = planilla.contrato
@@ -126,8 +119,6 @@ class PlanillaController {
         multas = MultasPlanilla.executeQuery("select sum(monto) from MultasPlanilla where planilla = :p", [p: planilla])[0] ?: 0
         multas += planilla.multaEspecial ?: 0
 
-//        println "multas: ${multas}, espacial: ${planilla.multaEspecial}"
-
         def tabla = "<table border='0'>"
         tabla += "<tr>"
         if (planilla.tipoPlanilla.codigo == 'A') {
@@ -189,7 +180,6 @@ class PlanillaController {
                     "ubicada en el Barrio ${contrato?.oferta?.concurso?.obra?.barrio}, Parroquia ${contrato?.oferta?.concurso?.obra?.parroquia}, " +
                     "Cantón ${contrato?.oferta?.concurso?.obra?.parroquia?.canton}, de la Provincia de ${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.provincia?.nombre}"
 
-//            def strParrafo2 = "Sírvase disponer el trámite respectivo para el pago de la planilla, a favor de ${nombrePersona(contrato?.oferta?.proveedor, 'prov')} "
             def strParrafo2 = "Sírvase disponer el trámite respectivo para el pago de la planilla, a favor de ${contrato?.oferta?.proveedor.pagarNombre} "
             def editParrafo2 = "según claúsula sexta, literal a) del citado documento. El detalle es el siguiente:"
 
@@ -247,8 +237,6 @@ class PlanillaController {
         rjplAcml += rjplAcmlCp
         rjplActl = rjplAcml - rjplAntr
 
-//        println "---reajuste de la planillas: $rjplAnterior, actual $rjpl"
-
         def texto = Pdfs.findAllByPlanilla(planilla)
         def textos = []
 
@@ -257,8 +245,6 @@ class PlanillaController {
 //        multas = planilla.multaDisposiciones + planilla.multaIncumplimiento + planilla.multaPlanilla + planilla.multaRetraso
         multas = MultasPlanilla.executeQuery("select sum(monto) from MultasPlanilla where planilla = :p", [p: planilla])[0] ?: 0
         multas += planilla.multaEspecial ?: 0
-
-//        println "multas: ${multas}, espacial: ${planilla.multaEspecial}"
 
         def tabla = "<table border='0'>"
         tabla += "<tr>"
@@ -307,8 +293,7 @@ class PlanillaController {
         tabla += "</table>"
 
         if (texto.size() == 0) {
-//            println "totalLetras: ${planilla.valor + reajuste - planilla.descuentos - multas - planilla.noPagoValor + costo}"
-//            def totalLetras = planilla.valor + reajuste - planilla.descuentos - multas - planilla.noPagoValor + costo
+
             def totalLetras = planilla.valor + planilla.planillaCmpl.valor + rjplActl - planilla.descuentos - multas - planilla.noPagoValor + costo
             def neg = ""
             if (totalLetras < 0) {
@@ -322,7 +307,6 @@ class PlanillaController {
                     "ubicada en el Barrio ${contrato?.oferta?.concurso?.obra?.barrio}, Parroquia ${contrato?.oferta?.concurso?.obra?.parroquia}, " +
                     "Cantón ${contrato?.oferta?.concurso?.obra?.parroquia?.canton}, de la Provincia de ${contrato?.oferta?.concurso?.obra?.parroquia?.canton?.provincia?.nombre}"
 
-//            def strParrafo2 = "Sírvase disponer el trámite respectivo para el pago de la planilla, a favor de ${nombrePersona(contrato?.oferta?.proveedor, 'prov')} "
             def strParrafo2 = "Sírvase disponer el trámite respectivo para el pago de la planilla, a favor de ${contrato?.oferta?.proveedor.pagarNombre} "
             def editParrafo2 = "según claúsula sexta, literal a) del citado documento. El detalle es el siguiente:"
 
@@ -502,7 +486,6 @@ class PlanillaController {
                 def edit = parts[2].toInteger()
                 def np = parrafo - 1
                 def ne = edit + (edit - 2)
-//                println "" + parrafo + "(" + (parrafo - 1 + ")" + "   " + edit + "(" + (edit + (edit - 2))) + ")" + "    " + v
                 textos[np][ne] = v
             }
         }
@@ -521,13 +504,11 @@ class PlanillaController {
         texto.parrafo4 = params.extra.trim()
 
         if (texto.save([flush: true])) {
-            flash.clase = "alert-success"
-            flash.message = "Orden de inicio de obra guardado exitosamente."
+            render "ok_Orden de inicio de obra guardado correctamente"
         } else {
-            flash.clase = "alert-error"
-            flash.message = "Ha ocurrido un error al guardar la orden de inicio de obra."
+            render "no_Error al al guardar la orden de inicio de obra."
         }
-        redirect(action: "configOrdenInicioObra", id: obra.id)
+
     }
 
     def savePedidoPagoAnticipo() {
@@ -1148,10 +1129,8 @@ class PlanillaController {
         def tiposTramite, tipoTramite
         def tramite
 
-//        def obraDpto = obra.departamento
         def adminContrato = contrato.administrador
         def fiscContrato = contrato.fiscalizador
-//        fiscContrato = null
         if (!adminContrato) {
             render "No se encontró el administrador del contrato. Por favor asegúrese de que existe un administrador " +
                     "activo para continuar con el trámite."
@@ -1169,20 +1148,13 @@ class PlanillaController {
 
         def errores = ""
 
-//        println planilla.fechaOficioEntradaPlanilla
-//        println planilla.fechaMemoSalidaPlanilla
-//        println planilla.fechaMemoPedidoPagoPlanilla
-//        println planilla.fechaMemoPagoPlanilla
-
         def dptoFiscalizacion = Departamento.findAllByCodigo("FISC")
-//        def dptoDirFinanciera = Departamento.findAllByCodigo("FINA")
         def dptoDirFinanciera
         if (params.tipo in ['4', '5']) {
             dptoDirFinanciera = Departamento.findAllByCodigo("FINA")
         } else {
             dptoDirFinanciera = Departamento.findAllByCodigo("AP")
         }
-        println "params.tipo: ${params.tipo}, dpto: ${dptoDirFinanciera[0]}, size: ${dptoDirFinanciera.size()}"
 
         if (dptoFiscalizacion.size() == 1) {
             dptoFiscalizacion = dptoFiscalizacion[0]
@@ -1215,13 +1187,10 @@ class PlanillaController {
                 fechaMin = planilla.fechaOficioEntradaPlanilla
                 fecha = planilla.fechaOficioEntradaPlanilla
                 extra = "Fecha de oficio de entrada: " + fechaMin.format("dd-MM-yyyy")
-//                tipoTramite = TipoTramite.findByCodigo("ENRJ")
                 tiposTramite = TipoTramite.findAllByCodigo("ENRJ")
                 tiposTramite.each { tt ->
-//                    def dptoDe = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("DE"))
                     def dptoPara = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("PARA"))
                     if (dptoPara?.departamento == obraDpto) {
-//                        println "SIP"
                         tipoTramite = tt
                     }
                 }
@@ -1243,7 +1212,6 @@ class PlanillaController {
                                 tipoTramite : tipoTramite,
                                 rolTramite  : RolTramite.findByCodigo("DE"),
                                 departamento: dptoFiscalizacion
-//                                departamento: Departamento.get(1) //Fiscalizacion
                         ])
                         if (!dDe.save(flush: true)) {
                             println "error al guardar DE: " + dDe.errors
@@ -1297,31 +1265,23 @@ class PlanillaController {
                 }
 
                 extra = "Fecha de memo de salida: " + fechaMin.format("dd-MM-yyyy")
-//                tipoTramite = TipoTramite.findByCodigo("PDPG")
                 tiposTramite = TipoTramite.findAllByCodigo("PDPG")
                 tiposTramite.each { tt ->
                     def dptoDe = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("DE"))
-//                    def dptoPara = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("PARA"))
                     if (dptoDe?.departamento == obraDpto) {
-//                        println "SIP"
                         tipoTramite = tt
                     }
                 }
                 especial = "DE"
                 if (!tipoTramite) {
-                    println "NOP: crear un tipo de tramite con codigo PDPG, de: " + obraDpto
-                    //////////////////////////////////
                     def tiposTramitePadre = TipoTramite.findAllByCodigo("ENRJ")
                     def tipoTramitePadre
                     tiposTramitePadre.each { tt ->
-//                        def dptoDe = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("DE"))
                         def dptoPara = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("PARA"))
                         if (dptoPara.departamento == obraDpto) {
-//                        println "SIP"
                             tipoTramitePadre = tt
                         }
                     }
-                    //////////////////////////////////
                     tipoTramite = new TipoTramite([
                             padre            : tipoTramitePadre,
                             codigo           : "PDPG",
@@ -1403,14 +1363,10 @@ class PlanillaController {
                     tiposTramitePadre.each { tt ->
                         def dptoDe = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("DE"))
                         println "dptode " + dptoDe + "   " + tt
-//                    def dptoPara = DepartamentoTramite.findByTipoTramiteAndRolTramite(tt, RolTramite.findByCodigo("PARA"))
                         if (dptoDe?.departamento == obraDpto) {
-//                        println "SIP"
                             tipoTramitePadre = tt
                         }
                     }
-                    println " asdasd " + tipoTramitePadre
-                    //////////////////////////////////
                     tipoTramite = new TipoTramite([
                             padre            : tipoTramitePadre,
                             codigo           : "INPG",
@@ -1492,22 +1448,22 @@ class PlanillaController {
             }
 
 
-            def sel = g.select(from: personas, class: "span3", optionKey: "id", optionValue: {
+            def sel = g.select(from: personas, class: "col-md-12", optionKey: "id", optionValue: {
                 it.nombre + " " + it.apellido
             }, name: "persona_" + rol.rolTramite.id, value: envia?.persona?.id)
 
-            nombres += '<div class="row">'
-            nombres += '<div class="span2 formato">'
+            nombres += '<div class="col-md-12">'
+            nombres += '<div class="col-md-3 formato">'
             nombres += rol.rolTramite.descripcion
             nombres += '</div>'
-            nombres += '<div class="span3">' + sel + '</div>'
-            nombres += '<div class="span2 dpto">(Dpto. de ' + rol.departamento.descripcion + ')</div>'
+            nombres += '<div class="col-md-5">' + sel + '</div>'
+            nombres += '<div class="col-md-4 dpto">(Dpto. de ' + rol.departamento.descripcion + ')</div>'
             nombres += '</div>'
         }
 
-        nombres += '<div class="row">'
-        nombres += '<div class="span2 formato">Asunto</div>'
-        nombres += '<div class="span4">' + g.textArea(name: 'asunto', value: tramite?.descripcion, style: "width:410px;") + '</div>'
+        nombres += '<div class="col-md-12">'
+        nombres += '<div class="col-md-2 formato">Asunto</div>'
+        nombres += '<div class="col-md-4">' + g.textArea(name: 'asunto', value: tramite?.descripcion, style: "width:410px; margin-bottom: 20px; resize:none") + '</div>'
         nombres += '</div>'
 
 //        println tipo + "  " + fechaMin

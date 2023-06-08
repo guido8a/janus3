@@ -30,7 +30,7 @@
 </div>
 
 <div class="row">
-    <div class="span4" role="navigation">
+    <div class="col-md-3" role="navigation">
         <g:if test="${obra.fechaInicio}">
             <a href="#" class="btn btn-info" id="imprimir">
                 <i class="fa fa-print"></i>
@@ -38,22 +38,21 @@
             </a>
         </g:if>
     </div>
-    <div class="span5" role="navigation">
+    <div class="col-md-5" role="navigation">
         <g:if test="${contrato.administrador.id == session.usuario.id}">
             <g:link controller="acta" action="form" class="btn btn-info" params="[contrato: contrato.id, tipo: 'P']">
-                <i class="fa fa-stackexchange"></i>
+                <i class="fa fa-book"></i>
                 Acta de recepción provisional
             </g:link>
             <g:set var="actaProvisional" value="${janus.actas.Acta.findAllByContratoAndTipo(contrato, 'P')}"/>
             <g:if test="${actaProvisional.size() == 1 && actaProvisional[0].registrada == 1}">
                 <g:link controller="acta" action="form" class="btn btn-info" params="[contrato: contrato.id, tipo: 'D']">
-                    <i class="fa fa-stackexchange"></i>
+                    <i class="fa fa-book"></i>
                     Acta de recepción definitiva
                 </g:link>
             </g:if>
         </g:if>
     </div>
-
 </div>
 
 <div id="list-Planilla" role="main" style="margin-top: 10px;">
@@ -61,15 +60,15 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <g:sortableColumn property="numero" title="#"/>
-            <g:sortableColumn property="tipoPlanilla" title="Tipo"/>
-            <g:sortableColumn property="fechaPresentacion" title="Fecha presentación"/>
-            <g:sortableColumn property="fechaInicio" title="Fecha inicio"/>
-            <g:sortableColumn property="fechaFin" title="Fecha fin"/>
-            <g:sortableColumn property="descripcion" title="Descripcion"/>
-            <g:sortableColumn property="valor" title="Valor"/>
-            <th width="160">Acciones</th>
-            <th width="130">Pagos</th>
+            <th>#</th>
+            <th>Tipo</th>
+            <th>Fecha de presentación</th>
+            <th>Fecha de inicio</th>
+            <th>Fecha de fin</th>
+            <th>Descripción</th>
+            <th>Valor</th>
+            <th>Acciones</th>
+            <th>Pagos</th>
         </tr>
         </thead>
         <g:set var="cont" value="${1}"/>
@@ -174,7 +173,7 @@
                         <g:if test="${(lblBtn == 3)}">
                             <g:if test="${garantia >= planillaInstance.fechaFin}">
                                 <g:if test="${(contrato.administrador.id == session.usuario.id) && ((janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0) || (planillaInstance.tipoPlanilla.codigo == 'C'))}">
-                                    <a href="#" class="btn btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
+                                    <a href="#" class="btn btn-info btn-xs btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
                                        data-tipo="${lblBtn}">
                                         Pedir pago
                                     </a>
@@ -185,7 +184,7 @@
                             </g:else>
                             <g:if test="${planillaInstance.tipoPlanilla.codigo != 'A'}">
                                 <g:if test="${contrato.administrador.id == session.usuario.id}">
-                                    <a href="#" class="btn btn-devolver pg_${lblBtn}"
+                                    <a href="#" class="btn btn-warning btn-xs btn-devolver pg_${lblBtn}"
                                        data-id="${planillaInstance.id}" data-tipo="${lblBtn}"
                                        data-txt="${planillaInstance.tipoPlanilla.codigo == 'A' ? 'reajuste' : 'planilla'}">
                                         Devolver
@@ -198,7 +197,7 @@
                         </g:if>
                         <g:if test="${lblBtn == 5}">
                             <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A'}">
-                                <a href="#" class="btn btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
+                                <a href="#" class="btn btn-info btn-xs btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
                                    data-tipo="${lblBtn}">
                                     Iniciar Obra
                                 </a>
@@ -246,7 +245,6 @@
         </g:each>
         </tbody>
     </table>
-
 </div>
 
 <div class="modal hide fade mediumModal" id="modal-Planilla">
@@ -277,11 +275,10 @@
     var url = "${resource(dir:'images', file:'spinner_24.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
 
-    function submitForm(btn) {
+    function submitForm() {
         if ($("#frmSave-Planilla").valid()) {
-            btn.replaceWith(spinner);
+            $("#frmSave-Planilla").submit();
         }
-        $("#frmSave-Planilla").submit();
     }
 
     $(function () {
@@ -315,32 +312,61 @@
                     tipo: tipo
                 },
                 success: function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
 
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-                    $("#modalTitle").html($btn.text());
+                    var b = bootbox.dialog({
+                        id      : "dlgPagar",
+                        title   : "Pedir pago",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitForm();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
 
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
 
-                    if (msg == "NO") {
-                        $("#modalBody").html("Ha ocurrido un error: No se encontró un administrador activo para el contrato." +
-                            "<br/>Por favor asigne uno desde la página del contrato en la opción Administrador.");
-                        btnOk.text("Aceptar");
-                        $("#modalFooter").html("").append(btnOk);
-                    } else {
-                        $("#modalBody").html(msg);
-                        if (msg.startsWith("No")) {
-                            btnOk.text("Aceptar");
-                            $("#modalFooter").html("").append(btnOk);
-                        } else {
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                        }
-                    }
-                    $("#modal-Planilla").modal("show");
+
+
+
+
+
+                    // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
+                    // var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+                    //
+                    // btnSave.click(function () {
+                    //     submitForm(btnSave);
+                    //     return false;
+                    // });
+                    // $("#modalTitle").html($btn.text());
+                    //
+                    // $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
+
+                    // if (msg == "NO") {
+                    //     $("#modalBody").html("Ha ocurrido un error: No se encontró un administrador activo para el contrato." +
+                    //         "<br/>Por favor asigne uno desde la página del contrato en la opción Administrador.");
+                    //     btnOk.text("Aceptar");
+                    //     $("#modalFooter").html("").append(btnOk);
+                    // } else {
+                    //     $("#modalBody").html(msg);
+                    //     if (msg.startsWith("No")) {
+                    //         btnOk.text("Aceptar");
+                    //         $("#modalFooter").html("").append(btnOk);
+                    //     } else {
+                    //         $("#modalFooter").html("").append(btnOk).append(btnSave);
+                    //     }
+                    // }
+                    // $("#modal-Planilla").modal("show");
                 }
             });
             return false;
