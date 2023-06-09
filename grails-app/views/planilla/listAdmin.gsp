@@ -279,6 +279,8 @@
         if ($("#frmSave-Planilla").valid()) {
             $("#frmSave-Planilla").submit();
         }
+
+        return false
     }
 
     $(function () {
@@ -304,6 +306,7 @@
         $(".btn-pagar").click(function () {
             var $btn = $(this);
             var tipo = $btn.data("tipo").toString();
+            var titulo = '';
             $.ajax({
                 type: "POST",
                 url: "${createLink(action:'pago_ajax')}",
@@ -312,10 +315,64 @@
                     tipo: tipo
                 },
                 success: function (msg) {
+                    if(msg === "NO"){
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador." + '</strong>');
+                    }else{
+                        var b = bootbox.dialog({
+                            id      : "dlgPagar",
+                            title   : "Pedir pago",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitForm();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                    }
+                }
+            });
+            return false;
+        }); //click btn pagar
 
-                    var b = bootbox.dialog({
-                        id      : "dlgPagar",
-                        title   : "Pedir pago",
+        $(".btn-devolver").click(function () {
+            var $btn = $(this);
+            var tipo = $btn.data("tipo").toString();
+            var titulo = ''
+
+            switch (tipo) {
+                case "3":
+                    titulo = "Devolver a Enviar";
+                    break;
+                case "4":
+                    titulo = "Devolver a Pedir pago";
+                    break;
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "${createLink(action:'devolver_ajax')}",
+                data: {
+                    id: $btn.data("id"),
+                    tipo: tipo
+                },
+                success: function (msg) {
+
+
+                    var d = bootbox.dialog({
+                        id      : "dlgDevolver",
+                        title   : titulo,
                         message : msg,
                         buttons : {
                             cancelar : {
@@ -334,77 +391,6 @@
                             } //guardar
                         } //buttons
                     }); //dialog
-
-
-
-
-
-
-
-                    // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    // var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-                    //
-                    // btnSave.click(function () {
-                    //     submitForm(btnSave);
-                    //     return false;
-                    // });
-                    // $("#modalTitle").html($btn.text());
-                    //
-                    // $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-
-                    // if (msg == "NO") {
-                    //     $("#modalBody").html("Ha ocurrido un error: No se encontró un administrador activo para el contrato." +
-                    //         "<br/>Por favor asigne uno desde la página del contrato en la opción Administrador.");
-                    //     btnOk.text("Aceptar");
-                    //     $("#modalFooter").html("").append(btnOk);
-                    // } else {
-                    //     $("#modalBody").html(msg);
-                    //     if (msg.startsWith("No")) {
-                    //         btnOk.text("Aceptar");
-                    //         $("#modalFooter").html("").append(btnOk);
-                    //     } else {
-                    //         $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    //     }
-                    // }
-                    // $("#modal-Planilla").modal("show");
-                }
-            });
-            return false;
-        }); //click btn pagar
-
-        $(".btn-devolver").click(function () {
-            var $btn = $(this);
-            var tipo = $btn.data("tipo").toString();
-            $.ajax({
-                type: "POST",
-                url: "${createLink(action:'devolver_ajax')}",
-                data: {
-                    id: $btn.data("id"),
-                    tipo: tipo
-                },
-                success: function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-
-                    switch (tipo) {
-                        case "3":
-                            $("#modalTitle").html("Devolver a Enviar " + $btn.data("txt"));
-                            break;
-                        case "4":
-                            $("#modalTitle").html("Devolver a Pedir pago");
-                            break;
-                    }
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Planilla").modal("show");
                 }
             });
             return false;

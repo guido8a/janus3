@@ -529,58 +529,31 @@
                 },
                 success : function (msg) {
 
-                    var b = bootbox.dialog({
-                        id      : "dlgPagar",
-                        title   : "Pedir pago",
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            },
-                            guardar  : {
-                                id        : "btnSave",
-                                label     : "<i class='fa fa-save'></i> Guardar",
-                                className : "btn-success",
-                                callback  : function () {
-                                    return submitForm();
-                                } //callback
-                            } //guardar
-                        } //buttons
-                    }); //dialog
-
-
-
-
-
-                    // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    // var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-                    //
-                    // btnSave.click(function () {
-                    //     submitForm(btnSave);
-                    //     return false;
-                    // });
-                    // $("#modalTitle").html($btn.text());
-                    //
-                    // $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                    //
-                    // if (msg === "NO") {
-                    //     $("#modalBody").html("Ha ocurrido un error: No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador.");
-                    //     btnOk.text("Aceptar");
-                    //     $("#modalFooter").html("").append(btnOk);
-                    // } else {
-                    //     $("#modalBody").html(msg);
-                    //     if (msg.startsWith("No")) {
-                    //         btnOk.text("Aceptar");
-                    //         $("#modalFooter").html("").append(btnOk);
-                    //     } else {
-                    //         $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    //     }
-                    // }
-                    //
-                    // $("#modal-Planilla").modal("show");
+                    if(msg === "NO"){
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador." + '</strong>');
+                    }else{
+                        var b = bootbox.dialog({
+                            id      : "dlgPagar",
+                            title   : "Pedir pago",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitForm();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                    }
                 }
             });
             return false;

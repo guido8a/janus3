@@ -57,11 +57,11 @@
             <th style="width: 13%">Tipo</th>
             <th style="width: 8%">Fecha Presentación</th>
             <th style="width: 7%">Fecha Inicio</th>
-            <th style="width: 7%">Fecha Fin</th>
+            <th style="width: 6%">Fecha Fin</th>
             <th style="width: 22%">Descripción</th>
-            <th style="width: 8%">Valor</th>
-            <th style="width: 12%">Acciones</th>
-            <th style="width: 8%">Pagos</th>
+            <th style="width: 7%">Valor</th>
+            <th style="width: 8%">Acciones</th>
+            <th style="width: 14%">Pagos</th>
         </tr>
         </thead>
         <g:set var="cont" value="${1}"/>
@@ -97,32 +97,6 @@
                     <g:formatNumber number="${planillaInstance.valor}" maxFractionDigits="2" minFractionDigits="2" format="##,##0" locale="ec"/>
                 </td>
                 <td style="text-align: center">
-                %{--                                <g:if test="${planillaInstance.tipoPlanilla.codigo == 'P'}">--}%
-                %{--                                    <g:link action="detalle" id="${planillaInstance.id}" params="[contrato: contrato.id]" rel="tooltip" title="Detalles" class="btn btn-small">--}%
-                %{--                                        <i class="icon-reorder icon-large"></i>--}%
-                %{--                                    </g:link>--}%
-                %{--                                </g:if>--}%
-                %{--                                <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A'}">--}%
-                %{--                                    <g:link controller="planilla2" action="resumen" id="${planillaInstance.id}" rel="tooltip" title="Resumen" class="btn btn-small">--}%
-                %{--                                        <i class="icon-table icon-large"></i>--}%
-                %{--                                    </g:link>--}%
-                %{--                                </g:if>--}%
-                %{--                                <g:elseif test="${planillaInstance.tipoPlanilla.codigo == 'P'}">--}%
-                %{--                                    <g:link controller="planilla2" action="resumen" id="${planillaInstance.id}" fprj="${planillaInstance.formulaPolinomicaReajuste}" rel="tooltip" title="Resumen" class="btn btn-small">--}%
-                %{--                                        <i class="icon-table icon-large"></i>--}%
-                %{--                                    </g:link>--}%
-                %{--                                </g:elseif>--}%
-                %{--                                <g:elseif test="${planillaInstance.tipoPlanilla.codigo == 'L'}">--}%
-                %{--                                    <g:link controller="planilla2" action="liquidacion" id="${planillaInstance.id}" rel="tooltip" title="Resumen" class="btn btn-small">--}%
-                %{--                                        <i class="icon-table icon-large"></i>--}%
-                %{--                                    </g:link>--}%
-                %{--                                </g:elseif>--}%
-                %{--                                <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C'}">--}%
-                %{--                                    <g:link action="detalleCosto" id="${planillaInstance.id}" params="[contrato: contrato.id]" rel="tooltip" title="Detalles" class="btn btn-small">--}%
-                %{--                                        <i class="icon-reorder icon-large"></i>--}%
-                %{--                                    </g:link>--}%
-                %{--                                </g:if>--}%
-
                     <g:if test="${planillaInstance.tipoPlanilla.codigo != 'C' && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
                         <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
                                 class="btn btn-info btnPrint btn-xs btn-ajax" rel="tooltip" title="Imprimir planilla">
@@ -179,7 +153,7 @@
                                 <a href="#" class="btn btn-pagar btn-success btn-xs pg_${lblBtn}" data-id="${planillaInstance.id}" data-tipo="${lblBtn}">
                                     Informar pago
                                 </a>
-                                <a href="#" class="btn btn-devolver pg_${lblBtn}" data-id="${planillaInstance.id}" data-tipo="${lblBtn}" data-txt="${planillaInstance.tipoPlanilla.codigo == 'A' ? 'reajuste' : 'planilla'}">
+                                <a href="#" class="btn btn-devolver pg_${lblBtn} btn-warning btn-xs" data-id="${planillaInstance.id}" data-tipo="${lblBtn}" data-txt="${planillaInstance.tipoPlanilla.codigo == 'A' ? 'reajuste' : 'planilla'}">
                                     Devolver
                                 </a>
                             </g:if>
@@ -211,7 +185,6 @@
                                 </a>
                             </g:else>
                         </g:elseif>
-
                     </g:if>
                 </td>
             </tr>
@@ -241,21 +214,14 @@
     var url = "${resource(dir:'images', file:'spinner_24.gif')}";
     var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
 
-    function submitForm(btn) {
+    function submitForm() {
         if ($("#frmSave-Planilla").valid()) {
-            btn.replaceWith(spinner);
+            $("#frmSave-Planilla").submit();
         }
-        $("#frmSave-Planilla").submit();
+        return false
     }
 
     $(function () {
-        // $('[rel=tooltip]').tooltip();
-        //
-        // $(".paginate").paginate({
-        //     maxRows        : 10,
-        //     searchPosition : $("#busqueda-Planilla"),
-        //     float          : "right"
-        // });
 
         $("#imprimir").click(function () {
             location.href = "${g.createLink(controller: 'reportesPlanillas', action: 'reporteContrato', id: obra?.id)}?oficio=" + $("#oficio").val() + "&firma=" + $("#firma").val();
@@ -281,31 +247,32 @@
                     tipo : tipo
                 },
                 success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
 
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
-                    $("#modalTitle").html($btn.text());
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-
-                    if (msg == "NO") {
-                        $("#modalBody").html("Ha ocurrido un error: No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador.");
-                        btnOk.text("Aceptar");
-                        $("#modalFooter").html("").append(btnOk);
-                    } else {
-                        $("#modalBody").html(msg);
-                        if (msg.startsWith("No")) {
-                            btnOk.text("Aceptar");
-                            $("#modalFooter").html("").append(btnOk);
-                        } else {
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                        }
+                    if(msg === "NO"){
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador." + '</strong>');
+                    }else{
+                        var b = bootbox.dialog({
+                            id      : "dlgPagar",
+                            title   : "Pedir pago",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitForm();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
                     }
-
-                    $("#modal-Planilla").modal("show");
                 }
             });
             return false;
@@ -315,6 +282,17 @@
         $(".btn-devolver").click(function () {
             var $btn = $(this);
             var tipo = $btn.data("tipo").toString();
+            var titulo = '';
+
+            switch (tipo) {
+                case "3":
+                    titulo = "Devolver a Enviar";
+                    break;
+                case "4":
+                   titulo = "Devolver a Pedir pago";
+                    break;
+            }
+
             $.ajax({
                 type    : "POST",
                 url     : "${createLink(action:'devolver_ajax')}",
@@ -323,28 +301,29 @@
                     tipo : tipo
                 },
                 success : function (msg) {
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
 
-                    btnSave.click(function () {
-                        submitForm(btnSave);
-                        return false;
-                    });
 
-                    switch (tipo) {
-                        case "3":
-                            $("#modalTitle").html("Devolver a Enviar " + $btn.data("txt"));
-                            break;
-                        case "4":
-                            $("#modalTitle").html("Devolver a Pedir pago");
-                            break;
-                    }
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-
-                    $("#modalBody").html(msg);
-                    $("#modalFooter").html("").append(btnOk).append(btnSave);
-                    $("#modal-Planilla").modal("show");
+                    var d = bootbox.dialog({
+                        id      : "dlgDevolver",
+                        title   : titulo,
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitForm();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
                 }
             });
             return false;

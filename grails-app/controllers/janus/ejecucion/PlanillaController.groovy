@@ -966,18 +966,13 @@ class PlanillaController {
                 tipoTramite = TipoTramite.findByCodigo("PDPG")
                 break;
         }
-//        println "??? " + Tramite.findAllByPlanillaAndTipoTramite(planilla, tipoTramite, [sort: 'fecha', order: "desc"]).descripcion
-//        println "??? " + Tramite.findAllByPlanillaAndTipoTramite(planilla, tipoTramite, [sort: 'fecha', order: "desc"]).fecha
         tramitePadre = Tramite.findAllByPlanillaAndTipoTramite(planilla, tipoTramite, [sort: 'fechaEnvio', order: "desc"])[0]
 
         tramite.planilla = planilla
         tramite.tramitePadre = tramitePadre
         tramite.tipoTramite = tipoTramite
         tramite.estado = EstadoTramite.findByCodigo("C")
-//        println ">>" + tramitePadre.descripcion
-//        tramite.descripcion = "Devolución de " + tramitePadre.descripcion
         tramite.descripcion = tramitePadre.descripcion
-//        println "<<" + tramite.descripcion
 
         PersonasTramite.findAllByTramite(tramitePadre).each { p ->
             def per = new PersonasTramite()
@@ -992,18 +987,18 @@ class PlanillaController {
                 per.rolTramite = p.rolTramite
             }
 
-            nombres += '<div class="row">'
-            nombres += '<div class="span2 formato">'
+            nombres += '<div class="col-md-12">'
+            nombres += '<div class="col-md-3 formato">'
             nombres += per.rolTramite.descripcion
             def hidden = g.hiddenField(name: "persona_" + per.rolTramite.id, value: per.personaId)
             nombres += '</div>'
-            nombres += '<div class="span3">' + hidden + ((per.persona.titulo ?: "") + " " + per.persona.nombre + " " + per.persona.apellido) + '</div>'
-            nombres += '<div class="span2 dpto">(Dpto. de ' + per.departamento.descripcion + ')</div>'
+            nombres += '<div class="col-md-6">' + hidden + ((per.persona.titulo ?: "") + " " + per.persona.nombre + " " + per.persona.apellido) + '</div>'
+            nombres += '<div class="col-md-3 dpto">(Dpto. de ' + per.departamento.descripcion + ')</div>'
             nombres += '</div>'
         }
-        nombres += '<div class="row">'
-        nombres += '<div class="span2 formato">Asunto</div>'
-        nombres += '<div class="span4">' + g.textArea(name: 'asunto', style: "width:410px;", value: tramite.descripcion) + '</div>'
+        nombres += '<div class="col-md-12">'
+        nombres += '<div class="col-md-2 formato">Asunto</div>'
+        nombres += '<div class="col-md-4">' + g.textArea(name: 'asunto', style: "width:410px; resize: none", value: tramite.descripcion) + '</div>'
         nombres += '</div>'
 
         [planilla: planilla, tipo: tipo, lblMemo: lblMemo, lblFecha: lblFecha, fechaMin: fechaMin, fechaMax: fechaMax, extra: extra, fecha: fecha, nombres: nombres]
@@ -1422,11 +1417,6 @@ class PlanillaController {
             case '5':
                 redirect(action: 'inicioObra_ajax', params: params)
                 return
-//                lblFecha = "Fecha de inicio de obra"
-//                fechaMin = planilla.fechaMemoPagoPlanilla
-//                fecha = planilla.fechaMemoPagoPlanilla
-//                extra = "Fecha de memo de pago: " + fechaMin.format("dd-MM-yyyy")
-//                tipoTramite = TipoTramite.findByCodigo("INOB")
                 break;
         }
 
