@@ -307,6 +307,13 @@
             var $btn = $(this);
             var tipo = $btn.data("tipo").toString();
             var titulo = '';
+
+            if(tipo === '5'){
+                titulo = 'Iniciar obra'
+            }else{
+                titulo = 'Pedir Pago'
+            }
+
             $.ajax({
                 type: "POST",
                 url: "${createLink(action:'pago_ajax')}",
@@ -320,7 +327,7 @@
                     }else{
                         var b = bootbox.dialog({
                             id      : "dlgPagar",
-                            title   : "Pedir pago",
+                            title   : titulo,
                             message : msg,
                             buttons : {
                                 cancelar : {
