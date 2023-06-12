@@ -207,7 +207,7 @@ class DocumentoProcesoController {
         documentoProcesoInstance.concurso = concurso
         def dscr = ""
         if(params.docuResp == 'R') dscr = 'Respaldo para obras adicionales'
-        if(params.docuResp == 'C') dscr = 'Respaldo para Costo mas prcentaje'
+        if(params.docuResp == 'C') dscr = 'Respaldo para Costo mas porcentaje'
         return [documentoProcesoInstance: documentoProcesoInstance, concurso: concurso, contrato: contrato, show: show,
                 respaldo: dscr]
     } //form_ajax

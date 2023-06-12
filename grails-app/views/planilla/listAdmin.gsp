@@ -197,7 +197,7 @@
                         </g:if>
                         <g:if test="${lblBtn == 5}">
                             <g:if test="${planillaInstance.tipoPlanilla.codigo == 'A'}">
-                                <a href="#" class="btn btn-info btn-xs btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
+                                <a href="#" class="btn btn-success btn-xs btn-pagar pg_${lblBtn}" data-id="${planillaInstance.id}"
                                    data-tipo="${lblBtn}">
                                     Iniciar Obra
                                 </a>
