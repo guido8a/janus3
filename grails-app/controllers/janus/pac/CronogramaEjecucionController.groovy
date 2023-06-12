@@ -1583,7 +1583,8 @@ class CronogramaEjecucionController {
         }
 
 //        direct(action: "indexNuevo", params: [id: params.contrato])
-        render "ok"
+        redirect(controller: 'contrato', action: "verContrato", id: cntr.id)
+//        render "ok"
     }
 
 
@@ -1916,7 +1917,7 @@ class CronogramaEjecucionController {
 //        println "datos de cronograma $cronogramas"
 
         if (cronogramas == 0) {
-//            println "no hay datos de cronograma ... inicia cargado"
+            println "no hay datos de cronograma ... inicia cargado"
             detalle.each { vol ->
                 def cronoCntr = CronogramaContratado.findAllByVolumenContrato(vol, [sort: 'periodo'])
                 cronoCntr.each { crono ->
@@ -1974,8 +1975,11 @@ class CronogramaEjecucionController {
             /** una vez cargado el cronograma ejecuta la creacion de periods mensuales, lo cual puede asimilarse dentro de PREJ **/
             params.cntr = contrato?.id
             actualizaPrej()  /** pone para cada prej los valores de cronograma **/
-            render ("<h1>Cronograma valorado de ejecución generado exitosamente</h1><br>")
-            return
+//            render ("<h1>Cronograma valorado de ejecución generado exitosamente</h1><br>")
+//            return
+
+
+//            redirect(controller: 'contrato', action: "verContrato", id: contrato.id)
         } else {
             redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
         }//if cronogramas == 0
