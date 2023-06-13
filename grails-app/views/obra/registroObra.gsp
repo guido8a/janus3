@@ -967,7 +967,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     //    $.jGrowl.defaults.closerTemplate = '<div>[ cerrar todo ]</div>';
 
     $("#lista").click(function () {
-        console.log('lista');
         $("#listaObra").dialog("open");
         $(".ui-dialog-titlebar-close").html("x")
     });

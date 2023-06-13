@@ -1,22 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: fabricio
-  Date: 11/27/12
-  Time: 11:54 AM
-  To change this template use File | Settings | File Templates.
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
 
     <meta name="layout" content="main">
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
 
-    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>
-    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
+    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+    %{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
 
 
     <style type="text/css">
@@ -42,424 +35,361 @@
 </head>
 
 <body>
-%{--Todo Por hacer: imprimir, Formula pol, Fp liquidacion, rubros , documentos, composicion, tramites--}%
-<g:if test="${flash.message}">
-    <div class="row">
-        <div class="span12" style="height: 35px;margin-bottom: 10px;">
-            <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                <a class="close" data-dismiss="alert" href="#">×</a>
-                ${flash.message}
-            </div>
-        </div>
-    </div>
-</g:if>
+
 
 <div class="row">
     <div class="span12 btn-group" role="navigation" style="margin-bottom: 15px;">
-        <button class="btn" id="lista"><i class="icon-book"></i> Lista</button>
+        <button class="btn btn-primary" id="lista"><i class="fa fa-list"></i> Lista</button>
         <g:if test="${obra?.id != null}">
-            <button class="btn" id="btnImprimir"><i class="icon-print"></i> Imprimir</button>
-
+            <button class="btn btn-info" id="btnImprimir"><i class="fa fa-print"></i> Imprimir</button>
             <g:if test="${obra?.estado == 'N'}">
-
-                <button class="btn" id="cambiarEstado"><i class="icon-refresh"></i> Cambiar Estado</button>
-
+                <button class="btn btn-success" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
             </g:if>
-
         </g:if>
     </div>
 </div>
 
 <g:form class="form-horizontal" name="frmSave-Lugar" action="save">
-<fieldset class="borde" style="padding: 10px;">
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Código
-                </span>
-            </div>
+    <div style="border: 1px solid black; width: 100%; height: 400px">
+        <div class="col-md-12" style="margin-bottom: 10px; margin-top: 20px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Código
+                    </span>
+                </div>
 
-            <div class="controls">
-                ${obra?.codigo}
+                <div class="controls col-md-10">
+                    ${obra?.codigo}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Nombre
+                    </span>
+                </div>
+
+                <div class="controls col-md-10">
+                    ${obra?.nombre}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Descripción
+                    </span>
+                </div>
+
+                <div class="controls col-md-10">
+                    ${obra?.descripcion}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Programa
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.programacion?.descripcion}
+                </div>
+
+
+                <div>
+                    <span class="badge col-md-2">
+                        Tipo
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.tipoObjetivo?.descripcion}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Clase
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.claseObra?.descripcion}
+                </div>
+
+                <div>
+                    <span class="badge col-md-2">
+                        Referencias
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.referencia}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Cantón
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.comunidad?.parroquia?.canton?.nombre}
+                </div>
+
+                <div>
+                    <span class="badge col-md-2">
+                        Parroquia
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.comunidad?.parroquia?.nombre}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Comunidad
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.comunidad?.nombre}
+                </div>
+
+                <div>
+                    <span class="badge col-md-2">
+                        Sitio
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.sitio}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Barrio
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    ${obra?.barrio}
+                </div>
+
+                <div>
+                    <span class="badge col-md-2">
+                        Fecha
+                    </span>
+                </div>
+
+                <div class="controls col-md-4">
+                    <g:formatDate date="${obra?.fechaPreciosRubros}" format="dd-MM-yyyy"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+                <div class="control-group">
+                    <div>
+                        <span class="badge col-md-2">
+                            Plazo
+                        </span>
+                    </div>
+
+                    <div class="controls col-md-4">
+                        ${obra?.plazoEjecucionMeses} Mes${obra?.plazoEjecucionMeses == 1 ? '' : 'es'}
+                        ${obra?.plazoEjecucionDias} Día${obra?.plazoEjecucionDias == 1 ? '' : 's'}
+                    </div>
+
+                    <div>
+                        <span class="badge col-md-2">
+                            Anticipo
+                        </span>
+                    </div>
+
+                    <div class="controls col-md-4">
+                        ${obra?.porcentajeAnticipo}%
+                    </div>
+                </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+                <div class="control-group">
+                    <div>
+                        <span class="badge col-md-2">
+                            Coordenadas
+                        </span>
+                    </div>
+
+                    <div class="controls col-md-4">
+                        ${obra?.coordenadas}
+                    </div>
+
+                    <div>
+                        <span class="badge col-md-2">
+                            Registrada:
+                        </span>
+                    </div>
+
+                    <div class="controls col-md-4">
+                        ${obra?.estado == "N" ? "Acepta modificaciones" : "Registrado"}
+                    </div>
+                </div>
+        </div>
+
+        <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="control-group">
+                <div>
+                    <span class="badge col-md-2">
+                        Observaciones
+                    </span>
+                </div>
+
+                <div class="controls col-md-10">
+                    ${obra?.observaciones}
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="span6">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Nombre
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.nombre}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span10">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripción
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.descripcion}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Programa
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.programacion?.descripcion}
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Tipo
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.tipoObjetivo?.descripcion}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Clase
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.claseObra?.descripcion}
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Referencias
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.referencia}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Cantón
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.comunidad?.parroquia?.canton?.nombre}
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Parroquia
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.comunidad?.parroquia?.nombre}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Comunidad
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.comunidad?.nombre}
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Sitio
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.sitio}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Barrio
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.barrio}
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Fecha
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:formatDate date="${obra?.fechaPreciosRubros}" format="dd-MM-yyyy"/>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Plazo
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.plazoEjecucionMeses} Mes${obra?.plazoEjecucionMeses == 1 ? '' : 'es'}
-                ${obra?.plazoEjecucionDias} Día${obra?.plazoEjecucionDias == 1 ? '' : 's'}
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Anticipo
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.porcentajeAnticipo}%
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Coordenadas
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.coordenadas}
-            </div>
-        </div>
-    </div>
-
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Registrada:
-                </span>
-            </div>
-
-            <div class="controls" style="font-weight:bold ">
-                ${obra?.estado == "N" ? "Acepta modificaciones" : "Registrado"}
-                %{--${obra?.estado}--}%
-            </div>
-        </div>
-    </div>
-
-
-</div>
-
-%{--
-<div class="row">
-    <div class="span5">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Precios para MO y Equipos
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.listaManoObra?.descripcion}
-            </div>
-        </div>
-    </div>
-</div>
---}%
-
-
-<div class="row">
-    <div class="span10">
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Observaciones
-                </span>
-            </div>
-
-            <div class="controls">
-                ${obra?.observaciones}
-            </div>
-        </div>
-    </div>
-</div>
-</fieldset>
 </g:form>
 
 
-<div id="busqueda" class="hide">
+%{--<div id="busqueda" class="hide">--}%
 
-    <fieldset class="borde">
-        <div class="span7">
+%{--    <fieldset class="borde">--}%
+%{--        <div class="span7">--}%
 
-            <div class="span2">Buscar Por</div>
+%{--            <div class="span2">Buscar Por</div>--}%
 
-            <div class="span2">Criterio</div>
+%{--            <div class="span2">Criterio</div>--}%
 
-            <div class="span1">Ordenar</div>
+%{--            <div class="span1">Ordenar</div>--}%
 
-        </div>
+%{--        </div>--}%
 
-        <div>
-            <div class="span2"><g:select name="buscarPor" class="buscarPor"
-                                         from="['1': 'Provincia', '2': 'Cantón', '3': 'Parroquia', '4': 'Comunidad']"
-                                         style="width: 120px" optionKey="key"
-                                         optionValue="value"/></div>
+%{--        <div>--}%
+%{--            <div class="span2"><g:select name="buscarPor" class="buscarPor"--}%
+%{--                                         from="['1': 'Provincia', '2': 'Cantón', '3': 'Parroquia', '4': 'Comunidad']"--}%
+%{--                                         style="width: 120px" optionKey="key"--}%
+%{--                                         optionValue="value"/></div>--}%
 
-            <div class="span2" style="margin-left: -20px"><g:textField name="criterio" class="criterio"/></div>
+%{--            <div class="span2" style="margin-left: -20px"><g:textField name="criterio" class="criterio"/></div>--}%
 
-            <div class="span1"><g:select name="ordenar" class="ordenar" from="['1': 'Ascendente', '2': 'Descendente']"
-                                         style="width: 120px; margin-left: 60px;" optionKey="key"
-                                         optionValue="value"/></div>
+%{--            <div class="span1"><g:select name="ordenar" class="ordenar" from="['1': 'Ascendente', '2': 'Descendente']"--}%
+%{--                                         style="width: 120px; margin-left: 60px;" optionKey="key"--}%
+%{--                                         optionValue="value"/></div>--}%
 
-            <div class="span2" style="margin-left: 140px"><button class="btn btn-info" id="btn-consultar"><i
-                    class="icon-check"></i> Consultar
-            </button></div>
+%{--            <div class="span2" style="margin-left: 140px"><button class="btn btn-info" id="btn-consultar"><i--}%
+%{--                    class="icon-check"></i> Consultar--}%
+%{--            </button></div>--}%
 
-        </div>
-    </fieldset>
+%{--        </div>--}%
+%{--    </fieldset>--}%
 
-    <fieldset class="borde">
+%{--    <fieldset class="borde">--}%
 
-        <div id="divTabla" style="height: 460px; overflow-y:auto; overflow-x: auto;">
+%{--        <div id="divTabla" style="height: 460px; overflow-y:auto; overflow-x: auto;">--}%
 
-        </div>
+%{--        </div>--}%
 
-    </fieldset>
+%{--    </fieldset>--}%
 
-</div>
+%{--</div>--}%
 
 <g:if test="${obra?.id}">
-    <div class="navbar navbar-inverse" style="margin-top: 10px;padding-left: 5px;float: left; width: 100%;"
-         align="center">
+    <div class="btn-group" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
 
-        <div class="navbar-inner">
-            <div class="botones">
+        <a href="#" id="btnVar" class="btn"><i class="fa fa-edit"></i> Variables</a>
+        <a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}" class="btn"><i
+                class="fa fa-list"></i> Vol. Obra
+        </a>
+        <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>
 
-                <ul class="nav">
-                    <li><a href="#" id="btnVar"><i class="icon-pencil"></i>Variables</a></li>
-                    <li><a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"><i
-                            class="icon-list-alt"></i>Vol. Obra
-                    </a></li>
-                    <li><a href="#" id="matriz"><i class="icon-th"></i>Matriz FP</a></li>
-                    <li>
-                        %{--<g:link controller="formulaPolinomica" action="coeficientes" id="${obra?.id}" class="btnFormula">--}%
-                        <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btnFormula"
-                                params="[obra: obra?.id]" title="Coeficientes">
-                            Fórmula Pol.
-                        </g:link>
-                    </li>
-                    %{--<li><a href="#">FP Liquidación</a></li>--}%
-                    <li><a href="#" id="btnRubros"><i class="icon-money"></i>Rubros</a></li>
-                    %{--<li><a href="#" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>--}%
-                    %{--<li><a href="${g.createLink(controller: 'documentosObra', action: 'documentosObra', id: obra?.id)}" id="btnDocumentos"><i class="icon-file"></i>Documentos</a></li>--}%
-                    <li><a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}"><i
-                            class="icon-calendar"></i>Cronograma
-                    </a></li>
-                    <li>
-                        <g:link controller="variables" action="composicion" id="${obra?.id}"><i
-                                class="icon-paste"></i>Composición
-                        </g:link>
-                    </li>
-                    %{--<li>--}%
-                    %{--<g:link controller="documentoObra" action="list" id="${obra.id}">--}%
-                    %{--<i class="icon-book"></i>Biblioteca--}%
-                    %{--</g:link>--}%
-                    %{--</li>--}%
-                    <li>
-                        <a href="#" id="btnMapa"><i class="icon-flag"></i>Mapa</a>
-                    </li>
+        <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btn btnFormula"
+                params="[obra: obra?.id]" title="Coeficientes">
+            Fórmula Pol.
+        </g:link>
 
-                </ul>
+        <a href="#" id="btnRubros" class="btn"><i class="fa fa-money-bill"></i> Rubros</a>
+        <a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}" class="btn"><i
+                class="fa fa-calendar"></i> Cronograma
+        </a>
 
-            </div>
-        </div>
+        <g:link controller="variables" action="composicion" id="${obra?.id}" class="btn"><i
+                class="fa fa-paste"></i> Composición
+        </g:link>
 
+        <a href="#" id="btnMapa" class="btn"><i class="fa fa-map-marker"></i> Mapa</a>
     </div>
 </g:if>
+
+
+
+
+
+
+
+%{--<g:if test="${obra?.id}">--}%
+%{--    <div class="navbar navbar-inverse" style="margin-top: 10px;padding-left: 5px;float: left; width: 100%;"--}%
+%{--         align="center">--}%
+%{--        <div class="navbar-inner">--}%
+%{--            <div class="botones">--}%
+%{--                <ul class="nav">--}%
+%{--                    <li><a href="#" id="btnVar"><i class="icon-pencil"></i>Variables</a></li>--}%
+%{--                    <li><a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}"><i--}%
+%{--                            class="icon-list-alt"></i>Vol. Obra--}%
+%{--                    </a></li>--}%
+%{--                    <li><a href="#" id="matriz"><i class="icon-th"></i>Matriz FP</a></li>--}%
+%{--                    <li>--}%
+%{--                        <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btnFormula"--}%
+%{--                                params="[obra: obra?.id]" title="Coeficientes">--}%
+%{--                            Fórmula Pol.--}%
+%{--                        </g:link>--}%
+%{--                    </li>--}%
+%{--                    <li><a href="#" id="btnRubros"><i class="icon-money"></i>Rubros</a></li>--}%
+%{--                    <li><a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}"><i--}%
+%{--                            class="icon-calendar"></i>Cronograma--}%
+%{--                    </a></li>--}%
+%{--                    <li>--}%
+%{--                        <g:link controller="variables" action="composicion" id="${obra?.id}"><i--}%
+%{--                                class="icon-paste"></i>Composición--}%
+%{--                        </g:link>--}%
+%{--                    </li>--}%
+%{--                    <li>--}%
+%{--                        <a href="#" id="btnMapa"><i class="icon-flag"></i>Mapa</a>--}%
+%{--                    </li>--}%
+%{--                </ul>--}%
+%{--            </div>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+%{--</g:if>--}%
 
 
 <div class="modal hide fade" id="modal-var" style=";overflow: hidden;">
@@ -560,12 +490,8 @@
             </div>
 
             <div id="datos_matriz" style="text-align: center">
-%{--
-                <span>Seleccione el subpresupuesto:</span>
-                <g:select name="mtariz_sub" from="${subs}" noSelection="['0': 'Todos los subpresupuestos']" optionKey="id" optionValue="descripcion" style="margin-right: 20px"></g:select>
-                <p>Generar con desglose de Transporte <input type="checkbox" id="si_trans" style="margin-top: -3px" checked="true">
-                </p>
---}%
+
+
                 <p>Haga clic en el botón Generar para iniciar el proceso</p>
                 <a href="#" class="btn btn-success" id="ok_matiz">Generar</a>
             </div>
@@ -573,6 +499,38 @@
 
     </div>
 </g:if>
+
+
+
+<div id="listaObra" style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaObra}" optionKey="key"
+                          optionValue="value"/>
+            </div>
+
+            <div class="col-md-2">Criterio
+            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+            <g:select name="ordenar" class="ordenar" from="${listaObra}" style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="cnsl-rubros"><i class="fa fa-search"></i> Buscar</button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaRbro" style="height: 460px; overflow: auto">
+        </div>
+    </fieldset>
+</div>
 
 <script type="text/javascript">
 
@@ -592,9 +550,9 @@
          39         -> flecha der
          */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-                (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-                ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-                ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+            ev.keyCode == 37 || ev.keyCode == 39);
     }
 
     $("#porcentajeAnticipo").keydown(function (ev) {
@@ -603,15 +561,15 @@
 
     }).keyup(function () {
 
-                var enteros = $(this).val();
+        var enteros = $(this).val();
 
-                if (parseFloat(enteros) > 100) {
+        if (parseFloat(enteros) > 100) {
 
-                    $(this).val(100)
+            $(this).val(100)
 
-                }
+        }
 
-            });
+    });
 
     $("#plazo").keydown(function (ev) {
 
@@ -619,9 +577,9 @@
 
     }).keyup(function () {
 
-                var enteros = $(this).val();
+        var enteros = $(this).val();
 
-            });
+    });
 
     $("#latitud").bind({
         keydown: function (ev) {
@@ -806,14 +764,55 @@
             %{--});--}%
         });
         </g:if>
+
         $("#lista").click(function () {
-            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            $("#modalTitle_busqueda").html("Lista de obras");
-//        $("#modalBody").html($("#buscador_rubro").html());
-            $("#modalFooter_busqueda").html("").append(btnOk);
-            $(".contenidoBuscador").html("");
-            $("#modal-busqueda").modal("show");
+            // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+            // $("#modalTitle_busqueda").html("Lista de obras");
+            // $("#modalFooter_busqueda").html("").append(btnOk);
+            // $(".contenidoBuscador").html("");
+            // $("#modal-busqueda").modal("show");
+            $("#listaObra").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
         });
+
+        $("#listaObra").dialog({
+            autoOpen: false,
+            resizable: true,
+            modal: true,
+            draggable: false,
+            width: 1000,
+            height: 500,
+            position: 'center',
+            title: 'Obras'
+        });
+
+        $("#cnsl-rubros").click(function () {
+            buscaObras();
+        });
+
+        function buscaObras() {
+            var d = cargarLoader("Cargando...");
+            var buscarPor = $("#buscarPor").val();
+            var tipo = $("#buscarTipo").val();
+            var criterio = $("#criterioCriterio").val();
+            var ordenar = $("#ordenar").val();
+            $.ajax({
+                type: "POST",
+                url: "${createLink(controller: 'obra', action:'listaObras')}",
+                data: {
+                    buscarPor: buscarPor,
+                    buscarTipo: tipo,
+                    criterio: criterio,
+                    ordenar: ordenar,
+                    tipo: "oferente"
+                },
+                success: function (msg) {
+                    d.modal("hide");
+                    $("#divTablaRbro").html(msg);
+                }
+            });
+        }
+
 
         $("#nuevo").click(function () {
             location.href = "${g.createLink(action: 'registroObra')}";
@@ -894,7 +893,7 @@
                         "Pdf Vae": function () {
                             url += "0";
                             location.href = urlVae;
-                         },
+                        },
                         "Excel Vae": function () {
                             var urlExcelVae = "${createLink(controller:'reportes', action:'imprimirRubrosExcelVae')}?oferente=${session.usuario.id}&obra=${obra?.id}&transporte=";
                             urlExcelVae += "1";

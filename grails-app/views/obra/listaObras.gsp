@@ -39,6 +39,10 @@
         var id = $(this).data("id");
         $("#listaObra").dialog("close");
         // $("#spinner").removeClass("hide");
-        location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}" + "?obra=" + id
+        if(${tipo == 'oferente'}){
+            location.href = "${g.createLink(controller: 'obraOf', action: 'registroObra')}" + "?obra=" + id
+        }else{
+            location.href = "${g.createLink(controller: 'obra', action: 'registroObra')}" + "?obra=" + id
+        }
     });
 </script>

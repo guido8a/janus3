@@ -106,27 +106,27 @@ class ObraOfController {
 
         def prov = Provincia.list();
         def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"], "descripcion": ["Descripción", "string"], "oficioIngreso": ["Memo ingreso", "string"], "oficioSalida": ["Memo salida", "string"], "sitio": ["Sitio", "string"], "plazo": ["Plazo", "int"], "parroquia": ["Parroquia", "string"], "comunidad": ["Comunidad", "string"], "canton": ["Canton", "string"]]
+        def listaObra = [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
         if (params.obra) {
             obra = Obra.get(params.obra)
             def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-
             def volumen = VolumenesObra.findByObra(obra)
-
             def formula = FormulaPolinomica.findByObra(obra)
-
-            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen]
+            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen, listaObra: listaObra]
         } else {
+            obra = new Obra();
             // si no se listan las obras, carga la primera obra que halle
-            obra = Obra.findByOferente(persona)
-            if (obra) {
-            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-            def volumen = VolumenesObra.findByObra(obra)
-            def formula = FormulaPolinomica.findByObra(obra)
-            //[campos: campos, prov: prov, persona: persona, obra: obra]
-            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen]
-            } else {
-                [campos: campos, prov: prov,persona: persona]
-            }
+//            obra = Obra.findByOferente(persona)
+//            if (obra) {
+//            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+//            def volumen = VolumenesObra.findByObra(obra)
+//            def formula = FormulaPolinomica.findByObra(obra)
+//            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen]
+//            } else {
+//                [campos: campos, prov: prov,persona: persona]
+//            }
+
+            [obra: obra, listaObra: listaObra]
         }
 
 

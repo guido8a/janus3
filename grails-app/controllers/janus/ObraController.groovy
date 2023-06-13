@@ -91,7 +91,7 @@ class ObraController {
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
-        [data: datos]
+        [data: datos, tipo: params.tipo]
 
     }
 
