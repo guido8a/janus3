@@ -925,7 +925,7 @@
         $("#btnVar").click(function () {
             $.ajax({
                 type: "POST",
-                url: "${createLink(controller: 'variables', action:'variables_ajax')}",
+                url: "${createLink(controller: 'variablesOf', action:'variables_ajax')}",
                 data: {
                     obra: "${obra?.id}"
                 },
