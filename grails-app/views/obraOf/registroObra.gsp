@@ -327,7 +327,7 @@
     <div class="btn-group" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
 
         <a href="#" id="btnVar" class="btn"><i class="fa fa-edit"></i> Variables</a>
-        <a href="${g.createLink(controller: 'volumenObra', action: 'volObra', id: obra?.id)}" class="btn"><i
+        <a href="${g.createLink(controller: 'volumenObraOf', action: 'volObra', id: obra?.id)}" class="btn"><i
                 class="fa fa-list"></i> Vol. Obra
         </a>
         <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>
