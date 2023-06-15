@@ -660,7 +660,7 @@ class RubroOfController {
                 "where obof.prsn__id =  ${session.usuario.id} and obra.obra__id = obof.obra__id and " +
                 "obratipo = 'F' and vlof.obra__id = obra.obra__id)"
         def sqlTx = ""
-        def item = listaRbro[params.buscarTipo.toInteger()-1]
+//        def item = listaRbro[params.buscarTipo.toInteger()-1]
         def bsca = listaItems[params.buscarPor.toInteger()-1]
         def ordn = listaRbro[params.ordenar.toInteger()-1]
 

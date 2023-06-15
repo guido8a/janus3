@@ -472,23 +472,23 @@
     <div id="listaRbro" style="overflow: hidden">
         <fieldset class="borde" style="border-radius: 4px">
             <div class="row-fluid" style="margin-left: 20px">
-                <div class="col-md-2">
-                    Tipo
-                    <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"
-                              optionValue="value"/>
-                </div>
+                %{--<div class="col-md-2">--}%
+                    %{--Tipo--}%
+                    %{--<g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"--}%
+                              %{--optionValue="value"/>--}%
+                %{--</div>--}%
                 <div class="col-md-2">
                     Buscar Por
                     <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
                               optionValue="value"/>
                 </div>
 
-                <div class="col-md-2">Criterio
+                <div class="col-md-3">Criterio
                 <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
                 </div>
 
                 <div class="col-md-2">Ordenado por
-                <g:select name="ordenar" class="ordenar" from="${listaRbro}" style="width: 100%" optionKey="key"
+                <g:select name="ordenar" class="ordenar" from="${listaItems}" style="width: 100%" optionKey="key"
                           optionValue="value"/>
                 </div>
                 <div class="col-md-2" style="margin-top: 6px">
