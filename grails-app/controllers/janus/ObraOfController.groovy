@@ -8,6 +8,8 @@ class ObraOfController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     def buscadorService
     def obraService
+    def dbConnectionService
+
 
 
     def index() {
@@ -651,4 +653,34 @@ class ObraOfController {
             render("no")
         }
     } //delete
+
+
+
+    /*lista obrtas */
+    def listaObras(){
+        println "listaItems" + params
+        def datos;
+//        [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
+        def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo']
+
+        def select = "select obra.obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
+                "from obra, parr, dpto, obof "
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and " +
+                "obof.obra__id = obra.obra__id and obof.prsn__id = ${session.usuario.id}"
+        def sqlTx = ""
+        def bsca = listaObra[params.buscarPor.toInteger()-1]
+        def ordn = listaObra[params.ordenar.toInteger()-1]
+
+        txwh += " and $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by obranmbr, ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+//        println "data: ${datos[0]}"
+        [data: datos, tipo: params.tipo]
+
+    }
+
+
 } //fin controller

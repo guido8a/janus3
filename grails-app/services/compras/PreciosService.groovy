@@ -772,6 +772,7 @@ class PreciosService {
     def vae_sub(obra){
         def cn = dbConnectionService.getConnection()
         def sql = "select * from rbro_pcun_vae_of("+ obra + ") order by vlobordn asc "
+        println "sql vae_sub: $sql"
         def result = []
         cn.eachRow(sql.toString()) { r ->
             result.add(r.toRowResult())

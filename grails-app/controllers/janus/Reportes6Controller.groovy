@@ -1496,6 +1496,8 @@ class Reportes6Controller {
 
         def indirecto = obra.totales/100
 
+        println "detalle; $detalle"
+
         renderPdf(template:'/reportes6/imprimirTablaSubVaeOferente', model: [detalle:detalle,precios:precios,subPres:subPres,
              subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso,
              fechaOferta: fechaOferta, firma: firma], filename: 'subPresupuestoVaeOferente.pdf')

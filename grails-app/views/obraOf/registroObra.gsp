@@ -785,7 +785,7 @@
             var ordenar = $("#ordenar").val();
             $.ajax({
                 type: "POST",
-                url: "${createLink(controller: 'obra', action:'listaObras')}",
+                url: "${createLink(controller: 'obraOf', action:'listaObras')}",
                 data: {
                     buscarPor: buscarPor,
                     buscarTipo: tipo,
