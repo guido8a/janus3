@@ -231,7 +231,7 @@
             <tbody id="tabla_mano">
             <g:each in="${items}" var="rub" status="i">
                 <g:if test="${rub.item.departamento.subgrupo.grupo.id == 2}">
-                    <tr class="item_row" id="${rub.id}" tipo="${rub.item.departamento.subgrupo.grupo.id}">
+                    <tr class="item_row" id="${rub.id}" data-item="${rub.item.id}" tipo="${rub.item.departamento.subgrupo.grupo.id}">
                         <td class="cdgo">${rub.item.codigo}</td>
                         <td>${rub.item.nombre}</td>
                         <td style="text-align: right" class="cant">
@@ -278,7 +278,7 @@
             <tbody id="tabla_material">
             <g:each in="${items}" var="rub" status="i">
                 <g:if test="${rub.item.departamento.subgrupo.grupo.id == 1}">
-                    <tr class="item_row" id="${rub.id}"  tipo="${rub.item.departamento.subgrupo.grupo.id}">
+                    <tr class="item_row" id="${rub.id}" data-item="${rub.item.id}"  tipo="${rub.item.departamento.subgrupo.grupo.id}">
                         <td class="cdgo">${rub.item.codigo}</td>
                         <td>${rub.item.nombre}</td>
                         <td style="width: 60px !important;text-align: center" class="col_unidad">${rub.item.unidad.codigo}</td>
@@ -1250,16 +1250,13 @@
 
         $(".item_row").dblclick(function(){
             var hijos = $(this).children();
-            console.log("hijos " + hijos.hasClass("col_tarifa"))
             var desc=$(hijos[1]).html();
             var cant;
             var codigo=$(hijos[0]).html();
             var unidad;
             var rendimiento;
             var item;
-            var ct = ''
-            var cp = ''
-            var cj = ''
+
 
            for(i=2;i<hijos.length;i++){
 
