@@ -1,23 +1,25 @@
-<div class="row-fluid" style="margin-left: 0px">
-    <div class="span5">
-        <b>Subpresupuesto:</b>
-        %{--<g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion" style="width: 300px;font-size: 10px" id="subPres_desc" value="${subPre}"></g:select>--}%
-        <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
-                  style="width: 300px;font-size: 10px" id="subPres_desc" value="${subPre}"
-                  noSelection="['-1': 'TODOS']"></g:select>
-
+<div class="col-md-12" style="margin-left: 0px; margin-top: 15px; margin-bottom: 10px">
+    <div class="col-md-6">
+        <div class="col-md-3">
+            <b>Subpresupuesto:</b>
+        </div>
+        <div class="col-md-6">
+            <g:select name="subpresupuesto" from="${subPres}" optionKey="id" optionValue="descripcion"
+                      style="width: 300px;font-size: 10px" id="subPres_desc" value="${subPre}"
+                      noSelection="['-1': 'TODOS']" class="form-control"/>
+        </div>
     </div>
-    <div class="span6">
-        <a href="#" class="btn  " id="imprimir_sub">
-            <i class="icon-print"></i>
+    <div class="col-md-5">
+        <a href="#" class="btn btn-info " id="imprimir_sub">
+            <i class="fa fa-print"></i>
             Imprimir Presupuesto
         </a>
-        <a href="#" class="btn  " id="imprimir_sub_vae">
-            <i class="icon-print"></i>
+        <a href="#" class="btn  btn-primary" id="imprimir_sub_vae">
+            <i class="fa fa-print"></i>
             Subpresupuesto VAE
         </a>
-        <a href="#" class="btn  " id="imprimir_excel" style="margin-left:-5px" >
-            <i class="icon-table"></i>
+        <a href="#" class="btn  btn-success" id="imprimir_excel" >
+            <i class="fa fa-file-excel"></i>
             Excel
         </a>
     </div>
@@ -140,46 +142,56 @@
 
     $("#imprimir_sub").click(function(){
 
-        if ($("#subPres_desc").val() != '') {
+        %{--if ($("#subPres_desc").val() !== '') {--}%
 
-            var dsps =
-            ${obra.distanciaPeso}
-            var dsvs =
-            ${obra.distanciaVolumen}
-            var volqueta =
-            ${precioVol}
-            var chofer =
-            ${precioChof}
-            var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val() + "Woferente=${session.usuario.id}"
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos
-            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+        %{--    var dsps =--}%
+        %{--    ${obra.distanciaPeso}--}%
+        %{--    var dsvs =--}%
+        %{--    ${obra.distanciaVolumen}--}%
+        %{--    var volqueta =--}%
+        %{--    ${precioVol}--}%
+        %{--    var chofer =--}%
+        %{--    ${precioChof}--}%
+        %{--    var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val() + "Woferente=${session.usuario.id}"--}%
+        %{--    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos--}%
+        %{--    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
+        %{--} else {--}%
+
+        %{--    alert("Escoja un subpresupuesto")--}%
+        %{--}--}%
+
+        if ($("#subPres_desc").val() !== '') {
+            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirTablaSubVaeOferente')}?obra=" + "${obra.id}&sub=" +  $("#subPres_desc").val() + "&oferente=" + ${session.usuario.id};
         } else {
-
-            alert("Escoja un subpresupuesto")
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
-
-
 
     });
 
     $("#imprimir_sub_vae").click(function(){
 
-        if ($("#subPres_desc").val() != '') {
+        %{--if ($("#subPres_desc").val() != '') {--}%
 
-            var dsps =
-            ${obra.distanciaPeso}
-            var dsvs =
-            ${obra.distanciaVolumen}
-            var volqueta =
-            ${precioVol}
-            var chofer =
-            ${precioChof}
-            var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val() + "Woferente=${session.usuario.id}"
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos
-            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+        %{--    var dsps =--}%
+        %{--    ${obra.distanciaPeso}--}%
+        %{--    var dsvs =--}%
+        %{--    ${obra.distanciaVolumen}--}%
+        %{--    var volqueta =--}%
+        %{--    ${precioVol}--}%
+        %{--    var chofer =--}%
+        %{--    ${precioChof}--}%
+        %{--    var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val() + "Woferente=${session.usuario.id}"--}%
+        %{--    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos--}%
+        %{--    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
+        %{--} else {--}%
+
+        %{--    alert("Escoja un subpresupuesto")--}%
+        %{--}--}%
+
+        if ($("#subPres_desc").val() !== '') {
+            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirTablaSubVaeOferente')}?obra=" + "${obra.id}&sub=" +  $("#subPres_desc").val() + "&oferente=" + ${session.usuario.id};
         } else {
-
-            alert("Escoja un subpresupuesto")
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
 
 
@@ -187,57 +199,39 @@
     });
 
     $("#imprimir_excel").click(function () {
-
-        var dsps=${obra.distanciaPeso}
-        var dsvs=${obra.distanciaVolumen}
-        var volqueta=${precioVol}
-        var chofer=${precioChof}
-
-        %{--var url = "${g.createLink(controller: 'reportes', action: 'reporteExcelVolObra')}"--}%
-
-        $("#dlgLoad").dialog("open");
-
-        location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',params:[id: obra?.id,oferente:session.usuario.id])}";
-        $("#dlgLoad").dialog("close");
-
+        location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteExcelVolObra')}?id=" + ${obra?.id} + "&sub=" + $("#subPres_desc").val();
+        %{--location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',params:[id: obra?.id,oferente:session.usuario.id])}";--}%
     });
 
 
     $("#subPres_desc").change(function () {
 
-        $("#ver_todos").removeClass("active")
-        $("#divTotal").html("")
-        $("#calcular").removeClass("active")
+        var d = cargarLoader("Cargando...");
 
-        if($("#subPres_desc").val() == '-1'){
+        $("#ver_todos").removeClass("active");
+        $("#divTotal").html("");
+        $("#calcular").removeClass("active");
+        var datos = '';
 
-
-            %{--var datos = "obra=${obra.id}&sub="+$("#subPres_desc").val()--}%
-            var datos = "obra=${obra.id}"
-            var interval = loading("detalle")
-            $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'tabla')}",
-                data     : datos,
-                success  : function (msg) {
-                    clearInterval(interval)
-                    $("#detalle").html(msg)
-                }
-            });
+        if($("#subPres_desc").val() === '-1'){
+            datos = "obra=${obra.id}"
         } else {
-            var datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1
-            var interval = loading("detalle")
-            $.ajax({type: "POST", url: "${g.createLink(controller: 'volumenObra',action:'tabla')}",
-                data: datos,
-                success: function (msg) {
-                    clearInterval(interval)
-                    $("#detalle").html(msg)
-                }
-            });
+            datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1
         }
+
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'volumenObraOf',action:'tabla')}",
+            data     : datos,
+            success  : function (msg) {
+                d.modal("hide");
+                $("#detalle").html(msg)
+            }
+        });
     });
 
     $(".item_row").dblclick(function(){
         $("#calcular").removeClass("active")
-//        $(".col_delete").show()
         $(".col_precio").hide()
         $(".col_total").hide()
         $("#divTotal").html("")
@@ -249,17 +243,6 @@
         $("#item_cantidad").val($(this).find(".cant").html().toString().trim())
         $("#item_orden").val($(this).find(".orden").html() )
 
-    });
-    $(".borrarItem").click(function(){
-        if(confirm("Esta seguro de eliminar el rubro?")){
-            $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
-                data     : "id=" + $(this).attr("iden"),
-                success  : function (msg) {
-                    $("#detalle").html(msg)
-
-                }
-            });
-        }
     });
 
 

@@ -14,83 +14,49 @@ class VariablesOfController {
 
         def volquetes = []
         def choferes = []
-/*
-        def grupoTransporte = DepartamentoItem.findAllByTransporteIsNotNull()
-        grupoTransporte.each {
-            if (it.transporte.codigo == "H")
-                choferes = Item.findAllByDepartamento(it)
-            if (it.transporte.codigo == "T")
-                volquetes = Item.findAllByDepartamento(it)
-        }
-*/
-       [choferes: choferes, volquetes: volquetes, obra: obra, par: par]
+
+        [choferes: choferes, volquetes: volquetes, obra: obra, par: par]
     }
 
     def saveVar_ajax() {
-        println "save vars aqui"
-        println params
+        println "save vars aqui " + params
 
         if(!params.mecanico){
-            flash.clase = "alert-error"
-            flash.message = "No se pudo actualizar las variables, debe ingresar una cantidad válida en mecánico"
-            render "flash"
+            render "no_No se pudo actualizar las variables, debe ingresar una cantidad válida en mecánico"
             return
         }
 
         def itemMecanico = Item.findByCodigo('009.001')
-
-        def precioMecanico = Precio.findByItemAndPersona(itemMecanico, session.usuario)
-
+        def precioMecanico = Precio.findByItemAndOferente(itemMecanico, session.usuario)
 
 
         if (precioMecanico) {
-
             precioMecanico.precio = params.mecanico.toDouble()
             println "precio double "+precioMecanico.precio
             precioMecanico.save(flush: true)
-//            render "OK"
-
-
         } else {
 
             precioMecanico = new Precio()
-
             precioMecanico.fecha = new Date()
             precioMecanico.item = itemMecanico
             precioMecanico.precio = params.mecanico.toDouble()
-            precioMecanico.persona = session.usuario
+            precioMecanico.oferente = session.usuario
 
-            precioMecanico.save(flush: true)
-//            render "OK"
-//            println("okf")
-////
             if (precioMecanico.save(flush: true)) {
 
-//                println("ok")
             } else {
-
-//               println("no")
                 println(precioMecanico.errors)
-
             }
-
-//            println(precioMecanico.item)
-//            println(precioMecanico.precio)
-//            println(precioMecanico.persona)
         }
-
 
         def obra = Obra.get(params.idObra)
         obra.properties = params
-//        obra.capacidadVolquete=params.asdas.toDouble()
-//        obra.factorVolumen=params.factorVolumen.toDouble()
+
         if (obra.save(flush: true)) {
-            flash.clase = "alert-success"
-            flash.message = "Variables actualizadas"
-            render "OK"
+            render "ok_Variables guardadas correctamente"
         } else {
             println obra.errors
-            render "NO"
+            render "no_Error al guardar las variables"
         }
     }
 

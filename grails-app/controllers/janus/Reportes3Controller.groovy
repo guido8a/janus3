@@ -95,10 +95,10 @@ class Reportes3Controller {
         def indirecto = obra.totales / 100
         preciosService.ac_rbroObra(obra.id)
 
-        renderPdf(template:'/reportes3/imprimirTablaSub', model: [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos, auxiliar: auxiliar], filename: 'presupuesto.pdf')
+        renderPdf(template:'/reportes3/imprimirTablaSub', model: [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos, auxiliar: auxiliar], filename: 'subpresupuesto.pdf')
     }
 
-    def imprimirTablaSubVae () {
+    def _imprimirTablaSubVae () {
         def obra = Obra.get(params.obra)
 
         def detalle
@@ -154,7 +154,9 @@ class Reportes3Controller {
         def indirecto = obra.totales / 100
         preciosService.ac_rbroObra(obra.id)
 
-        [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos]
+        renderPdf(template:'/reportes3/imprimirTablaSubVae', model: [detalle: detalle, precios: precios, subPres: subPres, subPre: subPre, obra: obra, indirectos: indirecto * 100, valores: valores, fechaNueva: fechaNueva, fechaPU: fechaPU, corregidos: corregidos], filename: 'subpresupuestoVae.pdf')
+
+
     }
 
     def imprimirRubroVolObra() {

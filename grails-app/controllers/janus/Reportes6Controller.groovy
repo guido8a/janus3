@@ -151,11 +151,6 @@ class Reportes6Controller {
 
     def reporteOrdenCambio () {
 
-//        println("params " + params)
-
-//        def contrato = Contrato.get(params.id)
-//        def planilla = Planilla.get(params.planilla)
-
         def planilla = Planilla.get(params.id).refresh()
         def contrato = planilla.contrato
 
@@ -210,7 +205,7 @@ class Reportes6Controller {
         def fondoGris = [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: colorGris, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
         def frmtDato = [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
 
-        addCellTabla(tabla1, new Paragraph("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE LOS RÍOS", fontThTiny), fondoGris + [colspan: 4, height: 30])
+        addCellTabla(tabla1, new Paragraph("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE PICHINCHA", fontThTiny), fondoGris + [colspan: 4, height: 30])
 
         addCellTabla(tabla1, new Paragraph("ORDEN DE CAMBIO N° " + (planilla?.numeroOrden ?: ''), fontThTiny), fondoGris + [colspan: 4, height: 30])
 
@@ -315,7 +310,7 @@ class Reportes6Controller {
         tabla3.setWidthPercentage(100);
         tabla3.setWidths(arregloEnteros([8,23,8,23,8,22,8]))
 
-        addCellTabla(tabla3, new Paragraph("Dado en Babahoyo, " + rep.fechaConFormato(fecha: planilla?.fechaCertificacionOrden, formato: "dd MMMM yyyy").toString(), fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, bcl: Color.BLACK, bcr: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 7])
+        addCellTabla(tabla3, new Paragraph("Dado en Quito, " + rep.fechaConFormato(fecha: planilla?.fechaCertificacionOrden, formato: "dd MMMM yyyy").toString(), fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, bcl: Color.BLACK, bcr: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 7])
 
         addCellTabla(tabla3, new Paragraph("", fontThTiny), [border: Color.BLACK, bcl: Color.BLACK, bcr: Color.WHITE, bct: Color.WHITE, bwb: 0.1, bcb: Color.WHITE, bg: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, height: 50])
         addCellTabla(tabla3, new Paragraph("", fontThTiny), [border: Color.BLACK, bcl: Color.WHITE, bcr: Color.WHITE, bct: Color.WHITE, bwb: 0.1, bcb: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, height: 50])
@@ -407,7 +402,7 @@ class Reportes6Controller {
         tabla1.setWidthPercentage(100);
         tabla1.setWidths(arregloEnteros([15,13,47,15]))
 
-        addCellTabla(tabla1, new Paragraph("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE LOS RÍOS", fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 4, height: 30])
+        addCellTabla(tabla1, new Paragraph("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE PICHINCHA", fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 4, height: 30])
 
         addCellTabla(tabla1, new Paragraph("ORDEN DE TRABAJO N° " + (planilla?.numeroTrabajo ?: '') , fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 4, height: 20])
 
@@ -504,7 +499,7 @@ class Reportes6Controller {
         tabla3.setWidthPercentage(100);
         tabla3.setWidths(arregloEnteros([8,23,8,23,8,22,8]))
 
-        addCellTabla(tabla3, new Paragraph("Dado en Babahoyo, " + rep.fechaConFormato(fecha: planilla?.fechaCertificacionTrabajo, formato: "dd MMMM yyyy").toString(), fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, bcl: Color.BLACK, bcr: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 7])
+        addCellTabla(tabla3, new Paragraph("Dado en Quito, " + rep.fechaConFormato(fecha: planilla?.fechaCertificacionTrabajo, formato: "dd MMMM yyyy").toString(), fontThTiny), [border: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, bcl: Color.BLACK, bcr: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 7])
 
         addCellTabla(tabla3, new Paragraph("", fontThTiny), [border: Color.BLACK, bcl: Color.BLACK, bcr: Color.WHITE, bct: Color.WHITE, bwb: 0.1, bcb: Color.WHITE, bg: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, height: 50])
         addCellTabla(tabla3, new Paragraph("", fontThTiny), [border: Color.BLACK, bcl: Color.WHITE, bcr: Color.WHITE, bct: Color.WHITE, bwb: 0.1, bcb: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE, height: 50])
@@ -778,7 +773,6 @@ class Reportes6Controller {
         return chart;
     }
 
-
     private CategoryDataset createDataset() {
 
         def cn = dbConnectionService.getConnection()
@@ -983,7 +977,6 @@ class Reportes6Controller {
             fila++
         }
 
-
         //total parcial
         label = new jxl.write.Label(1, fila, ''); sheet.addCell(label);
         label = new jxl.write.Label(2, fila, 'TOTAL PARCIAL', times16format); sheet.addCell(label);
@@ -1073,9 +1066,6 @@ class Reportes6Controller {
         def oferente = Persona.get(params.oferente)
         def obraOferente = ObraOferente.findByOferente(oferente)
         def obra2 = Obra.get(obraOferente.idJanus.id)
-
-//        println("--->>" + obra2?.idJanus)
-
 
         def concurso = obraOferente.concurso
 //        def fechaOferta = printFecha(obraOferente?.fechaOferta)
@@ -1179,9 +1169,6 @@ class Reportes6Controller {
                 tablaTrans += "<tr>"
                 tablaTrans += "<td style='width: 80px;'>" + r["itemcdgo"] + "</td>"
                 tablaTrans += "<td>" + r["itemnmbr"] + "</td>"
-                println("entro")
-
-
                 tablaTrans += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["itempeso"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaTrans += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["rbrocntd"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
                 tablaTrans += "<td style='width: 50px;text-align: right'>" + g.formatNumber(number: r["distancia"], format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec") + "</td>"
@@ -1193,7 +1180,6 @@ class Reportes6Controller {
             else {
 
             }
-
 
         }
         tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td></tr>"
@@ -1215,10 +1201,6 @@ class Reportes6Controller {
         tablaIndi += "<thead><tr><th class='tituloHeader'>COSTOS INDIRECTOS</th></tr><tr><th colspan='3' class='theader'></th></tr><tr><th style='width:550px' class='padTopBot'>DESCRIPCIÓN</th><th style='width:130px'>PORCENTAJE</th><th>VALOR</th></tr>    <tr><th colspan='3' class='theaderup'></th></tr>  </thead>"
         tablaIndi += "<tbody><tr><td>COSTOS INDIRECTOS</td><td style='text-align:center'>${indi}%</td><td style='text-align:right'>${g.formatNumber(number: totalIndi, format: "##,##0", minFractionDigits: "5", maxFractionDigits: "5")}</td></tr></tbody>"
         tablaIndi += "</table>"
-
-//        [rubro: rubro, tablaTrans: tablaTrans, band: band, bandMat: bandMat, tablaMat2: tablaMat2, bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
-//         tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obraOferente, oferente: oferente, fechaOferta: fechaOferta, obraOferente: obraOferente, concurso: concurso, fechaEntregaOFerta: fechaEntregaOferta, firma: firma]
-//
 
         renderPdf(template:'/reportes6/imprimirRubroOferentes', model:  [rubro: rubro, tablaTrans: tablaTrans, band: band, bandMat: bandMat, tablaMat2: tablaMat2,
              bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
@@ -1400,13 +1382,10 @@ class Reportes6Controller {
                 tablaTrans += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number: r["vae"], format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
                 tablaTrans += "<td style='width: 45px;text-align: right'>" + g.formatNumber(number:r["vae_vlor"], format: "##,#####0", minFractionDigits: "2", maxFractionDigits: "2", locale: "ec") + "</td>"
                 total += r["parcial_t"]
-//                totalTRel += vae[i].relativo_t
-//                totalTVae += vae[i].vae_vlor_t
                 tablaTrans += "</tr>"
 
             }
             else {
-
                 tablaTrans2 += "<tr>"
                 tablaTrans2 += "<td style='width: 140px;'></td>"
                 tablaTrans2 += "<td style='width: 420px;'></td>"
@@ -1422,10 +1401,7 @@ class Reportes6Controller {
                 tablaTrans2 += "<td style='width: 45px;text-align: right'></td>"
                 tablaTrans2 += "<td style='width: 45px;text-align: right'></td>"
                 tablaTrans2 += "</tr>"
-
             }
-
-
         }
 
         tablaTrans += "<tr><td></td><td></td><td></td><td></td><td></td><td></td><td style='text-align: right'><b>TOTAL</b></td><td style='width: 50px;text-align: right'><b>${g.formatNumber(number: total, format: "##,#####0", minFractionDigits: "5", maxFractionDigits: "5", locale: "ec")}</b></td> <td style='width: 50px;text-align: right'>" +
@@ -1465,17 +1441,66 @@ class Reportes6Controller {
             tablaMano = ""
         if (totalMat == 0)
             tablaMat = ""
-//        [rubro: rubro, fechaPrecios: fecha, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band: band, tablaMat2: tablaMat2, bandMat: bandMat, bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
-//         tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obraOferente, oferente: oferente, fechaPala: fecha1, totalRelativo: totalRelativo, totalVae: totalVae, fechaEntregaOFerta: fechaEntregaOferta, firma: firma, concurso: concurso]
-
 
         renderPdf(template:'/reportes6/imprimirRubroOferentesVae', model:   [rubro: rubro, fechaPrecios: fecha, tablaTrans: tablaTrans, tablaTrans2: tablaTrans2, band: band, tablaMat2: tablaMat2, bandMat: bandMat, bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
                                                                              tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obraOferente, oferente: oferente, fechaPala: fecha1, totalRelativo: totalRelativo, totalVae: totalVae, fechaEntregaOFerta: fechaEntregaOferta, firma: firma, concurso: concurso], filename: 'rubrosOferentesVae.pdf')
 
+    }
+
+    def _imprimirTablaSubVaeOferente(){
+//        println "imprimir tabla sub "+params
+        def obra = Obra.get(params.obra)
+        def detalle
+        def subPre
+        def orden
+        def fechaHoy = printFecha(new Date())
+        def oferente = Persona.get(params.oferente)
+        def sql = "SELECT * FROM cncr WHERE obra__id=${obra?.id}"
 
 
+        def cn = dbConnectionService.getConnection()
+        def conc = cn.rows(sql.toString())
+        def cncrId
+
+        conc.each {
+            cncrId = it?.cncr__id
+        }
+
+        def concurso = janus.pac.Concurso.get(cncrId)
+//        def fechaOferta = printFecha(obra?.fechaOferta);
+        def fechaOferta = printFecha(new Date());
+
+        def firma = Persona.get(params.oferente).firma
+
+        if (params.ord == '1') {
+            orden = 'asc'
+        } else {
+            orden = 'desc'
+        }
+
+        preciosService.ac_rbroObra(obra.id)
+        if (params.sub && params.sub != "-1") {
+            detalle = preciosService.vae_sub(obra.id)
+        } else {
+            detalle = preciosService.vae_sub(obra.id)
+        }
+
+        def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
+        def precios = [:]
+        if (params.sub != '-1'){
+            subPre= SubPresupuesto.get(params.sub).descripcion
+        }else {
+            subPre= -1
+        }
+
+        def indirecto = obra.totales/100
+
+        renderPdf(template:'/reportes6/imprimirTablaSubVaeOferente', model:   [detalle:detalle,precios:precios,subPres:subPres,subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso, fechaOferta: fechaOferta, firma: firma], filename: 'subPresupuestoVaeOferente.pdf')
 
     }
+
+
+
 
 
 

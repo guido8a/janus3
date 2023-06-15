@@ -226,57 +226,18 @@
     });
 
     $("#imprimir_sub").click(function () {
-        if ($("#subPres_desc").val() != '') {
-            var dsps =
-            ${obra.distanciaPeso}
-            var dsvs =
-            ${obra.distanciaVolumen}
-            var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val()
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos
-            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+        if ($("#subPres_desc").val() !== '') {
+            location.href = "${g.createLink(controller: 'reportes3',action: '_imprimirTablaSub')}?obra=" + "${obra.id}&sub=" +  $("#subPres_desc").val();
         } else {
-            $.box({
-                imageClass: "box_info",
-                text: "Seleccione un subpresupuesto",
-                title: "Alerta",
-                iconClose: false,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function () {
-                        }
-                    }
-                }
-            });
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
     });
 
-
     $("#imprimir_sub_vae").click(function () {
-        if ($("#subPres_desc").val() != '') {
-            var dsps =
-            ${obra.distanciaPeso}
-            var dsvs =
-            ${obra.distanciaVolumen}
-            var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val()
-            var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos
-            location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
+        if ($("#subPres_desc").val() !== '') {
+            location.href = "${g.createLink(controller: 'reportes3',action: '_imprimirTablaSubVae')}?obra=" + "${obra.id}&sub=" +  $("#subPres_desc").val();
         } else {
-            $.box({
-                imageClass: "box_info",
-                text: "Seleccione un subpresupuesto",
-                title: "Alerta",
-                iconClose: false,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function () {
-                        }
-                    }
-                }
-            });
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
     });
 
@@ -284,7 +245,7 @@
         if ($("#subPres_desc").val() !== '') {
             location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteVaeExcel')}?id=" + ${obra?.id} + "&sub=" + $("#subPres_desc").val();
         } else {
-            bootbox.alert("Seleccione un subpresupuesto")
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
     });
 
@@ -314,14 +275,12 @@
 
     var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + $(".item_row").attr("id") + "Wobra=${obra.id}";
 
-    // $(".item_row").dblclick(function () {
     $(".editarItem").click(function () {
         $("#calcular").removeClass("active");
         $(".col_delete").show();
         $(".col_precio").hide();
         $(".col_total").hide();
         $("#divTotal").html("");
-        // $("#vol_id").val($(this).attr("id"));   /* gdo: id del registro a editar */
         $("#vol_id").val($(this).attr("iden"));   /* gdo: id del registro a editar */
         $("#item_codigo").val($(this).data("cod"));
         $("#item_id").val($(this).attr("item"));
@@ -362,7 +321,7 @@
                             },
                             success: function (msg) {
                                 $("#dlgLoad").dialog("close");
-                                if(msg == 'ok'){
+                                if(msg === 'ok'){
                                     $.box({
                                         imageClass: "box_info",
                                         text: "Rubro borrado correctamente",

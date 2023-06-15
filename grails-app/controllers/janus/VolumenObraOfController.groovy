@@ -1,5 +1,7 @@
 package janus
 
+import seguridad.Persona
+
 class VolumenObraOfController {
     def buscadorService
     def preciosService
@@ -57,92 +59,14 @@ class VolumenObraOfController {
         }
     }
 
-//    def tabla(){
-//
-//        def orden
-//
-//        if (params.ord == '1') {
-//            orden = 'asc'
-//        } else {
-//            orden = 'desc'
-//        }
-//
-//
-//        println "paramms "+params
-//        def obra = Obra.get(params.obra)
-//        def detalle
-//        if (params.sub && params.sub !="null")
-//   {
-////    detalle= VolumenesObra.findAllByObraAndSubPresupuesto(obra,SubPresupuesto.get(params.sub),[sort:"orden"])
-//            println("entro1")
-//        detalle = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
-//   }
-//
-//        else
-//        {
-//        println("entro2")
-////            detalle= VolumenesObra.findAllByObra(obra,[sort:"orden"])
-//            detalle = preciosService.rbro_pcun_v4(obra.id, orden)
-//        }
-//
-//        println("-->" + detalle)
-//
-//        def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
-//
-//        def precios = [:]
-//        def fecha = obra.fechaPreciosRubros
-//        def dsps = obra.distanciaPeso
-//        def dsvl = obra.distanciaVolumen
-//        def lugar = obra.lugar
-//        def prch = 0
-//        def prvl = 0
-////        def orden
-////
-////        if (params.ord == '1'){
-////            orden = 'asc'
-////        } else {
-////            orden = 'desc'
-////        }
-//
-//
-////        /*Todo ver como mismo es esta suma*/
-//        def indirecto = obra.totales/100
-////        println "indirecto "+indirecto
-//        preciosService.ac_rbroObra(obra.id)
-//
-//
-//
-////        detalle.each{
-////              def res = preciosService.presioUnitarioVolumenObra("sum(parcial)+sum(parcial_t) precio ",it.item.id, obra.id )
-////            def precio = 0
-////            if(res["precio"][0]!=null && res["precio"][0]!="null" )
-////                precio = res["precio"][0]
-////            precios.put(it.id.toString(),(precio+precio*indirecto).toDouble().round(2))
-////        }
-//
-//
-//        [detalle:detalle,precios:precios,subPres:subPres,subPre:params.sub,obra: obra,precioVol:prch,precioChof:prvl,indirectos:indirecto*100]
-//
-//    }
-
-
     def tabla() {
-
 
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
-//        def direccion = Direccion.get(persona?.departamento?.direccion?.id)
-//        def grupo = Grupo.findAllByDireccion(direccion)
-//        def subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
-//
+
         params.ord  = params.ord?:'1'
-//        println "params --->>>> "+params
 
         def obra = Obra.get(params.obra)
-
-        def volumenes = VolumenesObra.findAllByObra(obra);
-
-        def detalle
         def valores
         def orden
 
@@ -152,44 +76,22 @@ class VolumenObraOfController {
             orden = 'desc'
         }
 
-//        println "orden: " + orden
         preciosService.ac_rbroObra(obra.id)
         if (params.sub && params.sub != "-1") {
-//            println("entro1")
-//        detalle= VolumenesObra.findAllByObraAndSubPresupuesto(obra,SubPresupuesto.get(params.sub),[sort:"orden"])
             valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
-//          detalle= VolumenesObra.findAllBySubPresupuesto(SubPresupuesto.get(params.sub))
-//            println("detalle" + detalle)
         } else {
-//            println("entro2")
-//        detalle= VolumenesObra.findAllByObra(obra,[sort:"orden"])
             valores = preciosService.rbro_pcun_v4(obra.id, orden)
         }
 
-
-//        println("-->>" + valores)
-
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-
-        def precios = [:]
-        def fecha = obra.fechaPreciosRubros
-        def dsps = obra.distanciaPeso
-        def dsvl = obra.distanciaVolumen
-        def lugar = obra.lugar
         def estado = obra.estado
         def prch = 0
         def prvl = 0
-
-//        /*Todo ver como mismo es esta suma*/
         def indirecto = obra.totales / 100
-
 
         [subPres: subPres, subPre: params.sub, obra: obra, precioVol: prch, precioChof: prvl, indirectos: indirecto * 100,
          valores: valores, estado: estado, msg: params.msg, persona: persona]
-
     }
-
-
 
     def eliminarRubro(){
         def vol = VolumenesObra.get(params.id)

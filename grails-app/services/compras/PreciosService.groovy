@@ -769,7 +769,16 @@ class PreciosService {
 
     }
 
-
+    def vae_sub(obra){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from rbro_pcun_vae_of("+ obra + ") order by vlobordn asc "
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
 
 
 }

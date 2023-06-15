@@ -4,13 +4,6 @@
 <head>
 
     <meta name="layout" content="main">
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.js')}"></script>--}%
-    %{--    <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-    %{--    <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-
 
     <style type="text/css">
 
@@ -391,22 +384,30 @@
 %{--    </div>--}%
 %{--</g:if>--}%
 
-
-<div class="modal hide fade" id="modal-var" style=";overflow: hidden;">
-    <div class="modal-header btn-primary">
-        <button type="button" class="close" data-dismiss="modal">×</button>
-
-        <h3 id="modal_title_var">
-        </h3>
-    </div>
-
-    <div class="modal-body" id="modal_body_var">
+<div id="modal-var">
+    <div id="modal_body_var">
 
     </div>
 
     <div class="modal-footer" id="modal_footer_var">
     </div>
 </div>
+
+%{--<div class="modal hide fade" id="modal-var" style=";overflow: hidden;">--}%
+%{--    <div class="modal-header btn-primary">--}%
+%{--        <button type="button" class="close" data-dismiss="modal">×</button>--}%
+
+%{--        <h3 id="modal_title_var">--}%
+%{--        </h3>--}%
+%{--    </div>--}%
+
+%{--    <div class="modal-body" id="modal_body_var">--}%
+
+%{--    </div>--}%
+
+%{--    <div class="modal-footer" id="modal_footer_var">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 
 <div class="modal hide fade mediumModal" id="modal-TipoObra" style=";overflow: hidden;">
@@ -753,24 +754,10 @@
                     });
                 }
             });
-            %{--$.ajax({--}%
-            %{--type    : "POST",--}%
-            %{--url     : "${createLink(action: 'matrizFP',controller: 'obraFP')}",--}%
-            %{--data    : "obra=${obra.id}&sub=" + sp + "&trans=" + tr,--}%
-            %{--success : function (msg) {--}%
-            %{--$("#dlgLoad").dialog("close");--}%
-            %{--location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',params:[id:obra.id,inicio:0,limit:40])}"--}%
-            %{--}--}%
-            %{--});--}%
         });
         </g:if>
 
         $("#lista").click(function () {
-            // var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-            // $("#modalTitle_busqueda").html("Lista de obras");
-            // $("#modalFooter_busqueda").html("").append(btnOk);
-            // $(".contenidoBuscador").html("");
-            // $("#modal-busqueda").modal("show");
             $("#listaObra").dialog("open");
             $(".ui-dialog-titlebar-close").html("x")
         });
@@ -915,11 +902,9 @@
         });
 
         $("#btnImprimir").click(function () {
-
             $("#dlgLoad").dialog("open");
             location.href = "${g.createLink(controller: 'reportes', action: 'reporteRegistro', id: obra?.id)}"
             $("#dlgLoad").dialog("close")
-
         });
 
         $("#btnVar").click(function () {
@@ -930,61 +915,67 @@
                     obra: "${obra?.id}"
                 },
                 success: function (msg) {
-                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-ok"></i> Guardar</a>');
+                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn btn-info"><i class="fa fa-times"></i> Cancelar</a>');
+                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>');
 
                     btnSave.click(function () {
                         if ($("#frmSave-var").valid()) {
-                            btnSave.replaceWith(spinner);
+                            // btnSave.replaceWith(spinner);
                         }
                         var data = $("#frmSave-var").serialize() + "&id=" + $("#id").val()+"&lang=en_US";
                         var url = $("#frmSave-var").attr("action");
-
-//                                console.log(url);
-//                                console.log(data);
 
                         $.ajax({
                             type: "POST",
                             url: url,
                             data: data,
                             success: function (msg) {
-//                                console.log("Data Saved: " + msg);
-                                if(msg == 'flash'){
-                                    location.reload(true)
+                                var parts = msg.split("_");
+                                if(parts[0] === 'no'){
+                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                                 }else{
-                                    location.reload(true)
+                                    log(parts[1], "success");
+                                    $("#modal-var").dialog("close");
                                 }
-                                $("#modal-var").modal("hide");
                             }
                         });
 
                         return false;
                     });
 
+                    btnCancel.click(function () {
+                        $("#modal-var").dialog("close");
+                    });
+
                     $("#modal_title_var").html("Variables");
                     $("#modal_body_var").html(msg);
-                    $("#modal_footer_var").html("").append(btnCancel);
 
                     <g:if test="${obra?.estado !='R'}">
-                    $("#modal_footer_var").html("").append(btnSave);
+                    $("#modal_footer_var").html("").append(btnCancel).append(btnSave);
                     </g:if>
                     <g:else>
                     $("#modal_footer_var").html("").append(btnCancel);
                     </g:else>
 
-
-
-
-//                    $("#modal_footer_var").html("").append(btnSave);
-                    $("#modal-var").modal("show");
+                    $("#modal-var").dialog("open");
+                    $(".ui-dialog-titlebar-close").html("x")
                 }
             });
             return false;
         });
 
+        $("#modal-var").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 600,
+            height: 500,
+            position: 'center',
+            title: 'Variables'
+        });
+
         $("#copiarDialog").dialog({
-
-
             autoOpen: false,
             resizable: false,
             modal: true,
@@ -995,14 +986,6 @@
             title: 'Copiar la obra',
             buttons: {
                 "Aceptar": function () {
-                    %{--var data = $("#frm-registroObra").serialize();--}%
-                    %{--data+="&nuevoCodigo="+ $.trim($("#nuevoCodigo").val());--}%
-
-                    %{--var url = "${createLink(action: 'saveCopia')}?"+data;--}%
-
-                    %{--console.log(url);--}%
-
-                    //location.href = url;
 
                     var originalId = "${obra?.id}";
                     var nuevoCodigo = $.trim($("#nuevoCodigo").val());
