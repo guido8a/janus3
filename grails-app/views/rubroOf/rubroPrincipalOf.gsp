@@ -186,14 +186,14 @@
             <tbody id="tabla_equipo">
             <g:each in="${items}" var="rub" status="i">
                 <g:if test="${rub.item.departamento.subgrupo.grupo.id == 3}">
-                    <tr class="item_row" id="${rub.id}" tipo="${rub.item.departamento.subgrupo.grupo.id}">
+                    <tr class="item_row" id="${rub.id}" data-item="${rub.item.id}" tipo="${rub.item.departamento.subgrupo.grupo.id}">
                         <td class="cdgo">${rub.item.codigo}</td>
                         <td>${rub.item.nombre}</td>
                         <td style="text-align: right" class="cant">
                             <g:formatNumber number="${rub.cantidad}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7"  locale="ec"  />
                         </td>
 
-                        <td class="col_tarifa" style="display: none;text-align: right" id="i_${rub.item.id}"></td>
+                        <td class="col_tarifa" style="display: none;text-align: right" id="i_${rub.item.id}" ></td>
                         <td class="col_hora" style="display: none;text-align: right"></td>
                         <td class="col_rend rend" style="width: 50px;text-align: right"  valor="${rub.rendimiento}">
                             <g:formatNumber number="${rub.rendimiento}" format="##,#####0" minFractionDigits="5" maxFractionDigits="7" locale="ec" />
@@ -278,7 +278,7 @@
             <tbody id="tabla_material">
             <g:each in="${items}" var="rub" status="i">
                 <g:if test="${rub.item.departamento.subgrupo.grupo.id == 1}">
-                    <tr class="item_row" id="${rub.id}" tipo="${rub.item.departamento.subgrupo.grupo.id}">
+                    <tr class="item_row" id="${rub.id}"  tipo="${rub.item.departamento.subgrupo.grupo.id}">
                         <td class="cdgo">${rub.item.codigo}</td>
                         <td>${rub.item.nombre}</td>
                         <td style="width: 60px !important;text-align: center" class="col_unidad">${rub.item.unidad.codigo}</td>
@@ -1250,13 +1250,18 @@
 
         $(".item_row").dblclick(function(){
             var hijos = $(this).children();
+            console.log("hijos " + hijos.hasClass("col_tarifa"))
             var desc=$(hijos[1]).html();
             var cant;
             var codigo=$(hijos[0]).html();
             var unidad;
             var rendimiento;
             var item;
-            for(i=2;i<hijos.length;i++){
+            var ct = ''
+            var cp = ''
+            var cj = ''
+
+           for(i=2;i<hijos.length;i++){
 
                 if($(hijos[i]).hasClass("cant"))
                     cant=$(hijos[i]).html();
@@ -1264,15 +1269,16 @@
                     unidad=$(hijos[i]).html();
                 if($(hijos[i]).hasClass("col_rend"))
                     rendimiento=$(hijos[i]).attr("valor");
-                if($(hijos[i]).hasClass("col_tarifa"));
-                    item=$(hijos[i]).attr("id");
-                if($(hijos[i]).hasClass("col_precioUnit"));
-                    item=$(hijos[i]).attr("id");
-                if($(hijos[i]).hasClass("col_jornal"))
-                    item=$(hijos[i]).attr("id")
-
+                // if($(hijos[i]).hasClass("col_tarifa"));
+                //     ct=$(hijos[i]).attr("id");
+                // if($(hijos[i]).hasClass("col_precioUnit"));
+                //     cp=$(hijos[i]).attr("id");
+                // if($(hijos[i]).hasClass("col_jornal"))
+                //     cj=$(hijos[i]).attr("id")
             }
-            item=item.replace("i_","");
+
+           item = $(this).data("item");
+
             $("#item_cantidad").val(cant.toString().trim());
 
             if(rendimiento)
