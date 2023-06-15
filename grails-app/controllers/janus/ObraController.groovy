@@ -77,9 +77,10 @@ class ObraController {
 //        [1: 'Código', 2: 'Nombre', 3: 'Mem. Ingreso', 4: 'Mem. Salida', 5: 'Estado']
         def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo']
 
-        def select = "select obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
-                "from obra, parr, dpto "
-        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id "
+        def select = "select obra.obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
+                "from obra, parr, dpto, obof "
+        def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and " +
+                "obof.obra__id = obra.obra__id and obof.prsn__id = ${session.usuario.id}"
         def sqlTx = ""
         def bsca = listaObra[params.buscarPor.toInteger()-1]
         def ordn = listaObra[params.ordenar.toInteger()-1]

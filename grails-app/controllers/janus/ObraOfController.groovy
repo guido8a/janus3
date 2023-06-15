@@ -116,17 +116,17 @@ class ObraOfController {
         } else {
 //            obra = new Obra();
 //             si no se listan las obras, carga la primera obra que halle
-            obra = Obra.findByOferente(persona)
-            if (obra) {
-            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-            def volumen = VolumenesObra.findByObra(obra)
-            def formula = FormulaPolinomica.findByObra(obra)
-            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen, listaObra: listaObra]
-            } else {
-                [campos: campos, prov: prov,persona: persona, listaObra: listaObra]
-            }
+//            obra = Obra.findByOferente(persona)
+//            if (obra) {
+//            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+//            def volumen = VolumenesObra.findByObra(obra)
+//            def formula = FormulaPolinomica.findByObra(obra)
+//            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen, listaObra: listaObra]
+//            } else {
+//                [campos: campos, prov: prov,persona: persona, listaObra: listaObra]
+//            }
 
-//            [obra: obra, listaObra: listaObra]
+            [obra: obra, listaObra: listaObra]
         }
 
 
