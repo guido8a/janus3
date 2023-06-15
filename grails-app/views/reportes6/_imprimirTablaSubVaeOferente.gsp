@@ -337,7 +337,7 @@
 
             </tr>
             </thead>
-            <tbody id="tabla_material">
+            <tbody id="tabla_material2">
             <g:set var="total" value="${0}"/>
             <g:each in="${detalle}" var="vol" status="i">
 
@@ -405,4 +405,3 @@
 
 </body>
 </html>
-

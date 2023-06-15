@@ -1,3 +1,4 @@
+import janus.NumberToLetterConverter
 import janus.Obra
 import janus.ejecucion.Planilla
 import org.springframework.beans.SimpleTypeConverter
@@ -1131,5 +1132,23 @@ class ElementosTagLib {
         }
         out << g.formatNumber(attrs)
     }
+
+    Closure numberToLetter = {attrs ->
+        println "nt" + attrs
+        def number = attrs.numero?: 0
+        def dolares = attrs.dolares?: false
+
+        try{
+            number=number.toDouble()
+        }catch (e){
+            number=0
+        }
+        if(dolares){
+            out <<   NumberToLetterConverter.convertNumberToLetter(number)
+        }  else {
+            out <<   NumberToLetterConverter.numberToLetter(number)
+        }
+    }
+
 
 }
