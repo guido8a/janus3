@@ -956,13 +956,13 @@ class Reportes6Controller {
             def parcial = Math.round(precios[vol.id.toString()] * vol.cantidad*100)/100
             sum += parcial
 
-           label = new jxl.write.Label(1, fila,  ((vol.rutaCritica == 'S' ? "* " : "") + vol.item.codigo)?.toString()); sheet.addCell(label);
-           label = new jxl.write.Label(2, fila, vol.item.nombre); sheet.addCell(label);
-           label = new jxl.write.Label(3, fila, vol.item.unidad.codigo); sheet.addCell(label);
-           number = new jxl.write.Number(4, fila, vol.cantidad?.toDouble() ?: 0); sheet.addCell(number);
-           number = new jxl.write.Number(5, fila, precios[vol.id.toString()] ?: 0); sheet.addCell(number);
-           number = new jxl.write.Number(6, fila, parcial); sheet.addCell(number);
-           label = new jxl.write.Label(7, fila, '$'); sheet.addCell(label);
+            label = new jxl.write.Label(1, fila,  ((vol.rutaCritica == 'S' ? "* " : "") + vol.item.codigo)?.toString()); sheet.addCell(label);
+            label = new jxl.write.Label(2, fila, vol.item.nombre); sheet.addCell(label);
+            label = new jxl.write.Label(3, fila, vol.item.unidad.codigo); sheet.addCell(label);
+            number = new jxl.write.Number(4, fila, vol.cantidad?.toDouble() ?: 0); sheet.addCell(number);
+            number = new jxl.write.Number(5, fila, precios[vol.id.toString()] ?: 0); sheet.addCell(number);
+            number = new jxl.write.Number(6, fila, parcial); sheet.addCell(number);
+            label = new jxl.write.Label(7, fila, '$'); sheet.addCell(label);
             meses.times { i ->
                 def prec = cronos.find { it.periodo == i + 1 }
                 totalDolRow += (prec ? prec.precio : 0)
@@ -1203,10 +1203,10 @@ class Reportes6Controller {
         tablaIndi += "</table>"
 
         renderPdf(template:'/reportes6/imprimirRubroOferentes', model:  [rubro: rubro, tablaTrans: tablaTrans, band: band, bandMat: bandMat, tablaMat2: tablaMat2,
-             bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
-             tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obra2, oferente: oferente,
-             fechaOferta: fechaOferta, obraOferente: obraOferente, concurso: concurso, fechaEntregaOFerta: fechaEntregaOferta,
-             firma: firma], filename: 'rubrosOferentes.pdf')
+                                                                         bandTrans: bandTrans , tablaHer: tablaHer, tablaMano: tablaMano, tablaMat: tablaMat,
+                                                                         tablaIndi: tablaIndi, totalRubro: totalRubro, totalIndi: totalIndi, obra: obra2, oferente: oferente,
+                                                                         fechaOferta: fechaOferta, obraOferente: obraOferente, concurso: concurso, fechaEntregaOFerta: fechaEntregaOferta,
+                                                                         firma: firma], filename: 'rubrosOferentes.pdf')
     }
 
     def _imprimirRubroOferentesVae() {
@@ -1496,6 +1496,56 @@ class Reportes6Controller {
         def indirecto = obra.totales/100
 
         renderPdf(template:'/reportes6/imprimirTablaSubVaeOferente', model:   [detalle:detalle,precios:precios,subPres:subPres,subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso, fechaOferta: fechaOferta, firma: firma], filename: 'subPresupuestoVaeOferente.pdf')
+
+    }
+
+    def imprimirTablaSub(){
+//        println "imprimir tabla sub "+params
+        def obra = Obra.get(params.obra)
+        def detalle
+        def subPre
+        def orden
+        def fechaHoy = printFecha(new Date())
+        def oferente = Persona.get(params.oferente)
+        def sql = "SELECT * FROM cncr WHERE obra__id=${obra?.idJanus}"
+        def cn = dbConnectionService.getConnection()
+        def conc = cn.rows(sql.toString())
+        def cncrId
+
+        conc.each {
+            cncrId = it?.cncr__id
+        }
+
+        def concurso = janus.pac.Concurso.get(cncrId)
+//        def fechaOferta = printFecha(obra?.fechaOferta);
+        def fechaOferta = printFecha(new Date());
+        def firma = Persona.get(params.oferente).firma
+
+        if (params.ord == '1') {
+            orden = 'asc'
+        } else {
+            orden = 'desc'
+        }
+
+        preciosService.ac_rbroObra(obra.id)
+        if (params.sub && params.sub != "-1") {
+            detalle = preciosService.rbro_pcun_v5(obra.id, params.sub, 'asc')
+        } else {
+            detalle = preciosService.rbro_pcun_v4(obra.id, 'asc')
+        }
+
+        def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
+        def precios = [:]
+
+        if (params.sub != '-1'){
+            subPre= SubPresupuesto.get(params.sub).descripcion
+        }else {
+            subPre= -1
+        }
+
+        def indirecto = obra.totales/100
+
+        [detalle:detalle,precios:precios,subPres:subPres,subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso, fechaOferta: fechaOferta, firma: firma]
 
     }
 
