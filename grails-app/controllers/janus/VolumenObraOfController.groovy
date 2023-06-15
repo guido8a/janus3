@@ -8,7 +8,9 @@ class VolumenObraOfController {
     def volObra(){
 
         def obra = Obra.get(params.id)
-        def volumenes = VolumenesObra.findAllByObra(obra)
+//        def volumenes = VolumenesObra.findAllByObra(obra)
+        def volumenes = VolumenObraOferente.findAllByObra(obra)
+        println "vlof: ${volumenes.size()}"
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
 
@@ -78,12 +80,12 @@ class VolumenObraOfController {
 
         preciosService.ac_rbroObra(obra.id)
         if (params.sub && params.sub != "-1") {
-            valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
+            valores = preciosService.rbro_pcun_v5_of(obra.id, params.sub, orden)
         } else {
-            valores = preciosService.rbro_pcun_v4(obra.id, orden)
+            valores = preciosService.rbro_pcun_v4_of(obra.id, orden)
         }
 
-        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+        def subPres = VolumenObraOferente.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
         def estado = obra.estado
         def prch = 0
         def prvl = 0

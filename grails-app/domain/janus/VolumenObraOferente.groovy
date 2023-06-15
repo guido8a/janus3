@@ -7,7 +7,7 @@ class VolumenObraOferente {
     Obra obra
     double cantidad
     int orden
-    int subpresupuestoOrden
+//    int subpresupuestoOrden
     double precioUnitario
     double subtotal
     double dias
@@ -27,7 +27,7 @@ class VolumenObraOferente {
             item column: 'item__id'
             cantidad column: 'vlofcntd'
             orden column: 'vlofordn'
-            subpresupuestoOrden column: 'sbprordn'
+//            subpresupuestoOrden column: 'sbprordn'
             precioUnitario column: 'vlofpcun'
             subtotal column: 'vlofsbtt'
             dias column: 'vlofdias'
@@ -41,7 +41,7 @@ class VolumenObraOferente {
         item(blank: false, nullable: false)
         cantidad(blank: true, nullable: true)
         orden(blank: true, nullable: true)
-        subpresupuestoOrden(blank: true, nullable: true)
+//        subpresupuestoOrden(blank: true, nullable: true)
         precioUnitario(blank: true, nullable: true)
         subtotal(blank: true, nullable: true)
         dias(blank: true, nullable: true)
