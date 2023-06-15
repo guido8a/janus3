@@ -154,7 +154,7 @@
 
 
 
-    <g:if test="${subPre == -1}">
+%{--    <g:if test="${subPre == -1}">--}%
         <g:each in="${subPres}" var="sp" status="sub">
             <div style="font-size: 12px; font-weight: bold">${sp.descripcion}</div>
             <table class="table table-bordered table-striped table-condensed table-hover">
@@ -216,7 +216,7 @@
 
                             <td style="width: 60px;text-align: right" class="relativo"><g:formatNumber number="${vol.relativo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                             <td style="width: 50px;text-align: right" class="vae_rbro"><g:formatNumber number="${vol.vae_rbro}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                            <td style="width: 50px;text-align: right" class="vae_totl"><g:formatNumber number="${vol.vae_totl}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
+                            <td style="width: 50px;text-align: right" class="vae_totl"><g:formatNumber number="${vol.vae_totl ?: 100}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
 
                             <g:set var="total" value="${total.toDouble() + vol.totl}"/>
 
@@ -228,7 +228,7 @@
                             <g:hiddenField name="totalRelativo2" value="${totalRelativo2 = totalR2+=totalRelativo1}"/>
                             <g:hiddenField name="finalRelativo" value="${finalRelativo = totalR1 += totalRelativo1}"/>
 
-                            <g:hiddenField name="totalVae1" value="${totalVae1 = vol.vae_totl}"/>
+                            <g:hiddenField name="totalVae1" value="${totalVae1 = (vol.vae_totl ?: 100)}"/>
                             <g:hiddenField name="totalVae2" value="${totalVae2 = totalV2 += totalVae1}"/>
                             <g:hiddenField name="finalVae" value="${finalVae = totalV1 += totalVae1}"/>
 
@@ -295,110 +295,109 @@
         </div>
 
 
-    </g:if>
+%{--    </g:if>--}%
 
-    <g:else>
+%{--    <g:else>--}%
 
-        <table class="table table-bordered table-striped table-condensed table-hover">
-            <thead>
-            <tr class="theaderBot thederup padTopBot">
-                <th colspan="11" class="theaderBot theaderup padTopBot">
-                <th style="width: 35px;" >
-                    Código (cpc)
-                </th>
-                <th style="width: 20px;" >
-                    N°
-                </th>
-                <th style="width: 80px;" >
-                    Rubro
-                </th>
-                <th style="width: 450px;" >
-                    Componente del proyecto/Item
-                </th>
-                <th style="width: 60px;" class="col_unidad ">
-                    Unidad
-                </th>
-                <th style="width: 80px;">
-                    Cantidad
-                </th>
-                <th class="col_precio " style="width:80px ;">P. U.</th>
-                <th class="col_total  " style="width:80px;">C.Total</th>
+%{--        <table class="table table-bordered table-striped table-condensed table-hover">--}%
+%{--            <thead>--}%
+%{--            <tr class="theaderBot thederup padTopBot">--}%
+%{--                <th colspan="11" class="theaderBot theaderup padTopBot">--}%
+%{--                <th style="width: 35px;" >--}%
+%{--                    Código (cpc)--}%
+%{--                </th>--}%
+%{--                <th style="width: 20px;" >--}%
+%{--                    N°--}%
+%{--                </th>--}%
+%{--                <th style="width: 80px;" >--}%
+%{--                    Rubro--}%
+%{--                </th>--}%
+%{--                <th style="width: 450px;" >--}%
+%{--                    Componente del proyecto/Item--}%
+%{--                </th>--}%
+%{--                <th style="width: 60px;" class="col_unidad ">--}%
+%{--                    Unidad--}%
+%{--                </th>--}%
+%{--                <th style="width: 80px;">--}%
+%{--                    Cantidad--}%
+%{--                </th>--}%
+%{--                <th class="col_precio " style="width:80px ;">P. U.</th>--}%
+%{--                <th class="col_total  " style="width:80px;">C.Total</th>--}%
 
-                <th style="width: 60px;" >
-                    Peso Relativo
-                </th>
-                <th style="width: 40px;" >
-                    VAE Rubro
-                </th>
-                <th style="width: 40px;">
-                    VAE Total
-                </th>
-            </th>
+%{--                <th style="width: 60px;" >--}%
+%{--                    Peso Relativo--}%
+%{--                </th>--}%
+%{--                <th style="width: 40px;" >--}%
+%{--                    VAE Rubro--}%
+%{--                </th>--}%
+%{--                <th style="width: 40px;">--}%
+%{--                    VAE Total--}%
+%{--                </th>--}%
+%{--            </th>--}%
 
-            </tr>
-            </thead>
-            <tbody id="tabla_material2">
-            <g:set var="total" value="${0}"/>
-            <g:each in="${detalle}" var="vol" status="i">
-
-                <tr class="item_row" id="${vol.id}" item="${vol.item.id}" sub="${vol.subPresupuesto.id}">
-                    <td style="width: 50px" class="cpc"></td>
-                    <td style="width: 20px" class="orden">${vol.orden}</td>
-                    <td style="width: 60px" class="cdgo">${vol.item.codigo}</td>
-                    <td style="width: 450px" class="nombre">${vol.item.nombre.replaceAll("<","(Menor)").replaceAll(">","(Mayor)")}</td>
-                    <td style="width: 60px !important;text-align: center" class="col_unidad">${vol.item.unidad.codigo}</td>
-                    <td style="text-align: right; width: 80px" class="cant">
-                        <g:formatNumber number="${vol.cantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>
-                    </td>
-                    <td class="col_precio" style="width:80px;text-align: right" id="i_${vol.item.id}"><g:formatNumber number="${precios[vol.id.toString()]}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                    <td class="col_total total" style="width:80px;text-align: right"><g:formatNumber number="${precios[vol.id.toString()]*vol.cantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-
-                    <td style="width: 60px;text-align: right" class="relativo"><g:formatNumber number="${vol.relativo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                    <td style="width: 50px;text-align: right" class="vae_rbro"><g:formatNumber number="${vol.vae_rbro}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-                    <td style="width: 50px;text-align: right" class="vae_totl"><g:formatNumber number="${vol.vae_totl}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-
-                    <g:set var="total" value="${total.toDouble()+(precios[vol.id.toString()]*vol.cantidad)}"/>
-                </tr>
-
-            </g:each>
-            <tr>
-                <td colspan="5"></td>
-                <td><b>Total:</b></td>
-                <td style="text-align: right"><g:formatNumber number="${total}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
-            </tr>
-            </tbody>
-        </table>
+%{--            </tr>--}%
+%{--            </thead>--}%
+%{--            <tbody id="tabla_material2">--}%
+%{--            <g:set var="total" value="${0}"/>--}%
+%{--            <g:each in="${detalle}" var="vol" status="i">--}%
 
 
-        <div class="tituloPdf">
+%{--                <tr class="item_row" id="${vol.id}" item="${vol.item.id}" sub="${vol.subPresupuesto.id}">--}%
+%{--                    <td style="width: 50px" class="cpc"></td>--}%
+%{--                    <td style="width: 20px" class="orden">${vol.orden}</td>--}%
+%{--                    <td style="width: 60px" class="cdgo">${vol.item.codigo}</td>--}%
+%{--                    <td style="width: 450px" class="nombre">${vol.item.nombre.replaceAll("<","(Menor)").replaceAll(">","(Mayor)")}</td>--}%
+%{--                    <td style="width: 60px !important;text-align: center" class="col_unidad">${vol.item.unidad.codigo}</td>--}%
+%{--                    <td style="text-align: right; width: 80px" class="cant">--}%
+%{--                        <g:formatNumber number="${vol.cantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/>--}%
+%{--                    </td>--}%
+%{--                    <td class="col_precio" style="width:80px;text-align: right" id="i_${vol.item.id}"><g:formatNumber number="${precios[vol.id.toString()]}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
+%{--                    <td class="col_total total" style="width:80px;text-align: right"><g:formatNumber number="${precios[vol.id.toString()]*vol.cantidad}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
+
+%{--                    <td style="width: 60px;text-align: right" class="relativo"><g:formatNumber number="${vol.relativo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
+%{--                    <td style="width: 50px;text-align: right" class="vae_rbro"><g:formatNumber number="${vol.vae_rbro}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
+%{--                    <td style="width: 50px;text-align: right" class="vae_totl"><g:formatNumber number="${vol.vae_totl}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
+
+%{--                    <g:set var="total" value="${total.toDouble()+(precios[vol.id.toString()]*vol.cantidad)}"/>--}%
+%{--                </tr>--}%
 
 
-            <p style="font-size: 14px; text-align: left">
-                NOTA: ESTOS PRECIOS NO INCLUYEN IVA
-            </p>
-
-            <p style="font-size: 14px; text-align: left">
-                <g:set var="valor" value="${total.toDouble().round(2)}"/>
-                PRECIO TOTAL DE LA OFERTA USD <b><elm:numberToLetter numero="${valor}" dolares="true"/></b>, MÁS IVA.
-
-            </p>
-
-
-            <p style="font-size: 14px; text-align: left; margin-top: 40px; margin-bottom: 60px">
-                Quito, <b>${fechaOferta}</b>
-            </p>
-
-            <p style="text-align: left">
-                _____________________________________
-            </p>
+%{--            </g:each>--}%
+%{--            <tr>--}%
+%{--                <td colspan="5"></td>--}%
+%{--                <td><b>Total:</b></td>--}%
+%{--                <td style="text-align: right"><g:formatNumber number="${total}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>--}%
+%{--            </tr>--}%
+%{--            </tbody>--}%
+%{--        </table>--}%
 
 
-            <p style="font-size: 14px; text-align: left; margin-bottom: 50px">
-                FIRMA DEL RESPONSABLE.
-            </p>
+%{--        <div class="tituloPdf">--}%
 
-        </div>
-    </g:else>
+%{--            <p style="font-size: 14px; text-align: left">--}%
+%{--                NOTA: ESTOS PRECIOS NO INCLUYEN IVA--}%
+%{--            </p>--}%
+
+%{--            <p style="font-size: 14px; text-align: left">--}%
+%{--                <g:set var="valor" value="${total.toDouble().round(2)}"/>--}%
+%{--                PRECIO TOTAL DE LA OFERTA USD <b><elm:numberToLetter numero="${valor}" dolares="true"/></b>, MÁS IVA.--}%
+%{--            </p>--}%
+
+
+%{--            <p style="font-size: 14px; text-align: left; margin-top: 40px; margin-bottom: 60px">--}%
+%{--                Quito, <b>${fechaOferta}</b>--}%
+%{--            </p>--}%
+
+%{--            <p style="text-align: left">--}%
+%{--                _____________________________________--}%
+%{--            </p>--}%
+
+%{--            <p style="font-size: 14px; text-align: left; margin-bottom: 50px">--}%
+%{--                FIRMA DEL RESPONSABLE.--}%
+%{--            </p>--}%
+
+%{--        </div>--}%
+%{--    </g:else>--}%
 </div>
 
 

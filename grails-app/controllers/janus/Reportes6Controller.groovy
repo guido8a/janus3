@@ -1486,7 +1486,7 @@ class Reportes6Controller {
             detalle = preciosService.vae_sub(obra.id)
         }
 
-        def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
+        def subPres = VolumenObraOferente.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
         def precios = [:]
         if (params.sub != '-1'){
             subPre= SubPresupuesto.get(params.sub).descripcion
