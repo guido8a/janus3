@@ -173,6 +173,7 @@ class VolumenObraController {
         def itemVolumen = VolumenesObra.findByItemAndSubPresupuestoAndObra(rubro, sbpr, obra)
         def itemVolumenDest = VolumenesObra.findByItemAndSubPresupuestoAndObra(rubro, sbprDest, obra)
         def volumen
+        def cont = 10000
 //        def volu = VolumenesObra.list()
 
             if (itemVolumenDest) {
@@ -192,7 +193,7 @@ class VolumenObraController {
         }
 
 //        volumen.orden = (volu.orden.size().toInteger()) + 1
-        volumen.orden = 10000
+        volumen.orden = cont++
         volumen.subPresupuesto = SubPresupuesto.get(params.subDest)
         volumen.obra = obra
         volumen.item = rubro
