@@ -117,37 +117,37 @@
     %{--});--}%
 
 
-    %{--$("#copiar_todos").click(function () {--}%
+    $("#copiar_todos").click(function () {
 
-    %{--    var tbody = $("#tabla_material");--}%
-    %{--    var datos--}%
-    %{--    var subPresDest = $("#subPres_destino").val()--}%
-    %{--    var subPre = $("#subPres_desc").val()--}%
+        var tbody = $("#tabla_material");
+        var datos
+        var subPresDest = $("#subPres_destino").val()
+        var subPre = $("#subPres_desc").val()
 
-    %{--    if(subPre == "" || subPresDest == ""){--}%
-    %{--        $("#faltaOrigenDialog").dialog("open")--}%
-    %{--        $(".ui-dialog-titlebar-close").html("x")--}%
-    %{--    } else {--}%
+        if(subPre == "" || subPresDest == ""){
+            $("#faltaOrigenDialog").dialog("open")
+            $(".ui-dialog-titlebar-close").html("x")
+        } else {
 
-    %{--        tbody.children("tr").each(function () {--}%
+            tbody.children("tr").each(function () {
 
-    %{--            var trId = $(this).attr("id")--}%
+                var trId = $(this).attr("id")
 
-    %{--            datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre--}%
+                datos ="rubro=" + trId + "&subDest=" + subPresDest + "&obra=" + ${obra.id} + "&sub=" + subPre
 
-    %{--            $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",--}%
-    %{--                data     : datos,--}%
-    %{--                success  : function (msg) {--}%
-    %{--                    $("#detalle").html(msg)--}%
+                $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'copiarItem')}",
+                    data     : datos,
+                    success  : function (msg) {
+                        $("#detalle").html(msg)
 
-    %{--                }--}%
-    %{--            });--}%
+                    }
+                });
 
 
-    %{--        });--}%
-    %{--    }--}%
+            });
+        }
 
-    %{--});--}%
+    });
 
     function copiar() {
         var d = cargarLoader("Copiando...");

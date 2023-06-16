@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-6">
         <b>Subpresupuesto de destino:</b>
-        <g:select name="subpresupuestoDes" from="${subPres}" class="form-control" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"
+        <g:select name="subpresupuestoDes" from="${janus.SubPresupuesto.list([order: 'descipcion'])}" class="form-control" optionKey="${{it.id}}" optionValue="${{it.descripcion}}"
                   style="width: 300px;font-size: 10px;" id="subPres_destino"
                   noSelection="['' : ' - Seleccione un subpresupuesto - ']" />
     </div>

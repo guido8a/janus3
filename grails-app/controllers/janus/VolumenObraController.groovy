@@ -170,10 +170,10 @@ class VolumenObraController {
         def rubro = Item.get(params.rubro)
         def sbprDest = SubPresupuesto.get(params.subDest)
         def sbpr = SubPresupuesto.get(params.sub)
-        def itemVolumen = VolumenesObra.findByItemAndSubPresupuesto(rubro, sbpr)
+        def itemVolumen = VolumenesObra.findByItemAndSubPresupuestoAndObra(rubro, sbpr, obra)
         def itemVolumenDest = VolumenesObra.findByItemAndSubPresupuestoAndObra(rubro, sbprDest, obra)
         def volumen
-        def volu = VolumenesObra.list()
+//        def volu = VolumenesObra.list()
 
             if (itemVolumenDest) {
                 render "no_No se puede copiar el rubro, ya existe en el subpresupuesto de destino"
@@ -191,7 +191,8 @@ class VolumenObraController {
             volumen.cantidad = itemVolumen.cantidad.toDouble()
         }
 
-        volumen.orden = (volu.orden.size().toInteger()) + 1
+//        volumen.orden = (volu.orden.size().toInteger()) + 1
+        volumen.orden = 10000
         volumen.subPresupuesto = SubPresupuesto.get(params.subDest)
         volumen.obra = obra
         volumen.item = rubro
