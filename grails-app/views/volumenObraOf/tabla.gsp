@@ -141,27 +141,8 @@
     });
 
     $("#imprimir_sub").click(function(){
-
-        %{--if ($("#subPres_desc").val() !== '') {--}%
-
-        %{--    var dsps =--}%
-        %{--    ${obra.distanciaPeso}--}%
-        %{--    var dsvs =--}%
-        %{--    ${obra.distanciaVolumen}--}%
-        %{--    var volqueta =--}%
-        %{--    ${precioVol}--}%
-        %{--    var chofer =--}%
-        %{--    ${precioChof}--}%
-        %{--    var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val() + "Woferente=${session.usuario.id}"--}%
-        %{--    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSub')}" + datos--}%
-        %{--    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-        %{--} else {--}%
-
-        %{--    alert("Escoja un subpresupuesto")--}%
-        %{--}--}%
-
         if ($("#subPres_desc").val() !== '') {
-            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirTablaSubVaeOferente')}?obra=" + "${obra.id}&sub=" +  $("#subPres_desc").val() + "&oferente=" + ${session.usuario.id};
+            location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirTablaSubOferente')}?obra=" + "${obra.id}&sub=" +  $("#subPres_desc").val() + "&oferente=" + ${session.usuario.id};
         } else {
             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
@@ -169,38 +150,15 @@
     });
 
     $("#imprimir_sub_vae").click(function(){
-
-        %{--if ($("#subPres_desc").val() != '') {--}%
-
-        %{--    var dsps =--}%
-        %{--    ${obra.distanciaPeso}--}%
-        %{--    var dsvs =--}%
-        %{--    ${obra.distanciaVolumen}--}%
-        %{--    var volqueta =--}%
-        %{--    ${precioVol}--}%
-        %{--    var chofer =--}%
-        %{--    ${precioChof}--}%
-        %{--    var datos = "?obra=${obra.id}Wsub=" + $("#subPres_desc").val() + "Woferente=${session.usuario.id}"--}%
-        %{--    var url = "${g.createLink(controller: 'reportes3',action: 'imprimirTablaSubVae')}" + datos--}%
-        %{--    location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-        %{--} else {--}%
-
-        %{--    alert("Escoja un subpresupuesto")--}%
-        %{--}--}%
-
         if ($("#subPres_desc").val() !== '') {
             location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirTablaSubVaeOferente')}?obra=" + "${obra.id}&sub=" +  $("#subPres_desc").val() + "&oferente=" + ${session.usuario.id};
         } else {
             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }
-
-
-
     });
 
     $("#imprimir_excel").click(function () {
-        location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteExcelVolObra')}?id=" + ${obra?.id} + "&sub=" + $("#subPres_desc").val();
-        %{--location.href = "${g.createLink(controller: 'reportes',action: 'reporteExcelVolObra',params:[id: obra?.id,oferente:session.usuario.id])}";--}%
+        location.href = "${g.createLink(controller: 'reportesExcel2',action: 'reporteExcelVolObraOferente')}?id=" + ${obra?.id} + "&sub=" + $("#subPres_desc").val() + "&oferente=" + ${session.usuario.id};
     });
 
 

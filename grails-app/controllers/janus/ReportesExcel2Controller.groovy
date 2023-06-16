@@ -2189,4 +2189,139 @@ class ReportesExcel2Controller {
         wb.write(output)
     }
 
+
+    def reporteExcelVolObraOferente() {
+
+        def obra = Obra.get(params.id)
+        def oferente = Persona.get(params.oferente)
+        def obraOferente = ObraOferente.findByObraAndOferente(obra, oferente)
+        def sql = "SELECT * FROM cncr WHERE obra__id=${obra?.id}"
+
+        def cn = dbConnectionService.getConnection()
+        def conc = cn.rows(sql.toString())
+
+        def cncrId
+
+        conc.each {
+            cncrId = it?.cncr__id
+        }
+
+        def concurso = obraOferente.concurso
+        def detalle = VolumenObraOferente.findAllByObra(obra, [sort: "orden"])
+//        def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+
+        def precios = [:]
+
+        def indirecto = obra.totales / 100
+        def total1 = 0;
+        def totales
+        def totalPresupuesto = 0;
+
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("VOL OBRA")
+        sheet.setColumnWidth(0, 20 * 256)
+        sheet.setColumnWidth(1, 15 * 256)
+        sheet.setColumnWidth(2, 15 * 256)
+        sheet.setColumnWidth(3, 15 * 256)
+        sheet.setColumnWidth(4, 15 * 256)
+        sheet.setColumnWidth(5, 15 * 256)
+        sheet.setColumnWidth(6, 15 * 256)
+        sheet.setColumnWidth(7, 15 * 256)
+        sheet.setColumnWidth(8, 15 * 256)
+        sheet.setColumnWidth(9, 15 * 256)
+        sheet.setColumnWidth(10, 15 * 256)
+        sheet.setColumnWidth(11, 15 * 256)
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue("NOMBRE DEL OFERENTE: " + (oferente?.nombre?.toUpperCase() ?: '') + " " + (oferente?.apellido?.toUpperCase() ?: ''))
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("PROCESO: " + (concurso?.codigo ?: ''))
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue("TABLA DE DESCRIPCIÓN DE RUBROS, UNIDADES, CANTIDADES Y PRECIOS")
+        row2.setRowStyle(style)
+        Row row21 = sheet.createRow(4)
+        row21.createCell(1).setCellValue("GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE PICHINCHA")
+        row21.setRowStyle(style)
+        Row row3 = sheet.createRow(5)
+        row3.createCell(1).setCellValue("NOMBRE DEL PROYECTO: " + (obra?.nombre?.toUpperCase() ?: ''))
+        row3.setRowStyle(style)
+
+        params.id = params.id.split(",")
+        if (params.id.class == java.lang.String) {
+            params.id = [params.id]
+        }
+
+        def label
+        def number
+        def nmro
+        def numero = 1;
+        def fila = 7;
+        def ultimaFila
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("N°")
+        rowC1.createCell(1).setCellValue("RUBRO")
+        rowC1.createCell(2).setCellValue("SUBPRESUPUESTO")
+        rowC1.createCell(3).setCellValue("COMPONENTE DEL PROYECTO/ITEM")
+        rowC1.createCell(4).setCellValue("UNIDAD")
+        rowC1.createCell(5).setCellValue("CANTIDAD")
+        rowC1.createCell(6).setCellValue("UNITARIO")
+        rowC1.createCell(7).setCellValue("C.TOTAL")
+        rowC1.setRowStyle(style)
+        fila++
+
+        detalle.each {
+
+            def res = preciosService.presioUnitarioVolumenObraOferente("sum(parcial)+sum(parcial_t) precio ", it.item.id, obra?.id)
+            def precio = 0
+
+            if (res["precio"][0] != null && res["precio"][0] != "null")
+                precio = res["precio"][0]
+            precios.put(it.id.toString(), (precio + precio * indirecto).toDouble().round(2))
+
+            def precioUnitario = precios[it.id.toString()];
+            def subtotal = precios[it.id.toString()] * it.cantidad;
+
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(numero++)
+            rowF1.createCell(1).setCellValue(it?.item?.codigo?.toString() ?: '')
+            rowF1.createCell(2).setCellValue(it?.subPresupuesto?.descripcion?.toString() ?: '')
+            rowF1.createCell(3).setCellValue(it?.item?.nombre?.toString() ?: '')
+            rowF1.createCell(4).setCellValue(it?.item?.unidad?.codigo?.toString() ?: '')
+            rowF1.createCell(5).setCellValue(it?.cantidad ?: 0)
+            rowF1.createCell(6).setCellValue(precioUnitario?.toDouble()?.round(2) ?: 0)
+            rowF1.createCell(7).setCellValue(subtotal?.toDouble()?.round(2) ?: 0)
+
+            fila++
+            totales = precios[it.id.toString()] * it.cantidad
+            totalPresupuesto = (total1 += totales);
+            ultimaFila = fila
+        }
+
+        Row rowT = sheet.createRow(fila)
+        rowT.createCell(6).setCellValue("TOTAL")
+        rowT.createCell(7).setCellValue(totalPresupuesto?.toDouble()?.round(2) ?: 0)
+        rowT.setRowStyle(style)
+        fila++
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "volObraExcelOferente.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+
+    }
+
+
+
 }

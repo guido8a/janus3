@@ -1496,7 +1496,7 @@ class Reportes6Controller {
 
         def indirecto = obra.totales/100
 
-        println "detalle; $detalle"
+//        println "detalle; $detalle"
 
         renderPdf(template:'/reportes6/imprimirTablaSubVaeOferente', model: [detalle:detalle,precios:precios,subPres:subPres,
              subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso,
@@ -1504,7 +1504,7 @@ class Reportes6Controller {
 
     }
 
-    def imprimirTablaSub(){
+    def _imprimirTablaSubOferente(){
 //        println "imprimir tabla sub "+params
         def obra = Obra.get(params.obra)
         def detalle
@@ -1512,16 +1512,17 @@ class Reportes6Controller {
         def orden
         def fechaHoy = printFecha(new Date())
         def oferente = Persona.get(params.oferente)
-        def sql = "SELECT * FROM cncr WHERE obra__id=${obra?.idJanus}"
+        def sql = "SELECT * FROM cncr WHERE obra__id=${obra?.id}"
         def cn = dbConnectionService.getConnection()
         def conc = cn.rows(sql.toString())
+        def obraOferente = ObraOferente.findByObraAndOferente(obra, oferente)
         def cncrId
 
         conc.each {
             cncrId = it?.cncr__id
         }
 
-        def concurso = janus.pac.Concurso.get(cncrId)
+        def concurso = obraOferente.concurso
 //        def fechaOferta = printFecha(obra?.fechaOferta);
         def fechaOferta = printFecha(new Date());
         def firma = Persona.get(params.oferente).firma
@@ -1534,12 +1535,12 @@ class Reportes6Controller {
 
         preciosService.ac_rbroObra(obra.id)
         if (params.sub && params.sub != "-1") {
-            detalle = preciosService.rbro_pcun_v5(obra.id, params.sub, 'asc')
+            detalle = preciosService.rbro_pcun_v5_of(obra.id, params.sub, orden)
         } else {
-            detalle = preciosService.rbro_pcun_v4(obra.id, 'asc')
+            detalle = preciosService.rbro_pcun_v4_of(obra.id, orden)
         }
 
-        def subPres = VolumenesObra.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
+        def subPres = VolumenObraOferente.findAllByObra(obra,[sort:"orden"]).subPresupuesto.unique()
         def precios = [:]
 
         if (params.sub != '-1'){
@@ -1550,7 +1551,9 @@ class Reportes6Controller {
 
         def indirecto = obra.totales/100
 
-        [detalle:detalle,precios:precios,subPres:subPres,subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso, fechaOferta: fechaOferta, firma: firma]
+        println("detalle " + detalle)
+
+        renderPdf(template:'/reportes6/imprimirTablaSubOferente', model:[detalle:detalle,precios:precios,subPres:subPres,subPre:subPre,obra: obra,indirectos:indirecto*100, oferente: oferente, fechaHoy: fechaHoy, concurso: concurso, fechaOferta: fechaOferta, firma: firma], filename: 'presupuesto.pdf')
 
     }
 

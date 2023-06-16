@@ -813,5 +813,16 @@ class PreciosService {
 
     }
 
+    def presioUnitarioVolumenObraOferente(select, item, obra) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select ${select} from rb_precios_of(${item}, ${obra}) order by grpocdgo desc"
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
+
 
 }
