@@ -325,19 +325,19 @@
         </a>
 %{--        <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>--}%
 
-        <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btn btnFormula"
-                params="[obra: obra?.id]" title="Coeficientes">
-            Fórmula Pol.
-        </g:link>
+%{--        <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btn btnFormula"--}%
+%{--                params="[obra: obra?.id]" title="Coeficientes">--}%
+%{--            Fórmula Pol.--}%
+%{--        </g:link>--}%
 
-        <a href="#" id="btnRubros" class="btn"><i class="fa fa-money-bill"></i> Rubros</a>
-        <a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}" class="btn"><i
-                class="fa fa-calendar"></i> Cronograma
-        </a>
+%{--        <a href="#" id="btnRubros" class="btn"><i class="fa fa-money-bill"></i> Rubros</a>--}%
+%{--        <a href="${g.createLink(controller: 'cronograma', action: 'cronogramaObra', id: obra?.id)}" class="btn"><i--}%
+%{--                class="fa fa-calendar"></i> Cronograma--}%
+%{--        </a>--}%
 
-        <g:link controller="variables" action="composicion" id="${obra?.id}" class="btn"><i
-                class="fa fa-paste"></i> Composición
-        </g:link>
+%{--        <g:link controller="variables" action="composicion" id="${obra?.id}" class="btn"><i--}%
+%{--                class="fa fa-paste"></i> Composición--}%
+%{--        </g:link>--}%
 
         <a href="#" id="btnMapa" class="btn"><i class="fa fa-map-marker"></i> Mapa</a>
     </div>
