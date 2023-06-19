@@ -463,13 +463,13 @@
 
 
 <g:if test="${obra}">
-    <div class="modal hide fade mediumModal" id="modal-matriz" style=";overflow: hidden;">
-        <div class="modal-header btn-primary">
-            <button type="button" class="close" data-dismiss="modal">×</button>
+    <div id="modal-matriz" style=";overflow: hidden;">
+%{--        <div class="modal-header btn-primary">--}%
+%{--            <button type="button" class="close" data-dismiss="modal">×</button>--}%
 
-            <h3 id="modal_title_matriz">
-            </h3>
-        </div>
+%{--            <h3 id="modal_title_matriz">--}%
+%{--            </h3>--}%
+%{--        </div>--}%
 
         <div class="modal-body" id="modal_body_matriz">
             <div id="msg_matriz">
@@ -484,15 +484,13 @@
                     </g:if>
                 </g:else>
                 <p>Desea generar la matriz? Esta acción podria tomar varios minutos</p>
-                <a href="#" class="btn btn-info" id="no">No</a>
-                <a href="#" class="btn btn-danger" id="si">Si</a>
-                <a href="#" class="btn btn-info" data-dismiss="modal" id="cancela" style="margin-left: 400px;">Cancelar</a>
+                <a href="#" class="btn btn-info" id="no">No -> Ver la Matriz existente</a>
+                <a href="#" class="btn btn-azul" id="si">Si -> Generar Matriz</a>
+                <a href="#" class="btn" id="cancela" style="margin-left: 5px;"><i class="fa fa-times"></i> Cancelar</a>
 
             </div>
 
             <div id="datos_matriz" style="text-align: center">
-
-
                 <p>Haga clic en el botón Generar para iniciar el proceso</p>
                 <a href="#" class="btn btn-success" id="ok_matiz">Generar</a>
             </div>
@@ -688,11 +686,28 @@
             $("#modal_title_matriz").html("Generar matriz");
             $("#datos_matriz").hide();
             $("#msg_matriz").show();
-            $("#modal-matriz").modal("show")
-
+            $("#modal-matriz").dialog("open");
+            $(".ui-dialog-titlebar-close").html("x")
         });
+
+        $("#modal-matriz").dialog({
+            autoOpen: false,
+            resizable: true,
+            modal: true,
+            draggable: false,
+            width: 460,
+            height: 150,
+            position: 'center',
+            title: 'Matriz FP'
+        });
+
+        $("#cancela").click(function () {
+            $("#modal-matriz").dialog("close")
+        });
+
+
         $("#no").click(function () {
-            location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',id: obra?.id)}"
+            location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatrizOferentes',id: obra?.id)}"
         });
         $("#si").click(function () {
             $("#datos_matriz").show();
