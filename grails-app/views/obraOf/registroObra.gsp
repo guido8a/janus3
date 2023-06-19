@@ -25,12 +25,9 @@
     .botonReg {
         <g:if test="${obra?.estado == 'N'}">
             background-color: #5a7c56;
-            background-image: none;
         </g:if>
         <g:else>
             background-color: #7c4f39;
-            background-image: none;
-            
         </g:else>
         color: #fff;
     }
@@ -45,6 +42,7 @@
 
 <body>
 
+<h3 style="text-align: center">Oferentes - ${obra.nombre}</h3>
 
 <div class="row">
     <div class="span12 btn-group" role="navigation" style="margin-bottom: 15px;">
@@ -338,7 +336,7 @@
 
         <a href="#" id="btnVar" class="btn"><i class="fa fa-edit"></i> Variables</a>
         <a href="${g.createLink(controller: 'volumenObraOf', action: 'volObra', id: obra?.id)}" class="btn"><i
-                class="fa fa-list"></i> Vol. Obra
+                class="fa fa-list"></i> Volúmenes de Obra
         </a>
 %{--        <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>--}%
 
@@ -356,7 +354,7 @@
 %{--                class="fa fa-paste"></i> Composición--}%
 %{--        </g:link>--}%
 
-        <a href="#" id="btnMapa" class="btn"><i class="fa fa-map-marker"></i> Mapa</a>
+        <a href="#" id="btnMapa" class="btn"><i class="fa fa-map-marker"></i> Mapa de la obra</a>
     </div>
 </g:if>
 
