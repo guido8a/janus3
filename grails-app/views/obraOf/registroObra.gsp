@@ -323,7 +323,7 @@
         <a href="${g.createLink(controller: 'volumenObraOf', action: 'volObra', id: obra?.id)}" class="btn"><i
                 class="fa fa-list"></i> Vol. Obra
         </a>
-        <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>
+%{--        <a href="#" id="matriz" class="btn"><i class="fa fa-table"></i> Matriz FP</a>--}%
 
         <g:link controller="formulaPolinomica" action="insertarVolumenesItem" class="btn btnFormula"
                 params="[obra: obra?.id]" title="Coeficientes">
@@ -459,47 +459,6 @@
         </div>
     </fieldset>
 </div>
-
-
-
-<g:if test="${obra}">
-    <div id="modal-matriz" style=";overflow: hidden;">
-%{--        <div class="modal-header btn-primary">--}%
-%{--            <button type="button" class="close" data-dismiss="modal">×</button>--}%
-
-%{--            <h3 id="modal_title_matriz">--}%
-%{--            </h3>--}%
-%{--        </div>--}%
-
-        <div class="modal-body" id="modal_body_matriz">
-            <div id="msg_matriz">
-                <g:if test="${obra.desgloseTransporte == 'S'}">
-                    <p style="font-size: 14px; text-align: center;">Ya existe una matriz generada
-                    </p>
-                </g:if>
-                <g:else>
-                    <g:if test="${obra.desgloseTransporte == 'N'}">
-                        <p style="font-size: 14px; text-align: center;">Ya existe una matriz generada
-                        </p>
-                    </g:if>
-                </g:else>
-                <p>Desea generar la matriz? Esta acción podria tomar varios minutos</p>
-                <a href="#" class="btn btn-info" id="no">No -> Ver la Matriz existente</a>
-                <a href="#" class="btn btn-azul" id="si">Si -> Generar Matriz</a>
-                <a href="#" class="btn" id="cancela" style="margin-left: 5px;"><i class="fa fa-times"></i> Cancelar</a>
-
-            </div>
-
-            <div id="datos_matriz" style="text-align: center">
-                <p>Haga clic en el botón Generar para iniciar el proceso</p>
-                <a href="#" class="btn btn-success" id="ok_matiz">Generar</a>
-            </div>
-        </div>
-
-    </div>
-</g:if>
-
-
 
 <div id="listaObra" style="overflow: hidden">
     <fieldset class="borde" style="border-radius: 4px">
@@ -682,37 +641,6 @@
             }
         });
 
-        $("#matriz").click(function () {
-            $("#modal_title_matriz").html("Generar matriz");
-            $("#datos_matriz").hide();
-            $("#msg_matriz").show();
-            $("#modal-matriz").dialog("open");
-            $(".ui-dialog-titlebar-close").html("x")
-        });
-
-        $("#modal-matriz").dialog({
-            autoOpen: false,
-            resizable: true,
-            modal: true,
-            draggable: false,
-            width: 460,
-            height: 150,
-            position: 'center',
-            title: 'Matriz FP'
-        });
-
-        $("#cancela").click(function () {
-            $("#modal-matriz").dialog("close")
-        });
-
-
-        $("#no").click(function () {
-            location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatrizOferentes',id: obra?.id)}"
-        });
-        $("#si").click(function () {
-            $("#datos_matriz").show();
-            $("#msg_matriz").hide()
-        });
 
         $("#ok_matiz").click(function () {
             var sp = $("#mtariz_sub").val();

@@ -207,32 +207,4 @@ class MatrizController {
         render "ok"
     }
 
-    def pantallaMatrizOferentes(){
-        def obra = params.id
-        def cn = dbConnectionService.getConnection()
-        def sql = "SELECT clmncdgo,clmndscr,clmntipo from mfcl where obra__id = ${obra} order by  1"
-//        println "sql desc "+sql
-        def columnas = []
-
-        cn.eachRow(sql.toString()){r->
-            def col = ""
-            if (r[2] != "R") {
-                def parts = r[1].split("_")
-
-                try{
-                    col = Item.get(parts[0].toLong()).nombre
-
-                }catch (e){
-                    println "matriz controller l 37: "+"error: " + e
-                    col = parts[0]
-                }
-                col += " " + parts[1]?.replaceAll("T","<br/>Total")?.replaceAll("U","<br/>Unitario")
-            }
-
-            columnas.add([r[0], col, r[2]])
-        }
-        def titulo = Obra.get(obra).desgloseTransporte == "S" ? 'Matriz con desglose de Transporte' : 'Matriz sin desglose de Transporte'
-        [obra: obra, cols: columnas, titulo: titulo]
-    }
-
 }
