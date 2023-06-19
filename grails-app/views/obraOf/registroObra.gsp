@@ -22,6 +22,22 @@
     .bold {
         font-weight: bold;
     }
+    .botonReg {
+        <g:if test="${obra?.estado == 'N'}">
+            background-color: #5a7c56;
+            background-image: none;
+        </g:if>
+        <g:else>
+            background-color: #7c4f39;
+            background-image: none;
+            
+        </g:else>
+        color: #fff;
+    }
+    .botonReg:hover {
+        color: #fff;
+        font-weight: bold;
+    }    
     </style>
 
     <title>Registro de Obras</title>
@@ -35,9 +51,10 @@
         <button class="btn btn-primary" id="lista"><i class="fa fa-list"></i> Lista</button>
         <g:if test="${obra?.id != null}">
             <button class="btn btn-info" id="btnImprimir"><i class="fa fa-print"></i> Imprimir</button>
-            <g:if test="${obra?.estado == 'N'}">
-                <button class="btn btn-success" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
-            </g:if>
+            %{--<g:if test="${obra?.estado == 'N'}">--}%
+                %{--<button class="btn btn-success botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>--}%
+                <button class="btn botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
+            %{--</g:if>--}%
         </g:if>
     </div>
 </div>
@@ -1007,7 +1024,7 @@
 //                        estadoCambiado = 'R';
                         $.ajax({
                             type: "POST",
-                            url: "${g.createLink(action: 'regitrarObra')}",
+                            url: "${g.createLink(controller: 'obraOf', action: 'regitrarObra')}",
                             data: "id=${obra?.id}",
                             success: function (msg) {
                                 console.log(msg)
@@ -1037,7 +1054,7 @@
                         estadoCambiado = 'N';
                         $.ajax({
                             type: "POST",
-                            url: "${g.createLink(action: 'desregitrarObra')}",
+                            url: "${g.createLink(controller: 'obraOf', action: 'desregitrarObra')}",
                             data: "id=${obra?.id}",
                             success: function (msg) {
                                 if (msg != "ok") {

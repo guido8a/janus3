@@ -27,54 +27,21 @@ class ObraOfController {
 
 
     def regitrarObra() {
+        println "regitrarObra Oferentes: $params"
         def obra = Obra.get(params.id)
         def obrafp = new ObraFPController()
 
         def msg = ""
-        def vols = VolumenesObra.findAllByObra(obra)
+//        def vols = VolumenesObra.findAllByObra(obra)
+        def vols = VolumenObraOferente.findAllByObra(obra)
         if (vols.size() < 1) {
             msg = "Error: la obra no tiene volumenes de obra registrados"
             render msg
             return
         }
 
-/*
-        def crono = 0
-        vols.each {
-            def tmp = Cronograma.findAllByVolumenObra(it)
-            tmp.each { tm ->
-                crono += tm.porcentaje
-            }
-//            println "tmp "+tmp.volumenObra.id+"  "+tmp.porcentaje+"  "+tmp.precio+"  "+tmp.cantidad
-            println "crono $crono"
-            if (crono.toDouble().round(2) != 100.00) {
-                println "crono $crono, ${crono.toDouble().round(2)}"
-                msg += "<br><span class='label-azul'>Error:</span> La suma de porcentajes de el volumen de obra: ${it.item.codigo} (${crono.toDouble().round(2)}) en el cronograma es diferente de 100%"
-            }
-            crono = 0
-        }
-        if (msg != "") {
-            render msg
-            return
-        }
-*/
-
-/*
-        def fps = FormulaPolinomica.findAllByObra(obra)
-        def totalP = 0
-        fps.each { fp ->
-            if (fp.numero =~ "p") {
-                totalP += fp.valor
-            }
-        }
-        if (totalP.toDouble().round(6) != 1.000) {
-            render "La suma de los coeficientes de la formula polinómica (${totalP}) es diferente a 1.000"
-            return
-        }
-*/
-
-
-        obraService.registrarObra(obra)
+        println "...1"
+        obraService.registrarObra_of(obra)
         obra.estado = "R"
 
         println(obra.id)
