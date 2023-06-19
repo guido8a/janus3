@@ -76,67 +76,47 @@
     $.contextMenu({
         selector: '.item_row',
         callback: function(key, options) {
-            if(key=="edit"){
+            if(key==="edit"){
                 $(this).dblclick()
             }
-            if(key=="print"){
-                var dsps =
-                ${obra.distanciaPeso}
-                var dsvs =
-                ${obra.distanciaVolumen}
-                var volqueta =
-                ${precioVol}
-                var chofer =
-                ${precioChof}
+            if(key==="print"){
                 var clickImprimir = $(this).attr("id");
-                var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
-                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1+ "Woferente=${session.usuario.id}"
-                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObra')}" + datos
-                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-
+                var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}';
+                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida1+ "&oferente=${session.usuario.id}";
+                location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroVolObraOferente')}" + datos
             }
-            if(key=="vae"){
-                var dsps =
-                ${obra.distanciaPeso}
-                var dsvs =
-                ${obra.distanciaVolumen}
-                var volqueta =
-                ${precioVol}
-                var chofer =
-                ${precioChof}
+            if(key==="vae"){
                 var clickImprimir = $(this).attr("id");
-                var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}'
-                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}Wid=" + clickImprimir + "Wobra=${obra.id}" + "WfechaSalida=" + fechaSalida1+ "Woferente=${session.usuario.id}"
-                var url = "${g.createLink(controller: 'reportes3',action: 'imprimirRubroVolObraVae')}" + datos
-                location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url
-
+                var fechaSalida1 = '${obra.fechaOficioSalida?.format('dd-MM-yyyy')}';
+                var datos = "?fecha=${obra.fechaPreciosRubros?.format('dd-MM-yyyy')}&id=" + clickImprimir + "&obra=${obra.id}" + "&fechaSalida=" + fechaSalida1+ "&oferente=${session.usuario.id}"
+                location.href = "${g.createLink(controller: 'reportes6',action: '_imprimirRubroVolObraVaeOferente')}" + datos
             }
 
-            if (key == "foto") {
-                var datosFoto = "Wid=" + $(this).attr("item")
-                var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("item") +
-                        '?tipo=il', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
-                if (child.opener == null)
-                    child.opener = self;
-                window.toolbar.visible = false;
-                window.menubar.visible = false;
-            }
+            %{--if (key === "foto") {--}%
+            %{--    var datosFoto = "Wid=" + $(this).attr("item")--}%
+            %{--    var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("item") +--}%
+            %{--            '?tipo=il', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
+            %{--    if (child.opener == null)--}%
+            %{--        child.opener = self;--}%
+            %{--    window.toolbar.visible = false;--}%
+            %{--    window.menubar.visible = false;--}%
+            %{--}--}%
 
-            if (key == "espc") {
-                var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("item") +
-                        '?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');
-                if (child.opener == null)
-                    child.opener = self;
-                window.toolbar.visible = false;
-                window.menubar.visible = false;
-            }
+            %{--if (key === "espc") {--}%
+            %{--    var child = window.open('${createLink(controller:"rubro", action:"showFoto")}/' + $(this).attr("item") +--}%
+            %{--            '?tipo=dt', 'GADPP', 'width=850,height=800,toolbar=0,resizable=0,menubar=0,scrollbars=1,status=0');--}%
+            %{--    if (child.opener == null)--}%
+            %{--        child.opener = self;--}%
+            %{--    window.toolbar.visible = false;--}%
+            %{--    window.menubar.visible = false;--}%
+            %{--}--}%
         },
         items: {
 //            "edit": {name: "Editar", icon: "edit"},
             "print": {name: "Imprimir", icon: "print"},
             "vae": {name: "Imprimir Vae", icon: "print"},
-            "foto": {name: "Ilustración", icon: "doc"},
-            "espc": {name: "Especificaciones", icon: "doc"}
+            // "foto": {name: "Ilustración", icon: "doc"},
+            // "espc": {name: "Especificaciones", icon: "doc"}
         }
     });
 

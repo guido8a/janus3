@@ -404,7 +404,30 @@ class PreciosService {
         return result
     }
 
+    def ac_rbroV2Oferente(rubro, oferente) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from ac_rbro_hr1_of(" + rubro + ",'" + oferente + "') "
+//        println "sql ac rubro "+sql
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
 
+
+    def vae_rbOferente(obra, rubro){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from vae_rb_precios_of("+ rubro + ","+ obra +") order by grpocdgo desc "
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+
+    }
 
     def ac_rbroObra(obra) {
         def cn = dbConnectionService.getConnection()
@@ -742,7 +765,6 @@ class PreciosService {
         return result
     }
 
-
     def rubros_oferentes(rubro, oferente) {
         def cn = dbConnectionService.getConnection()
         println "llega: rubro: $rubro, oferente: $oferente"
@@ -783,7 +805,7 @@ class PreciosService {
 
 
     def rbro_pcun_v4_of(obra,orden){
-//        println("ordenv4:" + orden)
+        println("ordenv4:" + orden)
 
         def cn = dbConnectionService.getConnection()
         def sql = "select * from rbro_pcun_v2_of(" + obra + ") order by vlobordn ${orden}"
