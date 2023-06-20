@@ -169,17 +169,17 @@
     });
 
     $(".item_row").dblclick(function(){
-        $("#calcular").removeClass("active")
-        $(".col_precio").hide()
-        $(".col_total").hide()
-        $("#divTotal").html("")
-        $("#vol_id").val($(this).attr("id"))
-        $("#item_codigo").val($(this).find(".cdgo").html())
-        $("#item_id").val($(this).attr("item"))
-        $("#subPres").val($(this).attr("sub"))
-        $("#item_nombre").val($(this).find(".nombre").html())
-        $("#item_cantidad").val($(this).find(".cant").html().toString().trim())
-        $("#item_orden").val($(this).find(".orden").html() )
+        $("#calcular").removeClass("active");
+        $(".col_precio").hide();
+        $(".col_total").hide();
+        $("#divTotal").html("");
+        $("#vol_id").val($(this).attr("id"));
+        $("#item_codigo").val($(this).find(".cdgo").html());
+        $("#item_id").val($(this).attr("item"));
+        $("#subPres").val($(this).attr("sub"));
+        $("#item_nombre").val($(this).find(".nombre").html());
+        $("#item_cantidad").val($(this).find(".cant").html().toString().trim());
+        $("#item_orden").val($(this).find(".orden").html());
 
     });
 
