@@ -42,17 +42,17 @@
 
 <body>
 
-<h3 style="text-align: center">Oferentes - ${obra.nombre}</h3>
+<h3 style="text-align: center">Oferentes - ${obra?.nombre}</h3>
 
 <div class="row">
     <div class="span12 btn-group" role="navigation" style="margin-bottom: 15px;">
         <button class="btn btn-primary" id="lista"><i class="fa fa-list"></i> Lista</button>
         <g:if test="${obra?.id != null}">
             <button class="btn btn-info" id="btnImprimir"><i class="fa fa-print"></i> Imprimir</button>
-            %{--<g:if test="${obra?.estado == 'N'}">--}%
+            <g:if test="${obraOferente?.estado != 'C'}">
                 %{--<button class="btn btn-success botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>--}%
                 <button class="btn botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
-            %{--</g:if>--}%
+            </g:if>
         </g:if>
     </div>
 </div>

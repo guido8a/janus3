@@ -68,6 +68,7 @@ class ObraOfController {
     def registroObra() {
 
         def obra
+        def obraOferente
 
         def usuario = session.usuario.id
 
@@ -78,10 +79,11 @@ class ObraOfController {
         def listaObra = [1: 'Código', 2: 'Nombre', 5: 'Estado']
         if (params.obra) {
             obra = Obra.get(params.obra)
-            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-            def volumen = VolumenesObra.findByObra(obra)
-            def formula = FormulaPolinomica.findByObra(obra)
-            [campos: campos, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen, listaObra: listaObra]
+//            def subs = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
+//            def volumen = VolumenesObra.findByObra(obra)
+//            def formula = FormulaPolinomica.findByObra(obra)
+            obraOferente = ObraOferente.findByObraAndOferente(obra, persona)
+            [campos: campos, prov: prov, obra: obra, persona: persona, listaObra: listaObra, obraOferente: obraOferente]
         } else {
 //            obra = new Obra();
 //             si no se listan las obras, carga la primera obra que halle
