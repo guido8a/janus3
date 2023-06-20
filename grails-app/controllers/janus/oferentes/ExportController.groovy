@@ -78,9 +78,9 @@ from obra where obra__id = ${params.obra} returning obra__id
         println "inserta vlof: $sql"
         cn.execute(sql.toString())
 
-        sql = "insert into obof (obra__id, prsn__id, oboffcha, obrajnid, cncr__id) " +
+        sql = "insert into obof (obra__id, prsn__id, oboffcha, obrajnid, cncr__id, obofetdo) " +
                 "values( ${obra_id},  ${params.oferente}, '${new Date().format('yyyy-MM-dd HH:mm:ss')}', " +
-                "${params.obra}, ${concurso} )"
+                "${params.obra}, ${concurso}, 'N')"
         println "inserta obof: $sql"
         cn.execute(sql.toString())
 

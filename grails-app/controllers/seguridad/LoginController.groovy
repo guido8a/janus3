@@ -1,6 +1,7 @@
 package seguridad
 
 import janus.Parametros
+import java.security.MessageDigest
 
 class LoginController {
 
@@ -126,6 +127,51 @@ class LoginController {
             }
         }
         redirect(action: 'login')
+    }
+
+    def conectaRest() {
+        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/gochoa"
+        def usro = "gochoa"
+        def random = 'janus'
+        def fecha = new Date()
+        def fcha = fecha.format("yyy-MM-dd") + "T" + fecha.format("HH:mm:ss") + "-05:00"
+        def privKey = '808a068b96222be6'
+        def random64 = Base64.getEncoder().encodeToString(random.getBytes())
+        def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
+        println "rand: $random64, clave: $clave"
+        def passp = random +  fcha + privKey
+        MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
+
+        byte[] digest  = ms_sha1.digest(passp.getBytes())
+        def key = digest.encodeBase64()
+        println "key: ${digest.encodeBase64()}"
+
+        def post = new URL(url).openConnection();
+        def message = "{'identidadWs':  {" +
+            "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
+            "'currentTime': '${fcha}'," +
+            "'random': 'amFudXM='," +
+            "'key': '${key}'," +
+            "'user': '${usro}'," +
+            "'moduleCode': 'SEP-P01'}," +
+            "'clave': 'R0FEUFAvKjE0MDY='}"
+
+        message = message.replace("'", '"')
+//        println "$message"
+        post.setRequestMethod("POST")
+        post.setDoOutput(true)
+        post.setRequestProperty("Content-Type", "application/json")
+        post.getOutputStream().write(message.getBytes("UTF-8"));
+        def postRC = post.getResponseCode();
+
+        println "responde: ${postRC}"
+        println "responde2: ${post.getResponseMessage()}"
+
+        if (postRC.equals(200)) {
+            println(post.getInputStream().getText());
+        }
+
+        render("ok")
     }
 
     def login() {

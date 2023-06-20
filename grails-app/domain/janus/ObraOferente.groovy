@@ -11,6 +11,7 @@ class ObraOferente implements Auditable{
     Date fecha
     Obra idJanus
     Concurso concurso
+    String estado
 
     static auditable = true
 
@@ -27,6 +28,7 @@ class ObraOferente implements Auditable{
             oferente column: 'prsn__id'
             fecha column: 'oboffcha'
             concurso column: 'cncr__id'
+            estado column: 'obofetdo'
         }
     }
 
