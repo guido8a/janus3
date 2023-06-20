@@ -138,7 +138,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                 <div class="col-md-1"  style="width: 170px; margin-left: -60px">
                     Fecha Modificación
-                      <input aria-label="" name="rubro.fechaMod" id='fecha_modificacion' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
+                    <input aria-label="" name="rubro.fechaMod" id='fecha_modificacion' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
                 </div>
 
             </div>
@@ -423,23 +423,22 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid" style="margin-left: 20px">
-            <div class="col-md-2">
-                Tipo
-                <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"
-                          optionValue="value"/>
-            </div>
+%{--            <div class="col-md-2">--}%
+%{--                Tipo--}%
+%{--                <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"--}%
+%{--                          optionValue="value"/>--}%
+%{--            </div>--}%
             <div class="col-md-2">
                 Buscar Por
-                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
+                <g:select name="buscarPorComposicion" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
                           optionValue="value"/>
             </div>
-
             <div class="col-md-2">Criterio
-            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            <g:textField name="criterioComposicion" id="criterioComposicion" style="width: 80%"/>
             </div>
 
             <div class="col-md-2">Ordenado por
-            <g:select name="ordenar" class="ordenar" from="${listaItems}" style="width: 100%" optionKey="key"
+            <g:select name="ordenarComposicion" class="ordenar" from="${listaItems}" style="width: 100%" optionKey="key"
                       optionValue="value"/>
             </div>
             <div class="col-md-2" style="margin-top: 6px">
@@ -699,22 +698,22 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid" style="margin-left: 20px">
             %{--<div class="col-md-2">--}%
-                %{--Tipo--}%
-                %{--<g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"--}%
-                          %{--optionValue="value"/>--}%
+            %{--Tipo--}%
+            %{--<g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"--}%
+            %{--optionValue="value"/>--}%
             %{--</div>--}%
             <div class="col-md-2">
                 Buscar Por
-                <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
+                <g:select name="buscarPorLista" class="col-md-12" from="${listaItems}" optionKey="key"
                           optionValue="value"/>
             </div>
 
             <div class="col-md-2">Criterio
-            <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
+            <g:textField name="criterioLista" style="width: 80%"/>
             </div>
 
             <div class="col-md-2">Ordenado por
-            <g:select name="ordenar" class="ordenar" from="${listaItems}" style="width: 100%" optionKey="key"
+            <g:select name="ordenarLista" from="${listaItems}" style="width: 100%" optionKey="key"
                       optionValue="value"/>
             </div>
             <div class="col-md-2" style="margin-top: 6px">
@@ -1839,18 +1838,40 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         });
 
         $("#cnsl-rubros").click(function () {
-            buscaRubros(null);
+            buscaRubros();
         });
 
         $("#cnsl-rubros-composicion").click(function () {
-            buscaRubros("composicion");
+            buscaRubrosComposicion();
         });
 
-        function buscaRubros(band) {
-            var buscarPor = $("#buscarPor").val();
-            var tipo = $("#buscarTipo").val();
-            var criterio = $("#criterioCriterio").val();
-            var ordenar = $("#ordenar").val();
+        function buscaRubros() {
+            var buscarPor = $("#buscarPorLista").val();
+            // var tipo = $("#buscarTipo").val();
+            var criterio = $("#criterioLista").val();
+            var ordenar = $("#ordenarLista").val();
+            $.ajax({
+                type: "POST",
+                url: "${createLink(controller: 'rubro', action:'listaRubros')}",
+                data: {
+                    buscarPor: buscarPor,
+                    // buscarTipo: tipo,
+                    criterio: criterio,
+                    ordenar: ordenar,
+                    rubro: '${rubro?.id}'
+                },
+                success: function (msg) {
+                    $("#divTablaRbro").html(msg);
+                }
+            });
+        }
+
+
+        function buscaRubrosComposicion() {
+            var buscarPor = $("#buscarPorComposicion").val();
+            // var tipo = $("#buscarTipo").val();
+            var criterio = $("#criterioComposicion").val();
+            var ordenar = $("#ordenarComposicion").val();
             $.ajax({
                 type: "POST",
                 url: "${createLink(controller: 'rubro', action:'listaRubros')}",
@@ -1859,16 +1880,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     buscarTipo: tipo,
                     criterio: criterio,
                     ordenar: ordenar,
-                    band: band,
                     rubro: '${rubro?.id}'
                 },
                 success: function (msg) {
-                    if(band === 'composicion'){
-                        $("#divTablaRbroComposicion").html(msg);
-                    }else{
-                        $("#divTablaRbro").html(msg);
-                    }
-
+                    $("#divTablaRbroComposicion").html(msg);
                 }
             });
         }

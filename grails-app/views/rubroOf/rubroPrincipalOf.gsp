@@ -25,22 +25,7 @@
             Calcular
         </a>
     </g:if>
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" id="detalle" class="btn btn-ajax btn-new" >--}%
-%{--            <i class="icon-list"></i>--}%
-%{--            Especificaciones--}%
-%{--        </a>--}%
-
-%{--    </g:if>--}%
-%{--    <g:if test="${rubro}">--}%
-%{--        <a href="#" id="foto" class="btn btn-ajax btn-new" >--}%
-%{--            <i class="icon-picture"></i>--}%
-%{--            Ilustración--}%
-%{--        </a>--}%
-
-%{--    </g:if>--}%
 </div>
-
 
 <div class="span6 btn-group" role="navigation">
     <g:if test="${rubro}">
@@ -74,18 +59,18 @@
             <div class="linea" style="height: 80px;"></div>
 
             <div class="row-fluid">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label> Código </label>
                     <g:textField name="rubro.codigo" id="input_codigo" class="form-control"
                                  value="${rubro?.codigo ?: ''}" readonly="" />
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label> Especificación </label>
                     <g:textField name="rubro.codigoEspecificacion" id="input_codigo_es" class="form-control"
                                  value="${rubro?.codigoEspecificacion ?: ''}" readonly="" />
                 </div>
-                <div class="col-md-4" >
+                <div class="col-md-6" >
                     <label>Descripción</label>
                     <g:textField name="rubro.nombre" id="input_descripcion" class="form-control"
                                  value="${rubro?.nombre ?: ''}" readonly="" />
