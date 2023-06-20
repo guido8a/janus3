@@ -131,7 +131,7 @@ class RubroController {
     }
 
     def listaRubros(){
-//        println "listaItems" + params
+        println "listaRubros" + params
         def datos;
         def listaRbro = ['grpo__id', 'grpo__id', 'grpo__id']
         def listaItems = ['itemnmbr', 'itemcdgo']
@@ -147,7 +147,7 @@ class RubroController {
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by itemnmbr, ${ordn} limit 100 ".toString()
-//        println "sql: $sqlTx"
+        println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)

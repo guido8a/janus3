@@ -69,6 +69,7 @@ class ObraOfController {
 
         def obra
         def obraOferente
+        def titulo = "Obras Oferentes"
 
         def usuario = session.usuario.id
 
@@ -83,7 +84,8 @@ class ObraOfController {
 //            def volumen = VolumenesObra.findByObra(obra)
 //            def formula = FormulaPolinomica.findByObra(obra)
             obraOferente = ObraOferente.findByObraAndOferente(obra, persona)
-            [campos: campos, prov: prov, obra: obra, persona: persona, listaObra: listaObra, obraOferente: obraOferente]
+            titulo = "Oferentes - Obra: ${obra.nombre}"
+            [campos: campos, prov: prov, obra: obra, persona: persona, listaObra: listaObra, titulo: titulo]
         } else {
 //            obra = new Obra();
 //             si no se listan las obras, carga la primera obra que halle
@@ -97,7 +99,7 @@ class ObraOfController {
 //                [campos: campos, prov: prov,persona: persona, listaObra: listaObra]
 //            }
 
-            [obra: obra, listaObra: listaObra]
+            [obra: obra, listaObra: listaObra, titulo: titulo]
         }
 
 

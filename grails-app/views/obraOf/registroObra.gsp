@@ -24,7 +24,7 @@
     }
     .botonReg {
         <g:if test="${obra?.estado == 'N'}">
-            background-color: #5a7c56;
+            background-color: #2b6c7c;
         </g:if>
         <g:else>
             background-color: #7c4f39;
@@ -42,7 +42,7 @@
 
 <body>
 
-<h3 style="text-align: center">Oferentes - ${obra?.nombre}</h3>
+<h3 style="text-align: center">${titulo}</h3>
 
 <div class="row">
     <div class="span12 btn-group" role="navigation" style="margin-bottom: 15px;">
@@ -52,6 +52,9 @@
             <g:if test="${obraOferente?.estado != 'C'}">
                 %{--<button class="btn btn-success botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>--}%
                 <button class="btn botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
+            </g:if>
+            <g:if test="${obra?.estado == 'R'}">
+                <button class="btn btn-success" id="migrarObra"><i class="fa fa-retweet"></i> Migrar obra a Proyectos</button>
             </g:if>
         </g:if>
     </div>
