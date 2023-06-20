@@ -1554,8 +1554,8 @@ class ReportesExcel2Controller {
         def obra2 = Obra.get(params.obra.toLong())
         def oferente = Persona.get(params.oferente)
         def obraOferente = ObraOferente.findByOferente(oferente)
-        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus}"
-
+        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus.id}"
+        println "sql: $sql"
         def cn = dbConnectionService.getConnection()
         def conc = cn.rows(sql.toString())
         def cncrId
@@ -1833,7 +1833,7 @@ class ReportesExcel2Controller {
         def obra2 = Obra.get(params.obra.toLong())
         def oferente = Persona.get(params.oferente)
         def obraOferente = ObraOferente.findByOferente(oferente)
-        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus}"
+        def sql = "SELECT * FROM cncr WHERE obra__id=${obraOferente?.idJanus.id}"
 
         def cn = dbConnectionService.getConnection()
         def conc = cn.rows(sql.toString())
