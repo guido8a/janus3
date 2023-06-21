@@ -39,7 +39,8 @@
         if(${tipo == 'composicion'}){
             bootbox.confirm({
                 title: "Copiar Composición",
-                message:  '<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' +  "Está seguro de copiar la composición de este rubro?" + '</strong>' ,
+                message:  '<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' +
+                  "Está seguro de copiar la composición de este rubro?" + '</strong>' ,
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancelar',
@@ -128,7 +129,7 @@
         var datos = "rubro=" + ${rubro} + "&copiar=" + id;
         $.ajax({
             type : "POST",
-            url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",
+            url : "${g.createLink(controller: 'rubroOf', action: 'copiarComposicion')}",
             data     : datos,
             success  : function (msg) {
                 cp.modal("hide");

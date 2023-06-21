@@ -281,35 +281,7 @@ class RubroOfController {
         }
     }
 
-    def copiarComposicion() {
-//        println "copiar " + params
-        if (request.method == "POST") {
-            def rubro = Item.get(params.rubro)
-            def copiar = Item.get(params.copiar)
-            def detalles = Rubro.findAllByRubro(copiar)
-            detalles.each {
-                def tmp = Rubro.findByRubroAndItem(rubro, it.item)
-                if (!tmp) {
-                    def nuevo = new Rubro()
-                    nuevo.rubro = rubro
-                    nuevo.item = it.item
-                    nuevo.cantidad = it.cantidad
-                    nuevo.fecha = new Date()
-                    if (!nuevo.save(flush: true))
-                        println "Error: copiar composicion " + nuevo.errors
-
-                }
-            }
-            rubro.fechaModificacion = new Date()
-            rubro.save(flush: true)
-            render "ok"
-        } else {
-            response.sendError(403)
-        }
-    }
-
-
-    def list() {
+def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [rubroInstanceList: Rubro.list(params), rubroInstanceTotal: Rubro.count(), params: params]
     } //list
@@ -676,6 +648,112 @@ class RubroOfController {
 
     def buscadorItemsOferente_ajax(){
 
+    }
+
+//    def copiarComposicion() {
+//        if (request.method == "POST") {
+//            def rubro = Item.get(params.rubro)
+//            def copiar = Item.get(params.copiar)
+//            def detalles = Rubro.findAllByRubro(copiar)
+//            detalles.each {
+//                def tmp = Rubro.findByRubroAndItem(rubro, it.item)
+//                if (!tmp) {
+//                    def nuevo = new Rubro()
+//                    nuevo.rubro = rubro
+//                    nuevo.item = it.item
+//                    nuevo.cantidad = it.cantidad
+//                    nuevo.fecha = new Date()
+//                    if (!nuevo.save(flush: true))
+//                        println "Error: copiar composicion " + nuevo.errors
+//
+//                }
+//            }
+//            rubro.fechaModificacion = new Date()
+//            rubro.save(flush: true)
+//            render "ok"
+//        } else {
+//            response.sendError(403)
+//        }
+//    }
+
+
+
+    def copiarComposicion() {
+        println "copiar OF!!! " + params + "  " + request.method
+//        if (request.method == "POST") {
+        def rubro = Item.get(params.rubro)
+        def copiar = Item.get(params.copiar)
+        def detalles = RubroOferente.findAllByRubro(copiar)
+        def persona = seguridad.Persona.get(session.usuario.id)
+
+        detalles.each {
+            println ""+it.item.departamento.subgrupo.grupo.descripcion+"  "+it.item.departamento.subgrupo.grupo.codigo
+            def tmp = RubroOferente.findByRubroAndItem(rubro, it.item)
+            println "rubro --> $tmp"
+            if (!tmp) {
+//                    println "no temnp "
+                def nuevo = new RubroOferente()
+                nuevo.rubro = rubro
+                nuevo.item = it.item
+                nuevo.oferente = persona
+//                    println " asd "  +it.item.nombre
+
+                if(it.item.departamento.subgrupo.grupo.id.toInteger()==1){
+                    nuevo.cantidad = it.cantidad
+                }else{
+                    if (!(it.item.nombre =~ "HERRAMIENTA MENOR")) {
+                        nuevo.rendimiento = it.rendimiento
+                        nuevo.cantidad=it.cantidad
+                    }
+                }
+
+                nuevo.fecha = new Date()
+                if (!nuevo.save(flush: true)) {
+                    println "Error: copiar composicion " + nuevo.errors
+                }
+                rubro.fecha = new Date()
+                rubro.save(flush: true)
+
+            } else {
+//                    println "else si hay "
+                if (!(it.item.nombre =~ "HERRAMIENTA MENOR")) {
+//                        println "entro 2 "
+                    if(it.item.departamento.subgrupo.grupo.id.toInteger()==2){
+                        //println "es mano de obra"
+                        def maxCant = Math.max(tmp.cantidad,it.cantidad)
+                        def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*it.rendimiento)
+                        //println "maxcant "+maxCant+" sum "+sum
+                        def rend = sum/maxCant
+                        tmp.cantidad = maxCant
+                        tmp.rendimiento=rend
+                        tmp.fecha = new Date()
+                        tmp.save(flush: true)
+
+
+                    }else{
+                        if(it.item.departamento.subgrupo.grupo.id.toInteger()==3){
+                            //println "es mano de obra"
+                            def maxCant = Math.max(tmp.cantidad,it.cantidad)
+                            def sum = tmp.cantidad*tmp.rendimiento+(it.cantidad*it.rendimiento)
+                            //println "maxcant "+maxCant+" sum "+sum
+                            def rend = sum/maxCant
+                            tmp.cantidad = maxCant
+                            tmp.rendimiento=rend
+                            tmp.fecha = new Date()
+                            tmp.save(flush: true)
+                        }else{
+                            tmp.cantidad = tmp.cantidad + it.cantidad
+                            tmp.fecha = new Date()
+                            tmp.save(flush: true)
+                        }
+                    }
+                }
+            }
+        }
+        render "ok"
+//        } else {
+//            response.sendError(403)
+//        }
     }
 
 
