@@ -665,7 +665,7 @@ class RubroOfController {
         def ordn = listaRbro[params.ordenar.toInteger()-1]
 
         txwh += " and $bsca ilike '%${params.criterio}%'"
-        sqlTx = "${select} ${txwh} order by itemnmbr, ${ordn} limit 100 ".toString()
+        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
         println "sql: $sqlTx"
 
         def cn = dbConnectionService.getConnection()
