@@ -1416,7 +1416,7 @@
             modal: true,
             draggable: false,
             width: 1000,
-            height: 500,
+            height: 540,
             position: 'center',
             title: 'Copiar rubros'
         });
@@ -1440,7 +1440,7 @@
             var ordenar = $("#ordenarComposicion").val();
             $.ajax({
                 type: "POST",
-                url: "${createLink(controller: 'rubro', action:'listaRubros')}",
+                url: "${createLink(controller: 'rubroOf', action:'listaRubros')}",
                 data: {
                     buscarPor: buscarPor,
                     criterio: criterio,

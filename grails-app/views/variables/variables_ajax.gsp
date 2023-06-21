@@ -193,9 +193,11 @@
                 </div>
 
                 <div class="col-md-4" style="margin-left: -40px">
+                    %{--<g:select name="listaPeso1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}"--}%
+                              %{--optionKey="id" optionValue="descripcion" value="${obra?.listaPeso1?.id}"--}%
+                              %{--noSelection="['null': 'Seleccione...']"/>--}%
                     <g:select name="listaPeso1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=2')}"
-                              optionKey="id" optionValue="descripcion" value="${obra?.listaPeso1?.id}"
-                              noSelection="['null': 'Seleccione...']"/>
+                              optionKey="id" optionValue="descripcion" value="${obra?.listaPeso1?.id}"/>
                 </div>
 
                 <div class="col-md-2" style="margin-left: 30px; width: 150px;">
