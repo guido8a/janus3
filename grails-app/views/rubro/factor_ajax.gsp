@@ -1,4 +1,16 @@
-Factor: <g:textField name="factor" id="factorId" class="form-control" style="width:150px;"/>
+<div class="container">
+    <div class="col-md-12">
+        <div class="col-md-1 bold">
+            <label>
+                Factor:
+            </label>
+        </div>
+        <div class="col-md-1">
+            <g:textField name="factor" id="factorId" class="form-control"/>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
 

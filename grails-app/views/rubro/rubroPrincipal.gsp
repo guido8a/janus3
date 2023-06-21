@@ -109,16 +109,16 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="row-fluid">
 
-                <div class="col-md-1" style="width: 140px;">
+                <div class="col-md-1" style="width: 150px;">
                     Código
-                    <g:textField name="rubro.codigo" id="input_codigo" class="col-md-12 allCaps required input-small"
-                                 value="${rubro?.codigo ? (rubro?.codigo?.contains("-") ? rubro?.codigo?.split("-")[1] : rubro?.codigo) : ''}"
+                    <g:textField name="rubro.codigo" id="input_codigo" class="allCaps required input-small"
+                                 value="${rubro?.codigo ?: ''}"
                                  maxlength="30" minlength="2"/>
                     <p class="help-block ui-helper-hidden"></p>
 
                 </div>
 
-                <div class="col-md-2" style="margin-left: -20px">
+                <div class="col-md-2" style="margin-left: 20px">
                     Código Especificación
                     <g:textField name="rubro.codigoEspecificacion" class="allCaps required input-small"
                                  value="${rubro?.codigoEspecificacion}" id="input_codigo_es" maxlength="30"/>
@@ -1866,7 +1866,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             });
         }
 
-
         function buscaRubrosComposicion() {
             var buscarPor = $("#buscarPorComposicion").val();
             // var tipo = $("#buscarTipo").val();
@@ -1877,10 +1876,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 url: "${createLink(controller: 'rubro', action:'listaRubros')}",
                 data: {
                     buscarPor: buscarPor,
-                    buscarTipo: tipo,
+                    // buscarTipo: tipo,
                     criterio: criterio,
                     ordenar: ordenar,
-                    rubro: '${rubro?.id}'
+                    rubro: '${rubro?.id}',
+                    tipo: "composicion"
                 },
                 success: function (msg) {
                     $("#divTablaRbroComposicion").html(msg);

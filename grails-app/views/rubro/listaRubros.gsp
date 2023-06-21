@@ -38,7 +38,7 @@
         if(${tipo == 'composicion'}){
             bootbox.confirm({
                 title: "Copiar Composición",
-                message: "Está seguro de copiar la composición de este rubro?",
+                message:  '<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' +  "Está seguro de copiar la composición de este rubro?" + '</strong>' ,
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancelar',
@@ -51,7 +51,12 @@
                 },
                 callback: function (result) {
                     if(result){
-                        copiarRubroComposicion(ad);
+                        if(${oferente == 'true'}){
+                            copiarRubroComposicionOferente(ad)
+                        }else{
+                            copiarRubroComposicion(ad);
+                        }
+
                     }
                 }
             });
@@ -62,7 +67,6 @@
         }
     });
 
-
     function copiarRubroComposicion(id){
         $.ajax({
             type    : "POST",
@@ -72,7 +76,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id    : "dlgCreateEditCC",
-                    title : "Copiar",
+                    title : "Factor para copiar composición",
                     class : "modal-sm",
                     message : msg,
                     buttons : {
@@ -117,6 +121,20 @@
                 }, 500);
             } //success
         }); //ajax
+    }
+
+    function copiarRubroComposicionOferente(id){
+        var cp = cargarLoader("Copiando...");
+        var datos = "rubro=" + ${rubro} + "&copiar=" + id + "&factor=" + factor;
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",
+            data     : datos,
+            success  : function (msg) {
+                cp.modal("hide")
+                location.reload()
+            }
+        });
     }
 
 </script>

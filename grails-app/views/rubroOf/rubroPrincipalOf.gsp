@@ -100,6 +100,24 @@
                 <g:textField name="unidad.id" id="costo_indi" class="form-control"
                              value="${obra ? obra.totales : '21'}" />
             </div>
+
+
+
+            %{--            <g:if test="${rubro}">--}%
+            <div class="col-md-2" style="margin-left: 85px">
+                <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " id="btn_copiarComp" ${rubro ? '' : 'disabled'}>
+                    <i class="fa fa-copy"></i> Copiar composición
+                </a>
+            </div>
+            %{--            </g:if>--}%
+            %{--            <g:else>--}%
+            %{--                <div class="col-md-2" style="margin-left: 30px">--}%
+            %{--                    <a class="btn btn-xs btn-warning " href="#" rel="tooltip" title="Copiar " disabled>--}%
+            %{--                        <i class="fa fa-copy"></i> Copiar composición--}%
+            %{--                    </a>--}%
+            %{--                </div>--}%
+            %{--            </g:else>--}%
+
         </div>
 
         <div class="row-fluid" style="margin-bottom: 5px">
@@ -522,7 +540,37 @@
     </fieldset>
 </div>
 
+<div id="modal-rubro" style=";overflow: hidden;">
+    <fieldset class="borde" style="border-radius: 4px">
+        <div class="row-fluid" style="margin-left: 20px">
+            <div class="col-md-2">
+                Buscar Por
+                <g:select name="buscarPorComposicion" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
+                          optionValue="value"/>
+            </div>
+            <div class="col-md-2">Criterio
+            <g:textField name="criterioComposicion" id="criterioComposicion" style="width: 80%"/>
+            </div>
+
+            <div class="col-md-2">Ordenado por
+            <g:select name="ordenarComposicion" class="ordenar" from="${listaItems}" style="width: 100%" optionKey="key"
+                      optionValue="value"/>
+            </div>
+            <div class="col-md-2" style="margin-top: 6px">
+                <button class="btn btn-info" id="cnsl-rubros-composicion"><i class="fa fa-search"></i> Consultar</button>
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaRbroComposicion" style="height: 460px; overflow: auto">
+        </div>
+    </fieldset>
+</div>
+
 <script type="text/javascript">
+
+
 
     $("#btn-consultar").click(function () {
         busqueda();
@@ -763,7 +811,6 @@
         }
     }
 
-
     function calcularTotales(){
         var materiales = $("#tabla_material").children()
         var equipos = $("#tabla_equipo").children()
@@ -926,7 +973,6 @@
         });
 
         $("#imprimir").click(function(){
-
             var dsp0=$("#dist_p1").val();
             var dsp1=$("#dist_p2").val();
             var dsv0=$("#dist_v1").val();
@@ -955,15 +1001,6 @@
         });
 
         $("#excelVae").click(function(){
-            // var dsp0=$("#dist_p1").val();
-            // var dsp1=$("#dist_p2").val();
-            // var dsv0=$("#dist_v1").val();
-            // var dsv1=$("#dist_v2").val();
-            // var dsv2=$("#dist_v3").val();
-            // var listas = $("#lista_1").val()+","+$("#lista_2").val()+","+$("#lista_3").val()+","+$("#lista_4").val()+","+$("#lista_5").val()+","+$("#ciudad").val();
-            // var volqueta=$("#costo_volqueta").val();
-            // var chofer=$("#costo_chofer").val();
-
             datos="id=${rubro?.id}&indi="+$("#costo_indi").val()+"&oferente=${session.usuario.id}" + "&obra=${obra?.id}";
             location.href= "${g.createLink(controller: 'reportesExcel2',action: 'imprimirRubroOferentesExcelVae')}?"+datos
         });
@@ -1026,7 +1063,7 @@
             var rendimiento;
             var item;
 
-           for(i=2;i<hijos.length;i++){
+            for(i=2;i<hijos.length;i++){
 
                 if($(hijos[i]).hasClass("cant"))
                     cant=$(hijos[i]).html();
@@ -1036,7 +1073,7 @@
                     rendimiento=$(hijos[i]).attr("valor");
             }
 
-           item = $(this).data("item");
+            item = $(this).data("item");
 
             $("#item_cantidad").val(cant.toString().trim());
 
@@ -1151,19 +1188,19 @@
             }
         });
 
-        $("#btn_copiarComp").click(function () {
-            if ($("#rubro__id").val() * 1 > 0) {
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                $("#modalTitle").html("Lista de rubros");
-                $("#modalFooter").html("").append(btnOk);
-                $(".contenidoBuscador").html("");
-                $("#modal-rubro").modal("show");
-                $("#buscarDialog").unbind("click");
-                $("#buscarDialog").bind("click", enviarCopiar)
-            } else {
-                bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
-            }
-        });
+        // $("#btn_copiarComp").click(function () {
+        //     if ($("#rubro__id").val() * 1 > 0) {
+        //         var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+        //         $("#modalTitle").html("Lista de rubros");
+        //         $("#modalFooter").html("").append(btnOk);
+        //         $(".contenidoBuscador").html("");
+        //         $("#modal-rubro").modal("show");
+        //         $("#buscarDialog").unbind("click");
+        //         $("#buscarDialog").bind("click", enviarCopiar)
+        //     } else {
+        //         bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "<strong style='font-size: 14px'>" +  "Primero guarde el rubro o seleccione uno para editar" +  "</strong>");
+        //     }
+        // });
 
         $(".borrarItem").click(function () {
             var tr = $(this).parent().parent();
@@ -1372,6 +1409,52 @@
                 }
             }
         });
+
+        $("#modal-rubro").dialog({
+            autoOpen: false,
+            resizable: false,
+            modal: true,
+            draggable: false,
+            width: 1000,
+            height: 500,
+            position: 'center',
+            title: 'Copiar rubros'
+        });
+
+        $("#btn_copiarComp").click(function () {
+            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
+            $("#modalTitle").html("Lista de rubros");
+            $("#modalFooter").html("").append(btnOk);
+            $(".contenidoBuscador").html("");
+            $("#tipos").hide();
+            $("#modal-rubro").dialog("open");
+        });
+
+        $("#cnsl-rubros-composicion").click(function () {
+            buscaRubrosComposicion();
+        });
+
+        function buscaRubrosComposicion() {
+            var buscarPor = $("#buscarPorComposicion").val();
+            var criterio = $("#criterioComposicion").val();
+            var ordenar = $("#ordenarComposicion").val();
+            $.ajax({
+                type: "POST",
+                url: "${createLink(controller: 'rubro', action:'listaRubros')}",
+                data: {
+                    buscarPor: buscarPor,
+                    criterio: criterio,
+                    ordenar: ordenar,
+                    rubro: '${rubro?.id}',
+                    tipo: "composicion",
+                    oferente: true
+                },
+                success: function (msg) {
+                    $("#divTablaRbroComposicion").html(msg);
+                }
+            });
+        }
+
     });
 </script>
 </body>
