@@ -51,12 +51,7 @@
                 },
                 callback: function (result) {
                     if(result){
-                        if(${oferente == 'true'}){
-                            copiarRubroComposicionOferente(ad)
-                        }else{
-                            copiarRubroComposicion(ad);
-                        }
-
+                        copiarRubroComposicion(ad);
                     }
                 }
             });
@@ -123,18 +118,6 @@
         }); //ajax
     }
 
-    function copiarRubroComposicionOferente(id){
-        var cp = cargarLoader("Copiando...");
-        var datos = "rubro=" + ${rubro} + "&copiar=" + id + "&factor=" + factor;
-        $.ajax({
-            type : "POST",
-            url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",
-            data     : datos,
-            success  : function (msg) {
-                cp.modal("hide")
-                location.reload()
-            }
-        });
-    }
+
 
 </script>

@@ -51,7 +51,7 @@
                 },
                 callback: function (result) {
                     if(result){
-                        copiarRubroComposicion(ad);
+                        copiarRubroComposicionOferente(ad);
                     }
                 }
             });
@@ -65,60 +65,75 @@
     });
 
 
-    function copiarRubroComposicion(id){
-        $.ajax({
-            type    : "POST",
-            url     : "${createLink( action:'factor_ajax')}",
-            data    : {
-            },
-            success : function (msg) {
-                var b = bootbox.dialog({
-                    id    : "dlgCreateEditCC",
-                    title : "Copiar",
-                    class : "modal-sm",
-                    message : msg,
-                    buttons : {
-                        cancelar : {
-                            label     : "Cancelar",
-                            className : "btn-primary",
-                            callback  : function () {
-                            }
-                        },
-                        guardar  : {
-                            id        : "btnSave",
-                            label     : "<i class='fa fa-save'></i> Aceptar",
-                            className : "btn-success",
-                            callback  : function () {
-                                var factor = $("#factorId").val();
-                                if (isNaN(factor))
-                                    factor = 0;
-                                else
-                                    factor = factor * 1;
+    %{--function copiarRubroComposicion(id){--}%
+    %{--    $.ajax({--}%
+    %{--        type    : "POST",--}%
+    %{--        url     : "${createLink( action:'factor_ajax')}",--}%
+    %{--        data    : {--}%
+    %{--        },--}%
+    %{--        success : function (msg) {--}%
+    %{--            var b = bootbox.dialog({--}%
+    %{--                id    : "dlgCreateEditCC",--}%
+    %{--                title : "Copiar",--}%
+    %{--                class : "modal-sm",--}%
+    %{--                message : msg,--}%
+    %{--                buttons : {--}%
+    %{--                    cancelar : {--}%
+    %{--                        label     : "Cancelar",--}%
+    %{--                        className : "btn-primary",--}%
+    %{--                        callback  : function () {--}%
+    %{--                        }--}%
+    %{--                    },--}%
+    %{--                    guardar  : {--}%
+    %{--                        id        : "btnSave",--}%
+    %{--                        label     : "<i class='fa fa-save'></i> Aceptar",--}%
+    %{--                        className : "btn-success",--}%
+    %{--                        callback  : function () {--}%
+    %{--                            var factor = $("#factorId").val();--}%
+    %{--                            if (isNaN(factor))--}%
+    %{--                                factor = 0;--}%
+    %{--                            else--}%
+    %{--                                factor = factor * 1;--}%
 
-                                if (factor > 0) {
-                                    var cp = cargarLoader("Copiando...");
-                                    var datos = "rubro=" + ${rubro} + "&copiar=" + id + "&factor=" + factor;
-                                    $.ajax({
-                                        type : "POST",
-                                        url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",
-                                        data     : datos,
-                                        success  : function (msg) {
-                                            location.reload()
-                                        }
-                                    });
-                                } else {
-                                    bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "El factor debe ser un número positivo" + '</strong>');
-                                    return false;
-                                }
-                            } //callback
-                        } //guardar
-                    } //buttons
-                }); //dialog
-                setTimeout(function () {
-                    b.find(".form-control").first().focus()
-                }, 500);
-            } //success
-        }); //ajax
+    %{--                            if (factor > 0) {--}%
+    %{--                                var cp = cargarLoader("Copiando...");--}%
+    %{--                                var datos = "rubro=" + ${rubro} + "&copiar=" + id + "&factor=" + factor;--}%
+    %{--                                $.ajax({--}%
+    %{--                                    type : "POST",--}%
+    %{--                                    url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",--}%
+    %{--                                    data     : datos,--}%
+    %{--                                    success  : function (msg) {--}%
+    %{--                                        location.reload()--}%
+    %{--                                    }--}%
+    %{--                                });--}%
+    %{--                            } else {--}%
+    %{--                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "El factor debe ser un número positivo" + '</strong>');--}%
+    %{--                                return false;--}%
+    %{--                            }--}%
+    %{--                        } //callback--}%
+    %{--                    } //guardar--}%
+    %{--                } //buttons--}%
+    %{--            }); //dialog--}%
+    %{--            setTimeout(function () {--}%
+    %{--                b.find(".form-control").first().focus()--}%
+    %{--            }, 500);--}%
+    %{--        } //success--}%
+    %{--    }); //ajax--}%
+    %{--}--}%
+
+
+    function copiarRubroComposicionOferente(id){
+        var cp = cargarLoader("Copiando...");
+        var datos = "rubro=" + ${rubro} + "&copiar=" + id;
+        $.ajax({
+            type : "POST",
+            url : "${g.createLink(controller: 'rubro', action: 'copiarComposicion')}",
+            data     : datos,
+            success  : function (msg) {
+                cp.modal("hide");
+                location.reload()
+            }
+        });
     }
 
 </script>
