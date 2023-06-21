@@ -34,11 +34,12 @@
 
     $(".selecciona").click(function () {
         var ad = $(this).data("id");
+        $("#modal-rubro").dialog("close");
 
         if(${tipo == 'composicion'}){
             bootbox.confirm({
                 title: "Copiar Composición",
-                message: "Está seguro de copiar la composición de este rubro?",
+                message:  '<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' +  "Está seguro de copiar la composición de este rubro?" + '</strong>' ,
                 buttons: {
                     cancel: {
                         label: '<i class="fa fa-times"></i> Cancelar',

@@ -671,7 +671,7 @@ class RubroOfController {
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
 //        println "data: ${datos[0]}"
-        [data: datos, tipo: params.band, rubro: params.rubro]
+        [data: datos, tipo: params.tipo, rubro: params.rubro]
     }
 
     def buscadorItemsOferente_ajax(){
