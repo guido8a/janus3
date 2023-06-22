@@ -630,7 +630,7 @@ def list() {
         def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
                 "sbgr.sbgr__id = dprt.sbgr__id and item.item__id in (select item__id from vlof, obra, obof " +
                 "where obof.prsn__id =  ${session.usuario.id} and obra.obra__id = obof.obra__id and " +
-                "obratipo = 'F' and vlof.obra__id = obra.obra__id)"
+                "obratipo in ('F', 'O') and vlof.obra__id = obra.obra__id)"
         def sqlTx = ""
 //        def item = listaRbro[params.buscarTipo.toInteger()-1]
         def bsca = listaItems[params.buscarPor.toInteger()-1]
