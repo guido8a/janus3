@@ -132,7 +132,7 @@
             <tbody id="tableBody" class="scroll-content">
             </tbody>
             <tfoot>
-            <tr id="bandera">
+            %{--<tr id="bandera">--}%
             </tr>
             </tfoot>
         </table>
