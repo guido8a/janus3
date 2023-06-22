@@ -653,5 +653,9 @@ class ObraOfController {
 
     }
 
+    def migrarObra_ajax(){
+
+    }
+
 
 } //fin controller

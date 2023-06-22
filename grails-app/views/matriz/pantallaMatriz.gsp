@@ -162,6 +162,7 @@
 </div>
 <script type="text/javascript">
     function cargarDatos(inicio, interval, limite) {
+        // var p = cargarLoader("Cargando...");
         var band = false;
         $.ajax({
             type    : "POST",
@@ -169,6 +170,7 @@
             data    : "id=${obra}&inicio=" + inicio + "&limit=" + limite + "&sbpr=${sbpr}",
             success : function (msg) {
                 $("#dlgLoad").dialog("close");
+                // p.modal("hide");
                 if (msg !== "fin") {
                     if (inicio === 0) {
                         $("#tableBody").append(msg);
@@ -185,6 +187,7 @@
         return band
     }
     function cargarDatosAsinc(inicio, interval, limite) {
+        // var p = cargarLoader("Cargando...");
         var band = false;
         $.ajax({
             type    : "POST",
@@ -192,6 +195,7 @@
             data    : "id=${obra}&inicio=" + inicio + "&limit=" + limite + "&sbpr=${sbpr}",
             async   : false,
             success : function (msg) {
+                // p.modal("hide");
                 $("#dlgLoad").dialog("close");
                 if (msg !== "fin") {
 

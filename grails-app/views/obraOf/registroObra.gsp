@@ -510,6 +510,43 @@
 
 <script type="text/javascript">
 
+    $("#migrarObra").click(function () {
+        var id = ${obra?.id}
+        bootbox.confirm({
+            title: "Migrar Obra",
+            message: '<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Está seguro de migrar esta obra a proyectos?" + '</strong>',
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Aceptar',
+                    className: 'btn-success'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'obraOf',action:'migrarObra_ajax')}",
+                        data     : {
+                            id: id
+                        },
+                        success  : function (msg) {
+                            if(msg === 'ok'){
+                                log("Obra mi grada correctamente", "success");
+                            }else {
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al migrar la obra" + '</strong>');
+                            }
+
+                        }
+                    });
+                }
+            }
+        });
+    });
+
     $("#frm-registroObra").validate();
 
     function validarNum(ev) {

@@ -554,7 +554,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                                                                      title="Detalle de anexos y planos ingresados en la biblioteca de la obra"/></div>
         </div>
 
-        <div class="col-md-12" style="margin-top: 10px">
+        <div class="col-md-12" style="margin-top: 10px;margin-bottom: 5px">
             <div class="col-md-2" style="width: 200px;">Lista de precios: MO y Equipos</div>
 
             <div class="col-md-2" style="margin-right: 20px; margin-left: 0px; width: 200px;"><g:select
@@ -572,15 +572,15 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="col-md-1" style="margin-left: 30px">Coordenadas:</div>
 
-            <div class="col-md-3">
+            <div class="col-md-3" style="font-size: 10px">
                 <g:set var="coords" value="${obra?.coordenadas}"/>
                 <g:if test="${obra?.id == null || coords == null || coords?.trim() == ''}">
                     <g:set var="coords" value="${'S 0 12.5999999 W 78 31.194'}"/>
                 </g:if>
                 <g:hiddenField name="coordenadas" value="${coords}"/>
-                <a href="#" id="coords" >
+%{--                <a href="#" id="coords" >--}%
                     ${coords}
-                </a>
+%{--                </a>--}%
                 <g:set var="coordsParts" value="${coords.split(' ')}"/>
             </div>
         </div>
@@ -1400,7 +1400,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             width: 460,
             height: 240,
             position: 'center',
-            title: 'Rubros'
+            title: 'Matriz'
         });
 
         $("#matriz").click(function () {
@@ -1412,9 +1412,11 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         });
 
         $("#no").click(function () {
+            cargarLoader("Cargando Matriz...");
             var sb = $("#matriz_gen").val();
             location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',id: obra?.id)}?sbpr=" + sb
         });
+
         $("#si").click(function () {
             $("#datos_matriz").show();
             $("#msg_matriz").hide()
@@ -1482,11 +1484,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             $("#dlgLoad").dialog("open");
             $(".ui-dialog-titlebar-close").html("x");
 
+            var lo = cargarLoader("Cargando...");
+
             $.ajax({
                 type: "POST",
                 url: "${createLink(action: 'validaciones', controller: 'obraFP')}",
                 data: "obra=${obra.id}&sub=" + sp + "&trans=" + tr + "&borraFP=" + borrar,
                 success: function (msg) {
+                    lo.modal("hide");
                     $("#dlgLoad").dialog("close");
                     $("#modal-matriz").modal("hide");
                     var arr = msg.split("_");
@@ -1509,6 +1514,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             }
                         });
                     } else {
+                        var lo1 = cargarLoader("Cargando Matriz...");
                         location.href = "${g.createLink(controller: 'matriz',action: 'pantallaMatriz',
                         params:[id:obra.id,inicio:0,limit:40])}&sbpr=" + sbpr
                     }
