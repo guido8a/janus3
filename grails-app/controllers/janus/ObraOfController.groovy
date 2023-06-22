@@ -85,7 +85,7 @@ class ObraOfController {
 //            def formula = FormulaPolinomica.findByObra(obra)
             obraOferente = ObraOferente.findByObraAndOferente(obra, persona)
             titulo = "Oferentes - Obra: ${obra.nombre}"
-            [campos: campos, prov: prov, obra: obra, persona: persona, listaObra: listaObra, titulo: titulo]
+            [campos: campos, prov: prov, obra: obra, persona: persona, listaObra: listaObra, titulo: titulo, obraOferente: obraOferente]
         } else {
 //            obra = new Obra();
 //             si no se listan las obras, carga la primera obra que halle
@@ -653,7 +653,8 @@ class ObraOfController {
 
     }
 
-    def migrarObra_ajax(){
+    def importarObra_ajax(){
+
 
     }
 

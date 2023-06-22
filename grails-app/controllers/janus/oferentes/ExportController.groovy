@@ -88,4 +88,31 @@ from obra where obra__id = ${params.obra} returning obra__id
         render "OK_Obra exportada correctamente"
     }
 
+    def importarAProyectos() {
+        def cn = dbConnectionService.getConnection()
+        def obra_id = 0
+
+        println "importar >>>> ${params}"
+
+        def sql = "insert into vlob (sbpr__id, item__id, obra__id, vlobcntd, vlobordn, " +
+                "sbprordn, vlobpcun, vlobsbtt, vlobdias, vlobrtcr) " +
+                "select sbpr__id,  item__id, ${params.obra},  vlofcntd,  vlofordn, " +
+                "sbprordn, vlofpcun, vlofsbtt, vlofdias, vlofrtcr from vlof " +
+                "where obra__id = ${params.obra} "
+        println "inserta vlob: $sql"
+        cn.execute(sql.toString())
+
+        sql = "update obof set obofetdo = 'C' where obra__id = ${params.obra} and obofetdo = 'N'"
+        println "actualiza obof: $sql"
+        cn.execute(sql.toString())
+
+        //cambia el tipo de 'F' a 'O' para trabajarla en Proyectos, las obras tipo 'O' no se pueden desregistrar.
+        sql = "update obra set obratipo = 'O' where obra__id = ${params.obra} and obratipo = 'F'"
+        println "actualiza obra: $sql"
+        cn.execute(sql.toString())
+
+
+        render "OK_Obra importada correctamente"
+    }
+
 }

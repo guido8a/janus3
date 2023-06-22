@@ -94,7 +94,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </g:if>
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) && (Concurso.countByObra(obra) == 0)}">
-                <g:if test="${obra?.fechaInicio == null}">
+                %{--las obras tuipo 'O' son migradas de oferentes no se pueden desregistrar--}%
+                <g:if test="${obra?.fechaInicio == null && obra?.tipo != 'O'}">
                     <button class="btn" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar de Estado</button>
                 </g:if>
             </g:if>

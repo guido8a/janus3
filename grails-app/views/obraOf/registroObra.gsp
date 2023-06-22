@@ -53,7 +53,12 @@
                 %{--<button class="btn btn-success botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>--}%
                 <button class="btn botonReg" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar Estado</button>
             </g:if>
-            <g:if test="${obra?.estado == 'R'}">
+            <g:else>
+                <g:if test="${obraOferente?.estado == 'C'}">
+                    <button class="btn botonReg" id="cambiarEstado" disabled><i class="fa fa-check"></i> Obra migrada a Proyectos</button>
+                </g:if>
+            </g:else>
+            <g:if test="${obra?.estado == 'R' && obra?.tipo != 'O'}">
                 <button class="btn btn-success" id="migrarObra"><i class="fa fa-retweet"></i> Migrar obra a Proyectos</button>
             </g:if>
         </g:if>
@@ -514,7 +519,8 @@
         var id = ${obra?.id}
         bootbox.confirm({
             title: "Migrar Obra",
-            message: '<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Está seguro de migrar esta obra a proyectos?" + '</strong>',
+            message: '<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' +
+              "Está seguro de importar esta obra a proyectos?" + '</strong>',
             buttons: {
                 cancel: {
                     label: '<i class="fa fa-times"></i> Cancelar',
@@ -529,15 +535,16 @@
                 if(result){
                     $.ajax({
                         type : "POST",
-                        url : "${g.createLink(controller: 'obraOf',action:'migrarObra_ajax')}",
+                        url : "${createLink(controller: "export", action: 'importarAProyectos')}",
                         data     : {
-                            id: id
+                            obra: id
                         },
                         success  : function (msg) {
                             if(msg === 'ok'){
-                                log("Obra mi grada correctamente", "success");
+                                log("Obra migrada a Proyectos correctamente", "success");
                             }else {
-                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al migrar la obra" + '</strong>');
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
+                                    '<strong style="font-size: 14px">' + "Error al migrar la obra" + '</strong>');
                             }
 
                         }
