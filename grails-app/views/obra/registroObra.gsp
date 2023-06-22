@@ -190,6 +190,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </g:if>
     </g:if>
 
+    <g:if test="${obra?.tipo == 'O'}">
+       <button class="btn btn-danger" id="revisarPrecios" disabled><i class="fa fa-check"></i> Importada de Oferentes</button>
+    </g:if>
 </div>
 
 <g:form class="registroObra" name="frm-registroObra" action="save">
