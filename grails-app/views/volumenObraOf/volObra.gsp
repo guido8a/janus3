@@ -107,7 +107,7 @@
                 $(".total").each(function(){
                     total+=parseFloat(str_replace(",","",$(this).html()))
                 });
-                $("#divTotal").html(number_format(total, 2, ".", " "));
+                $("#divTotal").html(number_format(total, 4, ".", " "));
             }
         });
 
