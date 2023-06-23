@@ -54,7 +54,7 @@
     </table>
 </div>
 
-<elm:pagination total="${periodosInecInstanceTotal}" params="${params}" />
+%{--<elm:pagination total="${periodosInecInstanceTotal}" params="${params}" />--}%
 
 <script type="text/javascript">
 
