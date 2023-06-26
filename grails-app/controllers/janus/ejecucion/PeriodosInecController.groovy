@@ -13,9 +13,7 @@ class PeriodosInecController {
     } //index
 
     def list() {
-        println params
         def periodos = PeriodosInec.list([sort: 'fechaInicio', order: 'desc'])
-//        [periodosInecInstanceList: PeriodosInec.list(params), params: params]
         [periodosInecInstanceList: periodos, params: params]
     } //list
 
@@ -43,60 +41,29 @@ class PeriodosInecController {
             params.fechaFin=new Date().parse("dd-MM-yyyy",params.fechaFin)
         }
 
-
         if(params.fechaInicio >= params.fechaFin){
-
-            flash.clase = "alert-error"
-            flash.message = "No se pudo guardar el Período Inec, la Fecha Fin debe ser mayor a la Fecha Inicio"
-            redirect(action: 'list')
-
+            render "no_No se pudo guardar el Período Inec, la Fecha Fin debe ser mayor a la Fecha Inicio"
+            return true
         }else{
 
             if(params.id) {
                 periodosInecInstance = PeriodosInec.get(params.id)
                 if(!periodosInecInstance) {
-                    flash.clase = "alert-error"
-                    flash.message = "No se encontró Periodos Inec con id " + params.id
-                    redirect(action: 'list')
-                    return
+                    render "no_No se encontró el período Inec"
+                    return true
                 }//no existe el objeto
                 periodosInecInstance.properties = params
             }//es edit
             else {
                 periodosInecInstance = new PeriodosInec(params)
-
             } //es create
 
             if (!periodosInecInstance.save(flush: true)) {
-                flash.clase = "alert-error"
-                def str = "<h4>No se pudo guardar Periodos Inec " + (periodosInecInstance.id ? periodosInecInstance.id : "") + "</h4>"
-
-                str += "<ul>"
-                periodosInecInstance.errors.allErrors.each { err ->
-                    def msg = err.defaultMessage
-                    err.arguments.eachWithIndex {  arg, i ->
-                        msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                    }
-                    str += "<li>" + msg + "</li>"
-                }
-                str += "</ul>"
-
-                flash.message = str
-                redirect(action: 'list')
-                return
+                render "no_Error al guardar el período"
+            }else{
+                render "ok_Período guardado correctamente"
             }
-
-            if(params.id) {
-                flash.clase = "alert-success"
-                flash.message = "Se ha actualizado correctamente el Período Inec " + periodosInecInstance.descripcion
-            } else {
-                flash.clase = "alert-success"
-                flash.message = "Se ha creado correctamente el Período Inec " + periodosInecInstance.descripcion
-            }
-            redirect(action: 'list')
         }
-
-
 
     } //save
 
@@ -114,27 +81,27 @@ class PeriodosInecController {
     def delete() {
         def periodosInecInstance = PeriodosInec.get(params.id)
         if (!periodosInecInstance) {
-            flash.clase = "alert-error"
-            flash.message =  "No se encontró el Período Inec con id " + params.id
-            redirect(action: "list")
-            return
+            render ("no_No se encontró el Período Inec")
+            return true
         }
 
         try {
             periodosInecInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message =  "Se ha eliminado correctamente el Período Inec " + periodosInecInstance.descripcion
-            redirect(action: "list")
+            render "ok_Se ha eliminado correctamente el Período Inec "
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message =  "No se pudo eliminar el Período Inec " + (periodosInecInstance.id ? periodosInecInstance.id : "")
-            redirect(action: "list")
+            println("error al guardar el período inec " + periodosInecInstance.errors)
+           render ("no_No se pudo eliminar el Período Inec ")
         }
     } //delete
 
     def generarIndices(){
         render migracionService.insertRandomIndices()
+    }
+
+    def tablaPeriodosIndices_ajax(){
+        def periodos = PeriodosInec.list([sort: 'fechaInicio', order: 'desc'])
+        return [periodosInecInstanceList: periodos]
     }
 
 } //fin controller

@@ -23,53 +23,44 @@
     <table class="table table-bordered table-striped table-condensed table-hover">
         <thead>
         <tr>
-            <th>Descripción</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Fin</th>
-            <th>Período Cerrado</th>
-            <th>Acciones</th>
+            <th style="width: 20%;">Descripción</th>
+            <th style="width: 20%;">Fecha Inicio</th>
+            <th style="width: 20%;">Fecha Fin</th>
+            <th style="width: 20%;">Período Cerrado</th>
+            <th style="width: 20%;">Acciones</th>
         </tr>
         </thead>
-        <tbody>
-        <g:each in="${periodosInecInstanceList}" status="i" var="periodosInecInstance">
-            <tr>
-                <td>${fieldValue(bean: periodosInecInstance, field: "descripcion")}</td>
-                <td><g:formatDate date="${periodosInecInstance.fechaInicio}" format="dd-MM-yyyy" /></td>
-                <td><g:formatDate date="${periodosInecInstance.fechaFin}" format="dd-MM-yyyy"/></td>
-                <td style="text-align: center">${periodosInecInstance?.periodoCerrado == 'N' ? 'NO' : 'SI'}</td>
-                <td style="text-align: center">
-                    <a class="btn btn-xs btn-show btn-info" href="#" rel="tooltip" title="Ver" data-id="${periodosInecInstance.id}">
-                        <i class="fa fa-search"></i>
-                    </a>
-                    <a class="btn btn-xs btn-edit btn-success" href="#" rel="tooltip" title="Editar" data-id="${periodosInecInstance.id}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-                    <a class="btn btn-xs btn-delete btn-danger" href="#" rel="tooltip" title="Eliminar" data-id="${periodosInecInstance.id}">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </td>
-            </tr>
-        </g:each>
-        </tbody>
     </table>
 </div>
 
-%{--<elm:pagination total="${periodosInecInstanceTotal}" params="${params}" />--}%
+<div id="tablaPeriodosIndices"></div>
+
 
 <script type="text/javascript">
 
-    $(function () {
+    cargarTablaPeriodos();
+
+    function cargarTablaPeriodos () {
+        var v = cargarLoader("Cargando...");
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'periodosInec', action: 'tablaPeriodosIndices_ajax')}",
+            data:{
+            },
+            success: function (msg){
+                v.modal("hide");
+                $("#tablaPeriodosIndices").html(msg)
+            }
+        })
+    }
+
 
         $(".btn-new").click(function () {
-            createEditRow();
+            createEditRowPI();
         }); //click btn new
 
-        $(".btn-edit").click(function () {
-            var id = $(this).data("id");
-            createEditRow(id);
-        }); //click btn edit
 
-        function createEditRow(id) {
+        function createEditRowPI(id) {
             var title = id ? "Editar " : "Crear ";
             var data = id ? {id : id} : {};
 
@@ -118,9 +109,7 @@
                         var parts = msg.split("_");
                         if(parts[0] === 'ok'){
                             log(parts[1], "success");
-                            setTimeout(function () {
-                                location.reload();
-                            }, 800);
+                            cargarTablaPeriodos();
                         }else{
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
                             return false;
@@ -133,80 +122,34 @@
         }
 
 
-        $(".btn-show").click(function () {
-            var id = $(this).data("id");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'show_ajax')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    var s = bootbox.dialog({
-                        id      : "dlgShow",
-                        title   : "Datos de Período",
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            }
-                        } //buttons
-                    }); //dialog
-                }
-            });
-            return false;
-        }); //click btn show
+        %{--$(".btn-show").click(function () {--}%
+        %{--    var id = $(this).data("id");--}%
+        %{--    $.ajax({--}%
+        %{--        type    : "POST",--}%
+        %{--        url     : "${createLink(action:'show_ajax')}",--}%
+        %{--        data    : {--}%
+        %{--            id : id--}%
+        %{--        },--}%
+        %{--        success : function (msg) {--}%
+        %{--            var s = bootbox.dialog({--}%
+        %{--                id      : "dlgShow",--}%
+        %{--                title   : "Datos de Período",--}%
+        %{--                message : msg,--}%
+        %{--                buttons : {--}%
+        %{--                    cancelar : {--}%
+        %{--                        label     : "Cancelar",--}%
+        %{--                        className : "btn-primary",--}%
+        %{--                        callback  : function () {--}%
+        %{--                        }--}%
+        %{--                    }--}%
+        %{--                } //buttons--}%
+        %{--            }); //dialog--}%
+        %{--        }--}%
+        %{--    });--}%
+        %{--    return false;--}%
+        %{--}); //click btn show--}%
 
-        $(".btn-delete").click(function () {
-            var id = $(this).data("id");
-            deleteRow(id);
-          });
-
-        function deleteRow(id) {
-            bootbox.dialog({
-                title   : "Alerta",
-                message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este registro? Esta acción no se puede deshacer.</p>",
-                buttons : {
-                    cancelar : {
-                        label     : "Cancelar",
-                        className : "btn-primary",
-                        callback  : function () {
-                        }
-                    },
-                    eliminar : {
-                        label     : "<i class='fa fa-trash'></i> Eliminar",
-                        className : "btn-danger",
-                        callback  : function () {
-                            var v = cargarLoader("Eliminando...");
-                            $.ajax({
-                                type    : "POST",
-                                url     : '${createLink(action:'delete')}',
-                                data    : {
-                                    id : id
-                                },
-                                success : function (msg) {
-                                    v.modal("hide");
-                                    var parts = msg.split("_");
-                                    if(parts[0] === 'ok'){
-                                        log(parts[1],"success");
-                                        setTimeout(function () {
-                                            location.reload()
-                                        }, 800);
-                                    }else{
-                                        log(parts[1],"error")
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-            });
-        }
-
-    });
+    // });
 
 </script>
 
