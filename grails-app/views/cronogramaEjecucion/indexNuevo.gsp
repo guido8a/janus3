@@ -2,18 +2,6 @@
 <html>
 <head>
     <meta name="layout" content="main">
-
-
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'custom-methods.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/i18n', file: 'jquery.ui.datepicker-es.js')}"></script>--}%
-
-    %{--<link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
     <title>Cronograma ejecución</title>
 
     <style type="text/css">
@@ -42,21 +30,21 @@
             <div class="btn-group">
                 <g:if test="${suspensiones.size() == 0}">
                     <a href="#" class="btn btn-info" id="btnAmpl">
-                        <i class="icon-resize-full"></i>
+                        <i class="fa fa-expand"></i>
                         Ampliación
                     </a>
                     <a href="#" class="btn btn-info" id="btnModif">
-                        <i class="icon-retweet"></i>
+                        <i class="fa fa-retweet"></i>
                         Modificación
                     </a>
-                    <a href="#" class="btn btn-info" id="btnSusp">
-                        <i class="icon-resize-small"></i>
+                    <a href="#" class="btn btn-warning" id="btnSusp">
+                        <i class="fa fa-clock"></i>
                         Suspensión
                     </a>
                 </g:if>
                 <g:else>
-                    <a href="#" class="btn btn-info" id="btnEndSusp">
-                        <i class="icon-resize-small"></i>
+                    <a href="#" class="btn btn-warning" id="btnEndSusp">
+                        <i class="fa fa-clock"></i>
                         Terminar Suspensión
                     </a>
                 </g:else>
@@ -64,7 +52,7 @@
             <div class="btn-group">
                 <g:if test="${suspensiones.size() == 0}">
                     <a href="#" class="btn btn-info" id="actualizaPrej">
-                        <i class="icon-resize-full"></i>
+                        <i class="fa fa-list"></i>
                         Actualizar Períodos
                     </a>
                 </g:if>
@@ -72,30 +60,30 @@
             <div class="btn-group">
                 <g:if test="${complementario}">
                     <a href="#" class="btn btn-warning" id="btnComp">
-                        <i class="icon-calendar"></i>
+                        <i class="fa fa-calendar"></i>
                         Complementario
                     </a>
                 </g:if>
             </div>
             <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">
-                <i class="icon-print"></i>
+                <i class="fa fa-print"></i> Imprimir
             </a>
         </g:if>
-        <g:if test="${contrato.fiscalizador?.id == session.usuario.id || contrato.administrador?.id == session.usuario.id}">
-            <g:if test="${contrato.administrador?.id == session.usuario.id}">
-                <div class="btn-group" style="width: 400px">
-                </div>
-            </g:if>
+%{--        <g:if test="${contrato.fiscalizador?.id == session.usuario.id || contrato.administrador?.id == session.usuario.id}">--}%
+%{--            <g:if test="${contrato.administrador?.id == session.usuario.id}">--}%
+%{--                <div class="btn-group" style="width: 400px">--}%
+%{--                </div>--}%
+%{--            </g:if>--}%
 
-            <div class="btn" style="height: 30px; font-size: 10px">
-                De:
-                <g:field type="number" name="desde" step="1" pattern="#" value="${desde}" min="0" max="${hasta+1}" class="input-mini"/>
-                a:
-                <g:field type="number" name="hasta" step="1" pattern="#" value="${hasta}" min="0" max="${maximo}" class="input-mini"/>
-                <a href="#" id="btnRango" class="btn" style="margin-top: -8px;"> <i class="icon-check"></i> Ir</a>
-                <a href="#" id="btnTodos" class="btn" style="margin-top: -8px;"> <i class="icon-all"></i>Todo</a>
-            </div>
-        </g:if>
+%{--            <div class="btn" style="height: 30px; font-size: 10px">--}%
+%{--                De:--}%
+%{--                <g:field type="number" name="desde" step="1" pattern="#" value="${desde}" min="0" max="${hasta+1}" class="input-mini"/>--}%
+%{--                a:--}%
+%{--                <g:field type="number" name="hasta" step="1" pattern="#" value="${hasta}" min="0" max="${maximo}" class="input-mini"/>--}%
+%{--                <a href="#" id="btnRango" class="btn" style="margin-top: -8px;"> <i class="icon-check"></i> Ir</a>--}%
+%{--                <a href="#" id="btnTodos" class="btn" style="margin-top: -8px;"> <i class="icon-all"></i>Todo</a>--}%
+%{--            </div>--}%
+%{--        </g:if>--}%
     </g:if>
 </div>
 
@@ -264,40 +252,92 @@
         });
 
         $("#btnAmpl").click(function () {
+
             $.ajax({
                 type: "POST",
                 url: "${createLink(action:'ampliacion_ajax')}",
                 success: function (msg) {
-                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
 
-                    btnSave.click(function () {
-                        if ($("#frmSave-ampliacion").valid()) {
-                            btnSave.replaceWith(spinner);
-                            var data = $("#frmSave-ampliacion").serialize();
-                            data += "&obra=${obra.id}&contrato=${contrato.id}";
-                            $.ajax({
-                                type: "POST",
-                                url: "${createLink(action:'ampliacion')}",
-                                data: data,
-                                success: function (msg) {
-                                    $("#modal-forms").modal("hide");
-                                    updateTabla();
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEdit",
+                        title   : "Ampliación",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
                                 }
-                            });
-                        }
-                        return false;
-                    });
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormAmpliacion();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
 
-                    $("#modalTitle-forms").html("Ampliación");
-                    $("#modalBody-forms").html(msg);
-                    $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
-                    $("#modal-forms").modal("show");
+                    %{--var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+                    %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
+
+                    %{--btnSave.click(function () {--}%
+                    %{--    if ($("#frmSave-ampliacion").valid()) {--}%
+                    %{--        btnSave.replaceWith(spinner);--}%
+                    %{--        var data = $("#frmSave-ampliacion").serialize();--}%
+                    %{--        data += "&obra=${obra.id}&contrato=${contrato.id}";--}%
+                    %{--        $.ajax({--}%
+                    %{--            type: "POST",--}%
+                    %{--            url: "${createLink(action:'ampliacion')}",--}%
+                    %{--            data: data,--}%
+                    %{--            success: function (msg) {--}%
+                    %{--                $("#modal-forms").modal("hide");--}%
+                    %{--                updateTabla();--}%
+                    %{--            }--}%
+                    %{--        });--}%
+                    %{--    }--}%
+                    %{--    return false;--}%
+                    %{--});--}%
+
+                    %{--$("#modalTitle-forms").html("Ampliación");--}%
+                    %{--$("#modalBody-forms").html(msg);--}%
+                    %{--$("#modalFooter-forms").html("").append(btnCancel).append(btnSave);--}%
+                    %{--$("#modal-forms").modal("show");--}%
 
                 }
             });
             return false;
         });
+
+
+        function submitFormAmpliacion() {
+            var $form = $("#frmSave-ampliacion");
+            if ($form.valid()) {
+                var data = $form.serialize();
+                data += "&obra=${obra.id}&contrato=${contrato.id}";
+                var dialog = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url     : $form.attr("action"),
+                    data    : data,
+                    success : function (msg) {
+                        dialog.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'OK'){
+                            log("Ampliación guardada correctamente", "success");
+                            updateTabla();
+                        }else{
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la ampliación" + '</strong>');
+                            return false;
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
 
         $("#btnEndSusp").click(function () {
             $.ajax({
