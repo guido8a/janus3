@@ -3291,7 +3291,80 @@ class CronogramaEjecucionController {
     }
 
     def tablax() {
-        
+        println "params: $params"
+        def cn = dbConnectionService.getConnection()
+        def cn1 = dbConnectionService.getConnection()
+        def cnp = dbConnectionService.getConnection()
+        def cne = dbConnectionService.getConnection()
+        def titulo1 = []
+        def titulo2 = []
+        def columnas = []
+        def sql1 = ""
+        def sqlp = ""
+        def sqle = ""
+        def sql = "select prej__id, prejfcin, prejfcfn, 'Periodo '||prejnmro||'('||prejfcfn-prejfcin+1||' días)' dias " +
+                "from prej where cntr__id = ${params.id}"
+        println "sql: $sql"
+
+        cn.eachRow(sql.toString()) { d ->
+            titulo1.add("${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}")
+            titulo2.add("${d.dias} ")
+        }
+
+        sql = "select count(*) cuenta from prej where cntr__id = ${params.id}"
+        println "sql: $sql"
+        def nmro = cn.rows(sql.toString())[0].cuenta.toInteger()
+        println "cuenta: $nmro"
+
+        def rubros = []
+        def val = []
+        def cont = 0, suma = 0
+
+        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd from item, undd, vocr where item.item__id = vocr.item__id and " +
+                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn"
+//        println "sql: $sql"
+
+        cn.eachRow(sql.toString()) { d ->
+            val = []
+            val.add(d.itemcdgo)
+            val.add("${d.itemnmbr}<br><strong>Unidad: ${d.unddcdgo}</strong>")
+            val.add("Subtt.<br>P.U.<br>Cant.")
+            val.add("${d.vocrsbtt}<br>${d.vocrpcun}<br>${d.vocrcntd}")
+
+            val.add("<br>%<br>F")
+
+            sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
+//            println "sql: $sqlp"
+            suma = 0
+            cnp.eachRow(sqlp.toString()) { pr ->
+                sql1 = "select coalesce(creoprco,0) creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                cont = cne.rows(sqle.toString())[0].cuenta
+//                println "sqle: $sqle"
+                if(cont > 0) {
+                    cnp.eachRow(sql1.toString()) { p ->
+                        val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
+                        suma += p.creoprco
+                    }
+                } else {
+                        val.add("")
+                }
+            }
+
+            val.add(suma)
+
+//            println "val: $val"
+            rubros.add(val)
+        }
+
+        println "--> $rubros"
+
+        cn.close()
+        cn1.close()
+        cnp.close()
+        cne.close()
+        [titulo1: titulo1, titulo2: titulo2, rubros: rubros]
+
     }
 
 
