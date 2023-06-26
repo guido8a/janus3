@@ -456,7 +456,7 @@
     <fieldset class="borde" style="border-radius: 4px">
         <div class="row-fluid" style="margin-left: 20px">
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 Buscar Por
                 <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaContrato}" optionKey="key"
                           optionValue="value"/>

@@ -57,7 +57,7 @@ class ContratoController {
     def verContrato() {
         def contrato
         def complementario
-        def listaContrato = [1: 'Código', 2: 'Nombre', 3: 'Contratista', 4: 'Fiscalizador', 5: 'Administrador']
+        def listaContrato = [1: 'Código', 2: 'Nombre', 3: 'Contratista', 4: 'Fiscalizador (apellido)', 5: 'Administrador (apellido)']
 
         println "params de verContrato: $params"
         println "perfil: ${session.perfil.codigo}"
