@@ -3302,25 +3302,30 @@ class CronogramaEjecucionController {
         def sql1 = ""
         def sqlp = ""
         def sqle = ""
-        def sql = "select prej__id, prejfcin, prejfcfn, 'Periodo '||prejnmro||'('||prejfcfn-prejfcin+1||' días)' dias " +
-                "from prej where cntr__id = ${params.id}"
-        println "sql: $sql"
+        def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
+                "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
+                "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
+                "from prej where cntr__id = ${params.id} order by prejfcin"
+//        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
-            titulo1.add("${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}")
-            titulo2.add("${d.dias} ")
+            titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
+            titulo2.add(["${d.tipo} ${d.prejtipo == 'P' ? d.prejnmro + ' ' + d.dias : d.dias} ", d.prejtipo])
+
         }
 
         sql = "select count(*) cuenta from prej where cntr__id = ${params.id}"
-        println "sql: $sql"
+//        println "sql: $sql"
         def nmro = cn.rows(sql.toString())[0].cuenta.toInteger()
-        println "cuenta: $nmro"
+//        println "cuenta: $nmro"
 
         def rubros = []
         def val = []
-        def cont = 0, suma = 0
+        def totales = [], total_ac = [], total_pc = [], total_pa = []
+        def cont = 0, suma = 0, sumaprco = 0, sumaprct = 0, sumacntd = 0, contrato = 0
 
-        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd from item, undd, vocr where item.item__id = vocr.item__id and " +
+        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd from item, undd, vocr " +
+                "where item.item__id = vocr.item__id and " +
                 "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn"
 //        println "sql: $sql"
 
@@ -3331,39 +3336,54 @@ class CronogramaEjecucionController {
             val.add("Subtt.<br>P.U.<br>Cant.")
             val.add("${d.vocrsbtt}<br>${d.vocrpcun}<br>${d.vocrcntd}")
 
-            val.add("<br>%<br>F")
+            val.add("\$<br>%<br>F")
 
             sqlp = "select prej__id from prej where cntr__id = ${params.id} order by prejfcin"
 //            println "sql: $sqlp"
-            suma = 0
+            sumaprco = 0; sumaprct = 0; sumacntd = 0
             cnp.eachRow(sqlp.toString()) { pr ->
-                sql1 = "select coalesce(creoprco,0) creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
+                sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 cont = cne.rows(sqle.toString())[0].cuenta
 //                println "sqle: $sqle"
                 if(cont > 0) {
                     cnp.eachRow(sql1.toString()) { p ->
                         val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
-                        suma += p.creoprco
+                        sumaprco += p.creoprco; sumaprct += p.creoprct; sumacntd += p.creocntd
                     }
                 } else {
                         val.add("")
                 }
             }
-
-            val.add(suma)
-
+            suma += d.vocrsbtt
+            val.add("<strong>${sumaprco}<br>${sumaprct}<br>${sumacntd}</strong>")
 //            println "val: $val"
             rubros.add(val)
         }
 
-        println "--> $rubros"
+        sqlp = "select prej__id, prejcrpa from prej where cntr__id = ${params.id} order by prejfcin"
+        sql = "select sum(vocrsbtt) suma from vocr where cntr__id = ${params.id}"
+        contrato = cne.rows(sql.toString())[0].suma
+        def i = 0, anterior = 0
+        cnp.eachRow(sqlp.toString()) { pr ->
+            totales[i] = pr.prejcrpa
+            anterior = (i > 0 ? total_ac[i - 1] : 0)
+            total_ac[i] = totales[i] + anterior
+            total_pc[i] = "${Math.round(totales[i] / contrato * 10000) /100} %"
+            total_pa[i] = "${Math.round(total_ac[i] / contrato *10000)/100} %"
+            i++
+        }
+
+//        println "--> $rubros"
+//        println "--> $totales"
+//        println "--> $total_ac"
 
         cn.close()
         cn1.close()
         cnp.close()
         cne.close()
-        [titulo1: titulo1, titulo2: titulo2, rubros: rubros]
+        [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
+         ttpc: total_pc, ttpa: total_pa]
 
     }
 

@@ -18,11 +18,33 @@
 
     <style type="text/css">
     .valor {
-        color: #0c4c85;
+        color: #093760;
+    }
+    .valor2 {
+        color: #093760;
+        text-align: right;
+        font-weight: bold;
+        /*background-color: #d8dddf;*/
+    }
+    .suspension {
+        background-color: #ffffff !important;
+        color: #444 !important;
+        font-weight: normal !important;
     }
     .numero {
         width: 80px;
         text-align: right;
+    }
+    .totales {
+        width: 80px;
+        text-align: right;
+        font-weight: bold;
+    }
+    .pie {
+        background-color: #ddd;
+    }
+    .pie2 {
+        background-color: #f0f0f0;
     }
     </style>
 
@@ -32,37 +54,69 @@
     <thead>
     <tr>
         <th rowspan="2" style="width:70px;">Código</th>
-        <th rowspan="2" style="width:420px;">Rubro</th>
+        <th rowspan="2" style="width:220px;">Rubro</th>
         <th rowspan="2" style="width:26px;">*</th>
         <th rowspan="2" style="width:60px;">Cantidad Unitario Total</th>
         <th rowspan="2" style="width:12px;">T.</th>
         <g:each in="${titulo1}" var="t">
-            <th>${t}</th>
+            <th class="${t[1] == 'S' ? 'suspension' : ''}">${t[0]}</th>
         </g:each>
         <th rowspan="2">Total rubro</th>
     </tr>
     <tr>
         <g:each in="${titulo2}" var="t">
-            <th>${t}</th>
+            <th class="${t[1] == 'S' ? 'suspension' : ''}">${raw(t[0])}</th>
         </g:each>
     </tr>
     </thead>
 
     <tbody>
         <g:each in="${rubros}" var="rubro">
-
-            <tr class="click item_row   rowSelected" data-vol="2773">
+            <tr class="click item_row   rowSelected" data-vol="${rubro[0]}">
                 <g:each in="${rubro}" var="val" status="i">
+                    <g:if test="${i == 3}">
+                        <td class="valor2">${raw(val)}</td>
+                    </g:if>
+                    <g:else>
                     <g:if test="${i<5}">
                         <td class="valor">${raw(val)}</td>
                     </g:if>
                     <g:else>
                         <td class="numero">${raw(val)}</td>
                     </g:else>
+                    </g:else>
                 </g:each>
             </tr>
         </g:each>
 
+        <tr class="pie">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>
+            <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>
+            <g:each in="${totales}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
+        </tr>
+        <tr class="pie2">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>
+            <td colspan="2"></td>
+            <g:each in="${total_ac}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
+        </tr>
+        <tr class="pie">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>
+            <td colspan="2"></td>
+            <g:each in="${ttpc}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
+        </tr>
+        <tr class="pie2">
+            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>
+            <td colspan="2"></td>
+            <g:each in="${ttpa}" var="tot" status="i">
+                <td class="totales">${raw(tot)}</td>
+            </g:each>
+        </tr>
 
     </tbody>
 </table>
