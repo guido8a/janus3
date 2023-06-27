@@ -19,7 +19,7 @@
 <div class="btn-toolbar" id="toolbar">
     <div class="btn-group">
         <a href="${g.createLink(controller: 'contrato', action: 'verContrato', params: [contrato: contrato?.id])}"
-           class="btn btn-info btn-new" id="atras" rel="tooltip" title="Regresar al contrato">
+           class="btn btn-primary btn-new" id="atras" rel="tooltip" title="Regresar al contrato">
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
@@ -135,27 +135,27 @@
 
 
 <script type="text/javascript">
-    function daydiff(first, second) {
-        return (second - first) / (1000 * 60 * 60 * 24)
-    }
-
-    function updateDias() {
-        var ini = $("#ini").datepicker("getDate");
-        var fin = $("#fin").datepicker("getDate");
-        if (ini && fin) {
-            var dif = daydiff(ini, fin);
-            if (dif < 0) {
-                dif = 0;
-            }
-            $("#diasSuspension").text(dif + " día" + (dif == 1 ? "" : "s"));
-        }
-        if (ini) {
-            $("#fin").datepicker("option", "minDate", ini.add(1).days());
-        }
-        if (fin) {
-            $("#inicio").datepicker("option", "maxDate", fin.add(-1).days());
-        }
-    }
+    // function daydiff(first, second) {
+    //     return (second - first) / (1000 * 60 * 60 * 24)
+    // }
+    //
+    // function updateDias() {
+    //     var ini = $("#ini").datepicker("getDate");
+    //     var fin = $("#fin").datepicker("getDate");
+    //     if (ini && fin) {
+    //         var dif = daydiff(ini, fin);
+    //         if (dif < 0) {
+    //             dif = 0;
+    //         }
+    //         $("#diasSuspension").text(dif + " día" + (dif == 1 ? "" : "s"));
+    //     }
+    //     if (ini) {
+    //         $("#fin").datepicker("option", "minDate", ini.add(1).days());
+    //     }
+    //     if (fin) {
+    //         $("#inicio").datepicker("option", "maxDate", fin.add(-1).days());
+    //     }
+    // }
 
     function validarNum(ev) {
         /*
@@ -177,18 +177,34 @@
         ev.keyCode == 37 || ev.keyCode == 39);
     }
 
+    %{--function updateTabla() {--}%
+    %{--    var g = cargarLoader("Cargando...");--}%
+    %{--    $("#toolbar").hide();--}%
+    %{--    $.ajax({--}%
+    %{--        type: "POST",--}%
+    %{--        url: "${createLink(action: 'tablaNueva')}",--}%
+    %{--        data: {--}%
+    %{--            id: ${contrato.id},--}%
+    %{--            desde: $("#desde").val(),--}%
+    %{--            hasta: $("#hasta").val()--}%
+    %{--        },--}%
+    %{--        success: function (msg) {--}%
+    %{--            g.modal("hide");--}%
+    %{--            $("#divTabla").html(msg);--}%
+    %{--            $("#toolbar").show();--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--}--}%
+
+
     function updateTabla() {
-        // var divLoad = $("<div style='text-align: center;'></div>").html(spinnerBg).append("<br/>Cargando...Por favor espere...");
         var g = cargarLoader("Cargando...");
         $("#toolbar").hide();
-        // $("#divTabla").html(divLoad);
         $.ajax({
             type: "POST",
-            url: "${createLink(action: 'tablaNueva')}",
+            url: "${createLink(action: 'tablax')}",
             data: {
-                id: ${contrato.id},
-                desde: $("#desde").val(),
-                hasta: $("#hasta").val()
+                id: ${contrato.id}
             },
             success: function (msg) {
                 g.modal("hide");
@@ -197,6 +213,8 @@
             }
         });
     }
+
+
 
     function log(msg) {
     }
@@ -347,36 +365,88 @@
                     obra: "${obra.id}"
                 },
                 success: function (msg) {
-                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
 
-                    btnSave.click(function () {
-                        if ($("#frmSave-terminaSuspension").valid()) {
-                            btnSave.replaceWith(spinner);
-                            var data = $("#frmSave-terminaSuspension").serialize();
-                            data += "&cntr=${contrato.id}";
-                            $.ajax({
-                                type: "POST",
-                                url: "${createLink(action:'terminaSuspensionNuevo')}",
-                                data: data,
-                                success: function (msg) {
-//                                            ////console.log(msg);
-                                    $("#modal-forms").modal("hide");
-                                    location.reload(true);
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditTermSusp",
+                        title   : "Suspensión",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
                                 }
-                            });
-                        }
-                        return false;
-                    });
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormTerminarSuspension();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
 
-                    $("#modalTitle-forms").html("Terminar Suspensión");
-                    $("#modalBody-forms").html(msg);
-                    $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
-                    $("#modal-forms").modal("show");
+                    %{--var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+                    %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
+
+                    %{--btnSave.click(function () {--}%
+                    %{--    if ($("#frmSave-terminaSuspension").valid()) {--}%
+                    %{--        btnSave.replaceWith(spinner);--}%
+                    %{--        var data = $("#frmSave-terminaSuspension").serialize();--}%
+                    %{--        data += "&cntr=${contrato.id}";--}%
+                    %{--        $.ajax({--}%
+                    %{--            type: "POST",--}%
+                    %{--            url: "${createLink(action:'terminaSuspensionNuevo')}",--}%
+                    %{--            data: data,--}%
+                    %{--            success: function (msg) {--}%
+                    %{--                $("#modal-forms").modal("hide");--}%
+                    %{--                location.reload(true);--}%
+                    %{--            }--}%
+                    %{--        });--}%
+                    %{--    }--}%
+                    %{--    return false;--}%
+                    %{--});--}%
+
+                    %{--$("#modalTitle-forms").html("Terminar Suspensión");--}%
+                    %{--$("#modalBody-forms").html(msg);--}%
+                    %{--$("#modalFooter-forms").html("").append(btnCancel).append(btnSave);--}%
+                    %{--$("#modal-forms").modal("show");--}%
 
                 }
             });
         });
+
+        function submitFormTerminarSuspension() {
+            var $form = $("#frmSave-terminaSuspension");
+            if ($form.valid()) {
+                var data = $form.serialize();
+                data += "&cntr=${contrato.id}";
+                var dialog = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url: "${createLink(action:'terminaSuspensionNuevo')}",
+                    data    : data,
+                    success : function (msg) {
+                        dialog.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'OK'){
+                            log("Suspensión terminada correctamente", "success");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 800);
+                        }else{
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al terminar la suspensión" + '</strong>');
+                            return false;
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+
 
         $("#actualizaPrej").click(function () {
             $.ajax({
@@ -400,38 +470,96 @@
                     obra: "${obra.id}"
                 },
                 success: function (msg) {
-                    var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
 
-                    btnSave.click(function () {
-                        if ($("#frmSave-suspension").valid()) {
-                            btnSave.replaceWith(spinner);
-                            var data = $("#frmSave-suspension").serialize();
-                            data += "&obra=${obra.id}";
-                            data += "&cntr=${contrato.id}";
-                            $.ajax({
-                                type: "POST",
-                                url: "${createLink(action:'suspensionNueva')}",
-                                data: data,
-                                success: function (msg) {
-//                                            ////console.log(msg);
-                                    $("#modal-forms").modal("hide");
-                                    location.reload(true);
+
+
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditSusp",
+                        title   : "Suspensión",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
                                 }
-                            });
-                        }
-                        return false;
-                    });
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return submitFormSuspension();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
 
-                    $("#modalTitle-forms").html("Suspensión");
-                    $("#modalBody-forms").html(msg);
-                    $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
-                    $("#modal-forms").modal("show");
+
+                    %{--var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+                    %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
+
+                    %{--btnSave.click(function () {--}%
+                    %{--    if ($("#frmSave-suspension").valid()) {--}%
+                    %{--        btnSave.replaceWith(spinner);--}%
+                    %{--        var data = $("#frmSave-suspension").serialize();--}%
+                    %{--        data += "&obra=${obra.id}";--}%
+                    %{--        data += "&cntr=${contrato.id}";--}%
+                    %{--        $.ajax({--}%
+                    %{--            type: "POST",--}%
+                    %{--            url: "${createLink(action:'suspensionNueva')}",--}%
+                    %{--            data: data,--}%
+                    %{--            success: function (msg) {--}%
+                    %{--                $("#modal-forms").modal("hide");--}%
+                    %{--                location.reload(true);--}%
+                    %{--            }--}%
+                    %{--        });--}%
+                    %{--    }--}%
+                    %{--    return false;--}%
+                    %{--});--}%
+
+//                    $("#modalTitle-forms").html("Suspensión");
+//                    $("#modalBody-forms").html(msg);
+//                    $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
+//                    $("#modal-forms").modal("show");
 
                 }
             });
             return false;
         });
+
+
+
+        function submitFormSuspension() {
+            var $form = $("#frmSave-suspension");
+            if ($form.valid()) {
+                var data = $form.serialize();
+                data += "&cntr=${contrato.id}&obra=${obra.id}";
+                var dialog = cargarLoader("Guardando...");
+                $.ajax({
+                    type    : "POST",
+                    url: "${createLink(action:'suspensionNueva')}",
+                    data    : data,
+                    success : function (msg) {
+                        dialog.modal('hide');
+                        var parts = msg.split("_");
+                        if(parts[0] === 'OK'){
+                            log("Suspensión guardada correctamente", "success");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 800);
+                        }else{
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión" + '</strong>');
+                            return false;
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+
+
 
         $("#btnModif").click(function () {
             var vol = $(".rowSelected").first().data("vol");
