@@ -173,6 +173,8 @@
         maxDate: new Date(${max}),
         icons: {
         }
+    }).on('dp.change', function(e){
+        updateDias();
     });
 
     $('#fin').datetimepicker({
@@ -182,32 +184,37 @@
         icons: {
         }
     }).on('dp.change', function(e){
-        // var minDate = new Date(e.date);
         updateDias();
     });
 
-    function daydiff(first, second) {
-        console.log("--> " + second - first)
-        return (second - first) / (1000 * 60 * 60 * 24)
-    }
+    // function daydiff(first, second) {
+    //     console.log("--> " + second - first)
+    //     return (second - first) / (1000 * 60 * 60 * 24)
+    // }
 
     function updateDias() {
         var ini = $("#ini").val();
         var fin = $("#fin").val();
 
-        var f1 = new Date(ini)
-        var f2 = new Date(fin)
-
-        console.log("1 " + f1)
-        console.log("2 " + f2)
-
-        if (ini && fin) {
-            var dif = daydiff(f1, f2);
-            if (dif < 0) {
-                dif = 0;
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'cronogramaEjecucion', action: 'calcularDias_ajax')}',
+            data:{
+                inicio: ini,
+                fin: fin
+            },
+            success: function (msg){
+                $("#diasSuspension").text(msg + " día" + (msg === 1 ? "" : "s"));
             }
-            $("#diasSuspension").text(dif + " día" + (dif === 1 ? "" : "s"));
-        }
+        });
+
+        // if (ini && fin) {
+        //     var dif = daydiff(f1, f2);
+        //     if (dif < 0) {
+        //         dif = 0;
+        //     }
+        //     $("#diasSuspension").text(dif + " día" + (dif === 1 ? "" : "s"));
+        // }
         // if (ini) {
         //     $("#fin").datepicker("option", "minDate", ini.add(1).days());
         // }

@@ -3387,5 +3387,21 @@ class CronogramaEjecucionController {
 
     }
 
+    def calcularDias_ajax (){
+
+        def dias = 0
+
+        if(params.inicio && params.fin){
+            def fechaInicio = new Date().parse("dd-MM-yyyy", params.inicio)
+            def fechaFin = new Date().parse("dd-MM-yyyy", params.fin)
+
+            dias = fechaFin.minus(fechaInicio)
+        }else{
+            dias = 0
+        }
+
+        render dias
+    }
+
 
 } //fin controller
