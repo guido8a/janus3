@@ -2,12 +2,13 @@ package janus.pac
 
 import groovy.time.TimeCategory
 import janus.*
+import janus.ejecucion.Planilla
 
 //import janus.ejecucion.PeriodoEjecucionMes
-import janus.ejecucion.Planilla
 import janus.ejecucion.TipoPlanilla
 
-class CronogramaEjecucionController {
+
+class CronogramaEjecucionController2 {
 
     def preciosService
     def arreglosService
@@ -1342,7 +1343,12 @@ class CronogramaEjecucionController {
             html += numero(totCan)
             html += "</td>"
             html += "</tr>"
+            println "procesa ${crono.codigo}"
         }
+
+        fin = new Date()
+        println "cronogramaObraEjec: termina html tabla --> ${TimeCategory.minus(fin, inicio)}"
+
         html += "</tbody>"
 
         html += "<tfoot>"
@@ -1522,15 +1528,6 @@ class CronogramaEjecucionController {
             eq("obra", obra)
             eq("tipo", "S")
             isNull("fechaFin")
-/*
-            or {
-                isNull("fechaFin")
-                and {
-                    le("fechaInicio", new Date().clearTime())
-                    gt("fechaFin", new Date().clearTime())
-                }
-            }
-*/
         }
 
         println "obra: ${obra.id}, suspensiones: ${suspensiones}"
@@ -1586,7 +1583,8 @@ class CronogramaEjecucionController {
         }
 
 //        direct(action: "indexNuevo", params: [id: params.contrato])
-        render "ok"
+        redirect(controller: 'contrato', action: "verContrato", id: cntr.id)
+//        render "ok"
     }
 
 
@@ -1787,12 +1785,12 @@ class CronogramaEjecucionController {
     }
 
     def creaCrngEjecNuevo() {
-        println "creaCrngEjecNuevo para contrato: $params.id"
+        println "creaCrngEjecNuevo para contrato: $params"
         def contrato = Contrato.get(params.id)
+
         if (!contrato) {
             flash.message = "No se encontró el contrato"
             flash.clase = "alert-error"
-//            println flash.message
             redirect(action: "errores", params: [contrato: params.id])
             return
         }
@@ -1809,6 +1807,7 @@ class CronogramaEjecucionController {
             redirect(action: "errores", params: [contrato: params.id])
             return
         }
+
 //        println "Id contrato: $contrato, Id obra: $obra"
 
         /** copia el CronogramaContratado (CRCR) a la tabla cronograma de ejecucion (CREO) CrngEjecucionObra
@@ -1834,7 +1833,7 @@ class CronogramaEjecucionController {
         def detalle = VolumenContrato.findAllByObra(obra, [sort: "volumenOrden"])
         def periodos = CronogramaEjecucion.executeQuery("select max(periodo) from CronogramaContratado where contrato = :c", [c: contrato])
         def hayPrej = PeriodoEjecucion.findAllByContrato(contrato)
-        println "periodos: $periodos --- hayPrej: $hayPrej, obra: ${obra.id}"
+        println "periodos: $periodos --- hayPrej: $hayPrej"
 
         if (!hayPrej) {
             fcin = obra.fechaInicio
@@ -1918,7 +1917,7 @@ class CronogramaEjecucionController {
 //        println "datos de cronograma $cronogramas"
 
         if (cronogramas == 0) {
-//            println "no hay datos de cronograma ... inicia cargado"
+            println "no hay datos de cronograma ... inicia cargado"
             detalle.each { vol ->
                 def cronoCntr = CronogramaContratado.findAllByVolumenContrato(vol, [sort: 'periodo'])
                 cronoCntr.each { crono ->
@@ -1943,7 +1942,7 @@ class CronogramaEjecucionController {
                             } else {
                                 mes = 30
                             }
-                            println "dias: $dias, restan: ${contrato.plazo - 30 * (crono.periodo - 1)}, mes = $mes, ultimo: $ultimo"
+//                            println "dias: $dias, restan: ${contrato.plazo - 30 * (crono.periodo - 1)}, mes = $mes, ultimo: $ultimo"
                         }
 
                         if (prco > 0) {
@@ -1976,10 +1975,15 @@ class CronogramaEjecucionController {
             /** una vez cargado el cronograma ejecuta la creacion de periods mensuales, lo cual puede asimilarse dentro de PREJ **/
             params.cntr = contrato?.id
             actualizaPrej()  /** pone para cada prej los valores de cronograma **/
-        } //if cronogramas == 0
+//            render ("<h1>Cronograma valorado de ejecución generado exitosamente</h1><br>")
+//            return
 
-//        println "finalizado creaCrngEjec"
-        redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
+
+//            redirect(controller: 'contrato', action: "verContrato", id: contrato.id)
+        } else {
+            redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
+        }//if cronogramas == 0
+
     }
 
     def insertaPrej(prmt) {
@@ -2318,7 +2322,7 @@ class CronogramaEjecucionController {
 //        println "tx2: $tx2"
         cn.execute(tx1.toString())
         cn.execute(tx2.toString())
-        println "ha borrado registros temporales, prejActual: ${prejActual.id}"
+//        println "ha borrado registros temporales, prejActual: ${prejActual.id}"
 
         tx1 = "insert into prej_t(prej__id, cntr__id, obra__id, prejfcfn, prejfcin, prejnmro, prejtipo, " +
                 "prejcrpa, prejcntr, prejcmpl) " +
@@ -2330,14 +2334,14 @@ class CronogramaEjecucionController {
                 "select creo__id, prej__id, vocr__id, creocntd, creoprct, creoprco " +
                 "from creo where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})"
         cn.execute(tx1.toString())
-        println "se ha creado registros temporales en prej_t y creo_t"
+//        println "se ha creado registros temporales en prej_t y creo_t"
 
 
         /** borra crej y prej actuales **/
         cn.execute("delete from crej where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})".toString())
         cn.execute("delete from creo where prej__id in (select prej__id from prej where cntr__id = ${cntr.id})".toString())
         cn.execute("delete from prej where cntr__id = ${cntr.id}".toString())
-        println "borrado de datos actuales de prej y crej"
+//        println "borrado de datos actuales de prej y crej"
 
         def suspension
         def diasSusp = 0
@@ -2437,7 +2441,7 @@ class CronogramaEjecucionController {
         cn.execute(sql.toString())
         println "Insertados los periodos hasta la suspensión: ${mdfc.id}, anteriores a ${pfcin.format('yyyy-MM-dd')}"
 
-        /* se procesa el primer periodo luego de la suspensión */
+        /* se procesa el prime periodo luego de la suspensión */
         sql = "select prej__id, prejfcin, prejfcfn, prejnmro, prejfcfn::date - prejfcin::date dias from prej_t " +
                 "where cntr__id = ${cntr.id} and prejtipo in ('P', 'C', 'A') and " +
 //                "prejfcin <= '${pfcin.format('yyyy-MM-dd')}' order by prejfcin limit 1"
@@ -2464,7 +2468,7 @@ class CronogramaEjecucionController {
         def diasrsto = fcfn - pfcin + 1
         def fcfm = preciosService.ultimoDiaDelMes(pfcfn)
 
-        println "procesa primer periodo: ${prej_id} desde ${pfcin} a ${fcfn}, inicia en: $fcin, diasPrdo: $diasPrdo"
+        println "procesa primer periodo: ${prej_id} desde ${pfcin} a ${fcfn}, inicia en: $fcin"
 
         def nuevoId
         /* se proceso solo el periodo hasta antes de la suspensión */
@@ -2490,7 +2494,6 @@ class CronogramaEjecucionController {
             nuevoId = insertaPrejNuevo(obra, prdo, 'S', pfcin, pfcfn, cntr)
             if (nuevoId) {
                 if(fcfm > pfcfn) {
-                    println ">>luego de crear suspensión fcfm: $fcfm, pfcfn: $pfcfn"
                     dias = fcfm - pfcfn
                     fcin = pfcfn + 1
 
@@ -2545,7 +2548,7 @@ class CronogramaEjecucionController {
                     println "====> $sql"
                     cn.execute(sql.toString())
                 }
-                /* falta la segunda parte del prdo 2 **/
+
             }
         } else {
             println "---> obra: $obra, prdo: $prdo, 'S', de: $pfcin, a. $pfcfn, cntr: $cntr"
@@ -2569,15 +2572,10 @@ class CronogramaEjecucionController {
         sql = "select prejnmro, sum((prejfcfn::date - prejfcin::date) + 1) dias, prejtipo from prej_t " +
                 "where cntr__id = ${cntr.id} and prejtipo in ('P', 'C', 'A') " +
                 "group by prejnmro, prejtipo order by 1"
-//        sql = "select prejnmro, sum((prejfcfn::date - prejfcin::date) + 1) dias from prej_t " +
-//                "where cntr__id = ${cntr.id} and prejtipo in ('P', 'C', 'A') " +
-//                "group by prejnmro order by 1"
         println "2 ---> $sql"
 
         def periodos = cn.rows(sql.toString())
         def prejtipo = ''
-        fctr = 0
-        diasrsto = 0
         periodos.each { pr ->
             prdo = pr.prejnmro
             diasPrdo = pr.dias
@@ -3354,7 +3352,7 @@ class CronogramaEjecucionController {
                         sumaprco += p.creoprco; sumaprct += p.creoprct; sumacntd += p.creocntd
                     }
                 } else {
-                    val.add("")
+                        val.add("")
                 }
             }
             suma += d.vocrsbtt
@@ -3404,7 +3402,6 @@ class CronogramaEjecucionController {
 
         render dias
     }
-
 
 
 } //fin controller
