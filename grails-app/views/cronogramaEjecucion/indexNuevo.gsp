@@ -347,7 +347,9 @@
                             log("Ampliación guardada correctamente", "success");
                             updateTabla();
                         }else{
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la ampliación" + '</strong>');
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
+                                "Error al guardar la ampliación: " + '<strong style="font-size: 14px">' +
+                                parts[1] + '</strong>');
                             return false;
                         }
                     }

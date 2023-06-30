@@ -712,9 +712,18 @@ class CronogramaEjecucionController {
 
     def ampliacion() {  /** ampliacion de plazo **/
         println "params ampliacion de plazo: $params"
+        def cn = dbConnectionService.getConnection()
         def dias = params.dias.toInteger()
         def obra = Obra.get(params.obra)
         def cntr = Contrato.get(params.contrato)
+        def sql = ""
+        def esteMes = 0
+
+        if(dias <= 0) {
+            render "NO_La aplicación no puede ser de 0 días"
+            return
+        }
+
 
         def modificacion = new Modificaciones([
                 obra         : obra,
@@ -739,86 +748,75 @@ class CronogramaEjecucionController {
 
         fcfm = preciosService.ultimoDiaDelMes(fcin)
         def diasMes
-        def errores = false
+        def error = ""
 
-        if (((fcfm - fcfn + 1) >= dias && (fcfm != fcfn))) {
-            ultimoPeriodo.fechaFin = fcfn + dias
-            if (!ultimoPeriodo.save(flush: true)) {
-                errores = true
-                println "ERROR!!!!: " + ultimoPeriodo.errors
-            } else {
-                println " se ha modificado el último prej"
-                dias = 0
-            }
-        }
+//        sql = "select sum(prejfcfn - prejfcin + 1) dias from prej where prejnmro = (" +
+//                "select max(prejnmro) from prej where cntr__id = 185) and " +
+//                "cntr__id = ${params.contrato} and prejtipo != 'S'"
+//        def sobran = 30 - cn.rows(sql.toString())[0].dias
+//
+//        println "fcin: $fcin, fcfn: $fcfn, prdo: $prdo, fcfm: $fcfm, dias: $dias, sobran: $sobran"
+//
+//        if ( sobran > 0 ) {
+//            esteMes = fcfm - fcfn + 1
+//            if(fcfm == fcfn) {
+//                fcin = fcfm + 1
+//            }
+//            if (sobran > dias) {
+//                if (esteMes >= dias) {
+//                    fcin = fcfn + 1
+//                    fcfn = fcin + dias - 1
+//                    render periodoAmpliacion(obra, prdo, fcin, fcfn, cntr)
+//                    return
+//                }
+//            } else {
+//                dias -= sobran
+//                fcfn = fcin + sobran - 1
+//                periodoAmpliacion(obra, prdo, fcin, fcfn, cntr)
+//            }
+//        }
 
-        if (fcfm == fcfn) {
-            println "cambia fecha de inicio"
-            fcin = fcfn + 1
-            fcfn = fcin
-            fcfm = preciosService.ultimoDiaDelMes(fcin)
-        } else {
-            println "pone fecha de inicio"
-            fcin = fcfn + 1
-            fcfm = preciosService.ultimoDiaDelMes(fcin)
-        }
-
+        fcfm = preciosService.ultimoDiaDelMes(fcin)
+        prdo++
         println "inicio de otros periodos con dias: $dias"
 
         while (dias > 0) {
+            fcin = fcfn + 1
+            fcfm = preciosService.ultimoDiaDelMes(fcin)
             diasMes = fcfm - fcin + 1
             if (dias > diasMes) {
-                /** nuevo periodo **/
-                def periodo = new PeriodoEjecucion([
-                        obra       : obra,
-                        numero     : prdo++,
-                        tipo       : "A",
-                        fechaInicio: fcin,
-                        fechaFin   : fcfm,
-                        contrato   : cntr
-                ])
-                if (!periodo.save(flush: true)) {
-                    errores = true
-                    println "ERROR!!!!: " + periodo.errors
-                } else {
-                    println "crea nuevo periodo completo"
-                    dias -= diasMes
-                    fcin = fcfm + 1
-                    fcfm = preciosService.ultimoDiaDelMes(fcin)
-                }
-
+                // ** nuevo periodo **
+                error = periodoAmpliacion(obra, prdo, fcin, fcfm, cntr)
+                dias -= diasMes
+                fcfn = fcfm
             } else {
-                fcfn = fcin + dias
-                dias -= (fcfn - fcin)
-                /** alarga el periodo inicial **/
-                def periodo = new PeriodoEjecucion([
-                        obra       : obra,
-
-
-                        numero     : prdo++,
-                        tipo       : "A",
-                        fechaInicio: fcin,
-                        fechaFin   : fcfn,
-                        contrato   : cntr
-                ])
-                if (!periodo.save(flush: true)) {
-                    errores = true
-                    println "ERROR!!!!: " + periodo.errors
-                } else {
-                    fcin = fcfn + 1
-                    dias -= (fcfn - fcin + 1)
-                    println "crea nuevo periodo parcial, queda: fcfm: $fcfm, fcin: $fcin, dias: $dias"
-                }
+                fcfn = fcin + dias - 1
+                dias -= (fcfn - fcin + 1)
+                error = periodoAmpliacion(obra, prdo, fcin, fcfn, cntr)
+                println "crea nuevo periodo parcial, queda: fcfm: $fcfm, fcin: $fcin, dias: $dias"
             }
         }
 
-        if (!errores) {
-            render "OK"
+        render error
+    }
+    
+
+    def periodoAmpliacion(obra, nmro, fcin, fcfn, cntr){
+        def periodo = new PeriodoEjecucion([
+                obra       : obra,
+                numero     : nmro,
+                tipo       : "A",
+                fechaInicio: fcin,
+                fechaFin   : fcfn,
+                contrato   : cntr
+        ])
+        if (!periodo.save(flush: true)) {
+            return "NO_ERROR!!!!: " + periodo.errors
         } else {
-            render "NO"
+            return "OK_periodo creado"
         }
     }
-
+    
 
     private String numero(num, decimales, cero) {
         if (num == 0 && cero.toString().toLowerCase() == "hide") {
@@ -3326,13 +3324,15 @@ class CronogramaEjecucionController {
         def totales = [], total_ac = [], total_pc = [], total_pa = []
         def cont = 0, suma = 0, sumaprco = 0, sumaprct = 0, sumacntd = 0, contrato = 0
 
-        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd from item, undd, vocr " +
+        sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
+                "from item, undd, vocr " +
                 "where item.item__id = vocr.item__id and " +
                 "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn"
 //        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
             val = []
+            val.add(d.vocr__id)
             val.add(d.itemcdgo)
             val.add("${d.itemnmbr}<br><strong>Unidad: ${d.unddcdgo}</strong>")
             val.add("Subtt.<br>P.U.<br>Cant.")

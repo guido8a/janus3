@@ -72,8 +72,9 @@
 
     <tbody>
         <g:each in="${rubros}" var="rubro">
-            <tr class="click item_row   rowSelected" data-vol="${rubro[0]}">
+            <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
                 <g:each in="${rubro}" var="val" status="i">
+                    <g:if test="${i > 0}">
                     <g:if test="${i == 3}">
                         <td class="valor2">${raw(val)}</td>
                     </g:if>
@@ -85,6 +86,7 @@
                         <td class="numero">${raw(val)}</td>
                     </g:else>
                     </g:else>
+                    </g:if>
                 </g:each>
             </tr>
         </g:each>
