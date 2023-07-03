@@ -123,3 +123,130 @@
     </tbody>
 </table>
 </html>
+
+<script type="text/javascript">
+
+    function editarFila(vol){
+        $.ajax({
+            type: "POST",
+            url: "${createLink(action: 'modificacionNuevo_ajax')}",
+            data: {
+                contrato: "${contrato}",
+                vol: vol
+            },
+            success: function (msg) {
+
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEditModif",
+                    title   : "Modificación",
+                    message : msg,
+                    class: 'modal-lg',
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var data = "obra=${janus.Contrato.get(contrato)?.obra?.id}";
+                                $(".tiny").each(function () {
+                                    var tipo = $(this).data("tipo");
+                                    var val = parseFloat($(this).val());
+                                    var crono = $(this).data("id");
+                                    var periodo = $(this).data("id2");
+                                    var vol = $(this).data("id3");
+                                    data += "&" + (tipo + "=" + val + "_" + periodo + "_" + vol + "_" + crono);
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    url: "${createLink(action:'modificacionNuevo')}",
+                                    data: data,
+                                    success: function (msg) {
+                                        b.modal("hide");
+                                        updateTabla();
+                                    }
+                                });
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+
+
+
+                %{--var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+                %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
+
+                %{--btnSave.click(function () {--}%
+                %{--    btnSave.replaceWith(spinner);--}%
+                %{--    var data = "obra=${obra.id}";--}%
+                %{--    $(".tiny").each(function () {--}%
+                %{--        var tipo = $(this).data("tipo");--}%
+                %{--        var val = parseFloat($(this).val());--}%
+                %{--        var crono = $(this).data("id");--}%
+                %{--        var periodo = $(this).data("id2");--}%
+                %{--        var vol = $(this).data("id3");--}%
+                %{--        data += "&" + (tipo + "=" + val + "_" + periodo + "_" + vol + "_" + crono);--}%
+                %{--    });--}%
+                %{--    $.ajax({--}%
+                %{--        type: "POST",--}%
+                %{--        url: "${createLink(action:'modificacionNuevo')}",--}%
+                %{--        data: data,--}%
+                %{--        success: function (msg) {--}%
+                %{--            $("#modal-forms").modal("hide");--}%
+                %{--            updateTabla();--}%
+                %{--        }--}%
+                %{--    });--}%
+                %{--    return false;--}%
+                %{--});--}%
+
+                %{--$("#modalTitle-forms").html("Modificación");--}%
+                %{--$("#modalBody-forms").html(msg);--}%
+                %{--$("#modalFooter-forms").html("").append(btnCancel).append(btnSave);--}%
+                %{--$("#modal-forms").modal("show");--}%
+            }
+        });
+    }
+
+
+
+    function createContextMenu(node) {
+        var $tr = $(node);
+        var items = {
+            header: {
+                label: "Acciones",
+                header: true
+            }
+        };
+
+        var id = $tr.data("vocr");
+
+        var editar = {
+            label: "Modificación",
+            icon: "fa fa-edit",
+            action : function ($element) {
+                editarFila(id);
+            }
+        };
+
+        items.editar = editar;
+
+        return items
+    }
+
+    $("tr").contextMenu({
+        items  : createContextMenu,
+        onShow : function ($element) {
+            $element.addClass("trHighlight");
+        },
+        onHide : function ($element) {
+            $(".trHighlight").removeClass("trHighlight");
+        }
+    });
+
+
+</script>

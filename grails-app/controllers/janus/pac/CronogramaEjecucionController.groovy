@@ -2372,6 +2372,7 @@ class CronogramaEjecucionController {
             if (!suspension.save(flush: true)) {
                 println "ERROR EN TEMINAR SUSSPENSION: " + suspension.errors
                 render "NO"
+                return true
             }
 /*
             else {
@@ -2388,6 +2389,7 @@ class CronogramaEjecucionController {
         } else {
             suspension = Modificaciones.findByContratoAndTipoAndFechaInicio(cntr, 'S', fcin)
         }
+
         def prejOk = insertaSuspensionNuevo(cntr, suspension.fechaInicio, suspension.fechaFin, 'S')
 
         if (prejOk) {
@@ -2935,7 +2937,7 @@ class CronogramaEjecucionController {
 
 
     def modificacionNuevo_ajax() {
-//        println("params modajax " + params)
+        println("params modajax " + params)
         def contrato = Contrato.get(params.contrato.toLong())
         def obra = contrato.obra
         def vol = VolumenContrato.get(params.vol.toLong())
@@ -3385,7 +3387,7 @@ class CronogramaEjecucionController {
         cnp.close()
         cne.close()
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
-         ttpc: total_pc, ttpa: total_pa]
+         ttpc: total_pc, ttpa: total_pa, contrato: params.id]
 
     }
 

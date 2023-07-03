@@ -33,10 +33,10 @@
                         <i class="fa fa-expand"></i>
                         Ampliación
                     </a>
-                    <a href="#" class="btn btn-info" id="btnModif">
-                        <i class="fa fa-retweet"></i>
-                        Modificación
-                    </a>
+%{--                    <a href="#" class="btn btn-info" id="btnModif">--}%
+%{--                        <i class="fa fa-retweet"></i>--}%
+%{--                        Modificación--}%
+%{--                    </a>--}%
                     <a href="#" class="btn btn-warning" id="btnSusp">
                         <i class="fa fa-clock"></i>
                         Suspensión
@@ -242,18 +242,6 @@
                         btnSave.click(function () {
                             if ($("#frmSave-modificacion").valid()) {
                                 btnSave.replaceWith(spinner);
-                                %{--$.ajax({--}%
-                                %{--type    : "POST",--}%
-                                %{--url     : "${createLink(action:'ampliacion')}",--}%
-                                %{--data    : {--}%
-                                %{--obra : "${obra.id}",--}%
-                                %{--dias : $("#dias").val()--}%
-                                %{--},--}%
-                                %{--success : function (msg) {--}%
-                                %{--$("#modal-forms").modal("hide");--}%
-                                %{--updateTabla();--}%
-                                %{--}--}%
-                                %{--});--}%
                             }
                             return false;
                         });
@@ -297,34 +285,7 @@
                             } //guardar
                         } //buttons
                     }); //dialog
-
-                    %{--var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-                    %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
-
-                    %{--btnSave.click(function () {--}%
-                    %{--    if ($("#frmSave-ampliacion").valid()) {--}%
-                    %{--        btnSave.replaceWith(spinner);--}%
-                    %{--        var data = $("#frmSave-ampliacion").serialize();--}%
-                    %{--        data += "&obra=${obra.id}&contrato=${contrato.id}";--}%
-                    %{--        $.ajax({--}%
-                    %{--            type: "POST",--}%
-                    %{--            url: "${createLink(action:'ampliacion')}",--}%
-                    %{--            data: data,--}%
-                    %{--            success: function (msg) {--}%
-                    %{--                $("#modal-forms").modal("hide");--}%
-                    %{--                updateTabla();--}%
-                    %{--            }--}%
-                    %{--        });--}%
-                    %{--    }--}%
-                    %{--    return false;--}%
-                    %{--});--}%
-
-                    %{--$("#modalTitle-forms").html("Ampliación");--}%
-                    %{--$("#modalBody-forms").html(msg);--}%
-                    %{--$("#modalFooter-forms").html("").append(btnCancel).append(btnSave);--}%
-                    %{--$("#modal-forms").modal("show");--}%
-
-                }
+                  }
             });
             return false;
         });
@@ -367,7 +328,6 @@
                     obra: "${obra.id}"
                 },
                 success: function (msg) {
-
                     var b = bootbox.dialog({
                         id      : "dlgCreateEditTermSusp",
                         title   : "Suspensión",
@@ -389,33 +349,6 @@
                             } //guardar
                         } //buttons
                     }); //dialog
-
-                    %{--var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-                    %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
-
-                    %{--btnSave.click(function () {--}%
-                    %{--    if ($("#frmSave-terminaSuspension").valid()) {--}%
-                    %{--        btnSave.replaceWith(spinner);--}%
-                    %{--        var data = $("#frmSave-terminaSuspension").serialize();--}%
-                    %{--        data += "&cntr=${contrato.id}";--}%
-                    %{--        $.ajax({--}%
-                    %{--            type: "POST",--}%
-                    %{--            url: "${createLink(action:'terminaSuspensionNuevo')}",--}%
-                    %{--            data: data,--}%
-                    %{--            success: function (msg) {--}%
-                    %{--                $("#modal-forms").modal("hide");--}%
-                    %{--                location.reload(true);--}%
-                    %{--            }--}%
-                    %{--        });--}%
-                    %{--    }--}%
-                    %{--    return false;--}%
-                    %{--});--}%
-
-                    %{--$("#modalTitle-forms").html("Terminar Suspensión");--}%
-                    %{--$("#modalBody-forms").html(msg);--}%
-                    %{--$("#modalFooter-forms").html("").append(btnCancel).append(btnSave);--}%
-                    %{--$("#modal-forms").modal("show");--}%
-
                 }
             });
         });
@@ -472,9 +405,6 @@
                     obra: "${obra.id}"
                 },
                 success: function (msg) {
-
-
-
                     var b = bootbox.dialog({
                         id      : "dlgCreateEditSusp",
                         title   : "Suspensión",
@@ -496,41 +426,10 @@
                             } //guardar
                         } //buttons
                     }); //dialog
-
-
-                    %{--var btnCancel = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-                    %{--var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
-
-                    %{--btnSave.click(function () {--}%
-                    %{--    if ($("#frmSave-suspension").valid()) {--}%
-                    %{--        btnSave.replaceWith(spinner);--}%
-                    %{--        var data = $("#frmSave-suspension").serialize();--}%
-                    %{--        data += "&obra=${obra.id}";--}%
-                    %{--        data += "&cntr=${contrato.id}";--}%
-                    %{--        $.ajax({--}%
-                    %{--            type: "POST",--}%
-                    %{--            url: "${createLink(action:'suspensionNueva')}",--}%
-                    %{--            data: data,--}%
-                    %{--            success: function (msg) {--}%
-                    %{--                $("#modal-forms").modal("hide");--}%
-                    %{--                location.reload(true);--}%
-                    %{--            }--}%
-                    %{--        });--}%
-                    %{--    }--}%
-                    %{--    return false;--}%
-                    %{--});--}%
-
-//                    $("#modalTitle-forms").html("Suspensión");
-//                    $("#modalBody-forms").html(msg);
-//                    $("#modalFooter-forms").html("").append(btnCancel).append(btnSave);
-//                    $("#modal-forms").modal("show");
-
                 }
             });
             return false;
         });
-
-
 
         function submitFormSuspension() {
             var $form = $("#frmSave-suspension");
@@ -592,11 +491,9 @@
                             });
                             $.ajax({
                                 type: "POST",
-                                %{--url: "${createLink(action:'modificacion')}",--}%
                                 url: "${createLink(action:'modificacionNuevo')}",
                                 data: data,
                                 success: function (msg) {
-//                                            console.log(msg);
                                     $("#modal-forms").modal("hide");
                                     updateTabla();
                                 }
