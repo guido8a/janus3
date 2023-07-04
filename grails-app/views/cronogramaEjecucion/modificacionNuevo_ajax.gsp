@@ -25,12 +25,14 @@ table th {
 </style>
 <g:form class="form-horizontal" name="frmSave-modificacion" action="modificacionNuevo">
     <g:if test="${msg}">
-        <div class="alert alert-error">
+        <div class="alert alert-danger">
             ${msg}
         </div>
     </g:if>
     <g:else>
-        <elm:poneHtml textoHtml="${html}"/>
+        <div class="" style="width: 99.7%;height: 450px; overflow: auto" >
+            <elm:poneHtml textoHtml="${html}"/>
+        </div>
     </g:else>
 </g:form>
 
