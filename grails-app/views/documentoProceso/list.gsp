@@ -90,25 +90,22 @@
             <th style="width: 15%">Resumen</th>
             <th style="width: 10%">Archivo</th>
             <th style="width: 10%">Tipo de archivo</th>
-            <th style="width:15%">Acciones</th>
+            <th style="width:10%">Acciones</th>
         </tr>
         </thead>
-        <tbody class="paginate">
+        <tbody >
         <g:each in="${documentoProcesoInstanceList}" status="i" var="documentoProcesoInstance">
-            <tr>
-                <td>${documentoProcesoInstance?.etapa?.descripcion}</td>
-                <td>${fieldValue(bean: documentoProcesoInstance, field: "nombre")}</td>
-                <td>${fieldValue(bean: documentoProcesoInstance, field: "descripcion")}</td>
-                <td>${fieldValue(bean: documentoProcesoInstance, field: "resumen")}</td>
-                <td style="font-weight: bold">${fieldValue(bean: documentoProcesoInstance, field: "path")}</td>
-                <td style="text-align: center; font-weight: bold">
+            <tr style="width: 100%">
+                <td style="width: 10%">${documentoProcesoInstance?.etapa?.descripcion}</td>
+                <td style="width: 25%">${fieldValue(bean: documentoProcesoInstance, field: "nombre")}</td>
+                <td style="width: 20%">${fieldValue(bean: documentoProcesoInstance, field: "descripcion")}</td>
+                <td style="width: 15%">${fieldValue(bean: documentoProcesoInstance, field: "resumen")}</td>
+                <td style="width: 10%">${fieldValue(bean: documentoProcesoInstance, field: "path")}</td>
+                <td style="width: 10%">
                     <g:set var="p" value="${documentoProcesoInstance.path.split("\\.")}"/>
                     ${p[p.size() - 1]}
                 </td>
-                <td>
-%{--                    <a class="btn btn-info btn-xs btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${documentoProcesoInstance.id}">--}%
-%{--                        <i class="fa fa-search"></i>--}%
-%{--                    </a>--}%
+                <td style="width:10%">
                     <a class="btn btn-success btn-xs btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${documentoProcesoInstance.id}">
                         <i class="fa fa-edit"></i>
                     </a>
