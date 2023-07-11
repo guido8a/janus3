@@ -2,9 +2,9 @@
 <html>
     <head>
         <meta name="layout" content="main">
-        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.min.js')}"></script>
-        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">
+%{--        <script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
+%{--        <script src="${resource(dir: 'js/jquery/plugins/', file: 'jquery.livequery.min.js')}"></script>--}%
+%{--        <link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
         <title>Detalle de planilla</title>
 
         <style type="text/css">
@@ -23,7 +23,6 @@
         .num {
             text-align : right !important;
             width      : 60px;
-            /*background : #c71585 !important;*/
         }
 
         .borderLeft {
@@ -44,12 +43,12 @@
 
         <div class="row" style="margin-bottom: 10px;">
             <div class="span9 btn-group" role="navigation">
-                <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-ajax btn-new" title="Regresar al contrato">
-                    <i class="icon-double-angle-left"></i>
+                <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-primary btn-new" title="Regresar al contrato">
+                    <i class="fa fa-arrow-left"></i>
                     Contrato
                 </g:link>
-                <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-ajax btn-new" title="Regresar a las planillas del contrato">
-                    <i class="icon-angle-left"></i>
+                <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar a las planillas del contrato">
+                    <i class="fa fa-arrow-left"></i>
                     Planillas
                 </g:link>
             </div>
@@ -77,12 +76,6 @@
                         </th>
                         <th id="thIndirectos" data-indi="${indirectos}">
                             % de indirectos ${contrato?.indirectos}<br/>
-                            %{--<g:if test="${detallesSize == 0}">--}%
-                                %{--<g:select name="indirectos" class="input-mini" value="${indirectos}" from="${0..100}"/>%--}%
-                            %{--</g:if>--}%
-                            %{--<g:else>--}%
-                                %{--${indirectos}%--}%
-                            %{--</g:else>--}%
                         </th>
                         <th>Valor total</th>
                         <th style="width: 110px;">
@@ -93,10 +86,10 @@
                 <tbody>
                     <tr id="trRubro">
                         <td id="tdFactura">
-                            <input type="text" id="txtFactura" class="input-small int" style="width: 120px;"/>
+                            <input type="text" id="txtFactura" class="input-small int" style="width: 100px;"/>
                         </td>
                         <td id="tdRubro">
-                            <input type="text" id="txtRubro" class="input-xlarge" style="width: 300px;"/>
+                            <input type="text" id="txtRubro" class="input-xlarge" style="width: 200px;"/>
                         </td>
                         <td id="tdUnidad">
                             <g:select class="input-mini" name="selUnidad" from="${janus.Unidad.list([sort: 'descripcion'])}" optionKey="id" optionValue="codigo"/>
@@ -239,32 +232,27 @@
                 $("#trRubro").removeData();
                 $("#btnSave").hide();
                 $("#btnAdd").show();
-
             }
 
             function updateVal(tipo) {
-//                var indi = parseInt($("#thIndirectos").data("indi")) / 100;
-                var indi = ${contrato?.indirectos?:21}/100
+                var indi = ${contrato?.indirectos?:21}/100;
                 var valorNoIva = parseFloat($.trim($("#txtValor").val()));
-
                 var valorIva = valorNoIva + (valorNoIva * iva);
-
                 var valorIndi = (valorNoIva * indi);
 
-                if (tipo == 1 || 3) {
+                if (tipo === 1 || 3) {
                     $("#txtIndirectos").val(number_format(valorIndi, 2, ".", "")).data("default", number_format(valorIndi, 2, ".", ""));
                 }
-                if (tipo == 2 || 3) {
+                if (tipo === 2 || 3) {
                     $("#txtValorIva").val(number_format(valorIva, 2, ".", "")).data("default", number_format(valorIva, 2, ".", ""));
                 }
             }
 
             function check($elm) {
                 var error = false;
-                if ($elm.attr("id") == "txtValor") {
+                if ($elm.attr("id") === "txtValor") {
                     updateVal(3);
                 }
-//                } else if ($elm.attr("id") == "txtValorIva" || $(this).attr("id") == "txtValorIndi") {
                 var str = "";
                 $("#txtValorIva, #txtIndirectos").each(function () {
                     var valor = parseFloat($.trim($(this).val()));
@@ -292,15 +280,12 @@
                 var valorIndi = parseFloat($.trim($("#txtIndirectos").val()));
                 var total = 0;
                 if (!error && valor != "" && valorIva != "" && valorIndi != "" && !isNaN(valor) && !isNaN(valorIva) && !isNaN(valorIndi)) {
-//                    total = valorIva + valorIndi;
                     total = valor + valorIndi;
                     total = total.toFixed(2);
-//                    $("#tdTotal").text(number_format(total, 2, ".", "")).data("val", total);
                     $("#tdTotal").text(number_format(valor + valorIndi, 2, ".", "")).data("val", valor + valorIndi);
                 }
 
                 if (!error && factura != "" && rubro != "" && valor != "" && valorIva != "" && valorIndi != "" && !isNaN(valor) && !isNaN(valorIva) && !isNaN(valorIndi)) {
-//                            console.log("aqui");
                     var rubro = {
                         "planilla.id"   :${planilla.id},
                         factura         : factura,
@@ -315,39 +300,50 @@
                         total           : total
                     };
                     $("#trRubro").data(rubro);
-//                            console.log($("#trRubro"), rubro);
                     return true;
                 }
                 return false;
             }
 
             function noDuplicados(data) {
-                var msg = ""
+                var msg = "";
                 $("#tbRubros").children("tr").each(function () {
                     var trData = $(this).data();
-
-//                    if (trData.factura == data.factura) {
-//                        msg += "<li>El número de factura " + trData.factura + " ya ha sido ingresado. Si necesita hacer cambios modifique el item ingresado.</li>";
-//                    }
-                    if (trData.rubro == data.rubro) {
+                    if (trData.rubro === data.rubro) {
                         msg += "<li>El rubro " + trData.rubro + " ya ha sido ingresado. Si necesita hacer cambios modifique el item ingresado.</li>";
                     }
                 });
-                if (msg != "") {
-                    $.box({
-                        imageClass : "box_info",
-                        title      : "Alerta",
-                        text       : "Se han encontrado los siguientes errores: <ul>" + msg + "</ul>",
-                        iconClose  : false,
-                        dialog     : {
-                            resizable : false,
-                            draggable : false,
-                            buttons   : {
-                                "Aceptar" : function () {
+                if (msg !== "") {
+
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEdit",
+                        title   :"Errores",
+                        message : "Se han encontrado los siguientes errores: <ul>" + msg + "</ul>",
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
                                 }
                             }
-                        }
-                    });
+                        } //buttons
+                    }); //dialog
+
+
+                    // $.box({
+                    //     imageClass : "box_info",
+                    //     title      : "Alerta",
+                    //     text       : "Se han encontrado los siguientes errores: <ul>" + msg + "</ul>",
+                    //     iconClose  : false,
+                    //     dialog     : {
+                    //         resizable : false,
+                    //         draggable : false,
+                    //         buttons   : {
+                    //             "Aceptar" : function () {
+                    //             }
+                    //         }
+                    //     }
+                    // });
                     return false;
                 }
                 return true;
@@ -372,7 +368,7 @@
             function updateRow(data) {
                 $("#tbRubros").children("tr").each(function () {
                     var idAct = $(this).data("id");
-                    if (idAct == data.id) {
+                    if (idAct === data.id) {
                         $(this).remove();
                         addRow(data, true);
                     }
@@ -407,34 +403,64 @@
                     var $btnDelete = $("<a href='#' class='btn btn-danger' style='margin-left: 10px;' title='Eliminar'><i class='icon-trash'></i></a>").appendTo($tdBtn);
 
                     $btnDelete.click(function () {
-                        $.box({
-                            imageClass : "box_info",
-                            title      : "Alerta",
-                            text       : "Está seguro de eliminar el rubro " + data.rubro + "? Esta acción no se puede deshacer.",
-                            iconClose  : false,
-                            dialog     : {
-                                resizable     : false,
-                                draggable     : false,
-                                closeOnEscape : false,
-                                buttons       : {
-                                    "Aceptar"  : function () {
-                                        $.ajax({
-                                            type    : "POST",
-                                            url     : "${createLink(action:'deleteDetalleCosto')}",
-                                            data    : {
-                                                id : data.id
-                                            },
-                                            success : function (msg) {
-                                                $tr.remove();
-                                                updateTotal();
-                                            }
-                                        });
-                                    },
-                                    "Cancelar" : function () {
-                                    }
+                        bootbox.confirm({
+                            title: "Eliminar",
+                            message: "Está seguro de eliminar el rubro " + data.rubro + "? Esta acción no se puede deshacer.",
+                            buttons: {
+                                cancel: {
+                                    label: '<i class="fa fa-times"></i> Cancelar',
+                                    className: 'btn-primary'
+                                },
+                                confirm: {
+                                    label: '<i class="fa fa-trash"></i> Borrar',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function (result) {
+                                if(result){
+                                    $.ajax({
+                                        type    : "POST",
+                                        url     : "${createLink(action:'deleteDetalleCosto')}",
+                                        data    : {
+                                            id : data.id
+                                        },
+                                        success : function (msg) {
+                                            $tr.remove();
+                                            updateTotal();
+                                        }
+                                    });
                                 }
                             }
                         });
+
+                        %{--$.box({--}%
+                        %{--    imageClass : "box_info",--}%
+                        %{--    title      : "Alerta",--}%
+                        %{--    text       : "Está seguro de eliminar el rubro " + data.rubro + "? Esta acción no se puede deshacer.",--}%
+                        %{--    iconClose  : false,--}%
+                        %{--    dialog     : {--}%
+                        %{--        resizable     : false,--}%
+                        %{--        draggable     : false,--}%
+                        %{--        closeOnEscape : false,--}%
+                        %{--        buttons       : {--}%
+                        %{--            "Aceptar"  : function () {--}%
+                        %{--                $.ajax({--}%
+                        %{--                    type    : "POST",--}%
+                        %{--                    url     : "${createLink(action:'deleteDetalleCosto')}",--}%
+                        %{--                    data    : {--}%
+                        %{--                        id : data.id--}%
+                        %{--                    },--}%
+                        %{--                    success : function (msg) {--}%
+                        %{--                        $tr.remove();--}%
+                        %{--                        updateTotal();--}%
+                        %{--                    }--}%
+                        %{--                });--}%
+                        %{--            },--}%
+                        %{--            "Cancelar" : function () {--}%
+                        %{--            }--}%
+                        %{--        }--}%
+                        %{--    }--}%
+                        %{--});--}%
                     });
 
                     $btnEdit.click(function () {
@@ -458,13 +484,11 @@
                 initRows();
 
                 $("#btnReset").click(function () {
-
                     reset();
                 });
 
                 $(".int").bind({
                     keydown : function (ev) {
-                        // esta parte valida q sean solo numeros,  tab, backspace, delete o flechas izq/der
                         return validarInt(ev);
                     } //keydown
                 });
@@ -520,10 +544,7 @@
                     var max = parseFloat($tdTotal.data("max"));
                     var tot = parseFloat($tdTotal.data("valor"));
                     var val = parseFloat(data.total) + parseFloat(tot) - parseFloat(anterior);
-                    var respaldo
-
-//                    console.log('clic Save');
-//                    console.log('max edit: ', max, 'val:', val);
+                    var respaldo;
 
                     if(max < 0.1) {
                         respaldo = "No se ha subido documento de respaldo de obras adicionales"
@@ -532,10 +553,6 @@
                         "superaría el valor permitido (${formatNumber(number: max, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale:'ec')})"
                     }
 
-
-
-//                    console.log('max', max, 'tot', tot, 'val', val, 'total:', $tdTotal.val(), 'anterior: ', anterior);
-//                    if (val <= max) {
                     if (val <= max) {
                         $.ajax({
                             type    : "POST",
@@ -543,7 +560,7 @@
                             data    : data,
                             success : function (msg) {
                                 var parts = msg.split("_");
-                                if (parts[0] == "OK") {
+                                if (parts[0] === "OK") {
                                     updateRow(data);
                                     reset();
                                     spinner.remove();
@@ -553,20 +570,35 @@
                     } else {
                         $("#btnSave").show();
                         spinner.remove();
-                        $.box({
-                            imageClass : "box_info",
-                            title      : "Alerta",
-                            text       : respaldo,
-                            iconClose  : false,
-                            dialog     : {
-                                resizable : false,
-                                draggable : false,
-                                buttons   : {
-                                    "Aceptar" : function () {
+
+                        bootbox.dialog({
+                            id      : "dlgAlerta",
+                            title   :"Errores",
+                            message : respaldo,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
                                     }
                                 }
-                            }
-                        });
+                            } //buttons
+                        }); //dialog
+
+                        // $.box({
+                        //     imageClass : "box_info",
+                        //     title      : "Alerta",
+                        //     text       : respaldo,
+                        //     iconClose  : false,
+                        //     dialog     : {
+                        //         resizable : false,
+                        //         draggable : false,
+                        //         buttons   : {
+                        //             "Aceptar" : function () {
+                        //             }
+                        //         }
+                        //     }
+                        // });
                     }
                     return false;
                 });
@@ -574,22 +606,13 @@
                 $("#btnAdd").click(function () {
                     if (check($(this))) {
                         $(this).hide().after(spinner);
-
-//                        var $tr = $("#trRubro");
-//                        var data = $tr.data();
-//                        var val = parseFloat(data.total) + parseFloat(tot) - parseFloat(anterior);
-
                         var $tr = $("#trRubro");
                         var data = $tr.data();
                         var $tdTotal = $("#tdTotalFinal");
                         var max = parseFloat($tdTotal.data("max"));
                         var tot = parseFloat($tdTotal.data("valor"));
-//                        var valTotal = parseFloat($("#tdTotal").val())
                         var val = parseFloat(data.total) + parseFloat(tot);
-//                        var val = valTotal + parseFloat(tot);
-                        var respaldo = ""
-
-//                        console.log('max Agregar:', max, 'val:', val, 'tot:', tot);
+                        var respaldo = "";
 
                         if(max < 0.001) {
                             respaldo = "No se ha subido documento de respaldo de obras adicionales"
@@ -606,29 +629,44 @@
                                     data    : data,
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        if (parts[0] == "OK") {
+                                        if (parts[0] === "OK") {
                                             data.id = parts[1];
                                             addRow(data, true);
                                             reset();
-//                                            $("#indirectos").hide().after($("<span>" + $("#thIndirectos").data("indi") + "</span>"));
                                             spinner.remove();
                                             $("#btnAdd").show();
                                             updateTotal();
                                         } else {
-                                            $.box({
-                                                imageClass : "box_info",
-                                                title      : "Alerta",
-                                                text       : parts[1],
-                                                iconClose  : false,
-                                                dialog     : {
-                                                    resizable : false,
-                                                    draggable : false,
-                                                    buttons   : {
-                                                        "Aceptar" : function () {
+                                            bootbox.dialog({
+                                                id      : "dlgAlerta2",
+                                                title   :"Errores",
+                                                message : parts[1],
+                                                buttons : {
+                                                    cancelar : {
+                                                        label     : "Cancelar",
+                                                        className : "btn-primary",
+                                                        callback  : function () {
                                                         }
                                                     }
-                                                }
-                                            });
+                                                } //buttons
+                                            }); //dialog
+
+
+
+                                            // $.box({
+                                            //     imageClass : "box_info",
+                                            //     title      : "Alerta",
+                                            //     text       : parts[1],
+                                            //     iconClose  : false,
+                                            //     dialog     : {
+                                            //         resizable : false,
+                                            //         draggable : false,
+                                            //         buttons   : {
+                                            //             "Aceptar" : function () {
+                                            //             }
+                                            //         }
+                                            //     }
+                                            // });
                                         }
                                     }
                                 });
@@ -636,41 +674,58 @@
                         } else {
                             $("#btnAdd").show();
                             spinner.remove();
-                            $.box({
-                                imageClass : "box_info",
-                                title      : "Alerta",
-                                %{--text       : "No puede ingresar otro rubro pues el valor de las planillas de Costo + porcentaje superaría el valor permitido (${formatNumber(number: max, maxFractionDigits: 2, minFractionDigits: 2, format: '##,##0', locale:'ec')})",--}%
-                                text       : respaldo,
-                                iconClose  : false,
-                                dialog     : {
-                                    resizable : false,
-                                    draggable : false,
-                                    buttons   : {
-                                        "Aceptar" : function () {
+
+                            bootbox.dialog({
+                                id      : "dlgAlerta",
+                                title   :"Errores",
+                                message : respaldo,
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
                                         }
                                     }
-                                }
-                            });
+                                } //buttons
+                            }); //dialog
+
+                            // $.box({
+                            //     imageClass : "box_info",
+                            //     title      : "Alerta",
+                            //     text       : respaldo,
+                            //     iconClose  : false,
+                            //     dialog     : {
+                            //         resizable : false,
+                            //         draggable : false,
+                            //         buttons   : {
+                            //             "Aceptar" : function () {
+                            //             }
+                            //         }
+                            //     }
+                            // });
                         }
                     } else {
-                        $.box({
-                            imageClass : "box_info",
-                            title      : "Alerta",
-                            text       : "Por favor complete todos los campos para agregar un rubro.",
-                            iconClose  : false,
-                            dialog     : {
-                                resizable : false,
-                                draggable : false,
-                                buttons   : {
-                                    "Aceptar" : function () {
-                                    }
-                                }
-                            }
-                        });
+
+
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Por favor complete todos los campos para agregar un rubro." + '</strong>');
+
+                        // $.box({
+                        //     imageClass : "box_info",
+                        //     title      : "Alerta",
+                        //     text       : "Por favor complete todos los campos para agregar un rubro.",
+                        //     iconClose  : false,
+                        //     dialog     : {
+                        //         resizable : false,
+                        //         draggable : false,
+                        //         buttons   : {
+                        //             "Aceptar" : function () {
+                        //             }
+                        //         }
+                        //     }
+                        // });
                     }
                     return false;
                 });
-
             });
         </script>
     </body>

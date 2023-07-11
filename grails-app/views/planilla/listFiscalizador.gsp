@@ -200,18 +200,11 @@
                         <g:if test="${planillaInstance.tipoPlanilla.codigo == 'C'}">
                             <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
                                 <g:link action="detalleCosto" id="${planillaInstance.id}" params="[contrato: contrato.id]"
-                                        rel="tooltip" title="Detalles" class="btn btn-small btn-primary">
+                                        rel="tooltip" title="Detalles" class="btn btn-xs btn-primary">
                                     <i class="fa fa-list-ul"></i>
                                 </g:link>
                             </g:if>
                         </g:if>
-
-                        %{--<g:if test="${planillaInstance.tipoPlanilla.codigo in ['A', 'B']}">--}%
-                            %{--<g:link controller="reportePlanillas3" action="reportePlanillaNuevo" id="${planillaInstance.id}"--}%
-                                    %{--class="btn btnPrint  btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir Anticipo">--}%
-                                %{--<i class="fa fa-print"></i>--}%
-                            %{--</g:link>--}%
-                        %{--</g:if>--}%
                         <g:if test="${planillaInstance.tipoPlanilla.codigo != 'C' && janus.ejecucion.ReajustePlanilla.countByPlanilla(planillaInstance) > 0}">
                             <g:link controller="reportePlanillas4" action="reportePlanillaNuevo1f" id="${planillaInstance.id}"
                                     class="btn btn-info btnPrint btn-xs btn-ajax" rel="tooltip" title="Imprimir planilla">
@@ -232,26 +225,6 @@
                                 <i class="fa fa-print"></i>
                             </g:link>
                         </g:if>
-
-%{--                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q']  && planillaInstance.id in adicionales}">--}%
-%{--                            <a href="#" class="btn btn-xs btn-warning btnOrdenCambio" title="Orden de Cambio" data-id="${planillaInstance?.id}">--}%
-%{--                                <i class="fa fa-calendar"></i>--}%
-%{--                            </a>--}%
-%{--                            <g:link controller="reportes6" action="reporteOrdenCambio" params="[id: contrato.id, planilla: planillaInstance?.id]"--}%
-%{--                                    class="btn btn-xs btn-info btn-ajax" rel="tooltip" title="Imprimir Orden de Cambio">--}%
-%{--                                <i class="fa fa-print"></i>--}%
-%{--                            </g:link>--}%
-%{--                        </g:if>--}%
-%{--                        <g:if test="${planillaInstance.tipoPlanilla.codigo in ['C']}">--}%
-%{--                            <a href="#" class="btn btn-xs btn-warning btnOrdenTrabajo" title="Orden de Trabajo" data-id="${planillaInstance?.id}">--}%
-%{--                                <i class="fa fa-calendar"></i>--}%
-%{--                            </a>--}%
-
-%{--                            <g:link controller="reportes6" action="reporteOrdenDeTrabajo" params="[id: contrato.id, planilla: planillaInstance?.id]"--}%
-%{--                                    class="btn btn-xs btn-warning btn-ajax" rel="tooltip" title="Imprimir Orden de Trabajo">--}%
-%{--                                <i class="fa fa-print"></i>--}%
-%{--                            </g:link>--}%
-%{--                        </g:if>--}%
                     </td>
 
                     <td style="text-align: center;width: 8%">
