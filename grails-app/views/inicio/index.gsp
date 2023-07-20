@@ -57,7 +57,7 @@
         font-family: 'open sans condensed';
         font-weight: bold;
         text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.25);
-    <g:if test="${janus.Parametros.findByEmpresaLike('CNSL-GADLR')}">
+    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
     %{--<g:if test="${empr.sigla == message(code: 'ambiente2')}">--}%
         color: #1a7031;
     </g:if>
@@ -70,9 +70,9 @@
     }
 
     .bordes {
-    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-GADPP')}">
+    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
     %{--<g:if test="${empr.sigla == message(code: 'ambiente2')}">--}%
-        background: #002934;
+        background: #1a7031;
     </g:if>
     <g:else>
         background: #204954;

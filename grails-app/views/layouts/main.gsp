@@ -9,7 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico"/>
 
-    <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap.css"/>
+    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
+        <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrapCon.css"/>
+    </g:if>
+    <g:else>
+        <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap.css"/>
+    </g:else>
 
     <asset:stylesheet src="/bootstrap-3.3.2/dist/css/bootstrap-theme.css"/>
 
