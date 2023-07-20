@@ -1,4 +1,4 @@
-<%@ page import="janus.construye.Bodega" %>
+%{--<%@ page import="janus.construye.Bodega" %>--}%
 <%--
   Created by IntelliJ IDEA.
   User: fabricio

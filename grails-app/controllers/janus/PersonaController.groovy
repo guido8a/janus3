@@ -326,8 +326,8 @@ class PersonaController {
 
 
         perfilesNue.each {
-            def perfil = janus.seguridad.Prfl.get(it)
-            def ses = janus.seguridad.Sesn.findByUsuarioAndPerfil(personaInstance, perfil)
+            def perfil = seguridad.Prfl.get(it)
+            def ses = seguridad.Sesn.findByUsuarioAndPerfil(personaInstance, perfil)
             if (!ses) {
                 ses = new seguridad.Sesn([usuario: personaInstance, perfil: perfil])
                 println "grabando " + it

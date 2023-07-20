@@ -1,4 +1,4 @@
-<%@ page import="janus.construye.Empresa" %>
+%{--<%@ page import="janus.construye.Empresa" %> --}%
 
 <g:if test="${!empresaInstance}">
     <elm:notFound elem="Empresa" genero="o" />
