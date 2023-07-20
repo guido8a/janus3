@@ -23,7 +23,6 @@
     }
 
     </style>
-
     <title>Variables</title>
 </head>
 
