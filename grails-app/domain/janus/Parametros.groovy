@@ -46,6 +46,8 @@ class Parametros implements Auditable {
     double indiceCampo = 0
     double indiceCampamento = 0
 
+    String servicio
+
     static auditable = true
     static mapping = {
         table 'paux'
@@ -96,6 +98,7 @@ class Parametros implements Auditable {
             titulo1 column: 'pauxttl1'
             titulo2 column: 'pauxttl2'
             logo column: 'pauxlogo'
+            servicio column: 'pauxsrvc'
         }
     }
     static constraints = {
@@ -137,5 +140,6 @@ class Parametros implements Auditable {
         titulo1(blank: true, nullable: true, size: 0..127)
         titulo2(blank: true, nullable: true, size: 0..127)
         logo(blank: true, nullable: true, size: 0..63)
+        servicio(blank: true, nullable: true, size: 0..63)
     }
 }

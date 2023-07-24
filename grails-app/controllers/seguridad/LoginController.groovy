@@ -46,11 +46,9 @@ class LoginController {
 
         def connect = true
         try {
-
-//            LDAP ldap = LDAP.newInstance('ldap://' + prmt.ipLDAP, "${user.getConnectionString()}", "${pass}")
-
-            /*valida usuario en el LDAP */
-//            ldap.exists("${prmt.textoCn}")
+            /**conecta al servicio */
+//            conectaRest('gochoa', 'GADPP/*1406')
+            conectaRest()
             println "ingresa..${user.login}"
 
         } catch (e) {
@@ -129,6 +127,7 @@ class LoginController {
         redirect(action: 'login')
     }
 
+    /*
     def conectaRest() {
         def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/gochoa"
         def usro = "gochoa"
@@ -172,7 +171,62 @@ class LoginController {
         }
 
         render("ok")
+    }*/
+
+    def conectaRest(usro, pass) {
+//    def conectaRest() {
+        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/gochoa"
+//        def usro = "gochoa"
+        def random = 'janus'
+        def fecha = new Date()
+        def fcha = fecha.format("yyy-MM-dd") + "T" + fecha.format("HH:mm:ss") + "-05:00"
+        def privKey = '808a068b96222be6'
+        def random64 = Base64.getEncoder().encodeToString(random.getBytes())
+//        def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
+        def clave = Base64.getEncoder().encodeToString(pass.toString().getBytes())
+        println "rand: $random64, clave: $clave"
+        def passp = random +  fcha + privKey
+        MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
+
+        byte[] digest  = ms_sha1.digest(passp.getBytes())
+        def key = digest.encodeBase64()
+        println "key: ${digest.encodeBase64()}"
+
+        def post = new URL(url).openConnection();
+        def message = "{'identidadWs':  {" +
+                "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
+                "'currentTime': '${fcha}'," +
+                "'random': 'amFudXM='," +
+                "'key': '${key}'," +
+                "'user': '${usro}'," +
+                "'moduleCode': 'SEP-P01'}," +
+                "'clave': 'R0FEUFAvKjE0MDY='}"
+        def conecta = false
+
+        message = message.replace("'", '"')
+        println "$message"
+        try {
+            post.setRequestMethod("POST")
+            post.setDoOutput(true)
+            post.setRequestProperty("Content-Type", "application/json")
+            post.getOutputStream().write(message.getBytes("UTF-8"));
+            def postRC = post.getResponseCode();
+
+            println "responde: ${postRC}"
+            println "responde2: ${post.getResponseMessage()}"
+
+            if (postRC.equals(200)) {
+                println(post.getInputStream().getText());
+                conecta = true
+            }
+        } catch (e) {
+            println "no conecta ${usro} error: " + e
+        }
+
+        return conecta
+//        render("ok")
     }
+
 
     def login() {
 //        def usro = session.usuario
@@ -187,6 +241,7 @@ class LoginController {
 
     def validar() {
         println "valida " + params
+        def usaServicio = Parametros.get(1).servicio == 'S'
         def user = Persona.withCriteria {
             eq("login", params.login, [ignoreCase: true])
             eq("activo", 1)
@@ -235,15 +290,15 @@ class LoginController {
                 } else {
 
 //                    println "el md5 del pass: ${params.pass} es ${params.pass.encodeAsMD5()} contraseña: ${user.password}"
-                    if (params.pass.encodeAsMD5() != user.password) {
-                            flash.message = "Contraseña incorrecta"
-                            flash.tipo = "error"
-                            flash.icon = "icon-warning"
-                            session.usuario = null
-                            session.departamento = null
-                            redirect(controller: 'login', action: "login")
-                            return
-                    }
+//                    if (params.pass.encodeAsMD5() != user.password) {
+//                            flash.message = "Contraseña incorrecta"
+//                            flash.tipo = "error"
+//                            flash.icon = "icon-warning"
+//                            session.usuario = null
+//                            session.departamento = null
+//                            redirect(controller: 'login', action: "login")
+//                            return
+//                    }
 
                     // registra sesion activa ------------------------------
                     //                println  "sesion ingreso: $session.id  desde ip: ${request.getRemoteAddr()}"  //activo
@@ -266,6 +321,30 @@ class LoginController {
                     }
                     // ------------------fin de sesion activa --------------
 
+                    if (!(user.departamento.id == 13) || !usaServicio) {
+//                        if (!conectaRest(user, params.pass)) {
+                        if ( !conectaRest(params.login, params.pass) ) {
+                            flash.message = "No se pudo validar la información ingresada con el servicio web, " +
+                                    "contraseña incorrecta o usuario no registrado"
+                            flash.tipo = "error"
+                            flash.icon = "icon-warning"
+                            session.usuario = null
+                            session.departamento = null
+                            redirect(controller: 'login', action: "login")
+                            return
+                        }
+                    } else {
+                        if (params.pass.encodeAsMD5() != user.password) {
+                            flash.message = "Contraseña incorrecta"
+                            flash.tipo = "error"
+                            flash.icon = "icon-warning"
+                            session.usuario = null
+                            session.departamento = null
+                            redirect(controller: 'login', action: "login")
+                            return
+                        }
+                        println "ingresa..${user.login} ${new Date().format('dd HH:mm')}"
+                    }
 
 
                     if (perfiles.size() == 1) {
