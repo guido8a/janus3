@@ -452,7 +452,8 @@
             <i class="fa fa-plus"></i> Asignar F. Polinómica
         </g:link>
 
-        <g:if test="${session.perfil.codigo == 'CNTR' && contrato?.estado == 'R' && !contrato.padre}">
+%{--        <g:if test="${session.perfil.codigo == 'CNTR' && contrato?.estado == 'R' && !contrato.padre}">--}%
+        <g:if test="${session.perfil.codigo == 'CNTR' && !contrato.padre}">
             <a href="#" id="btnAgregarAdmin" class="btn adm">
                 <i class="fa fa-user"></i> Administrador
             </a>

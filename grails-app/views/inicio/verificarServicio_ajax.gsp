@@ -1,0 +1,2 @@
+<i class='fa fa-exclamation-triangle fa-3x pull-left text-info text-shadow'></i><p style='font-size: 14px; font-weight: bold'> Está seguro de querer activar/desactivar el servicio de autentificación? </p>
+<div style="text-align: center"><br> El estado actual del servicio es: <p style="color: ${estado ? '#89b674' : '#e22b0c'} "> ${estado ? 'ACTIVADO' : 'DESACTIVADO'} </p></div>

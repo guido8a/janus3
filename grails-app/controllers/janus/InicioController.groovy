@@ -453,5 +453,28 @@ class InicioController {
     def indexOf() {
     }
 
+    def verificarServicio_ajax(){
+        def estado = Parametros.list().first()
+        return [estado : estado.servicio == 'S']
+    }
 
-}                                                                                                          /**/
+    def guardarServicio_ajax(){
+        def parametros = Parametros.get(1)
+        def estadoActual = parametros.servicio
+
+        if(estadoActual == 'S'){
+            parametros.servicio = 'N'
+        }else{
+            parametros.servicio = 'S'
+        }
+
+        if(!parametros.save(flush: true)){
+            render "no_Error al cambiar el estado del servicio"
+        }else{
+            render "ok_Cambiado correctamente"
+        }
+
+    }
+
+
+}

@@ -60,6 +60,13 @@
                                 <div class="row" style="margin-left: 5px;">
                                     <div class="col-md-12">
                                         <p>
+                                            <a href="#" class="btn btn-primary btn-xs" id="btnAutentificacion" title="Activar/Desactivar el servicio de autentificación">
+                                                <i class="fa fa-check fa-2x"></i>
+                                                Servicio de autentificación
+                                            </a>
+                                            <strong style="font-size: 14px"> Activar/Desactivar el servicio de autentificación</strong>
+                                        </p>
+                                        <p>
                                             <g:link class="link btn btn-primary btn-xs" controller="administracion" action="list">
                                                 <i class="fa fa-building fa-2x"></i>
                                                 Administración
@@ -397,6 +404,57 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnAutentificacion").click(function () {
+
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'verificarServicio_ajax')}",
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgVS",
+                    title   : "Alerta",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Aceptar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return activarServicio();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+    function activarServicio(){
+        var dialog = cargarLoader("Guardando...");
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'guardarServicio_ajax')}",
+            data    : {},
+            success : function (msg) {
+                dialog.modal('hide');
+                var parts = msg.split("_");
+                if(parts[0] === 'ok'){
+                    log(parts[1], "success");
+                }else{
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                    return false;
+                }
+            }
+        });
+    }
+
 
     function submitFormIva() {
         var $form = $("#frmIva");
