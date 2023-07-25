@@ -176,7 +176,7 @@ class LoginController {
 
     def conectaRest(usro, pass) {
 //    def conectaRest() {
-        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/gochoa"
+        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/${usro}"
 //        def usro = "gochoa"
         def random = 'janus'
         def fecha = new Date()
