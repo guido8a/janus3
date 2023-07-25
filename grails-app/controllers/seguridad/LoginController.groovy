@@ -1,5 +1,6 @@
 package seguridad
 
+import groovy.json.JsonSlurper
 import janus.Parametros
 import java.security.MessageDigest
 
@@ -184,6 +185,7 @@ class LoginController {
         def random64 = Base64.getEncoder().encodeToString(random.getBytes())
 //        def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
         def clave = Base64.getEncoder().encodeToString(pass.toString().getBytes())
+        println "usuario: $usro, pass: $pass"
         println "rand: $random64, clave: $clave"
         def passp = random +  fcha + privKey
         MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
@@ -200,11 +202,13 @@ class LoginController {
                 "'key': '${key}'," +
                 "'user': '${usro}'," +
                 "'moduleCode': 'SEP-P01'}," +
-                "'clave': 'R0FEUFAvKjE0MDY='}"
+//                "'clave': 'R0FEUFAvKjE0MDY=000000'}"
+//                "'clave': 'R0FEUFAvKjE0MDY='}"
+                "'clave': '${clave}'}"
         def conecta = false
 
         message = message.replace("'", '"')
-        println "$message"
+        println "json: $message"
         try {
             post.setRequestMethod("POST")
             post.setDoOutput(true)
@@ -215,9 +219,13 @@ class LoginController {
             println "responde: ${postRC}"
             println "responde2: ${post.getResponseMessage()}"
 
+            def jsonSlurper = new JsonSlurper()
             if (postRC.equals(200)) {
-                println(post.getInputStream().getText());
-                conecta = true
+                def texto = post.getInputStream().getText()
+                println(texto);
+                def retorna = jsonSlurper.parseText(texto)
+                println "autorizado: ${retorna.autorizado}"
+                conecta = retorna.autorizado
             }
         } catch (e) {
             println "no conecta ${usro} error: " + e
@@ -321,8 +329,19 @@ class LoginController {
                     }
                     // ------------------fin de sesion activa --------------
 
-                    if (!(user.departamento.id == 13) || !usaServicio) {
-//                        if (!conectaRest(user, params.pass)) {
+                    println "usaServicio: $usaServicio --> ${(user.departamento.id == 13) || !usaServicio}"
+                    if ((user.departamento.id == 13) || !usaServicio) {
+                        if (params.pass.encodeAsMD5() != user.password) {
+                            flash.message = "Contraseña incorrecta"
+                            flash.tipo = "error"
+                            flash.icon = "icon-warning"
+                            session.usuario = null
+                            session.departamento = null
+                            redirect(controller: 'login', action: "login")
+                            return
+                        }
+                    } else {
+                        println "no es oferente y si usa servicio"
                         if ( !conectaRest(params.login, params.pass) ) {
                             flash.message = "No se pudo validar la información ingresada con el servicio web, " +
                                     "contraseña incorrecta o usuario no registrado"
@@ -333,16 +352,7 @@ class LoginController {
                             redirect(controller: 'login', action: "login")
                             return
                         }
-                    } else {
-                        if (params.pass.encodeAsMD5() != user.password) {
-                            flash.message = "Contraseña incorrecta"
-                            flash.tipo = "error"
-                            flash.icon = "icon-warning"
-                            session.usuario = null
-                            session.departamento = null
-                            redirect(controller: 'login', action: "login")
-                            return
-                        }
+
                         println "ingresa..${user.login} ${new Date().format('dd HH:mm')}"
                     }
 
