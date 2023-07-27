@@ -1,7 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<html>
+<html lang="es">
 <head>
     <meta name="layout" content="main">
+    <asset:stylesheet src="/summernote-0.8.18-dist/summernote.min.css"/>
+    <asset:javascript src="/summernote-0.8.18-dist/summernote.min.js"/>
+
+
 
     <style type="text/css">
 
@@ -113,7 +117,7 @@
 
                 <div class="col-md-12" style="margin-top: 10px">
                     Descripción de la Nota
-                    <g:textArea name="texto" class="form-control" value="${nota?.texto}" rows="5" cols="5"
+                    <g:textArea name="texto" id="texto" class="form-control" value="${nota?.texto}" rows="5" cols="5"
                                 style="height: 85px; width:685px ; resize: none" maxlength="1023"/>
                 </div>
 
@@ -1023,6 +1027,13 @@
 </div>
 
 <script type="text/javascript">
+
+    $(document).ready(function() {
+        $('#texto').summernote({
+            spellCheck: true,
+            disableGrammar: true
+        });
+    });
 
     var tipoClick;
     var tipoClickMemo = $(".radioPresupuestoMemo").attr("value");
