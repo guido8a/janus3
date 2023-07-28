@@ -1028,12 +1028,12 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function() {
-        $('#texto').summernote({
-            spellCheck: true,
-            disableGrammar: true
-        });
-    });
+    // $(document).ready(function() {
+    //     $('#texto').summernote({
+    //         spellCheck: true,
+    //         disableGrammar: true
+    //     });
+    // });
 
     var tipoClick;
     var tipoClickMemo = $(".radioPresupuestoMemo").attr("value");
