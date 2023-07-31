@@ -1931,7 +1931,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                     $("#modal_title_var").html("Variables");
                     $("#modal_body_var").html(msg);
-                    $("#modal_footer_var").html("").append(btnCancel);
                     <g:if test="${duenoObra == 1 && obra?.estado != 'R'}">
                     $("#modal_footer_var").html("").append(btnSave);
                     </g:if>
