@@ -4,7 +4,7 @@ import janus.VolumenesObra
 class PreciosService {
 
     def dbConnectionService
-    boolean transactional = true
+    //boolean transactional = true
 
     def getPrecioItems(fecha, lugar, items) {
         def cn = dbConnectionService.getConnection()
@@ -169,7 +169,11 @@ class PreciosService {
         def cn = dbConnectionService.getConnection()
         def itemsId = items
         def res = []
-        def sql = "SELECT r1.item__id,i.itemcdgo,i.itemnmbr, (SELECT r2.rbpc__id from rbpc r2 where r2.item__id=r1.item__id and r2.rbpcfcha = max(r1.rbpcfcha) and r2.lgar__id=${lugar.id}) from rbpc r1,item i where r1.item__id in (${itemsId}) and r1.lgar__id=${lugar.id} and r1.rbpcfcha < '${fecha.format('yyyy-MM-dd')}' and i.item__id=r1.item__id group by 1,2,3 order by ${order} ${sort}"
+        def sql = "SELECT r1.item__id,i.itemcdgo,i.itemnmbr, (SELECT r2.rbpc__id " +
+                "from rbpc r2 where r2.item__id=r1.item__id and r2.rbpcfcha = max(r1.rbpcfcha) and " +
+                "r2.lgar__id=${lugar.id}) from rbpc r1,item i where r1.item__id in (${itemsId}) and " +
+                "r1.lgar__id=${lugar.id} and r1.rbpcfcha < '${fecha.format('yyyy-MM-dd')}' and " +
+                "i.item__id=r1.item__id group by 1,2,3 order by ${order} ${sort}"
 //        println(sql)
         cn.eachRow(sql.toString()) { row ->
             res.add(row[3])
@@ -424,10 +428,36 @@ class PreciosService {
         return result
     }
 
+    def ac_rbroV2Oferente(rubro, oferente) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from ac_rbro_hr1_of(" + rubro + ",'" + oferente + "') "
+//        println "sql ac rubro "+sql
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
+
+    def vae_rbOferente(obra, rubro){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from vae_rb_precios_of("+ rubro + ","+ obra +") order by grpocdgo desc "
+        println "sql: $sql"
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+
+    }
+
+
     def ac_rbroObra(obra) {
         def cn = dbConnectionService.getConnection()
         def sql = "select * from ac_rbro_hr_v2(" + obra + ") "
-//        println  sql
+        println "ac_rbroObra: $sql"
         def result = []
         cn.eachRow(sql.toString()) { r ->
             result.add(r.toRowResult())
@@ -739,6 +769,103 @@ class PreciosService {
         return dias?:0
 //        cn.close()
     }
+
+    def rb_preciosV3(parametros) {
+        def cn3 = dbConnectionService.getConnection()
+//        def sql = "select * from rb_precios_ofrb(" + rubro + ",'" + oferente + "') "
+        def sql = "select * from rb_precios_ofrb(" + parametros + ") "
+
+//        println "sql ac_rbroV3 -->>"+sql
+        def result = []
+        cn3.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn3.close()
+        return result
+    }
+
+    def rubros_oferentes(rubro, oferente) {
+        def cn = dbConnectionService.getConnection()
+        println "llega: rubro: $rubro, oferente: $oferente"
+        def sql = "select * from ac_rbro_hr1_of(${rubro} , ${oferente})"
+        println "sql ac rubro "+sql
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
+
+    def vae_rubros(rubro, persona){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from vae_rb_precios_ofrb("+ rubro + ","+ persona +") order by grpocdgo desc "
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+
+        return result
+
+    }
+
+    def vae_sub(obra){
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from rbro_pcun_vae_of("+ obra + ") order by vlobordn asc "
+//        println "sql vae_sub: $sql"
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
+
+
+    def rbro_pcun_v4_of(obra,orden){
+        println("ordenv4:" + orden)
+
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from rbro_pcun_v2_of(" + obra + ") order by vlobordn ${orden}"
+        def result = []
+        println "rbro_pcun_v4_of " + sql
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+
+    }
+
+    def rbro_pcun_v5_of(obra,subpres,orden){
+
+//        println("ordenv3:" + orden)
+
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from rbro_pcun_v2_of(" + obra + ") where sbpr__id= ${subpres} order by vlobordn ${orden}"
+        println "rbro_pcun_v5_of   vlob_pcun_v2 " + sql
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+
+    }
+
+    def presioUnitarioVolumenObraOferente(select, item, obra) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select ${select} from rb_precios_of(${item}, ${obra})"
+        println "sql: $sql"
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
+
 
 
 }
