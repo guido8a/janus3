@@ -198,7 +198,8 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 <g:form class="registroObra" name="frm-registroObra" action="save">
     <g:hiddenField name="crono" value="0"/>
 
-    <div style="width: 100%; float:left; border: 1px solid black;padding-left: 50px;margin-top: 20px;position: relative; height: 100px">
+    <div style="width: 100%; float:left; border: 1px solid black;padding-left: 50px;margin-top: 20px;position: relative;
+    height: 100px; background-color: #e8e8ef">
         <g:hiddenField name="id" value="${obra?.id}"/>
         <div style="margin-top: 15px" align="center">
 
@@ -591,7 +592,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     </div>
 
     <div style="width: 100%; float:left; border: 1px solid black; position: relative;
-    padding-left: 30px; height: 65px">
+    padding-left: 30px; height: 65px; background-color: #e8e8ef">
         <div style="margin-top: 5px" align="center">
             <p class="css-vertical-text">Salida</p>
             <div class="linea" style="height: 100%;"></div>
