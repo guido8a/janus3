@@ -48,7 +48,7 @@
 
 <div class="row" style="margin-bottom: 10px;">
     <div class="col-md-9 btn-group" role="navigation">
-        <g:link controller="concurso" action="list" class="btn">
+        <g:link controller="concurso" action="list" class="btn btn-info">
             <i class="fa fa-arrow-left"></i> Regresar
         </g:link>
         <g:if test="${concursoInstance.estado != 'R'}">
@@ -56,7 +56,8 @@
                 <i class="fa fa-save"></i> Guardar
             </a>
         </g:if>
-        <g:if test="${Oferta.countByConcurso(concursoInstance) == 0}">
+%{--        <g:if test="${Oferta.countByConcurso(concursoInstance) == 0}">--}%
+        <g:if test="${concursoInstance}">
             <a href="#" class="btn" id="btnRegi"><i class="fa fa-check"></i> Cambiar Estado</a>
         </g:if>
     </div>

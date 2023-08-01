@@ -366,8 +366,8 @@ class reportesRubrosController {
         def totalIndi = totalRubro?.toDouble() * indi / 100
 
         PdfPTable tablaIndirectos = new PdfPTable(3);
-        tablaIndirectos.setWidthPercentage(70);
-        tablaIndirectos.setWidths(arregloEnteros([50,25,25]))
+        tablaIndirectos.setWidthPercentage(100);
+        tablaIndirectos.setWidths(arregloEnteros([78,11,11]))
         tablaIndirectos.horizontalAlignment = Element.ALIGN_LEFT;
 
         reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("COSTOS INDIRECTOS", times12bold), tituloRubro)
@@ -377,8 +377,8 @@ class reportesRubrosController {
         reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("VALOR", times7bold), celdaCabecera)
 
         reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("COSTOS INDIRECTOS", times8normal), prmsFilaIzquierda)
-        reportesPdfService.addCellTb(tablaIndirectos, new Paragraph(numero(indi, 1)?.toString() + "%", times8normal), prmsFila)
-        reportesPdfService.addCellTb(tablaIndirectos, new Paragraph(numero(totalIndi, 5)?.toString(), times8normal), prmsFila)
+        reportesPdfService.addCellTb(tablaIndirectos, new Paragraph(numero(indi, 1)?.toString() + "%", times8normal), prmsFilaDerecha)
+        reportesPdfService.addCellTb(tablaIndirectos, new Paragraph(numero(totalIndi, 5)?.toString(), times8normal), prmsFilaDerecha)
 
         reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("", times8bold), [border: Color.WHITE, colspan: 3])
 
