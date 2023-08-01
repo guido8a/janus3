@@ -227,7 +227,7 @@
                     %{--        $("#modal-Oferta").modal("show");--}%
                     %{--    }--}%
                     %{--});--}%
-                    return false;
+                    // return false;
                 }); //click btn edit
 
                 $(".btn-show").click(function () {

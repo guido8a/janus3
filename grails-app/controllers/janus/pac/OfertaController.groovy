@@ -60,9 +60,7 @@ class OfertaController {
         if (params.id) {
             ofertaInstance = Oferta.get(params.id)
             if (!ofertaInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Oferta con id " + params.id
-                redirect(action: 'list')
+               render "no_No se encontró la oferta "
                 return
             }//no existe el objeto
             ofertaInstance.properties = params
@@ -70,33 +68,12 @@ class OfertaController {
         else {
             ofertaInstance = new Oferta(params)
         } //es create
+
         if (!ofertaInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Oferta " + (ofertaInstance.id ? ofertaInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            ofertaInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list', id: ofertaInstance.concursoId)
-            return
+           render "no_Error al guardar la oferta"
+        }else{
+            render "ok_Oferta guardada correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Oferta " + ofertaInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Oferta " + ofertaInstance.id
-        }
-        redirect(action: 'list', id: ofertaInstance.concursoId)
     } //save
 
     def show_ajax() {

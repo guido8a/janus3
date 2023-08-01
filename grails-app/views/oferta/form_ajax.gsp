@@ -94,11 +94,59 @@
                 <g:textField name="hoja" class="form-control required number" value="${ofertaInstance?.hoja}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
-            <span class="col-md-1">
-                días
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'hoja', 'error')} ">
+        <span class="grupo">
+            <label for="plazo" class="col-md-2 control-label text-info">
+                Garantía
+            </label>
+            <span class="col-md-4">
+                <g:select name="garantia" from="${[0: 'NO', 1 : 'SI']}" optionKey="key" optionValue="value" value="${ofertaInstance?.garantia}" class="form-control " />
+                <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
     </div>
+
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'subsecretario', 'error')} ">
+        <span class="grupo">
+            <label for="subsecretario" class="col-md-2 control-label text-info">
+                Secretario C.T.
+            </label>
+            <span class="col-md-4">
+                <g:textField name="subsecretario" maxlength="40" class="form-control" value="${ofertaInstance?.subsecretario}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'responsableProceso', 'error')} ">
+        <span class="grupo">
+            <label for="subsecretario" class="col-md-2 control-label text-info">
+                Responsable del proceso
+            </label>
+            <span class="col-md-8">
+                <g:select name="responsableProceso.id" from="${responsablesProceso}" optionKey="id" optionValue="${{
+                    it.apellido + ' ' + it.nombre
+                }}" value="${ofertaInstance?.responsableProcesoId}" class="form-control required" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'observaciones', 'error')} ">
+        <span class="grupo">
+            <label for="observaciones" class="col-md-2 control-label text-info">
+                Observaciones
+            </label>
+            <span class="col-md-8">
+                <g:textField name="observaciones" maxlength="127" class="form-control" value="${ofertaInstance?.observaciones}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
 
 
 %{--    <div class="control-group">--}%
@@ -225,96 +273,82 @@
 %{--        </div>--}%
 %{--    </div>--}%
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Garantía
-            </span>
-        </div>
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Garantía--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-        <div class="controls">
-            %{--<g:textField name="garantia" maxlength="1" class="" value="${ofertaInstance?.garantia}"/>--}%
-            <input type="checkbox" name="garantia" value="1" ${(ofertaInstance?.garantia == "1") ? "checked" : ""}>
+%{--        <div class="controls">--}%
+%{--            <input type="checkbox" name="garantia" value="1" ${(ofertaInstance?.garantia == "1") ? "checked" : ""}>--}%
 
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Secretario C.T.
-            </span>
-        </div>
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Secretario C.T.--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-        <div class="controls">
-            <g:textField name="subsecretario" maxlength="40" class="" value="${ofertaInstance?.subsecretario}" style="width: 300px;"/>
+%{--        <div class="controls">--}%
+%{--            <g:textField name="subsecretario" maxlength="40" class="" value="${ofertaInstance?.subsecretario}" style="width: 300px;"/>--}%
 
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Responsable del proceso
-            </span>
-        </div>
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Responsable del proceso--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-        <div class="controls">
-            <g:select name="responsableProceso.id" from="${responsablesProceso}" optionKey="id" optionValue="${{
-                it.apellido + ' ' + it.nombre
-            }}" value="${ofertaInstance?.responsableProcesoId}" class="required" style="width: 360px;"/>
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+%{--        <div class="controls">--}%
+%{--            <g:select name="responsableProceso.id" from="${responsablesProceso}" optionKey="id" optionValue="${{--}%
+%{--                it.apellido + ' ' + it.nombre--}%
+%{--            }}" value="${ofertaInstance?.responsableProcesoId}" class="required" style="width: 360px;"/>--}%
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
-%{--<div class="control-group">--}%
-%{--<div>--}%
-%{--<span class="control-label label label-inverse">--}%
-%{--Estado--}%
-%{--</span>--}%
-%{--</div>--}%
 
-%{--<div class="controls">--}%
-%{--<g:textField name="estado" maxlength="1" class="" value="${ofertaInstance?.estado}"/>--}%
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Observaciones--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-%{--<p class="help-block ui-helper-hidden"></p>--}%
-%{--</div>--}%
-%{--</div>--}%
+%{--        <div class="controls">--}%
+%{--            <g:textField name="observaciones" maxlength="127" class="" value="${ofertaInstance?.observaciones}" style="width: 400px;"/>--}%
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Observaciones
-            </span>
-        </div>
-
-        <div class="controls">
-            <g:textField name="observaciones" maxlength="127" class="" value="${ofertaInstance?.observaciones}" style="width: 400px;"/>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
 </g:form>
 
 
-<div class="modal mediumModal hide fade" id="modal-prov">
-    <div class="modal-header" id="modalHeader-prov">
-        <button type="button" class="close darker" data-dismiss="modal">
-            <i class="icon-remove-circle"></i>
-        </button>
+%{--<div class="modal mediumModal hide fade" id="modal-prov">--}%
+%{--    <div class="modal-header" id="modalHeader-prov">--}%
+%{--        <button type="button" class="close darker" data-dismiss="modal">--}%
+%{--            <i class="icon-remove-circle"></i>--}%
+%{--        </button>--}%
 
-        <h3 id="modalTitle-prov"></h3>
-    </div>
+%{--        <h3 id="modalTitle-prov"></h3>--}%
+%{--    </div>--}%
 
-    <div class="modal-body" id="modalBody-prov">
-    </div>
+%{--    <div class="modal-body" id="modalBody-prov">--}%
+%{--    </div>--}%
 
-    <div class="modal-footer" id="modalFooter-prov">
-    </div>
-</div>
+%{--    <div class="modal-footer" id="modalFooter-prov">--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 <script type="text/javascript">
 
@@ -326,60 +360,63 @@
         }
     });
 
-    $("#btnProv").click(function () {
-        var url = "${createLink(controller: 'proveedor', action: 'form_ajax_fo')}";
-        $.ajax({
-            type    : "POST",
-            url     : url,
-            success : function (msg) {
-                var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
+    %{--$("#btnProv").click(function () {--}%
+    %{--    var url = "${createLink(controller: 'proveedor', action: 'form_ajax_fo')}";--}%
+    %{--    $.ajax({--}%
+    %{--        type    : "POST",--}%
+    %{--        url     : url,--}%
+    %{--        success : function (msg) {--}%
+    %{--            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
+    %{--            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
 
-                btnSave.click(function () {
-                    btnSave.replaceWith(spinner)
-                    var $frm = $("#frmSave-Proveedor-fo");
-                    $.ajax({
-                        type    : "POST",
-                        url     : $frm.attr("action"),
-                        data    : $frm.serialize(),
-                        success : function (msg) {
-                            if (msg != "NO") {
-                                $("#modal-prov").modal("hide");
-                                $("#spProv").html(msg);
-                            }
-                        }
-                    });
+    %{--            btnSave.click(function () {--}%
+    %{--                btnSave.replaceWith(spinner)--}%
+    %{--                var $frm = $("#frmSave-Proveedor-fo");--}%
+    %{--                $.ajax({--}%
+    %{--                    type    : "POST",--}%
+    %{--                    url     : $frm.attr("action"),--}%
+    %{--                    data    : $frm.serialize(),--}%
+    %{--                    success : function (msg) {--}%
+    %{--                        if (msg != "NO") {--}%
+    %{--                            $("#modal-prov").modal("hide");--}%
+    %{--                            $("#spProv").html(msg);--}%
+    %{--                        }--}%
+    %{--                    }--}%
+    %{--                });--}%
 
-                    return false;
-                });
+    %{--                return false;--}%
+    %{--            });--}%
 
-                $("#modalHeader-prov").removeClass("btn-edit btn-show btn-delete");
-                $("#modalTitle-prov").html("Crear Proveedor");
-                $("#modalBody-prov").html(msg);
-                $("#modalFooter-prov").html("").append(btnOk).append(btnSave);
-                $("#modal-prov").modal("show");
-            }
-        });
-        return false;
-    });
+    %{--            $("#modalHeader-prov").removeClass("btn-edit btn-show btn-delete");--}%
+    %{--            $("#modalTitle-prov").html("Crear Proveedor");--}%
+    %{--            $("#modalBody-prov").html(msg);--}%
+    %{--            $("#modalFooter-prov").html("").append(btnOk).append(btnSave);--}%
+    %{--            $("#modal-prov").modal("show");--}%
+    %{--        }--}%
+    %{--    });--}%
+    %{--    return false;--}%
+    %{--});--}%
 
     $("#frmSave-Oferta").validate({
+        errorClass     : "help-block",
         errorPlacement : function (error, element) {
-            element.parent().find(".help-block").html(error).show();
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
         },
         success        : function (label) {
-            label.parent().hide();
-        },
-        errorClass     : "label label-important",
-        submitHandler  : function (form) {
-            $(".btn-success").replaceWith(spinner);
-            form.submit();
+            label.parents(".grupo").removeClass('has-error');
         }
     });
 
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormOferta();
+            return false;
         }
+        return true;
     });
 </script>
