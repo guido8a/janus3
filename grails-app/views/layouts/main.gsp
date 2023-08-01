@@ -73,14 +73,14 @@
 
 </head>
 
-<body>
+<body style="background-color: #dfdfdf">
 
 
 %{--<div id="modalTableGray"></div>--}%
 
 <mn:menu title="${g.layoutTitle(default: 'FIDA')}"/>
 
-<div class="container" style="min-width: 1100px !important; margin-top: 0px; overflow-y: hidden">
+<div class="container" style="min-width: 1100px !important; margin-top: 0px; overflow-y: hidden;">
     <g:layoutBody/>
 </div>
 
