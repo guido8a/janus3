@@ -303,8 +303,8 @@ class PreciosService {
 
     def nv_rubros(parametros){
         def cn = dbConnectionService.getConnection()
-        def sql = "select * from rubros(" + parametros + ") "
-//        println "sql " + sql
+        def sql = "select * from rubros(" + parametros + ") where rbrocdgo not ilike 'H%'"
+        println "sql " + sql
         def result = []
         cn.eachRow(sql) { r ->
             result.add(r.toRowResult())

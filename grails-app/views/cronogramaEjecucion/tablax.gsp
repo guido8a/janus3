@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <meta name="layout" content="mainMatriz">
+    <meta name="layout" content="mainCrono">
 
 
     %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
@@ -14,7 +14,8 @@
     %{--<script src="${resource(dir: 'js/jquery/i18n', file: 'jquery.ui.datepicker-es.js')}"></script>--}%
 
     %{--<link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
-    <title>Cronograma ejecución</title>
+
+    %{-- <title>Cronograma ejecución</title>--}%
 
     <style type="text/css">
     .valor {
@@ -50,7 +51,7 @@
 
 
 </head>
-<table class="table table-bordered table-condensed table-hover">
+<table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
     <tr>
         <th rowspan="2" style="width:70px;">Código</th>

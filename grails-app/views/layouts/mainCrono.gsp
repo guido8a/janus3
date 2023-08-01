@@ -1,3 +1,4 @@
+%{--
 <!doctype html>
 <html lang="en" class="no-js">
 <head>
@@ -61,12 +62,13 @@
     <g:layoutHead/>
 
 </head>
+--}%
 <body>
 
 
-<div id="modalTableGray"></div>
+%{--<div id="modalTableGray"></div>--}%
 
-<mn:menu title="${g.layoutTitle(default: 'FIDA')}"/>
+%{--<mn:menu title="${g.layoutTitle(default: 'FIDA')}"/> --}%
 
 <div class="container" style="min-width: 1300px !important; margin-top: 0px; overflow-y: hidden">
     <g:layoutBody/>

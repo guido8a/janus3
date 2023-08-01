@@ -123,8 +123,8 @@
             </a>
         </g:if>
 
-        <g:if test="${prms.contains('consumo')}">
-            <a href= "${createLink(controller:'consumo', action: 'consumo')}" title="Control de Bodega">
+        <g:if test="${prms.contains('registrarPac')}">
+            <a href= "${createLink(controller:'pac', action: 'registrarPac')}" title="Compras Públicas">
         </g:if>
         <div class="ui-corner-all item fuera">
             <div class="ui-corner-all ui-widget-content item">
@@ -132,8 +132,8 @@
                     <img src="${resource(dir: 'images', file: 'bodega.png')}" width="100%" height="100%"/>
                 </div>
 
-                <div class="texto"><b>Control de Bodega</b>: adquisiciones, requisiciones por obra, transferencias,
-                control de inventario y kardex ...</div>
+                <div class="texto"><b>Compras Públicas</b>: plan anual de contrataciones, gestión de pliegos,
+                control y seguimiento del PAC de obras...</div>
             </div>
         </div>
         <g:if test="${prms.contains('registrarPac')}">
@@ -174,19 +174,18 @@
         <div class="ui-corner-all  item fuera">
             <div class="ui-corner-all ui-widget-content item">
                 <div class="imagen">
-                    <img src="${resource(dir: 'images', file: 'manuales1.png')}" width="100%" height="100%"/>
+                    <img src="${resource(dir: 'images', file: 'manuales1.png')}" width="100%" height="100%" title="Manuales del sistema"/>
                 </div>
 
                 <div class="texto"><b>Manuales del sistema:</b>
-                    <g:link controller="manual" action="manualIngreso" target="_blank">Ingreso al Sistema</g:link>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual obras.html')}" title="Manual de Obras">Obras</a>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual APU.html')}" title="Manual de Obras">Análisis de Precios Unitarios</a>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual contrataciones.html')}" title="Manual de Contratación">Contratación</a>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual de ejecución.html')}" title="Manual de Fiscalización">Fiscalización</a>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual financiero.html')}" title="Manual de Financiero">Financiero</a>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual oferentes.html')}" title="Manual de Oferentes">Oferentes</a>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual de reportes.html')}" title="Manual de Reportes">Reportes</a>,
-                    <a href="${resource(dir: 'manuales', file: 'Manual administración directa.html')}" title="Manual de Administración Directa">Administración Directa</a>
+                    <g:link controller="descargas" action="manualIngreso" target="_blank">Ingreso al Sistema</g:link>,
+                    <g:link controller="descargas" action="manualAPU" target="_blank">Análisis de Precios Unitarios</g:link>,
+                    <g:link controller="descargas" action="manualObras" target="_blank">Obras</g:link>,
+                    <g:link controller="descargas" action="manualContratos" target="_blank">Contratación</g:link>,
+                    <g:link controller="descargas" action="manualEjec" target="_blank">Fiscalización</g:link>,
+                    <g:link controller="descargas" action="manualOferentes" target="_blank">Oferentes</g:link>,
+                    <g:link controller="descargas" action="manualRprt" target="_blank">Reportes</g:link>,
+                    <g:link controller="descargas" action="manualAdmnDire" target="_blank">Administración Directa</g:link>,
                 </div>
             </div>
         </div>

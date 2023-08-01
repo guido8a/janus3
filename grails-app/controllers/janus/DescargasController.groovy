@@ -5,7 +5,7 @@ package janus
 class DescargasController {
 
     def especificaciones() {
-        def nombre = "especificaciones generales.pdf"
+        def nombre = "especificaciones_generales.pdf"
         def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
@@ -16,7 +16,18 @@ class DescargasController {
     }
 
     def manualOferentes() {
-        def nombre = "Manual oferentes.pdf"
+        def nombre = "Manual sep-oferentes.pdf"
+        def path = '/var/janus/manual/' + nombre
+        def file = new File(path)
+        def b = file.getBytes()
+        response.setContentType('pdf')
+        response.setHeader("Content-disposition", "attachment; filename=" + nombre)
+        response.setContentLength(b.length)
+        response.getOutputStream().write(b)
+    }
+
+    def manualIngreso() {
+        def nombre = "Ingreso al sistema.pdf"
         def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
@@ -27,7 +38,7 @@ class DescargasController {
     }
 
     def manualAdmnOfrt() {
-        def nombre = "Manual oferentes gadlr.pdf"
+        def nombre = "Manual oferentes.pdf"
         def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
@@ -104,7 +115,7 @@ class DescargasController {
     }
 
     def manualAdmnDire() {
-        def nombre = "Manual administracion directa.pdf"
+        def nombre = "Manual administración directa.pdf"
         def path = '/var/janus/manual/' + nombre
         def file = new File(path)
         def b = file.getBytes()
