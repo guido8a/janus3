@@ -125,7 +125,7 @@ class DescargasController {
         response.getOutputStream().write(b)
     }
 
-/*
+
     def materiales() {
         def nombre = "materiales.xlsx"
         def path = '/var/janus/manual/' + nombre
@@ -136,7 +136,6 @@ class DescargasController {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
-*/
 
 
 } //fin controller
