@@ -21,7 +21,7 @@
     <table class="table-bordered table-condensed table-hover" style="width: 100%">
         <tbody>
         <g:each in="${data}" status="i" var="cncr">
-            <tr style="font-size: 11px" class="item_row" data-id="${cncr.cncr__id}" reg="${cncr.cncretdo}">
+            <tr style="font-size: 11px" class="item_row" data-id="${cncr.cncr__id}" data-reg="${cncr.cncretdo}">
                 <td style="width: 19%;">${cncr.obranmbr}</td>
                 <td style="width: 25%;">${cncr.pacpdscr}</td>
                 <td style="width: 10%;">${cncr.cncrcdgo}</td>
@@ -39,65 +39,102 @@
 
 
 <script type="text/javascript">
+
     $(function () {
-        $("tbody>tr").contextMenu({
-            items  : {
-                header   : {
-                    label  : "Acciones",
-                    header : true
-                },
-                ver      : {
-                    label  : "Ver",
-                    icon   : "fa fa-search",
-                    action : function ($element) {
-                        var id = $element.data("id");
-                        $.ajax({
-                            type    : "POST",
-                            url     : "${createLink(action:'show_ajax')}",
-                            data    : {
-                                id : id
-                            },
-                            success : function (msg) {
-                                bootbox.dialog({
-                                    title   : "Ver Concurso",
-                                    message : msg,
-                                    buttons : {
-                                        ok : {
-                                            label     : "Aceptar",
-                                            className : "btn-primary",
-                                            callback  : function () {
-                                            }
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    }
-                },
-                editar   : {
-                    label  : "Editar",
-                    icon   : "fa fa-edit",
-                    action : function ($element) {
-                        var id = $element.data("id");
-                        location.href = "${g.createLink(action: 'form_ajax')}/" + id
-                    }
-                },
-                eliminar : {
-                    label            : "Eliminar",
-                    icon             : "fa fa-trash",
-                    separator_before : true,
-                    action           : function ($element) {
-                        var id = $element.data("id");
-                        deleteRow(id);
-                    }
-                }
-            },
+        $("tr").contextMenu({
+            items  : createContextMenu,
             onShow : function ($element) {
-                $element.addClass("success");
+                $element.addClass("trHighlight");
             },
             onHide : function ($element) {
-                $(".success").removeClass("success");
+                $(".trHighlight").removeClass("trHighlight");
             }
         });
     });
+
+
+
+    function createContextMenu (node){
+        var $tr = $(node);
+        var id = $tr.data("id");
+        var estado = $tr.data("reg");
+
+        var items = {
+            header : {
+                label : "Sin Acciones",
+                header: true
+            }
+        };
+
+        var ver = {
+            label   : 'Ver',
+            icon   : "fa fa-search",
+            action : function (e) {
+                $.ajax({
+                    type    : "POST",
+                    url     : "${createLink(action:'show_ajax')}",
+                    data    : {
+                        id : id
+                    },
+                    success : function (msg) {
+                        bootbox.dialog({
+                            title   : "Ver Concurso",
+                            message : msg,
+                            buttons : {
+                                ok : {
+                                    label     : "Aceptar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+
+        var editar = {
+            label   : 'Editar',
+            icon   : "fa fa-edit",
+            action : function (e) {
+                location.href = "${g.createLink(action: 'form_ajax')}/" + id
+            }
+        };
+
+        var documentos = {
+            label   : 'Documentos',
+            icon   : "fa fa-file",
+            action : function (e) {
+                location.href = "${g.createLink(controller: 'documentoProceso',action: 'list')}/" + id
+            }
+        };
+
+        var oferta = {
+            label   : 'Ofertas',
+            icon   : "fa fa-book",
+            action : function (e) {
+                location.href = "${g.createLink(controller: 'oferta',action: 'list')}/" + id
+            }
+        };
+
+        var eliminar = {
+            label   : 'Eliminar',
+            icon   : "fa fa-trash",
+            action : function (e) {
+                deleteRow(id);
+            }
+        };
+
+        items.header.label = "Acciones";
+        items.ver = ver;
+        items.editar = editar;
+        items.documentos = documentos;
+        if(estado === 'R'){
+            items.oferta = oferta;
+        }
+        items.eliminar = eliminar;
+        return items
+    }
+
 </script>

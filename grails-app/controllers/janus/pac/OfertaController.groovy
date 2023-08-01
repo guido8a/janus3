@@ -21,6 +21,7 @@ class OfertaController {
 
     def form_ajax() {
         def ofertaInstance = new Oferta(params)
+        def concurso = Concurso.get(params.concurso)
         if (params.id) {
             ofertaInstance = Oferta.get(params.id)
             if (!ofertaInstance) {
@@ -31,7 +32,7 @@ class OfertaController {
             } //no existe el objeto
         } //es edit
         else {
-            def concurso = Concurso.get(params.cncr)
+//            concurso = Concurso.get(params.cncr)
             ofertaInstance.concurso = concurso
         }
 
@@ -45,7 +46,7 @@ class OfertaController {
             }
         }.persona
 
-        return [ofertaInstance: ofertaInstance, responsablesProceso: responsablesProceso]
+        return [ofertaInstance: ofertaInstance, responsablesProceso: responsablesProceso, concurso: concurso]
     } //form_ajax
 
     def save() {

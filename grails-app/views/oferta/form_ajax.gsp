@@ -3,100 +3,197 @@
 <div id="create-Oferta" class="span" role="main">
 <g:form class="form-horizontal" name="frmSave-Oferta" action="save">
     <g:hiddenField name="id" value="${ofertaInstance?.id}"/>
+    <g:hiddenField id="concurso" name="concurso.id" value="${ofertaInstance?.concurso?.id}"/>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group">
+        <span class="grupo">
+            <label class="col-md-2 control-label text-info">
                 Proceso
+            </label>
+            <span class="col-md-8">
+                <g:if test="${ofertaInstance}">
+                    ${ofertaInstance?.concurso?.objeto}
+                </g:if>
+                <g:else>
+                    ${concurso?.objeto}
+                </g:else>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:hiddenField id="concurso" name="concurso.id" value="${ofertaInstance?.concurso?.id}"/>
-            ${ofertaInstance?.concurso?.objeto}
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'descripcion', 'error')} ">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-2 control-label text-info">
                 Descripción
+            </label>
+            <span class="col-md-8">
+                <g:textField name="descripcion" maxlength="255" class="form-control required" value="${ofertaInstance?.descripcion}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:textArea name="descripcion" cols="100" rows="5" maxlength="255" class="" value="${ofertaInstance?.descripcion}" style="width: 400px;"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Proveedor
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'proveedor', 'error')} ">
+        <span class="grupo">
+            <label for="proveedor" class="col-md-2 control-label text-info">
+                Proveedores
+            </label>
+            <span class="col-md-8">
+                <g:select id="proveedor" name="proveedor.id" from="${janus.pac.Proveedor.list()}" optionKey="id" class="form-control"
+                          value="${ofertaInstance?.proveedor?.id}" optionValue="nombre" noSelection="['null': '']" />
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <span id="spProv">
-                <g:select id="proveedor" name="proveedor.id" from="${janus.pac.Proveedor.list()}" optionKey="id" class="many-to-one "
-                          value="${ofertaInstance?.proveedor?.id}" noSelection="['null': '']" optionValue="nombre" style="width: 380px;"/>
-            </span>
-            <span class="mandatory">*</span>
-            <a href="#" id="btnProv" class="btn" rel="tooltip" title="Agregar proveedor"><i class="icon-plus"></i></a>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
-
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'monto', 'error')} ">
+        <span class="grupo">
+            <label for="monto" class="col-md-2 control-label text-info">
                 Monto
+            </label>
+            <span class="col-md-4">
+                <g:textField name="monto" class="form-control required" value="${ofertaInstance?.monto}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:field type="number" name="monto" class="" value="${ofertaInstance.monto}" style="width:140px;"/>
-            <span class="mandatory">*</span>
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'plazo', 'error')} ">
+        <span class="grupo">
+            <label for="plazo" class="col-md-2 control-label text-info">
                 Plazo
+            </label>
+            <span class="col-md-4">
+                <g:textField name="plazo" class="form-control required" value="${ofertaInstance?.plazo}"/>
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <g:field type="number" name="plazo" class="" value="${fieldValue(bean: ofertaInstance, field: 'plazo')}" style="width:80px;"/>
-            días
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+            <span class="col-md-1">
+                días
+            </span>
+        </span>
     </div>
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'fechaEntrega', 'error')} ">
+        <span class="grupo">
+            <label for="fechaEntrega" class="col-md-2 control-label text-info">
                 Fecha Entrega de la Oferta
+            </label>
+            <span class="col-md-4">
+                <input aria-label="" name="fechaEntrega" id='fechaEntrega' type='text' class="form-control" value="${ofertaInstance?.fechaEntrega?.format("dd-MM-yyyy")}" />
+                <p class="help-block ui-helper-hidden"></p>
             </span>
-        </div>
-
-        <div class="controls">
-            <elm:datepicker name="fechaEntrega" class="" value="${ofertaInstance?.fechaEntrega}" style="width:140px;"/>
-            <span class="mandatory">*</span>
-
-
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
+        </span>
     </div>
+
+    <div class="form-group ${hasErrors(bean: ofertaInstance, field: 'hoja', 'error')} ">
+        <span class="grupo">
+            <label for="plazo" class="col-md-2 control-label text-info">
+                Hojas de oferta
+            </label>
+            <span class="col-md-4">
+                <g:textField name="hoja" class="form-control required number" value="${ofertaInstance?.hoja}"/>
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+            <span class="col-md-1">
+                días
+            </span>
+        </span>
+    </div>
+
+
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Proceso--}%
+%{--            </span>--}%
+%{--        </div>--}%
+
+%{--        <div class="controls">--}%
+%{--            <g:hiddenField id="concurso" name="concurso.id" value="${ofertaInstance?.concurso?.id}"/>--}%
+%{--            ${ofertaInstance?.concurso?.objeto}--}%
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Descripción--}%
+%{--            </span>--}%
+%{--        </div>--}%
+
+%{--        <div class="controls">--}%
+%{--            <g:textArea name="descripcion" cols="100" rows="5" maxlength="255" class="" value="${ofertaInstance?.descripcion}" style="width: 400px;"/>--}%
+%{--            <span class="mandatory">*</span>--}%
+
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Proveedor--}%
+%{--            </span>--}%
+%{--        </div>--}%
+
+%{--        <div class="controls">--}%
+%{--            <span id="spProv">--}%
+%{--                <g:select id="proveedor" name="proveedor.id" from="${janus.pac.Proveedor.list()}" optionKey="id" class="many-to-one "--}%
+%{--                          value="${ofertaInstance?.proveedor?.id}" noSelection="['null': '']" optionValue="nombre" style="width: 380px;"/>--}%
+%{--            </span>--}%
+%{--            <span class="mandatory">*</span>--}%
+%{--            <a href="#" id="btnProv" class="btn" rel="tooltip" title="Agregar proveedor"><i class="icon-plus"></i></a>--}%
+
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+
+
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Monto--}%
+%{--            </span>--}%
+%{--        </div>--}%
+
+%{--        <div class="controls">--}%
+%{--            <g:field type="number" name="monto" class="" value="${ofertaInstance.monto}" style="width:140px;"/>--}%
+%{--            <span class="mandatory">*</span>--}%
+
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Plazo--}%
+%{--            </span>--}%
+%{--        </div>--}%
+
+%{--        <div class="controls">--}%
+%{--            <g:field type="number" name="plazo" class="" value="${fieldValue(bean: ofertaInstance, field: 'plazo')}" style="width:80px;"/>--}%
+%{--            días--}%
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
+
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Fecha Entrega de la Oferta--}%
+%{--            </span>--}%
+%{--        </div>--}%
+
+%{--        <div class="controls">--}%
+%{--            <elm:datepicker name="fechaEntrega" class="" value="${ofertaInstance?.fechaEntrega}" style="width:140px;"/>--}%
+%{--            <span class="mandatory">*</span>--}%
+
+
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
 
 
@@ -114,19 +211,19 @@
 %{--</div>--}%
 %{--</div>--}%
 
-    <div class="control-group">
-        <div>
-            <span class="control-label label label-inverse">
-                Hojas de oferta
-            </span>
-        </div>
+%{--    <div class="control-group">--}%
+%{--        <div>--}%
+%{--            <span class="control-label label label-inverse">--}%
+%{--                Hojas de oferta--}%
+%{--            </span>--}%
+%{--        </div>--}%
 
-        <div class="controls">
-            <g:field type="number" name="hoja" class="" value="${fieldValue(bean: ofertaInstance, field: 'hoja')}" style="width:50px;"/>
+%{--        <div class="controls">--}%
+%{--            <g:field type="number" name="hoja" class="" value="${fieldValue(bean: ofertaInstance, field: 'hoja')}" style="width:50px;"/>--}%
 
-            <p class="help-block ui-helper-hidden"></p>
-        </div>
-    </div>
+%{--            <p class="help-block ui-helper-hidden"></p>--}%
+%{--        </div>--}%
+%{--    </div>--}%
 
     <div class="control-group">
         <div>
@@ -220,6 +317,14 @@
 </div>
 
 <script type="text/javascript">
+
+    $('#fechaEntrega').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
 
     $("#btnProv").click(function () {
         var url = "${createLink(controller: 'proveedor', action: 'form_ajax_fo')}";
