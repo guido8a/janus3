@@ -15,11 +15,12 @@ class InicioController {
     def index() {
         def cn = dbConnectionService.getConnection()
         def prms = []
-        def acciones = "'rubroPrincipal', 'registroObra', 'registrarPac', 'verContrato'"
-        def tx = "select accnnmbr from prms, accn where prfl__id = " + Prfl.findByNombre(session.perfil.toString()).id +
-                " and accn.accn__id = prms.accn__id and accnnmbr in (${acciones})"
+        def acciones = "'3. Rubros', 'Registro de Obras', '3. Concursos', 'Contratos', 'Reportes'"
+        def tx = "select accndscr from prms, accn where prfl__id = " + Prfl.findByNombre(session.perfil.toString()).id +
+                " and accn.accn__id = prms.accn__id and accndscr in (${acciones})"
+        println "sql: $tx"
         cn.eachRow(tx) { d ->
-            prms << d.accnnmbr
+            prms << d.accndscr
         }
         cn.close()
         def empr = Parametros.get(1)
@@ -28,6 +29,7 @@ class InicioController {
         //oferentesService.copiaFormula(1457,1485)
         // println " crono "
         //oferentesService.copiaCrono(1457,1485)
+        println "--> $prms"
         return [prms: prms, empr: empr]
     }
 

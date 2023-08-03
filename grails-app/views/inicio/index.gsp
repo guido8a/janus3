@@ -89,7 +89,7 @@
 
     <div class="body ui-corner-all bordes" style="width: 850px;position: relative;margin: auto;margin-top: 0px;height: 510px;">
 
-        <g:if test="${prms.contains('rubroPrincipal')}">
+        <g:if test="${prms.contains('3. Rubros')}">
             <a href="${createLink(controller: 'rubro', action: 'rubroPrincipal')}" title="Análisis de Precios Unitarios">
         </g:if>
         <div class="ui-corner-all  item fuera">
@@ -106,7 +106,7 @@
             </a>
         </g:if>
 
-        <g:if test="${prms.contains('registroObra')}">
+        <g:if test="${prms.contains('Registro de Obras')}">
             <a href= "${createLink(controller:'obra', action: 'registroObra')}" title="Registro de Obras">
         </g:if>
         <div class="ui-corner-all item fuera">
@@ -123,7 +123,7 @@
             </a>
         </g:if>
 
-        <g:if test="${prms.contains('registrarPac')}">
+        <g:if test="${prms.contains('3. Concursos')}">
             <a href= "${createLink(controller:'pac', action: 'registrarPac')}" title="Compras Públicas">
         </g:if>
         <div class="ui-corner-all item fuera">
@@ -140,7 +140,7 @@
             </a>
         </g:if>
 
-        <g:if test="${prms.contains('verContrato')}">
+        <g:if test="${prms.contains('Contratos')}">
             <a href= "${createLink(controller:'contrato', action: 'verContrato')}" title="Contratos y Ejecución de Obras">
         </g:if>
         <div class="ui-corner-all  item fuera">
@@ -154,11 +154,11 @@
             </div>
         </div>
         <g:if test="${prms.contains('verContrato')}">
-            </a>
+        </a>
         </g:if>
 
-        <g:if test="${session.perfil.descripcion != 'Oferente'}">
-            <a href= "${createLink(controller:'reprotes', action: 'index')}" title="Reportes del sistema">
+        <g:if test="${(session.perfil.descripcion != 'Oferente') && prms.contains('Reportes')}">
+            <a href= "${createLink(controller:'reportes', action: 'index')}" title="Reportes del sistema">
         </g:if>
             <div class="ui-corner-all  item fuera">
                 <div class="ui-corner-all ui-widget-content item">
@@ -171,7 +171,9 @@
                 </div>
             </div>
     %{--<g:link  controller="documento" action="list" title="Documentos de los Proyectos">--}%
+        </a>
         <div class="ui-corner-all  item fuera">
+
             <div class="ui-corner-all ui-widget-content item">
                 <div class="imagen">
                     <img src="${resource(dir: 'images', file: 'manuales1.png')}" width="100%" height="100%" title="Manuales del sistema"/>
