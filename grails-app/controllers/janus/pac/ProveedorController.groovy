@@ -16,7 +16,7 @@ class ProveedorController {
     } //index
 
     def list() {
-        [proveedorInstanceList: Proveedor.list(params), params: params]
+        [proveedorInstanceList: Proveedor.list(params).sort{it.nombre}, params: params]
     } //list
 
     def form_ajax() {
@@ -24,8 +24,6 @@ class ProveedorController {
         if (params.id) {
             proveedorInstance = Proveedor.get(params.id)
             if (!proveedorInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Proveedor con id " + params.id
                 redirect(action: "list")
                 return
             } //no existe el objeto
@@ -83,74 +81,35 @@ class ProveedorController {
             render "NO"
             return
         }
-
-        /*
-          <g:select id="proveedor" name="proveedor.id" from="${janus.pac.Proveedor.list()}" optionKey="id" class="many-to-one "
-                          value="${ofertaInstance?.proveedor?.id}" noSelection="['null': '']" optionValue="nombre"/>
-         */
         def sel = g.select(id: "proveedor", name: 'proveedor.id', from: Proveedor.list([sort: 'nombre']), optionKey: "id", optionValue: "nombre", "class": "many-to-one", value: proveedorInstance.id, noSelection: ['null': ''])
-
         render sel
     }
 
     def save() {
-
-
-//        println("params: " + params)
-        if(params.fechaContacto){
-            params.fechaContacto = new Date().parse("dd-MM-yyyy", params.fechaContacto)
-        }
-
-
-
         def proveedorInstance
         if (params.id) {
             proveedorInstance = Proveedor.get(params.id)
             if (!proveedorInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Proveedor con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró el proveedor"
                 return
             }//no existe el objeto
+
             proveedorInstance.properties = params
         }//es edit
         else {
+            params.fechaContacto = new Date()
             proveedorInstance = new Proveedor(params)
         } //es create
         if (!proveedorInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Proveedor " + (proveedorInstance.id ? proveedorInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            proveedorInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'proveedor')
-            return
+            render "no_Error al guardar el proveedor"
+        }else{
+            render "ok_Proveedor guardado correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Proveedor " + proveedorInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Proveedor " + proveedorInstance.id
-        }
-        redirect(action: 'proveedor')
     } //save
 
     def show_ajax() {
         def proveedorInstance = Proveedor.get(params.id)
         if (!proveedorInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Proveedor con id " + params.id
             redirect(action: "list")
             return
         }
@@ -160,22 +119,16 @@ class ProveedorController {
     def delete() {
         def proveedorInstance = Proveedor.get(params.id)
         if (!proveedorInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Proveedor con id " + params.id
-            redirect(action: "list")
+            render "no_Error al borrar el proveedor"
             return
         }
 
         try {
             proveedorInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Proveedor " + proveedorInstance.id
-            redirect(action: "list")
+            render "ok_Proveedor borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Proveedor " + (proveedorInstance.id ? proveedorInstance.id : "")
-            redirect(action: "list")
+            render "no_Error al borrar el proveedor"
         }
     } //delete
 

@@ -44,7 +44,8 @@
             url: "${createLink(action:'tablaPresupuesto_ajax')}",
             data: {
                 buscarPor: buscarPor,
-                criterio: criterio
+                criterio: criterio,
+                anio: '${anio}'
             },
             success: function (msg) {
                 $("#divTablaPartida").html(msg);

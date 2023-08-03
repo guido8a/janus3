@@ -4,277 +4,188 @@
 <div id="show-proveedor" class="span5" role="main">
 
     <form class="form-horizontal">
-    
-    <g:if test="${proveedorInstance?.especialidad}">
-        <div class="control-group">
-            <div>
-                <span id="especialidad-label" class="control-label label label-inverse">
-                    Especialidad
-                </span>
-            </div>
-            <div class="controls">
-                <span aria-labelledby="especialidad-label">
-                    ${proveedorInstance?.especialidad?.descripcion?.encodeAsHTML()}
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.tipo}">
-        <div class="control-group">
-            <div>
-                <span id="tipo-label" class="control-label label label-inverse">
-                    Tipo
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="tipo-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="tipo"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.ruc}">
-        <div class="control-group">
-            <div>
-                <span id="ruc-label" class="control-label label label-inverse">
-                    Ruc
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="ruc-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="ruc"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.nombre}">
-        <div class="control-group">
-            <div>
-                <span id="nombre-label" class="control-label label label-inverse">
-                    Nombre
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="nombre-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="nombre"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.nombreContacto}">
-        <div class="control-group">
-            <div>
-                <span id="nombreContacto-label" class="control-label label label-inverse">
-                    Nombre Contacto
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="nombreContacto-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="nombreContacto"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.apellidoContacto}">
-        <div class="control-group">
-            <div>
-                <span id="apellidoContacto-label" class="control-label label label-inverse">
-                    Apellido Contacto
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="apellidoContacto-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="apellidoContacto"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.garante}">
-        <div class="control-group">
-            <div>
-                <span id="garante-label" class="control-label label label-inverse">
-                   Gerente
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="garante-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="garante"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.direccion}">
-        <div class="control-group">
-            <div>
-                <span id="direccion-label" class="control-label label label-inverse">
-                    Direccion
-                </span>
-            </div>
-            <div class="controls">
-        
-                <span aria-labelledby="direccion-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="direccion"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
 
-    <g:if test="${proveedorInstance?.telefonos}">
-        <div class="control-group">
-            <div>
-                <span id="telefonos-label" class="control-label label label-inverse">
-                    Telefonos
+        <g:if test="${proveedorInstance?.especialidad}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Especialidad
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.especialidad?.descripcion}
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="telefonos-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="telefonos"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.fechaContacto}">
-        <div class="control-group">
-            <div>
-                <span id="fechaContacto-label" class="control-label label label-inverse">
-                    Fecha Contacto
+        </g:if>
+
+        <g:if test="${proveedorInstance?.tipo}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Tipo
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.tipo == 'N' ?  "Natural" : 'Jurídica' }
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="fechaContacto-label">
-                    <g:formatDate date="${proveedorInstance?.fechaContacto}" format="dd-MM-yyyy" />
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.email}">
-        <div class="control-group">
-            <div>
-                <span id="email-label" class="control-label label label-inverse">
-                    Email
+        </g:if>
+
+        <g:if test="${proveedorInstance?.ruc}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Ruc
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.ruc}
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="email-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="email"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.licencia}">
-        <div class="control-group">
-            <div>
-                <span id="licencia-label" class="control-label label label-inverse">
-                    Licencia
+        </g:if>
+
+        <g:if test="${proveedorInstance?.nombre}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Nombre
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.nombre}
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="licencia-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="licencia"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.registro}">
-        <div class="control-group">
-            <div>
-                <span id="registro-label" class="control-label label label-inverse">
-                    Registro
+        </g:if>
+
+        <g:if test="${proveedorInstance?.nombreContacto}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Nombre Contacto
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.nombreContacto}
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="registro-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="registro"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.titulo}">
-        <div class="control-group">
-            <div>
-                <span id="titulo-label" class="control-label label label-inverse">
-                    Titulo
+        </g:if>
+
+        <g:if test="${proveedorInstance?.apellidoContacto}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Apellido Contacto
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.apellidoContacto}
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="titulo-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="titulo"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.estado}">
-        <div class="control-group">
-            <div>
-                <span id="estado-label" class="control-label label label-inverse">
-                    Estado
+        </g:if>
+
+        <g:if test="${proveedorInstance?.garante}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Gerente
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.garante}
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="estado-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="estado"/>
-                </span>
-        
-            </div>
-        </div>
-    </g:if>
-    
-    <g:if test="${proveedorInstance?.observaciones}">
-        <div class="control-group">
-            <div>
-                <span id="observaciones-label" class="control-label label label-inverse">
-                    Observaciones
+        </g:if>
+
+        <g:if test="${proveedorInstance?.direccion}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Dirección
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.direccion}
+                    </span>
                 </span>
             </div>
-            <div class="controls">
-        
-                <span aria-labelledby="observaciones-label">
-                    <g:fieldValue bean="${proveedorInstance}" field="observaciones"/>
+        </g:if>
+
+        <g:if test="${proveedorInstance?.telefonos}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Telefonos
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.telefonos}
+                    </span>
                 </span>
-        
             </div>
-        </div>
-    </g:if>
-    
+        </g:if>
+
+        <g:if test="${proveedorInstance?.fechaContacto}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Fecha Contacto
+                    </label>
+                    <span class="col-md-8">
+                        <g:formatDate date="${proveedorInstance?.fechaContacto}" format="dd-MM-yyyy" />
+                    </span>
+                </span>
+            </div>
+        </g:if>
+
+        <g:if test="${proveedorInstance?.email}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Email
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.email}
+                    </span>
+                </span>
+            </div>
+        </g:if>
+
+        <g:if test="${proveedorInstance?.titulo}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Titulo
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.titulo}
+                    </span>
+                </span>
+            </div>
+        </g:if>
+
+        <g:if test="${proveedorInstance?.estado}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Estado
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.estado == '1' ? 'Activo' : 'Inactivo'}
+                    </span>
+                </span>
+            </div>
+        </g:if>
+
+        <g:if test="${proveedorInstance?.observaciones}">
+            <div class="form-group">
+                <span class="grupo">
+                    <label class="col-md-2 control-label text-info">
+                        Observaciones
+                    </label>
+                    <span class="col-md-8">
+                        ${proveedorInstance?.observaciones}
+                    </span>
+                </span>
+            </div>
+        </g:if>
+
     </form>
 </div>

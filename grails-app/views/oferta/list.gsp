@@ -6,7 +6,6 @@
         <title>
             Lista de Ofertas
         </title>
-
     </head>
 
     <body>
@@ -14,15 +13,6 @@
         <div class="alert alert-info">
             Ofertas de <span style="font-weight: bold; font-style: italic;">${concurso.objeto}</span>
         </div>
-
-%{--        <g:if test="${flash.message}">--}%
-%{--            <div class="span12">--}%
-%{--                <div class="alert ${flash.clase ?: 'alert-info'}" role="status">--}%
-%{--                    <a class="close" data-dismiss="alert" href="#">×</a>--}%
-%{--                    ${flash.message}--}%
-%{--                </div>--}%
-%{--            </div>--}%
-%{--        </g:if>--}%
 
         <div class="row">
             <div class="span9 btn-group" role="navigation">
@@ -87,26 +77,7 @@
 
         </div>
 
-%{--        <div id="modal-Oferta">--}%
-%{--            <div class="modal-body" id="modalBody">--}%
-%{--            </div>--}%
-
-%{--            <div class="modal-footer" id="modalFooter">--}%
-%{--            </div>--}%
-%{--        </div>--}%
-
         <script type="text/javascript">
-            %{--var url = "${resource(dir:'images', file:'spinner_24.gif')}";--}%
-            // var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
-
-            function submitForm(btn) {
-                if ($("#frmSave-Oferta").valid()) {
-                    btn.replaceWith(spinner);
-                }
-                $("#frmSave-Oferta").submit();
-            }
-
-
             function createEditRow(id) {
                 var title = id ? "Editar " : "Crear ";
                 var data = id ? {id : id, concurso: ${concurso?.id} }: {concurso: ${concurso?.id}};
@@ -169,65 +140,56 @@
                 }
             }
 
+            function deleteRow(itemId) {
+                bootbox.dialog({
+                    title   : "Alerta",
+                    message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar esta oferta? Esta acción no se puede deshacer.</p>",
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        eliminar : {
+                            label     : "<i class='fa fa-trash'></i> Eliminar",
+                            className : "btn-danger",
+                            callback  : function () {
+                                var v = cargarLoader("Eliminando...");
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : '${createLink(action:'delete')}',
+                                    data    : {
+                                        id : itemId
+                                    },
+                                    success : function (msg) {
+                                        v.modal("hide");
+                                        var parts = msg.split("_");
+                                        if(parts[0] === 'ok'){
+                                            log(parts[1],"success");
+                                            setTimeout(function () {
+                                                location.reload()
+                                            }, 800);
+                                        }else{
+                                            log(parts[1],"error")
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
 
             $(function () {
 
                 $(".btn-new").click(function () {
-
-
                     createEditRow();
-
-                    %{--$.ajax({--}%
-                    %{--    type    : "POST",--}%
-                    %{--    url     : "${createLink(action:'form_ajax')}",--}%
-                    %{--    data    : {--}%
-                    %{--        cncr : ${concurso.id}--}%
-                    %{--    },--}%
-                    %{--    success : function (msg) {--}%
-                    %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-                    %{--        var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
-
-                    %{--        btnSave.click(function () {--}%
-                    %{--            submitForm(btnSave);--}%
-                    %{--            return false;--}%
-                    %{--        });--}%
-
-                    %{--        $("#modalHeader").removeClass("btn-edit btn-show btn-delete");--}%
-                    %{--        $("#modalTitle").html("Crear Oferta");--}%
-                    %{--        $("#modalBody").html(msg);--}%
-                    %{--        $("#modalFooter").html("").append(btnOk).append(btnSave);--}%
-                    %{--        $("#modal-Oferta").dialog("open");--}%
-                    %{--    }--}%
-                    %{--});--}%
-                    %{--return false;--}%
                 }); //click btn new
 
                 $(".btn-edit").click(function () {
                     var id = $(this).data("id");
                     createEditRow(id);
-                    %{--$.ajax({--}%
-                    %{--    type    : "POST",--}%
-                    %{--    url     : "${createLink(action:'form_ajax')}",--}%
-                    %{--    data    : {--}%
-                    %{--        id : id--}%
-                    %{--    },--}%
-                    %{--    success : function (msg) {--}%
-                    %{--        var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');--}%
-                    %{--        var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');--}%
-
-                    %{--        btnSave.click(function () {--}%
-                    %{--            submitForm(btnSave);--}%
-                    %{--            return false;--}%
-                    %{--        });--}%
-
-                    %{--        $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");--}%
-                    %{--        $("#modalTitle").html("Editar Oferta");--}%
-                    %{--        $("#modalBody").html(msg);--}%
-                    %{--        $("#modalFooter").html("").append(btnOk).append(btnSave);--}%
-                    %{--        $("#modal-Oferta").modal("show");--}%
-                    %{--    }--}%
-                    %{--});--}%
-                    // return false;
                 }); //click btn edit
 
                 $(".btn-show").click(function () {
@@ -239,35 +201,26 @@
                             id : id
                         },
                         success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
-                            $("#modalTitle").html("Ver Oferta");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk);
-                            $("#modal-Oferta").modal("show");
+                            var b = bootbox.dialog({
+                                id      : "dlgShow",
+                                title   : "Ver Oferta",
+                                message : msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    }
+                                } //buttons
+                            }); //dialog
                         }
                     });
-                    return false;
                 }); //click btn show
 
                 $(".btn-delete").click(function () {
                     var id = $(this).data("id");
-                    $("#id").val(id);
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-                    btnDelete.click(function () {
-                        btnDelete.replaceWith(spinner);
-                        $("#frmDelete-Oferta").submit();
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-                    $("#modalTitle").html("Eliminar Oferta");
-                    $("#modalBody").html("<p>¿Está seguro de querer eliminar esta Oferta?</p>");
-                    $("#modalFooter").html("").append(btnOk).append(btnDelete);
-                    $("#modal-Oferta").modal("show");
-                    return false;
+                    deleteRow(id);
                 });
 
             });

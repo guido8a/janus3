@@ -43,6 +43,16 @@
             <g:hiddenField name="id" value="${asignacionInstance?.id}"/>
 
             <div class="col-md-12 control-group">
+                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>
+
+                <div class="col-md-3 controls" style="width: 120px;">
+                    <g:select id="anio" name="anio.id" from="${janus.pac.Anio.list()}" optionKey="id" optionValue="anio"
+                              class="form-control required" value="${actual.id}" style="width: 100px;"/>
+                    <p class="help-block ui-helper-hidden"></p>
+                </div>
+            </div>
+
+            <div class="col-md-12 control-group">
 
                 <h3> <span class="col-md-2 badge badge-secondary">Partida</span></h3>
 
@@ -79,14 +89,15 @@
                 </div>
             </div>
 
-            <div class="col-md-12 control-group">
-                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>
 
-                <div class="col-md-3 controls" style="width: 120px;">
-                    <g:select id="anio" name="anio.id" from="${janus.pac.Anio.list()}" optionKey="id" optionValue="anio"
-                              class="form-control required" value="${actual.id}" style="width: 100px;"/>
-                    <p class="help-block ui-helper-hidden"></p>
-                </div>
+            <div class="col-md-12 control-group">
+%{--                <h3> <span class="col-md-2 badge badge-secondary">Año</span></h3>--}%
+
+%{--                <div class="col-md-3 controls" style="width: 120px;">--}%
+%{--                    <g:select id="anio" name="anio.id" from="${janus.pac.Anio.list()}" optionKey="id" optionValue="anio"--}%
+%{--                              class="form-control required" value="${actual.id}" style="width: 100px;"/>--}%
+%{--                    <p class="help-block ui-helper-hidden"></p>--}%
+%{--                </div>--}%
 
                 <h3> <span class="col-md-2 badge badge-secondary">Valor</span></h3>
 
@@ -115,10 +126,13 @@
     var bcpc;
 
     $("#item_presupuesto").dblclick(function () {
+        var anio = $("#anio").val();
         $.ajax({
             type    : "POST",
             url: "${createLink(action:'buscarPresupuesto')}",
-            data    : {},
+            data    : {
+                anio: anio
+            },
             success : function (msg) {
                 bcpc = bootbox.dialog({
                     id      : "dlgBuscarPR",
@@ -176,7 +190,7 @@
                 }
             });
         } else {
-            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Escoja una partida presupuestaria, dando doble click en el campo de texto 'Partida' " + '</strong>');
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Escoja una partida presupuestaria, dando doble click en el campo de texto 'Partida' " + '</strong>');
         }
     }
 
@@ -211,7 +225,6 @@
     $("#item_agregar_prsp").click(function () {
         createEditPresupuesto();
     });
-
 
     function createEditPresupuesto(id) {
         var title = id ? "Editar" : "Crear";

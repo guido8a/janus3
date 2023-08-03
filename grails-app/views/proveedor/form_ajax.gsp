@@ -5,207 +5,209 @@
 <g:form class="form-horizontal" name="frmSave-Proveedor" action="save">
     <g:hiddenField name="id" value="${proveedorInstance?.id}"/>
 
-    <table cellpadding="5">
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Especialidad
-                </span>
-            </td>
-            <td width="250px">
-                <g:select id="especialidad" name="especialidad.id" from="${janus.EspecialidadProveedor.list()}" optionKey="id" optionValue="descripcion" class="many-to-one " value="${proveedorInstance?.especialidad?.id}"/>
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'especialidad', 'error')} ">
+        <span class="grupo">
+            <label for="especialidad" class="col-md-2 control-label text-info">
+                Especialidad
+            </label>
+            <span class="col-md-4">
+                <g:select id="especialidad" name="especialidad.id" from="${janus.EspecialidadProveedor.list()}" optionKey="id" optionValue="descripcion" class="form-control" value="${proveedorInstance?.especialidad?.id}"/>
                 <p class="help-block ui-helper-hidden"></p>
-                <span class="mandatory">*</span>
-            </td>
-            <td width="100px">
-                <span class="control-label label label-inverse">
-                    Tipo
-                </span>
-            </td>
-            <td>
-                <g:select id="tipo" name="tipo.id" from="${['J' : 'Jurídica', 'N': 'Natural', 'E' : 'Empresa Pública']}" optionKey="key" optionValue="value" class="many-to-one " value="${proveedorInstance?.tipo}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'tipo', 'error')} ">
+        <span class="grupo">
+            <label for="tipo" class="col-md-2 control-label text-info">
+                Tipo
+            </label>
+            <span class="col-md-4">
+                <g:select id="tipo" name="tipo.id" from="${['J' : 'Jurídica', 'N': 'Natural', 'E' : 'Empresa Pública']}" optionKey="key" optionValue="value" class="form-control" value="${proveedorInstance?.tipo}"/>
                 <p class="help-block ui-helper-hidden"></p>
-                <span class="mandatory">*</span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    RUC
-                </span>
-            </td>
-            <td width="250px">
-                <g:textField name="ruc" maxlength="13" class="required" value="${proveedorInstance?.ruc}"/>
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'ruc', 'error')} ">
+        <span class="grupo">
+            <label for="ruc" class="col-md-2 control-label text-info">
+                RUC
+            </label>
+            <span class="col-md-8">
+                <g:textField name="ruc" maxlength="13" class="form-control required" value="${proveedorInstance?.ruc}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-            <td width="100px">
-                <span class="control-label label label-inverse">
-                    Estado
-                </span>
-            </td>
-            <td>
-                <g:select name="estado" from="${[1 : 'Activo', 0: 'Inactivo']}" optionKey="key" optionValue="value" class="many-to-one " value="${proveedorInstance?.estado}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'nombre', 'error')} ">
+        <span class="grupo">
+            <label for="nombre" class="col-md-2 control-label text-info">
+                Nombre
+            </label>
+            <span class="col-md-8">
+                <g:textField name="nombre" maxlength="63" class="form-control required" value="${proveedorInstance?.nombre}" />
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Nombre
-                </span>
-            </td>
-            <td colspan="3">
-                <g:textField name="nombre" maxlength="63" class="required" value="${proveedorInstance?.nombre}" style="width: 430px"/>
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'nombreContacto', 'error')} ">
+        <span class="grupo">
+            <label for="nombreContacto" class="col-md-2 control-label text-info">
+                Nombre contacto
+            </label>
+            <span class="col-md-8">
+                <g:textField name="nombreContacto" maxlength="31" class="form-control required" value="${proveedorInstance?.nombreContacto}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Nombre Contacto
-                </span>
-            </td>
-            <td width="250px">
-                <g:textField name="nombreContacto" maxlength="31" class="required" value="${proveedorInstance?.nombreContacto}"/>
-                <span class="mandatory">*</span>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'apellidoContacto', 'error')} ">
+        <span class="grupo">
+            <label for="apellidoContacto" class="col-md-2 control-label text-info">
+                Apellido contacto
+            </label>
+            <span class="col-md-8">
+                <g:textField name="apellidoContacto" maxlength="31" class="form-control" value="${proveedorInstance?.apellidoContacto}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-            <td width="100px">
-                <span class="control-label label label-inverse">
-                    Apellido Contacto
-                </span>
-            </td>
-            <td>
-                <g:textField name="apellidoContacto" maxlength="31" class="" value="${proveedorInstance?.apellidoContacto}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'direccion', 'error')} ">
+        <span class="grupo">
+            <label for="direccion" class="col-md-2 control-label text-info">
+                Dirección
+            </label>
+            <span class="col-md-8">
+                <g:textField name="direccion" maxlength="60" class="form-control" value="${proveedorInstance?.direccion}" />
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Dirección
-                </span>
-            </td>
-            <td colspan="3">
-                <g:textField name="direccion" maxlength="60" class="" value="${proveedorInstance?.direccion}" style="width: 650px; resize: none"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'telefonos', 'error')} ">
+        <span class="grupo">
+            <label for="telefonos" class="col-md-2 control-label text-info">
+                Teléfono
+            </label>
+            <span class="col-md-8">
+                <g:textField name="telefonos" maxlength="40" class="form-control" value="${proveedorInstance?.telefonos}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Teléfono
-                </span>
-            </td>
-            <td width="250px">
-                <g:textField name="telefonos" maxlength="40" class="" value="${proveedorInstance?.telefonos}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'email', 'error')} ">
+        <span class="grupo">
+            <label for="email" class="col-md-2 control-label text-info">
+                Email
+            </label>
+            <span class="col-md-8">
+                <g:textField name="email" maxlength="40" class="form-control email mail" value="${proveedorInstance?.email}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-            <td width="100px">
-                <span class="control-label label label-inverse">
-                    Email
-                </span>
-            </td>
-            <td>
-                <g:textField name="email" maxlength="40" class="email mail" value="${proveedorInstance?.email}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'garante', 'error')} ">
+        <span class="grupo">
+            <label for="garante" class="col-md-2 control-label text-info">
+                Gerente
+            </label>
+            <span class="col-md-8">
+                <g:textField name="garante" maxlength="40" class="form-control" value="${proveedorInstance?.garante}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Gerente
-                </span>
-            </td>
-            <td width="250px">
-                <g:textField name="garante" maxlength="40" class="" value="${proveedorInstance?.garante}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'titulo', 'error')} ">
+        <span class="grupo">
+            <label for="titulo" class="col-md-2 control-label text-info">
+                Título
+            </label>
+            <span class="col-md-4">
+                <g:textField name="titulo" maxlength="4" class="form-control" value="${proveedorInstance?.titulo}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-            <td width="100px">
-                <span class="control-label label label-inverse">
-                    Título
-                </span>
-            </td>
-            <td>
-                <g:textField name="titulo" maxlength="4" class="" value="${proveedorInstance?.titulo}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'origen', 'error')} ">
+        <span class="grupo">
+            <label for="origen" class="col-md-2 control-label text-info">
+                Origen
+            </label>
+            <span class="col-md-4">
+                <g:select name="origen" from="${['N' : 'Nacional', 'E': 'Extranjero', 'M' : 'Multinacional']}" optionKey="key" optionValue="value" class="form-control" value="${proveedorInstance?.origen}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-%{--        <tr>--}%
-%{--            <td colspan="1">--}%
-%{--                <span class="control-label label label-inverse">--}%
-%{--                    Licencia--}%
-%{--                </span>--}%
-%{--            </td>--}%
-%{--            <td width="250px">--}%
-%{--                <g:textField name="licencia" maxlength="10" class="" value="${proveedorInstance?.licencia}"/>--}%
-%{--                <p class="help-block ui-helper-hidden"></p>--}%
-%{--            </td>--}%
-%{--            <td width="100px">--}%
-%{--                <span class="control-label label label-inverse">--}%
-%{--                    Registro--}%
-%{--                </span>--}%
-%{--            </td>--}%
-%{--            <td>--}%
-%{--                <g:textField name="registro" maxlength="7" class="" value="${proveedorInstance?.registro}"/>--}%
-%{--                <p class="help-block ui-helper-hidden"></p>--}%
-%{--            </td>--}%
-%{--        </tr>--}%
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Origen
-                </span>
-            </td>
-            <td width="250px">
-                <g:select name="origen" from="${['N' : 'Nacional', 'E': 'Extranjero', 'M' : 'Multinacional']}" optionKey="key" optionValue="value" class="many-to-one " value="${proveedorInstance?.origen}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'pagarNombre', 'error')} ">
+        <span class="grupo">
+            <label for="pagarNombre" class="col-md-2 control-label text-info">
+                Pago a nombre de
+            </label>
+            <span class="col-md-8">
+                <g:textField name="pagarNombre" maxlength="63" class="form-control" value="${proveedorInstance?.pagarNombre}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-            <td width="100px">
-                <span class="control-label label label-inverse">
-                   Pago
-                </span>
-            </td>
-            <td>
-                <g:textField name="nombreCheque" maxlength="63" class="" value="${proveedorInstance?.pagarNombre}"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'estado', 'error')} ">
+        <span class="grupo">
+            <label for="estado" class="col-md-2 control-label text-info">
+                Estado
+            </label>
+            <span class="col-md-4">
+                <g:select name="estado" from="${[1 : 'Activo', 0: 'Inactivo']}" optionKey="key" optionValue="value" class="form-control" value="${proveedorInstance?.estado}"/>
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="1">
-                <span class="control-label label label-inverse">
-                    Observaciones
-                </span>
-            </td>
-            <td colspan="3">
-                <g:textArea name="observaciones" maxlength="127" class="" value="${proveedorInstance?.observaciones}" style="width: 650px; resize: none"/>
+            </span>
+        </span>
+    </div>
+
+    <div class="form-group ${hasErrors(bean: proveedorInstance, field: 'observaciones', 'error')} ">
+        <span class="grupo">
+            <label for="observaciones" class="col-md-2 control-label text-info">
+                Observaciones
+            </label>
+            <span class="col-md-8">
+                <g:textArea name="observaciones" maxlength="127" class="form-control" value="${proveedorInstance?.observaciones}" style="resize: none;" />
                 <p class="help-block ui-helper-hidden"></p>
-            </td>
-        </tr>
-    </table>
+            </span>
+        </span>
+    </div>
 
 </g:form>
 
 <script type="text/javascript">
-    // $("#frmSave-Proveedor").validate({
-    //     errorPlacement : function (error, element) {
-    //         element.parent().find(".help-block").html(error).show();
-    //     },
-    //     success        : function (label) {
-    //         label.parent().hide();
-    //     },
-    //     errorClass     : "label label-important",
-    //     submitHandler  : function(form) {
-    //         $(".btn-success").replaceWith(spinner);
-    //         form.submit();
-    //     }
-    // });
-    //
-    // $("input").keyup(function (ev) {
-    //     if (ev.keyCode == 13) {
-    //         submitForm($(".btn-success"));
-    //     }
-    // });
+    $("#frmSave-Proveedor").validate({
+        errorClass     : "help-block",
+        errorPlacement : function (error, element) {
+            if (element.parent().hasClass("input-group")) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+            element.parents(".grupo").addClass('has-error');
+        },
+        success        : function (label) {
+            label.parents(".grupo").removeClass('has-error');
+        }
+    });
+
+    $(".form-control").keydown(function (ev) {
+        if (ev.keyCode === 13) {
+            submitFormProveedor();
+            return false;
+        }
+        return true;
+    });
 </script>

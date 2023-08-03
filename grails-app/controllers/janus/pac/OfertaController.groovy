@@ -79,8 +79,6 @@ class OfertaController {
     def show_ajax() {
         def ofertaInstance = Oferta.get(params.id)
         if (!ofertaInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Oferta con id " + params.id
             redirect(action: "list")
             return
         }
@@ -90,22 +88,16 @@ class OfertaController {
     def delete() {
         def ofertaInstance = Oferta.get(params.id)
         if (!ofertaInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Oferta con id " + params.id
-            redirect(action: "list")
+           render "no_No se encontró la oferta"
             return
         }
 
         try {
             ofertaInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Oferta " + ofertaInstance.id
-            redirect(controller: "concurso", action: "list")
+            render "ok_Oferta borrada correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Oferta " + (ofertaInstance.id ? ofertaInstance.id : "")
-            redirect(controller: "concurso",action: "list")
+            render "no_error al borrar la oferta"
         }
     } //delete
 } //fin controller

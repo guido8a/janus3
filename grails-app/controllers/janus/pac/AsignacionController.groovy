@@ -199,18 +199,20 @@ class AsignacionController {
     } //delete
 
     def buscarPresupuesto(){
-
+        def anio = params.anio
+        return[anio: anio]
     }
 
     def tablaPresupuesto_ajax(){
 //        println("tabla pre " + params)
+        def anio = Anio.get(params.anio)
         def datos;
         def sqlTx = ""
         def listaItems = ['prspnmro', 'prspdscr']
         def bsca = listaItems[params.buscarPor.toInteger()-1]
 
         def select = "select * from prsp"
-        def txwh = " where $bsca ilike '%${params.criterio}%'"
+        def txwh = " where $bsca ilike '%${params.criterio}%' and anio__id = ${anio?.id}"
         sqlTx = "${select} ${txwh} order by prspdscr limit 30 ".toString()
 //        println "sql: $sqlTx"
 
@@ -218,7 +220,7 @@ class AsignacionController {
         datos = cn.rows(sqlTx)
 
 //        println("data " + datos)
-        return[presupuestos: datos]
+        return[presupuestos: datos, anioSeleccionado: anio.anio]
     }
 
 
