@@ -482,8 +482,8 @@ class LoginController {
     }
 
 
-    def conectaGarantias() {
-        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/19-DCP-2022"
+    def conectaGarantias(cntr) {
+        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/${cntr}"
         def usro = "gochoa"
         def random = 'janus'
         def fecha = new Date()
@@ -500,6 +500,7 @@ class LoginController {
         println "key: ${digest.encodeBase64()}"
 
         def conecta = false
+        def retorna = ""
         def post = new URL(url).openConnection();
         def message = "{'identidadWs':  {" +
                 "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
@@ -524,17 +525,28 @@ class LoginController {
             def jsonSlurper = new JsonSlurper()
             if (postRC.equals(200)) {
                 def texto = post.getInputStream().getText()
-                //println(texto.split(',').join('\n'));
-                def retorna = jsonSlurper.parseText(texto)
-                println "Garantía: ${retorna.listaDatoGarantia[0]}"
+                println(texto.split(',').join('\n'));
+                retorna = jsonSlurper.parseText(texto)
+                println "Garantías: ${retorna.listaDatoGarantia.size()}"
+                println "Garantía última: ${retorna.listaDatoGarantia[-1]}"
                 conecta = retorna.autorizado
+
+                render("Existen: ${retorna.listaDatoGarantia.size()} garatías, <br>" +
+                        "Garantías: ${retorna.listaDatoGarantia}")
+                return
             }
         } catch (e) {
             println "no conecta ${usro} error: " + e
         }
 
 //        return conecta
-        render("ok")
+        render("<hr>Error - No existen datos de garantías del contrato $cntr")
+
+    }
+
+    def llamaGarantias() {
+        conectaGarantias("44-DCP-2022")
+        conectaGarantias("39-DCP-2022") //--> Bad Request
     }
 
 }
