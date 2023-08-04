@@ -128,51 +128,6 @@ class LoginController {
         redirect(action: 'login')
     }
 
-    /*
-    def conectaRest() {
-        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/gochoa"
-        def usro = "gochoa"
-        def random = 'janus'
-        def fecha = new Date()
-        def fcha = fecha.format("yyy-MM-dd") + "T" + fecha.format("HH:mm:ss") + "-05:00"
-        def privKey = '808a068b96222be6'
-        def random64 = Base64.getEncoder().encodeToString(random.getBytes())
-        def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
-        println "rand: $random64, clave: $clave"
-        def passp = random +  fcha + privKey
-        MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
-
-        byte[] digest  = ms_sha1.digest(passp.getBytes())
-        def key = digest.encodeBase64()
-        println "key: ${digest.encodeBase64()}"
-
-        def post = new URL(url).openConnection();
-        def message = "{'identidadWs':  {" +
-            "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
-            "'currentTime': '${fcha}'," +
-            "'random': 'amFudXM='," +
-            "'key': '${key}'," +
-            "'user': '${usro}'," +
-            "'moduleCode': 'SEP-P01'}," +
-            "'clave': 'R0FEUFAvKjE0MDY='}"
-
-        message = message.replace("'", '"')
-//        println "$message"
-        post.setRequestMethod("POST")
-        post.setDoOutput(true)
-        post.setRequestProperty("Content-Type", "application/json")
-        post.getOutputStream().write(message.getBytes("UTF-8"));
-        def postRC = post.getResponseCode();
-
-        println "responde: ${postRC}"
-        println "responde2: ${post.getResponseMessage()}"
-
-        if (postRC.equals(200)) {
-            println(post.getInputStream().getText());
-        }
-
-        render("ok")
-    }*/
 
     def conectaRest(usro, pass) {
 //    def conectaRest() {
@@ -187,10 +142,10 @@ class LoginController {
         def clave = Base64.getEncoder().encodeToString(pass.toString().getBytes())
         println "usuario: $usro, pass: $pass"
         println "rand: $random64, clave: $clave"
-        def passp = random +  fcha + privKey
+        def passp = random + fcha + privKey
         MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
 
-        byte[] digest  = ms_sha1.digest(passp.getBytes())
+        byte[] digest = ms_sha1.digest(passp.getBytes())
         def key = digest.encodeBase64()
         println "key: ${digest.encodeBase64()}"
 
@@ -342,7 +297,7 @@ class LoginController {
                         }
                     } else {
                         println "no es oferente y si usa servicio"
-                        if ( !conectaRest(params.login, params.pass) ) {
+                        if (!conectaRest(params.login, params.pass)) {
                             flash.message = "No se pudo validar la información ingresada con el servicio web, " +
                                     "contraseña incorrecta o usuario no registrado"
                             flash.tipo = "error"
@@ -375,7 +330,7 @@ class LoginController {
                         def count = borrarAlertas()
                         if (count > 0) {
                             redirect(controller: 'alertas', action: 'list')
-                        } else if(perfiles.first().perfil.descripcion != 'Oferente') {// llama a reporte
+                        } else if (perfiles.first().perfil.descripcion != 'Oferente') {// llama a reporte
                             redirect(controller: 'inicio', action: 'index', id: 1)
                         } else {
                             redirect(controller: 'inicio', action: 'indexOf', id: 1)
@@ -404,7 +359,7 @@ class LoginController {
             }
         }
         println "---- perfiles ----"
-        return [perfilesUsr: perfiles.sort{it.perfil.descripcion}]
+        return [perfilesUsr: perfiles.sort { it.perfil.descripcion }]
     }
 
     def savePer() {
@@ -467,7 +422,7 @@ class LoginController {
 //                    if (session.usuario.getPuedeJefe()) {
 //                        redirect(controller: "retrasadosWeb", action: "reporteRetrasadosConsolidado", params: [dpto: Persona.get(session.usuario.id).departamento.id, inicio: "1"])
 //                    } else {
-                        redirect(controller: "inicio", action: "index")
+                redirect(controller: "inicio", action: "index")
 //                    }
 
 //                }
@@ -524,6 +479,62 @@ class LoginController {
         }
         session.permisos = hp
 //        println "permisos menu " + session.permisos
+    }
+
+
+    def conectaGarantias() {
+        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/19-DCP-2022"
+        def usro = "gochoa"
+        def random = 'janus'
+        def fecha = new Date()
+        def fcha = fecha.format("yyy-MM-dd") + "T" + fecha.format("HH:mm:ss") + "-05:00"
+        def privKey = '808a068b96222be6'
+        def random64 = Base64.getEncoder().encodeToString(random.getBytes())
+        def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
+        println "rand: $random64, clave: $clave"
+        def passp = random + fcha + privKey
+        MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
+
+        byte[] digest = ms_sha1.digest(passp.getBytes())
+        def key = digest.encodeBase64()
+        println "key: ${digest.encodeBase64()}"
+
+        def conecta = false
+        def post = new URL(url).openConnection();
+        def message = "{'identidadWs':  {" +
+                "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
+                "'currentTime': '${fcha}'," +
+                "'random': 'amFudXM='," +
+                "'key': '${key}'," +
+                "'user': '${usro}'," +
+                "'moduleCode': 'SEP-P02'}}"
+
+        message = message.replace("'", '"')
+        println "$message"
+        try {
+            post.setRequestMethod("POST")
+            post.setDoOutput(true)
+            post.setRequestProperty("Content-Type", "application/json")
+            post.getOutputStream().write(message.getBytes("UTF-8"));
+            def postRC = post.getResponseCode();
+
+            println "responde: ${postRC}"
+            println "responde2: ${post.getResponseMessage()}"
+
+            def jsonSlurper = new JsonSlurper()
+            if (postRC.equals(200)) {
+                def texto = post.getInputStream().getText()
+                //println(texto.split(',').join('\n'));
+                def retorna = jsonSlurper.parseText(texto)
+                println "Garantía: ${retorna.listaDatoGarantia[0]}"
+                conecta = retorna.autorizado
+            }
+        } catch (e) {
+            println "no conecta ${usro} error: " + e
+        }
+
+//        return conecta
+        render("ok")
     }
 
 }
