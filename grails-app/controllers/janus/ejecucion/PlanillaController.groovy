@@ -5558,7 +5558,6 @@ class PlanillaController {
         prmt.fpReajuste = planilla.formulaPolinomicaReajuste
 
         def dsct1 = calculaPo(planilla.id, esteMes, planillaFinal, prmt.periodo)
-//                println "+++2: ${calculaPo(plnl.id, 0, false, prmt.periodo)}, anterior: $dsct1"
         prmt.valorPo = dsct1
         println "inserta segunda parte Po: $dsct1"
 
@@ -5571,7 +5570,6 @@ class PlanillaController {
     }
 
     def anticipo_ajax() {
-//        println("params " + params)
         def contrato = Contrato.get(params.contrato)
         def tipoPlanilla = TipoPlanilla.get(params.tipo)
         def com
@@ -5595,8 +5593,6 @@ class PlanillaController {
     }
 
     def saveOrdenCambio() {
-//        println("parmas oc " + params)
-
         def planilla = Planilla.get(params.id)
 
         planilla.memoOrden = params."memo_name"
@@ -5618,20 +5614,14 @@ class PlanillaController {
             flash.message = "Error al guardar la Orden de Cambio"
         }
 
-
         if (params."adi_name" == '1') {
             redirect(controller: 'reportes6', action: 'reporteOrdenCambio', id: planilla.id)
         } else {
-//            redirect(action: 'listFiscalizador' , id: planilla.contrato.id)
             render "ok"
         }
-
-
     }
 
     def saveOrdenTrabajo() {
-//        println("params ot " + params)
-
         def planilla = Planilla.get(params.id)
 
         planilla.memoTrabajo = params."memoT_name"
@@ -5656,7 +5646,6 @@ class PlanillaController {
         if (params."adi2_name" == '1') {
             redirect(controller: 'reportes6', action: 'reporteOrdenDeTrabajo', id: planilla.id)
         } else {
-//            redirect(action: 'listFiscalizador' , id: planilla.contrato.id)
             render "ok"
         }
     }

@@ -88,6 +88,10 @@
                 Imprimir Orden de Inicio de Obra
             </a>
         </g:if>
+        <a href="#" class="btn btn-primary" id="garantias">
+            <i class="fa fa-calendar"></i>
+            Garantías
+        </a>
     </div>
 </div>
 
@@ -347,6 +351,34 @@
 
 
 <script type="text/javascript">
+
+
+    $("#garantias").click(function () {
+        var d = cargarLoader("Cargando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'garantiaFinanciero', action:'garantia_ajax')}",
+            data    : {
+                    contrato : '${contrato?.id}'
+            },
+            success : function (msg) {
+                d.modal("hide");
+                    var b = bootbox.dialog({
+                        id      : "dlgShowGarantia",
+                        title   : "Garantía",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            }
+                        } //buttons
+                    }); //dialog
+            }
+        });
+    });
 
     $("#btnNuevaPlanilla").click(function () {
         <g:if test="${Planilla.findByContratoAndTipoPlanilla(janus.Contrato.get(contrato?.id), TipoPlanilla.findByCodigo('A'))}">
