@@ -102,7 +102,7 @@
                 ítems y rubros. Análisis de precios, rendimientos y listas de precios...</div>
             </div>
         </div>
-        <g:if test="${prms.contains('rubroPrincipal')}">
+        <g:if test="${prms.contains('3. Rubros')}">
             </a>
         </g:if>
 
@@ -119,7 +119,7 @@
                 variables de transporte y costos indirectos ...</div>
             </div>
         </div>
-        <g:if test="${prms.contains('registroObra')}">
+        <g:if test="${prms.contains('Registro de Obras')}">
             </a>
         </g:if>
 
@@ -136,7 +136,7 @@
                 control y seguimiento del PAC de obras...</div>
             </div>
         </div>
-        <g:if test="${prms.contains('registrarPac')}">
+        <g:if test="${prms.contains('3. Concursos')}">
             </a>
         </g:if>
 
@@ -153,7 +153,7 @@
                 planillas, reajuste de precios, cronograma ...</div>
             </div>
         </div>
-        <g:if test="${prms.contains('verContrato')}">
+        <g:if test="${prms.contains('Contratos')}">
         </a>
         </g:if>
 
@@ -171,8 +171,11 @@
                 </div>
             </div>
     %{--<g:link  controller="documento" action="list" title="Documentos de los Proyectos">--}%
-        </a>
-        <div class="ui-corner-all  item fuera">
+           <g:if test="${(session.perfil.descripcion != 'Oferente') && prms.contains('Reportes')}">
+             </a>
+           </g:if>
+
+            <div class="ui-corner-all  item fuera">
 
             <div class="ui-corner-all ui-widget-content item">
                 <div class="imagen">
