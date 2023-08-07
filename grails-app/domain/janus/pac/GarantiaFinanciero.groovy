@@ -18,16 +18,16 @@ class GarantiaFinanciero {
     Date desde
     Date hasta
     double monto
-    String borre
+    int idFinanciero
 
     static auditable = true
     static mapping = {
         table 'grfi'
-        //cache usage: 'read-write', include: 'non-lazy'
-        //id column: 'grfi__id'
-        //id generator: 'identity'
+        cache usage: 'read-write', include: 'non-lazy'
+        id column: 'grfi__id'
+        id generator: 'identity'
         version false
-        //columns {
+        columns {
             id column: 'grfi__id'
             contrato column: 'cntr__id'
             numeroGarantia column: 'grfinmro'
@@ -42,8 +42,8 @@ class GarantiaFinanciero {
             desde column: 'grfifcin'
             hasta column: 'grfifcfn'
             monto column: 'grfimnto'
-            borre column: 'grfibrre'
-        //}
+            idFinanciero column: 'grfiidfi'
+        }
     }
 
 
@@ -62,6 +62,5 @@ class GarantiaFinanciero {
         desde(blank: true, nullable: true)
         hasta(blank: true, nullable: true)
         monto(blank: true, nullable: true)
-        borre(blank: true, nullable: true)
     }
 }
