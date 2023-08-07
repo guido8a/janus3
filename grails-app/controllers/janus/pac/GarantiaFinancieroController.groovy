@@ -98,7 +98,7 @@ class GarantiaFinancieroController {
                 }
 
                 def garantia = new GarantiaFinanciero()
-                garantia.id = it.id
+                garantia.idFinanciero = it.id
                 garantia.contrato = contrato
                 garantia.numeroGarantia = it.numeroGarantia
                 garantia.conceptoGarantia_id = it.conceptoGarantia_id
