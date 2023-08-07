@@ -55,7 +55,8 @@
                 <i class="fa fa-book"></i> Biblioteca
             </g:link>
 
-            <g:link controller="garantia" class="btn" action="garantiasContrato" id="${contrato?.id}">
+%{--            <g:link controller="garantia" class="btn" action="garantiasContrato" id="${contrato?.id}">--}%
+            <g:link controller="garantiaFinanciero" class="btn" action="garantiasContratoFi" id="${contrato?.id}">
                 <i class="fa fa-th"></i> Garantías
             </g:link>
             <a href="${g.createLink(controller: 'contrato', action: 'polinomicaContrato', id: contrato?.id)}" class="btn">

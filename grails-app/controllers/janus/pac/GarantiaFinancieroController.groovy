@@ -105,9 +105,9 @@ class GarantiaFinancieroController {
                 garantia.tipoGarantia_id = it.tipoGarantia_id
                 garantia.tipoGarantia = it.tipoGarantia
                 garantia.estado = it.estado
-                garantia.fechaGarantia = new Date().parse("dd-MM-yyyy",it.fechaGarantia)
-                garantia.desde = new Date().parse("dd-MM-yyyy",it.desde)
-                garantia.hasta = new Date().parse("dd-MM-yyyy",it.hasta)
+                garantia.fechaGarantia = new Date().parse("yyyy-MM-dd", it.fechaGarantia)
+                garantia.desde = new Date().parse("yyyy-MM-dd", it.desde)
+                garantia.hasta = new Date().parse("yyyy-MM-dd", it.hasta)
                 garantia.monto = it.monto
 
 
@@ -122,5 +122,11 @@ class GarantiaFinancieroController {
         }
 
         return[garantias: resultado?.garantias, contrato: contrato]
+    }
+
+    def garantiasContratoFi(){
+        def contrato = Contrato.get(params.id)
+        def garantias = GarantiaFinanciero.findAllByContrato(contrato)
+        return[contrato: contrato, garantias: garantias]
     }
 }
