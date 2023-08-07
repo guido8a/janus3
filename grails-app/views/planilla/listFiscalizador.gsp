@@ -75,7 +75,7 @@
                     <g:set var="actaProvisional" value="${janus.actas.Acta.findAllByContratoAndTipo(contrato, 'P')}"/>
                     <g:if test="${actaProvisional.size() == 1 && actaProvisional[0].registrada == 1}">
                         <g:link controller="acta" action="form" class="btn btn-info" params="[contrato: contrato.id, tipo: 'D']">
-                            <i class="fa fa-hand-o-up"></i>
+                            <i class="fa fa-table"></i>
                             Acta de recepción definitiva
                         </g:link>
                     </g:if>
