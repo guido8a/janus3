@@ -1,9 +1,11 @@
 package janus.pac
 
+import janus.Contrato
+
 class GarantiaFinanciero {
 
     int id
-    int contrato
+    Contrato contrato
     String numeroGarantia
     int conceptoGarantia_id
     String conceptoGarantia
@@ -45,10 +47,18 @@ class GarantiaFinanciero {
 
     static constraints = {
         id(blank: false, nullable: false)
+        contrato(blank: true, nullable: true)
         numeroGarantia(size: 0..15, blank: true, nullable: true)
+        conceptoGarantia_id(blank: true, nullable: true)
         conceptoGarantia(size: 0..127, blank: true, nullable: true)
+        emisor_id(blank: true, nullable: true)
         emisor(size: 0..127, blank: true, nullable: true)
+        tipoGarantia_id(blank: true, nullable: true)
         tipoGarantia(size: 0..127, blank: true, nullable: true)
         estado(size: 0..31, blank: true, nullable: true)
+        fechaGarantia(blank: true, nullable: true)
+        desde(blank: true, nullable: true)
+        hasta(blank: true, nullable: true)
+        monto(blank: true, nullable: true)
     }
 }

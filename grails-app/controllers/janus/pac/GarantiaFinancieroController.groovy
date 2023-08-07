@@ -99,7 +99,7 @@ class GarantiaFinancieroController {
 
                 def garantia = new GarantiaFinanciero()
                 garantia.id = it.id
-                garantia.contrato = contrato.id.toInteger()
+                garantia.contrato = contrato
                 garantia.numeroGarantia = it.numeroGarantia
                 garantia.conceptoGarantia_id = it.conceptoGarantia_id
                 garantia.conceptoGarantia = it.conceptoGarantia
@@ -113,17 +113,17 @@ class GarantiaFinancieroController {
                 garantia.hasta = new Date().parse("dd-MM-yyyy",it.hasta)
                 garantia.monto = it.monto
 
-                try{
-                    garantia.save(flush:true)
-                }catch(e){
-                    println("error al guardar la garantia existente " + garantia.errors)
-                }
-
-//                if(!garantia.save(flush: true)){
-//                    println("error al guardar la nueva garantia " + garantia.errors)
-//                }else{
-//                    println("garantia ${it.id} guardada correctamente")
+//                try{
+//                    garantia.save(flush:true)
+//                }catch(e){
+//                    println("error al guardar la garantia existente " + garantia.errors)
 //                }
+
+                if(!garantia.save(flush: true)){
+                    println("error al guardar la nueva garantia " + garantia.errors)
+                }else{
+                    println("garantia ${it.id} guardada correctamente")
+                }
 
             }
         }else{
