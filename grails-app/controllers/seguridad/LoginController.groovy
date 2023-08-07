@@ -546,7 +546,7 @@ class LoginController {
 
     def llamaGarantias() {
         conectaGarantias("44-DCP-2022")
-        conectaGarantias("39-DCP-2022") //--> Bad Request
+        conectaGarantias("39-DGCP-2022") //--> Bad Request
     }
 
 }

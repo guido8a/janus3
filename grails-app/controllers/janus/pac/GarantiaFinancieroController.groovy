@@ -47,16 +47,16 @@ class GarantiaFinancieroController {
             post.getOutputStream().write(message.getBytes("UTF-8"));
             def postRC = post.getResponseCode();
 
-            println "responde: ${postRC}"
-            println "responde2: ${post.getResponseMessage()}"
+            //println "responde: ${postRC}"
+            //println "responde2: ${post.getResponseMessage()}"
 
             def jsonSlurper = new JsonSlurper()
             if (postRC.equals(200)) {
                 def texto = post.getInputStream().getText()
-                println(texto.split(',').join('\n'));
+                //println(texto.split(',').join('\n'));
                 retorna = jsonSlurper.parseText(texto)
-                println "Garantías: ${retorna.listaDatoGarantia.size()}"
-                println "Garantía última: ${retorna.listaDatoGarantia[-1]}"
+                //println "Garantías: ${retorna.listaDatoGarantia.size()}"
+                //println "Garantía última: ${retorna.listaDatoGarantia[-1]}"
                 conecta = retorna.autorizado
 
 //                render("Existen: ${retorna.listaDatoGarantia.size()} garatías, <br>" +
@@ -119,11 +119,20 @@ class GarantiaFinancieroController {
 //                    println("error al guardar la garantia existente " + garantia.errors)
 //                }
 
-                if(!garantia.save(flush: true)){
-                    println("error al guardar la nueva garantia " + garantia.errors)
-                }else{
-                    println("garantia ${it.id} guardada correctamente")
+                garantia.validate()
+                if (garantia.hasErrors()) {
+                    garantia.errors.allErrors.each {
+                        println it
+                    }
+                } else {
+                    garantia.save(flush: true)
                 }
+                println "a grabar: ${garantia}"
+                //if(!garantia.save(flush: true)){
+                //    println("error al guardar la nueva garantia " + garantia.errors)
+                //}else{
+                //    println("garantia ${it.id} guardada correctamente")
+                //}
 
             }
         }else{
