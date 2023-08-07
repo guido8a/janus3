@@ -62,5 +62,6 @@ class GarantiaFinanciero {
         desde(blank: true, nullable: true)
         hasta(blank: true, nullable: true)
         monto(blank: true, nullable: true)
+        idFinanciero(blank: false, nullable: false)
     }
 }

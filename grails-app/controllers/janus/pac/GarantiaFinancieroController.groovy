@@ -72,7 +72,7 @@ class GarantiaFinancieroController {
 //        render("<hr>Error - No existen datos de garantías del contrato $cntr")
 //        render "no_No existen datos de garantías del contrato $cntr"
 
-        println("---> " + retorna)
+//        println("---> " + retorna)
 
         return[garantias : (retorna ?  retorna?.listaDatoGarantia : null)]
 
@@ -88,18 +88,15 @@ class GarantiaFinancieroController {
 
             resultado?.garantias?.each{
 //                println("--> " + it)
-                def existente = GarantiaFinanciero.findById(it.id)
+                def existente = GarantiaFinanciero.findByContratoAndIdFinanciero(contrato, it.id)
+                def garantia = new GarantiaFinanciero()
                 if(existente){
-                    try{
-                        existente.delete(flush:true)
-                    }catch(e){
-                        println("error al borrar la garantia existente " + existente.errors)
-                    }
+                    garantia = existente
+                }else{
+                    garantia.idFinanciero = it.id
+                    garantia.contrato = contrato
                 }
 
-                def garantia = new GarantiaFinanciero()
-                garantia.idFinanciero = it.id
-                garantia.contrato = contrato
                 garantia.numeroGarantia = it.numeroGarantia
                 garantia.conceptoGarantia_id = it.conceptoGarantia_id
                 garantia.conceptoGarantia = it.conceptoGarantia
@@ -113,27 +110,12 @@ class GarantiaFinancieroController {
                 garantia.hasta = new Date().parse("dd-MM-yyyy",it.hasta)
                 garantia.monto = it.monto
 
-//                try{
-//                    garantia.save(flush:true)
-//                }catch(e){
-//                    println("error al guardar la garantia existente " + garantia.errors)
-//                }
 
-                garantia.validate()
-                if (garantia.hasErrors()) {
-                    garantia.errors.allErrors.each {
-                        println it
-                    }
-                } else {
-                    garantia.save(flush: true)
+                if(!garantia.save(flush:true)){
+                   println("error al guardar la garantia ")
+                }else{
+                    println "a grabar: ${garantia}"
                 }
-                println "a grabar: ${garantia}"
-                //if(!garantia.save(flush: true)){
-                //    println("error al guardar la nueva garantia " + garantia.errors)
-                //}else{
-                //    println("garantia ${it.id} guardada correctamente")
-                //}
-
             }
         }else{
             println("no existen garantias a guardar")
