@@ -88,10 +88,12 @@
                 Imprimir Orden de Inicio de Obra
             </a>
         </g:if>
-        <a href="#" class="btn btn-primary" id="garantias">
-            <i class="fa fa-calendar"></i>
-            Garantías
-        </a>
+        <g:if test="${contrato.fiscalizador.id == session.usuario.id}">
+            <a href="#" class="btn btn-primary" id="garantias">
+                <i class="fa fa-calendar"></i>
+                Garantías
+            </a>
+        </g:if>
     </div>
 </div>
 
@@ -260,7 +262,7 @@
                                 </g:if>
 
                                 <g:if test="${lblBtn == 3}">
-                                     Pedir pago
+                                    Pedir pago
                                 </g:if>
 
                                 <g:if test="${lblBtn == 4}">
@@ -359,23 +361,23 @@
             type    : "POST",
             url     : "${createLink(controller: 'garantiaFinanciero', action:'garantia_ajax')}",
             data    : {
-                    contrato : '${contrato?.id}'
+                contrato : '${contrato?.id}'
             },
             success : function (msg) {
                 d.modal("hide");
-                    var b = bootbox.dialog({
-                        id      : "dlgShowGarantia",
-                        title   : "Garantía",
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
+                var b = bootbox.dialog({
+                    id      : "dlgShowGarantia",
+                    title   : "Garantía",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
-                        } //buttons
-                    }); //dialog
+                        }
+                    } //buttons
+                }); //dialog
             }
         });
     });
