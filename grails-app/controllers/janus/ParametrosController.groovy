@@ -5,6 +5,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class ParametrosController {
 
+    def dbConnectionService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -157,4 +159,36 @@ class ParametrosController {
             redirect(action: "list")
         }
     } //delete
+
+    def auditoria(){
+
+    }
+
+
+    def tablaAuditoria_ajax(){
+        println("params " + params)
+
+        def desde
+        def hasta
+        def sql = ''
+
+        if(params.desde){
+             desde = new Date().parse("dd-MM-yyyy", params.desde)
+        }
+
+        if(params.hasta){
+            hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        }
+
+        if(params.desde && params.hasta){
+            sql = "select * from audt where audtfcha between '${desde?.format("yyyy-MM-dd")}' and '${hasta?.format("yyyy-MM-dd")}' limit 100"
+        }else{
+            sql = "select * from audt limit 100"
+        }
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString())
+
+        return [data: res]
+    }
 } //fin controller

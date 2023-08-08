@@ -1511,7 +1511,7 @@ class ReportesExcel2Controller {
         row1.createCell(1).setCellValue("REPORTE PRECIOS DE MATERIALES")
         row1.setRowStyle(style)
         Row row2 = sheet.createRow(3)
-        row2.createCell(1).setCellValue("LISTA DE PRECIOS: " + lista.descripcion.toUpperCase())
+        row2.createCell(1).setCellValue("LISTA DE PRECIOS DE MATERIALES PETREOS A LA FECHA ACTUAL: " + lista.descripcion.toUpperCase())
         row2.setRowStyle(style)
 //        Row row3 = sheet.createRow(4)
 //        row3.createCell(1).setCellValue("CONSULTA A LA FECHA: " +  fecha?.format("dd-MM-yyyy"))
@@ -1520,7 +1520,7 @@ class ReportesExcel2Controller {
         def fila = 6
 
         Row rowC1 = sheet.createRow(fila)
-        rowC1.createCell(0).setCellValue("LUGAR")
+        rowC1.createCell(0).setCellValue("LISTA DE PRECIOS")
         rowC1.createCell(1).setCellValue("CODIGO")
         rowC1.createCell(2).setCellValue("NOMBRE")
         rowC1.createCell(3).setCellValue("UNIDAD")
