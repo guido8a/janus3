@@ -715,7 +715,7 @@ class ReportesPlanillasController {
                 "tppl__id in (3,9,4) and plnlfcfn <= '${plnl.fechaFin}'"
         multas += cn.rows(tx.toString())[0]?.suma?:0  /* multas especiales anteriores */
 
-        multas += plnl.multaEspecial?:0
+//        multas += plnl.multaEspecial?:0
 
 //        println "sum: $tx"
         def baos = new ByteArrayOutputStream()

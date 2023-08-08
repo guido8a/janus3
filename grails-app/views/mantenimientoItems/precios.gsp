@@ -942,7 +942,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgImprimirMinas",
-                    title   : "Imprimir excel de minas",
+                    title   : "Listas de Precios de materiales pétreos - minas (Excel)",
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -953,7 +953,7 @@
                         },
                         guardar  : {
                             id        : "btnSave",
-                            label     : "<i class='fa fa-print'></i> Imprimir",
+                            label     : "<i class='fa fa-file-excel'></i> Excel",
                             className : "btn-success",
                             callback  : function () {
                                 %{--location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?fecha=" + $("#fecha1").val() + "&lista=" + $("#lista option:selected").val();--}%

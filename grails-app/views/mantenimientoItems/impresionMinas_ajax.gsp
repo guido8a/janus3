@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="col-md-6">
             <label>
-                Listas
+                Listas de Precios para:
             </label>
             <g:select name="lista" from="${janus.TipoLista.findAllByCodigoInList(['V', 'V1', 'V2'])}" optionValue="descripcion" optionKey="id" class="form-control" />
         </div>
