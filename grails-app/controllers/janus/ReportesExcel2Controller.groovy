@@ -1473,12 +1473,14 @@ class ReportesExcel2Controller {
     def reporteExcelMinas (){
 
         def lista = TipoLista.get(params.lista)
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+//        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+//
+//        def sql = "select itemcdgo, itemnmbr, unddcdgo, " +
+//                "itempeso, rbpcpcun, rbpcfcha, lgardscr from item, undd, rbpc r1, " +
+//                "lgar where undd.undd__id = item.undd__id and r1.item__id = item.item__id and lgar.tpls__id = ${params.lista} " +
+//                "and r1.rbpcfcha >= '${params.fecha}' and lgar.lgar__id = r1.lgar__id order by lgardscr, itemcdgo, rbpcfcha"
 
-        def sql = "select itemcdgo, itemnmbr, unddcdgo, " +
-                "itempeso, rbpcpcun, rbpcfcha, lgardscr from item, undd, rbpc r1, " +
-                "lgar where undd.undd__id = item.undd__id and r1.item__id = item.item__id and lgar.tpls__id = ${params.lista} " +
-                "and r1.rbpcfcha >= '${params.fecha}' and lgar.lgar__id = r1.lgar__id order by lgardscr, itemcdgo, rbpcfcha"
+        def sql = "select * from rp_minas('${lista.id}')"
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
@@ -1497,6 +1499,8 @@ class ReportesExcel2Controller {
         sheet.setColumnWidth(4, 10 * 256);
         sheet.setColumnWidth(5, 10 * 256);
         sheet.setColumnWidth(6, 15 * 256);
+        sheet.setColumnWidth(7, 15 * 256);
+        sheet.setColumnWidth(8, 15 * 256);
 
         Row row = sheet.createRow(0)
         row.createCell(0).setCellValue("")
@@ -1509,9 +1513,9 @@ class ReportesExcel2Controller {
         Row row2 = sheet.createRow(3)
         row2.createCell(1).setCellValue("LISTA DE PRECIOS: " + lista.descripcion.toUpperCase())
         row2.setRowStyle(style)
-        Row row3 = sheet.createRow(4)
-        row3.createCell(1).setCellValue("CONSULTA A LA FECHA: " +  fecha?.format("dd-MM-yyyy"))
-        row3.setRowStyle(style)
+//        Row row3 = sheet.createRow(4)
+//        row3.createCell(1).setCellValue("CONSULTA A LA FECHA: " +  fecha?.format("dd-MM-yyyy"))
+//        row3.setRowStyle(style)
 
         def fila = 6
 
@@ -1523,6 +1527,8 @@ class ReportesExcel2Controller {
         rowC1.createCell(4).setCellValue("PESO")
         rowC1.createCell(5).setCellValue("PRECIO")
         rowC1.createCell(6).setCellValue("FECHA")
+        rowC1.createCell(7).setCellValue("# RUBRO")
+        rowC1.createCell(8).setCellValue("# OBRA")
         rowC1.setRowStyle(style)
         fila++
 
@@ -1535,6 +1541,8 @@ class ReportesExcel2Controller {
             rowF1.createCell(4).setCellValue(k?.itempeso ?: '')
             rowF1.createCell(5).setCellValue(k?.rbpcpcun ?: 0)
             rowF1.createCell(6).setCellValue(k?.rbpcfcha?.format("dd-MM-yyyy"))
+            rowF1.createCell(7).setCellValue(k?.nmrorbro)
+            rowF1.createCell(8).setCellValue(k?.nmroobra)
             fila++
         }
 

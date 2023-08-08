@@ -956,7 +956,8 @@
                             label     : "<i class='fa fa-print'></i> Imprimir",
                             className : "btn-success",
                             callback  : function () {
-                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?fecha=" + $("#fecha1").val() + "&lista=" + $("#lista option:selected").val();
+                                %{--location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?fecha=" + $("#fecha1").val() + "&lista=" + $("#lista option:selected").val();--}%
+                                location.href="${createLink(controller: 'reportesExcel2', action: 'reporteExcelMinas')}?lista=" + $("#lista option:selected").val();
                             } //callback
                         } //guardar
                     } //buttons
