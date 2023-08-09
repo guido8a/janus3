@@ -14,8 +14,8 @@ class WardInterceptor {
 
     boolean before() {
         println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
-//        println "shield sesión: " + session
-//        println "usuario: " + session.usuario
+        println "shield sesión: " + session
+        println "usuario: " + session.usuario
         session.an = actionName
         session.cn = controllerName
         session.pr = params
@@ -29,6 +29,7 @@ class WardInterceptor {
             return true
         } else {
             if (!session?.usuario && !session?.perfil) {
+                println "...sin sesión"
                 if(controllerName != "inicio" && actionName != "index") {
 //                    flash.message = "Usted ha superado el tiempo de inactividad máximo de la sesión"
                 }
@@ -36,9 +37,16 @@ class WardInterceptor {
                 session.finalize()
                 return false
             }
+
+            if (isAllowed()) {
+                return true
+            } else {
+                println "******Dar permisos en acción: $actionName controlador: $controllerName"
+                return true
+            }
         }
 
-        true
+        //true
     }
 
     boolean after() {
@@ -53,7 +61,7 @@ class WardInterceptor {
 
 
     boolean isAllowed() {
-        println "--> ${session.permisos[controllerName.toLowerCase()]} --> ${actionName}"
+        println "**--> ${session.permisos[controllerName.toLowerCase()]} --> ${actionName}"
 
         try {
             if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {

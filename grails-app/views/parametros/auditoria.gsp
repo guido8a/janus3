@@ -23,20 +23,20 @@
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
                 <span class="col-md-2">
-                    <label class="control-label text-info">ID registro</label>
-                    <g:textField name="registro" id="registro" class="number form-control"/>
+                    <label class="control-label text-info">Fecha desde</label>
+                    <input aria-label="" name="desde" id='desde' type='text' class="form-control" />
+                </span>
+                <span class="col-md-2">
+                    <label class="control-label text-info">Fecha hasta</label>
+                    <input aria-label="" name="hasta" id='hasta' type='text' class="form-control"  />
                 </span>
                 <span class="col-md-2">
                     <label class="control-label text-info">Dominio</label>
                     <g:select name="dominio" id="dominio" from="${dominios}" optionValue="${{it.audtdomn}}" optionKey="audtdomn" class="form-control"/>
                 </span>
                 <span class="col-md-2">
-                    <label class="control-label text-info">Fecha desde</label>
-                    <input aria-label="" name="desde" id='desde' type='text' class="form-control"  />
-                </span>
-                <span class="col-md-2">
-                    <label class="control-label text-info">Fecha hasta</label>
-                    <input aria-label="" name="hasta" id='hasta' type='text' class="form-control"  />
+                    <label class="control-label text-info">ID registro</label>
+                    <g:textField name="registro" id="registro" class="number form-control"/>
                 </span>
             </span>
             <div class="col-md-1" style="margin-top: 20px">
@@ -80,7 +80,7 @@
         $("#hasta").val('');
         $("#registro").val('');
         // $("#dominio").val('');
-        cargarTablaAuditoria();
+        //cargarTablaAuditoria();
     });
 
     // cargarTablaAuditoria();
