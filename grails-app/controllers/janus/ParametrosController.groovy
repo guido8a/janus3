@@ -2,6 +2,7 @@ package janus
 
 
 import org.springframework.dao.DataIntegrityViolationException
+import seguridad.ShieldController
 
 class ParametrosController {
 
@@ -171,6 +172,10 @@ class ParametrosController {
         def desde
         def hasta
         def sql = ''
+        def reg = ""
+        def fec = ""
+        def dom = ""
+
 
         if(params.desde){
              desde = new Date().parse("dd-MM-yyyy", params.desde)
@@ -181,10 +186,23 @@ class ParametrosController {
         }
 
         if(params.desde && params.hasta){
-            sql = "select * from audt where audtfcha between '${desde?.format("yyyy-MM-dd")}' and '${hasta?.format("yyyy-MM-dd")}' limit 100"
-        }else{
-            sql = "select * from audt limit 100"
+            fec = " audtfcha between '${desde?.format("yyyy-MM-dd")}' and '${hasta?.format("yyyy-MM-dd")}' "
         }
+
+        if(params.registro){
+            reg = " audtrgid = '${params.registro}' "
+        }
+
+        if(params.dominio){
+            dom = " audtdomn ilike '%${params.dominio}%' "
+        }
+
+
+        sql = "select * from audt ${ (params.desde && params.hasta) || params.registro || params.dominio ? "  where " : ""} ${(params.desde && params.hasta) ? fec : (params.registro ? reg : (params.dominio ? dom : ""))} " +
+                "  limit 100  "
+
+
+//        println("sql " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())

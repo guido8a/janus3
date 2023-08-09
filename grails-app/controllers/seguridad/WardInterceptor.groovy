@@ -53,30 +53,30 @@ class WardInterceptor {
 
 
     boolean isAllowed() {
-//        println "--> ${session.permisos[controllerName.toLowerCase()]} --> ${actionName}"
-//
-//        try {
-//            if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
-//                println "es post no audit"
-//                return true
-//            }
-////            println "is allowed Accion: ${actionName.toLowerCase()} ---  Controlador: ${controllerName.toLowerCase()} --- Permisos de ese controlador: "+session.permisos[controllerName.toLowerCase()]
-//            if (!session.permisos[controllerName.toLowerCase()]) {
-//                return false
-//            } else {
-//                if (session.permisos[controllerName.toLowerCase()].contains(actionName.toLowerCase())) {
-//                    return true
-//                } else {
-//                    return false
-//                }
-//            }
-//
-//        } catch (e) {
-//            println "Shield execption e: " + e
-//            return false
-//        }
+        println "--> ${session.permisos[controllerName.toLowerCase()]} --> ${actionName}"
 
-        return true
+        try {
+            if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
+                println "es post no audit"
+                return true
+            }
+            println "is allowed Accion: ${actionName.toLowerCase()} ---  Controlador: ${controllerName.toLowerCase()} --- Permisos de ese controlador: "+session.permisos[controllerName.toLowerCase()]
+            if (!session.permisos[controllerName.toLowerCase()]) {
+                return false
+            } else {
+                if (session.permisos[controllerName.toLowerCase()].contains(actionName.toLowerCase())) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+
+        } catch (e) {
+            println "Shield execption e: " + e
+            return false
+        }
+
+//        return true
 
     }
 

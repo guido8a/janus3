@@ -3,11 +3,12 @@
     <tr style="width: 100%">
         <th style="width: 5%">Id</th>
         <th style="width: 7%">Usuario</th>
-        <th style="width: 23%">Anterior</th>
-        <th style="width: 23%">Actual</th>
+        <th style="width: 15%">Anterior</th>
+        <th style="width: 18%">Actual</th>
         <th style="width: 10%">Fecha</th>
         <th style="width: 8%">IP</th>
         <th style="width: 6%">Registro</th>
+        <th style="width: 13%">Dominio</th>
         <th style="width: 11%">Campo</th>
         <th style="width: 7%">Operación</th>
     </tr>
@@ -20,11 +21,12 @@
             <tr style="width: 100%">
                   <td style="width: 5%">${dt?.audt__id}</td>
                   <td style="width: 7%">${dt?.usrologn}</td>
-                  <td style="width: 23%">${dt?.audtantr}</td>
-                  <td style="width: 23%">${dt?.audtactl}</td>
+                  <td style="width: 15%">${dt?.audtantr}</td>
+                  <td style="width: 18%">${dt?.audtactl}</td>
                   <td style="width: 10%">${dt?.audtfcha?.format("dd-MM-yyyy HH:mm")}</td>
                   <td style="width: 8%">${dt?.audtdrip}</td>
                   <td style="width: 6%">${dt?.audtrgid}</td>
+                  <td style="width: 13%">${dt?.audtdomn}</td>
                   <td style="width: 11%">${dt?.audtcmpo}</td>
                   <td style="width: 7%">${dt?.audtoprc}</td>
             </tr>

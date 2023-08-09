@@ -23,6 +23,14 @@
         <div class="row-fluid" style="margin-left: 10px">
             <span class="grupo">
                 <span class="col-md-2">
+                    <label class="control-label text-info">ID registro</label>
+                    <g:textField name="registro" id="registro" class="number form-control"/>
+                </span>
+                <span class="col-md-2">
+                    <label class="control-label text-info">Dominio</label>
+                    <g:textField name="dominio" id="dominio" class="form-control"/>
+                </span>
+                <span class="col-md-2">
                     <label class="control-label text-info">Fecha desde</label>
                     <input aria-label="" name="desde" id='desde' type='text' class="form-control"  />
                 </span>
@@ -48,6 +56,17 @@
 
 <script type="text/javascript">
 
+    function validarNum(ev) {
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
+
+    $("#registro").keydown(function (ev){
+        return validarNum(ev)
+    });
+
     $('#desde, #hasta').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
@@ -59,6 +78,8 @@
     $("#btnLimpiarBusqueda").click(function () {
         $("#desde").val('');
         $("#hasta").val('');
+        $("#registro").val('');
+        $("#dominio").val('');
         cargarTablaAuditoria();
     });
 
@@ -72,6 +93,8 @@
         var d = cargarLoader("Cargando...");
         var desde = $("#desde").val();
         var hasta = $("#hasta").val();
+        var registro = $("#registro").val();
+        var dominio = $("#dominio").val();
 
         if(desde > hasta){
             d.modal("hide");
@@ -82,7 +105,9 @@
                 url: '${createLink(controller: 'parametros', action: 'tablaAuditoria_ajax')}',
                 data:{
                     desde: desde,
-                    hasta: hasta
+                    hasta: hasta,
+                    registro: registro,
+                    dominio: dominio
                 },
                 success: function (msg){
                     d.modal("hide");
