@@ -28,7 +28,7 @@
                 </span>
                 <span class="col-md-2">
                     <label class="control-label text-info">Dominio</label>
-                    <g:textField name="dominio" id="dominio" class="form-control"/>
+                    <g:select name="dominio" id="dominio" from="${dominios}" optionValue="${{it.audtdomn}}" optionKey="audtdomn" class="form-control"/>
                 </span>
                 <span class="col-md-2">
                     <label class="control-label text-info">Fecha desde</label>
@@ -79,7 +79,7 @@
         $("#desde").val('');
         $("#hasta").val('');
         $("#registro").val('');
-        $("#dominio").val('');
+        // $("#dominio").val('');
         cargarTablaAuditoria();
     });
 

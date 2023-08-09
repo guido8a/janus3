@@ -162,7 +162,11 @@ class ParametrosController {
     } //delete
 
     def auditoria(){
+        def sql = "select distinct audtdomn from audt"
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString())
 
+        return[dominios: res]
     }
 
 
