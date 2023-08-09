@@ -83,7 +83,7 @@
         cargarTablaAuditoria();
     });
 
-    cargarTablaAuditoria();
+    // cargarTablaAuditoria();
 
     $("#btnBuscarAuditoria").click(function () {
         cargarTablaAuditoria();
