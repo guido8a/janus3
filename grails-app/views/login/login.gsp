@@ -6,12 +6,22 @@
     <title>Login</title>
 
     <style type="text/css">
-        .archivo {
-            width: 100%;
-            float: left;
-            margin-top: 60px;
-            text-align: center;
-        }
+    .archivo {
+        width: 100%;
+        float: left;
+        margin-top: 60px;
+        text-align: center;
+    }
+
+    .titl {
+        font-family: 'open sans condensed';
+        font-weight: bold;
+        text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.25);
+    <g:if test="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP')}">
+        color: #1a7031;
+    </g:if>
+    }
+
     </style>
 </head>
 
@@ -53,7 +63,7 @@
                 <h4 class="modal-title">Ingreso al Sistema</h4>
             </div>
 
-            <p style="padding: 10px" class="text-info">Usted es responsable de velar por la veracidad y confiabilidad de la información. ¿Está seguro/a de ingresar al sistema?</p>
+            <p style="padding: 10px" class="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP') ? 'text-success' : 'text-info'}">Usted es responsable de velar por la veracidad y confiabilidad de la información. ¿Está seguro/a de ingresar al sistema?</p>
             <div class="modal-body" style="width: 280px; margin: auto">
                 <g:form name="frmLogin" action="validar" class="form-horizontal">
                     <div class="form-group">
