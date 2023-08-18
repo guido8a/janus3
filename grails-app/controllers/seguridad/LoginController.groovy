@@ -284,8 +284,9 @@ class LoginController {
                     }
                     // ------------------fin de sesion activa --------------
 
-                    println "usaServicio: $usaServicio --> ${(user.departamento.id == 13) || !usaServicio}"
-                    if ((user.departamento.id == 13) || !usaServicio) {
+                    println "****dpto --> ${user.departamento.id}"
+                    println "****usaServicio: $usaServicio es oferente --> ${user.departamento.id == 13}"
+                    if ((user.departamento.id == 13)){
                         if (params.pass.encodeAsMD5() != user.password) {
                             flash.message = "Contraseña incorrecta"
                             flash.tipo = "error"
@@ -295,8 +296,8 @@ class LoginController {
                             redirect(controller: 'login', action: "login")
                             return
                         }
-                    } else {
-                        println "no es oferente y si usa servicio"
+                    } else if (usaServicio) {
+                        println "*** si usa servicio"
                         if (!conectaRest(params.login, params.pass)) {
                             flash.message = "No se pudo validar la información ingresada con el servicio web, " +
                                     "contraseña incorrecta o usuario no registrado"
@@ -309,6 +310,17 @@ class LoginController {
                         }
 
                         println "ingresa..${user.login} ${new Date().format('dd HH:mm')}"
+                    }  else {
+                        println "*** no usa servicio"
+                        if (params.pass.encodeAsMD5() != user.password) {
+                            flash.message = "Contraseña incorrecta"
+                            flash.tipo = "error"
+                            flash.icon = "icon-warning"
+                            session.usuario = null
+                            session.departamento = null
+                            redirect(controller: 'login', action: "login")
+                            return
+                        }
                     }
 
 
