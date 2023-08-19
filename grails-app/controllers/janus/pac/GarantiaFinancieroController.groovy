@@ -11,12 +11,14 @@ class GarantiaFinancieroController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def conectaGarantias(cntr) {
-        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/${cntr}"
+//        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/${cntr}"
+        def url = "https://servicios.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/${cntr}"
         def usro = "gochoa"
         def random = 'janus'
         def fecha = new Date()
         def fcha = fecha.format("yyy-MM-dd") + "T" + fecha.format("HH:mm:ss") + "-05:00"
-        def privKey = '808a068b96222be6'
+//        def privKey = '808a068b96222be6'
+        def privKey = '59e423e9214a1250'
         def random64 = Base64.getEncoder().encodeToString(random.getBytes())
         def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
         println "rand: $random64, clave: $clave"
@@ -31,7 +33,8 @@ class GarantiaFinancieroController {
         def retorna = ""
         def post = new URL(url).openConnection();
         def message = "{'identidadWs':  {" +
-                "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
+//                "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
+                "'login': '5bdd9a6170161bd492e9eb4c153dce0e'," +
                 "'currentTime': '${fcha}'," +
                 "'random': 'amFudXM='," +
                 "'key': '${key}'," +
@@ -47,8 +50,8 @@ class GarantiaFinancieroController {
             post.getOutputStream().write(message.getBytes("UTF-8"));
             def postRC = post.getResponseCode();
 
-            //println "responde: ${postRC}"
-            //println "responde2: ${post.getResponseMessage()}"
+            println "responde: ${postRC}"
+            println "responde2: ${post.getResponseMessage()}"
 
             def jsonSlurper = new JsonSlurper()
             if (postRC.equals(200)) {

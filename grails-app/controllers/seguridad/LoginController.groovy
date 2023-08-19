@@ -131,12 +131,14 @@ class LoginController {
 
     def conectaRest(usro, pass) {
 //    def conectaRest() {
-        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/${usro}"
+//        def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/${usro}"
+        def url = "https://servicios.pichincha.gob.ec/servicios/api/directorioactivo/autenticar/uid/${usro}"
 //        def usro = "gochoa"
         def random = 'janus'
         def fecha = new Date()
         def fcha = fecha.format("yyy-MM-dd") + "T" + fecha.format("HH:mm:ss") + "-05:00"
-        def privKey = '808a068b96222be6'
+//        def privKey = '808a068b96222be6'
+        def privKey = '59e423e9214a1250'
         def random64 = Base64.getEncoder().encodeToString(random.getBytes())
 //        def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
         def clave = Base64.getEncoder().encodeToString(pass.toString().getBytes())
@@ -150,15 +152,21 @@ class LoginController {
         println "key: ${digest.encodeBase64()}"
 
         def post = new URL(url).openConnection();
+//        def message = "{'identidadWs':  {" +
+//                "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
+//                "'currentTime': '${fcha}'," +
+//                "'random': 'amFudXM='," +
+//                "'key': '${key}'," +
+//                "'user': '${usro}'," +
+//                "'moduleCode': 'SEP-P01'}," +
+//                "'clave': '${clave}'}"
         def message = "{'identidadWs':  {" +
-                "'login': '1a93363a83f2a5cfb8ae115d874be5cb'," +
+                "'login': '5bdd9a6170161bd492e9eb4c153dce0e'," +
                 "'currentTime': '${fcha}'," +
                 "'random': 'amFudXM='," +
                 "'key': '${key}'," +
                 "'user': '${usro}'," +
                 "'moduleCode': 'SEP-P01'}," +
-//                "'clave': 'R0FEUFAvKjE0MDY=000000'}"
-//                "'clave': 'R0FEUFAvKjE0MDY='}"
                 "'clave': '${clave}'}"
         def conecta = false
 
@@ -496,11 +504,13 @@ class LoginController {
 
     def conectaGarantias(cntr) {
         def url = "https://serviciospruebas.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/${cntr}"
+//        def url = "https://servicios.pichincha.gob.ec/servicios/api/odoo/garantias/numerocontrato/${cntr}"
         def usro = "gochoa"
         def random = 'janus'
         def fecha = new Date()
         def fcha = fecha.format("yyy-MM-dd") + "T" + fecha.format("HH:mm:ss") + "-05:00"
         def privKey = '808a068b96222be6'
+//        def privKey = '59e423e9214a1250'
         def random64 = Base64.getEncoder().encodeToString(random.getBytes())
         def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
         println "rand: $random64, clave: $clave"
@@ -521,6 +531,13 @@ class LoginController {
                 "'key': '${key}'," +
                 "'user': '${usro}'," +
                 "'moduleCode': 'SEP-P02'}}"
+//        def message = "{'identidadWs':  {" +
+//                "'login': '5bdd9a6170161bd492e9eb4c153dce0e'," +
+//                "'currentTime': '${fcha}'," +
+//                "'random': 'amFudXM='," +
+//                "'key': '${key}'," +
+//                "'user': '${usro}'," +
+//                "'moduleCode': 'SEP-P02'}}"
 
         message = message.replace("'", '"')
         println "$message"

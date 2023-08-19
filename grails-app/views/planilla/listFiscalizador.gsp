@@ -371,7 +371,7 @@
                     message : msg,
                     buttons : {
                         cancelar : {
-                            label     : "Cancelar",
+                            label     : "Aceptar",
                             className : "btn-primary",
                             callback  : function () {
                             }
