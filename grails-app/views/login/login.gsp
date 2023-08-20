@@ -63,8 +63,9 @@
                 <h4 class="modal-title">Ingreso al Sistema</h4>
             </div>
 
-            <p style="padding: 10px" class="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP') ? 'text-success' : 'text-info'}">Usted es responsable de velar por la veracidad y confiabilidad de la información. ¿Está seguro/a de ingresar al sistema?</p>
-            <div class="modal-body" style="width: 280px; margin: auto">
+            <p style="padding: 20px" class="${janus.Parametros.findByEmpresaLike('SEP-C-GADPP') ? 'text-success' : 'text-info'}">
+                Favor ingrese al sistema con la misma contraseña que usa para ingresar al SAD-WEB</p>
+            <div class="modal-body" style="width: 290px; margin: auto">
                 <g:form name="frmLogin" action="validar" class="form-horizontal">
                     <div class="form-group">
                         <label class="col-md-5" for="login">Usuario</label>
@@ -76,6 +77,7 @@
                         </div>
                     </div>
 
+                    <span style="color: #0b2c89">Favor use su contraseña del SAD-WEB</span>
                     <div class="form-group">
                         <label class="col-md-5" for="pass">Contraseña</label>
 
