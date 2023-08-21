@@ -106,7 +106,7 @@ class ContratoController {
                 def esDirector = directores.contains(session.usuario.id) ? "S" : "N"
 
                 def personalFis = Persona.findAllByDepartamento(Departamento.findByCodigo('FISC'))
-                def directoresFis = PersonaRol.findAllByFuncionAndPersonaInList(Funcion.findByCodigo("O"), personalFis).persona.id
+                def directoresFis = PersonaRol.findAllByFuncionAndPersonaInList(Funcion.findByCodigo("D"), personalFis).persona.id
                 def esDirFis = directoresFis.contains(session.usuario.id) ? "S" : "N"
                 println "esDirector: $esDirector directores: ${directoresFis}, dirFis: ${esDirFis}"
 
