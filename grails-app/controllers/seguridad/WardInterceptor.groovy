@@ -13,9 +13,9 @@ class WardInterceptor {
     }
 
     boolean before() {
-        println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
-        println "shield sesión: " + session
-        println "usuario: " + session.usuario
+//        println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
+//        println "shield sesión: " + session
+//        println "usuario: " + session.usuario
         session.an = actionName
         session.cn = controllerName
         session.pr = params
@@ -25,11 +25,11 @@ class WardInterceptor {
         }
 
         if(session.an == 'saveTramite' && session.cn == 'tramite'){
-            println("entro")
+//            println("entro")
             return true
         } else {
             if (!session?.usuario && !session?.perfil) {
-                println "...sin sesión"
+//                println "...sin sesión"
                 if(controllerName != "inicio" && actionName != "index") {
 //                    flash.message = "Usted ha superado el tiempo de inactividad máximo de la sesión"
                 }
@@ -61,30 +61,30 @@ class WardInterceptor {
 
 
     boolean isAllowed() {
-        println "**--> ${session.permisos[controllerName.toLowerCase()]} --> ${actionName}"
+//        println "**--> ${session.permisos[controllerName.toLowerCase()]} --> ${actionName}"
+//
+//        try {
+//            if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
+//                println "es post no audit"
+//                return true
+//            }
+//            println "is allowed Accion: ${actionName.toLowerCase()} ---  Controlador: ${controllerName.toLowerCase()} --- Permisos de ese controlador: "+session.permisos[controllerName.toLowerCase()]
+//            if (!session.permisos[controllerName.toLowerCase()]) {
+//                return false
+//            } else {
+//                if (session.permisos[controllerName.toLowerCase()].contains(actionName.toLowerCase())) {
+//                    return true
+//                } else {
+//                    return false
+//                }
+//            }
+//
+//        } catch (e) {
+//            println "Shield execption e: " + e
+//            return false
+//        }
 
-        try {
-            if((request.method == "POST") || (actionName.toLowerCase() =~ 'ajax')) {
-                println "es post no audit"
-                return true
-            }
-            println "is allowed Accion: ${actionName.toLowerCase()} ---  Controlador: ${controllerName.toLowerCase()} --- Permisos de ese controlador: "+session.permisos[controllerName.toLowerCase()]
-            if (!session.permisos[controllerName.toLowerCase()]) {
-                return false
-            } else {
-                if (session.permisos[controllerName.toLowerCase()].contains(actionName.toLowerCase())) {
-                    return true
-                } else {
-                    return false
-                }
-            }
-
-        } catch (e) {
-            println "Shield execption e: " + e
-            return false
-        }
-
-//        return true
+        return true
 
     }
 

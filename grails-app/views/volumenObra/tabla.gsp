@@ -102,7 +102,7 @@
             <td class="col_total total" style="display: none;text-align: right">
                 <g:formatNumber number="${val.totl}" format="##,##0" minFractionDigits="4"  maxFractionDigits="4" locale="ec"/>
             </td>
-            <g:if test="${obra.estado!='R' && duenoObra == 1}">
+%{--            <g:if test="${obra.estado!='R' && duenoObra == 1}">--}%
                 <td style="width: 10%;text-align: center" class="col_delete">
                     <a class="btn btn-xs btn-primary editarItem" href="#" rel="tooltip" title="Editar" iden="${val.vlob__id}"
                        data-orden="${val.vlobordn}" data-nom="${val.rbronmbr}" data-can="${val.vlobcntd}"
@@ -114,7 +114,7 @@
                         <i class="fa fa-trash"></i>
                     </a>
                 </td>
-            </g:if>
+%{--            </g:if>--}%
         </tr>
     </g:each>
 
@@ -302,65 +302,106 @@
 
     $(".borrarItem").click(function () {
         var id = $(this).attr("iden");
-        $.box({
-            imageClass: "box_info",
-            text: "Está seguro de eliminar el rubro?",
-            title: "Alerta",
-            iconClose: false,
-            dialog: {
-                resizable: false,
-                draggable: false,
-                buttons: {
-                    "Aceptar": function () {
-                        $("#dlgLoad").dialog("open");
-                        $.ajax({
-                            type: "POST",
-                            url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
-                            data: {
-                                id: id
-                            },
-                            success: function (msg) {
-                                $("#dlgLoad").dialog("close");
-                                if(msg === 'ok'){
-                                    $.box({
-                                        imageClass: "box_info",
-                                        text: "Rubro borrado correctamente",
-                                        title: "Alerta",
-                                        iconClose: false,
-                                        dialog: {
-                                            resizable: false,
-                                            draggable: false,
-                                            buttons: {
-                                                "Aceptar": function () {
-                                                    cargarTabla();
-                                                }
-                                            }
-                                        }
-                                    });
-                                }else{
-                                    $.box({
-                                        imageClass: "box_info",
-                                        text: "Error al borrar el rubro",
-                                        title: "Error",
-                                        iconClose: false,
-                                        dialog: {
-                                            resizable: false,
-                                            draggable: false,
-                                            buttons: {
-                                                "Aceptar": function () {
-                                                }
-                                            }
-                                        }
-                                    });
-                                }
+
+
+
+        bootbox.confirm({
+            title: "Eliminar",
+            message: "Está seguro de eliminar este rubro? Esta acción no puede deshacerse.",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result){
+                    var d = cargarLoader("Borrando...");
+                    $.ajax({
+                        type : "POST",
+                        url : "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",
+                        data     : {
+                            id: id
+                        },
+                        success  : function (msg) {
+                           d.modal("hide");
+                            if(msg === "ok"){
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Rubro borrado correctamente" +'</strong>');
+                                cargarTabla();
+                            }else{
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + msg +'</strong>');
                             }
-                        });
-                    },
-                    "Cancelar": function () {
-                    }
+                        }
+                    });
                 }
             }
         });
+
+
+
+        %{--$.box({--}%
+        %{--    imageClass: "box_info",--}%
+        %{--    text: "Está seguro de eliminar el rubro?",--}%
+        %{--    title: "Alerta",--}%
+        %{--    iconClose: false,--}%
+        %{--    dialog: {--}%
+        %{--        resizable: false,--}%
+        %{--        draggable: false,--}%
+        %{--        buttons: {--}%
+        %{--            "Aceptar": function () {--}%
+        %{--                $("#dlgLoad").dialog("open");--}%
+        %{--                $.ajax({--}%
+        %{--                    type: "POST",--}%
+        %{--                    url: "${g.createLink(controller: 'volumenObra',action:'eliminarRubro')}",--}%
+        %{--                    data: {--}%
+        %{--                        id: id--}%
+        %{--                    },--}%
+        %{--                    success: function (msg) {--}%
+        %{--                        $("#dlgLoad").dialog("close");--}%
+        %{--                        if(msg === 'ok'){--}%
+        %{--                            $.box({--}%
+        %{--                                imageClass: "box_info",--}%
+        %{--                                text: "Rubro borrado correctamente",--}%
+        %{--                                title: "Alerta",--}%
+        %{--                                iconClose: false,--}%
+        %{--                                dialog: {--}%
+        %{--                                    resizable: false,--}%
+        %{--                                    draggable: false,--}%
+        %{--                                    buttons: {--}%
+        %{--                                        "Aceptar": function () {--}%
+        %{--                                            cargarTabla();--}%
+        %{--                                        }--}%
+        %{--                                    }--}%
+        %{--                                }--}%
+        %{--                            });--}%
+        %{--                        }else{--}%
+        %{--                            $.box({--}%
+        %{--                                imageClass: "box_info",--}%
+        %{--                                text: "Error al borrar el rubro",--}%
+        %{--                                title: "Error",--}%
+        %{--                                iconClose: false,--}%
+        %{--                                dialog: {--}%
+        %{--                                    resizable: false,--}%
+        %{--                                    draggable: false,--}%
+        %{--                                    buttons: {--}%
+        %{--                                        "Aceptar": function () {--}%
+        %{--                                        }--}%
+        %{--                                    }--}%
+        %{--                                }--}%
+        %{--                            });--}%
+        %{--                        }--}%
+        %{--                    }--}%
+        %{--                });--}%
+        %{--            },--}%
+        %{--            "Cancelar": function () {--}%
+        %{--            }--}%
+        %{--        }--}%
+        %{--    }--}%
+        %{--});--}%
     });
 
     $("#copiar_rubros").click(function () {

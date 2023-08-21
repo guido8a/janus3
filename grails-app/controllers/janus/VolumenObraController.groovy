@@ -305,7 +305,9 @@ class VolumenObraController {
             println "e " + e
             msg = "Error"
         }
-        redirect(action: "tabla", params: [obra: obra.id, sub: vol.subPresupuesto.id, ord: 1, msg: msg])
+
+        render msg
+//        redirect(action: "tabla", params: [obra: obra.id, sub: vol.subPresupuesto.id, ord: 1, msg: msg])
 
 
     }

@@ -628,7 +628,7 @@ class PreciosService {
 
     def actualizaOrden(volumen, tipo) {
 
-        def vlob = VolumenesObra.findAll("from VolumenesObra where obra = ${volumen.obra.id} order by orden asc,id desc")
+        def vlob = VolumenesObra.findAll("from VolumenesObra where obra = ${volumen.obra} order by orden asc,id desc")
 //        println "actualizar orden !!!!! /n" + vlob
         def dist = 1
         def prev = null

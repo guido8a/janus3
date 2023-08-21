@@ -1453,6 +1453,7 @@ class MantenimientoItemsController {
         params.observaciones = params.observaciones.toString().toUpperCase()
         params.codigo = params.codigo.toString().toUpperCase()
         params.peso = params.peso.toDouble()
+        params.codigoComprasPublicas = CodigoComprasPublicas.get(params.codigoComprasPublicas)
         if (!params.id) {
             if (!params.codigo.contains(".")) {
                 if (dep.subgrupo.grupoId == 2) {

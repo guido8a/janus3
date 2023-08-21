@@ -162,7 +162,6 @@
 
                     <div class="col-md-1" style="margin-left: -20px;margin-top:-5px; width: 85px;">
                         <input type="hidden" value="" id="vol_id">
-
                         <g:if test="${obra?.estado != 'R' && duenoObra == 1}">
                             <a href="#" class="btn btn-xs btn-primary" title="Agregar" id="item_agregar">
                                 <i class="fa fa-plus"></i></a>
@@ -265,7 +264,7 @@
     }
 
     function cargarTabla() {
-        var d = cargarLoader("Guardando...");
+        var d = cargarLoader("Cargando...");
         var datos = "";
         if ($("#subPres_desc").val() * 1 > 0) {
             datos = "obra=${obra.id}&sub=" + $("#subPres_desc").val() + "&ord=" + 1
@@ -610,6 +609,7 @@
         });
 
         $("#item_agregar").click(function () {
+            var d = cargarLoader("Guardando...");
             $("#calcular").removeClass("active");
             $(".col_delete").show();
             $(".col_precio").hide();
@@ -643,6 +643,7 @@
                 $.ajax({type : "POST", url : "${g.createLink(controller: 'volumenObra',action:'addItem')}",
                     data     : datos,
                     success  : function (msg) {
+                    d.modal("hide");
                         if (msg !== "error") {
                             $("#detalle").html(msg)
                             $("#vol_id").val("")
@@ -669,6 +670,7 @@
                     }
                 });
             } else {
+                d.modal("hide");
                 $.box({
                     imageClass : "box_info",
                     text       : msn,

@@ -27,7 +27,7 @@ class CodigoComprasPublicas {
     }
     static constraints = {
         numero(nullable: false,blank: false,size: 1..32)
-        descripcion(nullable: true,blank: true,size: 1..64)
+        descripcion(nullable: true,blank: true,size: 1..512)
         fecha(nullable: true,blank:true)
         padre(nullable: true,blank:true)
     }

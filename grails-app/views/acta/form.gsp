@@ -1005,7 +1005,7 @@
                             type : "POST",
                             url : location.href = "${createLink(action:'registrar')}",
                             data     : {
-                                id: ${actaInstance?.id}
+                                id: '${actaInstance?.id}'
                             },
                             success  : function (msg) {
                                 var parts = msg.split("_");
