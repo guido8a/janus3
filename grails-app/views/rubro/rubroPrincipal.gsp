@@ -133,12 +133,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
                 <div class="col-md-2" style="margin-left: -10px">
                     Fecha Creación
-                    <input aria-label="" name="rubro.fechaReg" id='fecha_registro' type='text' class="required input-small" value="${rubro?.fecha ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
+                    <g:textField name="rubroFC" class="" value="${rubro?.fecha?.format("dd-MM-yyyy")}" style="width: 100px" readonly="true"/>
+%{--                    <input aria-label="" name="rubro.fechaReg" id='fecha_registro' type='text' class="required input-small" value="${rubro?.fecha ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>--}%
                 </div>
 
                 <div class="col-md-1"  style="width: 170px; margin-left: -60px">
                     Fecha Modificación
-                    <input aria-label="" name="rubro.fechaMod" id='fecha_modificacion' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>
+                    <g:textField name="rubroFM" class="" value="${rubro?.fechaModificacion?.format("dd-MM-yyyy")}" style="width: 100px" readonly="true"/>
+%{--                    <input aria-label="" name="rubro.fechaMod" id='fecha_modificacion' type='text' class="required input-small" value="${rubro?.fechaModificacion ?: new java.util.Date().format('dd-MM-yyyy')}" style="width: 100px"/>--}%
                 </div>
 
             </div>
