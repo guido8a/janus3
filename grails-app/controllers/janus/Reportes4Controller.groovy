@@ -1888,7 +1888,7 @@ class Reportes4Controller {
         addEmptyLine(headers, 1);
         headers.add(new Paragraph("REPORTE DE CONTRATOS", times12bold));
         addEmptyLine(headers, 1);
-        headers.add(new Paragraph("Babahoyo, " + printFecha(new Date()).toUpperCase(), times12bold));
+        headers.add(new Paragraph("Quito, " + printFecha(new Date()).toUpperCase(), times12bold));
         addEmptyLine(headers, 1);
         document.add(headers);
 
