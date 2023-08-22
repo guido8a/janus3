@@ -434,7 +434,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                           optionValue="value"/>
             </div>
             <div class="col-md-2">Criterio
-            <g:textField name="criterioComposicion" id="criterioComposicion" style="width: 80%"/>
+            <g:textField name="criterioComposicion" id="criterioComposicion" class="critC" style="width: 80%"/>
             </div>
 
             <div class="col-md-2">Ordenado por
@@ -1887,6 +1887,22 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 }
             });
         }
+
+        $("#criterioLista").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                buscaRubros();
+                return false;
+            }
+            return true;
+        });
+
+        $("#criterio").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                busqueda();
+                return false;
+            }
+            return true;
+        });
 
         $("#cdgo_buscar").keydown(function (ev) {
             if (ev.keyCode * 1 !== 9 && (ev.keyCode * 1 < 37 || ev.keyCode * 1 > 40)) {
