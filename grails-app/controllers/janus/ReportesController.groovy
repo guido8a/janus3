@@ -4633,7 +4633,7 @@ class ReportesController {
         headers.setAlignment(Element.ALIGN_CENTER);
         headers.add(new Paragraph(auxiliar?.titulo, times14bold));
         headers.add(new Paragraph(auxiliar?.memo1, times12bold))
-        headers.add(new Paragraph("FÓRMULA POLINÓMICA" + obra?.formulaPolinomica, times12bold))
+        headers.add(new Paragraph("FÓRMULA POLINÓMICA " + obra?.formulaPolinomica, times12bold))
         document.add(headers);
 
         Paragraph txtIzq = new Paragraph();
