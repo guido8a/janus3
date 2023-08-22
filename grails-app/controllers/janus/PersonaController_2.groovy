@@ -6,7 +6,7 @@ import seguridad.Persona
 
 import org.springframework.dao.DataIntegrityViolationException
 
-class PersonaController {
+class PersonaController_2 {
 
     def dbConnectionService
 

@@ -94,6 +94,20 @@ option[selected]{
                     </span>
                 </div>
             </div>
+            <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'departamento', 'error')} ">
+                <div class="col-md-12 ">
+                    <span class="grupo">
+                        <label for="departamento" class="col-md-2 control-label">
+                            Departamento
+                        </label>
+
+                        <div class="col-md-10">
+                            <g:select name="departamento" from="${janus.Departamento.findAllByIdNotEqual(13)}" required="" optionKey="id" optionValue="descripcion"
+                                      class="form-control required" value="${personaInstance?.departamento?.id}"/>
+                        </div>
+                    </span>
+                </div>
+            </div>
             <div class="form-group keeptogether ${hasErrors(bean: personaInstance, field: 'direccion', 'error')} ">
                 <div class="col-md-12 ">
                     <span class="grupo">

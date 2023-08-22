@@ -1,15 +1,17 @@
 package seguridad
 
 import groovy.json.JsonBuilder
+import janus.Departamento
 import org.apache.commons.lang.WordUtils
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
 import static java.awt.RenderingHints.KEY_INTERPOLATION
 import static java.awt.RenderingHints.VALUE_INTERPOLATION_BICUBIC
 
-class PersonaController_old {
+class PersonaController {
 
     def tramitesService
+    def dbConnectionService
 
     static allowedMethods = [save: "POST", delete: "POST", save_ajax: "POST", delete_ajax: "POST"]
 
@@ -1420,4 +1422,104 @@ class PersonaController_old {
             render "ok"
         }
     }
+
+    def tablaUsuarios_ajax(){
+        println "tablaUsuarios_ajax params $params"
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
+        def estados = ['%', '1', '0']
+        def bsca
+        def perfil = params.perfil == 'null'? '%' : params.perfil
+        def dpto = params.departamento == 'null'? '%' : params.departamento
+
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+
+        def select = "select distinct prsn.* from prsn, sesn"
+        def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
+                "sesn.prfl__id::text ilike '${perfil}' and sesn.prsn__id = prsn.prsn__id and " +
+                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' and " +
+                "sesnfcfn is null "
+        sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
+        println "sql: $sqlTx"
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        [data: datos, tipo: params.tipo]
+    }
+
+    def formOferente() {
+        println "....123"
+        def personaInstance = new Persona(params)
+        if (params.id) {
+            personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+
+                redirect(action: "list")
+                return
+            } //no existe el objeto
+        } //es edit
+        return [personaInstance: personaInstance]
+    }
+
+    def saveOferente() {
+//        println "Save oferente: " + params
+        if (params.fechaInicio) {
+            params.fechaInicio = new Date().parse("dd-MM-yyyy", params.fechaInicio)
+        }
+        if (params.fechaFin) {
+            params.fechaFin = new Date().parse("dd-MM-yyyy", params.fechaFin)
+        }
+
+        if (params.password) {
+            params.password = params.password.encodeAsMD5()
+        }
+        if (params.autorizacion) {
+            params.autorizacion = params.autorizacion.encodeAsMD5()
+        }
+        params.sexo="M"
+        def personaInstance
+
+
+        if (params.id) {
+            personaInstance = Persona.get(params.id)
+            if (!personaInstance) {
+                render "no_No se encontró la persona"
+                return
+            }//no existe el objeto
+        }//es edit
+        else {
+            personaInstance = new Persona(params)
+            personaInstance.departamento = Departamento.get(13);
+        } //es create
+
+        personaInstance.properties = params
+
+
+        if (!personaInstance.save(flush: true)) {
+            println("error al guardar el oferente " + personaInstance.errors)
+            render "no_Error al guardar el oferente"
+        }else{
+            //le asigna perfil oferente si no tiene perfil
+            def perfilOferente = Prfl.findByCodigo("OFRT")
+            def sesiones = Sesn.findAllByUsuario(personaInstance)
+            if (sesiones.size() == 0) {
+                def sesn = new Sesn()
+                sesn.perfil = perfilOferente
+                sesn.usuario = personaInstance
+                if (!sesn.save(flush: true)) {
+                    println "error al grabar sesn perfil: " + perfilOferente + " persona " + personaInstance.id
+                    render "no_Error al guardar el perfil de oferente"
+                } else {
+                    println "Asignacion OK"
+                    render "ok_Oferente guardado correctamente"
+                }
+            }else{
+                render "ok_Oferente guardado correctamente"
+            }
+        }
+    } //save
 }
