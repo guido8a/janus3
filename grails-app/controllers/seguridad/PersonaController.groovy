@@ -1522,4 +1522,64 @@ class PersonaController {
             }
         }
     } //save
+
+    def listOferente() {
+        def perfil = Prfl.findByCodigo("OFRT")
+        [params: params, sesion: Sesn.findAllByPerfil(perfil).sort{it.usuario.apellido}]
+    }
+
+
+    def showOferente() {
+        def personaInstance = Persona.get(params.id)
+        if (!personaInstance) {
+            redirect(action: "listOferente")
+            return
+        }
+        [personaInstance: personaInstance]
+    }
+
+    def passOferente() {
+        def usroInstance = Persona.get(params.id)
+        if (!usroInstance) {
+            redirect(action: "listOferente")
+            return
+        }
+        [usroInstance: usroInstance]
+    }
+
+    def savePass() {
+//        println params
+
+        def user = Persona.get(params.id)
+
+        if (params.password.trim() != "") {
+            user.password = params.password.trim().encodeAsMD5()
+        }
+
+        if(!user.save(flush: true)) {
+            println("error al actualizar el password de oferentes " + user.errors)
+            render "no_Error al actualizar el password del oferente"
+        } else {
+            render "ok_Guardado correctamente"
+        }
+    }
+
+    def cambiarEstado() {
+        def persona = Persona.get(params.id)
+
+        if (persona.activo == 0) {
+            persona.activo = 1
+        } else {
+            persona.activo = 0
+        }
+
+        if (!persona.save(flush: true)) {
+            println("Error al cambiar el estado del oferente " + persona.errors)
+            render "no_Error al cambiar el estado del oferente"
+        } else {
+            render "ok_Estado cambiando correctamente"
+        }
+    }
+
+
 }
