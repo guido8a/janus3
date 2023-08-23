@@ -1439,11 +1439,11 @@ class PersonaController {
             bsca = listaItems[0]
         }
 
-        def select = "select distinct prsn.* from prsn, sesn"
+        //def select = "select distinct prsn.* from prsn, sesn"
+        def select = "select distinct prsn.* from prsn left join sesn on sesn.prsn__id = prsn.prsn__id "
         def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
-                "sesn.prfl__id::text ilike '${perfil}' and sesn.prsn__id = prsn.prsn__id and " +
-                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' and " +
-                "sesnfcfn is null "
+                //"sesn.prfl__id::text ilike '${perfil}' and " + //todo: incluir busqueda de perfil
+                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
         println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()
