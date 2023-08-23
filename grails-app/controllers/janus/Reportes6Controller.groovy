@@ -1928,4 +1928,30 @@ class Reportes6Controller {
 
     }
 
+    def _imprimirUsuarios () {
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
+        def estados = ['%', '1', '0']
+        def bsca
+        def perfil = params.perfil == 'null'? '%' : params.perfil
+        def dpto = params.departamento == 'null'? '%' : params.departamento
+
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+
+        def select = "select distinct prsn.* from prsn, sesn"
+        def txwh = " where dpto__id != 13 and " +
+                "sesnfcfn is null "
+        sqlTx = "${select} ${txwh} order by prsnapll ".toString()
+        println "sql: $sqlTx"
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+
+        renderPdf(template:'/reportes6/imprimirUsuarios', model: [datos:datos], filename: 'reporteUsuarios.pdf')
+    }
+
 }
