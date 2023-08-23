@@ -74,6 +74,7 @@
 
                 if (parts[0] === 'SI') {
                     $("#divError").hide();
+                    console.log("okkkk");
                     location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";
                 } else {
                     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Archivo no encontrado" + '</strong>');

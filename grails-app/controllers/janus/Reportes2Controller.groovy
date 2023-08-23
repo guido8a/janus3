@@ -223,6 +223,7 @@ class Reportes2Controller {
 
         def tipo = params.tipo //i: ilustraciones, e: especificaciones, ie: ambas
 
+        println "rubros: ${rubros.size()}"
         rubros.eachWithIndex { rubro, ik ->
 
             Paragraph paragraphRubro = new Paragraph();
@@ -255,15 +256,17 @@ class Reportes2Controller {
                 extEspecificacion = ares.ruta.split("\\.")
                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
                 pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
-
-                if (pathEspecificacion.toLowerCase() in ["pdf"]) {
+                println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+                if (pathEspecificacion.toLowerCase().contains("pdf")) {
                     readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
+                    println "pags: ${readerEspecificacion.getNumberOfPages()}"
                     pagesEspecificacion = readerEspecificacion.getNumberOfPages()
                 }else{
-                    redirect(controller: "contrato", action: "verContrato", params: [contrato: params.id])
+                    //redirect(controller: "contrato", action: "verContrato", params: [contrato: params.id])
                 }
             }
 
+            println "...2--"
             def maxImageSize = 400
 
             addCellTabla(tablaRubro, new Paragraph("Código", fontTh), prmsTh)
@@ -327,7 +330,7 @@ class Reportes2Controller {
             document.add(tablaRubro)
 
             infoText(cb, document, rubrosText, DOC)
-
+            println "paginas: $pagesEspecificacion"
             if (extEspecificacion == "pdf") {
                 pagesEspecificacion.times {
                     document.newPage();
@@ -357,6 +360,7 @@ class Reportes2Controller {
             }
         }
 
+        println "...termina reporte"
         document.close();
         pdfw.close()
         byte[] b = baos.toByteArray();
@@ -591,7 +595,7 @@ class Reportes2Controller {
             def extIlustracion = "", extEspecificacion = "", pagesEspecificacion = 0, pagesIlustracion = 0, pathEspecificacion, pathIlustracion
             PdfReader readerEspecificacion
             PdfReader readerIlustracion
-
+/*
             if (rubro.foto && tipo.contains("i")) {
                 mensaje += rubro?.foto
                 extIlustracion = rubro.foto.split("\\.")
@@ -640,9 +644,11 @@ class Reportes2Controller {
             }
             println "errores: $error"
             if(!error) render "SI*"
+            */
         }
-        println "....fin"
-        render "FIN"
+
+            println "....fin"
+        render "SI*"
     }
 
     def reporteRubroIlustracion_bck() {

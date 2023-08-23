@@ -1691,7 +1691,6 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             var urlVae = "${createLink(controller:'reportes3', action:'reporteRubrosVaeReg')}?obra=${obra?.id}Wdesglose=";
             var idObra = "${obra?.id}";
 
-
             $.ajax({
                 type: "POST",
                 url: "${createLink(controller: 'obra', action: 'impresionesRubros_ajax')}",

@@ -1570,7 +1570,7 @@ class ObraController {
         def tamano = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
         def tamano1 = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()
 
-        if(tamano > 100){
+        if(tamano > 0){
             render "ok"
         }else{
             render "no"
