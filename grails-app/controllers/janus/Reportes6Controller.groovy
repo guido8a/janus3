@@ -21,6 +21,12 @@ import jxl.write.WritableCellFormat
 import jxl.write.WritableFont
 import jxl.write.WritableSheet
 import jxl.write.WritableWorkbook
+import org.apache.poi.ss.usermodel.Row
+import org.apache.poi.ss.usermodel.Sheet
+import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.xssf.usermodel.XSSFCellStyle
+import org.apache.poi.xssf.usermodel.XSSFFont
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.jfree.chart.ChartFactory
 import org.jfree.chart.JFreeChart
 import org.jfree.chart.axis.CategoryAxis
@@ -1930,28 +1936,88 @@ class Reportes6Controller {
 
     def _imprimirUsuarios () {
         def datos;
-        def sqlTx = ""
-        def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
-        def estados = ['%', '1', '0']
-        def bsca
-        def perfil = params.perfil == 'null'? '%' : params.perfil
-        def dpto = params.departamento == 'null'? '%' : params.departamento
-
-        if(params.buscarPor){
-            bsca = listaItems[params.buscarPor?.toInteger()-1]
-        }else{
-            bsca = listaItems[0]
-        }
-
-        def select = "select distinct prsn.* from prsn, sesn"
-        def txwh = " where dpto__id != 13 and " +
-                "sesnfcfn is null "
-        sqlTx = "${select} ${txwh} order by prsnapll ".toString()
-        println "sql: $sqlTx"
+        def select = "select distinct * from prsn where dpto__id != 13 and prsnactv = 1 order by prsnapll".toString()
+//        def select = "select distinct prsn.* , dptodscr from prsn, dpto where prsn.dpto__id != 13 and prsnactv = 1 and dpto.dpto__id = prsn.dpto__id order by prsnapll".toString()
+        println "sql: $select"
         def cn = dbConnectionService.getConnection()
-        datos = cn.rows(sqlTx)
+        datos = cn.rows(select)
 
         renderPdf(template:'/reportes6/imprimirUsuarios', model: [datos:datos], filename: 'reporteUsuarios.pdf')
+    }
+
+    def imprimirUsuariosExcel () {
+        def datos;
+//        def select = "select distinct * from prsn where dpto__id != 13 and prsnactv = 1 order by prsnapll".toString()
+        def select = "select distinct prsn.* , dptodscr from prsn, dpto where prsn.dpto__id != 13 and prsnactv = 1 and dpto.dpto__id = prsn.dpto__id order by prsnapll".toString()
+        println "sql: $select"
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(select)
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("USUARIOS")
+        sheet.setColumnWidth(0, 15 * 256);
+        sheet.setColumnWidth(1, 25 * 256);
+        sheet.setColumnWidth(2, 25 * 256);
+        sheet.setColumnWidth(3, 60 * 256);
+        sheet.setColumnWidth(4, 15 * 256);
+        sheet.setColumnWidth(5, 15 * 256);
+
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+         Row row2 = sheet.createRow(2)
+        row2.createCell(1).setCellValue("LISTA DE USUARIOS")
+        row2.setRowStyle(style)
+        Row row3 = sheet.createRow(4)
+        row3.createCell(1).setCellValue("")
+        Row row4 = sheet.createRow(5)
+
+        def fila = 5;
+        def total = 0
+
+//        Row rowT1 = sheet.createRow(9)
+//        rowT1.createCell(0).setCellValue("Equipos")
+//        rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2))
+//        rowT1.setRowStyle(style)
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Usuario")
+        rowC1.createCell(1).setCellValue("Nombre")
+        rowC1.createCell(2).setCellValue("Apellido")
+        rowC1.createCell(3).setCellValue("Departamento")
+        rowC1.createCell(4).setCellValue("Estado")
+        rowC1.setRowStyle(style)
+        fila++
+
+        datos.each { r ->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(r["prsnlogn"]?.toString())
+            rowF1.createCell(1).setCellValue(r["prsnnmbr"]?.toString())
+            rowF1.createCell(2).setCellValue(r["prsnapll"]?.toString())
+            rowF1.createCell(3).setCellValue(r["dptodscr"]?.toString())
+            rowF1.createCell(4).setCellValue(r["prsnactv"] == 0 ? 'Inactivo' : 'Activo')
+            total ++
+            fila++
+        }
+
+        Row rowP9 = sheet.createRow(fila + 3)
+        rowP9.createCell(1).setCellValue("Total de usuarios")
+        rowP9.createCell(2).setCellValue(total.toInteger())
+        rowP9.setRowStyle(style)
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "listaDeUsuarios.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
     }
 
 }

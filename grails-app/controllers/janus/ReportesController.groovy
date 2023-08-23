@@ -4159,7 +4159,7 @@ class ReportesController {
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
-        document.addTitle("Memorando " + new Date().format("dd_MM_yyyy"));
+        document.addTitle("Informe " + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
         document.addKeywords("documentosObra, janus, presupuesto");
         document.addAuthor("Janus");
@@ -4169,8 +4169,9 @@ class ReportesController {
         addEmptyLine(headers, 1);
         headers.setAlignment(Element.ALIGN_CENTER);
         headers.add(new Paragraph(auxiliar.titulo, times14bold));
-        headers.add(new Paragraph(auxiliar?.memo1, times12bold));
-        headers.add(new Paragraph("MEMORANDO", times12bold))
+//        headers.add(new Paragraph(auxiliar?.memo1, times12bold));
+        headers.add(new Paragraph("DCP. - COORDINACIÓN DE RÉGINMEN DE FIJACIÓN DE COSTOS", times12bold));
+        headers.add(new Paragraph("INFORME", times12bold))
 
         Paragraph txtIzq = new Paragraph();
         addEmptyLine(txtIzq, 1);
@@ -4182,10 +4183,10 @@ class ReportesController {
 
         if (obra?.memoSalida == null) {
             addCellTabla(tablaCabecera, new Paragraph(" ", times8bold), prmsHeaderHoja)
-            addCellTabla(tablaCabecera, new Paragraph("Memo N°:", times10bold), prmsHeaderHoja)
+            addCellTabla(tablaCabecera, new Paragraph("Informe N°:", times10bold), prmsHeaderHoja)
         } else {
             addCellTabla(tablaCabecera, new Paragraph(" ", times8bold), prmsHeaderHoja)
-            addCellTabla(tablaCabecera, new Paragraph("Memo N°: " + obra?.memoSalida, times10bold), prmsHeaderHoja)
+            addCellTabla(tablaCabecera, new Paragraph("Informe N°: " + obra?.memoSalida, times10bold), prmsHeaderHoja)
         }
 
         PdfPTable tablaQuito = new PdfPTable(2);

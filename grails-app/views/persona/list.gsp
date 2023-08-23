@@ -32,7 +32,7 @@
         <a href="#" class="btn btn-info" id="btnAsignarCoordinador">  <i class="fa fa-users"></i> Asignar coordinador</a>
     </div>
     <div class="btn-group">
-        <a href="#" class="btn btn-primary btnReporte" >  <i class="fa fa-print"></i>  Reporte de usuarios</a>
+        <a href="#" class="btn btn-success btnReporte" >  <i class="fa fa-print"></i>  Reporte de usuarios</a>
      </div>
 </div>
 
@@ -81,7 +81,8 @@
 <script type="text/javascript">
 
     $(".btnReporte").click(function () {
-        location.href = "${g.createLink(controller: 'reportes6', action: '_imprimirUsuarios')}";
+        %{--location.href = "${g.createLink(controller: 'reportes6', action: '_imprimirUsuarios')}";--}%
+        location.href = "${g.createLink(controller: 'reportes6',action: 'imprimirUsuariosExcel')}"
     });
 
     $("#btnOferentes").click(function () {
