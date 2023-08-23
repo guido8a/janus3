@@ -1648,4 +1648,9 @@ class ObraController {
         return [data: obras, params: params]
     }
 
+    def impresionesRubros_ajax(){
+        def obra = Obra.get(params.id)
+        return[obra: obra]
+    }
+
 } //fin controller

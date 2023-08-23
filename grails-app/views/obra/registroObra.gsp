@@ -1691,173 +1691,196 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             var urlVae = "${createLink(controller:'reportes3', action:'reporteRubrosVaeReg')}?obra=${obra?.id}Wdesglose=";
             var idObra = "${obra?.id}";
 
+
             $.ajax({
-                type: 'POST',
-                url: "${createLink(controller: 'obra', action: 'revisarSizeRubros_ajax')}",
+                type: "POST",
+                url: "${createLink(controller: 'obra', action: 'impresionesRubros_ajax')}",
                 data:{
-                    id: '${obra?.id}'
+                    id : idObra
                 },
-                success: function (msg){
-                    if(msg === 'ok'){
-                        $.box({
-                            imageClass: "box_info",
-                            text: "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br>" +
-                                "<span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",
-                            title: "Imprimir Rubros de la Obra",
-                            iconClose: true,
-                            dialog: {
-                                resizable: false,
-                                draggable: false,
-                                width: 600,
-                                height: 320,
-                                buttons: {
-                                    "Con desglose de Trans.": function () {
-                                        url += "1";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "Sin desglose de Trans.": function () {
-                                        url += "0";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + url--}%
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "Exportar Rubros a Excel": function () {
-                                        %{--var url = "${createLink(controller:'reportes', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";--}%
-                                        var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
-                                        url += "1";
-                                        location.href = url;
-                                    },
-                                    "VAE con desglose de Trans.": function () {
-                                        urlVae += "1";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae--}%
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "VAE sin desglose de Trans.": function () {
-                                        urlVae += "0";
-                                        %{--location.href = "${g.createLink(controller: 'pdf',action: 'pdfLink')}?url=" + urlVae--}%
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "Exportar VAE a Excel": function () {
-                                        var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";
-                                        urlVaeEx += "1";
-                                        location.href = urlVaeEx;
-                                    },
-                                    "Imprimir las Ilustraciones y las Especificaciones de los Rubros (100 primeros)": function () {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
-                                            data: {
-                                                id: idObra,
-                                                tipo: "ie"
-                                            },
-                                            success: function (msg) {
-                                                var parts = msg.split('*');
-                                                if (parts[0] === 'SI') {
-                                                    $("#divError").hide();
-                                                    location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";
-                                                } else {
-                                                    $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
-                                                    $("#divError").show()
-                                                }
-                                            }
-                                        });
-                                    },
-                                    "Imprimir las Ilustraciones y las Especificaciones de los Rubros (101 en adelante)": function () {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
-                                            data: {
-                                                id: idObra,
-                                                tipo: "ie"
-                                            },
-                                            success: function (msg) {
-                                                var parts = msg.split('*');
+                success: function (msg) {
 
-                                                if (parts[0] === 'SI') {
-                                                    $("#divError").hide();
-                                                    location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion2')}?id=${obra?.id}&tipo=ie";
-                                                } else {
-                                                    $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
-                                                    $("#divError").show()
-                                                }
-                                            }
-                                        });
-                                    },
-                                    "Cancelar": function () {
-                                    }
+                    var b = bootbox.dialog({
+                        id      : "dlgImprimir",
+                        title   : "Imprimir Rubros de la Obra",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
                                 }
                             }
-                        });
-                    }   else{
-                        $.box({
-                            imageClass: "box_info",
-                            text: "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br><span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",
-                            title: "Imprimir Rubros de la Obra",
-                            iconClose: true,
-                            dialog: {
-                                resizable: false,
-                                draggable: false,
-                                width: 600,
-                                height: 260,
-                                buttons: {
-
-                                    "Con desglose de Trans.": function () {
-                                        url += "1";
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "Sin desglose de Trans.": function () {
-                                        url += "0";
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "Exportar Rubros a Excel": function () {
-                                        var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";
-                                        url += "1";
-                                        location.href = url;
-                                    },
-                                    "VAE con desglose de Trans.": function () {
-                                        urlVae += "1";
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "VAE sin desglose de Trans.": function () {
-                                        urlVae += "0";
-                                        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
-                                    },
-                                    "Exportar VAE a Excel": function () {
-                                        var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";
-                                        %{--var urlVaeEx = "${createLink(controller:'reportesExcel', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";--}%
-                                        urlVaeEx += "1";
-                                        location.href = urlVaeEx;
-                                    },
-                                    "Imprimir las Ilustraciones y las Especificaciones de los Rubros": function () {
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",
-                                            data: {
-                                                id: idObra,
-                                                tipo: "ie"
-                                            },
-                                            success: function (msg) {
-                                                var parts = msg.split('*');
-                                                if (parts[0] === 'SI') {
-                                                    $("#divError").hide();
-                                                    location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";
-                                                } else {
-                                                    $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");
-                                                    $("#divError").show()
-                                                }
-                                            }
-                                        });
-
-                                    },
-                                    "Cancelar": function () {
-                                    }
-                                }
-                            }
-                        });
-                    }
+                        } //buttons
+                    }); //dialog
                 }
             });
             return false;
+
+
+
+            %{--$.ajax({--}%
+            %{--    type: 'POST',--}%
+            %{--    url: "${createLink(controller: 'obra', action: 'revisarSizeRubros_ajax')}",--}%
+            %{--    data:{--}%
+            %{--        id: '${obra?.id}'--}%
+            %{--    },--}%
+            %{--    success: function (msg){--}%
+            %{--        if(msg === 'ok'){--}%
+            %{--            $.box({--}%
+            %{--                imageClass: "box_info",--}%
+            %{--                text: "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br>" +--}%
+            %{--                    "<span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",--}%
+            %{--                title: "Imprimir Rubros de la Obra",--}%
+            %{--                iconClose: true,--}%
+            %{--                dialog: {--}%
+            %{--                    resizable: false,--}%
+            %{--                    draggable: false,--}%
+            %{--                    width: 600,--}%
+            %{--                    height: 320,--}%
+            %{--                    buttons: {--}%
+            %{--                        "Con desglose de Trans.": function () {--}%
+            %{--                            url += "1";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "Sin desglose de Trans.": function () {--}%
+            %{--                            url += "0";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "Exportar Rubros a Excel": function () {--}%
+            %{--                            var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";--}%
+            %{--                            url += "1";--}%
+            %{--                            location.href = url;--}%
+            %{--                        },--}%
+            %{--                        "VAE con desglose de Trans.": function () {--}%
+            %{--                            urlVae += "1";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "VAE sin desglose de Trans.": function () {--}%
+            %{--                            urlVae += "0";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "Exportar VAE a Excel": function () {--}%
+            %{--                            var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";--}%
+            %{--                            urlVaeEx += "1";--}%
+            %{--                            location.href = urlVaeEx;--}%
+            %{--                        },--}%
+            %{--                        "Imprimir las Ilustraciones y las Especificaciones de los Rubros (100 primeros)": function () {--}%
+            %{--                            $.ajax({--}%
+            %{--                                type: "POST",--}%
+            %{--                                url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
+            %{--                                data: {--}%
+            %{--                                    id: idObra,--}%
+            %{--                                    tipo: "ie"--}%
+            %{--                                },--}%
+            %{--                                success: function (msg) {--}%
+            %{--                                    var parts = msg.split('*');--}%
+            %{--                                    if (parts[0] === 'SI') {--}%
+            %{--                                        $("#divError").hide();--}%
+            %{--                                        location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
+            %{--                                    } else {--}%
+            %{--                                        $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");--}%
+            %{--                                        $("#divError").show()--}%
+            %{--                                    }--}%
+            %{--                                }--}%
+            %{--                            });--}%
+            %{--                        },--}%
+            %{--                        "Imprimir las Ilustraciones y las Especificaciones de los Rubros (101 en adelante)": function () {--}%
+            %{--                            $.ajax({--}%
+            %{--                                type: "POST",--}%
+            %{--                                url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
+            %{--                                data: {--}%
+            %{--                                    id: idObra,--}%
+            %{--                                    tipo: "ie"--}%
+            %{--                                },--}%
+            %{--                                success: function (msg) {--}%
+            %{--                                    var parts = msg.split('*');--}%
+
+            %{--                                    if (parts[0] === 'SI') {--}%
+            %{--                                        $("#divError").hide();--}%
+            %{--                                        location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion2')}?id=${obra?.id}&tipo=ie";--}%
+            %{--                                    } else {--}%
+            %{--                                        $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");--}%
+            %{--                                        $("#divError").show()--}%
+            %{--                                    }--}%
+            %{--                                }--}%
+            %{--                            });--}%
+            %{--                        },--}%
+            %{--                        "Cancelar": function () {--}%
+            %{--                        }--}%
+            %{--                    }--}%
+            %{--                }--}%
+            %{--            });--}%
+            %{--        }   else{--}%
+            %{--            $.box({--}%
+            %{--                imageClass: "box_info",--}%
+            %{--                text: "Imprimir los análisis de precios unitarios de los rubros usados en la obra<br><span style='margin-left: 42px;'>Ilustraciones y Especificaciones</span>",--}%
+            %{--                title: "Imprimir Rubros de la Obra",--}%
+            %{--                iconClose: true,--}%
+            %{--                dialog: {--}%
+            %{--                    resizable: false,--}%
+            %{--                    draggable: false,--}%
+            %{--                    width: 600,--}%
+            %{--                    height: 260,--}%
+            %{--                    buttons: {--}%
+
+            %{--                        "Con desglose de Trans.": function () {--}%
+            %{--                            url += "1";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "Sin desglose de Trans.": function () {--}%
+            %{--                            url += "0";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosTransporteRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "Exportar Rubros a Excel": function () {--}%
+            %{--                            var url = "${createLink(controller:'reportesExcel', action:'imprimirRubrosExcel')}?obra=${obra?.id}&transporte=";--}%
+            %{--                            url += "1";--}%
+            %{--                            location.href = url;--}%
+            %{--                        },--}%
+            %{--                        "VAE con desglose de Trans.": function () {--}%
+            %{--                            urlVae += "1";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "VAE sin desglose de Trans.": function () {--}%
+            %{--                            urlVae += "0";--}%
+            %{--                            location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';--}%
+            %{--                        },--}%
+            %{--                        "Exportar VAE a Excel": function () {--}%
+            %{--                            var urlVaeEx = "${createLink(controller:'reportes3', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";--}%
+            %{--                            --}%%{--var urlVaeEx = "${createLink(controller:'reportesExcel', action:'imprimirRubrosVaeExcel')}?obra=${obra?.id}&transporte=";--}%
+            %{--                            urlVaeEx += "1";--}%
+            %{--                            location.href = urlVaeEx;--}%
+            %{--                        },--}%
+            %{--                        "Imprimir las Ilustraciones y las Especificaciones de los Rubros": function () {--}%
+            %{--                            $.ajax({--}%
+            %{--                                type: "POST",--}%
+            %{--                                url: "${createLink(controller:'reportes2', action:'comprobarIlustracion')}",--}%
+            %{--                                data: {--}%
+            %{--                                    id: idObra,--}%
+            %{--                                    tipo: "ie"--}%
+            %{--                                },--}%
+            %{--                                success: function (msg) {--}%
+            %{--                                    var parts = msg.split('*');--}%
+            %{--                                    if (parts[0] === 'SI') {--}%
+            %{--                                        $("#divError").hide();--}%
+            %{--                                        location.href = "${createLink(controller:'reportes2', action:'reporteRubroIlustracion')}?id=${obra?.id}&tipo=ie";--}%
+            %{--                                    } else {--}%
+            %{--                                        $("#spanError").html("El archivo  '" + parts[1] + "'  no ha sido encontrado");--}%
+            %{--                                        $("#divError").show()--}%
+            %{--                                    }--}%
+            %{--                                }--}%
+            %{--                            });--}%
+
+            %{--                        },--}%
+            %{--                        "Cancelar": function () {--}%
+            %{--                        }--}%
+            %{--                    }--}%
+            %{--                }--}%
+            %{--            });--}%
+            %{--        }--}%
+            %{--    }--}%
+            %{--});--}%
+            %{--return false;--}%
         });
 
         $("#btn-consultar-geo").click(function () {
