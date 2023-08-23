@@ -70,7 +70,7 @@
                     tipo: "ie"
                 },
                 success: function (msg) {
-
+                    console.log(msg);
                     var parts = msg.split('*');
 
                     if (parts[0] === 'SI') {

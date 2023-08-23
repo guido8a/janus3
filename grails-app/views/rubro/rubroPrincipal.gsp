@@ -190,7 +190,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="col-md-3" style="width: 180px;">
                 % costos indirectos
-                <g:textField style="width: 40px;" name="costo_indi" value="20.0"/>
+                <g:textField style="width: 40px;" name="costo_indi" value="22.5"/>
             </div>
 
             <div class="form-group ${hasErrors(bean: administracionInstance, field: 'fechaInicio', 'error')} ">

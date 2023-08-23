@@ -166,6 +166,7 @@ class Reportes2Controller {
     }
 
     def reporteRubroIlustracion() {
+        println "inicia reporteRubroIlustracion"
         def obra = Obra.get(params.id)
         def persona = Persona.get(session.usuario.id)
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
@@ -584,6 +585,7 @@ class Reportes2Controller {
         def pagAct = 1
         def tipo = params.tipo //i: ilustraciones, e: especificaciones, ie: ambas
 
+        println "...1 --> ${rubros.size()}, tipo: $tipo"
         rubros.each { rubro ->
             mensaje = rubro.codigo
             def extIlustracion = "", extEspecificacion = "", pagesEspecificacion = 0, pagesIlustracion = 0, pathEspecificacion, pathIlustracion
@@ -609,6 +611,7 @@ class Reportes2Controller {
                 }
             }
 
+            println "...2"
             def ares = ArchivoEspecificacion.findByItem(rubro)
             if (ares && tipo.contains("e")) {
                 mensaje += " ruta: ${ares?.ruta}"
@@ -635,8 +638,11 @@ class Reportes2Controller {
 //                    }
                 }
             }
+            println "errores: $error"
             if(!error) render "SI*"
         }
+        println "....fin"
+        render "FIN"
     }
 
     def reporteRubroIlustracion_bck() {
