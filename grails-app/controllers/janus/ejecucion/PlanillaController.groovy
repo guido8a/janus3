@@ -3452,7 +3452,7 @@ class PlanillaController {
 
         if (!respaldo) obrasAdicionales = 0
 
-        println "adicionales: $obrasAdicionales, complementario: $cmpl"
+        println "adicionales: $obrasAdicionales, complementario: $cmpl, planillasAnteriores: $planillasAnteriores"
         return [planilla           : planilla, detalle: detalle, precios: precios, obra: obra, adicionales: obrasAdicionales,
                 planillasAnteriores: planillasAnteriores, contrato: contrato, editable: editable, cmpl: cmpl]
     }

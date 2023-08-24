@@ -94,8 +94,8 @@
 %{--                    <g:set var="anteriores" value="${janus.ejecucion.DetallePlanillaEjecucion.findAllByPlanillaInListAndVolumenContrato(planillasAnteriores, vol)}"/>--}%
 
 
-                    <g:if test="${planillasAnteriores.size() > 0}">
-                        <g:set var="anteriores" value="${janus.ejecucion.DetallePlanilla.findAllByPlanillaInListAndVolumenObra(planillasAnteriores, vol)}"/>
+                    <g:if test="${planillasAnteriores?.size() > 0}">
+                        <g:set var="anteriores" value="${janus.ejecucion.DetallePlanillaEjecucion.findAllByPlanillaInListAndVolumenContrato(planillasAnteriores, vol)}"/>
                         <g:set var="cantAnt" value="${anteriores.sum { it.cantidad } ?: 0}"/>
                         <g:set var="valAnt" value="${anteriores.sum { it.monto } ?: 0}"/>
                     </g:if>
