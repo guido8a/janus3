@@ -18,6 +18,7 @@
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
             (ev.keyCode >= 96 && ev.keyCode <= 105) ||
             ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 190 || ev.keyCode === 110 ||
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
