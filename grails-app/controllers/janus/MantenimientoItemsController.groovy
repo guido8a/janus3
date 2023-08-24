@@ -1091,6 +1091,7 @@ class MantenimientoItemsController {
     }
 
     def formSg_ajax() {
+        println("---" +  params)
         def grupo = Grupo.get(params.grupo)
         def subgrupoItemsInstance = new SubgrupoItems()
         if (params.id) {
@@ -1830,13 +1831,9 @@ itemId: item.id
             codigos += row[0]
         }
 
-//        println(sql);
-//        println(codigos)
-
         def ultimo = codigos.last()
 
-
-        return [lugarInstance: lugarInstance, all: params.all, tipo: tipo, ultimo: ultimo]
+        return [lugarInstance: lugarInstance, all: params.all, tipo: tipo, ultimo: ultimo, id: params.id]
     }
 
 

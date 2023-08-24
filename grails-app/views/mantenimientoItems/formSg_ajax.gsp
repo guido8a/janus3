@@ -2,7 +2,7 @@
 
 <g:form class="form-horizontal" name="frmSave" action="saveSg_ajax">
     <g:hiddenField name="id" value="${subgrupoItemsInstance?.id}"/>
-    <g:hiddenField name="grupo" value="${grupo.id}"/>
+    <g:hiddenField name="grupo" value="${grupo?.id}"/>
 
     <div class="form-group ${hasErrors(bean: subgrupoItemsInstance, field: 'grupo', 'error')} ">
         <span class="grupo">

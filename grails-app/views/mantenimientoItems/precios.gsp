@@ -778,7 +778,7 @@
         };
 
         var editarLista = {
-            label  : "Editar lsita",
+            label  : "Editar lista",
             icon   : "fa fa-underline text-success",
             action : function () {
                 createEditLista(nodeId, parentId);
@@ -803,7 +803,8 @@
         data.grupo = parentId;
         $.ajax({
             type    : "POST",
-            url     : "${createLink( action:'formSg_ajax')}",
+            %{--url     : "${createLink( action:'formSg_ajax')}",--}%
+            url     : "${createLink( action:'formLg_ajax')}",
             data    : data,
             success : function (msg) {
                 var b = bootbox.dialog({
