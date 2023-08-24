@@ -850,12 +850,12 @@
                 success : function (msg) {
                     dialog.modal('hide');
                     var parts = msg.split("_");
-                    if(parts[0] === 'ok'){
-                        log(parts[1], "success");
+                    if(parts[0] === 'OK'){
+                        log("Guardado correctamente", "success");
                         setTimeout(function () {
-                            if(tipo === '1'){
+                            if(tipoSeleccionado === 1){
                                 recargarMateriales();
-                            }else if(tipo === '2'){
+                            }else if(tipoSeleccionado === 2){
                                 recargaMano();
                             }else{
                                 recargaEquipo();
