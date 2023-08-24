@@ -1601,5 +1601,30 @@ class PersonaController {
         }
     }
 
+    def tablaOferentes_ajax(){
+//        def perfil = Prfl.findByCodigo("OFRT")
+        def listaItems = ['prsncdla', 'prsnnmbr', 'prsnapll' ]
+        def bsca
+        def sqlTx = ""
+
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+        def select = "select distinct prsn.* from prsn left join sesn on sesn.prsn__id = prsn.prsn__id "
+        def txwh = " where prfl__id = 18 and " +
+                " $bsca ilike '%${params.criterio}%' "
+        sqlTx = "${select} ${txwh} order by prsnapll ".toString()
+//        println "sql: $sqlTx"
+        def cn = dbConnectionService.getConnection()
+        def datos = cn.rows(sqlTx)
+
+//        def sql = "select * from sesn where prfl__id = 18 and sesnfcfn is null"
+
+//        [params: params, sesion: Sesn.findAllByPerfilAndFechaFinIsNull(perfil).sort{it.usuario.apellido}]
+        [params: params, datos: datos]
+    }
+
 
 }
