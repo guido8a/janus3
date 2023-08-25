@@ -2205,5 +2205,12 @@ itemId: item.id
 
     }
 
+    def tablaBusqueda_ajax(){
+        def sql = "select * from item where itemnmbr ilike '%${params.criterio}%' order by itemnmbr "
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString());
+//        println("res " + res)
+        return[res: res]
+    }
 
 }

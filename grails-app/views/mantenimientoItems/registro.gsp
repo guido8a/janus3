@@ -159,6 +159,9 @@
 
     $('#btnSearchArbol').click(function () {
         // $treeContainer.jstree("open_all");
+
+
+
         if(tipoSeleccionado === 1){
             $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
         }else if(tipoSeleccionado === 2){
@@ -166,6 +169,11 @@
         }else{
             $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
         }
+
+        if($("#searchArbol").val() != ''){
+            dialogoBuscar();
+        }
+
         return false;
     });
 
@@ -225,6 +233,32 @@
         limpiarBusqueda();
         $("#divSearchRes").addClass("hidden")
     });
+
+    function dialogoBuscar(){
+        $.ajax({
+            type    : "POST",
+            url     :  "${createLink(controller: 'mantenimientoItems', action:'tablaBusqueda_ajax')}",
+            data    : {
+                criterio: $("#searchArbol").val()
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgShowB",
+                    title   : "Búsqueda",
+                    class   : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
 
     function showInfo() {
         var node = $("#tree").jstree(true).get_selected();
