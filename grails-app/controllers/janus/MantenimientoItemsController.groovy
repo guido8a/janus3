@@ -2206,7 +2206,7 @@ itemId: item.id
     }
 
     def tablaBusqueda_ajax(){
-        def sql = "select * from item where itemnmbr ilike '%${params.criterio}%' order by itemnmbr "
+        def sql = "select * from item, dprt, sbgr, grpo where item.dprt__id = dprt.dprt__id and dprt.sbgr__id = sbgr.sbgr__id and sbgr.grpo__id = ${params.tipo} and itemnmbr ilike '%${params.criterio}%' order by itemnmbr "
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString());
 //        println("res " + res)

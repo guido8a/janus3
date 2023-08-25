@@ -160,8 +160,6 @@
     $('#btnSearchArbol').click(function () {
         // $treeContainer.jstree("open_all");
 
-
-
         if(tipoSeleccionado === 1){
             $treeContainer.jstree(true).search($.trim($("#searchArbol").val()));
         }else if(tipoSeleccionado === 2){
@@ -170,8 +168,8 @@
             $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
         }
 
-        if($("#searchArbol").val() != ''){
-            dialogoBuscar();
+        if($("#searchArbol").val() !== ''){
+            dialogoBuscar(tipoSeleccionado);
         }
 
         return false;
@@ -187,6 +185,11 @@
             }else{
                 $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
             }
+
+            if($("#searchArbol").val() !== ''){
+                dialogoBuscar(tipoSeleccionado);
+            }
+
             return false;
         }
     });
@@ -234,12 +237,13 @@
         $("#divSearchRes").addClass("hidden")
     });
 
-    function dialogoBuscar(){
+    function dialogoBuscar(tipo){
         $.ajax({
             type    : "POST",
             url     :  "${createLink(controller: 'mantenimientoItems', action:'tablaBusqueda_ajax')}",
             data    : {
-                criterio: $("#searchArbol").val()
+                criterio: $("#searchArbol").val(),
+                tipo: tipo
             },
             success : function (msg) {
                 var b = bootbox.dialog({
