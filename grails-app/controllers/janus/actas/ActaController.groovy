@@ -567,17 +567,6 @@ class ActaController {
             flash.message = str
             redirect(action: 'form', params: [contrato: params.contrato.id])
             return
-        }else{
-            def sql = "update prrf set prrfcont = replace(prrfcont, '&ldquo;', '\"') where prrf__id in " +
-                    "(select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
-            println("sql " + sql)
-            cn.execute(sql.toString())
-            println "actualiza 1"
-            sql = "update prrf set prrfcont = replace(prrfcont, '&rdquo;', ' \" ') where prrf__id in " +
-                    "(select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
-            println("sql " + sql)
-            println "actualiza 2"
-            cn.execute(sql.toString())
         }
 
         if (params.id) {
@@ -636,6 +625,17 @@ class ActaController {
         println "actualiza 1"
         sql = "update prrf set prrfcont = replace(prrfcont, '&rdquo;', ' \" ') where prrf__id in " +
                 "(select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
+        println("sql " + sql)
+        println "actualiza 2"
+        cn.execute(sql.toString())
+
+        sql = "update sccn set sccnttlo = replace(sccnttlo, '&ldquo;', ' \" ') where sccn__id in " +
+                "(select sccn__id  from sccn where acta__id = ${actaInstance?.id})"
+        println("sql " + sql)
+        println "actualiza 2"
+        cn.execute(sql.toString())
+        sql = "update sccn set sccnttlo = replace(sccnttlo, '&rdquo;', ' \" ') where sccn__id in " +
+                "(select sccn__id  from sccn where acta__id = ${actaInstance?.id})"
         println("sql " + sql)
         println "actualiza 2"
         cn.execute(sql.toString())
