@@ -7,6 +7,7 @@ import janus.NumberToLetterConverter
 import org.springframework.dao.DataIntegrityViolationException
 
 class ActaController {
+    def dbConnectionService
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
@@ -565,6 +566,11 @@ class ActaController {
             flash.message = str
             redirect(action: 'form', params: [contrato: params.contrato.id])
             return
+        }else{
+            def sql = "update prrf set prrfcont = replace(prrfcont, '&ldquo;', ' \" ') where prrf__id in (select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
+            println("sql " + sql)
+            def cn = dbConnectionService.getConnection()
+            def datos = cn.execute(sql.toString())
         }
 
         if (params.id) {
