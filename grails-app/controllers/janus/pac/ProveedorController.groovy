@@ -214,6 +214,27 @@ class ProveedorController {
         }
     }
 
+    def tablaProveedores2_ajax(){
+        def listaItems = ['prve_ruc', 'prvenmbr']
+        def bsca
+        def sqlTx = ""
+
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+        def select = "select * from prve "
+        def txwh = " where prve__id  is not null and " +
+                " $bsca ilike '%${params.criterio}%' "
+        sqlTx = "${select} ${txwh} order by prvenmbr ".toString()
+//        println "sql: $sqlTx"
+        def cn = dbConnectionService.getConnection()
+        def datos = cn.rows(sqlTx)
+
+        [datos: datos]
+    }
+
 
 
 } //fin controller

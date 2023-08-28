@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<div class="row">
+<div class="row" style="margin-bottom: 10px">
     <div class="span9 btn-group" role="navigation">
         <g:link controller="concurso" action="list" class="btn btn-primary">
             <i class="fa fa-arrow-left"></i>
@@ -23,52 +23,69 @@
     </div>
 </div>
 
-<div id="list-Proveedor" role="main" style="margin-top: 10px;">
 
-    <table class="table table-bordered table-striped table-condensed table-hover">
-        <thead>
-        <tr>
-            <th style="width: 10%">Especialidad</th>
-            <th style="width: 10%">Tipo</th>
-            <th style="width: 10%">Ruc</th>
-            <th style="width: 25%">Nombre</th>
-            <th style="width: 35%">Contacto</th>
-            <th style="width: 10%">Acciones</th>
-        </tr>
-        </thead>
-    </table>
-</div>
+<div style="overflow: hidden">
+    <fieldset class="borde" style="border-radius: 4px; margin-bottom: 10px">
+        <div class="row-fluid" style="margin-left: 10px">
+            <span class="grupo">
+                <span class="col-md-2">
+                    <label class="control-label text-info">Buscar Por</label>
+                    <g:select name="buscarPor" class="buscarPor col-md-12 form-control" from="${[1: 'RUC', 2: 'Nombre']}" optionKey="key"
+                              optionValue="value"/>
+                </span>
+                <span class="col-md-2">
+                    <label class="control-label text-info">Criterio</label>
+                    <g:textField name="buscarCriterio" id="criterioCriterio" class="form-control"/>
+                </span>
+            </span>
+            <div class="col-md-1" style="margin-top: 20px">
+                <button class="btn btn-info" id="btnBuscarProveedores"><i class="fa fa-search"></i></button>
+            </div>
+            <div class="col-md-1" style="margin-top: 20px">
+                <button class="btn btn-warning" id="btnLimpiarBusqueda" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+            </div>
+        </div>
+    </fieldset>
 
-<div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">
-    <table class="table-bordered table-striped table-condensed table-hover" style="width: 100%">
-        <tbody>
-        <g:each in="${proveedorInstanceList}" status="i" var="proveedorInstance">
-            <tr>
-                <td style="width: 10%">${proveedorInstance?.especialidad?.descripcion}</td>
-                <td style="width: 10%">${(proveedorInstance.tipo=="N")?"Natural": (proveedorInstance.tipo=="J")? "Jurídica":"Empresa Pública"}</td>
-                <td style="width: 10%">${fieldValue(bean: proveedorInstance, field: "ruc")}</td>
-                <td style="width: 25%">${fieldValue(bean: proveedorInstance, field: "nombre")}</td>
-                <td style="width: 35%">${proveedorInstance?.nombreContacto + " " + proveedorInstance?.apellidoContacto}</td>
-                <td style="width: 10%">
-                    <a class="btn btn-xs btn-show btn-info" href="#" rel="tooltip" title="Ver" data-id="${proveedorInstance.id}">
-                        <i class="fa fa-search"></i>
-                    </a>
-                    <a class="btn btn-xs btn-edit btn-success" href="#" rel="tooltip" title="Editar" data-id="${proveedorInstance.id}">
-                        <i class="fa fa-edit"></i>
-                    </a>
-
-                    <a class="btn btn-xs btn-delete btn-danger" href="#" rel="tooltip" title="Eliminar" data-id="${proveedorInstance.id}">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </td>
-            </tr>
-        </g:each>
-        </tbody>
-    </table>
+    <fieldset class="borde" style="border-radius: 4px">
+        <div id="divTablaProveedores" >
+        </div>
+    </fieldset>
 </div>
 
 
 <script type="text/javascript">
+
+    $("#btnLimpiarBusqueda").click(function  () {
+        $("#buscarPor").val(1);
+        $("#criterioCriterio").val('');
+        cargarTablaProveedor();
+    });
+
+    $("#btnBuscarProveedores").click(function () {
+       cargarTablaProveedor();
+    });
+
+    cargarTablaProveedor();
+
+    function cargarTablaProveedor() {
+        var d = cargarLoader("Cargando...");
+        var buscarPor = $("#buscarPor option:selected").val();
+        var criterio = $("#criterioCriterio").val();
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'proveedor', action: 'tablaProveedores2_ajax')}',
+            data:{
+                buscarPor: buscarPor,
+                criterio: criterio
+            },
+            success: function (msg){
+                d.modal("hide");
+                $("#divTablaProveedores").html(msg)
+            }
+        })
+    }
+
 
     function createEditRow(id) {
         var title = id ? "Editar " : "Crear ";
@@ -172,51 +189,6 @@
             }
         });
     }
-
-
-    $(function () {
-
-        $(".btn-new").click(function () {
-            createEditRow();
-        }); //click btn new
-
-        $(".btn-edit").click(function () {
-            var id = $(this).data("id");
-            createEditRow(id);
-        }); //click btn edit
-
-        $(".btn-show").click(function () {
-            var id = $(this).data("id");
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(action:'show_ajax')}",
-                data    : {
-                    id : id
-                },
-                success : function (msg) {
-                    var b = bootbox.dialog({
-                        id      : "dlgShow",
-                        title   : "Ver Proveedor",
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            }
-                        } //buttons
-                    }); //dialog
-                }
-            });
-        }); //click btn show
-
-        $(".btn-delete").click(function () {
-            var id = $(this).data("id");
-            deleteRow(id);
-        });
-
-    });
 
 </script>
 

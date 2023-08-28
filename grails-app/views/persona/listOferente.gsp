@@ -32,6 +32,9 @@
                 <div class="col-md-1" style="margin-top: 20px">
                     <button class="btn btn-info" id="btnBuscarOferentes"><i class="fa fa-search"></i></button>
                 </div>
+                <div class="col-md-1" style="margin-top: 20px">
+                    <button class="btn btn-warning" id="btnLimpiarBusqueda" title="Limpiar Búsqueda"><i class="fa fa-eraser"></i></button>
+                </div>
             </div>
         </fieldset>
 
@@ -41,38 +44,13 @@
         </fieldset>
     </div>
 
-
-%{--    <div class="" style="width: 99.7%;height: 530px; overflow-y: auto;float: right; margin-top: -20px">--}%
-%{--        <table class="table-bordered table-condensed table-hover" style="width: 100%; ">--}%
-%{--            <g:each in="${sesion}" status="j" var="sesionPerfil">--}%
-%{--                <tr>--}%
-%{--                    <td style="width: 10%">${sesionPerfil?.usuario?.cedula}</td>--}%
-%{--                    <td style="width: 20%">${sesionPerfil?.usuario?.nombre}</td>--}%
-%{--                    <td style="width: 20%">${sesionPerfil?.usuario?.apellido}</td>--}%
-%{--                    <td style="width: 10%">${sesionPerfil?.usuario?.login}</td>--}%
-%{--                    <td style="width: 20%">${sesionPerfil?.usuario?.departamento?.descripcion}</td>--}%
-%{--                    <td style="width: 7%; text-align: center; background-color: ${sesionPerfil?.usuario?.activo == 1 ? '#c2f8a2' : '#E22B0C'};"><g:formatBoolean boolean="${sesionPerfil?.usuario?.activo == 1}" true="Sí" false="No"/></td>--}%
-%{--                    <td style="width: 13%">--}%
-%{--                        <a class="btn btn-xs btn-show btn-info" href="#" rel="tooltip" title="Ver" data-id="${sesionPerfil?.usuario?.id}">--}%
-%{--                            <i class="fa fa-search"></i>--}%
-%{--                        </a>--}%
-%{--                        <a class="btn btn-xs btn-edit btn-success" href="#" rel="tooltip" title="Editar" data-id="${sesionPerfil?.usuario?.id}">--}%
-%{--                            <i class="fa fa-edit"></i>--}%
-%{--                        </a>--}%
-%{--                        <a class="btn btn-xs btn-password btn-info" href="#" rel="tooltip" title="Cambiar password" data-id="${sesionPerfil?.usuario?.id}">--}%
-%{--                            <i class="fa fa-lock"></i>--}%
-%{--                        </a>--}%
-%{--                        <a class="btn btn-xs btn-cambiarEstado btn-primary" href="#" rel="tooltip" title="Cambiar estado" data-id="${sesionPerfil?.usuario?.id}" data-activo="${sesionPerfil?.usuario?.activo}">--}%
-%{--                            <i class="fa fa-retweet"></i>--}%
-%{--                        </a>--}%
-%{--                    </td>--}%
-%{--                </tr>--}%
-%{--            </g:each>--}%
-%{--        </table>--}%
-%{--    </div>--}%
-
         <script type="text/javascript">
 
+        $("#btnLimpiarBusqueda").click(function  () {
+            $("#buscarPor").val(1);
+            $("#criterioCriterio").val('');
+            cargarTablaOferentes();
+        });
 
         cargarTablaOferentes();
 
@@ -97,8 +75,6 @@
                 }
             })
         }
-
-
 
             // $(function () {
 
