@@ -130,13 +130,22 @@
         <div class="btn-group">
             <g:if test="${!actaInstance?.id || editable}">
                 <a href="#" id="btnSave" class="btn btn-success"><i class="fa fa-save"></i> Guardar</a>
+                <a href="#" id="btnCorregir" class="btn btn-warning"><i class="fa fa-language"></i> Corregir texto</a>
             </g:if>
+        </div>
+
+        <div class="btn-group">
             <g:if test="${actaInstance?.id}">
                 <a href="#" class="btn btn-info" id="btnPrint"><i class="fa fa-print"></i> Imprimir</a>
+                <a href="#" class="btn btn-primary" id="btnPrintCmpl"><i class="fa fa-print"></i> Impr. Complementario</a>
+            </g:if>
+        </div>
+
+        <div class="btn-group">
+            <g:if test="${actaInstance?.id}">
                 <g:if test="${editable}">
                     <a href="#" class="btn btn-warning" id="btnRegistro"><i class="fa fa-lock"></i> Registrar</a>
                 </g:if>
-                <a href="#" class="btn btn-info" id="btnPrintCmpl"><i class="fa fa-print"></i> Impr. Complementario</a>
             </g:if>
         </div>
     </div>
@@ -311,6 +320,20 @@
         sideBySide: true,
         icons: {
         }
+    });
+
+    $("#btnCorregir").click(function () {
+        var d = cargarLoader("Procesando...");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'acta', action: 'corregirTexto_ajax')}",
+            data    : {
+                acta: '${actaInstance?.id}'
+            },
+            success : function (msg) {
+            d.modal("hide");
+            }
+        });
     });
 
     function submitFormSeccion() {

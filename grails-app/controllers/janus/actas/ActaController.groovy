@@ -622,4 +622,22 @@ class ActaController {
             redirect(action: "list")
         }
     } //delete
+
+
+    def corregirTexto_ajax () {
+        def cn = dbConnectionService.getConnection()
+        def actaInstance = Acta.get(params.acta)
+        def errores = ''
+        def sql = "update prrf set prrfcont = replace(prrfcont, '&ldquo;', '\"') where prrf__id in " +
+                "(select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
+        println("sql " + sql)
+      cn.execute(sql.toString())
+
+        println "actualiza 1"
+        sql = "update prrf set prrfcont = replace(prrfcont, '&rdquo;', ' \" ') where prrf__id in " +
+                "(select prrf__id  from prrf, sccn where sccn.sccn__id = prrf.sccn__id and acta__id = ${actaInstance?.id})"
+        println("sql " + sql)
+        println "actualiza 2"
+        cn.execute(sql.toString())
+    }
 } //fin controller
