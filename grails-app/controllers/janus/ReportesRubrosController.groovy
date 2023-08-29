@@ -1411,8 +1411,14 @@ class reportesRubrosController {
 
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Fecha: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((fecha2?.format("dd-MM-yyyy") ?: ''), times10normal), [border: Color.WHITE, colspan: 3])
-            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Fecha Act. P.U: ", times10bold), prmsHeaderHoja)
-            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((fecha1?.format("dd-MM-yyyy") ?: '') , times10normal), prmsHeaderHoja)
+
+            if(params.tipo != '1'){
+                reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Fecha Act. P.U: ", times10bold), prmsHeaderHoja)
+                reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((fecha1?.format("dd-MM-yyyy") ?: '') , times10normal), prmsHeaderHoja)
+            }else{
+                reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("", times10bold), prmsHeaderHoja)
+                reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("" , times10normal), prmsHeaderHoja)
+            }
 
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Código de obra: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((obra?.codigo ?: ''), times10normal), [border: Color.WHITE, colspan: 5])

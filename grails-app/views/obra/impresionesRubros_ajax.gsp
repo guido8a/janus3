@@ -24,6 +24,12 @@
     </div>
 
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
+        <a href="#" id="btnReporteVAEsinFecha" class="btn"><i class="fa fa-truck"></i>
+            VAE sin desglose de Trans (Sin fecha)
+        </a>
+    </div>
+
+    <div class="col-md-9 btn-group" style="margin-bottom: 10px">
         <a href="#" id="btnIlustraciones" class="btn"><i class="fa fa-image"></i>
             Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra
         </a>
@@ -52,6 +58,10 @@
 
     $("#btnReporteVencidas").click(function ()  {
         location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}';
+    });
+
+    $("#btnReporteVAEsinFecha").click(function ()  {
+        location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 0 + "&obra=" + '${obra?.id}' + "&tipo=" + 1;
     });
 
     $("#btnExpVaeExcel").click(function () {
