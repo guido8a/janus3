@@ -34,6 +34,35 @@
         Equipos
     </a>
 
+    <div class="col-md-4">
+        <div class="input-group input-group-sm">
+            <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
+            <span class="input-group-btn">
+                <a href="#" id="btnSearchArbol" class="btn btn-sm btn-info">
+                    <i class="fa fa-search"></i>&nbsp;
+                </a>
+            </span>
+        </div><!-- /input-group -->
+
+        <div class="col-md-4 hidden" id="divSearchRes">
+            <span id="spanSearchRes">
+
+            </span>
+
+            <div class="btn-group">
+                <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
+                    <i class="fa fa-chevron-down"></i>&nbsp;
+                </a>
+                <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
+                    <i class="fa fa-chevron-up"></i>&nbsp;
+                </a>
+                <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
+                    <i class="fa fa-times-circle"></i>&nbsp;
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="col-md-1" style="margin-right: 10px">
         <div class="btn-group">
             <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
@@ -49,24 +78,6 @@
     <span class="col-md-2">
         <input aria-label="" name="fechaPorDefecto" id='datetimepicker2' type='text' class="form-control" value="${ new Date().format("dd-MM-yyyy")}"/>
     </span>
-
-    <div class="col-md-4 hidden" id="divSearchRes">
-        <span id="spanSearchRes">
-
-        </span>
-
-        <div class="btn-group">
-            <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
-                <i class="fa fa-chevron-down"></i>&nbsp;
-            </a>
-            <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
-                <i class="fa fa-chevron-up"></i>&nbsp;
-            </a>
-            <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
-                <i class="fa fa-times-circle"></i>&nbsp;
-            </a>
-        </div>
-    </div>
 
     <div class="col-md-12 btn-group"  style="margin-bottom: 5px; margin-top: 10px">
         <a href="#" id="ignore" class="btn btn-warning btnTodosLugares" aria-pressed="true">
@@ -308,8 +319,40 @@
         }else{
             $treeContainer3.jstree(true).search($.trim($("#searchArbol").val()));
         }
+
+        if($("#searchArbol").val() !== ''){
+            dialogoBuscar(tipoSeleccionado);
+        }
+
         return false;
     });
+
+    function dialogoBuscar(tipo){
+        $.ajax({
+            type    : "POST",
+            url     :  "${createLink(controller: 'mantenimientoItems', action:'tablaBusqueda_ajax')}",
+            data    : {
+                criterio: $("#searchArbol").val(),
+                tipo: tipo
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgShowB",
+                    title   : "Búsqueda",
+                    class   : "modal-lg",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    }
 
     $("#searchArbol").keypress(function (ev) {
         if (ev.keyCode === 13) {
