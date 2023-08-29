@@ -45,15 +45,7 @@
         </div><!-- /input-group -->
     </div>
 
-    <div class="col-md-1" style="float: right">
-        <div class="btn-group">
-            <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
-                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
-            </a>
-        </div>
-    </div>
-
-    <div class="col-md-4 hidden" id="divSearchRes">
+    <div class="col-md-2 hidden" id="divSearchRes">
         <span id="spanSearchRes">
 
         </span>
@@ -70,6 +62,16 @@
             </a>
         </div>
     </div>
+
+    <div class="col-md-1" style="float: right">
+        <div class="btn-group">
+            <a href="#" class="btn btn-success" id="btnCollapseAll" title="Cerrar todos los nodos">
+                <i class="fa fa-minus-square"></i> Cerrar todo&nbsp;
+            </a>
+        </div>
+    </div>
+
+
 
 </div>
 

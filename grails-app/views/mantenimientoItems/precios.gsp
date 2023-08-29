@@ -34,7 +34,7 @@
         Equipos
     </a>
 
-    <div class="col-md-4">
+    <div class="col-md-2">
         <div class="input-group input-group-sm">
             <g:textField name="searchArbol" class="form-control input-sm" placeholder="Buscador"/>
             <span class="input-group-btn">
@@ -43,23 +43,23 @@
                 </a>
             </span>
         </div><!-- /input-group -->
+    </div>
 
-        <div class="col-md-4 hidden" id="divSearchRes">
-            <span id="spanSearchRes">
+    <div class="col-md-2 hidden" id="divSearchRes">
+        <span id="spanSearchRes">
 
-            </span>
+        </span>
 
-            <div class="btn-group">
-                <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
-                    <i class="fa fa-chevron-down"></i>&nbsp;
-                </a>
-                <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
-                    <i class="fa fa-chevron-up"></i>&nbsp;
-                </a>
-                <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
-                    <i class="fa fa-times-circle"></i>&nbsp;
-                </a>
-            </div>
+        <div class="btn-group">
+            <a href="#" class="btn btn-xs btn-default" id="btnNextSearch" title="Siguiente">
+                <i class="fa fa-chevron-down"></i>&nbsp;
+            </a>
+            <a href="#" class="btn btn-xs btn-default" id="btnPrevSearch" title="Anterior">
+                <i class="fa fa-chevron-up"></i>&nbsp;
+            </a>
+            <a href="#" class="btn btn-xs btn-default" id="btnClearSearch" title="Limpiar búsqueda">
+                <i class="fa fa-times-circle"></i>&nbsp;
+            </a>
         </div>
     </div>
 
