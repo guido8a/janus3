@@ -56,5 +56,10 @@ class OferentesController {
         return mapa
     }
 
+    def listaObrasOferente () {
+        def obrasOferente = ObraOferente.list()
+        return[obras: obrasOferente]
+    }
+
 
 }
