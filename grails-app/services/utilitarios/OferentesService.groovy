@@ -10,7 +10,7 @@ class OferentesService {
 
 
     def list(tipo,oferente){
-        def cn  =dbConnectionService.getConnectionOferentes()
+        //def cn  = dbConnectionService.getConnectionOferentes()
         def sql ="select o.obra__id,o.ofrt__id,p.prsnnmbr || ' ' || p.prsnapll,p.prsnjnid,obracdgo,obranmbr,obraetdo,obrajnid from obra o ,prsn p where o.ofrt__id=p.prsn__id X &"
         def where =" and o.obraetdo = '${tipo?.toUpperCase()}' "
         def result  =[]
