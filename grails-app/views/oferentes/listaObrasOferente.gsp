@@ -17,10 +17,11 @@
         <table class="table table-hover table-bordered table-striped">
             <thead>
             <tr>
-                <th style="width: 45%;">Obra</th>
+                <th style="width: 40%;">Obra</th>
                 <th style="width: 30%;">Oferente</th>
                 <th style="width: 15%;">Concurso</th>
                 <th style="width: 10%;">Estado</th>
+                <th style="width: 5%;">Obra</th>
             </tr>
             </thead>
 
@@ -33,16 +34,25 @@
         <tbody>
         <g:each in="${obras}" var="obra" status="i">
             <tr>
-                <td style="width: 45%;">${obra?.obra?.descripcion}</td>
+                <td style="width: 40%;">${obra?.obra?.descripcion}</td>
                 <td style="width: 30%;">${obra?.oferente?.nombre + " " + obra?.oferente?.apellido}</td>
                 <td style="width: 15%;">${obra?.concurso?.codigo}</td>
-                <td style="width: 10%;">${obra?.estado}</td>
+                <td style="width: 10%;">${obra?.estado == 'N' ? 'No copiado' : 'Copiado' }</td>
+                <td style="width: 5%; text-align: center"><button class="btn btn-info btn-xs btnIrObra" title="Ir a la obra" data-id="${obra?.obra?.id}"><i class="fa fa-file"></i></button> </td>
             </tr>
         </g:each>
         </tbody>
     </table>
 </div>
 
+<script type="text/javascript">
+
+    $(".btnIrObra").click(function () {
+        var id = $(this).data("id");
+       location.href="${createLink(controller: 'obra', action: 'registroObra')}?obra=" + id
+    });
+
+</script>
 
 </body>
 </html>
