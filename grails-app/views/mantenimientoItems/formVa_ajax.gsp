@@ -2,7 +2,7 @@
 
 <div id="create" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave" action="saveVa_ajax">
-        <g:hiddenField name="id" value="${itemInstance?.id}"/>
+        <g:hiddenField name="id" value="${vaeInstance?.id}"/>
         <g:hiddenField name="item" value="${item}"/>
 
         <div class="form-group ${hasErrors(bean: vaeInstance, field: 'fecha', 'error')} ">

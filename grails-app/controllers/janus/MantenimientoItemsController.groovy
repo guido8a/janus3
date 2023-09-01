@@ -1968,6 +1968,7 @@ itemId: item.id
     }
 
     def showVa_ajax() {
+//        println("show va " + params)
         def vaeItem = VaeItems.get(params.id)
 //        def parts = params.id.split("_")
 //        def idMaterial = parts[0]
@@ -1992,7 +1993,7 @@ itemId: item.id
     }
 
     def saveVa_ajax() {
-//        println ("saveVae_ajax" +  params)
+        println ("saveVae_ajax" +  params)
 
         def vaeItem
 
@@ -2009,6 +2010,8 @@ itemId: item.id
             params.fechaIngreso = new Date()
             vaeItem.item = Item.get(params.item)
         }
+
+
 
         vaeItem.properties = params
 

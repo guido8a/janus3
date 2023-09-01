@@ -30,7 +30,7 @@
                     <g:formatNumber number="${vae.porcentaje}" maxFractionDigits="2" minFractionDigits="2" format="#,##0" locale='ec'/>
                 </td>
                 <td>
-                    <a href="#" class="btn btn-info btn-xs btnEditar" rel="tooltip" title="Editar vae" data-id="${vae.id}">
+                    <a href="#" class="btn btn-info btn-xs btnEditar" rel="tooltip" title="Editar vae" data-id="${vae.id}" data-item="${vae?.item?.id}">
                         <i class="fa fa-edit"></i>
                     </a>
                     <g:if test="${vae.registrado != 'R'}">
@@ -59,7 +59,7 @@
 
     function createEditRow(id) {
         var title = id ? "Editar " : "Crear ";
-        var data = id ? {id : id, item: '${item.id}'} : {item: '${item.id}'};
+        var data = id ? {id : id, item:'${item.id}'} : {item: '${item.id}'};
         $.ajax({
             type    : "POST",
             url: "${createLink(action:'formVa_ajax')}",
