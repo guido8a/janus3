@@ -1769,11 +1769,12 @@ class ReportesController {
             headers.add(new Paragraph(auxiliar?.memo1, times12bold));
         }
 
-        if (obra?.oficioSalida == null) {
-            headers.add(new Paragraph("INFORME" + " ", times12bold));
-        } else {
-            headers.add(new Paragraph("INFORME N°. " + obra?.oficioSalida, times12bold));
-        }
+//        if (obra?.oficioSalida == null) {
+//            headers.add(new Paragraph("INFORME" + " ", times12bold));
+//        } else {
+//            headers.add(new Paragraph("INFORME N°. " + obra?.codigo, times12bold));
+            headers.add(new Paragraph(obra?.codigo, times12bold));
+//        }
 
         Paragraph headerFecha = new Paragraph();
         headerFecha.setAlignment(Element.ALIGN_RIGHT);
@@ -2573,11 +2574,12 @@ class ReportesController {
             headers.add(new Paragraph(auxiliar?.memo1, times12bold));
         }
 
-        if (obra?.oficioSalida == null) {
-            headers.add(new Paragraph("INFORME" + " ", times12bold));
-        } else {
-            headers.add(new Paragraph("INFORME N°. " + obra?.oficioSalida, times12bold));
-        }
+//        if (obra?.oficioSalida == null) {
+//            headers.add(new Paragraph("INFORME" + " ", times12bold));
+//        } else {
+//            headers.add(new Paragraph("INFORME N°. " + obra?.oficioSalida, times12bold));
+        headers.add(new Paragraph(obra?.codigo, times12bold));
+//        }
 
         Paragraph headerFecha = new Paragraph();
         headerFecha.setAlignment(Element.ALIGN_RIGHT);
@@ -3376,11 +3378,12 @@ class ReportesController {
         headers.add(new Paragraph(auxiliar?.titulo, times14bold));
         headers.add(new Paragraph(auxiliar?.memo1, times12bold));
 
-        if (obra?.oficioSalida == null) {
-            headers.add(new Paragraph("INFORME" + " ", times12bold));
-        } else {
-            headers.add(new Paragraph("INFORME N°. " + obra?.oficioSalida, times12bold));
-        }
+//        if (obra?.oficioSalida == null) {
+//            headers.add(new Paragraph("INFORME" + " ", times12bold));
+//        } else {
+//            headers.add(new Paragraph("INFORME N°. " + obra?.oficioSalida, times12bold));
+            headers.add(new Paragraph(obra?.codigo, times12bold));
+//        }
 
         Paragraph headerFecha = new Paragraph();
         headerFecha.setAlignment(Element.ALIGN_RIGHT);
