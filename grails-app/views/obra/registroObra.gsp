@@ -94,7 +94,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         </g:if>
         <g:if test="${obra?.liquidacion == 0}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) && (Concurso.countByObra(obra) == 0)}">
-                %{--las obras tuipo 'O' son migradas de oferentes no se pueden desregistrar--}%
+            %{--las obras tuipo 'O' son migradas de oferentes no se pueden desregistrar--}%
                 <g:if test="${obra?.fechaInicio == null && obra?.tipo != 'O'}">
                     <button class="btn" id="cambiarEstado"><i class="fa fa-retweet"></i> Cambiar de Estado</button>
                 </g:if>
@@ -105,8 +105,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:if>
 
             <g:if test="${obra?.id != null && obra?.estado == 'R' && perfil.codigo == 'CNTR' && concurso}">
-                <button class="btn" id="copiarObraOfe"><i class="fa fa-copy"></i> Copiar Obra a Oferentes
-                </button>
+                <g:if test="${!existeObraOferente}">
+                    <button class="btn" id="copiarObraOfe"><i class="fa fa-copy"></i> Copiar Obra a Oferentes
+                    </button>
+                </g:if>
             </g:if>
         </g:if>
         <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D'}">
@@ -160,8 +162,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:if>
 
             <g:if test="${obra?.id != null && obra?.estado == 'R' && perfil.codigo == 'CNTR' && concurso}">
-                <button class="btn" id="copiarObraOfe"><i class="fa fa-copy"></i> Copiar Obra a Oferentes
-                </button>
+                <g:if test="${!existeObraOferente}">
+                    <button class="btn" id="copiarObraOfe"><i class="fa fa-copy"></i> Copiar Obra a Oferentes
+                    </button>
+                </g:if>
             </g:if>
         </g:if>
 
@@ -191,7 +195,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
     </g:if>
 
     <g:if test="${obra?.tipo == 'O'}">
-       <button class="btn btn-danger" id="revisarPrecios" disabled><i class="fa fa-check"></i> Importada de Oferentes</button>
+        <button class="btn btn-danger" id="revisarPrecios" disabled><i class="fa fa-check"></i> Importada de Oferentes</button>
     </g:if>
 </div>
 
@@ -583,9 +587,9 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                     <g:set var="coords" value="${'S 0 12.5999999 W 78 31.194'}"/>
                 </g:if>
                 <g:hiddenField name="coordenadas" value="${coords}"/>
-%{--                <a href="#" id="coords" >--}%
-                    ${coords}
-%{--                </a>--}%
+                %{--                <a href="#" id="coords" >--}%
+                ${coords}
+                %{--                </a>--}%
                 <g:set var="coordsParts" value="${coords.split(' ')}"/>
             </div>
         </div>

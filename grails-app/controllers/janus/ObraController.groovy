@@ -542,10 +542,12 @@ class ObraController {
             duenoObra = esDuenoObra(obra) ? 1 : 0
 //            println "dueño: $duenoObra, concurso: $concurso, obra: $obra"
 
+            def existeObraOferente = ObraOferente.findByIdJanus(obra)
+
             [campos: campos, camposCPC: camposCPC, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,
              claseObra: claseObra, grupoDir: grupo, dire  : direccion, depar: departamentos, concurso: concurso,
-             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF: sbprMF, listaObra: listaObra]
+             personasUtfpu: personasUtfpu, duenoObra: duenoObra, sbprMF: sbprMF, listaObra: listaObra, existeObraOferente: existeObraOferente]
         } else {
 
             duenoObra = 0
