@@ -4643,8 +4643,9 @@ class ReportesController {
 
         Paragraph txtIzq = new Paragraph();
         txtIzq.setAlignment(Element.ALIGN_CENTER);
-        txtIzq.setIndentationLeft(20)
+        txtIzq.setIndentationLeft(15)
         txtIzq.add(new Paragraph("De existir variaciones en los costos de los componentes de precios unitarios estipulados en el contrato para la construcción de: ", times10normal));
+        txtIzq.setSpacingAfter(10)
         document.add(txtIzq);
 
         PdfPTable tablaObra = new PdfPTable(2);
