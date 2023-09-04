@@ -320,7 +320,7 @@
 
         }).on("select_node.jstree", function (node, selected, event) {
         }).jstree({
-            plugins     : ["types", "state", "search"],
+            plugins     : ["types", "state", "search", "contextmenu"],
             core        : {
                 multiple       : false,
                 check_callback : true,
@@ -340,10 +340,10 @@
                     }
                 }
             },
-            // contextmenu : {
-            //     show_at_node : false,
-            //     items        : createContextMenu
-            // },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
             state       : {
                 key : "unidades",
                 opened: false
@@ -409,7 +409,7 @@
 
         }).on("select_node.jstree", function (node, selected, event) {
         }).jstree({
-            plugins     : ["types", "state", "search"],
+            plugins     : ["types", "state", "search", "contextmenu"],
             core        : {
                 multiple       : false,
                 check_callback : true,
@@ -429,10 +429,10 @@
                     }
                 }
             },
-            // contextmenu : {
-            //     show_at_node : false,
-            //     items        : createContextMenu
-            // },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
             state       : {
                 key : "unidades",
                 opened: false
@@ -518,7 +518,7 @@
 
         }).on("select_node.jstree", function (node, selected, event) {
         }).jstree({
-            plugins     : ["types", "state", "search"],
+            plugins     : ["types", "state", "search", "contextmenu"],
             core        : {
                 multiple       : false,
                 check_callback : true,
@@ -538,10 +538,10 @@
                     }
                 }
             },
-            // contextmenu : {
-            //     show_at_node : false,
-            //     items        : createContextMenu
-            // },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
             state       : {
                 key : "unidades",
                 opened: false
@@ -596,6 +596,113 @@
         var fecha = $("#datetimepicker2").val();
         location.href="${g.createLink(controller: 'reportes4', action:'reporteExcelItemsVae' )}?fecha=" + fecha
     });
+
+    function createContextMenu(node) {
+
+        var nodeStrId = node.id;
+        var $node = $("#" + nodeStrId);
+        var nodeId = nodeStrId.split("_")[1];
+        var parentId = $node.parent().parent().children()[1].id.split("_")[1];
+        var nodeType = $node.data("jstree").type;
+        var esRoot = nodeType === "root";
+        var esPrincipal = nodeType === "principal";
+        var esSubgrupo = nodeType.contains("subgrupo");
+        var esDepartamento = nodeType.contains("departamento");
+        var esItem = nodeType.contains("item");
+        var tipoGrupo = $node.data("tipo");
+        var nodeHasChildren = $node.hasClass("hasChildren");
+        var abueloId = null;
+
+        if(esDepartamento){
+            abueloId = $node.parent().parent().parent().parent().children()[1].id.split("_")[1];
+        }else{
+            abueloId = parentId
+        }
+
+        var items = {};
+
+        var crearVae = {
+            label            : "Crear Vae",
+            icon             : "fa fa-info-circle text-info",
+            separator_before : true,
+            action           : function () {
+                $.ajax({
+                    type    : "POST",
+                    url: "${createLink(action:'formVa_ajax')}",
+                    data    : {
+                        item: nodeId
+                    },
+                    success : function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgCreateEdit",
+                            title   : "Nuevo VAE",
+                            message : msg,
+                            class: 'modal-sm',
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitFormVAE_1();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                    } //success
+                }); //ajax
+            }
+        };
+
+
+        if (esItem) {
+            if(!nodeHasChildren){
+                items.crearVae = crearVae;
+            }
+        }
+        return items;
+    }
+
+    function submitFormVAE_1() {
+        var $form = $("#frmSave");
+        if ($form.valid()) {
+            var data = $form.serialize();
+            var dialog = cargarLoader("Guardando...");
+            $.ajax({
+                type    : "POST",
+                url     : $form.attr("action"),
+                data    : data,
+                success : function (msg) {
+                    dialog.modal('hide');
+                    var parts = msg.split("_");
+                    if(parts[0] === 'ok'){
+                        log(parts[1], "success");
+                        setTimeout(function () {
+                            if(tipoSeleccionado === 1){
+                                recargarMateriales();
+                            }else if(tipoSeleccionado === 2){
+                                recargaMano();
+                            }else{
+                                recargaEquipo();
+                            }
+                        }, 1000);
+                    }else{
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    }
+
 
 </script>
 

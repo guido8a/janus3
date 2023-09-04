@@ -214,7 +214,7 @@ class MantenimientoItemsController {
                         ico = ", \"icon\":\"fa fa-info-circle text-info\""
                         hijos.each { h ->
                             clase = ""
-                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
+                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"vae"}\" ${ico}}'>"
                             tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "VAE" + "</strong>" + "</a>"
                             tree += "</li>"
                         }
@@ -2011,16 +2011,16 @@ itemId: item.id
             vaeItem.item = Item.get(params.item)
         }
 
-
-
         vaeItem.properties = params
 
-        if(!vaeItem.save(flush:true)){
+        try{
+            vaeItem.save(flush:true)
+            render "ok_Guardado correctamente"
+        }catch(e){
             println("error al guardar el valor del vae" + vaeItem.errors)
             render "no_Error al guardar el valor del vae"
-        }else{
-            render "ok_Guardado correctamente"
         }
+
     }
 
     def actualizarVae_ajax() {

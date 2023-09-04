@@ -583,13 +583,15 @@
             </div>
 
             <div class="col-md-12" style="margin-top: 10px;">
-                <div class="col-md-1" style="margin-left: 0px; width: 120px;"><g:link controller="reportes2"
-                    action="reporteCostosIndirectos"  id="${obra.id}" style="margin-left: 0px; margin-top: -60px"
-                    class="btn"><i class="icon-print"></i> Reporte</g:link></div>
-                <div class="col-md-2" style="margin-left: 0px; width: 160px;"><g:link controller="reportes2" 
+                <div class="col-md-1" style="margin-left: 0px; width: 120px;">
+                    <g:link controller="reportes2" action="reporteCostosIndirectos"  id="${obra.id}" style="margin-left: 0px; margin-top: -60px"
+                    class="btn"><i class="fa fa-print"></i> Reporte</g:link>
+                </div>
+                <div class="col-md-2" style="margin-left: 0px; width: 160px;">
+                    <g:link controller="reportes2"
                     action="reporteCostosIndirectosNuevo"  id="${obra.id}" style="margin-left: 0px; margin-top: -60px" 
-                    class="btn"><i class="icon-print"></i> Desglose Nuevo</g:link></div>
-
+                    class="btn"><i class="fa fa-print"></i> Desglose Nuevo</g:link>
+                </div>
             </div>
         </div>
 

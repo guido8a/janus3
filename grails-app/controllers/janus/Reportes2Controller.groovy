@@ -2411,7 +2411,6 @@ class Reportes2Controller {
         def fechaPrecios = printFecha(obra?.fechaPreciosRubros)
 
         def prmsHeaderHoja = [border: Color.WHITE]
-//        def prmsHeaderHojaBorde = [border: Color.WHITE, bordeBot:"1"]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
@@ -2431,7 +2430,6 @@ class Reportes2Controller {
         def prms = [prmsHeaderHoja: prmsHeaderHoja, prmsHeader: prmsHeader, prmsHeader2: prmsHeader2,
                     prmsCellHead: prmsCellHead, prmsCell: prmsCellCenter, prmsCellLeft: prmsCellLeft, prmsSubtotal: prmsSubtotal, prmsNum: prmsNum, prmsHeaderHoja2: prmsHeaderHoja2, prmsCellRight: prmsCellRight, prmsCellHeadRight: prmsCellHeadRight, prmsDerecha: prmsDerecha]
 
-
         def baos = new ByteArrayOutputStream()
         def name = "costos_indirectos_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
         Font times12bold = new Font(Font.TIMES_ROMAN, 12, Font.BOLD);
@@ -2447,7 +2445,6 @@ class Reportes2Controller {
         def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
                      times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times10normal: times10normal]
 
-
         Document document
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
@@ -2459,7 +2456,6 @@ class Reportes2Controller {
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
 
-
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
         headersTitulo.setAlignment(Element.ALIGN_CENTER);
@@ -2468,9 +2464,8 @@ class Reportes2Controller {
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         addEmptyLine(headersTitulo, 1)
         headersTitulo.add(new Paragraph("COSTOS INDIRECTOS", times12bold));
-        addEmptyLine(headersTitulo, 1);
+//        addEmptyLine(headersTitulo, 1);
         document.add(headersTitulo);
-//
 
         PdfPTable tablaHeader = new PdfPTable(3);
         tablaHeader.setWidthPercentage(100);
@@ -2486,6 +2481,7 @@ class Reportes2Controller {
 
         addCellTabla(tablaHeader, new Paragraph("MEMO CANT. OBRA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaHeader, new Paragraph(obra?.memoCantidadObra, times8normal), prmsHeaderHoja)
 
         addCellTabla(tablaHeader, new Paragraph("FECHA ACT. PRECIOS", times8bold), prmsHeaderHoja)
         addCellTabla(tablaHeader, new Paragraph(" : ", times8bold), prmsHeaderHoja)
@@ -2615,13 +2611,10 @@ class Reportes2Controller {
         //        println("params" + params)
 
         def obra = Obra.get(params.id)
-
-
         def fechaIngreso = printFecha(obra?.fechaCreacionObra)
         def fechaPrecios = printFecha(obra?.fechaPreciosRubros)
 
         def prmsHeaderHoja = [border: Color.WHITE]
-//        def prmsHeaderHojaBorde = [border: Color.WHITE, bordeBot:"1"]
         def prmsHeaderHoja2 = [border: Color.WHITE, colspan: 9]
         def prmsHeader = [border: Color.WHITE, colspan: 7, bg: new Color(73, 175, 205),
                           align : Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE]
@@ -2657,18 +2650,15 @@ class Reportes2Controller {
         def fonts = [times12bold: times12bold, times10bold: times10bold, times8bold: times8bold,
                      times10boldWhite: times10boldWhite, times8boldWhite: times8boldWhite, times8normal: times8normal, times10normal: times10normal]
 
-
         Document document
         document = new Document(PageSize.A4);
         def pdfw = PdfWriter.getInstance(document, baos);
         document.open();
-//        document.setMargins(2,2,2,2)
         document.addTitle("Costos Indirectos " + new Date().format("dd_MM_yyyy"));
         document.addSubject("Generado por el sistema Janus");
         document.addKeywords("documentosObra, janus, presupuesto");
         document.addAuthor("Janus");
         document.addCreator("Tedein SA");
-
 
         Paragraph headersTitulo = new Paragraph();
         addEmptyLine(headersTitulo, 1);
@@ -2676,8 +2666,8 @@ class Reportes2Controller {
         headersTitulo.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), times14bold));
         headersTitulo.add(new Paragraph(obra?.departamento?.direccion?.nombre, times12bold));
         headersTitulo.add(new Paragraph("COSTOS INDIRECTOS, IMPREVISTOS Y UTILIDAD", times12bold));
+        headersTitulo.add(new Paragraph("", times12bold));
         document.add(headersTitulo);
-//
 
         PdfPTable tablaHeader = new PdfPTable(3);
         tablaHeader.setWidthPercentage(100);
@@ -2713,16 +2703,9 @@ class Reportes2Controller {
 
         tablaDesgloseBody.setHorizontalAlignment(Element.ALIGN_RIGHT)
 
-//        addCellTabla(tablaDesgloseBody, new Paragraph("Alquiler y depreciación", times10normal), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceAlquiler, minFractionDigits:
-//                2, maxFractionDigits: 2, format: "##,##0", locale: "ec"), times10normal), prmsDerecha)
-//        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-
-        addCellTabla(tablaDesgloseBody, new Paragraph("Dirección de la Obra", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph("Alquiler y depreciación", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosObra, minFractionDigits:
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceAlquiler, minFractionDigits:
                 2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
@@ -2732,33 +2715,15 @@ class Reportes2Controller {
                 2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
-        addCellTabla(tablaDesgloseBody, new Paragraph("Locales Provisionales", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph("Cargos Profesionales", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceAlquiler, minFractionDigits:
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceProfesionales, minFractionDigits:
                 2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
-        addCellTabla(tablaDesgloseBody, new Paragraph("Vehículos", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph("Materiales de consumo y mantenimiento", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosVehiculos, minFractionDigits:
-                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-        addCellTabla(tablaDesgloseBody, new Paragraph("Servicios Públicos", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosTimbresProvinciales, minFractionDigits:
-                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-        addCellTabla(tablaDesgloseBody, new Paragraph("Promoción", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosPromocion, minFractionDigits:
-                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-        addCellTabla(tablaDesgloseBody, new Paragraph("Garantías", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosGarantias, minFractionDigits:
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosMantenimiento, minFractionDigits:
                 2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
@@ -2768,13 +2733,7 @@ class Reportes2Controller {
                 2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
-        addCellTabla(tablaDesgloseBody, new Paragraph("Costos Financieros", times10normal), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosCostosFinancieros, minFractionDigits:
-                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-        addCellTabla(tablaDesgloseBody, new Paragraph("Prevención de Accidentes", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph("Seguridad", times10normal), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceSeguridad, minFractionDigits:
                 2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
@@ -2785,10 +2744,61 @@ class Reportes2Controller {
         addCellTabla(tablaDesgloseBody, new Paragraph("_______"), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
-        addCellTabla(tablaDesgloseBody, new Paragraph("Gastos Administración de Obra", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph("Gastos Administración Central", times10bold), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceGastosGenerales, minFractionDigits:
                 2, maxFractionDigits: 2, format: "##,##0"), times10bold), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph("Cargos de campo", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCampo, minFractionDigits:
+                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph("Financiamiento", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosCostosFinancieros, minFractionDigits:
+                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph("Garantías", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCostosIndirectosGarantias, minFractionDigits:
+                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph("Campamento", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceCampamento, minFractionDigits:
+                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph("_______"), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph("Gasto Administración de Campo", times10bold), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.indiceGastoObra, minFractionDigits:
+                2, maxFractionDigits: 2, format: "##,##0"), times10bold), prmsDerecha)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
+
+        addCellTabla(tablaDesgloseBody, new Paragraph("Imprevistos", times10normal), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
+        addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.impreso, minFractionDigits:
+                2, maxFractionDigits: 2, format: "##,##0"), times10normal), prmsDerecha)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
         addCellTabla(tablaDesgloseBody, new Paragraph("Utilidad", times10normal), prmsHeaderHoja)
@@ -2806,11 +2816,6 @@ class Reportes2Controller {
         addCellTabla(tablaDesgloseBody, new Paragraph(" : "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(g.formatNumber(number: obra?.totales, minFractionDigits:
                 2, maxFractionDigits: 2, format: "##,##0"), times10bold), prmsDerecha)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
-        addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
         addCellTabla(tablaDesgloseBody, new Paragraph(" "), prmsHeaderHoja)
 
         document.add(tablaDesgloseBody)
