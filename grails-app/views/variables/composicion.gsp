@@ -271,19 +271,23 @@
 
                     $("#imprimirPdf").click(function () {
                         if($("#btnTodos").hasClass("active")){
-                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicion',id: obra?.id)}?sp=${sub}"
+                            %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicion',id: obra?.id)}?sp=${sub}"--}%
+                            location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicion',id: obra?.id)}?sp=${sub}"
                         }
 
                         if($("#btnMateriales").hasClass("active")){
-                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"
+                            %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"--}%
+                            location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicionMat',id: obra?.id)}?sp=${sub}"
                         }
 
                         if($("#btnManoObra").hasClass("active")){
-                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"
+                            %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"--}%
+                            location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicionMano',id: obra?.id)}?sp=${sub}"
                         }
 
                         if($("#btnEquipos").hasClass("active")){
-                            location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"
+                            %{--location.href = "${g.createLink(controller: 'reportes' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"--}%
+                            location.href = "${g.createLink(controller: 'reportes6' ,action: 'reporteComposicionEq',id: obra?.id)}?sp=${sub}"
                         }
                     });
 
