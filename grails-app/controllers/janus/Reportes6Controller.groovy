@@ -2487,11 +2487,10 @@ class Reportes6Controller {
         tablaTotales1.setWidthPercentage(100)
         tablaTotales1.setWidths(arregloEnteros([90, 10]))
 
-        def totalCD = valorTotal + valorTotalMano + valorTotalEquipos + total4 + total5 + total6 + total7
+        def totalCD = (valorTotal ?: 0) + (valorTotalMano ?: 0) + (valorTotalEquipos ?: 0) + (total4 ?: 0) + (total5 ?: 0) + (total6?: 0) + (total7 ?: 0)
         println "total: ${totalCD}"
         addCellTabla(tablaTotales1, new Paragraph("TOTAL COSTO DIRECTO:", times10bold), prmsCellDerecha)
-        addCellTabla(tablaTotales1, new Paragraph(g.formatNumber(number: (valorTotal + valorTotalMano + valorTotalEquipos +
-                total4 + total5 + total6 + total7), minFractionDigits:
+        addCellTabla(tablaTotales1, new Paragraph(g.formatNumber(number: (totalCD), minFractionDigits:
                 3, maxFractionDigits: 3, format: "##,##0", locale: "ec"), times10bold), prmsNum)
 
         addCellTabla(tablaComposicion7, new Paragraph(" ", times10bold), prmsNum)
