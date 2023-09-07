@@ -264,7 +264,7 @@
             </div>
 
             <div class="titulo bold tac">
-                G.A.D LOS RÍOS
+                G.A.D PROVINCIA DE PICHINCHA
             </div>
 
             <div class="titulo bold tac upper">

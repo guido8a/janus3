@@ -1104,7 +1104,7 @@ class Reportes3Controller {
             header =
                     "  <div class=\"tituloPdf\">\n" +
                             "                <p style=\"font-size: 18px\">\n" +
-                            "                    <b>G.A.D. LOS RÍOS</b>\n" +
+                            "                    <b>G.A.D. PROVINCIA DE PICHINCHA</b>\n" +
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
@@ -1391,7 +1391,7 @@ class Reportes3Controller {
             header =
                     "  <div class=\"tituloPdf tituloHeader\">\n" +
                             "                <p style=\"font-size: 18px\">\n" +
-                            "                    <b>G.A.D. LOS RÍOS</b>\n" +
+                            "                    <b>G.A.D. PROVINCIA DE PICHINCHA</b>\n" +
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
@@ -2803,7 +2803,7 @@ class Reportes3Controller {
                 header =
                         "  <div class=\"tituloPdf tituloHeader\" >\n" +
                                 "                <p style=\"font-size: 18px\">\n" +
-                                "                    <b>G.A.D. LOS RÍOS</b>\n" +
+                                "                    <b>G.A.D. PROVINCIA DE PICHINCHA</b>\n" +
                                 "                </p>\n" +
                                 "\n" +
                                 "                <p style=\"font-size: 14px\">\n" +
