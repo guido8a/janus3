@@ -4173,7 +4173,7 @@ class ReportesController {
         headers.setAlignment(Element.ALIGN_CENTER);
         headers.add(new Paragraph(auxiliar.titulo, times14bold));
 //        headers.add(new Paragraph(auxiliar?.memo1, times12bold));
-        headers.add(new Paragraph("DCP. - COORDINACIÓN DE RÉGINMEN DE FIJACIÓN DE COSTOS", times12bold));
+        headers.add(new Paragraph("DCP. - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS", times12bold));
         headers.add(new Paragraph("INFORME", times12bold))
 
         Paragraph txtIzq = new Paragraph();
@@ -4189,7 +4189,7 @@ class ReportesController {
             addCellTabla(tablaCabecera, new Paragraph("Informe N°:", times10bold), prmsHeaderHoja)
         } else {
             addCellTabla(tablaCabecera, new Paragraph(" ", times8bold), prmsHeaderHoja)
-            addCellTabla(tablaCabecera, new Paragraph("Informe N°: " + obra?.memoSalida, times10bold), prmsHeaderHoja)
+            addCellTabla(tablaCabecera, new Paragraph("Informe N°: " + obra?.oficioSalida, times10bold), prmsHeaderHoja)
         }
 
         PdfPTable tablaQuito = new PdfPTable(2);
