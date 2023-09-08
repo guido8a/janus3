@@ -181,7 +181,7 @@
                 <div class="col-md-4">
                     <g:select name="listaVolumen0.id" from="${janus.Lugar.findAll('from Lugar where tipoLista=3')}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen0?.id}"
-                              noSelection="['null': 'Seleccione...']" style="margin-left: -20px;"/>
+                              style="margin-left: -20px;"/>
                 </div>
 
             </div>
@@ -207,7 +207,7 @@
                 <div class="col-md-4">
                     <g:select name="listaVolumen1.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=4')}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen1?.id}"
-                              noSelection="['null': 'Seleccione...']" style="margin-left: -20px;"/>
+                              style="margin-left: -20px;"/>
                 </div>
 
             </div>
@@ -224,7 +224,7 @@
                 <div class="col-md-4">
                     <g:select name="listaVolumen2.id" from="${janus.Lugar.findAll('from Lugar  where tipoLista=5')}"
                               optionKey="id" optionValue="descripcion" value="${obra?.listaVolumen2?.id}"
-                              noSelection="['null': 'Seleccione...']" style="margin-left: -20px;"/>
+                              style="margin-left: -20px;"/>
                 </div>
 
             </div>

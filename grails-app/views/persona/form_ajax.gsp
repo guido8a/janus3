@@ -1,5 +1,7 @@
 <%@ page import="seguridad.Prfl; seguridad.Persona" %>
 
+%{--<asset:stylesheet src="/summernote-0.8.18-dist/summernote.min.css"/>--}%
+%{--<asset:javascript src="/summernote-0.8.18-dist/summernote.min.js"/>--}%
 
 <style type="text/css">
 
@@ -247,6 +249,15 @@ option[selected]{
     </div>
 
     <script type="text/javascript">
+
+        // $(document).ready(function() {
+        //     $('#direccion').summernote({
+        //         spellCheck: true,
+        //         disableGrammar: true
+        //     });
+        // });
+
+
         var validator = $("#frmPersona").validate({
             errorClass    : "help-block",
             errorPlacement: function (error, element) {
