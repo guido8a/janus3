@@ -210,11 +210,11 @@
     <div id="listaRbro" style="overflow: hidden">
         <fieldset class="borde" style="border-radius: 4px">
             <div class="row-fluid" style="margin-left: 20px">
-                <div class="col-md-2">
-                    Tipo
-                    <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"
-                              optionValue="value"/>
-                </div>
+%{--                <div class="col-md-2">--}%
+%{--                    Tipo--}%
+%{--                    <g:select name="buscarTipo" class="buscarPor col-md-12" from="${listaRbro}" optionKey="key"--}%
+%{--                              optionValue="value"/>--}%
+%{--                </div>--}%
                 <div class="col-md-2">
                     Buscar Por
                     <g:select name="buscarPor" class="buscarPor col-md-12" from="${listaItems}" optionKey="key"
@@ -224,7 +224,9 @@
                 <g:textField name="buscarCriterio" id="criterioCriterio" style="width: 80%"/>
                 </div>
                 <div class="col-md-2">Ordenado por
-                <g:select name="ordenar" class="ordenar" from="${listaRbro}" style="width: 100%" optionKey="key"
+%{--                <g:select name="ordenar" class="ordenar" from="${listaRbro}" style="width: 100%" optionKey="key"--}%
+%{--                          optionValue="value"/>--}%
+                <g:select name="ordenar" class="ordenar" from="${listaItems}" style="width: 100%" optionKey="key"
                           optionValue="value"/>
                 </div>
                 <div class="col-md-2" style="margin-top: 6px">
@@ -349,7 +351,7 @@
 
         function buscaRubros() {
             var buscarPor = $("#buscarPor").val();
-            var tipo = $("#buscarTipo").val();
+            // var tipo = $("#buscarTipo").val();
             var criterio = $("#criterioCriterio").val();
             var ordenar = $("#ordenar").val();
             $.ajax({
@@ -357,16 +359,23 @@
                 url: "${createLink(controller: 'volumenObra', action:'listaRubros')}",
                 data: {
                     buscarPor: buscarPor,
-                    buscarTipo: tipo,
+                    // buscarTipo: tipo,
                     criterio: criterio,
                     ordenar: ordenar
-
                 },
                 success: function (msg) {
                     $("#divTablaRbro").html(msg);
                 }
             });
         }
+
+        $("#criterioCriterio").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                ev.preventDefault();
+                buscaRubros();
+                return false;
+            }
+        });
 
         $("#reporteGrupos").click(function () {
             location.href = "${g.createLink(controller: 'reportes',action: 'reporteSubgrupos',id: obra?.id)}"
