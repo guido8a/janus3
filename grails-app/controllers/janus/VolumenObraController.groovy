@@ -407,7 +407,7 @@ class VolumenObraController {
 
         def select = "select item__id, itemnmbr, itemcdgo, unddcdgo " +
                 "from item, undd, dprt, sbgr "
-        def txwh = "where tpit__id = 2 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
+        def txwh = "where tpit__id = ${params.buscarTipo} and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
                 "sbgr.sbgr__id = dprt.sbgr__id "
         def sqlTx = ""
         def item = listaRbro[params.buscarTipo.toInteger()-1]
