@@ -3564,8 +3564,6 @@ class PlanillaController {
                     monto          : dp.monto,
                     montoIva       : dp.montoIva,
                     montoIndirectos: dp.montoIndirectos,
-//                    indirectos     : dp.indirectos,
-//                    total          : dp.montoIva + dp.montoIndirectos
                     total          : dp.monto + dp.montoIndirectos
             ])
         }
@@ -3578,13 +3576,8 @@ class PlanillaController {
 
         def totalAnterior = anteriores.size() > 0 ? anteriores.sum { it.valor } : 0
 
-//        def indirectos = detalles.size() > 0 ? detalles.first().indirectos : 21
         def max = contrato.monto * 0.1
 
-        /**
-         *   máximo valor a considerar de las planillas costo + porcentaje desde el 20-mar-2017 --> 2%
-         */
-//        if(new Date() > Date.parse('dd-MM-yyy', '20-03-2017')) {
         if (contrato.fechaSubscripcion > Date.parse('dd-MM-yyy', '20-03-2017')) {
             max = contrato.monto * 0.02
         }
@@ -3595,15 +3588,12 @@ class PlanillaController {
         max = Math.round(max * 100) / 100
 
         def json = new JsonBuilder(dets)
-//        println json.toPrettyString()
-        println "max: $max, totalAnterior: $totalAnterior, anteriores: ${anteriores.valor} "
 
-
+//        println "max: $max, totalAnterior: $totalAnterior, anteriores: ${anteriores.valor}, json: ${json} "
 
         return [planilla: planilla, obra: obra, contrato: contrato,
                 editable: editable, detalles: json, iva: iva, detallesSize: detalles.size(), max: max]
     }
-
 
     def saveDetalle() {
 //        println "saveDetalle $params"
