@@ -134,7 +134,7 @@
                                         Planilla Asociada
                                     </label>
                                     <span class="col-md-3 hide planillaAsociada">
-                                        <g:select name="asociada" from="${planillas}" optionKey="id" style="width: 600px"
+                                        <g:select name="asociada" class="form-control" from="${planillas}" optionKey="id" style="width: 600px"
                                                   value="${planillaInstance?.padreCosto?.id}"  noSelection="['null': 'Sin planilla asociada']"/>
                                     </span>
                                 </span>
@@ -364,312 +364,6 @@
                             </span>
                         </div>
 
-
-
-
-                        %{--                        <div class="row">--}%
-                        %{--                            <div class='span2 formato'>--}%
-                        %{--                                Tipo de Planilla--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span10">--}%
-                        %{--                                <g:if test="${planillaInstance?.id}">--}%
-                        %{--                                    <g:if test="${planillaInstance?.tipoPlanilla.toString() != 'A'}">--}%
-                        %{--                                        ${planillaInstance?.tipoPlanilla?.nombre} <span--}%
-                        %{--                                            style="margin-left: 290px;">Planillado del: ${planillaInstance?.fechaInicio?.format('dd-MM-yyyy')} Hasta: ${planillaInstance?.fechaFin?.format('dd-MM-yyyy')}</span>--}%
-                        %{--                                    </g:if>--}%
-                        %{--                                    <g:else>--}%
-                        %{--                                        ${planillaInstance?.tipoPlanilla?.nombre}--}%
-                        %{--                                    </g:else>--}%
-                        %{--                                </g:if>--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4">--}%
-                        %{--                                <g:if test="${!planillaInstance?.id}">--}%
-                        %{--                                    <g:select id="tipoPlanilla" name="tipoPlanilla.id" from="${tipos}" optionKey="id"--}%
-                        %{--                                              optionValue="nombre"--}%
-                        %{--                                              class="many-to-one span3 required"--}%
-                        %{--                                              value="${planillaInstance?.tipoPlanilla?.id}"/>--}%
-                        %{--                                    <span class="mandatory">*</span>--}%
-
-                        %{--                                    <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                                </g:if>--}%
-                        %{--                            </div>--}%
-                        %{--                            <g:if test="${!planillaInstance?.id && !(tipos.find { it.codigo == 'A' })}">--}%
-
-                        %{--                                <div class="span2 formato periodo hide">--}%
-                        %{--                                    Periodo--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span4 periodo hide">--}%
-                        %{--                                    <g:select id="periodoPlanilla" name="periodoPlanilla" from="${periodos}"--}%
-                        %{--                                              optionKey="key" class="many-to-one span3"--}%
-                        %{--                                              optionValue="value"/>--}%
-                        %{--                                    <span class="mandatory">*</span>--}%
-
-                        %{--                                    <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                                </div>--}%
-                        %{--                            </g:if>--}%
-                        %{--                        </div>--}%
-
-
-                        %{--                        <div class="row">--}%
-                        %{--                            <g:if test="${planillaInstance?.id && planillaInstance?.tipoPlanilla?.codigo == "C"}">--}%
-                        %{--                                <div class='span2 formato hide planillaAsociada'>--}%
-                        %{--                                    Planilla Asociada--}%
-                        %{--                                </div>--}%
-                        %{--                                <div class="span10 hide planillaAsociada">--}%
-                        %{--                                    <g:select name="asociada" from="${planillas}" optionKey="id" style="width: 600px"--}%
-                        %{--                                              value="${planillaInstance?.padreCosto?.id}"  noSelection="['null': 'Sin planilla asociada']"/>--}%
-                        %{--                                </div>--}%
-                        %{--                            </g:if>--}%
-                        %{--                        </div>--}%
-
-
-                        %{--                        <div class="row">--}%
-
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                Número planilla--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4">--}%
-                        %{--                                <g:textField name="numero" maxlength="28" class="span3 required allCaps"--}%
-                        %{--                                             value="${fieldValue(bean: planillaInstance, field: 'numero')}"/>--}%
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                Fiscalizador--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4">--}%
-                        %{--                                ${contrato.fiscalizador?.titulo} ${contrato.fiscalizador?.nombre} ${contrato.fiscalizador?.apellido}--}%
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-                        %{--                        </div>--}%
-
-                        %{--                        <div class="row">--}%
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                <g:if test="${tipos.find { it.codigo == 'A' }}">--}%
-                        %{--                                    Memo de anticipo--}%
-                        %{--                                </g:if>--}%
-                        %{--                                <g:else>--}%
-                        %{--                                    Oficio de entrada--}%
-                        %{--                                </g:else>--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4">--}%
-                        %{--                                <g:textField name="oficioEntradaPlanilla" class="span3 required allCaps"--}%
-                        %{--                                             value="${planillaInstance.oficioEntradaPlanilla}" maxlength="20"/>--}%
-                        %{--                                <span class="mandatory">*</span>--}%
-
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                Fecha de--}%
-                        %{--                                <g:if test="${tipos.find { it.codigo == 'A' }}">--}%
-                        %{--                                    memo de anticipo--}%
-                        %{--                                </g:if>--}%
-                        %{--                                <g:else>--}%
-                        %{--                                    oficio de entrada--}%
-                        %{--                                </g:else>--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4">--}%
-                        %{--                                <elm:datepicker name="fechaOficioEntradaPlanilla" class=" span3 required"--}%
-                        %{--                                                value="${planillaInstance?.fechaOficioEntradaPlanilla}"--}%
-                        %{--                                                minDate="new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0)"--}%
-                        %{--                                                maxDate="new Date(${fechaMax.format('yyyy')},${fechaMax.format('MM').toInteger() - 1},${fechaMax.format('dd')},0,0,0,0)"/>--}%
-                        %{--                                <span class="mandatory">*</span>--}%
-
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-                        %{--                        </div>--}%
-
-                        %{--                        <div class="row">--}%
-
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                Fecha de Aprobación--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4">--}%
-                        %{--                                <elm:datepicker name="fechaIngreso" class=" span3 required" onSelect="fechas"--}%
-                        %{--                                                value="${planillaInstance?.fechaIngreso}"--}%
-                        %{--                                                minDate="new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0)"--}%
-                        %{--                                                maxDate="new Date(${fechaMax.format('yyyy')},${fechaMax.format('MM').toInteger() - 1},${fechaMax.format('dd')},0,0,0,0)"/>--}%
-                        %{--                                <span class="mandatory">*</span>--}%
-
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span2 hide presentacion formato">--}%
-                        %{--                                Fecha Presentacion--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4 hide presentacion">--}%
-                        %{--                                <elm:datepicker name="fechaPresentacion" class=" span3 required"--}%
-                        %{--                                                value="${planillaInstance?.fechaPresentacion}"--}%
-                        %{--                                                minDate="new Date(${contrato.fechaSubscripcion.format('yyyy')},${contrato.fechaSubscripcion.format('MM').toInteger() - 1},${contrato.fechaSubscripcion.format('dd')},0,0,0,0)"--}%
-                        %{--                                                maxDate="new Date(${fechaMax.format('yyyy')},${fechaMax.format('MM').toInteger() - 1},${fechaMax.format('dd')},0,0,0,0)"/>--}%
-                        %{--                                <span class="mandatory">*</span>--}%
-
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-                        %{--                        </div>--}%
-
-
-                        %{--                        <div class="row" style="margin-top: 10px; margin-bottom: 10px;">--}%
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                Periodo para el reajuste--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span4">--}%
-                        %{--                                <g:select name="periodoIndices.id"--}%
-                        %{--                                          from="${janus.ejecucion.PeriodosInec.list([sort: 'fechaFin', order: 'desc', max: 20])}"--}%
-                        %{--                                          class="span3" optionKey="id" style="width: 100%" value="${planillaInstance.periodoIndices?.id}"></g:select>--}%
-
-                        %{--                            </div>--}%
-
-
-                        %{--                            <g:if test="${!(esAnticipo) && planillaInstance?.tipoContrato != 'C' && hayCmpl}">--}%
-                        %{--                                <div class="span2 formato text-info">--}%
-                        %{--                                    Generar planilla para el Complementario:--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span1">--}%
-                        %{--                                    <g:select name="complementario" from="${['S': 'Generar Planilla', 'E': 'No']}"--}%
-                        %{--                                              optionKey="key" optionValue="value" class="form-control text-info"--}%
-                        %{--                                              value="${planillaInstance?.tipoContrato}" />--}%
-                        %{--                                </div>--}%
-                        %{--                            </g:if>--}%
-                        %{--                        </div>--}%
-
-                        %{--                        <g:if test="${!(esAnticipo || planillaInstance?.tipoPlanilla?.codigo == 'A')}">   --}%%{-- no es anticipo--}%
-
-                        %{--                            <div class="row">--}%
-                        %{--                                <div class='span2 formato'>--}%
-                        %{--                                    Fórmula Polinómica a utilizar--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span6">--}%
-                        %{--                                    <g:select id="formulaPolinomicaReajuste" name="formulaPolinomicaReajuste.id" from="${formulas}" optionKey="id"--}%
-                        %{--                                              optionValue="descripcion"--}%
-                        %{--                                              class="many-to-one span5 required"--}%
-                        %{--                                              value="${planillaInstance?.formulaPolinomicaReajuste?.id}"/>--}%
-                        %{--                                    <span class="mandatory">*</span>--}%
-
-                        %{--                                    <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                                </div>--}%
-                        %{--                            </div>--}%
-
-
-                        %{--                            <div class="row hide" style="margin-bottom: 10px;" id="divMultaDisp">--}%
-                        %{--                                <div class='span2 formato'>--}%
-                        %{--                                    Multa por no acatar las disposiciones del fiscalizador--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span4">--}%
-                        %{--                                    <g:field type="number" name="diasMultaDisposiciones"--}%
-                        %{--                                             class="input-mini required digits"--}%
-                        %{--                                             value="${planillaInstance.diasMultaDisposiciones}" maxlength="3"/> días--}%
-
-                        %{--                                </div>--}%
-
-                        %{--                                <div class='span2 formato'>--}%
-                        %{--                                    Avance físico--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span4">--}%
-                        %{--                                    <g:field type="number" name="avanceFisico" class="input-mini required number"--}%
-                        %{--                                             value="${planillaInstance.avanceFisico}" max="100"/> %--}%
-                        %{--                                    <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                                </div>--}%
-                        %{--                            </div>--}%
-                        %{--                        </g:if>--}%
-
-                        %{--                        <g:if test="${esAnticipo}">--}%
-                        %{--                            <div class="row" style="margin-bottom: 10px;">--}%
-                        %{--                                <div class='span2 formato'>--}%
-                        %{--                                    Valor--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span4" id="divAnticipo">--}%
-
-                        %{--                                </div>--}%
-                        %{--                            </div>--}%
-                        %{--                        </g:if>--}%
-
-                        %{--                        <div class="row">--}%
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                Descripción--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span10">--}%
-                        %{--                                <g:textArea name="descripcion" cols="40" rows="2" maxlength="254" class="span9 required"--}%
-                        %{--                                            value="${planillaInstance?.descripcion}" style="resize: none;"/>--}%
-                        %{--                                <span class="mandatory">*</span>--}%
-
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-                        %{--                        </div>--}%
-                        %{-- --}%
-                        %{--                        <g:if test="${!esAnticipo}">--}%
-                        %{--                            <div class="row hide" style="margin-bottom: 10px;" id="divMulta">--}%
-                        %{--                                <div class='span2 formato'>--}%
-                        %{--                                    Multa--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span5">--}%
-                        %{--                                    <input type="text" name="descripcionMulta"--}%
-                        %{--                                           value="${planillaInstance?.descripcionMulta}" style="width: 100%">--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class='span1 formato'>--}%
-                        %{--                                    Monto--}%
-                        %{--                                </div>--}%
-
-                        %{--                                <div class="span3">--}%
-                        %{--                                    <input type="text" name="multaEspecial" value="${planillaInstance?.multaEspecial}">--}%
-                        %{--                                </div>--}%
-                        %{--                            </div>--}%
-                        %{--                        </g:if>--}%
-
-
-                        %{--                        <div class="row">--}%
-                        %{--                            <div class="span2 formato">--}%
-                        %{--                                Observaciones--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span10">--}%
-                        %{--                                <g:textArea name="observaciones" maxlength="127" class="span9"--}%
-                        %{--                                            value="${planillaInstance?.observaciones}"/>--}%
-
-                        %{--                                <p class="help-block ui-helper-hidden"></p>--}%
-                        %{--                            </div>--}%
-
-                        %{--                        </div>--}%
-
-                        %{--                        <div class="row" style="margin-bottom: 10px;" id="divNoPago">--}%
-                        %{--                            <div class='span2 formato'>--}%
-                        %{--                                Nota de descuento--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span6">--}%
-                        %{--                                <g:textArea maxlength="255" name="noPago" class="span6"--}%
-                        %{--                                            value="${planillaInstance?.noPago}"/>--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class='span1 formato'>--}%
-                        %{--                                Valor--}%
-                        %{--                            </div>--}%
-
-                        %{--                            <div class="span3">--}%
-                        %{--                                <input type="text" name="noPagoValor" value="${planillaInstance?.noPagoValor}">--}%
-                        %{--                            </div>--}%
-                        %{--                        </div>--}%
-
-
                     </fieldset>
                 </g:form>
             </g:if>
@@ -740,9 +434,7 @@
         }
     }).on('dp.change', function(e){
         var minDate = new Date(e.date);
-        // if ($.trim($("#fechaPresentacion").val()) === "") {
             $('#fechaPresentacion').data("DateTimePicker").date(moment(minDate).format('DD/MM/YYYY'));
-        // }
     });
 
     function validarNum(ev) {
@@ -802,14 +494,14 @@
         if (tppl === "3" || tppl === "9" || (tp === "3" || tp === "9")) { //avance
             $(".periodo,.presentacion,#divMultaDisp, #divMulta").show();
         } else {
-            $("#divMultaDisp").hide();
-            $("#divMulta").hide();
+            $("#divMultaDisp").addClass('hide');
+            $("#divMulta").addClass('hide');
             if (tppl === "1" || tppl === "2") {
-                $(".periodo").hide();
-                $(".presentacion").hide();
+                $(".periodo").addClass('hide');
+                $(".presentacion").addClass('hide');
             } else if (tppl === "5" || tppl === "6") {
-                $(".periodo").hide();
-                $(".presentacion").show();
+                $(".periodo").addClass('hide');
+                $(".presentacion").removeClass('hide');
             }
         }
     }
@@ -818,12 +510,12 @@
         var tppl = $("#tipoPlanilla").val();
 
         if(${planillaInstance?.id && planillaInstance?.tipoPlanilla?.codigo == 'C'}){
-            $(".planillaAsociada").show();
+            $(".planillaAsociada").removeClass('hide');
         }else{
             if(tppl === '5'){
-                $(".planillaAsociada").show();
+                $(".planillaAsociada").removeClass('hide');
             }else{
-                $(".planillaAsociada").hide();
+                $(".planillaAsociada").addClass('hide');
             }
         }
     }
@@ -853,38 +545,6 @@
             }
             // return submitFormPlanilla();
         });
-
-
-
-        // function submitFormPlanilla() {
-        //     var $form = $("#frmSave-Planilla");
-        //     if ($form.valid()) {
-        //         var data = $form.serialize();
-        //         var dialog = cargarLoader("Guardando...");
-        //         $.ajax({
-        //             type    : "POST",
-        //             url     : $form.attr("action"),
-        //             data    : data,
-        //             success : function (msg) {
-        //                 console.log("msg " + msg)
-        //                 dialog.modal('hide');
-        //                 var parts = msg.split("_");
-        //                 if(parts[0] === 'ok'){
-        //                     log(parts[1], "success");
-        //                     setTimeout(function () {
-        //                         location.reload();
-        //                     }, 800);
-        //                 }else{
-        //                     bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
-        //                     return false;
-        //                 }
-        //             }
-        //         });
-        //     } else {
-        //         return false;
-        //     }
-        // }
-
 
         $("#tipoPlanilla").change(function () {
             var tp = $(this).val();
