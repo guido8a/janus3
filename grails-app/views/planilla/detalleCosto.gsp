@@ -152,7 +152,7 @@
 
 <script type="text/javascript">
 
-    var iva = ${iva*0.01};
+    var iva = ${iva}/100;
     var anterior = 0;
 
     function initRows() {
@@ -506,6 +506,7 @@
                         updateRow(data);
                         reset();
                         spinner.remove();
+                        location.reload();
                     }
                 }
             });
@@ -563,6 +564,7 @@
                                 spinner.remove();
                                 $("#btnAdd").removeClass('hide');
                                 updateTotal();
+                                location.reload();
                             } else {
                                 bootbox.dialog({
                                     id      : "dlgAlerta2",

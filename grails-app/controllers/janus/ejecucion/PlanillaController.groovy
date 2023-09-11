@@ -3517,11 +3517,12 @@ class PlanillaController {
     }
 
     def addDetalleCosto() {
-//        println "params detalle costo" + params
+        println "params detalle costo" + params
         def detalle = new DetallePlanillaCosto()
         if (params.id) {
             detalle = DetallePlanillaCosto.get(params.id)
         }
+        params.cantidad = params.cantidad.toDouble();
         detalle.properties = params
         if (detalle.save(flush: true)) {
             def planilla = Planilla.get(params.planilla.id)
