@@ -34,7 +34,7 @@
                 Tipo Tabla
             </label>
             <span class="col-md-8">
-                <g:select name="tipoTabla" from="${["RBR", "DTP", "OAD", "OCP", "RRP", "RGV", "DTA", "DTS", "RPR"]}" class="form-control" value="${parrafoInstance?.tipoTabla}" valueMessagePrefix="parrafo.tipoTabla"/>
+                <g:select name="tipoTabla" from="${["", "RBR", "DTP", "OAD", "OCP", "RRP", "RGV", "DTA", "DTS", "RPR"]}" class="form-control" value="${parrafoInstance?.tipoTabla}" valueMessagePrefix="parrafo.tipoTabla"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
