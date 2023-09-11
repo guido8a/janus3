@@ -27,7 +27,7 @@
                 Fecha de fin (opcional)
             </label>
             <span class="col-md-3">
-                <input aria-label="" name="fin" id='fin' type='text' class="form-control required dateEC" />
+                <input aria-label="" name="fin" id='fin' type='text' class="form-control dateEC" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
             <span class="col-md-6">
@@ -187,11 +187,6 @@
         updateDias();
     });
 
-    // function daydiff(first, second) {
-    //     console.log("--> " + second - first)
-    //     return (second - first) / (1000 * 60 * 60 * 24)
-    // }
-
     function updateDias() {
         var ini = $("#ini").val();
         var fin = $("#fin").val();
@@ -208,19 +203,6 @@
             }
         });
 
-        // if (ini && fin) {
-        //     var dif = daydiff(f1, f2);
-        //     if (dif < 0) {
-        //         dif = 0;
-        //     }
-        //     $("#diasSuspension").text(dif + " día" + (dif === 1 ? "" : "s"));
-        // }
-        // if (ini) {
-        //     $("#fin").datepicker("option", "minDate", ini.add(1).days());
-        // }
-        // if (fin) {
-        //     $("#inicio").datepicker("option", "maxDate", fin.add(-1).days());
-        // }
     }
 
 
