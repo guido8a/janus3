@@ -320,7 +320,7 @@ class ContratoController {
             planilla = Planilla.countByContrato(contrato)
             complementario = Contrato.findByPadre(contrato)
 //            def f1 = FormulaPolinomicaReajuste.get(1).refresh()
-            def f1 = FormulaPolinomicaReajuste.findByIdGreaterThan(0)?.refresh()
+            //def f1 = FormulaPolinomicaReajuste.findByIdGreaterThan(0)?.refresh()
             def fp = FormulaPolinomicaReajuste.countByContratoAndDescripcionIlike(contrato, '%complem%')
 
             def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"]]
