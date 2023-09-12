@@ -651,6 +651,9 @@ class ActaController {
 
         if(params.id){
             def parrafo = Parrafo.get(params.id)
+
+            params.titulo = params.contenido.replaceAll("<br>", "")
+
             parrafo.properties = params
 
             if(!parrafo.save(flush:true)){
@@ -675,6 +678,9 @@ class ActaController {
 
         if(params.id){
             def seccion = Seccion.get(params.id)
+
+            params.titulo = params.titulo.replaceAll("<br>", "")
+
             seccion.properties = params
 
             if(!seccion.save(flush:true)){
