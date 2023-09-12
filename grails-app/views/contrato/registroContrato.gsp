@@ -913,57 +913,6 @@
                         }
                     }
                 });
-
-
-                %{--$.box({--}%
-                %{--    imageClass : "box_info",--}%
-                %{--    title      : "Confirmación",--}%
-                %{--    text       : "Está seguro que desea integrar el cronograma del contrato complementario en el cronograma del contrato: ${contrato?.codigo} ?",--}%
-                %{--    iconClose  : false,--}%
-                %{--    dialog     : {--}%
-                %{--        width         : 400,--}%
-                %{--        resizable     : false,--}%
-                %{--        draggable     : false,--}%
-                %{--        closeOnEscape : false,--}%
-                %{--        buttons       : {--}%
-                %{--            "Aceptar" : function () {--}%
-                %{--                $.ajax({--}%
-                %{--                    type    : "POST",--}%
-                %{--                    url     : "${createLink(controller: 'contrato', action: 'integrarCrono')}",--}%
-                %{--                    data    :  {--}%
-                %{--                        id: '${contrato?.id}',--}%
-                %{--                        comp: complementario--}%
-                %{--                    },--}%
-                %{--                    success : function (msg) {--}%
-                %{--                        var parts = msg.split("_");--}%
-                %{--                        if(parts[0] === 'no'){--}%
-                %{--                            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])--}%
-                %{--                        } else {--}%
-                %{--                            var b = bootbox.dialog({--}%
-                %{--                                id      : "dlgCreateEdit",--}%
-                %{--                                title   : "Integrado",--}%
-                %{--                                message : "<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1],--}%
-                %{--                                buttons : {--}%
-                %{--                                    cancelar : {--}%
-                %{--                                        label     : "Aceptar",--}%
-                %{--                                        className : "btn-primary",--}%
-                %{--                                        callback  : function () {--}%
-                %{--                                            $("#integrarCronoDialog").dialog("close");--}%
-                %{--                                        }--}%
-                %{--                                    }--}%
-                %{--                                } //buttons--}%
-                %{--                            }); //dialog--}%
-                %{--                        }--}%
-                %{--                        location.reload();--}%
-                %{--                    }--}%
-                %{--                });--}%
-                %{--            },--}%
-                %{--            "Cancelar" : function () {--}%
-                %{--                $("#integrarCronoDialog").dialog("close");--}%
-                %{--            }--}%
-                %{--        }--}%
-                %{--    }--}%
-                %{--});--}%
             },
             "Cancelar" : function () {
                 $("#integrarCronoDialog").dialog("close");
