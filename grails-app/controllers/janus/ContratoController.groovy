@@ -324,8 +324,8 @@ class ContratoController {
             def fp = FormulaPolinomicaReajuste.countByContratoAndDescripcionIlike(contrato, '%complem%')
 
             def campos = ["codigo": ["Código", "string"], "nombre": ["Nombre", "string"]]
-            def v1 =  VolumenContrato.findByIdGreaterThan(0)
-            if(v1) v1.refresh()
+            //def v1 =  VolumenContrato.findByIdGreaterThan(0)
+            //if(v1) v1.refresh()
             def volumenesCopiados = VolumenContrato.findAllByContratoAndContratoComplementarioIsNotNull(contrato).contratoComplementario.unique()
             def filtrados = []
 
@@ -333,12 +333,7 @@ class ContratoController {
             if(complementario) {
                 println "?????1: ${volumenesCopiados?.id}"
                 //println "?????2: ${Contrato.findAllByIdInList(volumenesCopiados?.id)}"
-                if(volumenesCopiados) {
-                    filtrados = [complementario] - Contrato.findAllByIdInList(volumenesCopiados?.id)
-                } else {
-                    filtrados = []
-                }
-
+                filtrados = [complementario] //- Contrato.findAllByIdInList(volumenesCopiados?.id)
             }
 
             println "campos: $campos, contrato: $contrato, planilla: $planilla, complementario: $complementario, \n " +

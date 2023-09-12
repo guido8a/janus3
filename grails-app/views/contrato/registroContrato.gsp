@@ -594,7 +594,8 @@
 <div id="integrarCronoDialog">
     <fieldset>
         <div class="col-md-4">
-            Seleccione el contrato complementario cuyo cronograma será integrado al cronograma del contrato: <strong>${contrato?.codigo}</strong>
+            Seleccione el contrato complementario cuyo cronograma será integrado al cronograma del contrato:
+            <strong>${contrato?.codigo}</strong>
         </div>
     </fieldset>
     <fieldset style="margin-top: 10px">
@@ -608,7 +609,8 @@
 <div id="integrarCronoDialogNo">
     <fieldset>
         <div class="col-md-12">
-            Ya se ha realizado la integración del cronograma del contrato complementario al contrato: <p><strong>${contrato?.codigo}</strong></p>
+            Ya se ha realizado la integración del cronograma del contrato complementario al contrato:
+            <p><strong>${contrato?.codigo}</strong></p>
         </div>
     </fieldset>
 </div>
@@ -807,6 +809,8 @@
 
     $("#integrarCronograma").click(function () {
         var complementario = $("#contratosComp").val();
+        //var complementario = 12;
+        console.log('complementario', complementario)
         if(complementario){
             $("#integrarCronoDialog").dialog("open")
         }else{
