@@ -887,7 +887,7 @@
                                     comp: complementario
                                 },
                                 success : function (msg) {
-                                    d.modal("hide")
+                                    g.modal("hide")
                                     var parts = msg.split("_");
                                     if(parts[0] === 'no'){
                                         bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + parts[1])
