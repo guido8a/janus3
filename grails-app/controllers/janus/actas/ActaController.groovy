@@ -640,4 +640,53 @@ class ActaController {
         println "actualiza 2"
         cn.execute(sql.toString())
     }
+
+    def formParrafo_ajax (){
+        println("params pff " + params)
+        def parrafo = Parrafo.get(params.id)
+        return [parrafo: parrafo]
+    }
+
+    def saveEditParrafo_ajax () {
+
+        if(params.id){
+            def parrafo = Parrafo.get(params.id)
+            parrafo.properties = params
+
+            if(!parrafo.save(flush:true)){
+                println("error al guardar el parrafo " + parrafo.errors)
+                render "no"
+            }else{
+                render "ok"
+            }
+
+        }else{
+            render "no"
+        }
+    }
+
+    def formSeccion_ajax (){
+        println("params secc " + params)
+        def seccion = Seccion.get(params.id)
+        return [seccion: seccion]
+    }
+
+    def saveEditSeccion_ajax () {
+
+        if(params.id){
+            def seccion = Seccion.get(params.id)
+            seccion.properties = params
+
+            if(!seccion.save(flush:true)){
+                println("error al guardar el seccion " + seccion.errors)
+                render "no"
+            }else{
+                render "ok"
+            }
+
+        }else{
+            render "no"
+        }
+    }
+
 } //fin controller

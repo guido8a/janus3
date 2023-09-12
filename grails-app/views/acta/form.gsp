@@ -611,20 +611,22 @@
         }
 
         var clase = "editable", contentEditable = "contenteditable='true'";
-        if (!isEditable) {
-            clase = "";
-            contentEditable = "";
-        }
+        // if (!isEditable) {
+        //     clase = "";
+        //     contentEditable = "";
+        // }
 
         var $parr = $("<div class='col-md-12 parrafo'></div>");
         var $titulo = $("<div class='col-md-12 tituloParrafo '></div>");
         $("<div class='col-md-1 numero lvl2 bold'>" + num + "." + data.numero + ".-</div>").appendTo($titulo);
-        var $edit = $("<div class='col-md-9 contParrafo " + clase + " ui-corner-all' id='parrafo_" + data.id + "' " + contentEditable + ">" + data.contenido + "</div>").appendTo($titulo);
+        // var $edit = $("<div class='col-md-9 contParrafo " + clase + " ui-corner-all' id='parrafo_" + data.id + "' " + contentEditable + ">" + data.contenido + "</div>").appendTo($titulo);
+        var $edit = $("<div class='col-md-9 contParrafo " + clase + " ui-corner-all' id='parrafo_" + data.id + "' " + ">" + data.contenido + "</div>").appendTo($titulo);
         if (data.tipoTabla) {
             tipoTabla(data.tipoTabla, $titulo);
         }
-        var $btnTabla = $('<a href="#" class="btn btn-xs btn-info" style="margin-left: 10px;"><i class="fa fa-edit"></i> Modificar tabla</a>');
-        var $btnEliminarParrafo = $('<a href="#" class="btn btn-delete btn-xs btn-danger" style="margin-left: 10px;"><i class="fa fa-minus"></i> Eliminar párrafo</a>');
+        var $btnTabla = $('<a href="#" class="btn btn-xs btn-info" style="margin-left: 10px; margin-top: 10px"><i class="fa fa-edit"></i> Modificar</a>');
+        var $btnEliminarParrafo = $('<a href="#" class="btn btn-delete btn-xs btn-danger" style="margin-left: 10px; margin-top: 10px"><i class="fa fa-minus"></i> Eliminar </a>');
+        var $btnEditarParrafo = $('<a href="#" class="btn btn-xs btn-success" style="margin-left: 10px; margin-top: 10px"><i class="fa fa-edit"></i> Editar</a>');
 
         $btnTabla.click(function () {
             $.ajax({
@@ -705,8 +707,67 @@
             return false;
         });
 
+        $btnEditarParrafo.click(function () {
+            $.ajax({
+                type    : "POST",
+                url: "${createLink(controller: 'acta', action:'formParrafo_ajax')}",
+                data    : {
+                    id : data.id
+                },
+                success : function (msg) {
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditP",
+                        title   : "Editar",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return  submitFormEditarParrafo();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+            return false;
+        });
+
+        function submitFormEditarParrafo() {
+            var $form = $("#frmEditarSave");
+            if ($form.valid()) {
+                var url = $form.attr("action");
+                $.ajax({
+                    type    : "POST",
+                    url     : url,
+                    data    : $form.serialize(),
+                    success : function (msg) {
+                        if (msg === 'ok') {
+                            log("Guardado correctamente", "success");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 800);
+                        } else {
+                            log("Error al editar la información", "error");
+                        }
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        }
+
         if (isEditable) {
-            $titulo.append($btnEliminarParrafo).append($btnTabla);
+            $titulo.append($btnEditarParrafo).append($btnEliminarParrafo).append($btnTabla);
         }
         $titulo.appendTo($parr);
         if ($replace) {
@@ -731,19 +792,23 @@
         $("<div class='col-md-1 numero lvl1 bold'>" + data.numero + ".-</div>").appendTo($titulo);
 
         var clase = "editable", contentEditable = "contenteditable='true'";
-        if (!isEditable) {
-            clase = "";
-            contentEditable = "";
-        }
+        // if (!isEditable) {
+        //     clase = "";
+        //     contentEditable = "";
+        // }
 
-        var $edit = $("<div class='col-md-7 lblSeccion " + clase + " ui-corner-all' id='seccion_" + data.id + "' " + contentEditable + ">" + data.titulo + "</div>").appendTo($titulo);
-        var $btnAddParrafo = $('<a href="#" class="btn btn-show btn-info btn-xs pull-right" style="margin-left: 10px;"><i class="fa fa-plus"></i> Agregar párrafo</a>');
+        // var $edit = $("<div class='col-md-7 lblSeccion " + clase + " ui-corner-all' id='seccion_" + data.id + "' " + contentEditable + ">" + data.titulo + "</div>").appendTo($titulo);
+        var $edit = $("<div class='col-md-7 lblSeccion " + clase + " ui-corner-all' id='seccion_" + data.id + "' " + ">" + data.titulo + "</div>").appendTo($titulo);
+        var $btnAddParrafo = $('<a href="#" class="btn btn-show btn-warning btn-xs pull-right" style="margin-left: 10px;"><i class="fa fa-plus"></i> Agregar párrafo</a>');
         var $btnEliminarSeccion = $('<a href="#" class="btn btn-danger btn-xs pull-right" style="margin-left: 10px;"><i class="fa fa-minus"></i> Eliminar sección</a>');
+        var $btnEditarSeccion = $('<a href="#" class="btn btn-xs btn-success " style="margin-left: 10px; margin-top: 10px"><i class="fa fa-edit"></i> Editar</a>');
 
         var $btnSubir = $('<a href="#" class="btn btn-bajar btn-xs btn-info"><i class="fa fa-arrow-up"></i></a>');
 
         var $botones = $("<div class='botones'></div>");
         $botones.append($btnSubir);
+
+
 
         $btnSubir.click(function () {
             var $prev = $seccion.prev();
@@ -861,9 +926,70 @@
             return false;
         });
 
-        if (isEditable) {
-            $titulo.append($btnAddParrafo).append($btnEliminarSeccion);
+        $btnEditarSeccion.click(function () {
+            $.ajax({
+                type    : "POST",
+                url: "${createLink(controller: 'acta', action:'formSeccion_ajax')}",
+                data    : {
+                    id : data.id
+                },
+                success : function (msg) {
+                    var b = bootbox.dialog({
+                        id      : "dlgCreateEditS",
+                        title   : "Editar",
+                        message : msg,
+                        buttons : {
+                            cancelar : {
+                                label     : "Cancelar",
+                                className : "btn-primary",
+                                callback  : function () {
+                                }
+                            },
+                            guardar  : {
+                                id        : "btnSave",
+                                label     : "<i class='fa fa-save'></i> Guardar",
+                                className : "btn-success",
+                                callback  : function () {
+                                    return  submitFormEditarSeccion();
+                                } //callback
+                            } //guardar
+                        } //buttons
+                    }); //dialog
+                } //success
+            }); //ajax
+            return false;
+        });
+
+        function submitFormEditarSeccion() {
+            var $form = $("#frmEditarSeccionSave");
+            if ($form.valid()) {
+                var url = $form.attr("action");
+                $.ajax({
+                    type    : "POST",
+                    url     : url,
+                    data    : $form.serialize(),
+                    success : function (msg) {
+                        if (msg === 'ok') {
+                            log("Guardado correctamente", "success");
+                            setTimeout(function () {
+                                location.reload();
+                            }, 800);
+                        } else {
+                            log("Error al editar la información", "error");
+                        }
+                    }
+                });
+            }
+            else {
+                return false;
+            }
         }
+
+        if (isEditable) {
+            $seccion.append($btnAddParrafo).append($btnEliminarSeccion);
+            $titulo.append($btnEditarSeccion);
+        }
+
         $titulo.appendTo($seccion);
 
         $seccion.data({
@@ -917,76 +1043,76 @@
     }
 
     function editable($elm) {
-        var id = $elm.attr("id");
-        var p = id.split("_");
-        CKEDITOR.config.toolbar_descripcion = [
-            ['Undo', 'Redo'],
-            ['Bold', 'Italic', 'Underline'],
-            ['Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList'],
-            ['Outdent', 'Indent']
-        ];
-        CKEDITOR.config.toolbar_seccion = [
-            ['Undo', 'Redo'],
-            ['Bold', 'Italic', 'Underline'],
-            ['Subscript', 'Superscript']
-        ];
-        CKEDITOR.config.toolbar_parrafo = [
-            ['Undo', 'Redo'],
-            ['Bold', 'Italic', 'Underline'],
-            ['Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList'],
-            ['Outdent', 'Indent']
-        ];
+        %{--var id = $elm.attr("id");--}%
+        %{--var p = id.split("_");--}%
+        %{--CKEDITOR.config.toolbar_descripcion = [--}%
+        %{--    ['Undo', 'Redo'],--}%
+        %{--    ['Bold', 'Italic', 'Underline'],--}%
+        %{--    ['Subscript', 'Superscript'],--}%
+        %{--    ['NumberedList', 'BulletedList'],--}%
+        %{--    ['Outdent', 'Indent']--}%
+        %{--];--}%
+        %{--CKEDITOR.config.toolbar_seccion = [--}%
+        %{--    ['Undo', 'Redo'],--}%
+        %{--    ['Bold', 'Italic', 'Underline'],--}%
+        %{--    ['Subscript', 'Superscript']--}%
+        %{--];--}%
+        %{--CKEDITOR.config.toolbar_parrafo = [--}%
+        %{--    ['Undo', 'Redo'],--}%
+        %{--    ['Bold', 'Italic', 'Underline'],--}%
+        %{--    ['Subscript', 'Superscript'],--}%
+        %{--    ['NumberedList', 'BulletedList'],--}%
+        %{--    ['Outdent', 'Indent']--}%
+        %{--];--}%
 
-        try {
-            CKEDITOR.inline(id, {
-                toolbar : p[0],
-                on      : {
-                    blur : function (event) {
-                        var data = event.editor.getData();
-                        var url, datos;
-                        switch (p[0]) {
-                            case "descripcion":
-                                url = "${createLink(controller: 'acta', action: 'updateDescripcion')}";
-                                datos = {
-                                    id          : "${actaInstance.id}",
-                                    descripcion : data
-                                };
-                                break;
-                            case "seccion":
-                                url = "${createLink(controller: 'seccion', action: 'save_ext')}";
-                                datos = {
-                                    id     : $elm.parents(".seccion").data("id"),
-                                    titulo : data
-                                };
-                                break;
-                            case "parrafo":
-                                url = "${createLink(controller: 'parrafo', action: 'save_ext')}";
-                                datos = {
-                                    id        : $elm.parents(".parrafo").data("id"),
-                                    contenido : data
-                                };
-                                break;
-                        }
-                        <g:if test="${actaInstance.id}">
-                        $.ajax({
-                            type    : "POST",
-                            url     : url,
-                            data    : datos,
-                            success : function (msg) {
-                                var p = msg.split("_");
-                                if (p[0] === "NO") {
-                                    log(p[1], p[0] === "NO");
-                                }
-                            }
-                        });
-                        </g:if>
-                    }
-                }
-            });
-        } catch (e) {
-        }
+        %{--try {--}%
+        %{--    CKEDITOR.inline(id, {--}%
+        %{--        toolbar : p[0],--}%
+        %{--        on      : {--}%
+        %{--            blur : function (event) {--}%
+        %{--                var data = event.editor.getData();--}%
+        %{--                var url, datos;--}%
+        %{--                switch (p[0]) {--}%
+        %{--                    case "descripcion":--}%
+        %{--                        url = "${createLink(controller: 'acta', action: 'updateDescripcion')}";--}%
+        %{--                        datos = {--}%
+        %{--                            id          : "${actaInstance.id}",--}%
+        %{--                            descripcion : data--}%
+        %{--                        };--}%
+        %{--                        break;--}%
+        %{--                    case "seccion":--}%
+        %{--                        url = "${createLink(controller: 'seccion', action: 'save_ext')}";--}%
+        %{--                        datos = {--}%
+        %{--                            id     : $elm.parents(".seccion").data("id"),--}%
+        %{--                            titulo : data--}%
+        %{--                        };--}%
+        %{--                        break;--}%
+        %{--                    case "parrafo":--}%
+        %{--                        url = "${createLink(controller: 'parrafo', action: 'save_ext')}";--}%
+        %{--                        datos = {--}%
+        %{--                            id        : $elm.parents(".parrafo").data("id"),--}%
+        %{--                            contenido : data--}%
+        %{--                        };--}%
+        %{--                        break;--}%
+        %{--                }--}%
+        %{--                <g:if test="${actaInstance.id}">--}%
+        %{--                $.ajax({--}%
+        %{--                    type    : "POST",--}%
+        %{--                    url     : url,--}%
+        %{--                    data    : datos,--}%
+        %{--                    success : function (msg) {--}%
+        %{--                        var p = msg.split("_");--}%
+        %{--                        if (p[0] === "NO") {--}%
+        %{--                            log(p[1], p[0] === "NO");--}%
+        %{--                        }--}%
+        %{--                    }--}%
+        %{--                });--}%
+        %{--                </g:if>--}%
+        %{--            }--}%
+        %{--        }--}%
+        %{--    });--}%
+        %{--} catch (e) {--}%
+        %{--}--}%
     }
 
 
