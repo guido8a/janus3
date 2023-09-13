@@ -540,10 +540,12 @@
         });
 
         $("#btnSave").click(function () {
+            var d = cargarLoader("Cargando...");
             if ($("#frmSave-Planilla").valid()) {
                 $("#frmSave-Planilla").submit();
+            }else{
+                d.modal("hide")
             }
-            // return submitFormPlanilla();
         });
 
         $("#tipoPlanilla").change(function () {
