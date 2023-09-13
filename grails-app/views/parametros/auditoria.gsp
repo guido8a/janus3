@@ -39,11 +39,13 @@
                     <g:textField name="registro" id="registro" class="number form-control"/>
                 </span>
             </span>
-            <div class="col-md-1" style="margin-top: 20px">
+            <div class="col-md-2" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscarAuditoria"><i class="fa fa-search"></i></button>
-            </div>
-            <div class="col-md-1" style="margin-top: 20px">
                 <button class="btn btn-warning" id="btnLimpiarBusqueda"><i class="fa fa-eraser"></i>Limpiar</button>
+            </div>
+
+            <div class="col-md-2" style="margin-top: 20px; margin-left: -50px; width: 230px">
+                Se listan como máximo 200 registros, favor restringir la búsqueda
             </div>
         </div>
     </fieldset>

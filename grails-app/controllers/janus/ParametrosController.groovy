@@ -176,9 +176,7 @@ class ParametrosController {
         def desde
         def hasta
         def sql = ''
-        def reg = ""
-        def fec = ""
-        def dom = ""
+        def wh = ' where audtfcha is not null '
 
 
         if(params.desde){
@@ -190,23 +188,22 @@ class ParametrosController {
         }
 
         if(params.desde && params.hasta){
-            fec = " audtfcha between '${desde?.format("yyyy-MM-dd")}' and '${hasta?.format("yyyy-MM-dd")}' "
+            wh += " and audtfcha between '${desde?.format("yyyy-MM-dd")}' and '${hasta?.format("yyyy-MM-dd")}' "
         }
 
         if(params.registro){
-            reg = " audtrgid = '${params.registro}' "
+            wh += " and audtrgid = '${params.registro}' "
         }
 
         if(params.dominio){
-            dom = " audtdomn ilike '%${params.dominio}%' "
+            wh += " and audtdomn ilike '%${params.dominio}%' "
         }
 
 
-        sql = "select * from audt ${ (params.desde && params.hasta) || params.registro || params.dominio ? "  where " : ""} ${(params.desde && params.hasta) ? fec : (params.registro ? reg : (params.dominio ? dom : ""))} " +
-                "  limit 100  "
+        sql = "select * from audt ${wh} order by audtfcha limit 200"
 
 
-//        println("sql " + sql)
+        println("sql " + sql)
 
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
