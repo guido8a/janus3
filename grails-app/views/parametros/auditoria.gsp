@@ -42,7 +42,7 @@
             <div class="col-md-2" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscarAuditoria"><i class="fa fa-search"></i></button>
                 <button class="btn btn-warning" id="btnLimpiarBusqueda"><i class="fa fa-eraser"></i></button>
-                <button class="btn btn-success" id="btnImprimirAuditoria"><i class="fa fa-print"></i></button>
+                <button class="btn btn-success" id="btnImprimirAuditoria" title="Reporte Excel"><i class="fa fa-file-excel"></i></button>
             </div>
 
             <div class="col-md-2" style="margin-top: 20px; margin-left: -50px; width: 230px">
