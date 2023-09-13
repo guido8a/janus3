@@ -210,4 +210,30 @@ class ParametrosController {
 
         return [data: res]
     }
+
+    def revisarFechas_ajax(){
+
+        def desde;
+        def hasta;
+
+
+        if(params.desde){
+            desde = new Date().parse("dd-MM-yyyy", params.desde)
+        }
+
+        if(params.hasta){
+            hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        }
+
+        if(desde && hasta){
+            if(desde > hasta){
+                render "no"
+            }else{
+                render "ok"
+            }
+        }else{
+            render "ok"
+        }
+
+    }
 } //fin controller

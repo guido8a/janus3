@@ -102,7 +102,7 @@
         $("#hasta").val('');
         $("#registro").val('');
         // $("#dominio").val('');
-        cargarTablaAuditoria();
+        // cargarTablaAuditoria();
     });
 
     // cargarTablaAuditoria();
@@ -118,25 +118,36 @@
         var registro = $("#registro").val();
         var dominio = $("#dominio").val();
 
-        if(desde > hasta){
-            d.modal("hide");
-            bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "La fecha inicial es mayor a la fecha final" + '</strong>')
-        }else{
-            $.ajax({
-                type: 'POST',
-                url: '${createLink(controller: 'parametros', action: 'tablaAuditoria_ajax')}',
-                data:{
-                    desde: desde,
-                    hasta: hasta,
-                    registro: registro,
-                    dominio: dominio
-                },
-                success: function (msg){
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'parametros', action: 'revisarFechas_ajax')}',
+            data:{
+                desde: desde,
+                hasta: hasta
+            },
+            success: function (msg){
+                if(msg === 'ok'){
+                    $.ajax({
+                        type: 'POST',
+                        url: '${createLink(controller: 'parametros', action: 'tablaAuditoria_ajax')}',
+                        data:{
+                            desde: desde,
+                            hasta: hasta,
+                            registro: registro,
+                            dominio: dominio
+                        },
+                        success: function (msg){
+                            d.modal("hide");
+                            $("#divTablaAuditoria").html(msg)
+                        }
+                    })
+                }else{
                     d.modal("hide");
-                    $("#divTablaAuditoria").html(msg)
+                    bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "La fecha inicial es mayor a la fecha final" + '</strong>')
                 }
-            })
-        }
+
+            }
+        });
     }
 
 
