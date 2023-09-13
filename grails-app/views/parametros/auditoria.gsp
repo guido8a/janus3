@@ -78,20 +78,31 @@
         return validarNum(ev)
     });
 
-    $('#desde, #hasta').datetimepicker({
+    $('#hasta').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
         sideBySide: true,
+        maxDate: new Date(),
         icons: {
         }
     });
+
+    $('#desde').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        maxDate: new Date(),
+        icons: {
+        }
+    });
+
 
     $("#btnLimpiarBusqueda").click(function () {
         $("#desde").val('');
         $("#hasta").val('');
         $("#registro").val('');
         // $("#dominio").val('');
-        //cargarTablaAuditoria();
+        cargarTablaAuditoria();
     });
 
     // cargarTablaAuditoria();
