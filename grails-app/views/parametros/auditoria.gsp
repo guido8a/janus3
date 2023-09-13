@@ -41,7 +41,8 @@
             </span>
             <div class="col-md-2" style="margin-top: 20px">
                 <button class="btn btn-info" id="btnBuscarAuditoria"><i class="fa fa-search"></i></button>
-                <button class="btn btn-warning" id="btnLimpiarBusqueda"><i class="fa fa-eraser"></i>Limpiar</button>
+                <button class="btn btn-warning" id="btnLimpiarBusqueda"><i class="fa fa-eraser"></i></button>
+                <button class="btn btn-success" id="btnImprimirAuditoria"><i class="fa fa-print"></i></button>
             </div>
 
             <div class="col-md-2" style="margin-top: 20px; margin-left: -50px; width: 230px">
@@ -57,6 +58,14 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnImprimirAuditoria").click(function () {
+        var desde = $("#desde").val();
+        var hasta = $("#hasta").val();
+        var registro = $("#registro").val();
+        var dominio = $("#dominio").val();
+        location.href = "${g.createLink(controller: 'reportes6',action: 'imprimirAuditoriaExcel')}?dominio=" + dominio + "&registro=" + registro + "&desde=" + desde + "&hasta=" + hasta;
+    });
 
     function validarNum(ev) {
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||

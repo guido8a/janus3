@@ -3335,5 +3335,110 @@ class Reportes6Controller {
         response.getOutputStream().write(b)
     }
 
+    def imprimirAuditoriaExcel () {
+
+        def desde
+        def hasta
+        def sql = ''
+        def wh = ' where audtfcha is not null '
+
+        if(params.desde){
+            desde = new Date().parse("dd-MM-yyyy", params.desde)
+        }
+
+        if(params.hasta){
+            hasta = new Date().parse("dd-MM-yyyy", params.hasta)
+        }
+
+        if(params.desde && params.hasta){
+            wh += " and audtfcha between '${desde?.format("yyyy-MM-dd")}' and '${hasta?.format("yyyy-MM-dd")}' "
+        }
+
+        if(params.registro){
+            wh += " and audtrgid = '${params.registro}' "
+        }
+
+        if(params.dominio){
+            wh += " and audtdomn ilike '%${params.dominio}%' "
+        }
+
+
+        sql = "select * from audt ${wh} order by audtfcha limit 200"
+
+        println("sql " + sql)
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString())
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("AUDITORÍA")
+        sheet.setColumnWidth(0, 10 * 256);
+        sheet.setColumnWidth(1, 15 * 256);
+        sheet.setColumnWidth(2, 30 * 256);
+        sheet.setColumnWidth(3, 30 * 256);
+        sheet.setColumnWidth(4, 15 * 256);
+        sheet.setColumnWidth(5, 15 * 256);
+        sheet.setColumnWidth(6, 10 * 256);
+        sheet.setColumnWidth(7, 40 * 256);
+        sheet.setColumnWidth(8, 20 * 256);
+        sheet.setColumnWidth(9, 15 * 256);
+
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row2 = sheet.createRow(2)
+        row2.createCell(1).setCellValue("AUDITORÍA")
+        row2.setRowStyle(style)
+        Row row3 = sheet.createRow(4)
+        row3.createCell(1).setCellValue("")
+        Row row4 = sheet.createRow(5)
+
+        def fila = 5;
+        def total = 0
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("Id")
+        rowC1.createCell(1).setCellValue("Usuario")
+        rowC1.createCell(2).setCellValue("Anterior")
+        rowC1.createCell(3).setCellValue("Actual")
+        rowC1.createCell(4).setCellValue("Fecha")
+        rowC1.createCell(5).setCellValue("IP")
+        rowC1.createCell(6).setCellValue("Registro")
+        rowC1.createCell(7).setCellValue("Dominio")
+        rowC1.createCell(8).setCellValue("Campo")
+        rowC1.createCell(9).setCellValue("Operación")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.each { r ->
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(r["audt__id"]?.toString())
+            rowF1.createCell(1).setCellValue(r["usrologn"]?.toString())
+            rowF1.createCell(2).setCellValue(r["audtantr"]?.toString())
+            rowF1.createCell(3).setCellValue(r["audtactl"]?.toString())
+            rowF1.createCell(4).setCellValue(r["audtfcha"]?.toString())
+            rowF1.createCell(5).setCellValue(r["audtdrip"]?.toString())
+            rowF1.createCell(6).setCellValue(r["audtrgid"]?.toString())
+            rowF1.createCell(7).setCellValue(r["audtdomn"]?.toString())
+            rowF1.createCell(8).setCellValue(r["audtcmpo"]?.toString())
+            rowF1.createCell(9).setCellValue(r["audtoprc"]?.toString())
+            fila++
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "auditoria.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
 
 }
