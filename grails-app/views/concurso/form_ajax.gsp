@@ -56,7 +56,6 @@
                 <i class="fa fa-save"></i> Guardar
             </a>
         </g:if>
-%{--        <g:if test="${Oferta.countByConcurso(concursoInstance) == 0}">--}%
         <g:if test="${concursoInstance}">
             <a href="#" class="btn" id="btnRegi"><i class="fa fa-check"></i> Cambiar Estado</a>
         </g:if>
@@ -344,7 +343,7 @@
 
                         <div class="controls col-md-8">
                             <div class="input-append">
-                                <g:field type="text" name="presupuestoReferencial" class="required number"
+                                <g:field type="text" name="presupuestoReferencial" id="presupuestoReferencial" class="required number"
                                          value="${concursoInstance?.presupuestoReferencial ?: 0}"
                                          style="text-align: right;width: 120px;"/>
                                 <span class="add-on">$</span>
@@ -922,7 +921,7 @@
             success: function (msg) {
                 var parts = msg.split("&&");
                 $("#presupuestoReferencial").val(parts[3]);
-                $("#obra_busqueda").val(parts[0]).attr("title", parts[1])
+                $("#obra_busqueda").val(parts[0]).attr("title", parts[1]);
             }
         });
     }

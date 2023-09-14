@@ -86,6 +86,7 @@ class ProveedorController {
     }
 
     def save() {
+
         def proveedorInstance
         if (params.id) {
             proveedorInstance = Proveedor.get(params.id)
@@ -100,7 +101,9 @@ class ProveedorController {
             params.fechaContacto = new Date()
             proveedorInstance = new Proveedor(params)
         } //es create
+
         if (!proveedorInstance.save(flush: true)) {
+            println("error al guardar el proveedor " + proveedorInstance.errors)
             render "no_Error al guardar el proveedor"
         }else{
             render "ok_Proveedor guardado correctamente"

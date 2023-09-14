@@ -767,7 +767,7 @@ class ConcursoController {
         def datos;
         def listaObra = ['obracdgo', 'obranmbr', 'obrammig', 'obrammsl', 'obraetdo, obrafcha']
 
-        def select = "select obra__id, obracdgo, obranmbr, obraetdo, dptodscr, obrafcha " +
+        def select = "select obra__id, obracdgo, obranmbr, obravlor, obraetdo, dptodscr, obrafcha " +
                 "from obra, parr, dpto "
         def txwh = "where parr.parr__id = obra.parr__id and dpto.dpto__id = obra.dpto__id and obraetdo = 'R' "
         def sqlTx = ""

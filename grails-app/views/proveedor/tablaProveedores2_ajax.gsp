@@ -19,7 +19,7 @@
         <tbody>
         <g:each in="${datos}" status="i" var="proveedorInstance">
             <tr>
-                <td style="width: 10%">${janus.EspecialidadProveedor.get(datos.espc__id)?.descripcion}</td>
+                <td style="width: 10%">${janus.EspecialidadProveedor.get(proveedorInstance.espc__id)?.descripcion}</td>
                 <td style="width: 10%">${(proveedorInstance.prvetipo=="N")?"Natural": (proveedorInstance.prvetipo=="J")? "Jurídica":"Empresa Pública"}</td>
                 <td style="width: 10%">${proveedorInstance?.prve_ruc}</td>
                 <td style="width: 25%">${proveedorInstance?.prvenmbr}</td>

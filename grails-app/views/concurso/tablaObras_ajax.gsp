@@ -32,7 +32,7 @@
                 <td style="width: 4%">
                     <div style="text-align: center" class="selecciona" id="reg_${i}"
                          regNmbr="${dt?.obranmbr}" data-codigo="${dt?.obracdgo}"
-                         data-id="${dt?.obra__id}">
+                         data-id="${dt?.obra__id}" data-valor="${dt?.obravlor}">
                         <button class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
                     </div></td>
             </tr>
@@ -44,8 +44,10 @@
     $(".selecciona").click(function () {
         var id = $(this).data("id");
         var codigo = $(this).data("codigo");
+        var valor = $(this).data("valor");
         $("#obra_id").val(id);
         $("#obra_busqueda").val(codigo);
+        $("#presupuestoReferencial").val(valor);
         $("#listaObra").dialog("close");
     });
 

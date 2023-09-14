@@ -11,7 +11,7 @@
                 Especialidad
             </label>
             <span class="col-md-4">
-                <g:select id="especialidad" name="especialidad.id" from="${janus.EspecialidadProveedor.list()}" optionKey="id" optionValue="descripcion" class="form-control" value="${proveedorInstance?.especialidad?.id}"/>
+                <g:select id="especialidad" name="especialidad" from="${janus.EspecialidadProveedor.list()}" optionKey="id" optionValue="descripcion" class="form-control" value="${proveedorInstance?.especialidad?.id}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
@@ -23,7 +23,7 @@
                 Tipo
             </label>
             <span class="col-md-4">
-                <g:select id="tipo" name="tipo.id" from="${['J' : 'Jurídica', 'N': 'Natural', 'E' : 'Empresa Pública']}" optionKey="key" optionValue="value" class="form-control" value="${proveedorInstance?.tipo}"/>
+                <g:select id="tipo" name="tipo" from="${['J' : 'Jurídica', 'N': 'Natural', 'E' : 'Empresa Pública']}" optionKey="key" optionValue="value" class="form-control" value="${proveedorInstance?.tipo}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>

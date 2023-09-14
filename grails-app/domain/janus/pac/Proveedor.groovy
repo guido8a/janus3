@@ -58,7 +58,7 @@ class Proveedor {
     static constraints = {
 //        empresa(blank: false, nullable: false)
         especialidad(blank: true, nullable: true)
-        tipo(blank: true, nullable: true, maxSize: 1, inList: ['N', 'J', 'E'])
+        tipo(blank: true, nullable: true, maxSize: 1)
         ruc(blank: true, nullable: true, maxSize: 13)
         nombre(blank: true, nullable: true, maxSize: 63)
         nombreContacto(blank: true, nullable: true, maxSize: 31)
@@ -74,7 +74,7 @@ class Proveedor {
         estado(blank: true, nullable: true, maxSize: 1)
         observaciones(blank: true, nullable: true, maxSize: 127)
         pagarNombre(blank: true, nullable: true, maxSize: 127)
-        origen(blank: true, nullable: true, maxSize: 1, inList: ['N', 'E', 'M'])
+        origen(blank: true, nullable: true, maxSize: 1)
     }
 
     String toString() {
