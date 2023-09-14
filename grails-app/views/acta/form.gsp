@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
 
-    <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>
+%{--    <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>--}%
 
     <title>Acta</title>
 
@@ -451,7 +451,11 @@
                 $num.text(num + ".-");
             }
 
-            var titulo = CKEDITOR.instances["seccion_" + $sec.data("id")].getData();
+            // var titulo = CKEDITOR.instances["seccion_" + $sec.data("id")].getData();
+            var titulo = $sec.val();
+
+
+            console.log("tttt 1" + titulo)
 
             $sec.data({
                 numero : num,
@@ -478,7 +482,8 @@
                 $num.text(num + ".-");
             }
 
-            var titulo = CKEDITOR.instances["seccion_" + $sec.data("id")].getData();
+            // var titulo = CKEDITOR.instances["seccion_" + $sec.data("id")].getData();
+            var titulo = $sec.val()
 
             $sec.data({
                 numero : num,
@@ -595,7 +600,8 @@
                 $num.text(numSec + "." + num + ".-");
             }
 
-            var contenido = CKEDITOR.instances["parrafo_" + $par.data("id")].getData();
+            // var contenido = CKEDITOR.instances["parrafo_" + $par.data("id")].getData();
+            var contenido = $par.val();
 
             $par.data({
                 numero    : num,
@@ -1032,7 +1038,7 @@
     function doSave() {
         if ($("#frmSave-Acta").valid()) {
             var v = cargarLoader("Guardando...");
-            $("#txtDescripcion").val(CKEDITOR.instances.descripcion.getData());
+            // $("#txtDescripcion").val(CKEDITOR.instances.descripcion.getData());
             $("#frmSave-Acta").serialize();
             $("#frmSave-Acta").submit();
             numerosSecciones();
@@ -1118,7 +1124,8 @@
 
     $(function () {
 
-        CKEDITOR.disableAutoInline = true;
+        // CKEDITOR.disableAutoInline = true;
+
 
         initSecciones();
 
