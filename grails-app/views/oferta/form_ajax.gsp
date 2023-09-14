@@ -91,7 +91,7 @@
                 Hojas de oferta
             </label>
             <span class="col-md-4">
-                <g:textField name="hoja" class="form-control required number" value="${ofertaInstance?.hoja}"/>
+                <g:textField name="hoja" class="form-control number" value="${ofertaInstance?.hoja}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
