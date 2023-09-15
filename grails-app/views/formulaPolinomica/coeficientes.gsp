@@ -11,15 +11,10 @@
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/messages_es.js"/>
     <asset:javascript src="/jquery/plugins/jstree/jquery.jstree.js"/>
     <asset:javascript src="/jquery/plugins/jstree/_lib/jquery.cookie.js"/>
-
     <asset:javascript src="/jquery/plugins/jquery.livequery.js"/>
     <asset:javascript src="/jquery/plugins/box/js/jquery.luz.box.js"/>
-%{--    <asset:javascript src="/jquery/plugins/editable/bootstrap-editable/js/bootstrap-editable.js"/>--}%
-%{--    <asset:javascript src="/jquery/plugins/editable/inputs-ext/coords/coords.js"/>--}%
     <asset:javascript src="/jquery/plugins/jgrowl/jquery.jgrowl.js"/>
-
     <asset:javascript src="/jquery/plugins/jstree/jstreegrid.js"/>
-
     <asset:stylesheet src="/jquery/plugins/box/css/jquery.luz.box.css"/>
     <asset:stylesheet src="/jquery/plugins/editable/bootstrap-editable/css/bootstrap-editable.css"/>
     <asset:stylesheet src="/jquery/plugins/editable/inputs-ext/coords/coords.css"/>
@@ -170,15 +165,16 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-1" style="font-weight: bold;">Total</div>
-
-    <div class="col-md-2" id="spanTotal" data-valor='${total}'>
-        <g:formatNumber number="${total}" maxFractionDigits="3" minFractionDigits="3" locale="ec"/>
+<div class="col-md-1"></div>
+<div class="col-md-3 alert ${total < 1 ? 'alert-danger' : 'alert-success'} " style="margin-left: 0">
+    <div class="col-md-2"></div>
+    <div class="col-md-2" style="font-weight: bold; font-size: 14px; color: #0c6dc4">Total: </div>
+    <div class="col-md-2" style="font-weight: bold; font-size: 14px; color: #0c6dc4" id="spanTotal" data-valor='${total}'>
+      <g:formatNumber number="${total}" maxFractionDigits="3" minFractionDigits="3" locale="ec"/>
     </div>
 </div>
 
-<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 5px;margin-left: 0;">
+<div id="list-grupo" class="col-md-12" role="main" style="margin-top: 3px;margin-left: 0;">
 
     <div class="area ui-corner-all" id="formula">
 
@@ -655,10 +651,10 @@
 
             var tipo = "${tipo}";
             if (Math.abs(total - 1) <= 0.0001) {
+                location.href="${g.createLink(controller: 'obra', action: 'registroObra', params: [obra: obra?.id])}";
                 return true;
             }
 
-            // if (tipo === "c") {
             bootbox.confirm({
                 title: "Alerta",
                 message: "La fórmula polinómica no suma 1. ¿Está seguro de querer salir de esta página?",
@@ -678,7 +674,6 @@
                     }
                 }
             });
-            // }
             return false;
         });
 
