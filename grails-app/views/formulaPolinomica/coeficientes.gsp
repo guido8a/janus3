@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
     <title>
-        AJUSTE DE LA F.P. Y C. TIPO
+        FP y Cuadrilla tipo
     </title>
 
     <asset:javascript src="/jquery/plugins/jquery-validation-1.9.0/jquery.validate.min.js"/>
@@ -116,7 +116,7 @@
 <body>
 
 <div class="tituloTree">
-    <div class="alert alert-info " style="margin-top: 5px">Coeficientes de la fórmula polinómica de la obra: ${obra.descripcion + " (" + obra.codigo + ")"}</div>
+    <div class="alert alert-info " style="margin-top: 5px">FP obra: ${obra.descripcion + " (" + obra.codigo + ")"}</div>
 </div>
 
 <div class="btn-toolbar" style="margin-top: 15px;">

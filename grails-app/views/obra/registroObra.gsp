@@ -108,7 +108,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <g:if test="${!existeObraOferente}">
                     <button class="btn" id="copiarObraOfe"><i class="fa fa-copy"></i> Copiar Obra a Oferentes
                     </button>
-                </g:if>
+                </g:if>g
             </g:if>
         </g:if>
         <g:if test="${obra?.estado == 'R' && obra?.tipo == 'D'}">
