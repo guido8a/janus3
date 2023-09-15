@@ -374,15 +374,17 @@ class ContratoController {
     def contratos(){
         println "contratos" + params
         def datos;
-        def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr', 'fs.prsnapll', 'ad.prsnapll']
+        def listaObra = ['cntrcdgo', 'cntrobjt', 'prvenmbr', 'fscl', 'admn']
 
-        def select = "select cntr.cntr__id, cntrcdgo, cntrobjt, cntretdo, cntrfcsb, prvenmbr, " +
-                "fs.prsnnmbr||' '||fs.prsnapll fscl, ad.prsnnmbr||' '||ad.prsnapll admn " +
-                "from cntr, ofrt, prve, fscr, adcr, prsn ad, prsn fs"
-        def txwh = "where ofrt.ofrt__id = cntr.ofrt__id and prve.prve__id = ofrt.prve__id and " +
-                "fscr.cntr__id = cntr.cntr__id and adcr.cntr__id = cntr.cntr__id and " +
-                "ad.prsn__id = adcr.prsn__id and fs.prsn__id = fscr.prsn__id and adcrfcfn is null and " +
-                "fscrfcfn is null "
+//        def select = "select cntr.cntr__id, cntrcdgo, cntrobjt, cntretdo, cntrfcsb, prvenmbr, " +
+//                "fs.prsnnmbr||' '||fs.prsnapll fscl, ad.prsnnmbr||' '||ad.prsnapll admn " +
+//                "from cntr, ofrt, prve, fscr, adcr, prsn ad, prsn fs"
+//        def txwh = "where ofrt.ofrt__id = cntr.ofrt__id and prve.prve__id = ofrt.prve__id and " +
+//                "fscr.cntr__id = cntr.cntr__id and adcr.cntr__id = cntr.cntr__id and " +
+//                "ad.prsn__id = adcr.prsn__id and fs.prsn__id = fscr.prsn__id and adcrfcfn is null and " +
+//                "fscrfcfn is null "
+        def select = "select * from lsta_cntr()"
+        def txwh = "where cntrcdgo is not null"
         def sqlTx = ""
         def bsca = listaObra[params.buscarPor.toInteger()-1]
         def ordn = listaObra[params.ordenar.toInteger()-1]
