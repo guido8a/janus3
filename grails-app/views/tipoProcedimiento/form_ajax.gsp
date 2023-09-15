@@ -93,7 +93,8 @@
                     Techo
                 </label>
                 <span class="col-md-4">
-                    <g:textField name="techo" class="form-control number required" value="${tipoProcedimientoInstance?.techo}" />
+%{--                    <g:textField name="techo" class="form-control number required" value="${tipoProcedimientoInstance?.techo}" />--}%
+                    <g:textField name="techo" class="form-control number required" value="${g.formatNumber(number: tipoProcedimientoInstance?.techo, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2)}" />
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </span>

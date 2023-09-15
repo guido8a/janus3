@@ -42,7 +42,7 @@
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "descripcion")}</td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "sigla")}</td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "bases")}</td>
-                <td style="text-align: right" >${fieldValue(bean: tipoProcedimientoInstance, field: "techo")}</td>
+                <td style="text-align: right" > <g:formatNumber number="${tipoProcedimientoInstance?.techo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "preparatorio")}</td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "precontractual")}</td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "contractual")}</td>
