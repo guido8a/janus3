@@ -16,7 +16,7 @@
             <i class="fa fa-arrow-left"></i>
             Ir a Concurso
         </g:link>
-        <a href="#" class="btn btn-success btn-new">
+        <a href="#" class="btn btn-success btnNuevoProveedor">
             <i class="fa fa-file"></i>
             Nuevo  Proveedor
         </a>
@@ -55,6 +55,10 @@
 
 
 <script type="text/javascript">
+
+    $(".btnNuevoProveedor").click(function () {
+        createEditRow();
+    });
 
     $("#btnLimpiarBusqueda").click(function  () {
         $("#buscarPor").val(1);
