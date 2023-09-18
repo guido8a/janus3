@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
 
-%{--    <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>--}%
+    %{--    <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>--}%
 
     <title>Acta</title>
 
@@ -276,17 +276,21 @@
 
     </div> %{-- well contrato --}%
 
-    <div class="${editable ? 'editable' : ''} ui-corner-all" id="descripcion" ${editable ? 'contenteditable="true"' : ''}>
-        <elm:poneHtml textoHtml="${actaInstance.descripcion}"/>
+    <div class="well ui-corner-all " style="height: 40px;" >
+            <elm:poneHtml textoHtml="${actaInstance.descripcion}"/>
+
     </div>
 
-    <g:if test="${editable && actaInstance.id}">
-        <a href="#" class="btn btn-primary btn-xs" style="margin-bottom: 10px;" id="btnAddSeccion">
-            <i class="fa fa-plus"></i> Agregar sección
-        </a>
+    <g:if test="${editable}">
+        <a href="#" class="btn btn-xs btn-success " id="btnEditarDescripcion" style="margin-top: 0px; float: right"><i class="fa fa-edit"></i> Editar Descripción</a>
     </g:if>
 
-%{------ secciones ---- "${secciones}"--}%
+        <g:if test="${editable && actaInstance.id}">
+            <a href="#" class="btn btn-primary btn-xs" style="margin-bottom: 10px;" id="btnAddSeccion">
+                <i class="fa fa-plus"></i> Agregar sección
+            </a>
+        </g:if>
+
     <div id="secciones"></div>
 
 </g:form>
@@ -311,7 +315,6 @@
     var secciones = 1;
     var $btnSaveActa = $("#btnSave");
 
-
     $('#fecha').datetimepicker({
         locale: 'es',
         format: 'DD-MM-YYYY',
@@ -322,6 +325,66 @@
         }
     });
 
+
+    $("#btnEditarDescripcion").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(controller: 'acta', action:'formDescripcion_ajax')}",
+            data    : {
+                id : '${actaInstance?.id}'
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEditD",
+                    title   : "Editar",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return  submitFormEditarDescripcion();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+        return false;
+    });
+
+    function submitFormEditarDescripcion() {
+        var $form = $("#frmEditarDesc");
+        if ($form.valid()) {
+            var url = $form.attr("action");
+            $.ajax({
+                type    : "POST",
+                url     : url,
+                data    : $form.serialize(),
+                success : function (msg) {
+                    if (msg === 'ok') {
+                        log("Guardado correctamente", "success");
+                        setTimeout(function () {
+                            location.reload();
+                        }, 800);
+                    } else {
+                        log("Error al editar la información", "error");
+                    }
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    }
+
     $("#btnCorregir").click(function () {
         var d = cargarLoader("Procesando...");
         $.ajax({
@@ -331,7 +394,7 @@
                 acta: '${actaInstance?.id}'
             },
             success : function (msg) {
-            d.modal("hide");
+                d.modal("hide");
             }
         });
     });
@@ -453,9 +516,6 @@
 
             // var titulo = CKEDITOR.instances["seccion_" + $sec.data("id")].getData();
             var titulo = $sec.val();
-
-
-            console.log("tttt 1" + titulo)
 
             $sec.data({
                 numero : num,
@@ -857,7 +917,7 @@
                 url: "${createLink(controller: 'parrafo', action:'form_ext_ajax')}",
                 data    : {
                     seccion : data.id,
-                   numero  : parrafos + 1
+                    numero  : parrafos + 1
                 },
                 success : function (msg) {
                     var b = bootbox.dialog({

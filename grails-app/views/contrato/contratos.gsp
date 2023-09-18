@@ -27,7 +27,7 @@
             <tr>
                 <td style="width: 8%">${dt.cntrcdgo}</td>
                 <td style="width: 35%">${dt.cntrobjt}</td>
-                <td style="width: 8%"> ${dt.cntrfcsb.format('dd/MM/yyyy')}
+                <td style="width: 8%"> ${dt?.cntrfcsb?.format('dd/MM/yyyy')}
                 <td style="width: 14%"> ${dt.prvenmbr}
                 <td style="width: 15%"> ${dt.admn}
                 <td style="width: 15%"> ${dt.fscl}

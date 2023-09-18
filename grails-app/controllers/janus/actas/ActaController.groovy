@@ -695,4 +695,31 @@ class ActaController {
         }
     }
 
+    def formDescripcion_ajax (){
+        def acta = Acta.get(params.id)
+        return [acta: acta]
+    }
+
+    def saveEditDescripcion_ajax () {
+
+        if(params.id){
+            def acta = Acta.get(params.id)
+
+            params.descripcion = params.descripcion.replaceAll("<br>", "<br></br>")
+
+            acta.properties = params
+
+            if(!acta.save(flush:true)){
+                println("error al guardar la descrpicion " + seccion.errors)
+                render "no"
+            }else{
+                render "ok"
+            }
+
+        }else{
+            render "no"
+        }
+    }
+
+
 } //fin controller
