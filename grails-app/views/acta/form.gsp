@@ -160,7 +160,7 @@
 
     <div class="titulo bold col-md-12">
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             Acta de
             <g:if test="${editable}">
                 <g:textField name="nombre" maxlength="20" class="form-control required" value="${actaInstance?.nombre ?: actaProv ? actaProv.nombre : 'recepción'}"/>
@@ -169,7 +169,7 @@
                 ${actaInstance?.nombre}
             </g:else>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             &nbsp;
             <g:if test="${editable}">
                 <g:select name="tipo" from="${tipos}" class="form-control required" value="${actaInstance?.tipo}" valueMessagePrefix="acta.tipo"/>
@@ -178,8 +178,8 @@
                 <g:message code="acta.tipo.${actaInstance.tipo}"/>
             </g:else>
         </div>
-        <div class="col-md-1">
-            N.
+        <div class="col-md-2">
+            Número
             <g:if test="${editable}">
                 <g:textField name="numero" maxlength="20" class="form-control required allCaps" value="${actaInstance?.numero}"/>
             </g:if>
@@ -188,7 +188,7 @@
             </g:else>
         </div>
         <div class="col-md-5">
-            efectuada el
+            Efectuada el
             <g:if test="${editable}">
                 <input aria-label="" name="fecha" id='fecha' type='text' class="form-control required" style="width: 150px" value="${actaInstance?.fecha?.format("dd-MM-yyyy")}" />
             </g:if>
