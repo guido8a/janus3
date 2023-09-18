@@ -228,23 +228,23 @@
     <g:set var="garantias" value="${janus.pac.Garantia.findAllByContrato(actaInstance.contrato)}"/>
     <g:set var="obra" value="${actaInstance.contrato.oferta.concurso.obra}"/>
     <g:set var="fisc" value="${janus.ejecucion.Planilla.findAllByContrato(actaInstance.contrato, [sort: "id", order: "desc"]).first().fiscalizador}"/>
-    <div class="well" style="height: 220px;">
+    <div class="well" style="height: 230px;">
         <div class='col-md-12'>
             <div class="bold col-md-1">Contrato N.</div>
             <div class="col-md-10">${actaInstance.contrato.codigo}</div>
         </div>
 
         <div class='col-md-12'>
-            <div class="bold col-md-1">Garantías N.</div>
+            <div class="bold col-md-1">Garantías.</div>
 
-            <div class="col-md-10">
+            <div class="col-md-10" style="height: 50px; overflow-y: auto; margin-top: 0px">
                 <g:each in="${garantias}" var="gar" status="i">
                     ${gar.tipoDocumentoGarantia.descripcion} N. ${gar.codigo} - ${gar.aseguradora.nombre} ${i < garantias.size() - 1 ? "," : ""}
                 </g:each>
             </div>
         </div>
 
-        <div class='col-md-12'>
+        <div class='col-md-12' style="margin-top: 5px">
             <div class="bold col-md-1">Objeto</div>
             <div class="col-md-10">${actaInstance.contrato.objeto}</div>
         </div>
