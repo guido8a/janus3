@@ -373,7 +373,7 @@
                             ${directorDeFiscalizacion.titulo?.toUpperCase() ?: ""} ${directorDeFiscalizacion.nombre} ${directorDeFiscalizacion.apellido}
                         </g:if>
                         <br/>
-                        DELEGADO DIRECCIÓN DE FISCALIZACIÓN
+                        TÉCNICO DESIGNADO POR LA MÁXIMA AUTORIDAD O SU DELEGADO
                     </div>
 
                     <div class="firma">
