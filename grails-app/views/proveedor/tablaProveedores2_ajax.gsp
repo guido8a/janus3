@@ -23,7 +23,7 @@
                 <td style="width: 10%">${(proveedorInstance.prvetipo=="N")?"Natural": (proveedorInstance.prvetipo=="J")? "Jurídica":"Empresa Pública"}</td>
                 <td style="width: 10%">${proveedorInstance?.prve_ruc}</td>
                 <td style="width: 25%">${proveedorInstance?.prvenmbr}</td>
-                <td style="width: 35%">${proveedorInstance?.prvenbct + " " + proveedorInstance?.prveapct}</td>
+                <td style="width: 35%">${proveedorInstance?.prvenbct + " " + (proveedorInstance?.prveapct ?: '')}</td>
                 <td style="width: 10%">
                     <a class="btn btn-xs btn-show btn-info" href="#" rel="tooltip" title="Ver" data-id="${proveedorInstance.prve__id}">
                         <i class="fa fa-search"></i>
