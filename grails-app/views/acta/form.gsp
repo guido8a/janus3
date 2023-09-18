@@ -276,22 +276,21 @@
 
     </div> %{-- well contrato --}%
 
-    <div class="well ui-corner-all " style="height: 40px;" >
+    <div class="well ui-corner-all " style="height: 50px;" >
             <elm:poneHtml textoHtml="${actaInstance.descripcion}"/>
-
     </div>
 
+    <div class="col-md-12" style="margin-bottom: 10px">
     <g:if test="${editable}">
+        <g:if test="${actaInstance.id}">
+            <a href="#" class="btn btn-primary btn-xs" style="margin-top: 0px; float: left;" id="btnAddSeccion"><i class="fa fa-plus"></i> Agregar sección</a>
+        </g:if>
         <a href="#" class="btn btn-xs btn-success " id="btnEditarDescripcion" style="margin-top: 0px; float: right"><i class="fa fa-edit"></i> Editar Descripción</a>
     </g:if>
 
-        <g:if test="${editable && actaInstance.id}">
-            <a href="#" class="btn btn-primary btn-xs" style="margin-bottom: 10px;" id="btnAddSeccion">
-                <i class="fa fa-plus"></i> Agregar sección
-            </a>
-        </g:if>
+    </div>
 
-    <div id="secciones"></div>
+    <div class="col-md-12" id="secciones"></div>
 
 </g:form>
 
@@ -690,8 +689,8 @@
         if (data.tipoTabla) {
             tipoTabla(data.tipoTabla, $titulo);
         }
-        var $btnTabla = $('<a href="#" class="btn btn-xs btn-info" style="margin-left: 10px; margin-top: 10px"><i class="fa fa-edit"></i> Modificar</a>');
-        var $btnEliminarParrafo = $('<a href="#" class="btn btn-delete btn-xs btn-danger" style="margin-left: 10px; margin-top: 10px"><i class="fa fa-minus"></i> Eliminar </a>');
+        var $btnTabla = $('<a href="#" class="btn btn-xs btn-info" style="margin-left: 10px; margin-top: 10px">Modificar</a>');
+        var $btnEliminarParrafo = $('<a href="#" class="btn btn-delete btn-xs btn-danger" style="margin-left: 10px; margin-top: 10px"> Eliminar </a>');
         var $btnEditarParrafo = $('<a href="#" class="btn btn-xs btn-success" style="margin-left: 10px; margin-top: 10px"><i class="fa fa-edit"></i> Editar</a>');
 
         $btnTabla.click(function () {
