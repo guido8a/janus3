@@ -102,27 +102,27 @@
 
             <div class="well">
                 <p>
-                    ${texto.parrafo1}
+                    ${raw(texto.parrafo1)}
                 </p>
 
                 <p>
-                    ${texto.parrafo2}
+                    ${raw(texto.parrafo2)}
                 </p>
 
                 <p>
-                    ${texto.parrafo3}
+                    ${raw(texto.parrafo3)}
                 </p>
 
                 <p>
-                    ${tabla}
+                    ${raw(tabla)}
                 </p>
 
                 <p>
-                    ${texto.parrafo4}
+                    ${raw(texto.parrafo4)}
                 </p>
 
                 <p>
-                    ${texto.parrafo5}
+                    ${raw(texto.parrafo5)}
                 </p>
             </div>
         </g:else>
