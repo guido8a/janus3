@@ -76,7 +76,8 @@
                                     <g:set var="i" value="${i + 1}"/>
                                 </g:if>
                                 <g:else>
-                                    ${elem.string}
+                                    %{-- ${elem.string}  --}%
+                                    ${raw(elem.string)}
                                 </g:else>
                             </g:each>
                         </p>
