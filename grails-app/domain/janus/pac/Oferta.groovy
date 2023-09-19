@@ -12,7 +12,7 @@ class Oferta {
     Date fechaEntrega
     Integer plazo
     String calificado
-    Integer hoja
+    Integer hoja = 0
     String subsecretario
     String garantia
     String estado

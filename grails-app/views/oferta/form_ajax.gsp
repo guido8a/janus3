@@ -79,7 +79,7 @@
                 Fecha Entrega de la Oferta
             </label>
             <span class="col-md-4">
-                <input aria-label="" name="fechaEntrega" id='fechaEntrega' type='text' class="form-control" value="${ofertaInstance?.fechaEntrega?.format("dd-MM-yyyy")}" />
+                <input aria-label="" name="fechaEntrega" id='fechaEntrega' type='text' class="form-control required" value="${ofertaInstance?.fechaEntrega?.format("dd-MM-yyyy") ?: new Date().format("dd-MM-yyyy")}" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>
@@ -91,7 +91,7 @@
                 Hojas de oferta
             </label>
             <span class="col-md-4">
-                <g:textField name="hoja" class="form-control number" value="${ofertaInstance?.hoja}"/>
+                <g:textField name="hoja" class="form-control number" value="${ofertaInstance?.hoja ?: 0}"/>
                 <p class="help-block ui-helper-hidden"></p>
             </span>
         </span>

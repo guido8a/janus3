@@ -56,6 +56,9 @@ class OfertaController {
         if (params.monto) {
             params.monto = params.monto.toDouble()
         }
+
+        params.hoja = (params.hoja ?: 0)
+
         def ofertaInstance
         if (params.id) {
             ofertaInstance = Oferta.get(params.id)
@@ -70,6 +73,7 @@ class OfertaController {
         } //es create
 
         if (!ofertaInstance.save(flush: true)) {
+            println("error " + ofertaInstance.errors)
            render "no_Error al guardar la oferta"
         }else{
             render "ok_Oferta guardada correctamente"
