@@ -19,7 +19,6 @@
     CKEDITOR.config.toolbar_parrafo = [
         ['Undo', 'Redo'],
         ['Bold', 'Italic', 'Underline'],
-        ['Subscript', 'Superscript'],
         ['NumberedList', 'BulletedList'],
         ['Outdent', 'Indent']
     ];
