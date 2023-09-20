@@ -4,7 +4,7 @@
 <head>
     <meta name="layout" content="main">
 
-    %{--    <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>--}%
+        <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>
 
     <title>Acta</title>
 
@@ -361,12 +361,18 @@
 
     function submitFormEditarDescripcion() {
         var $form = $("#frmEditarDesc");
+        var descripcion = CKEDITOR.instances["descripcion"].getData();
+        var id = $("#id").val();
         if ($form.valid()) {
             var url = $form.attr("action");
             $.ajax({
                 type    : "POST",
                 url     : url,
-                data    : $form.serialize(),
+                // data    : $form.serialize(),
+                data    : {
+                        descripcion: descripcion,
+                        id: id
+                },
                 success : function (msg) {
                     if (msg === 'ok') {
                         log("Guardado correctamente", "success");
@@ -435,7 +441,7 @@
                 type    : "POST",
                 url     : url,
                 data    : $form.serialize(),
-                success : function (msg) {
+                  success : function (msg) {
                     if (msg.startsWith("NO")) {
                         var p = msg.split("_");
                         log(p[1], "error");
@@ -808,12 +814,18 @@
 
         function submitFormEditarParrafo() {
             var $form = $("#frmEditarSave");
+            var contenido = CKEDITOR.instances["contenido"].getData();
+            var id = $("#idParrafo").val();
             if ($form.valid()) {
                 var url = $form.attr("action");
                 $.ajax({
                     type    : "POST",
                     url     : url,
-                    data    : $form.serialize(),
+                    // data    : $form.serialize(),
+                    data:{
+                        contenido: contenido,
+                        id: id
+                    },
                     success : function (msg) {
                         if (msg === 'ok') {
                             log("Guardado correctamente", "success");
@@ -1027,12 +1039,18 @@
 
         function submitFormEditarSeccion() {
             var $form = $("#frmEditarSeccionSave");
+            var titulo = CKEDITOR.instances["titulo"].getData();
+            var id = $("#idSeccion").val();
             if ($form.valid()) {
                 var url = $form.attr("action");
                 $.ajax({
                     type    : "POST",
                     url     : url,
-                    data    : $form.serialize(),
+                    // data    : $form.serialize(),
+                    data:{
+                        titulo: titulo,
+                        id: id
+                    },
                     success : function (msg) {
                         if (msg === 'ok') {
                             log("Guardado correctamente", "success");

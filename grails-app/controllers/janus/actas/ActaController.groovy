@@ -642,17 +642,18 @@ class ActaController {
     }
 
     def formParrafo_ajax (){
-        println("params pff " + params)
         def parrafo = Parrafo.get(params.id)
         return [parrafo: parrafo]
     }
 
     def saveEditParrafo_ajax () {
 
+        println("paramns pafff " + params)
+
         if(params.id){
             def parrafo = Parrafo.get(params.id)
 
-            params.contenido = params.contenido.replaceAll("<br>", "<br></br>")
+//            params.contenido = params.contenido.replaceAll("<br>", "<br></br>")
 
             parrafo.properties = params
 
@@ -669,7 +670,6 @@ class ActaController {
     }
 
     def formSeccion_ajax (){
-        println("params secc " + params)
         def seccion = Seccion.get(params.id)
         return [seccion: seccion]
     }
@@ -679,7 +679,7 @@ class ActaController {
         if(params.id){
             def seccion = Seccion.get(params.id)
 
-            params.titulo = params.titulo.replaceAll("<br>", "<br></br>")
+//            params.titulo = params.titulo.replaceAll("<br>", "<br></br>")
 
             seccion.properties = params
 
@@ -705,7 +705,7 @@ class ActaController {
         if(params.id){
             def acta = Acta.get(params.id)
 
-            params.descripcion = params.descripcion.replaceAll("<br>", "<br></br>")
+//            params.descripcion = params.descripcion.replaceAll("<br>", "<br></br>")
 
             acta.properties = params
 

@@ -1,8 +1,7 @@
-<asset:stylesheet src="/summernote-0.8.18-dist/summernote.min.css"/>
-<asset:javascript src="/summernote-0.8.18-dist/summernote.min.js"/>
+<asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>
 
 <g:form class="form-horizontal" name="frmEditarSeccionSave" action="saveEditSeccion_ajax">
-    <g:hiddenField name="id" value="${seccion?.id}"/>
+    <g:hiddenField name="idSeccion" value="${seccion?.id}"/>
     <div class="container">
         <div class="col-md-6" >
             <g:textArea name="titulo" class="form-control" style="height: 150px; resize: none;" value="${seccion?.titulo ?: ''}"/>
@@ -12,17 +11,18 @@
 
 <script type="text/javascript">
 
-    $(document).ready(function() {
-        $('#titulo').summernote({
-            spellCheck: true,
-            disableGrammar: true,
-            toolbar: [
-                ['font', ['bold', 'underline', 'clear']],
-                ['color', ['color']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['view', ['codeview']]
-            ]
-        });
+    CKEDITOR.replace( 'titulo', {
+        language: 'es',
+        uiColor: '#9AB8F3'
     });
+
+    CKEDITOR.config.toolbar_parrafo = [
+        ['Undo', 'Redo'],
+        ['Bold', 'Italic', 'Underline'],
+        ['Subscript', 'Superscript'],
+        ['NumberedList', 'BulletedList'],
+        ['Outdent', 'Indent']
+    ];
+
 
 </script>
