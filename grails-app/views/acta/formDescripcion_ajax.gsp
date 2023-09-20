@@ -12,16 +12,12 @@
 
     CKEDITOR.replace( 'descripcion', {
         language: 'es',
-        uiColor: '#9AB8F3'
+        uiColor: '#9AB8F3',
+        extraPlugins: 'entities',
+        toolbar                 : [
+            ['FontSize', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
+            ['Bold', 'Italic', 'Underline'] ]
     });
-
-
-    CKEDITOR.config.toolbar_parrafo = [
-        ['Undo', 'Redo'],
-        ['Bold', 'Italic', 'Underline'],
-        ['NumberedList', 'BulletedList'],
-        ['Outdent', 'Indent']
-    ];
 
 
 </script>

@@ -1,4 +1,5 @@
-<asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>
+
+<ckeditor:resources/>
 
 <g:form class="form-horizontal" name="frmEditarSeccionSave" action="saveEditSeccion_ajax">
     <g:hiddenField name="idSeccion" value="${seccion?.id}"/>
@@ -13,15 +14,14 @@
 
     CKEDITOR.replace( 'titulo', {
         language: 'es',
-        uiColor: '#9AB8F3'
+        uiColor: '#9AB8F3',
+        extraPlugins: 'entities',
+        toolbar                 : [
+            ['FontSize', 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
+            ['Bold', 'Italic', 'Underline'] ]
+
     });
 
-    CKEDITOR.config.toolbar_parrafo = [
-        ['Undo', 'Redo'],
-        ['Bold', 'Italic', 'Underline'],
-        ['NumberedList', 'BulletedList'],
-        ['Outdent', 'Indent']
-    ];
 
 
 </script>

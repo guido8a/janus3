@@ -4,7 +4,8 @@
 <head>
     <meta name="layout" content="main">
 
-        <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/>
+        %{-- <asset:javascript src="/jquery/plugins/ckeditor/ckeditor.js"/> --}%
+        <ckeditor:resources/>
 
     <title>Acta</title>
 
