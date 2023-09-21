@@ -303,8 +303,6 @@
     $(".borrarItem").click(function () {
         var id = $(this).attr("iden");
 
-
-
         bootbox.confirm({
             title: "Eliminar",
             message: "Está seguro de eliminar este rubro? Esta acción no puede deshacerse.",
@@ -519,25 +517,56 @@
         }
     });
 
-    $("#borrarSubpre").click(function () {
-        var todos = $(".selector option:selected").val();
-        if(todos == -1){
-            $.box({
-                imageClass: "box_info",
-                text: "Seleccione un subpresupuesto",
-                title: "Alerta",
-                iconClose: false,
-                dialog: {
-                    resizable: false,
-                    draggable: false,
-                    buttons: {
-                        "Aceptar": function () {
-                        }
-                    }
+
+    function borrarSupresupuesto () {
+        bootbox.confirm({
+            title: "Borrar Subpresupuesto",
+            message: "<i class='fa fa-exclamation-triangle text-danger fa-3x'></i> Está seguro que desea borrar este subpresupuesto?",
+            buttons: {
+                cancel: {
+                    label: '<i class="fa fa-times"></i> Cancelar',
+                    className: 'btn-primary'
+                },
+                confirm: {
+                    label: '<i class="fa fa-trash"></i> Borrar',
+                    className: 'btn-danger'
                 }
-            });
+            },
+            callback: function (result) {
+                if(result){
+                    var g = cargarLoader("Borrando...");
+                    var subpresupuesto = $("#subPres_desc option:selected").val();
+                    $.ajax({
+                        type: "POST",
+                        url: "${g.createLink(controller: 'volumenObra',action:'eliminarSubpre')}",
+                        data: {
+                            sub: subpresupuesto,
+                            obra: '${obra?.id}'
+                        },
+                        success: function (msg) {
+                            var parts = msg.split("_");
+                            if(parts[0] === 'OK'){
+                                log(parts[1], "success");
+                                // cargarTabla();
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 1000);
+                            }else{
+                                log(parts[1], "error")
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    $("#borrarSubpre").click(function () {
+        var todos = $("#subPres_desc option:selected").val();
+        if(todos === '-1'){
+            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Seleccione un subpresupuesto" + '</strong>');
         }else{
-            $("#borrarSubpreDialog").dialog("open");
+            borrarSupresupuesto();
         }
     });
 

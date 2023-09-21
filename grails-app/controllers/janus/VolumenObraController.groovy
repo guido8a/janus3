@@ -208,18 +208,13 @@ class VolumenObraController {
 
     /** carga tabla de detalle de volúmenes de obra **/
     def tabla() {
-//        println "params tabla Vlob---> $params"
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)
-//        println "persona $persona ${persona?.departamento?.direccion?.id}"
         def direccion = Direccion.get(persona?.departamento?.direccion?.id)
         def grupo = Grupo.findAllByDireccion(direccion)
-//        println "grupo --> $grupo"
         def subPresupuesto1 = []
         if(grupo) subPresupuesto1 = SubPresupuesto.findAllByGrupoInList(grupo)
-//        println "sbpr --> $subPresupuesto1"
         def obra = Obra.get(params.obra)
-//        println "obra --> $obra"
 
         def duenoObra = 0
         def valores
@@ -231,33 +226,25 @@ class VolumenObraController {
             orden = 'desc'
         }
 
-//        println "...1"
         // actualiza el rendimiento de rubros transporte TR% si la obra no está registrada y herr. menor
         if(obra.estado != 'R') {
-//            println "actualiza desalojo y herramienta menor"
             preciosService.ac_transporteDesalojo(obra.id)
             preciosService.ac_rbroObra(obra.id)
         }
-
-//        println "...2"
 
         if (params.sub && params.sub != "-1") {
             valores = preciosService.rbro_pcun_v5(obra.id, params.sub, orden)
         } else {
             valores = preciosService.rbro_pcun_v4(obra.id, orden)
         }
-//        println("-->>" + valores)
 
         def subPres = VolumenesObra.findAllByObra(obra, [sort: "orden"]).subPresupuesto.unique()
-
         def estado = obra.estado
 
         duenoObra = esDuenoObra(obra)? 1 : 0
 
-
         [subPres: subPres, subPre: params.sub, obra: obra, valores: valores,
          subPresupuesto1: subPresupuesto1, estado: estado, msg: params.msg, persona: persona, duenoObra: duenoObra]
-
     }
 
     def esDuenoObra(obra) {
