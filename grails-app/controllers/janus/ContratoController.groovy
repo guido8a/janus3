@@ -1123,6 +1123,7 @@ class ContratoController {
 
         params.monto = params.monto.toDouble()
         params.anticipo = params.anticipo.toDouble()
+        params.indirectos = params.indirectos.toDouble()
 
         if (params.id) {
             contratoInstance = Contrato.get(params.id)
@@ -1143,20 +1144,16 @@ class ContratoController {
         }
 
         contratoInstance.periodoInec = indice
-//        contratoInstance.oferta = oferta
         contratoInstance.tipoContrato = tipoContrato
         contratoInstance.depAdministrador = Departamento.get(params."depAdministrador.id")
         contratoInstance.aplicaReajuste = params.aplicaReajuste.toInteger()
         contratoInstance.saldoMulta = params.saldoMulta.toInteger()
 
-//        println "graba contrato... ${contratoInstance.depAdministrador}"
 
         try {
-//            println "...1"
             if(!contratoInstance.save(flush: true)) {
                 println "err: ${contratoInstance.errors}"
             }  else {
-//                println "-----ok"
             }
 
         } catch (e) {

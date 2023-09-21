@@ -181,19 +181,11 @@
                 <div class="col-md-2 formato">Oferta</div>
 
                 <div class="col-md-3" id="div_ofertas">
-%{--                    <g:select name="oferta.id" from="" noSelection="['-1': 'Seleccione']" id="oferta" optionKey="id"/>--}%
                 </div>
-
-                %{--<div class="col-md-3 formato" style="margin-left: -1px">Fecha presentación de la Oferta</div>--}%
-
-                %{--<div class="col-md-2"><g:textField name="fechaPresentacion" class="fechaPresentacion" value="${contrato?.oferta?.fechaEntrega?.format('dd-MM-yyyy') ?: ''}"--}%
-                %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
 
                 <div class="col-md-6" id="filaFecha">
 
                 </div>
-                %{--<div class="col-md-2"><g:textField name="fechaPresentacion" class="fechaPresentacion" id="fechaPresentacion"--}%
-                %{--disabled="true" style="width: 100px; margin-left: -180px"/></div>--}%
             </div>
 
             <div class="col-md-12" style="margin-top: 5px" align="center">
@@ -205,23 +197,15 @@
             </div>
 
             <div class="col-md-12" style="margin-top: 5px" align="center">
-
                 <div class="col-md-2 formato">Parroquia</div>
-
                 <div class="col-md-3"><g:textField name="parroquia" class="parroquia" id="parr"/></div>
-
                 <div class="col-md-1 formato">Cantón</div>
-
                 <div class="col-md-2"><g:textField name="canton" class="canton" id="canton"/></div>
-
             </div>
 
             <div class="col-md-12" style="margin-top: 5px" align="center">
-
                 <div class="col-md-2 formato">Clase Obra</div>
-
                 <div class="col-md-3"><g:textField name="claseObra" class="claseObra" id="clase"/></div>
-
             </div>
 
             <div class="col-md-12" style="margin-top: 5px" align="center">
@@ -256,8 +240,6 @@
             <div class="col-md-1 formato">Fecha de Suscripción</div>
 
             <div class="col-md-2">
-                %{--                <elm:datepicker name="fechaSubscripcion" class="fechaSuscripcion datepicker required input-small activo"--}%
-                %{--                                value="${contrato?.fechaSubscripcion}"/>--}%
                 <input aria-label="" name="fechaSubscripcion" id='fecha1' type='text' class="input-small" value="${contrato?.fechaSubscripcion?.format("dd-MM-yyyy")}" />
             </div>
 
@@ -282,7 +264,6 @@
     <fieldset class="" style="position: relative; border-bottom: 1px solid black; padding-bottom: 10px">
 
         <div class="col-md-12" style="margin-top: 10px">
-
             <div class="col-md-3 formato">Multa por retraso de obra</div>
 
             <div class="col-md-1">
@@ -305,13 +286,10 @@
             <div class="col-md-1" style="margin-left: -40px">
                 x 1000
             </div>
-
         </div>
 
         <div class="col-md-12" style="margin-top: 10px">
-
             <div class="col-md-3 formato">Multa por incumplimiento del cronograma</div>
-
             <div class="col-md-1">
                 <g:textField name="multaIncumplimiento" class="number" style="width: 50px"
                              value="${g.formatNumber(number: contrato?.multaIncumplimiento ?: 0, maxFractionDigits: 0, minFractionDigits: 0, format: '##,##0', locale: 'ec')}"/>
@@ -321,7 +299,6 @@
             </div>
             <div class="col-md-1">
             </div>
-
             <div class="col-md-4 formato">Multa por no acatar disposiciones del fiscalizador</div>
 
             <div class="col-md-1">
@@ -331,13 +308,10 @@
             <div class="col-md-1" style="margin-left: -40px">
                 x 1000
             </div>
-
         </div>
 
         <div class="col-md-12" style="margin-top: 10px">
-
             <div class="col-md-3 formato">Monto del contrato</div>
-
             <div class="col-md-2"><g:textField name="monto" class="monto activo number"
                                                value="${contrato?.monto}"/></div>
 
@@ -354,29 +328,23 @@
 
             <div class="col-md-1">
                 <g:textField name="indirectos" class="anticipo activo"
-                             value="${g.formatNumber(number: contrato?.indirectos ?: 20, maxFractionDigits: 0,
+                             value="${g.formatNumber(number: contrato?.indirectos ?: 20, maxFractionDigits: 2,
                                      minFractionDigits: 0, locale: 'ec')}"
-                             style="width: 30px; text-align: right"/> %
+                             style="width: 45px; text-align: right"/> %
             </div>
-
         </div>
 
         <div class="col-md-12" style="margin-top: 10px">
-
             <div class="col-md-3 formato">Anticipo sin reajuste</div>
-
             <div class="col-md-1">
                 <g:textField name="porcentajeAnticipo" class="anticipo required activo"
                              value="${g.formatNumber(number: contrato?.porcentajeAnticipo, maxFractionDigits: 0, minFractionDigits: 0, locale: 'ec')}"
                              style="width: 30px; text-align: right"/> %
             </div>
-
             <div class="col-md-2" style="margin-left: -40px">
                 <g:textField name="anticipo" class="anticipoValor activo required" style="width: 105px; text-align: right"
                              value="${g.formatNumber(number: contrato?.anticipo, maxFractionDigits: 2, minFractionDigits: 2, locale: 'ec')}"/>
             </div>
-
-
             <div class="col-md-4 formato">Indices 30 días antes de la presentación de la oferta</div>
             <div class="col-md-2">
                 <g:select name="periodoInec.id" from="${janus.pac.PeriodoValidez.list([sort: 'fechaFin'])}"
@@ -385,9 +353,7 @@
         </div>
 
         <div class="col-md-12" style="margin-top: 15px">
-
             <div class="col-md-2 formato">Departamento Administrador</div>
-
             <div class="col-md-4">
                 <g:select name="depAdministrador.id" from="${janus.Departamento.list([sort: 'descripcion'])}"
                           optionKey="id" optionValue="descripcion"  value="${contrato?.depAdministrador?.id?:1}"
@@ -398,12 +364,10 @@
             <div class="col-md-1">
                 <g:select name="conReajuste" from="${[0 : 'NO', 1 : 'SI']}" optionKey="key" optionValue="value" value="${contrato?.conReajuste == 1 ? 1 : 0}" style="width: 60px"/>
             </div>
-
         </div>
 
         <div class="col-md-12" style="margin-top: 10px">
             <div class="col-md-2 formato">Administrador delegado</div>
-
             <div class="${contrato?.administrador?.nombre ? 'col-md-4' : 'col-md-4'}">
                 ${contrato?.administrador?.titulo} ${contrato?.administrador?.nombre} ${contrato?.administrador?.apellido}
             </div>
@@ -452,28 +416,16 @@
             <i class="fa fa-plus"></i> Asignar F. Polinómica
         </g:link>
 
-%{--        <g:if test="${session.perfil.codigo == 'CNTR' && contrato?.estado == 'R' && !contrato.padre}">--}%
         <g:if test="${session.perfil.codigo == 'CNTR' && !contrato.padre}">
             <a href="#" id="btnAgregarAdmin" class="btn adm">
                 <i class="fa fa-user"></i> Administrador
             </a>
         </g:if>
 
-%{--        <g:link class="contratado, btn" controller="cronogramaContrato" action="editarVocr" id="${contrato?.id}"--}%
-%{--                title="Nuevo Cronograma Contrato Complementario">--}%
-%{--            <i class="fa fa-file-code"></i> Valores Contratados--}%
-%{--        </g:link>--}%
-
         <g:link class="comple, btn" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
                 title="Nuevo Cronograma Contrato Complementario">
             <i class="fa fa-clipboard"></i> Cronograma Total
         </g:link>
-
-
-%{--        <g:link class="comple, btn" controller="cronogramaContrato" action="corrigeCrcr" id="${contrato?.id}"--}%
-%{--                title="Nuevo Cronograma Contrato Complementario">--}%
-%{--            <i class="fa fa-th"></i> Corregir decimales Crono.--}%
-%{--        </g:link>--}%
 
         <g:if test="${complementario}">
             <a href="#" class="comple btn" name="integrarFP_name" id="integrarFP"
