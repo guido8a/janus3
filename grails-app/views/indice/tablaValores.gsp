@@ -4,11 +4,15 @@
 
     $(".btnEditar").click(function () {
         var id = $(this).data("id");
+        var indice = $(this).data("indc");
+        var periodo = $(this).data("prin");
         $.ajax({
             type    : "POST",
             url: "${createLink(action:'editarValorIndice_ajax')}",
             data    : {
-                id: id
+                id: id,
+                indice: indice,
+                periodo: periodo
             },
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -66,12 +70,16 @@
     $(".btCopia").click(function () {
         var valorPrevio =  $(this).parent().prev().prev().prev().data('valor');
         var id = $(this).data("id");
+        var indice = $(this).data("indc");
+        var periodo = $(this).data("prin");
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'indice', action: 'saveValorIndice_ajax')}',
             data:{
                 id: id,
-                valor: valorPrevio
+                valor: valorPrevio,
+                indice: indice,
+                periodo: periodo
             },
             success: function (msg){
                 var parts = msg.split("_");

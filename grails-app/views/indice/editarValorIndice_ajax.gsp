@@ -1,5 +1,7 @@
 <g:form class="form-horizontal" name="frmSave-ValorIndice" action="saveValorIndice_ajax">
     <g:hiddenField name="id" value="${valorIndice?.id}"/>
+    <g:hiddenField name="indice" value="${indice?.id}"/>
+    <g:hiddenField name="periodo" value="${periodo?.id}"/>
 
     <div class="form-group ${hasErrors(bean: valorIndice, field: 'valor', 'error')} ">
         <span class="grupo">

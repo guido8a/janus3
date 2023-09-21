@@ -344,9 +344,9 @@ class IndiceController {
             body += "<td>${d.indcdscr}</td>"
 
             cont = 0
-            def prec = "", p = 0, rubro = "new"
+            def prec = "", p = 0, rubro = null
             while (cont < 2) {
-                rubro = "new"
+                rubro = null
                 txValor = "select vlin__id, vlinvalr, vlin.prin__id from vlin, prin where vlin.prin__id = ${periodos[cont]} and " +
                     "vlin.indc__id = ${d.indc__id} and prin.prin__id = vlin.prin__id order by prinfcin"
                 prec = g.formatNumber(number: 0.0, maxFractionDigits: 2, minFractionDigits: 2, locale: "ec")
@@ -359,13 +359,14 @@ class IndiceController {
                         rubro = v.vlin__id
                     }
                 }
+
                 body += "<td class='${editar} number' data-original='${p}' data-prin='${periodos[cont]}' " +
                         "data-id='${rubro}' data-indc='${d.indc__id}' data-valor='${p}'>" + prec + '</td>'
 
                 if(cont==1){
-                    body += "<td style='text-align:center' ><a class='btn btn-xs btn-success btnEditar' data-id='${rubro}'  href='#' rel='tooltip' title='Editar' " +
+                    body += "<td style='text-align:center' ><a class='btn btn-xs btn-success btnEditar' data-id='${rubro}' data-indc='${d.indc__id}' data-prin='${periodos[cont]}'  href='#' rel='tooltip' title='Editar' " +
                             "</a><i class='fa fa-edit'></i>  </td>"
-                    body += "<td style='text-align:center'><a class='btn btn-xs btn-show btn-info btCopia' data-id='${rubro}' href='#' rel='tooltip' title='Copiar' " +
+                    body += "<td style='text-align:center'><a class='btn btn-xs btn-show btn-info btCopia' data-id='${rubro}' data-indc='${d.indc__id}' data-prin='${periodos[cont]}' href='#' rel='tooltip' title='Copiar' " +
                             "</a><i class='fa fa-copy'></i>  Copiar</td>"
                 }
 
@@ -538,11 +539,25 @@ class IndiceController {
 
     def editarValorIndice_ajax(){
         def valorIndice = ValorIndice.get(params.id)
-        return[valorIndice: valorIndice]
+        def indice = Indice.get(params.indice)
+        def periodo = PeriodosInec.get(params.periodo)
+        return[valorIndice: valorIndice, indice: indice, periodo: periodo]
     }
 
     def saveValorIndice_ajax(){
-        def valorIndice = ValorIndice.get(params.id)
+
+        def valorIndice
+
+        if(params.id){
+            valorIndice = ValorIndice.get(params.id)
+        }else{
+            def indice = Indice.get(params.indice)
+            def periodo = PeriodosInec.get(params.periodo)
+            valorIndice =  new ValorIndice();
+            valorIndice.indice = indice
+            valorIndice.periodo = periodo
+
+        }
 
         if(params.valor){
             valorIndice.valor = params.valor.toDouble()
