@@ -19,8 +19,10 @@
                     <tr style="width: 100%">
                         <th style="width: 10%; text-align: center">Coeficiente</th>
                         <th style="width: 65%">Nombre del Indice (INEC)</th>
-                        <th style="width: 15%">Valor</th>
-                        <th style="width: 15%">Editar</th>
+                        <th style="width: ${editar != 'no' ? '15%' : '25%'}">Valor</th>
+                        <g:if test="${editar != 'no'}">
+                            <th style="width: 15%">Editar</th>
+                        </g:if>
                     </tr>
                     </thead>
                     <tbody id="bodyPoliContrato">
@@ -39,13 +41,16 @@
                                     ${g.formatNumber(number: i?.valor, minFractionDigits: 3, maxFractionDigits: 3)}
                                 </td>
                             </g:else>
-                            <td style="text-align: center">
-                                <g:if test="${i.indice.id != 143}">
-                                    <a href="#" data-id="${i.id}" class="btn btn-xs btn-success btnEditarIndice" title="Editar índice">
-                                        <i class="fa fa-edit"></i>
-                                    </a>
-                                </g:if>
-                            </td>
+                            <g:if test="${editar != 'no'}">
+                                <td style="text-align: center">
+                                    <g:if test="${i.indice.id != 143}">
+                                        <a href="#" data-id="${i.id}" class="btn btn-xs btn-success btnEditarIndice" title="Editar índice">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                    </g:if>
+                                </td>
+                            </g:if>
+
                             <g:set var="tot" value="${tot + i.valor}"/>
                         </tr>
                     </g:each>
@@ -71,8 +76,10 @@
                 <tr style="width: 100%">
                     <th style="width: 10%; text-align: center">Coeficiente</th>
                     <th style="width: 65%">Nombre del Indice (INEC)</th>
-                    <th style="width: 15%">Valor</th>
-                    <th style="width: 15%">Editar</th>
+                    <th style="width: ${editar != 'no' ? '15%' : '25%'}">Valor</th>
+                    <g:if test="${editar != 'no'}">
+                        <th style="width: 15%">Editar</th>
+                    </g:if>
                 </tr>
                 </thead>
                 <tbody id="bodyCuadrilla">
@@ -84,11 +91,13 @@
                         <td data-tipo="c" data-id="${i.id}" id="${i.id}" data-original="${i.valor}" data-valor="${i.valor}" style="text-align: right; width: 40px">
                             ${g.formatNumber(number: i?.valor, minFractionDigits: 3, maxFractionDigits: 3)}
                         </td>
-                        <td style="text-align: center">
-                            <a href="#" data-id="${i.id}" class="btn btn-xs btn-success btnEditarIndiceCuadrilla" title="Editar índice">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        </td>
+                        <g:if test="${editar != 'no'}">
+                            <td style="text-align: center">
+                                <a href="#" data-id="${i.id}" class="btn btn-xs btn-success btnEditarIndiceCuadrilla" title="Editar índice">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                            </td>
+                        </g:if>
                         <g:set var="tot" value="${tot + i.valor}"/>
                     </tr>
                 </g:each>
@@ -167,7 +176,7 @@
                                         if(msg === 'ok'){
                                             log("Guardado correctamente","success");
                                             cargarTabla('${fp?.id}');
-                                         }else{
+                                        }else{
                                             bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-warning'></i>" + "Error al guardar el Indice")
                                         }
                                     }
@@ -184,7 +193,7 @@
     $(".btnEditarIndice").click(function () {
         var id = $(this).data("id");
 
-               $.ajax({
+        $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'contrato', action: 'editarIndice_ajax')}",
             data    : {

@@ -27,10 +27,10 @@
         </g:link>
     %{--        <a href="#" class="btn btn-success" id="btnSave"><i class="fa fa-save"></i> Guardar</a>--}%
 
-%{--        <div class="col-md-6">--}%
-%{--            <g:select name="listaFormulas" id="existentes" from="${formulas}" optionValue="descripcion" optionKey="id"--}%
-%{--                      style="margin-right: 1px" class="form-control"/>--}%
-%{--        </div>--}%
+        <div class="col-md-6">
+            <g:select name="listaFormulas" id="existentes" from="${formulas}" optionValue="descripcion" optionKey="id"
+                      style="margin-right: 1px" class="form-control"/>
+        </div>
 %{--        <div class="col-md-3">--}%
 %{--            <a href="#" class="btn btn-info" id="btnCopiar"><i class="fa fa-file"></i> Crear fórmula polinómica</a>--}%
 %{--        </div>--}%

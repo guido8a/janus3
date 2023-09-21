@@ -474,12 +474,8 @@ class ContratoController {
             fr.each {
                 it.delete(flush: true)
             }
-
             copiaFpDesdeObra(contrato, true)  //true copia FP desde obra
         }
-
-        //return la tabla para editar
-//        def ps = FormulaPolinomicaContractual.findAllByContratoAndNumeroIlike(contrato, "p%", [sort: 'numero'])
 
         def ps = FormulaPolinomicaContractual.withCriteria {
             eq("contrato", contrato)
@@ -487,8 +483,6 @@ class ContratoController {
             ne("numero", "P0")
             order("numero", "asc")
         }
-
-        println("contrato " + contrato)
 
         def cuadrilla = FormulaPolinomicaContractual.findAllByContratoAndNumeroIlike(contrato, 'c%', [sort: 'numero'])
         return [ps: ps, cuadrilla: cuadrilla, contrato: contrato, formulas: formulasVarias]
@@ -564,26 +558,10 @@ class ContratoController {
             order("numero", "asc")
         }
 
-        return [ps: ps, cuadrilla: cuadrilla, fp: fpReajuste]
+        return [ps: ps, cuadrilla: cuadrilla, fp: fpReajuste, editar: params.editar]
     }
 
     def copiarFormula() {
-
-//        def muestra = FormulaPolinomicaContractual.get(params.id)
-//        def codigoMuestra = muestra.codigo
-//        def contratoMuestra = muestra.contrato
-//
-//        def formulasVarias = FormulaPolinomicaContractual.findAllByContrato(contratoMuestra)
-//
-//        def po = []
-//        formulasVarias.each {
-//            def cont = it.codigo
-//            if(cont in po){
-//            }else{
-//                po += it.codigo
-//            }
-//        }
-
 
         def fpReajuste = FormulaPolinomicaReajuste.get(params.id)
 
@@ -593,16 +571,8 @@ class ContratoController {
             order("numero", "asc")
         }
 
-//        println("ps " + ps)
-//        println("po " + po.max())
-
         def errorCopiado = 0
-
-
-        def cont = FormulaPolinomicaContractual.findAllByContrato(fpReajuste.contrato).codigo
-
-//        println("codigos " + cont.max())
-
+        def cont = FormulaPolinomicaContractual.findAllByContrato(fpReajuste.contrato)?.codigo
         def nuevoReajuste = new FormulaPolinomicaReajuste()
 
         nuevoReajuste.contrato = fpReajuste.contrato
@@ -632,13 +602,13 @@ class ContratoController {
         } else {
             render "si"
         }
-
     }
 
 
     def polinomicaContrato() {
         def contrato = Contrato.get(params.id)
-//        def ps = FormulaPolinomicaContractual.findAllByContratoAndNumeroIlike(contrato, "p%", [sort: 'numero'])
+        def formulasVarias = FormulaPolinomicaReajuste.findAllByContrato(contrato)
+
         def ps = FormulaPolinomicaContractual.withCriteria {
             eq("contrato", contrato)
             ilike("numero", "p%")
@@ -646,7 +616,7 @@ class ContratoController {
             order("numero", "asc")
         }
         def cuadrilla = FormulaPolinomicaContractual.findAllByContratoAndNumeroIlike(contrato, 'c%', [sort: 'numero'])
-        return [ps: ps, cuadrilla: cuadrilla, contrato: contrato]
+        return [ps: ps, cuadrilla: cuadrilla, contrato: contrato, formulas: formulasVarias]
     }
 
     def buscarContrato() {
