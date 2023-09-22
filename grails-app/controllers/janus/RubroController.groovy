@@ -657,7 +657,7 @@ class RubroController {
         println "get precios fecha: "+params.fecha
         def lugar = Lugar.get(params.ciudad)
         //def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
-        def fecha = new Date().parse("yyyy-MM-dd", params.fecha)
+        def fecha = new Date().parse("dd-MM-yyyyy", params.fecha)
         def tipo = params.tipo
         def items = []
         def parts = params.ids.split("#")
