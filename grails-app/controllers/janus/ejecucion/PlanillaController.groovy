@@ -1714,8 +1714,17 @@ class PlanillaController {
             println "Error al guardar la fecha de la obra desde el boton azul: " + obra.errors
             redirect(action: "list", id: contrato.id)
         } else {
+
+
+            if(contrato.obra.id != contrato.oferta.concurso.obra.id){
+                def concurso = Concurso.get(contrato.oferta.concurso.id)
+                concurso.obra = contrato.obra
+
+                concurso.save(flush:true)
+            }
+
+
             flash.message = "Obra iniciada exitosamente"
-//            redirect(controller: "cronogramaEjecucion", action: "creaCronogramaEjec", id: planilla.contratoId)
             if (params.cntr) {
                 render "ok"
             } else {
