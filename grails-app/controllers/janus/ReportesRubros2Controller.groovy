@@ -3638,7 +3638,7 @@ class ReportesRubros2Controller {
     }
 
     def reporteRubrosConsolidadoGrupo2(){
-//        println("params rrcg " + params)
+        println("params rrcg " + params)
 
         def rubros = []
         def parts = params.id.split("_")
@@ -3647,8 +3647,16 @@ class ReportesRubros2Controller {
         switch (parts[0]) {
             case "gr":
                 def subGrupo = SubgrupoItems.findAllByGrupo(Grupo.get(parts[1].toLong()))
-                def departamentos = DepartamentoItem.findAllBySubgrupoInList(subGrupo)
-                rubros = Item.findAllByDepartamentoInList(departamentos, [sort: "nombre"])
+                if(subGrupo.size() > 0){
+                    def departamentos = DepartamentoItem.findAllBySubgrupoInList(subGrupo)
+                    if(departamentos.size() > 0){
+                        rubros = Item.findAllByDepartamentoInList(departamentos, [sort: "nombre"])
+                    }else{
+                        rubros = []
+                    }
+                }else{
+                    rubros = []
+                }
                 break;
             case "sg":
                 def departamentos = DepartamentoItem.findAllBySubgrupo(SubgrupoItems.get(parts[1].toLong()))
