@@ -1184,7 +1184,7 @@ class ObraController {
 
 
     def save() {
-//        println "save " + params
+        println "save " + params
 
         def usuario = session.usuario.id
         def persona = Persona.get(usuario)

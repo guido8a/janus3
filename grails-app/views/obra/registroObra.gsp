@@ -507,7 +507,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
 
             <div class="col-md-2" style="margin-left: 10px; width: 120px;">
                 <g:textField name="porcentajeAnticipo" type="number" class="anticipo number required"
-                             style="width: 40px" value="${obra?.porcentajeAnticipo?:50}" maxlength="3"
+                             style="width: 40px" value="${obra?.porcentajeAnticipo >=0? obra?.porcentajeAnticipo : 50}" maxlength="3"
                              title="Porcentaje de Anticipo"/> %</div>
 
             <g:if test="${matrizOk}">
