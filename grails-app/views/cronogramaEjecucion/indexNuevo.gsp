@@ -519,30 +519,63 @@
         });
 
         $("#btnComp").click(function () {
-            $.box({
-                imageClass: "box_info",
+
+            bootbox.confirm({
                 title: "Integrar Cronograma del Complementario",
-                text: "Está seguro de querer integrar el cronograma de contrato complementario?<br>Esta acción no se puede deshacer.",
-                iconClose: false,
-                dialog: {resizable: false, draggable: false, closeOnEscape: false,
-                    buttons: {
-                        "Aceptar": function () {
-                            $.ajax({
-                                type: "POST",
-                                url: "${createLink(action: 'armaCrcrComp')}",
-                                data: {
-                                    contrato: "${contrato.id}"
-                                },
-                                success: function (msg) {
-                                    location.reload();
-                                }
-                            })
-                        },
-                        "Cancelar": function () {
-                        }
+                message: "<i class='fa fa-exclamation-triangle text-warning fa-3x'></i> Está seguro de querer integrar el cronograma de contrato complementario?.Esta acción no se puede deshacer.",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancelar',
+                        className: 'btn-primary'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Aceptar',
+                        className: 'btn-success'
+                    }
+                },
+                callback: function (result) {
+                    if(result){
+                        var g = cargarLoader("Cargando...");
+                        $.ajax({
+                            type: "POST",
+                            url: "${createLink(action: 'armaCrcrComp')}",
+                            data: {
+                                contrato: "${contrato.id}"
+                            },
+                            success: function (msg) {
+                                location.reload();
+                            }
+                        })
                     }
                 }
             });
+
+
+
+            %{--$.box({--}%
+            %{--    imageClass: "box_info",--}%
+            %{--    title: "Integrar Cronograma del Complementario",--}%
+            %{--    text: "Está seguro de querer integrar el cronograma de contrato complementario?<br>Esta acción no se puede deshacer.",--}%
+            %{--    iconClose: false,--}%
+            %{--    dialog: {resizable: false, draggable: false, closeOnEscape: false,--}%
+            %{--        buttons: {--}%
+            %{--            "Aceptar": function () {--}%
+            %{--                $.ajax({--}%
+            %{--                    type: "POST",--}%
+            %{--                    url: "${createLink(action: 'armaCrcrComp')}",--}%
+            %{--                    data: {--}%
+            %{--                        contrato: "${contrato.id}"--}%
+            %{--                    },--}%
+            %{--                    success: function (msg) {--}%
+            %{--                        location.reload();--}%
+            %{--                    }--}%
+            %{--                })--}%
+            %{--            },--}%
+            %{--            "Cancelar": function () {--}%
+            %{--            }--}%
+            %{--        }--}%
+            %{--    }--}%
+            %{--});--}%
             return false;
         });
 
