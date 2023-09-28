@@ -61,7 +61,7 @@
                 <g:if test="${complementario}">
                     <a href="#" class="btn btn-warning" id="btnComp">
                         <i class="fa fa-calendar"></i>
-                        Complementario
+                        Crea periodos Complementario
                     </a>
                 </g:if>
             </div>

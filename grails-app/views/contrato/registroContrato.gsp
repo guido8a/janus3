@@ -545,7 +545,7 @@
 
 <div id="integrarCronoDialog">
     <fieldset>
-        <div class="col-md-4">
+        <div class="col-md-12">
             Seleccione el contrato complementario cuyo cronograma será integrado al cronograma del contrato:
             <strong>${contrato?.codigo}</strong>
         </div>
