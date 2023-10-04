@@ -113,7 +113,7 @@
                     <i class="fa fa-file-excel"></i> Adm. Directa Excel
                 </g:link>
                 <g:link controller="reportesExcel2" action="reporteExcelItemsComposicion" class="btn btn-success" id="${obra?.id}" title="Items">
-                    <i class="fa fa-file-excel"></i> Items
+                    <i class="fa fa-file-excel"></i> Items LP
                 </g:link>
             </div>
         </div>
