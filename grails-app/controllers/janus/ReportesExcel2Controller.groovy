@@ -2330,6 +2330,127 @@ class ReportesExcel2Controller {
 
     }
 
+    def reporteExcelItemsComposicion() {
+
+        def obra = Obra.get(params.id)
+
+        def sql = "select distinct vlobitem.itemcdgo, itemnmbr, " +
+                "tplsdscr, obradsps, obradsvl, obradses, obradsmj, obradsca from obra, " +
+                "vlobitem, item, tpls where obra.obra__id = vlobitem.obra__id and item.item__id = vlobitem.item__id and tpls.tpls__id = item.tpls__id and vlobitem.obra__id = ${obra?.id} " +
+                "and item.tpls__id <> 6 order by tplsdscr, itemcdgo;"
+//
+//        def sql = "SELECT\n" +
+//                "  i.itemcdgo              codigo,\n" +
+//                "  i.itemnmbr              item,\n" +
+//                "  u.unddcdgo              unidad,\n" +
+//                "  sum(v.voitcntd)         cantidad,\n" +
+//                "  v.voitpcun              punitario,\n" +
+//                "  v.voittrnp              transporte,\n" +
+//                "  v.voitpcun + v.voittrnp costo,\n" +
+//                "  d.dprtdscr              departamento,\n" +
+//                "  s.sbgrdscr              subgrupo,\n" +
+//                "  g.grpodscr              grupo,\n" +
+//                "  g.grpo__id              grid\n" +
+//                "FROM vlobitem v\n" +
+//                "  LEFT JOIN item i ON v.item__id = i.item__id\n" +
+//                "  LEFT JOIN undd u ON i.undd__id = u.undd__id\n" +
+//                "  LEFT JOIN dprt d ON i.dprt__id = d.dprt__id\n" +
+//                "  LEFT JOIN sbgr s ON d.sbgr__id = s.sbgr__id\n" +
+//                "  LEFT JOIN grpo g ON s.grpo__id = g.grpo__id AND g.grpo__id IN (${params.tipo})\n" +
+//                "WHERE v.obra__id = ${params.id} \n" +
+//                "GROUP BY i.itemcdgo, i.itemnmbr, u.unddcdgo, v.voitpcun, v.voittrnp, d.dprtdscr, s.sbgrdscr, g.grpodscr,\n" +
+//                "  g.grpo__id\n" +
+//                "ORDER BY grid ASC, i.itemnmbr"
+
+
+        def cn = dbConnectionService.getConnection()
+        def res = cn.rows(sql.toString())
+
+        def label
+        def number
+        def totalE = 0;
+        def totalM = 0;
+        def totalMO = 0;
+        def ultimaFila = 0
+
+        XSSFWorkbook wb = new XSSFWorkbook()
+        XSSFCellStyle style = wb.createCellStyle();
+        XSSFFont font = wb.createFont();
+        font.setBold(true);
+        style.setFont(font);
+
+        Sheet sheet = wb.createSheet("ITEMS")
+        sheet.setColumnWidth(0, 15 * 256);
+        sheet.setColumnWidth(1, 60 * 256);
+        sheet.setColumnWidth(2, 20 * 256);
+        sheet.setColumnWidth(3, 20 * 256);
+        sheet.setColumnWidth(4, 20 * 256);
+        sheet.setColumnWidth(5, 20 * 256);
+        sheet.setColumnWidth(6, 20 * 256);
+        sheet.setColumnWidth(7, 20 * 256);
+
+        Row row = sheet.createRow(0)
+        row.createCell(0).setCellValue("")
+        Row row0 = sheet.createRow(1)
+        row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
+        row0.setRowStyle(style)
+        Row row1 = sheet.createRow(2)
+        row1.createCell(1).setCellValue("COMPOSICIÓN: " + obra?.nombre)
+        row1.setRowStyle(style)
+        Row row2 = sheet.createRow(3)
+        row2.createCell(1).setCellValue(obra?.departamento?.direccion?.nombre ?: '')
+        row2.setRowStyle(style)
+        Row row3 = sheet.createRow(4)
+        row3.createCell(1).setCellValue("CÓDIGO: " + obra?.codigo)
+        row3.setRowStyle(style)
+        Row row4 = sheet.createRow(5)
+        row4.createCell(1).setCellValue("DOC. REFERENCIA: " + obra?.oficioIngreso)
+        row4.setRowStyle(style)
+        Row rowE = sheet.createRow(6)
+        rowE.createCell(1).setCellValue("")
+        Row row5 = sheet.createRow(6)
+        row5.createCell(1).setCellValue("FECHA: " + obra?.fechaCreacionObra?.format('dd-MM-yyyy'))
+        row5.setRowStyle(style)
+        Row row6 = sheet.createRow(7)
+        row6.createCell(1).setCellValue("FECHA ACT.PRECIOS: " + obra?.fechaPreciosRubros?.format("dd-MM-yyyy"))
+        row6.setRowStyle(style)
+
+        def fila = 9
+
+        Row rowC1 = sheet.createRow(fila)
+        rowC1.createCell(0).setCellValue("CÓDIGO")
+        rowC1.createCell(1).setCellValue("ITEM")
+        rowC1.createCell(2).setCellValue("LISTA")
+        rowC1.createCell(3).setCellValue("DISTANCIA PESO")
+        rowC1.createCell(4).setCellValue("DISTANCIA VOLUMEN")
+        rowC1.createCell(5).setCellValue("DISTANCIA PESO ESPECIAL")
+        rowC1.createCell(6).setCellValue("DISTANCIA VOLUMEN MEJORAMIENTO")
+        rowC1.createCell(7).setCellValue("DISTANCIA VOLUMEN CARPETA ASFÁLTICA")
+        rowC1.setRowStyle(style)
+        fila++
+
+        res.each {
+            Row rowF1 = sheet.createRow(fila)
+            rowF1.createCell(0).setCellValue(it?.itemcdgo?.toString() ?: '')
+            rowF1.createCell(1).setCellValue(it?.itemnmbr?.toString() ?: '')
+            rowF1.createCell(2).setCellValue(it?.tplsdscr?.toString() ?: '')
+            rowF1.createCell(3).setCellValue(it?.obradsps?.toDouble() ?: 0)
+            rowF1.createCell(4).setCellValue(it?.obradsvl?.toDouble() ?: 0)
+            rowF1.createCell(5).setCellValue(it?.obradses?.toDouble() ?: 0)
+            rowF1.createCell(6).setCellValue(it?.obradsmj?.toDouble() ?: 0)
+            rowF1.createCell(7).setCellValue(it?.obradsca?.toDouble() ?: 0)
+            fila++
+
+            ultimaFila = fila
+        }
+
+        def output = response.getOutputStream()
+        def header = "attachment; filename=" + "itemsComposicion.xlsx";
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-Disposition", header);
+        wb.write(output)
+    }
+
 
 
 }
