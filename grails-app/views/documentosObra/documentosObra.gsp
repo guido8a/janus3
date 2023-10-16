@@ -30,10 +30,10 @@
 
 <body>
 <g:if test="${flash.message}">
-    <div class="col-md-12" style="float:right; z-index: 1000">
-        <div class="alert ${flash.clase ?: 'alert-info'}" role="status" style="margin-bottom: 0px; margin-left: 15px;">
+    <div class="col-md-12" style="z-index: 1000; margin-top: 0">
+        <div class="alert ${flash.clase ?: 'alert-info'}" role="status" style="margin-bottom: 0px; margin-left: -15px;">
             <a class="close" data-dismiss="alert" href="#">×</a>
-            ${flash.message}
+            ${raw(flash.message)}
         </div>
     </div>
 </g:if>

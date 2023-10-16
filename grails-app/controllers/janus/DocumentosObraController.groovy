@@ -146,11 +146,20 @@ class DocumentosObraController {
         def direccion = departamento.direccion
         def dptoDireccion = Departamento.findAllByDireccion(direccion)
         def personalDireccion = Persona.findAllByDepartamentoInList(dptoDireccion, [sort: 'nombre'])
-        def firmas = PersonaRol.findAllByFuncionAndPersonaInList(funcionFirmar, firmasAdicionales)
+
+        def firmas
+        try {
+            firmas = PersonaRol.findAllByFuncionAndPersonaInList(funcionFirmar, firmasAdicionales)
+        } catch (e) {
+            //println "No se pudo conseguir las firmas"
+            flash.clase = "alert-error"
+            flash.message = "ERROR: No se pudo conseguir las firmas, revise que la dirección requirente posea dependencias"
+        }
+
         def firmaDirector = PersonaRol.findByFuncionAndPersonaInList(funcionDirector, personalDireccion)
         def coordinadores = PersonaRol.findAllByFuncionAndPersonaInList(funcionCoordinador, personalDireccion)
 
-//        println "coordinadores: ${coordinadores.persona.nombre}"
+        println "coordinadores: ${coordinadores.persona.nombre}"
 
         //calculo de composición
 
@@ -209,8 +218,14 @@ class DocumentosObraController {
 
         def personasDepartamento = Persona.findAllByDepartamento(obra?.departamento)
 
-        def coordinadorOtros = PersonaRol.findAllByFuncionAndPersonaInList(funcionCoor, Persona.findAllByDepartamento(Departamento.get(obra?.departamento?.id)))
-
+        def coordinadorOtros
+        try {
+            coordinadorOtros = PersonaRol.findAllByFuncionAndPersonaInList(funcionCoor, Persona.findAllByDepartamento(Departamento.get(obra?.departamento?.id)))
+        } catch (e) {
+            println "No se pudo conseguir los coordinadores para firmas"
+            flash.clase = "alert-error"
+            flash.message += "<br>No se pudo conseguir los coordinadores para firmas, revise que la dirección requirente posea dependencias"
+        }
 
         def personalUtfpu =  Persona.findAllByDepartamento(Departamento.findByCodigo('UTFPU'))
 
@@ -232,7 +247,7 @@ class DocumentosObraController {
 
         }
 
-        [obra: obra, nota: nota, auxiliar: auxiliar, auxiliarFijo: auxiliarFijo, totalPresupuesto: totalPresupuesto, firmas: firmas.persona,
+        [obra: obra, nota: nota, auxiliar: auxiliar, auxiliarFijo: auxiliarFijo, totalPresupuesto: totalPresupuesto, firmas: firmas?.persona,
                 totalPresupuestoBien: totalPresupuestoBien, persona: persona,
                 resComp: resComp, resMano: resMano, resEq: resEq, firmaDirector: firmaDirector, coordinadores: coordinadores,
                 notaMemo: notaMemo, notaFormu: notaFormu, duenoObra: duenoObra, personasUtfpuCoor: personasUtfpuCoor,
