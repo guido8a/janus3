@@ -394,12 +394,12 @@
                         var v100 = $(".totalAcu").data("max");
 //                        var v125 = parseFloat($(".totalAcu").data("max")) * 1.25;
                         var v125 = parseFloat($(".totalAcu").data("max")) * parseFloat(${adicionales});
-                        if(v125 == 0) v125 = v100;
+                        if(v125 === 0) v125 = v100;
                         var adicionales = Math.round(v125 * 100)/100 + " con el " +
                             parseInt((parseFloat(${adicionales}) - 1) *100) + "% de incremento";
-                        var respaldo = ""
-                        if(parseFloat(${adicionales}) == 0) {
-                            respaldo = "No se ha subido documento de respaldo de obras adicionales"
+                        var respaldo = "";
+                        if(parseFloat(${adicionales}) === 0) {
+                            respaldo = "No se ha subido documento de respaldo de obras adicionales";
                             adicionales = Math.round(v100 * 100)/100  + ", no hay documento de respaldo de obras adicionales";
                         } else {
                             respaldo = "El total planillado supera el 100% del monto del contrato"
@@ -417,41 +417,14 @@
                             }
                         });
 
-//                        console.log('totalAcu', totalAcu, 'v100', v100, 'v125', v125)
                         if (totalAcu > v100 && totalAcu <= v125) {
-                            $.box({
-                                imageClass : "box_info",
-//                                text       : "El total planillado supera el 100% del monto del contrato. Se requiere autorización de aumento de cantidad de obra.",
-                                text       : respaldo,
-                                title      : "Alerta",
-                                iconClose  : false,
-                                dialog     : {
-                                    resizable : false,
-                                    draggable : false,
-                                    buttons   : {
-                                        "Aceptar" : function () {
-                                        }
-                                    }
-                                }
-                            });
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + respaldo + '</strong>');
                         }
+
                         if (totalAcu > v125) {
                             $("#btnSave").addClass("disabled");
-                            $.box({
-                                imageClass : "box_info",
-                                text       : "El monto " + Math.round(totalAcu)*100/100 + " supera el máximo de " + adicionales,
-                                title      : "Alerta",
-                                iconClose  : false,
-                                dialog     : {
-                                    resizable : false,
-                                    draggable : false,
-                                    buttons   : {
-                                        "Aceptar" : function () {
-                                        }
-                                    }
-                                }
-                            });
-                        } else {
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "El monto " + Math.round(totalAcu)*100/100 + " supera el máximo de " + adicionales + '</strong>');
+                          } else {
                             $("#btnSave").removeClass("disabled");
                         }
 
