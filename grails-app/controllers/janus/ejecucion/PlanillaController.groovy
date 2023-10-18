@@ -3532,6 +3532,10 @@ class PlanillaController {
             detalle = DetallePlanillaCosto.get(params.id)
         }
         params.cantidad = params.cantidad.toDouble();
+        params.monto = params.monto.toDouble();
+        params.montoIva = params.montoIva.toDouble();
+        params.montoIndirectos = params.montoIndirectos.toDouble();
+
         detalle.properties = params
         if (detalle.save(flush: true)) {
             def planilla = Planilla.get(params.planilla.id)
