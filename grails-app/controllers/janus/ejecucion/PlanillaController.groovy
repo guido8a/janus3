@@ -3458,6 +3458,9 @@ class PlanillaController {
         }
 
         def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
+        println "${planilla.fechaMemoSalidaPlanilla} == null && ${contrato.fiscalizador.id} == ${session.usuario.id}"
+
+        println "editable: $editable"
 
         if (!respaldo) obrasAdicionales = 0
 

@@ -418,12 +418,14 @@
                         });
 
                         if (totalAcu > v100 && totalAcu <= v125) {
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + respaldo + '</strong>');
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' +
+                                '<strong style="font-size: 14px">' + respaldo + '</strong>');
                         }
 
                         if (totalAcu > v125) {
                             $("#btnSave").addClass("disabled");
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' + '<strong style="font-size: 14px">' + "El monto " + Math.round(totalAcu)*100/100 + " supera el máximo de " + adicionales + '</strong>');
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-warning fa-3x"></i> ' +
+                                '<strong style="font-size: 14px">' + "El monto " + Math.round(totalAcu)*100/100 + " supera el máximo de " + adicionales + '</strong>');
                           } else {
                             $("#btnSave").removeClass("disabled");
                         }
