@@ -116,7 +116,7 @@ class IndiceController {
                             if (celdas > 0) {
                                 if (j >= filaInicial) {
 //                                    println("fila " + (j + 1) + "   " + celdas)
-                                    def descripcion = row[0].getContents().toString().trim()
+                                    def descripcion = row[1].getContents().toString().trim()
                                     descripcion = descripcion.replaceAll(/ {2,}/, ' ')
 //                                    descripcion = descripcion.
                                     if (descripcion != '' && !ignorar.contains(descripcion) && !descripcion.startsWith("*")) {
@@ -163,7 +163,7 @@ class IndiceController {
 //                                        println(indice)
                                         def valor
                                         if (celdas > 2) {
-                                            valor = row[3].getContents();
+                                            valor = row[5].getContents();
                                             valor = valor? valor.toString().replaceAll(',', '.') : ''
                                             try {
                                                 valor = valor.toDouble()

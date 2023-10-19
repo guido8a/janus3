@@ -16,7 +16,7 @@
         </div>
 
         <div class="col-md-2">
-            <g:select id="anio" name="anio" from="${janus.pac.Anio.list([sort: 'anio'])}" optionKey="id" optionValue="anio" class="form-control"  value="${anio}" />
+            <g:select id="anio" name="anio" from="${janus.pac.Anio.list([sort: 'anio', order:'desc'])}" optionKey="id" optionValue="anio" class="form-control"  value="${anio}" />
         </div>
         <div class="col-md-2">
             <a id="consultar" href="#" class="btn btn-success" title="Consultar" >

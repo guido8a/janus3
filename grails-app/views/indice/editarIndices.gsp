@@ -45,7 +45,7 @@
         </div>
         <div class="col-md-2">
             <g:select class="form-control" name="periodoIndices"
-                      from="${janus.ejecucion.PeriodosInec.findAllByPeriodoCerrado("N", [sort: 'fechaInicio'])}" optionKey="id" optionValue="${{ it.descripcion }}"
+                      from="${janus.ejecucion.PeriodosInec.findAllByPeriodoCerrado("N", [sort: 'fechaInicio', order: 'desc'])}" optionKey="id" optionValue="${{ it.descripcion }}"
                       disabled="false" />
         </div>
         <div class=" btn-group col-md-3">
