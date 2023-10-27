@@ -1,10 +1,15 @@
+<style type="text/css">
+.fecha {
+    color: #0c4c85;
+    font-weight: bold;
+    border-color: #0a6aa1;
+}
+</style>
+
 <g:form class="form-horizontal" name="frmSave-suspension" action="ampliacion">
-    <div class="col-md-12 alert alert-danger">
-        <i class="fa fa-exclamation-triangle text-danger fa-3x"></i> <h4>Atención: Una vez hecha la suspensión no se puede deshacer.</h4>
+    <div class="col-md-12 alert alert-danger" style="display: inline-block">
+        <i class="fa fa-exclamation-triangle text-danger fa-3x"></i> <h4 style="float: right">Atención: Una vez hecha la suspensión no se puede deshacer.</h4>
     </div>
-
-
-
 
     <div class="form-group">
         <span class="grupo">
@@ -24,19 +29,19 @@
     <div class="form-group">
         <span class="grupo">
             <label class="col-md-3 control-label text-info">
-                Fecha de fin (opcional)
+                Fecha de reinicio de la obra (opcional)
             </label>
             <span class="col-md-3">
-                <input aria-label="" name="fin" id='fin' type='text' class="form-control dateEC" />
+                <input aria-label="" name="fin" id='fin' type='text' class="form-control fecha" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
-            <span class="col-md-6">
-                Día en el que se reinicia la obra
+            <span class="col-md-6, text-info" style="font-size: 14px; font-weight: bold;">
+                Fecha en el que se reinicia la obra
             </span>
         </span>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" style="margin-top: 10px">
         <span class="grupo">
             <label class="col-md-3 control-label text-info">
                 Días de suspensión
@@ -63,7 +68,7 @@
             <label class="col-md-3 control-label text-info">
                 Observaciones
             </label>
-            <span class="col-md-7">
+            <span class="col-md-8">
                 <g:textField name="observaciones" class="required form-control"/>
             </span>
         </span>
