@@ -2354,7 +2354,7 @@ class CronogramaEjecucionController {
         if (fcfn) {
             suspensiones = Modificaciones.findAllByContratoAndTipoAndFechaFinIsNull(cntr, "S")
         }
-//        println "suspensión: ${suspensiones.size()}, inicio en ${suspensiones[0]?.fechaInicio?.format('dd-MMM-yyyy'.toString())}"
+        println "suspensión: ${suspensiones.size()}, inicio en ${suspensiones[0]?.fechaInicio?.format('dd-MMM-yyyy'.toString())}"
 
         def finSusp = fcfn
         cn.close()

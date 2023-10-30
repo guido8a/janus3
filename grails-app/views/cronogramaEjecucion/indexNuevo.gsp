@@ -364,13 +364,14 @@
                     url: "${createLink(action:'terminaSuspensionNuevo')}",
                     data    : data,
                     success : function (msg) {
+                        console.log("msg " + msg)
                         dialog.modal('hide');
                         var parts = msg.split("_");
-                        if(parts[0] === 'OK'){
+                        if(parts[0] === 'okOK'){
                             log("Suspensión terminada correctamente", "success");
                             setTimeout(function () {
                                 location.reload();
-                            }, 800);
+                            }, 1000);
                         }else{
                             bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al terminar la suspensión" + '</strong>');
                             return false;
