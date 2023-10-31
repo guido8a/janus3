@@ -4,7 +4,7 @@
         <i class="icon-info-sign icon-2x pull-left"></i>
         Una vez terminada la suspensión no se puede deshacer.
         <br/>
-        ${suspension}
+        ${raw(suspension)}
     </div>
 
 %{--    <div class="control-group">--}%
@@ -25,13 +25,13 @@
     <div class="form-group">
         <span class="grupo">
             <label class="col-md-3 control-label text-info">
-                Fecha de fin
+                Fecha de reinicio de la obra
             </label>
             <span class="col-md-3">
                 <input aria-label="" name="fcfn" id='fcfn' type='text' class="form-control required dateEC" />
                 <p class="help-block ui-helper-hidden"></p>
             </span>
-            <span class="col-md-6">
+            <span class="col-md-6 text-info"  style="font-size: 14px; font-weight: bold; margin-left: -20px">
                 Día en el que se reinicia la obra
             </span>
         </span>

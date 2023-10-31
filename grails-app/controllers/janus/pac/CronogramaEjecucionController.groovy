@@ -71,7 +71,7 @@ class CronogramaEjecucionController {
             }
         }
         println "suspensión en curso: ${fi}"
-        def suspension = "Suspensión iniciada el ${fi.first().format('dd-MM-yyyy'.toString())}"
+        def suspension = "<strong>Suspensión iniciada el ${fi.first().format('dd-MM-yyyy'.toString())}</strong>"
         def minDate = fi.first().format("yyyy") + "," + (fi.first().format("MM").toInteger() - 1) + "," + fi.first().format("dd")
 
         return [min: minDate, suspension: suspension]
@@ -3349,7 +3349,7 @@ class CronogramaEjecucionController {
                 sql1 = "select creoprco, creoprct, creocntd, prej__id from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 sqle = "select count(*) cuenta from creo where vocr__id = ${d.vocr__id} and prej__id = ${pr.prej__id}"
                 cont = cne.rows(sqle.toString())[0].cuenta
-                println "sql1: $sql1"
+                //println "sql1: $sql1"
                 if(cont > 0) {
                     cnp.eachRow(sql1.toString()) { p ->
                         val.add("${p.creoprco}<br>${p.creoprct}<br>${p.creocntd}")
