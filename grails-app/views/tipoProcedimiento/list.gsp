@@ -29,6 +29,7 @@
             <th>Descripción</th>
             <th>Sigla</th>
             <th>Costo de Bases</th>
+            <th>Desde</th>
             <th>Techo</th>
             <th>Preparatorio (d)</th>
             <th>Precontractual (d)</th>
@@ -42,6 +43,7 @@
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "descripcion")}</td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "sigla")}</td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "bases")}</td>
+                <td style="text-align: right" > <g:formatNumber number="${tipoProcedimientoInstance?.minimo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                 <td style="text-align: right" > <g:formatNumber number="${tipoProcedimientoInstance?.techo}" format="##,##0" minFractionDigits="2" maxFractionDigits="2" locale="ec"/></td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "preparatorio")}</td>
                 <td>${fieldValue(bean: tipoProcedimientoInstance, field: "precontractual")}</td>

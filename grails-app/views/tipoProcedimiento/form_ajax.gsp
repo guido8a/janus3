@@ -87,18 +87,31 @@
             </span>
         </div>
 
+        <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'minimo', 'error')} ">
+            <span class="grupo">
+                <label for="minimo" class="col-md-4 control-label text-info">
+                    Desde
+                </label>
+                <span class="col-md-4">
+                    <g:textField name="minimo" class="form-control number required" value="${g.formatNumber(number: tipoProcedimientoInstance?.minimo, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2)}" />
+                    <p class="help-block ui-helper-hidden"></p>
+                </span>
+            </span>
+        </div>
+
         <div class="form-group ${hasErrors(bean: tipoProcedimientoInstance, field: 'techo', 'error')} ">
             <span class="grupo">
                 <label for="techo" class="col-md-4 control-label text-info">
                     Techo
                 </label>
                 <span class="col-md-4">
-%{--                    <g:textField name="techo" class="form-control number required" value="${tipoProcedimientoInstance?.techo}" />--}%
                     <g:textField name="techo" class="form-control number required" value="${g.formatNumber(number: tipoProcedimientoInstance?.techo, format: "##,##0", locale: "ec", maxFractionDigits: 2, minFractionDigits: 2)}" />
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </span>
         </div>
+
+
 
     </g:form>
 
