@@ -51,7 +51,7 @@ class VolumenObraController {
         def valorLicitacion = TipoProcedimiento.findBySigla("LICO")?.minimo?: 30000000
 
         def campos = ["codigo": ["Código", "string"], "nombre": ["Descripción", "string"]]
-//        println "subs "+subpreFiltrado.descripcion
+        println "valores: valorLicitacion: $valorLicitacion, valorMenorCuantia: $valorMenorCuantia"
 
         [obra: obra, volumenes: volumenes, campos: campos, subPresupuesto1: subPresupuesto1, grupoFiltrado: grupoFiltrado,
          subpreFiltrado: subpreFiltrado, grupos: grupoFiltrado, persona: persona, vmc: valorMenorCuantia, duenoObra: duenoObra,
