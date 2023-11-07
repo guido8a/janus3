@@ -2474,7 +2474,7 @@ class Reportes4Controller {
 
         sql = "select * from items_ver_vae( cast( '${fecha}' as date))"
 
-//        println("vae " + sql)
+        println("vae " + sql)
 
         cn = dbConnectionService.getConnection()
         res = cn.rows(sql.toString())
@@ -2518,16 +2518,18 @@ class Reportes4Controller {
 
         label = new Label(0, 4, "Código: ", times16format); sheet.addCell(label);
         label = new Label(1, 4, "Nombre", times16format); sheet.addCell(label);
-        label = new Label(2, 4, "Unidad", times16format); sheet.addCell(label);
-        label = new Label(3, 4, "VAE", times16format); sheet.addCell(label);
-        label = new Label(4, 4, "Valor", times16format); sheet.addCell(label);
+        label = new Label(2, 4, "CPC", times16format); sheet.addCell(label);
+        label = new Label(3, 4, "Unidad", times16format); sheet.addCell(label);
+        label = new Label(4, 4, "VAE", times16format); sheet.addCell(label);
+        label = new Label(5, 4, "Valor", times16format); sheet.addCell(label);
 
         res.eachWithIndex {i, j->
             label = new Label(0, fila, i?.itemcdgo?.toString()); sheet.addCell(label);
             label = new Label(1, fila, i?.itemnmbr?.toString()); sheet.addCell(label);
-            label = new Label(2, fila, i?.unddcdgo?.toString()); sheet.addCell(label);
-            label = new Label(3, fila, i?.item_vae?.toString()); sheet.addCell(label);
-            number = new jxl.write.Number(4, fila, i?.itvapcnt ?: 0); sheet.addCell(number);
+            label = new Label(2, fila,  Item.get(i?.item__id)?.codigoComprasPublicas?.numero?.toString()); sheet.addCell(label);
+            label = new Label(3, fila, i?.unddcdgo?.toString()); sheet.addCell(label);
+            label = new Label(4, fila, i?.item_vae?.toString()); sheet.addCell(label);
+            number = new jxl.write.Number(5, fila, i?.itvapcnt ?: 0); sheet.addCell(number);
             fila++
         }
         workbook.write();
