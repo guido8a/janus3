@@ -2485,7 +2485,7 @@ class Reportes6Controller {
 
         PdfPTable tablaTotales1 = new PdfPTable(2)
         tablaTotales1.setWidthPercentage(100)
-        tablaTotales1.setWidths(arregloEnteros([90, 10]))
+        tablaTotales1.setWidths(arregloEnteros([87, 13]))
 
         def totalCD = (valorTotal ?: 0) + (valorTotalMano ?: 0) + (valorTotalEquipos ?: 0) + (total4 ?: 0) + (total5 ?: 0) + (total6?: 0) + (total7 ?: 0)
         println "total: ${totalCD}"
@@ -2570,7 +2570,7 @@ class Reportes6Controller {
 
         PdfPTable tablaTotales2 = new PdfPTable(2)
         tablaTotales2.setWidthPercentage(100)
-        tablaTotales2.setWidths(arregloEnteros([90, 10]))
+        tablaTotales2.setWidths(arregloEnteros([87, 13]))
 
         addCellTabla(tablaTotales2, new Paragraph("TOTAL COSTO INDIRECTO:", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotales2, new Paragraph(g.formatNumber(number: (total8 + total9), minFractionDigits:
@@ -2616,7 +2616,7 @@ class Reportes6Controller {
 
         PdfPTable tablaTotales3 = new PdfPTable(2)
         tablaTotales3.setWidthPercentage(100)
-        tablaTotales3.setWidths(arregloEnteros([90, 10]))
+        tablaTotales3.setWidths(arregloEnteros([87, 13]))
 
         addCellTabla(tablaTotales3, new Paragraph("TOTAL GASTOS GENERALES:", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotales3, new Paragraph(g.formatNumber(number: (total10), minFractionDigits:
@@ -2627,7 +2627,7 @@ class Reportes6Controller {
 
         PdfPTable tablaTotalGeneral = new PdfPTable(2)
         tablaTotalGeneral.setWidthPercentage(100)
-        tablaTotalGeneral.setWidths(arregloEnteros([90, 10]))
+        tablaTotalGeneral.setWidths(arregloEnteros([87, 13]))
 
         addCellTabla(tablaTotalGeneral, new Paragraph("Subtotal Costo:", times10bold), prmsCellDerecha)
         addCellTabla(tablaTotalGeneral, new Paragraph(g.formatNumber(number: (valorTotal + valorTotalMano +
