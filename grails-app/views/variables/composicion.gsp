@@ -110,7 +110,7 @@
                     <i class="fa fa-file-excel"></i> Excel
                 </g:link>
                 <g:link controller="reportesExcel2" action="reporteExcelComposicionTotales" class="btn btn-success" id="${obra?.id}" params="[sp: sub, tipo: tipo]" title="Exportar a excel para definir las cantidades reales de Materiales, M.O. y Equipos">
-                    <i class="fa fa-file-excel"></i> Adm. Directa Excel
+                    <i class="fa fa-file-excel"></i> Adm. Dir. Excel
                 </g:link>
                 <g:link controller="reportesExcel2" action="reporteExcelItemsComposicion" class="btn btn-success" id="${obra?.id}" title="Items">
                     <i class="fa fa-file-excel"></i> Items LP
