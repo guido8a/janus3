@@ -1478,6 +1478,12 @@
             });
         }
 
+        $("#criterio").keydown(function (ev) {
+            if (ev.keyCode === 13) {
+                busqueda();
+            }
+        });
+
     });
 </script>
 </body>
