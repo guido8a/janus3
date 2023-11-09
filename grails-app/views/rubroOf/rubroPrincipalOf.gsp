@@ -583,7 +583,7 @@
         var grupo = $("#buscarGrupo").val();
         $.ajax({
             type: "POST",
-            url: "${createLink(controller: 'rubro', action:'listaItem')}",
+            url: "${createLink(controller: 'rubroOf', action:'listaItem')}",
             data: {
                 buscarPor: buscarPor,
                 criterio: criterio,

@@ -87,9 +87,11 @@ class RubroOfController {
             rubro = Item.get(params.idRubro)
             def items = RubroOferente.findAllByRubro(rubro)
             items.sort { it.item.codigo }
-            [campos: campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items, choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
+            [campos: campos, listaRbro: listaRbro, listaItems: listaItems, rubro: rubro, grupos: grupos, items: items,
+             choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
         } else {
-            [campos: campos, listaRbro: listaRbro, listaItems: listaItems,  grupos: grupos, choferes: choferes, volquetes: volquetes, aux: aux,obra:obra]
+            [campos: campos, listaRbro: listaRbro, listaItems: listaItems,  grupos: grupos, choferes: choferes,
+             volquetes: volquetes, aux: aux,obra:obra]
         }
     }
 
@@ -98,7 +100,9 @@ class RubroOfController {
         def item = Item.get(params.id)
         def precio = Precio.findByItemAndPersona(item,session.usuario)
 //        println "render "+  item.id + "&" + item.codigo + "&" + item.nombre + "&" + item.unidad.codigo + "&" + item.rendimiento+"&"+((item.tipoLista)?item.tipoLista?.id:"0")
-        render "" + item.id + "&" + item.codigo + "&" + item.nombre + "&" + item.unidad?.codigo?.trim() + "&" + item.rendimiento + "&" + ((item.tipoLista) ? item.tipoLista?.id : "0")+"&"+item.departamento.subgrupo.grupo.id+"&"+((precio)?precio.precio:"1")
+        render "" + item.id + "&" + item.codigo + "&" + item.nombre + "&" + item.unidad?.codigo?.trim() + "&" +
+                item.rendimiento + "&" + ((item.tipoLista) ? item.tipoLista?.id : "0")+"&"+
+                item.departamento.subgrupo.grupo.id+"&"+((precio)?precio.precio:"1")
     }
 
     def addItem() {
@@ -756,5 +760,28 @@ def list() {
 //        }
     }
 
+    def listaItem() {
+        println "listaItem" + params
+        def listaItems = ['itemnmbr', 'itemcdgo']
+        def datos;
+        def usuario = seguridad.Persona.get(session.usuario.id)
+        def empresa = Parametros.get('1').empresa
+
+        def select = "select * from lsta_itemof(${usuario.id}, ${params.grupo}) "
+        def txwh = " where itemnmbr is not null  "
+
+        def sqlTx = ""
+        def bsca = listaItems[params.buscarPor.toInteger()-1]
+        def ordn = listaItems[params.ordenar.toInteger()-1]
+        txwh += " and $bsca ilike '%${params.criterio}%' and grpo__id = ${params.grupo}"
+
+        sqlTx = "${select} ${txwh} order by ${ordn} limit 100 ".toString()
+        println "sql: $sqlTx"
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        println "data: ${datos[0]}"
+        [data: datos]
+    }
 
 } //fin controller
