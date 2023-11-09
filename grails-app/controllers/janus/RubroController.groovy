@@ -1036,10 +1036,10 @@ class RubroController {
         def usuario = Persona.get(session.usuario.id)
         def empresa = Parametros.get('1').empresa
 
-        def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo " +
-                "from item, undd, dprt, sbgr "
+        def select = "select item.item__id, itemcdgo, itemnmbr, item.tpls__id, unddcdgo, prcoprco " +
+                "from item, undd, dprt, sbgr, prco "
         def txwh = "where tpit__id = 1 and undd.undd__id = item.undd__id and dprt.dprt__id = item.dprt__id and " +
-                "sbgr.sbgr__id = dprt.sbgr__id"
+                "sbgr.sbgr__id = dprt.sbgr__id and prco.prsn__id = ${usuario.id} and prco.item__id = item.item__id "
         def sqlTx = ""
         def bsca = listaItems[params.buscarPor.toInteger()-1]
         def ordn = listaItems[params.ordenar.toInteger()-1]
