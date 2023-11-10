@@ -78,7 +78,7 @@ class VolumenObraOfController {
             orden = 'desc'
         }
 
-        preciosService.ac_rbroObra(obra.id)
+        preciosService.ac_rbroObraOf(obra.id)
         if (params.sub && params.sub != "-1") {
             valores = preciosService.rbro_pcun_v5_of(obra.id, params.sub, orden)
         } else {

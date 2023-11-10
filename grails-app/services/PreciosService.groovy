@@ -466,6 +466,18 @@ class PreciosService {
         return result
     }
 
+    def ac_rbroObraOf(obra) {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select * from ac_rbro_hr_of(" + obra + ") "
+        //println "ac_rbroObra: $sql"
+        def result = []
+        cn.eachRow(sql.toString()) { r ->
+            result.add(r.toRowResult())
+        }
+        cn.close()
+        return result
+    }
+
 
     def rbro_pcun_v2(obra){
 
