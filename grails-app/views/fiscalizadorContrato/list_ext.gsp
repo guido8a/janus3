@@ -18,7 +18,7 @@
             Desde
         </div>
         <div class="col-md-3">
-            <input aria-label="" name="desde" id='desde' type='text' class="form-control required"  value="${new Date()}" />
+            <input aria-label="" name="desde" id='desde' type='text' class="form-control required"  value="${new Date().format("dd-MM-yyyy")}" />
         </div>
         <div class="col-md-1">
             <a href="#" class="btn btn-success" id="btnAddFisc" style="margin-left: 10px;"><i class="fa fa-plus"></i> Agregar</a>
