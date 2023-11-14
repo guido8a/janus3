@@ -63,7 +63,7 @@
     <div class="span12" role="navigation">
         <g:if test="${liquidacion}">
             <div class="btn-group">
-                <g:if test="${contrato.fiscalizador.id == session.usuario.id}">
+                <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
                     <g:link controller="reportesPlanillas" action="reporteDiferencias" class="btn btn-info" id="${contrato.id}">
                         <i class="fa fa-list-ul"></i>
                         Reporte de diferencias
@@ -88,7 +88,7 @@
                 Imprimir Orden de Inicio de Obra
             </a>
         </g:if>
-        <g:if test="${contrato.fiscalizador.id == session.usuario.id}">
+        <g:if test="${contrato?.fiscalizador?.id == session.usuario.id}">
             <a href="#" class="btn btn-primary" id="garantias">
                 <i class="fa fa-calendar"></i>
                 Garantías
@@ -537,7 +537,8 @@
                 success : function (msg) {
 
                     if(msg === "NO"){
-                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador." + '</strong>');
+                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
+                            '<strong style="font-size: 14px">' + "No se encontró un administrador activo para el contrato.<br/>Por favor asigne uno desde la página del contrato en la opción Administrador." + '</strong>');
                     }else{
                         var b = bootbox.dialog({
                             id      : "dlgPagar",
