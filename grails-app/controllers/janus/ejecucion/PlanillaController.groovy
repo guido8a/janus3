@@ -2061,9 +2061,7 @@ class PlanillaController {
         }
 
         if (!params.fechaPresentacion) params.fechaPresentacion = params.fechaIngreso
-
         if (params.oficioEntradaPlanilla) params.oficioEntradaPlanilla = params.oficioEntradaPlanilla.toString().toUpperCase()
-
         if (params.numero) params.numero = params.numero.toString().toUpperCase()
 
         def planillaInstance
@@ -2101,6 +2099,10 @@ class PlanillaController {
 
             planillaInstance.noPago = params.noPago
             planillaInstance.noPagoValor = params.noPagoValor.toDouble()
+
+            planillaInstance.multaEspecial = params.multaEspecial.toDouble()
+            planillaInstance.noPagoValor = params.noPagoValor.toDouble()
+            planillaInstance.avanceFisico = params.avanceFisico.toDouble()
 
             if (planillaInstance.tipoPlanilla.codigo == 'O') { //pone fecha del último periodo planillado
                 def pl = Planilla.findByContratoAndTipoPlanilla(cntr, TipoPlanilla.findByCodigo('Q'))
@@ -2169,6 +2171,9 @@ class PlanillaController {
                 }
             }
 
+            planillaInstance.multaEspecial = params.multaEspecial.toDouble()
+            planillaInstance.noPagoValor = params.noPagoValor.toDouble()
+            planillaInstance.avanceFisico = params.avanceFisico.toDouble()
 
         } //es create
 

@@ -274,8 +274,10 @@
                                         Avance físico
                                     </label>
                                     <span class="col-md-2">
-                                        <g:field type="number" name="avanceFisico" class="form-control required number"
-                                                 value="${planillaInstance.avanceFisico}" max="100"/>
+%{--                                        <g:field type="number" name="avanceFisico" class="form-control required number"--}%
+%{--                                                 value="${planillaInstance.avanceFisico}" max="100"/>--}%
+                                        <g:textField type="text" name="avanceFisico" class="form-control required"
+                                                     value="${planillaInstance?.avanceFisico}" style="width: 100%" />
                                     </span>
                                     <div class="col-md-1">%</div>
                                 </span>
@@ -456,20 +458,13 @@
             ev.keyCode === 37 || ev.keyCode === 39);
     }
 
-    $("#avanceFisico").keydown(function (ev) {
-
-        return validarNum(ev);
-
-    }).keyup(function () {
-        var enteros = $(this).val();
-
-        if (parseFloat(enteros) > 100) {
-            $(this).val(100)
-        }
-        if (parseFloat(enteros) <= 0) {
-            $(this).val(0)
-        }
-    });
+    function validarNumDec(ev) {
+        return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            ev.keyCode === 8 || ev.keyCode === 46 || ev.keyCode === 9 ||
+            ev.keyCode === 110 || ev.keyCode === 190 ||
+            ev.keyCode === 37 || ev.keyCode === 39);
+    }
 
     $("#diasMultaDisposiciones").keydown(function (ev) {
         return validarNum(ev);
@@ -478,6 +473,19 @@
 
         if (parseFloat(enteros) > 1000) {
             $(this).val(999)
+        }
+        if (parseFloat(enteros) <= 0) {
+            $(this).val(0)
+        }
+    });
+
+    $("#avanceFisico").keydown(function (ev) {
+        return validarNumDec(ev);
+    }).keyup(function () {
+        var enteros = $(this).val();
+
+        if (parseFloat(enteros) > 100) {
+            $(this).val(100)
         }
         if (parseFloat(enteros) <= 0) {
             $(this).val(0)
