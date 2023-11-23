@@ -1277,27 +1277,41 @@ class MantenimientoItemsController {
         return [itemInstance: itemInstance]
     }
 
-    def formIt_ajax() {
+//    def formIt_ajax() {
+//
+//        def departamento = DepartamentoItem.get(params.departamento)
+//        def itemInstance = new Item()
+//        if (params.id) {
+//            itemInstance = Item.get(params.id)
+//        }
+//
+//        def grupo = departamento.codigo.toString().padLeft(3, '0')
+//        def subgrupo = departamento.subgrupo.codigo.toString().padLeft(3, '0')
+//
+////        def sql="select max(substr(itemcdgo, length(itemcdgo)-2,3)::integer+1) from item where itemcdgo ilike " +
+//        def sql="select itemcdgo from item where itemcdgo ilike " +
+//                "'${grupo.toString() + "." + subgrupo.toString() + ".%"}' "
+//        println "sql: $sql"
+//        def cn = dbConnectionService.getConnection()
+//        def maximo = cn.rows(sql)[-1]
+//
+//        def grupoGeneral = departamento?.subgrupo?.grupo?.codigo
+//
+//        def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
+//
+//        return [departamento: departamento, itemInstance: itemInstance, grupo: params.grupo, campos: campos, maximo: maximo[0], grupoGeneral: grupoGeneral]
+//    }
 
+    def formIt_ajax() {
         def departamento = DepartamentoItem.get(params.departamento)
         def itemInstance = new Item()
         if (params.id) {
             itemInstance = Item.get(params.id)
         }
 
-        def grupo = departamento.codigo.toString().padLeft(3, '0')
-        def subgrupo = departamento.subgrupo.codigo.toString().padLeft(3, '0')
-
-        def sql="select max(substr(itemcdgo, length(itemcdgo)-2,3)::integer+1) from item where itemcdgo ilike " +
-                "'${grupo.toString() + "." + subgrupo.toString() + ".%"}' "
-        def cn = dbConnectionService.getConnection()
-        def maximo = cn.rows(sql)
-
-        def grupoGeneral = departamento?.subgrupo?.grupo?.codigo
-
         def campos = ["numero": ["Código", "string"], "descripcion": ["Descripción", "string"]]
 
-        return [departamento: departamento, itemInstance: itemInstance, grupo: params.grupo, campos: campos, maximo: maximo[0].max, grupoGeneral: grupoGeneral]
+        return [departamento: departamento, itemInstance: itemInstance, grupo: params.grupo, campos: campos]
     }
 
     def buscaCpac() {
