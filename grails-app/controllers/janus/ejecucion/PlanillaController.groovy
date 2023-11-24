@@ -2171,9 +2171,9 @@ class PlanillaController {
                 }
             }
 
-            planillaInstance.multaEspecial = params.multaEspecial.toDouble()
-            planillaInstance.noPagoValor = params.noPagoValor.toDouble()
-            planillaInstance.avanceFisico = params.avanceFisico.toDouble()
+            planillaInstance.multaEspecial = params.multaEspecial?.toDouble()
+            planillaInstance.noPagoValor = params.noPagoValor?.toDouble()
+            planillaInstance.avanceFisico = params.avanceFisico?.toDouble()
 
         } //es create
 
