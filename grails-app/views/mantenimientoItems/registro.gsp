@@ -1138,6 +1138,9 @@
         if (parentId) {
             data.departamento = parentId;
         }
+
+        data.grupo = tipoSeleccionado;
+
         $.ajax({
             type    : "POST",
             url     : "${createLink( action:'formIt_ajax')}",
