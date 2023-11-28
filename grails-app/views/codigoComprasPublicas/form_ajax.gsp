@@ -24,7 +24,7 @@
                     Descripción
                 </label>
                 <span class="col-md-10">
-                    <g:textField name="descripcion" maxlength="512"  class="form-control required" value="${codigoComprasPublicasInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" maxlength="512"  class="form-control required" style="resize: none; height: 100px" value="${codigoComprasPublicasInstance?.descripcion}"/>
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </span>
