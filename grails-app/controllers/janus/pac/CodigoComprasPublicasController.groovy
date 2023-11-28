@@ -8,6 +8,8 @@ import org.springframework.dao.DataIntegrityViolationException
 
 class CodigoComprasPublicasController {
 
+    def dbConnectionService
+
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index() {
@@ -15,8 +17,29 @@ class CodigoComprasPublicasController {
     } //index
 
     def list() {
-        [codigoComprasPublicasInstanceList: CodigoComprasPublicas.list(params), params: params]
+//        [codigoComprasPublicasInstanceList: CodigoComprasPublicas.list(params), params: params]
     } //list
+
+    def tablaCPC_ajax(){
+        println("params " + params)
+        def datos;
+        def sqlTx = ""
+        def listaItems = ['cpacdscr', 'cpacnmro']
+        def bsca
+        if(params.buscarPor){
+            bsca = listaItems[params.buscarPor?.toInteger()-1]
+        }else{
+            bsca = listaItems[0]
+        }
+
+        def select = "select * from cpac"
+        def txwh = " where $bsca ilike '%${params.criterio}%'"
+        sqlTx = "${select} ${txwh} order by cpacdscr limit 100 ".toString()
+
+        def cn = dbConnectionService.getConnection()
+        datos = cn.rows(sqlTx)
+        [data: datos, tipo: params.tipo]
+    }
 
     def form_ajax() {
         def codigoComprasPublicasInstance = new CodigoComprasPublicas(params)
@@ -34,46 +57,28 @@ class CodigoComprasPublicasController {
 
     def save() {
         def codigoComprasPublicasInstance
-        if (params.id) {
+
+        if(params.fecha){
+            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        }
+
+        if(params.id){
             codigoComprasPublicasInstance = CodigoComprasPublicas.get(params.id)
-            if (!codigoComprasPublicasInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Codigo Compras Publicas con id " + params.id
-                redirect(action: 'list')
-                return
-            }//no existe el objeto
-            codigoComprasPublicasInstance.properties = params
-        }//es edit
-        else {
-            codigoComprasPublicasInstance = new CodigoComprasPublicas(params)
-        } //es create
-        if (!codigoComprasPublicasInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Codigo Compras Publicas " + (codigoComprasPublicasInstance.id ? codigoComprasPublicasInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            codigoComprasPublicasInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex { arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+        }else{
+            codigoComprasPublicasInstance = new CodigoComprasPublicas()
+            codigoComprasPublicasInstance.nivel = 9
+            codigoComprasPublicasInstance.movimiento = 1
         }
 
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Codigo Compras Publicas " + codigoComprasPublicasInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Codigo Compras Publicas " + codigoComprasPublicasInstance.id
+        codigoComprasPublicasInstance.properties = params
+
+        if(!codigoComprasPublicasInstance.save(flush:true)){
+            println("Error al guardar el CPC " + codigoComprasPublicasInstance.errors)
+            render "no_Error al guardar el CPC"
+        }else{
+            render "ok_Guardado correctamente"
         }
-        redirect(action: 'list')
+
     } //save
 
     def show_ajax() {
@@ -90,22 +95,16 @@ class CodigoComprasPublicasController {
     def delete() {
         def codigoComprasPublicasInstance = CodigoComprasPublicas.get(params.id)
         if (!codigoComprasPublicasInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Codigo Compras Publicas con id " + params.id
-            redirect(action: "list")
-            return
+           render "no_No se encontró el registro"
         }
 
         try {
             codigoComprasPublicasInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Codigo Compras Publicas " + codigoComprasPublicasInstance.id
-            redirect(action: "list")
+            render "ok_Borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Codigo Compras Publicas " + (codigoComprasPublicasInstance.id ? codigoComprasPublicasInstance.id : "")
-            redirect(action: "list")
+            println("error al borrar el CPC " + codigoComprasPublicasInstance.errors)
+            render "no_Error al borrar el registro"
         }
     } //delete
 

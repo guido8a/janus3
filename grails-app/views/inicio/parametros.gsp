@@ -392,6 +392,13 @@
                                             </g:link>
                                             <strong style="font-size: 14px">que puede tener el proceso de ejecución de la obra: anticipo, liquidación, avance <br/> de obra, reajuste, etc.</strong>
                                         </p>
+                                        <p>
+                                            <g:link class="link btn btn-danger btn-xs" controller="codigoComprasPublicas" action="list">
+                                                <i class="fa fa-globe fa-2x"></i>
+                                                Código de Compras Públicas
+                                            </g:link>
+                                            <strong style="font-size: 14px">Código de compras públicas </strong>
+                                        </p>
                                     </div>
                                 </div>
                             </div>

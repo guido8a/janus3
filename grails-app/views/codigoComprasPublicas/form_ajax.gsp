@@ -4,81 +4,57 @@
 <div id="create-CodigoComprasPublicas" class="span" role="main">
     <g:form class="form-horizontal" name="frmSave-CodigoComprasPublicas" action="save">
         <g:hiddenField name="id" value="${codigoComprasPublicasInstance?.id}"/>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Numero
-                </span>
-            </div>
 
-            <div class="controls">
-                <g:textField name="numero" maxlength="32" class=" required" value="${codigoComprasPublicasInstance?.numero}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Descripcion
-                </span>
-            </div>
 
-            <div class="controls">
-                <g:textField name="descripcion" maxlength="64" class="" value="${codigoComprasPublicasInstance?.descripcion}"/>
-                
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+        <div class="form-group ${hasErrors(bean: codigoComprasPublicasInstance, field: 'numero', 'error')} ">
+            <span class="grupo">
+                <label for="numero" class="col-md-2 control-label text-info">
+                    Código
+                </label>
+                <span class="col-md-3">
+                    <g:textField name="numero" maxlength="32"  class="form-control required" value="${codigoComprasPublicasInstance?.numero}"/>
+                    <p class="help-block ui-helper-hidden"></p>
+                </span>
+            </span>
         </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
+
+        <div class="form-group ${hasErrors(bean: codigoComprasPublicasInstance, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-2 control-label text-info">
+                    Descripción
+                </label>
+                <span class="col-md-10">
+                    <g:textField name="descripcion" maxlength="512"  class="form-control required" value="${codigoComprasPublicasInstance?.descripcion}"/>
+                    <p class="help-block ui-helper-hidden"></p>
+                </span>
+            </span>
+        </div>
+
+        <div class="form-group ${hasErrors(bean: codigoComprasPublicasInstance, field: 'fecha', 'error')} ">
+            <span class="grupo">
+                <label class="col-md-2 control-label text-info">
                     Fecha
+                </label>
+                <span class="col-md-4">
+                    <input aria-label="" name="fecha" id='fecha' type='text' class="form-control" value="${codigoComprasPublicasInstance?.fecha?.format("dd-MM-yyyy") ?: new java.util.Date().format("dd-MM-yyyy")}" />
+                    <p class="help-block ui-helper-hidden"></p>
                 </span>
-            </div>
-
-            <div class="controls">
-                <elm:datepicker name="fecha" class="" value="${codigoComprasPublicasInstance?.fecha}"/>
-
-                
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
+            </span>
         </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Nivel
-                </span>
-            </div>
 
-            <div class="controls">
-                <g:field type="number" name="nivel" class=" required" value="${fieldValue(bean: codigoComprasPublicasInstance, field: 'nivel')}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
-        <div class="control-group">
-            <div>
-                <span class="control-label label label-inverse">
-                    Padre
-                </span>
-            </div>
-
-            <div class="controls">
-                <g:select id="padre" name="padre.id" from="${janus.pac.CodigoComprasPublicas.list()}" optionKey="id" class="many-to-one  required" value="${codigoComprasPublicasInstance?.padre?.id}"/>
-                <span class="mandatory">*</span>
-                <p class="help-block ui-helper-hidden"></p>
-            </div>
-        </div>
-                
     </g:form>
 
 <script type="text/javascript">
+
+    $('#fecha').datetimepicker({
+        locale: 'es',
+        format: 'DD-MM-YYYY',
+        sideBySide: true,
+        icons: {
+        }
+    });
+
+
     $("#frmSave-CodigoComprasPublicas").validate({
         errorPlacement : function (error, element) {
             element.parent().find(".help-block").html(error).show();
@@ -93,9 +69,4 @@
         }
     });
 
-    $("input").keyup(function (ev) {
-        if (ev.keyCode == 13) {
-            submitForm($(".btn-success"));
-        }
-    });
 </script>

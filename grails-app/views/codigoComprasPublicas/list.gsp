@@ -7,208 +7,181 @@
         <title>
             Lista de Codigo Compras Publicass
         </title>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>
-        <script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>
     </head>
     <body>
 
-        <div class="span12">
-            <g:if test="${flash.message}">
-                <div class="alert ${flash.clase ?: 'alert-info'}" role="status">
-                    <a class="close" data-dismiss="alert" href="#">×</a>
-                    ${flash.message}
-                </div>
-            </g:if>
-        </div>
-
         <div class="span12 btn-group" role="navigation">
-            <a href="#" class="btn btn-ajax btn-new">
-                <i class="icon-file"></i>
-                Crear  Codigo Compras Publicas
+            <a href="#" class="btn btn-success btn-new">
+                <i class="fa fa-file"></i>
+                Nuevo Código Compras Publicas
             </a>
         </div>
 
-        <g:form action="delete" name="frmDelete-CodigoComprasPublicas">
-            <g:hiddenField name="id"/>
-        </g:form>
 
-        <div id="list-CodigoComprasPublicas" class="span12" role="main" style="margin-top: 10px;">
-
-            <table class="table table-bordered table-striped table-condensed table-hover">
-                <thead>
-                    <tr>
-                    
-                        <g:sortableColumn property="numero" title="Numero" />
-                    
-                        <g:sortableColumn property="descripcion" title="Descripcion" />
-                    
-                        <g:sortableColumn property="fecha" title="Fecha" />
-                    
-                        <g:sortableColumn property="nivel" title="Nivel" />
-                    
-                        <th>Padre</th>
-                    
-                        <th width="150">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="paginate">
-                <g:each in="${codigoComprasPublicasInstanceList}" status="i" var="codigoComprasPublicasInstance">
-                    <tr>
-                    
-                        <td>${fieldValue(bean: codigoComprasPublicasInstance, field: "numero")}</td>
-                    
-                        <td>${fieldValue(bean: codigoComprasPublicasInstance, field: "descripcion")}</td>
-                    
-                        <td><g:formatDate date="${codigoComprasPublicasInstance.fecha}" /></td>
-                    
-                        <td>${fieldValue(bean: codigoComprasPublicasInstance, field: "nivel")}</td>
-                    
-                        <td>${fieldValue(bean: codigoComprasPublicasInstance, field: "padre")}</td>
-                    
-                        <td>
-                            <a class="btn btn-small btn-show btn-ajax" href="#" rel="tooltip" title="Ver" data-id="${codigoComprasPublicasInstance.id}">
-                                <i class="icon-zoom-in icon-large"></i>
-                            </a>
-                            <a class="btn btn-small btn-edit btn-ajax" href="#" rel="tooltip" title="Editar" data-id="${codigoComprasPublicasInstance.id}">
-                                <i class="icon-pencil icon-large"></i>
-                            </a>
-
-                            <a class="btn btn-small btn-delete" href="#" rel="tooltip" title="Eliminar" data-id="${codigoComprasPublicasInstance.id}">
-                                <i class="icon-trash icon-large"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </g:each>
-                </tbody>
-            </table>
-
-        </div>
-
-        <div class="modal hide fade" id="modal-CodigoComprasPublicas">
-            <div class="modal-header" id="modalHeader">
-                <button type="button" class="close darker" data-dismiss="modal">
-                    <i class="icon-remove-circle"></i>
-                </button>
-
-                <h3 id="modalTitle"></h3>
+    <div id="listaRbro" style="overflow: hidden; margin-top: 10px">
+        <fieldset class="borde" style="border-radius: 4px">
+            <div class="row-fluid" style="margin-left: 10px">
+                <span class="grupo">
+                    <label class="col-md-1 control-label text-info">
+                        Buscar Por
+                    </label>
+                    <span class="col-md-2">
+                        <g:select name="buscarPor" class="buscarPor col-md-12 form-control" from="${[1: 'Descripción', 2: 'Código']}" optionKey="key"
+                                  optionValue="value"/>
+                    </span>
+                    <label class="col-md-1 control-label text-info">
+                        Criterio
+                    </label>
+                    <span class="col-md-4">
+                        <g:textField name="buscarCriterio" id="criterioCriterio" class="form-control"/>
+                    </span>
+                </span>
+                <div class="col-md-1" style="margin-top: 1px">
+                    <button class="btn btn-info" id="btnBuscarCPC"><i class="fa fa-search"></i></button>
+                </div>
             </div>
+        </fieldset>
 
-            <div class="modal-body" id="modalBody">
+        <fieldset class="borde" style="border-radius: 4px">
+            <div id="divTablaCPC" style="height: 460px; overflow: auto; margin-top: 5px">
             </div>
-
-            <div class="modal-footer" id="modalFooter">
-            </div>
-        </div>
+        </fieldset>
+    </div>
 
         <script type="text/javascript">
-            var url = "${resource(dir:'images', file:'spinner_24.gif')}";
-            var spinner = $("<img style='margin-left:15px;' src='" + url + "' alt='Cargando...'/>");
+            buscarCPC();
 
-            function submitForm(btn) {
-                if ($("#frmSave-CodigoComprasPublicas").valid()) {
-                    btn.replaceWith(spinner);
-                }
-                $("#frmSave-CodigoComprasPublicas").submit();
+            $("#btnBuscarCPC").click(function () {
+                buscarCPC();
+            });
+
+            function buscarCPC() {
+                var buscarPor = $("#buscarPor option:selected").val();
+                var criterio = $("#criterioCriterio").val();
+                $.ajax({
+                    type: "POST",
+                    url: "${createLink(controller: 'codigoComprasPublicas', action:'tablaCPC_ajax')}",
+                    data: {
+                        buscarPor: buscarPor,
+                        criterio: criterio,
+                        tipo: '${tipo}'
+                    },
+                    success: function (msg) {
+                        $("#divTablaCPC").html(msg);
+                    }
+                });
             }
 
-            $(function () {
-                $('[rel=tooltip]').tooltip();
-
-                $(".paginate").paginate({
-                    maxRows: 10
-                });
-
-                $(".btn-new").click(function () {
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                            btnSave.click(function () {
-                                submitForm(btnSave);
-                                return false;
-                            });
-
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete");
-                            $("#modalTitle").html("Crear Codigo Compras Publicas");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-CodigoComprasPublicas").modal("show");
-                        }
-                    });
+            $("#criterioCriterio").keydown(function (ev) {
+                if (ev.keyCode === 13) {
+                    ev.preventDefault();
+                    buscarCPC();
                     return false;
-                }); //click btn new
-
-                $(".btn-edit").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'form_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                            var btnSave = $('<a href="#"  class="btn btn-success"><i class="icon-save"></i> Guardar</a>');
-
-                            btnSave.click(function () {
-                                submitForm(btnSave);
-                                return false;
-                            });
-
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-edit");
-                            $("#modalTitle").html("Editar Codigo Compras Publicas");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk).append(btnSave);
-                            $("#modal-CodigoComprasPublicas").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn edit
-
-                $(".btn-show").click(function () {
-                    var id = $(this).data("id");
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(action:'show_ajax')}",
-                        data    : {
-                            id : id
-                        },
-                        success : function (msg) {
-                            var btnOk = $('<a href="#" data-dismiss="modal" class="btn btn-primary">Aceptar</a>');
-                            $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-show");
-                            $("#modalTitle").html("Ver Codigo Compras Publicas");
-                            $("#modalBody").html(msg);
-                            $("#modalFooter").html("").append(btnOk);
-                            $("#modal-CodigoComprasPublicas").modal("show");
-                        }
-                    });
-                    return false;
-                }); //click btn show
-
-                $(".btn-delete").click(function () {
-                    var id = $(this).data("id");
-                    $("#id").val(id);
-                    var btnOk = $('<a href="#" data-dismiss="modal" class="btn">Cancelar</a>');
-                    var btnDelete = $('<a href="#" class="btn btn-danger"><i class="icon-trash"></i> Eliminar</a>');
-
-                    btnDelete.click(function () {
-                        btnDelete.replaceWith(spinner);
-                        $("#frmDelete-CodigoComprasPublicas").submit();
-                        return false;
-                    });
-
-                    $("#modalHeader").removeClass("btn-edit btn-show btn-delete").addClass("btn-delete");
-                    $("#modalTitle").html("Eliminar Codigo Compras Publicas");
-                    $("#modalBody").html("<p>¿Está seguro de querer eliminar este Codigo Compras Publicas?</p>");
-                    $("#modalFooter").html("").append(btnOk).append(btnDelete);
-                    $("#modal-CodigoComprasPublicas").modal("show");
-                    return false;
-                });
-
+                }
             });
+
+            function createEditRowCPC(id) {
+                var title = id ? "Editar " : "Crear ";
+                var data = id ? {id : id} : {};
+
+                $.ajax({
+                    type    : "POST",
+                    url: "${createLink(action:'form_ajax')}",
+                    data    : data,
+                    success : function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgCreateEdit",
+                            title   : title + " CPC",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        return submitFormCPC();
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                    } //success
+                }); //ajax
+            } //createEdit
+
+            function submitFormCPC() {
+                var $form = $("#frmSave-CodigoComprasPublicas");
+                if ($form.valid()) {
+                    var data = $form.serialize();
+                    var dialog = cargarLoader("Guardando...");
+                    $.ajax({
+                        type    : "POST",
+                        url     : $form.attr("action"),
+                        data    : data,
+                        success : function (msg) {
+                            dialog.modal('hide');
+                            var parts = msg.split("_");
+                            if(parts[0] === 'ok'){
+                                log(parts[1], "success");
+                                buscarCPC();
+                            }else{
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + parts[1] + '</strong>');
+                                return false;
+                            }
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            }
+
+            $(".btn-new").click(function () {
+                createEditRowCPC();
+            }); //click btn new
+
+            function deleteRowCPC(itemId) {
+                bootbox.dialog({
+                    title   : "Alerta",
+                    message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este registro? Esta acción no se puede deshacer.</p>",
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        eliminar : {
+                            label     : "<i class='fa fa-trash'></i> Eliminar",
+                            className : "btn-danger",
+                            callback  : function () {
+                                var v = cargarLoader("Eliminando...");
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : '${createLink(action:'delete')}',
+                                    data    : {
+                                        id : itemId
+                                    },
+                                    success : function (msg) {
+                                        v.modal("hide");
+                                        var parts = msg.split("_");
+                                        if(parts[0] === 'ok'){
+                                            log(parts[1],"success");
+                                            buscarCPC();
+                                        }else{
+                                            log(parts[1],"error")
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
+            }
 
         </script>
 
