@@ -177,7 +177,9 @@ class Contrato implements Auditable {
     def getObra() {
 //        println "(obraContratada): ${this.obraContratada}, concurso: ${this.oferta?.concurso?.obra?.codigo}"
         if(this.obraContratada == null){
-            def tmp_obra = Obra.findByCodigo(this.oferta?.concurso?.obra?.codigo+"-OF")
+            //pone obraContratada en contrato
+            //def tmp_obra = Obra.findByCodigo(this.oferta?.concurso?.obra?.codigo+"-OF")
+            def tmp_obra = Obra.findByCodigo(this.oferta?.concurso?.obra?.codigo)
             if(!tmp_obra) {
                 if(this.obraContratada == null) this.obraContratada = this.oferta?.concurso?.obra
             } else {
