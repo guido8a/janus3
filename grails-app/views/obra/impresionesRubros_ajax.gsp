@@ -61,7 +61,8 @@
     });
 
     $("#btnReporteVAEsinFecha").click(function ()  {
-        location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}' + "&tipo=" + 1;
+        %{--location.href = "${g.createLink(controller: 'reportesRubros',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}' + "&tipo=" + 1;--}%
+        location.href = "${g.createLink(controller: 'reportesRubros2',action: 'reporteRubrosVaeRegistro')}?" + "&desglose=" + 1 + "&obra=" + '${obra?.id}' + "&tipo=" + 1;
     });
 
     $("#btnExpVaeExcel").click(function () {
