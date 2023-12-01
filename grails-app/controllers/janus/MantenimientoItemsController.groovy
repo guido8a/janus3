@@ -2021,7 +2021,7 @@ itemId: item.id
             vaeItem = VaeItems.get(params.id)
         }else{
             vaeItem = new VaeItems()
-//            params.fechaIngreso = new Date()
+            params.fechaIngreso = new Date()
             vaeItem.item = Item.get(params.item)
         }
 
