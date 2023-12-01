@@ -1982,12 +1982,7 @@ itemId: item.id
     }
 
     def showVa_ajax() {
-//        println("show va " + params)
         def vaeItem = VaeItems.get(params.id)
-//        def parts = params.id.split("_")
-//        def idMaterial = parts[0]
-//        def idVae=parts[1]
-//        def item = Item.get(parts[0])
         def item = vaeItem.item
         def vaeItems = VaeItems.findAllByItem(item, [sort: 'fecha'])
         return [params:params, item:item, vaeItems: vaeItems]
@@ -1995,6 +1990,14 @@ itemId: item.id
 
     def formVa_ajax() {
 //        println " vae: " + params
+
+        def fd
+        if(params.fechaDefecto){
+            fd = new Date().parse("dd-MM-yyyy", params.fechaDefecto)
+        }else{
+            fd = new Date()
+        }
+
         def vaeInstance = new VaeItems()
         if (params.fechaVae)
             vaeInstance.fecha = new Date().parse("dd-MM-yyyy", params.fechaVae)
@@ -2003,7 +2006,7 @@ itemId: item.id
             vaeInstance = VaeItems.get(params.id)
         }
 
-        return [vaeInstance: vaeInstance, itemInstance: itemInstance, item: params.item]
+        return [vaeInstance: vaeInstance, itemInstance: itemInstance, item: params.item, fd: fd]
     }
 
     def saveVa_ajax() {

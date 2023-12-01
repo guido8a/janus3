@@ -60,6 +60,7 @@
     function createEditRow(id) {
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id, item:'${item.id}'} : {item: '${item.id}'};
+        data.fechaDefecto = $("#datetimepicker2").val()
         $.ajax({
             type    : "POST",
             url: "${createLink(action:'formVa_ajax')}",

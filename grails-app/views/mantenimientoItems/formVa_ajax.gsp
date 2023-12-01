@@ -11,7 +11,7 @@
                     Fecha
                 </label>
                 <span class="col-md-6">
-                    <input aria-label="" name="fecha" id='fechaVae' type='text' class="form-control required" value="${vaeInstance?.fecha?.format("dd-MM-yyyy") ?: new Date().format("dd-MM-yyyy")}"/>
+                        <input aria-label="" name="fecha" id='fechaVae' type='text' class="form-control required" value="${vaeInstance?.fecha?.format("dd-MM-yyyy") ?: fd.format("dd-MM-yyyy")}"/>
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </span>
