@@ -10,6 +10,7 @@ import janus.actas.Acta
 import janus.ejecucion.DetallePlanillaEjecucion
 import janus.ejecucion.Planilla
 import janus.ejecucion.TipoPlanilla
+import janus.pac.CodigoComprasPublicas
 import janus.pac.CronogramaContratado
 import janus.pac.Garantia
 //import janus.seguridad.Shield
@@ -1404,6 +1405,7 @@ class ReportesRubros2Controller {
             preciosService.ac_rbroObra(obra.id)
             def res = preciosService.precioUnitarioVolumenObraAsc("*", obra.id, rubro.id)
             def vae = preciosService.vae_rb(obra.id,rubro.id)
+            println("--> " + vae)
             def total = 0, totalHer = 0, totalMan = 0, totalMat = 0, totalHerRel = 0,
                 totalHerVae = 0, totalManRel = 0, totalManVae = 0, totalMatRel = 0, totalMatVae = 0,
                 totalTRel=0, totalTVae=0
@@ -1643,7 +1645,8 @@ class ReportesRubros2Controller {
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["parcial_t"], 5)?.toString(), times8normal), prmsFilaDerecha)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["relativo_t"], 2)?.toString(), times8normal), prmsFilaDerecha)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph((r["itemcpac"] ?: '')?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(("641000022" ?: '')?.toString(), times8normal), prmsFila)
+//                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(("641000022" ?: '')?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(( Item.get(r["item__id"])?.codigoComprasPublicasTransporte?.numero ?: '')?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(r["tpbncdgo"], times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["vae_t"], 2)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(0, 2)?.toString(), times8normal), prmsFila)
@@ -1652,6 +1655,7 @@ class ReportesRubros2Controller {
                     total += r["parcial_t"]
                     totalTRel += r["relativo_t"]
                     totalTVae += r["vae_vlor_t"]
+
                 }
             }
 

@@ -70,7 +70,7 @@
                 <g:hiddenField name="codigoComprasPublicas" value="${itemInstance?.codigoComprasPublicas?.id}" />
                 <g:textField name="item_codigo" class="form-control required" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.numero ?: ''}" readonly=""/>
             </span>
-            <span class="col-md-3">
+            <span class="col-md-4">
                 <g:textField name="item_desc" class="form-control" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.descripcion ?: ''}" readonly=""/>
             </span>
             <span class="col-md-1">
@@ -137,6 +137,27 @@
         </span>
     </div>
 
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'codigoComprasPublicasTransporte', 'error')} ">
+        <span class="grupo">
+            <label for="codigoTransporte" class="col-md-2 control-label text-warning">
+                Código CPC Transporte
+            </label>
+            <span class="col-md-2">
+                <g:hiddenField name="codigoComprasPublicasTransporte" value="${itemInstance?.codigoComprasPublicasTransporte?.id}" />
+                <g:textField name="codigoTransporte" class="form-control" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicasTransporte?.id)?.numero ?: ''}" readonly=""/>
+            </span>
+            <span class="col-md-4">
+                <g:textField name="descTransporte" class="form-control" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicasTransporte?.id)?.descripcion ?: ''}" readonly=""/>
+            </span>
+            <span class="col-md-1">
+                <a href="#" id="btnBuscarCPCTransporte" class="btn btn-info ">
+                    <i class="fa fa-search"></i>
+                    Buscar
+                </a>
+            </span>
+        </span>
+    </div>
+
     <g:if test="${grupo.toString() == '3'}">
         <div class="form-group ${hasErrors(bean: itemInstance, field: 'combustible', 'error')} ">
             <span class="grupo">
@@ -167,6 +188,30 @@
 <script type="text/javascript">
 
     var bcpc;
+    var bcpct;
+
+    $("#btnBuscarCPCTransporte").click(function () {
+        $.ajax({
+            type    : "POST",
+            url: "${createLink(action:'buscadorCPCTransporte_ajax')}",
+            data    : {},
+            success : function (msg) {
+                bcpct = bootbox.dialog({
+                    id      : "dlgBuscarCPCT",
+                    title   : "Buscar Código Compras Públicas Transporte",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        }
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
 
     $("#btnBuscadrCPC").click(function () {
         $.ajax({
@@ -193,6 +238,10 @@
 
     function cerrarBuscadorCPC(){
         bcpc.modal("hide")
+    }
+
+    function cerrarBuscadorCPCT(){
+        bcpct.modal("hide")
     }
 
     $('#datetimepicker1').datetimepicker({

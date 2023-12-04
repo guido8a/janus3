@@ -34,6 +34,7 @@ class Item implements Auditable {
     String especificaciones
     String codigoEspecificacion
     CodigoComprasPublicas codigoComprasPublicas
+    CodigoComprasPublicas codigoComprasPublicasTransporte
     String aprobado
 //    Empresa empresa
 
@@ -74,6 +75,7 @@ class Item implements Auditable {
             especificaciones column: 'itemespc'
             codigoEspecificacion column: 'itemcdes'
             codigoComprasPublicas column: 'cpac__id'
+            codigoComprasPublicasTransporte column: 'cpactrans'
             aprobado column: 'itemaprb'
 //            empresa column: 'empr__id'
         }
@@ -107,6 +109,7 @@ class Item implements Auditable {
         especificaciones(blank: true, nullable: true, size: 1..1024)
         codigoEspecificacion(blank: true, nullable: true, size: 1..30)
         codigoComprasPublicas(blank: true, nullable: true, attributes: [title: 'Código de Compras Públicas'])
+        codigoComprasPublicasTransporte(blank: true, nullable: true)
         aprobado(blank: true, nullable: true, attributes: [title: 'Aprobado'])
     }
 
