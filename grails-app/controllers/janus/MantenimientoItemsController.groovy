@@ -2142,8 +2142,8 @@ itemId: item.id
             bsca = listaItems[0]
         }
 
-        def select = "select * from cpac"
-        def txwh = " where $bsca ilike '%${params.criterio}%'"
+        def select = "select * from cpac "
+        def txwh = " where cpacdscr ilike '%transport%' and $bsca ilike '%${params.criterio}%'"
         sqlTx = "${select} ${txwh} order by cpacdscr limit 30 ".toString()
 
         def cn = dbConnectionService.getConnection()
