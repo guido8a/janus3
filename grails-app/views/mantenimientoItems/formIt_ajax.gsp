@@ -70,7 +70,7 @@
                 <g:hiddenField name="codigoComprasPublicas" value="${itemInstance?.codigoComprasPublicas?.id}" />
                 <g:textField name="item_codigo" class="form-control required" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.numero ?: ''}" readonly=""/>
             </span>
-            <span class="col-md-4">
+            <span class="col-md-6">
                 <g:textField name="item_desc" class="form-control" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicas?.id)?.descripcion ?: ''}" readonly=""/>
             </span>
             <span class="col-md-1">
@@ -146,7 +146,7 @@
                 <g:hiddenField name="codigoComprasPublicasTransporte" value="${itemInstance?.codigoComprasPublicasTransporte?.id}" />
                 <g:textField name="codigoTransporte" class="form-control" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicasTransporte?.id)?.numero ?: ''}" readonly=""/>
             </span>
-            <span class="col-md-4">
+            <span class="col-md-6">
                 <g:textField name="descTransporte" class="form-control" value="${janus.pac.CodigoComprasPublicas.get(itemInstance?.codigoComprasPublicasTransporte?.id)?.descripcion ?: ''}" readonly=""/>
             </span>
             <span class="col-md-1">
