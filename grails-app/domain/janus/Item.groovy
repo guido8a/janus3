@@ -75,7 +75,7 @@ class Item implements Auditable {
             especificaciones column: 'itemespc'
             codigoEspecificacion column: 'itemcdes'
             codigoComprasPublicas column: 'cpac__id'
-            codigoComprasPublicasTransporte column: 'cpactrans'
+            codigoComprasPublicasTransporte column: 'cpactran'
             aprobado column: 'itemaprb'
 //            empresa column: 'empr__id'
         }
