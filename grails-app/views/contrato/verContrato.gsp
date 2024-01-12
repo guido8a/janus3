@@ -77,6 +77,13 @@
                 <i class="fa fa-print"></i>
                 Imp. Rubros y VAE
             </a>
+            <g:if test="${contrato?.anticipo == 0}">
+                <a href="#" class="btn btn-warning" id="inicioObra">
+                    <i class="icon-check text_info"></i>
+                    Inicio de Obra
+                </a>
+            </g:if>
+
         </g:if>
     </div>
 </div>
@@ -1094,35 +1101,53 @@
             data    : {
                 id : "${contrato?.id}"
             },
-            success : function (msg) {
-                var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');
-                var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');
-                $btnSave.click(function () {
-                    $(this).replaceWith(spinner);
-                    var fcha = $("#fecha").val();
-                    var memo = $("#memo").val();
-                    $.ajax({
-                        type    : "POST",
-                        url     : "${createLink(controller: 'planilla', action:'iniciarObra')}",
-                        data    : {
-                            cntr  : "${contrato?.id}",
-                            fecha  : fcha,
-                            memo  : memo
-                        },
-                        success : function (msg) {
-                            if(msg === "ok") {
-                                location.reload(true);
-                            } else {
-                                log("Un error ha ocurrido al iniciar la obra", "success")
+            %{--success : function (msg) {--}%
+                %{--var $btnSave = $('<a href="#" class="btn btn-success"><i class="icon icon-save"></i> Guardar</a>');--}%
+                %{--var $btnCerrar = $('<a href="#" data-dismiss="modal" class="btn">Cerrar</a>');--}%
+                %{--$btnSave.click(function () {--}%
+                    %{--$(this).replaceWith(spinner);--}%
+                    %{--var fcha = $("#fecha").val();--}%
+                    %{--var memo = $("#memo").val();--}%
+                    %{--$.ajax({--}%
+                        %{--type    : "POST",--}%
+                        %{--url     : "${createLink(controller: 'planilla', action:'iniciarObra')}",--}%
+                        %{--data    : {--}%
+                            %{--cntr  : "${contrato?.id}",--}%
+                            %{--fecha  : fcha,--}%
+                            %{--memo  : memo--}%
+                        %{--},--}%
+                        %{--success : function (msg) {--}%
+                            %{--if(msg === "ok") {--}%
+                                %{--location.reload(true);--}%
+                            %{--} else {--}%
+                                %{--log("Un error ha ocurrido al iniciar la obra", "success")--}%
+                            %{--}--}%
+                        %{--}--}%
+                    %{--});--}%
+                %{--});--}%
+                %{--$("#modal_tittle_var").text("Inicio de Obra sin Reajustes");--}%
+                %{--$("#modal_body_var").html(msg);--}%
+                %{--$("#modal_footer_var").html($btnCerrar).append($btnSave);--}%
+                %{--$("#modal-var").modal("show");--}%
+            %{--}--}%
+
+            success: function (msg) {
+
+                var b = bootbox.dialog({
+                    id      : "dlgImprimir",
+                    title   : "Inicio de Obra sin reajuste",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
                             }
                         }
-                    });
-                });
-                $("#modal_tittle_var").text("Inicio de Obra sin Reajustes");
-                $("#modal_body_var").html(msg);
-                $("#modal_footer_var").html($btnCerrar).append($btnSave);
-                $("#modal-var").modal("show");
+                    } //buttons
+                }); //dialog
             }
+
         });
         return false;
     });

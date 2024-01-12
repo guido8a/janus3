@@ -8,21 +8,21 @@
     font-style : italic;
 }
 </style>
-<g:form name="frmSave-Planilla" action="iniciarObra" cntr="${cntr}">
+<g:form name="frmSave-Planilla" action="iniciarObra" id="${cntr}">
     <g:hiddenField name="tipo" value="${tipo}"/>
     <fieldset>
         <div class="row">
-            <div class="span5">
+            <div class="col-md-5">
                 ${extra}
             </div>
         </div>
 
         <div class="row">
-            <div class="span2 formato">
+            <div class="col-md-2 formato">
                 ${lblMemo}
             </div>
 
-            <div class="span4">
+            <div class="col-md-4">
                 <g:textField name="memo" class="span3 required allCaps" maxlength="20"/>
                 <span class="mandatory">*</span>
 
@@ -31,11 +31,11 @@
         </div>
 
         <div class="row">
-            <div class="span2 formato">
+            <div class="col-md-2 formato">
                 ${lblFecha}
             </div>
 
-            <div class="span4">
+            <div class="col-md-4">
                 <elm:datepicker name="fecha" class=" span3 required" maxDate="${fechaMax}" minDate="${fechaMin}" value="${fecha}"/>
                 %{--<elm:datepicker name="fecha" class=" span3 required"/>--}%
                 <span class="mandatory">*</span>
@@ -50,6 +50,7 @@
             </strong>
         </div>
     </fieldset>
+    <input type="submit" value="Iniciar Obra">
 </g:form>
 
 <script type="text/javascript">

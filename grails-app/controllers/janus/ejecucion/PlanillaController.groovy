@@ -1682,16 +1682,10 @@ class PlanillaController {
         println "iniciarObra: $params"
 
         def memo = params.memo.toString().toUpperCase()
-        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        def fecha = new Date().parse("MM/dd/yyyy", params.fecha_input)
 
         def planilla
-        def contrato
-        if (params.id) {
-            planilla = Planilla.get(params.id)
-            contrato = planilla.contrato
-        } else {
-            contrato = Contrato.get(params.cntr)
-        }
+        def contrato = Contrato.get(params.id)
 
         println "contrato: $contrato"
         contrato.numeralPlazo = params.numeralPlazo
@@ -2098,11 +2092,11 @@ class PlanillaController {
 //            println "nopagoValor: '${params.noPagoValor}'"
 
             planillaInstance.noPago = params.noPago
-            planillaInstance.noPagoValor = params.noPagoValor.toDouble()
+            planillaInstance.noPagoValor = params?.noPagoValor?.toDouble()
 
-            planillaInstance.multaEspecial = params.multaEspecial.toDouble()
-            planillaInstance.noPagoValor = params.noPagoValor.toDouble()
-            planillaInstance.avanceFisico = params.avanceFisico.toDouble()
+            planillaInstance.multaEspecial = params.multaEspecial ? params?.multaEspecial?.toDouble() : 0
+            planillaInstance.noPagoValor = params?.noPagoValor?.toDouble()
+            planillaInstance.avanceFisico = params?.avanceFisico?.toDouble()
 
             if (planillaInstance.tipoPlanilla.codigo == 'O') { //pone fecha del último periodo planillado
                 def pl = Planilla.findByContratoAndTipoPlanilla(cntr, TipoPlanilla.findByCodigo('Q'))
