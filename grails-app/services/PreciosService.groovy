@@ -597,7 +597,7 @@ class PreciosService {
             result.add(r.toRowResult())
         }
         cn.close()
-//        println("sql " + sql)
+        println("sql " + sql)
         return result
 
     }

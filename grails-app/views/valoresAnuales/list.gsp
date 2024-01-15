@@ -41,6 +41,7 @@
         <g:each in="${valoresAnualesInstanceList}" status="i" var="valoresAnualesInstance">
             <tr>
                 <td>${valoresAnualesInstance?.anioNuevo?.anio}</td>
+                %{--<td>${valoresAnualesInstance.anio}</td>--}%
                 <td>${fieldValue(bean: valoresAnualesInstance, field: "costoDiesel")}</td>
                 <td>${fieldValue(bean: valoresAnualesInstance, field: "costoGrasa")}</td>
                 <td>${fieldValue(bean: valoresAnualesInstance, field: "costoLubricante")}</td>

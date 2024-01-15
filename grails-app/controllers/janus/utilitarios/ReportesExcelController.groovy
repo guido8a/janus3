@@ -409,7 +409,7 @@ class ReportesExcelController {
 
 
     def imprimirRubrosVaeExcel () {
-
+        println "imprimirRubrosVaeExcel --> "
         def obra = Obra.get(params.obra.toLong())
         def lugar = obra.lugar
         def fecha = obra.fechaPreciosRubros
@@ -508,16 +508,17 @@ class ReportesExcelController {
                         Row rowC1 = sheet.createRow(fila)
                         rowC1.createCell(0).setCellValue("Código")
                         rowC1.createCell(1).setCellValue("Descripción")
-                        rowC1.createCell(2).setCellValue("Cantidad")
-                        rowC1.createCell(3).setCellValue("Tarifa")
-                        rowC1.createCell(4).setCellValue("Costo")
-                        rowC1.createCell(5).setCellValue("Rendimiento")
-                        rowC1.createCell(6).setCellValue("C.Total")
-                        rowC1.createCell(7).setCellValue("Peso Relat(%)")
-                        rowC1.createCell(8).setCellValue("CPC")
-                        rowC1.createCell(9).setCellValue("NP/EP/ND")
-                        rowC1.createCell(10).setCellValue("VAE(%)")
-                        rowC1.createCell(11).setCellValue("VAE(%) Elemento")
+                        rowC1.createCell(2).setCellValue("Unidad")
+                        rowC1.createCell(3).setCellValue("Cantidad")
+                        rowC1.createCell(4).setCellValue("Tarifa")
+                        rowC1.createCell(5).setCellValue("Costo")
+                        rowC1.createCell(6).setCellValue("Rendimiento")
+                        rowC1.createCell(7).setCellValue("C.Total")
+                        rowC1.createCell(8).setCellValue("Peso Relat(%)")
+                        rowC1.createCell(9).setCellValue("CPC")
+                        rowC1.createCell(10).setCellValue("NP/EP/ND")
+                        rowC1.createCell(11).setCellValue("VAE(%)")
+                        rowC1.createCell(12).setCellValue("VAE(%) Elemento")
                         rowC1.setRowStyle(style)
                         fila++
                     }
@@ -526,16 +527,17 @@ class ReportesExcelController {
                     Row rowF1 = sheet.createRow(fila)
                     rowF1.createCell(0).setCellValue(r["itemcdgo"]?.toString())
                     rowF1.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                    rowF1.createCell(2).setCellValue(r["rbrocntd"]?.toDouble())
-                    rowF1.createCell(3).setCellValue(r["rbpcpcun"]?.toDouble())
-                    rowF1.createCell(4).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
-                    rowF1.createCell(5).setCellValue(r["rndm"]?.toDouble())
-                    rowF1.createCell(6).setCellValue(r["parcial"]?.toDouble())
-                    rowF1.createCell(7).setCellValue(r["relativo"]?.toDouble())
-                    rowF1.createCell(8).setCellValue(r.itemcpac?.toDouble())
-                    rowF1.createCell(9).setCellValue(r.tpbncdgo)
-                    rowF1.createCell(10).setCellValue(r["vae"]?.toDouble())
-                    rowF1.createCell(11).setCellValue(r["vae_vlor"]?.toDouble())
+                    rowF1.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+                    rowF1.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+                    rowF1.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+                    rowF1.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
+                    rowF1.createCell(6).setCellValue(r["rndm"]?.toDouble())
+                    rowF1.createCell(7).setCellValue(r["parcial"]?.toDouble())
+                    rowF1.createCell(8).setCellValue(r["relativo"]?.toDouble())
+                    rowF1.createCell(9).setCellValue(r.itemcpac?.toDouble())
+                    rowF1.createCell(10).setCellValue(r.tpbncdgo)
+                    rowF1.createCell(11).setCellValue(r["vae"]?.toDouble())
+                    rowF1.createCell(12).setCellValue(r["vae_vlor"]?.toDouble())
 
                     totalHer += r["parcial"]
                     totalHerRel += r["relativo"]
@@ -547,9 +549,9 @@ class ReportesExcelController {
                     if (band == 0) {
                         Row rowP1 = sheet.createRow(fila)
                         rowP1.createCell(0).setCellValue("SUBTOTAL")
-                        rowP1.createCell(6).setCellValue(totalHer)
-                        rowP1.createCell(7).setCellValue(totalHerRel)
-                        rowP1.createCell(11).setCellValue(totalHerVae)
+                        rowP1.createCell(7).setCellValue(totalHer)
+                        rowP1.createCell(8).setCellValue(totalHerRel)
+                        rowP1.createCell(12).setCellValue(totalHerVae)
                         fila++
                     }
 
@@ -563,16 +565,17 @@ class ReportesExcelController {
                         Row rowC2 = sheet.createRow(fila)
                         rowC2.createCell(0).setCellValue("Código")
                         rowC2.createCell(1).setCellValue("Descripción")
-                        rowC2.createCell(2).setCellValue("Cantidad")
-                        rowC2.createCell(3).setCellValue("Jornal")
-                        rowC2.createCell(4).setCellValue("Costo")
-                        rowC2.createCell(5).setCellValue("Rendimiento")
-                        rowC2.createCell(6).setCellValue("C.Total")
-                        rowC2.createCell(7).setCellValue("Peso Relat(%)")
-                        rowC2.createCell(8).setCellValue("CPC")
-                        rowC2.createCell(9).setCellValue("NP/EP/ND")
-                        rowC2.createCell(10).setCellValue("VAE(%)")
-                        rowC2.createCell(11).setCellValue("VAE(%) Elemento")
+                        rowC2.createCell(2).setCellValue("Unidad")
+                        rowC2.createCell(3).setCellValue("Cantidad")
+                        rowC2.createCell(4).setCellValue("Jornal")
+                        rowC2.createCell(5).setCellValue("Costo")
+                        rowC2.createCell(6).setCellValue("Rendimiento")
+                        rowC2.createCell(7).setCellValue("C.Total")
+                        rowC2.createCell(8).setCellValue("Peso Relat(%)")
+                        rowC2.createCell(9).setCellValue("CPC")
+                        rowC2.createCell(10).setCellValue("NP/EP/ND")
+                        rowC2.createCell(11).setCellValue("VAE(%)")
+                        rowC2.createCell(12).setCellValue("VAE(%) Elemento")
                         rowC2.setRowStyle(style)
                         fila++
                     }
@@ -581,16 +584,17 @@ class ReportesExcelController {
                     Row rowF2 = sheet.createRow(fila)
                     rowF2.createCell(0).setCellValue(r["itemcdgo"]?.toString())
                     rowF2.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                    rowF2.createCell(2).setCellValue(r["rbrocntd"]?.toDouble())
-                    rowF2.createCell(3).setCellValue(r["rbpcpcun"]?.toDouble())
-                    rowF2.createCell(4).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
-                    rowF2.createCell(5).setCellValue(r["rndm"]?.toDouble())
-                    rowF2.createCell(6).setCellValue(r["parcial"]?.toDouble())
-                    rowF2.createCell(7).setCellValue(r["relativo"]?.toDouble())
-                    rowF2.createCell(8).setCellValue(r.itemcpac?.toDouble())
-                    rowF2.createCell(9).setCellValue(r.tpbncdgo)
-                    rowF2.createCell(10).setCellValue(r["vae"]?.toDouble())
-                    rowF2.createCell(11).setCellValue(r["vae_vlor"]?.toDouble())
+                    rowF2.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+                    rowF2.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+                    rowF2.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+                    rowF2.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
+                    rowF2.createCell(6).setCellValue(r["rndm"]?.toDouble())
+                    rowF2.createCell(7).setCellValue(r["parcial"]?.toDouble())
+                    rowF2.createCell(8).setCellValue(r["relativo"]?.toDouble())
+                    rowF2.createCell(9).setCellValue(r.itemcpac?.toDouble())
+                    rowF2.createCell(10).setCellValue(r.tpbncdgo)
+                    rowF2.createCell(11).setCellValue(r["vae"]?.toDouble())
+                    rowF2.createCell(12).setCellValue(r["vae_vlor"]?.toDouble())
 
                     totalMan += r["parcial"]
                     totalManRel += r["relativo"]
@@ -602,9 +606,9 @@ class ReportesExcelController {
                     if (band == 2) {
                         Row rowP2 = sheet.createRow(fila)
                         rowP2.createCell(0).setCellValue("SUBTOTAL")
-                        rowP2.createCell(6).setCellValue(totalMan)
-                        rowP2.createCell(7).setCellValue(totalManRel)
-                        rowP2.createCell(11).setCellValue(totalManVae)
+                        rowP2.createCell(7).setCellValue(totalMan)
+                        rowP2.createCell(8).setCellValue(totalManRel)
+                        rowP2.createCell(12).setCellValue(totalManVae)
                         fila++
                     }
                 }
@@ -621,14 +625,15 @@ class ReportesExcelController {
                         Row rowC3 = sheet.createRow(fila)
                         rowC3.createCell(0).setCellValue("Código")
                         rowC3.createCell(1).setCellValue("Descripción")
-                        rowC3.createCell(2).setCellValue("Cantidad")
-                        rowC3.createCell(3).setCellValue("Unitario")
-                        rowC3.createCell(6).setCellValue("C.Total")
-                        rowC3.createCell(7).setCellValue("Peso Relat(%)")
-                        rowC3.createCell(8).setCellValue("CPC")
+                        rowC3.createCell(2).setCellValue("Unidad")
+                        rowC3.createCell(3).setCellValue("Cantidad")
+                        rowC3.createCell(4).setCellValue("Unitario")
+                        rowC3.createCell(7).setCellValue("C.Total")
+                        rowC3.createCell(8).setCellValue("Peso Relat(%)")
+                        rowC3.createCell(9).setCellValue("CPC")
                         rowC3.createCell(0).setCellValue("NP/EP/ND")
-                        rowC3.createCell(10).setCellValue("VAE(%)")
-                        rowC3.createCell(11).setCellValue("VAE(%) Elemento")
+                        rowC3.createCell(11).setCellValue("VAE(%)")
+                        rowC3.createCell(12).setCellValue("VAE(%) Elemento")
                         rowC3.setRowStyle(style)
                         fila++
                     }
@@ -638,14 +643,15 @@ class ReportesExcelController {
                     Row rowF3 = sheet.createRow(fila)
                     rowF3.createCell(0).setCellValue(r["itemcdgo"]?.toString())
                     rowF3.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                    rowF3.createCell(2).setCellValue(r["rbrocntd"]?.toDouble())
-                    rowF3.createCell(3).setCellValue(r["rbpcpcun"]?.toDouble())
-                    rowF3.createCell(6).setCellValue(r["parcial"]?.toDouble())
-                    rowF3.createCell(7).setCellValue(r["relativo"]?.toDouble())
-                    rowF3.createCell(8).setCellValue(r.itemcpac?.toDouble())
-                    rowF3.createCell(9).setCellValue(r.tpbncdgo)
-                    rowF3.createCell(10).setCellValue(r["vae"]?.toDouble())
-                    rowF3.createCell(11).setCellValue(r["vae_vlor"]?.toDouble())
+                    rowF3.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+                    rowF3.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+                    rowF3.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+                    rowF3.createCell(7).setCellValue(r["parcial"]?.toDouble())
+                    rowF3.createCell(8).setCellValue(r["relativo"]?.toDouble())
+                    rowF3.createCell(9).setCellValue(r.itemcpac?.toDouble())
+                    rowF3.createCell(10).setCellValue(r.tpbncdgo)
+                    rowF3.createCell(11).setCellValue(r["vae"]?.toDouble())
+                    rowF3.createCell(12).setCellValue(r["vae_vlor"]?.toDouble())
 
                     totalMat += r["parcial"]
                     totalMatRel += r["relativo"]
@@ -665,18 +671,18 @@ class ReportesExcelController {
             if (band == 2 && flag != 1) {
                 Row rowP21 = sheet.createRow(fila)
                 rowP21.createCell(0).setCellValue("SUBTOTAL")
-                rowP21.createCell(6).setCellValue(totalMan)
-                rowP21.createCell(7).setCellValue(totalManRel)
-                rowP21.createCell(11).setCellValue(totalManVae)
+                rowP21.createCell(7).setCellValue(totalMan)
+                rowP21.createCell(8).setCellValue(totalManRel)
+                rowP21.createCell(12).setCellValue(totalManVae)
                 fila++
             }
 
             if (band == 3) {
                 Row rowP3 = sheet.createRow(fila)
                 rowP3.createCell(0).setCellValue("SUBTOTAL")
-                rowP3.createCell(6).setCellValue(totalMat)
-                rowP3.createCell(7).setCellValue(totalMatRel)
-                rowP3.createCell(11).setCellValue(totalMatVae)
+                rowP3.createCell(7).setCellValue(totalMat)
+                rowP3.createCell(8).setCellValue(totalMatRel)
+                rowP3.createCell(12).setCellValue(totalMatVae)
                 fila++
             }
 
@@ -692,16 +698,17 @@ class ReportesExcelController {
                 Row rowC4 = sheet.createRow(fila)
                 rowC4.createCell(0).setCellValue("Código")
                 rowC4.createCell(1).setCellValue("Descripción")
-                rowC4.createCell(2).setCellValue("Peso/Vol")
-                rowC4.createCell(3).setCellValue("Cantidad")
-                rowC4.createCell(4).setCellValue("Distancia")
-                rowC4.createCell(5).setCellValue("Unitario")
-                rowC4.createCell(6).setCellValue("C.Total")
-                rowC4.createCell(7).setCellValue("Peso Relat(%)")
-                rowC4.createCell(8).setCellValue("CPC")
-                rowC4.createCell(9).setCellValue("NP/EP/ND")
-                rowC4.createCell(10).setCellValue("VAE(%)")
-                rowC4.createCell(11).setCellValue("VAE(%) Elemento")
+                rowC4.createCell(2).setCellValue("Unidad")
+                rowC4.createCell(3).setCellValue("Peso/Vol")
+                rowC4.createCell(4).setCellValue("Cantidad")
+                rowC4.createCell(5).setCellValue("Distancia")
+                rowC4.createCell(6).setCellValue("Unitario")
+                rowC4.createCell(7).setCellValue("C.Total")
+                rowC4.createCell(8).setCellValue("Peso Relat(%)")
+                rowC4.createCell(9).setCellValue("CPC")
+                rowC4.createCell(10).setCellValue("NP/EP/ND")
+                rowC4.createCell(11).setCellValue("VAE(%)")
+                rowC4.createCell(12).setCellValue("VAE(%) Elemento")
                 rowC4.setRowStyle(style)
                 fila++
 
@@ -714,23 +721,24 @@ class ReportesExcelController {
                     Row rowF4 = sheet.createRow(fila)
                     rowF4.createCell(0).setCellValue(rt["itemcdgo"]?.toString())
                     rowF4.createCell(1).setCellValue(rt["itemnmbr"]?.toString())
-                    rowF4.createCell(2).setCellValue(rt["itempeso"]?.toDouble())
-                    rowF4.createCell(3).setCellValue(rt["rbrocntd"]?.toDouble())
-                    rowF4.createCell(4).setCellValue(rt["distancia"]?.toDouble())
-                    rowF4.createCell(5).setCellValue(tot)
-                    rowF4.createCell(6).setCellValue(rt["parcial_t"]?.toDouble())
-                    rowF4.createCell(7).setCellValue(rt["relativo_t"]?.toDouble())
-                    rowF4.createCell(8).setCellValue(rt["itemcpac"]?.toDouble())
-                    rowF4.createCell(9).setCellValue(rt["tpbncdgo"]?.toString())
-                    rowF4.createCell(10).setCellValue(rt["vae_t"]?.toDouble())
-                    rowF4.createCell(11).setCellValue(rt["vae_vlor_t"]?.toDouble())
+                    rowF4.createCell(2).setCellValue(rt["unddcdgo"]?.toString())
+                    rowF4.createCell(3).setCellValue(rt["itempeso"]?.toDouble())
+                    rowF4.createCell(4).setCellValue(rt["rbrocntd"]?.toDouble())
+                    rowF4.createCell(5).setCellValue(rt["distancia"]?.toDouble())
+                    rowF4.createCell(6).setCellValue(tot)
+                    rowF4.createCell(7).setCellValue(rt["parcial_t"]?.toDouble())
+                    rowF4.createCell(8).setCellValue(rt["relativo_t"]?.toDouble())
+                    rowF4.createCell(9).setCellValue(rt["itemcpac"]?.toDouble())
+                    rowF4.createCell(10).setCellValue(rt["tpbncdgo"]?.toString())
+                    rowF4.createCell(11).setCellValue(rt["vae_t"]?.toDouble())
+                    rowF4.createCell(12).setCellValue(rt["vae_vlor_t"]?.toDouble())
                     fila++
                 }
                 Row rowP4 = sheet.createRow(fila)
                 rowP4.createCell(0).setCellValue("SUBTOTAL")
-                rowP4.createCell(6).setCellValue(total)
-                rowP4.createCell(7).setCellValue(totalTRel)
-                rowP4.createCell(11).setCellValue(totalTVae)
+                rowP4.createCell(7).setCellValue(total)
+                rowP4.createCell(8).setCellValue(totalTRel)
+                rowP4.createCell(12).setCellValue(totalTVae)
                 fila++
             }
 
@@ -743,8 +751,8 @@ class ReportesExcelController {
             fila++
             Row rowC5 = sheet.createRow(fila)
             rowC5.createCell(0).setCellValue("Descripción")
-            rowC5.createCell(6).setCellValue("Porcentaje")
-            rowC5.createCell(7).setCellValue("Valor")
+            rowC5.createCell(7).setCellValue("Porcentaje")
+            rowC5.createCell(8).setCellValue("Valor")
             rowC5.setRowStyle(style)
             fila++
             def totalRubro = total + totalHer + totalMan + totalMat
@@ -753,37 +761,37 @@ class ReportesExcelController {
             def totalIndi = totalRubro * indi / 100
             Row rowF5 = sheet.createRow(fila)
             rowF5.createCell(0).setCellValue("Costos indirectos")
-            rowF5.createCell(6).setCellValue(indi)
-            rowF5.createCell(7).setCellValue(totalIndi)
+            rowF5.createCell(7).setCellValue(indi)
+            rowF5.createCell(8).setCellValue(totalIndi)
 
             /*Totales*/
             fila += 4
             Row rowP6 = sheet.createRow(fila)
-            rowP6.createCell(4).setCellValue("Costo unitario directo")
-            rowP6.createCell(6).setCellValue(totalRubro)
-            rowP6.createCell(7).setCellValue(totalRelativo)
-            rowP6.createCell(11).setCellValue(totalVae)
+            rowP6.createCell(5).setCellValue("Costo unitario directo")
+            rowP6.createCell(7).setCellValue(totalRubro)
+            rowP6.createCell(8).setCellValue(totalRelativo)
+            rowP6.createCell(12).setCellValue(totalVae)
             rowP6.setRowStyle(style)
 
             Row rowP7 = sheet.createRow(fila + 1)
-            rowP7.createCell(4).setCellValue("Costos indirectos")
-            rowP7.createCell(6).setCellValue(totalIndi)
-            rowP7.createCell(7).setCellValue("TOTAL")
-            rowP7.createCell(11).setCellValue("TOTAL")
+            rowP7.createCell(5).setCellValue("Costos indirectos")
+            rowP7.createCell(7).setCellValue(totalIndi)
+            rowP7.createCell(8).setCellValue("TOTAL")
+            rowP7.createCell(12).setCellValue("TOTAL")
             rowP7.setRowStyle(style)
 
             Row rowP8 = sheet.createRow(fila + 2)
-            rowP8.createCell(4).setCellValue("Costo total del rubro")
-            rowP8.createCell(6).setCellValue(totalRubro + totalIndi)
-            rowP8.createCell(7).setCellValue("PESO")
-            rowP8.createCell(11).setCellValue("VAE")
+            rowP8.createCell(5).setCellValue("Costo total del rubro")
+            rowP8.createCell(7).setCellValue(totalRubro + totalIndi)
+            rowP8.createCell(8).setCellValue("PESO")
+            rowP8.createCell(12).setCellValue("VAE")
             rowP8.setRowStyle(style)
 
             Row rowP9 = sheet.createRow(fila + 3)
-            rowP9.createCell(4).setCellValue("Precio unitario")
-            rowP9.createCell(6).setCellValue((totalRubro + totalIndi).toDouble().round(2))
-            rowP9.createCell(7).setCellValue("RELATIVO(%)")
-            rowP9.createCell(11).setCellValue("(%)")
+            rowP9.createCell(5).setCellValue("Precio unitario")
+            rowP9.createCell(7).setCellValue((totalRubro + totalIndi).toDouble().round(2))
+            rowP9.createCell(8).setCellValue("RELATIVO(%)")
+            rowP9.createCell(12).setCellValue("(%)")
             rowP9.setRowStyle(style)
 
         }

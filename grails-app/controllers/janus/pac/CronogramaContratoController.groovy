@@ -162,7 +162,7 @@ class CronogramaContratoController {
 
 
     def nuevoCronograma () {
-//        println "nuevoCronograma: $params"
+        println "nuevoCronograma: $params"
         def contrato = Contrato.get(params.id).refresh()
         def cn = dbConnectionService.getConnection()
         if (!contrato) {
