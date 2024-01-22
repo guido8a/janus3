@@ -1977,6 +1977,7 @@ class CronogramaEjecucionController {
         } //if cronogramas == 0
 
 //        println "finalizado creaCrngEjec"
+
         redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
     }
 

@@ -1682,10 +1682,10 @@ class PlanillaController {
         println "iniciarObra: $params"
 
         def memo = params.memo.toString().toUpperCase()
-        def fecha = new Date().parse("MM/dd/yyyy", params.fecha_input)
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
 
-        def planilla
-        def contrato = Contrato.get(params.id)
+        def planilla = Planilla.get(params.id)
+        def contrato = planilla.contrato
 
         println "contrato: $contrato"
         contrato.numeralPlazo = params.numeralPlazo
@@ -1719,8 +1719,11 @@ class PlanillaController {
 
 
             flash.message = "Obra iniciada exitosamente"
-            if (params.cntr) {
-                render "ok"
+//            if (params.cntr) {
+            if (params.id) {
+                println "---> si"
+//                render "ok"
+                redirect(controller: "contrato", action: "verContrato", id: contrato.id)
             } else {
                 redirect(controller: "cronogramaEjecucion", action: "creaCrngEjecNuevo", id: contrato.id)
             }
