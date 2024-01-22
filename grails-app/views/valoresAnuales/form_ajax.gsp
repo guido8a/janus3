@@ -10,7 +10,7 @@
                     Año
                 </label>
                 <span class="col-md-3">
-                    <g:select name="anioNuevo" from="${janus.pac.Anio.list([sort: 'anio'])}"  optionValue="anio" optionKey="id"  class="form-control required" value="${valoresAnualesInstance?.anioNuevo?.id}"/>
+                    <g:select name="anioNuevo" from="${janus.pac.Anio.list([sort: 'anio', order: 'desc'])}"  optionValue="anio" optionKey="id"  class="form-control required" value="${valoresAnualesInstance?.anioNuevo?.id}"/>
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </span>

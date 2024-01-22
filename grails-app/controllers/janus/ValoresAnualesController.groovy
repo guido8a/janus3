@@ -31,6 +31,7 @@ class ValoresAnualesController {
 //        println("params" + params)
         def anioNuevo = Anio.get(params.anioNuevo)
         def existe = ValoresAnuales.findByAnioNuevo(anioNuevo)
+        params.anio = anioNuevo.anio
         def valoresAnualesInstance
 
         if (params.id) {
@@ -55,7 +56,8 @@ class ValoresAnualesController {
                 render "no_Ya existen valores anuales para ese año"
                 return
             }else{
-                valoresAnualesInstance = new ValoresAnuales(params)
+                valoresAnualesInstance = new ValoresAnuales()
+                valoresAnualesInstance.properties = params
             }
         } //es create
         if (!valoresAnualesInstance.save(flush: true)) {
