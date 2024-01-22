@@ -1468,7 +1468,8 @@ class reportesRubrosController {
                     reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(r["relativo"], 2)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaEquipos, new Paragraph(r["itemcpac"]?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaEquipos, new Paragraph(r["tpbncdgo"], times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+//                    reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaEquipos, new Paragraph(numero(Item.findByCodigo(r["itemcdgo"])?.transporteValor, 2)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaEquipos, new Paragraph((numero(r["vae_vlor"],2))?.toString(), times8normal), prmsFila)
                     totalHer += r["parcial"]
                     totalHerRel += r["relativo"]
@@ -1515,7 +1516,8 @@ class reportesRubrosController {
                     reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(r["relativo"], 2)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaManoObra, new Paragraph(r["itemcpac"]?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaManoObra, new Paragraph(r["tpbncdgo"], times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+//                    reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaManoObra, new Paragraph(numero(Item.findByCodigo(r["itemcdgo"])?.transporteValor, 2)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaManoObra, new Paragraph((numero(r["vae_vlor"],2))?.toString(), times8normal), prmsFila)
                     totalMan += r["parcial"]
                     totalManRel += r["relativo"]
@@ -1567,7 +1569,9 @@ class reportesRubrosController {
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["relativo"], 2)?.toString(), times8normal), prmsFila)
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(r["itemcpac"]?.toString(), times8normal), prmsFila)
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(r["tpbncdgo"], times8normal), prmsFila)
-                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+//                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(Item.findByCodigo(r["itemcdgo"])?.transporteValor, 2)?.toString(), times8normal), prmsFila)
+
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph((numero(r["vae_vlor"],2))?.toString(), times8normal), prmsFila)
 
                         totalMat += r["parcial"]
@@ -1579,7 +1583,9 @@ class reportesRubrosController {
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero((r["relativo"] + r["relativo_t"]), 2)?.toString(), times8normal), prmsFila)
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(r["itemcpac"]?.toString(), times8normal), prmsFila)
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph(r["tpbncdgo"], times8normal), prmsFila)
-                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+//                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(r["vae"], 2)?.toString(), times8normal), prmsFila)
+                        reportesPdfService.addCellTb(tablaMateriales, new Paragraph(numero(Item.findByCodigo(r["itemcdgo"])?.transporteValor, 2)?.toString(), times8normal), prmsFila)
+
                         reportesPdfService.addCellTb(tablaMateriales, new Paragraph((numero(r["vae_vlor"] + r["vae_vlor_t"],2))?.toString(), times8normal), prmsFila)
 
                         totalMat += (r["parcial"] + r["parcial_t"])
