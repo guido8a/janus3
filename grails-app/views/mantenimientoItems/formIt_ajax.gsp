@@ -158,6 +158,18 @@
         </span>
     </div>
 
+    <div class="form-group ${hasErrors(bean: itemInstance, field: 'transporteValor', 'error')} ">
+        <span class="grupo">
+            <label for="transporteValor" class="col-md-2 control-label text-warning">
+                Valor transporte
+            </label>
+            <span class="col-md-2">
+                <g:textField name="transporteValor" class="form-control" value="${itemInstance?.transporteValor ?: 0}" />
+                <p class="help-block ui-helper-hidden"></p>
+            </span>
+        </span>
+    </div>
+
     <g:if test="${grupo.toString() == '3'}">
         <div class="form-group ${hasErrors(bean: itemInstance, field: 'combustible', 'error')} ">
             <span class="grupo">
@@ -189,6 +201,9 @@
 
     var bcpc;
     var bcpct;
+
+
+
 
     $("#btnBuscarCPCTransporte").click(function () {
         $.ajax({
@@ -280,6 +295,10 @@
 
     $("#codigo").keydown(function (ev) {
         return validarNumDec(ev)
+    });
+
+    $("#transporteValor").keydown(function (ev) {
+        return validarNum(ev);
     });
 
     label();

@@ -36,6 +36,7 @@ class Item implements Auditable {
     CodigoComprasPublicas codigoComprasPublicas
     CodigoComprasPublicas codigoComprasPublicasTransporte
     String aprobado
+    double transporteValor
 //    Empresa empresa
 
     static auditable = true
@@ -77,6 +78,7 @@ class Item implements Auditable {
             codigoComprasPublicas column: 'cpac__id'
             codigoComprasPublicasTransporte column: 'cpactran'
             aprobado column: 'itemaprb'
+            transporteValor column: 'itemtrva'
 //            empresa column: 'empr__id'
         }
     }
@@ -111,6 +113,7 @@ class Item implements Auditable {
         codigoComprasPublicas(blank: true, nullable: true, attributes: [title: 'Código de Compras Públicas'])
         codigoComprasPublicasTransporte(blank: true, nullable: true)
         aprobado(blank: true, nullable: true, attributes: [title: 'Aprobado'])
+        transporteValor(blank: true, nullable: true, attributes: [title: 'Transporte valor'])
     }
 
     String toString() {
