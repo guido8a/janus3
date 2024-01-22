@@ -37,11 +37,11 @@
         <thead>
         <tr style="width: 100%">
             <g:if test="${lgar}">
-                <th style="width: 30%">Lugar</th>
+                <th style="width: 29%">Lugar</th>
             </g:if>
             <th style="width: 20%">Fecha</th>
             <th class="precio" style="width: 20%">Precio</th>
-            <th class="delete" style="width: 29%"></th>
+            <th class="delete" style="width: 30%"></th>
             <th style="width: 1%"></th>
         </tr>
         </thead>
@@ -49,7 +49,7 @@
         <g:each in="${precios}" var="precio" status="i">
             <tr style="width: 100%">
                 <g:if test="${lgar}">
-                    <td style="width: 30%">
+                    <td style="width: 29%">
                         ${precio.lugar.descripcion}
                     </td>
                 </g:if>
@@ -60,7 +60,7 @@
                     <td class="precio textRight " style="width: 20%" data-original="${precio.precioUnitario}" data-valor="${precio.precioUnitario}" id="${precio.id}" >
                         <g:formatNumber number="${precio.precioUnitario}" maxFractionDigits="5" minFractionDigits="5" format="##,#####0" locale='ec'/>
                     </td>
-                    <td class="delete" style="width: 29%">
+                    <td class="delete" style="width: 30%">
                         <g:if test="${precio?.registrado != 'R'}">
                             <a href="#" class="btn btn-info btn-xs btnEditar" title="Editar valor" data-id="${precio.id}">
                                 <i class="fa fa-edit"></i>

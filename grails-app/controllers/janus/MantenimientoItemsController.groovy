@@ -1563,7 +1563,7 @@ class MantenimientoItemsController {
     }
 
     def savePrecio_ajax() {
-//        println "savePrecio_ajax $params"
+        println "savePrecio_ajax $params"
         def item = Item.get(params.item.id)
         params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
 
