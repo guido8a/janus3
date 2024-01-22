@@ -731,7 +731,7 @@ class ReportesExcelController {
                     rowF4.createCell(9).setCellValue(rt["itemcpac"]?.toDouble())
                     rowF4.createCell(10).setCellValue(rt["tpbncdgo"]?.toString())
 //                    rowF4.createCell(11).setCellValue(rt["vae_t"]?.toDouble())
-                    rowF4.createCell(11).setCellValue(Item.findByCodigo(r["itemcdgo"])?.transporteValor?.toDouble())
+                    rowF4.createCell(11).setCellValue(Item.findByCodigo(rt["itemcdgo"])?.transporteValor?.toDouble())
                     rowF4.createCell(12).setCellValue(rt["vae_vlor_t"]?.toDouble())
                     fila++
                 }
