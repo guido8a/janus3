@@ -712,9 +712,12 @@ class ReportesExcelController {
                 rowC4.setRowStyle(style)
                 fila++
 
+                def totalVaeT = 0
+
                 rowsTrans.eachWithIndex { rt, j ->
                     def tra = rt["parcial_t"]
                     def tot = 0
+
                     if (tra > 0)
                         tot = rt["parcial_t"] / (rt["itempeso"] * rt["rbrocntd"] * rt["distancia"])
 
@@ -732,14 +735,17 @@ class ReportesExcelController {
                     rowF4.createCell(10).setCellValue(rt["tpbncdgo"]?.toString())
 //                    rowF4.createCell(11).setCellValue(rt["vae_t"]?.toDouble())
                     rowF4.createCell(11).setCellValue(Item.findByCodigo(rt["itemcdgo"])?.transporteValor?.toDouble())
-                    rowF4.createCell(12).setCellValue(rt["vae_vlor_t"]?.toDouble())
+//                    rowF4.createCell(12).setCellValue(rt["vae_vlor_t"]?.toDouble())
+                    rowF4.createCell(12).setCellValue((Item.findByCodigo(rt["itemcdgo"])?.transporteValor * rt["relativo_t"]).toDouble())
+                    totalVaeT += (Item.findByCodigo(rt["itemcdgo"])?.transporteValor * rt["relativo_t"])
                     fila++
                 }
                 Row rowP4 = sheet.createRow(fila)
                 rowP4.createCell(0).setCellValue("SUBTOTAL")
                 rowP4.createCell(7).setCellValue(total)
                 rowP4.createCell(8).setCellValue(totalTRel)
-                rowP4.createCell(12).setCellValue(totalTVae)
+//                rowP4.createCell(12).setCellValue(totalTVae)
+                rowP4.createCell(12).setCellValue(totalVaeT)
                 fila++
             }
 
