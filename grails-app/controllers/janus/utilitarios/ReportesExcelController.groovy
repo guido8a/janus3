@@ -413,8 +413,8 @@ class ReportesExcelController {
         def obra = Obra.get(params.obra.toLong())
         def lugar = obra.lugar
         def fecha = obra.fechaPreciosRubros
-        def itemsChofer = [obra.chofer]
-        def itemsVolquete = [obra.volquete]
+        def itemsChofer = [obra?.chofer]
+        def itemsVolquete = [obra?.volquete]
         def indi = obra.totales
         preciosService.ac_rbroObra(obra.id)
 
