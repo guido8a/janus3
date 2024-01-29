@@ -1426,8 +1426,10 @@ class ReportesRubros2Controller {
 
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Fecha: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((fecha2?.format("dd-MM-yyyy") ?: ''), times10normal), [border: Color.WHITE, colspan: 3])
-            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Fecha Act. P.U: ", times10bold), prmsHeaderHoja)
-            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((fecha1?.format("dd-MM-yyyy") ?: '') , times10normal), prmsHeaderHoja)
+//            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Fecha Act. P.U: ", times10bold), prmsHeaderHoja)
+//            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((fecha1?.format("dd-MM-yyyy") ?: '') , times10normal), prmsHeaderHoja)
+            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("", times10bold), prmsHeaderHoja)
+            reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph('' , times10normal), prmsHeaderHoja)
 
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph("Código de obra: ", times10bold), prmsHeaderHoja)
             reportesPdfService.addCellTb(tablaCoeficiente, new Paragraph((obra?.codigo ?: ''), times10normal), [border: Color.WHITE, colspan: 5])
@@ -1640,6 +1642,10 @@ class ReportesRubros2Controller {
                             reportesPdfService.addCellTb(tablaTransporte, new Paragraph(r["unddcdgo"], times8normal), prmsFila)
                         }
                     }
+
+                    def cpc_trnsp = Item.findByCodigo(r["itemcdgo"])
+                    def tpbn = cpc_trnsp?.transporteValor == 100 ? 'EP' : cpc_trnsp?.transporteValor == 0 ? 'NP' : 'ND'
+
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["itempeso"], 5)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["rbrocntd"], 5)?.toString(), times8normal), prmsFila)
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["distancia"], 5)?.toString(), times8normal), prmsFila)
@@ -1648,13 +1654,13 @@ class ReportesRubros2Controller {
                     reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["relativo_t"], 2)?.toString(), times8normal), prmsFilaDerecha)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph((r["itemcpac"] ?: '')?.toString(), times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(("641000022" ?: '')?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(( Item.findByCodigo(r["itemcdgo"])?.codigoComprasPublicasTransporte?.numero ?: '')?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(r["tpbncdgo"], times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(( cpc_trnsp?.codigoComprasPublicasTransporte?.numero ?: '')?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(tpbn, times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["vae_t"], 2)?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(Item.findByCodigo(r["itemcdgo"])?.transporteValor, 2)?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(cpc_trnsp?.transporteValor, 2)?.toString(), times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(0, 2)?.toString(), times8normal), prmsFila)
 //                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(r["vae_vlor_t"], 2)?.toString(), times8normal), prmsFila)
-                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(Item.findByCodigo(r["itemcdgo"])?.transporteValor * r["relativo_t"], 2)?.toString(), times8normal), prmsFila)
+                    reportesPdfService.addCellTb(tablaTransporte, new Paragraph(numero(cpc_trnsp?.transporteValor * r["relativo_t"], 2)?.toString(), times8normal), prmsFila)
                     total += r["parcial_t"]
                     totalTRel += r["relativo_t"]
 //                    totalTVae += r["vae_vlor_t"]
