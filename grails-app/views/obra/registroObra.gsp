@@ -1667,7 +1667,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             </g:else>
 
             var idObra = "${obra?.id}";
-
+            %{--console.log('Dir:', "${obra?.departamento?.id}", ${persona?.departamento?.id});--}%
             $.ajax({
                 type: "POST",
                 url: "${g.createLink(action:'getSalida')}",

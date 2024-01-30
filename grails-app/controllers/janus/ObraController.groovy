@@ -1102,9 +1102,11 @@ class ObraController {
 
         println("getSalida:" + params)
 
+        params.direccion = params.direccion ?: Obra.get(params.obra).departamento.direccion.id
+
         def direccion = Departamento.get(params.direccion?:21).direccion
-        def departamentos = Departamento.findAllByDireccion(direccion)
         def obra = Obra.get(params.obra)
+        def departamentos = Departamento.findAllByDireccion(direccion)
 
         println "direccion: $direccion, dept: $departamentos"
         return [dire: direccion, depar: departamentos, obra: obra, fcha: new Date()]
