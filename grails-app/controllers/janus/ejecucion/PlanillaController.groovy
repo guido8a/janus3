@@ -3743,6 +3743,34 @@ class PlanillaController {
         }
     }
 
+    def saveDetalleUno_ajax(){
+//        println("params --> " + params)
+        def planilla = Planilla.get(params.planilla)
+        def vol = VolumenContrato.get(params.vol)
+        def detalle
+
+        params.nuevoValor = (params.nuevoValor ?: 0)
+
+        if(params.id){
+            detalle = DetallePlanillaEjecucion.get(params.id)
+            detalle.cantidad = params.nuevoValor?.toDouble()
+            detalle.monto = params.val?.toDouble()
+        }else{
+            detalle = new DetallePlanillaEjecucion()
+            detalle.cantidad = params.nuevoValor?.toDouble()
+            detalle.monto = params.val?.toDouble()
+            detalle.planilla = planilla
+            detalle.volumenContrato = vol
+        }
+
+        if(!detalle.save(flush:true)){
+            println("Error al guardar " + detalle.errors)
+            render "no_Error al guardar"
+        }else{
+            render "ok_Guardado correctamente"
+        }
+    }
+
     def errores() {
         return [params: params]
     }
