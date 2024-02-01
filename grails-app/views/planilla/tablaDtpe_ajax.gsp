@@ -1,224 +1,144 @@
 <%@ page import="janus.SubPresupuesto" contentType="text/html;charset=UTF-8" %>
-<html>
-<head>
-    <meta name="layout" content="main">
-    <title>Detalle de planilla</title>
-
-    <style type="text/css">
-    th {
-        vertical-align : middle !important;
-    }
-
-    tbody th {
-        background : #5E8E9B !important;
-    }
-
-    td {
-        vertical-align : middle !important;
-    }
-
-    .num {
-        text-align : right !important;
-        width      : 60px;
-    }
-
-    .borderLeft {
-        border-left : #5E8E9B double 3px !important;
-    }
-
-    .borderTop {
-        border-top : #5E8E9B double 3px !important;
-    }
-
-    input[type=text]:focus {
-        color: #000f24 !important;
-        background-color: #faff96 !important;
-    }
-    </style>
-
-</head>
 
 <body>
 
-<div class="row" style="margin-bottom: 10px;">
-    <div class="col-md-12 btn-group" role="navigation">
-        <g:link controller="contrato" action="verContrato" params="[contrato: contrato?.id]" class="btn btn-primary btn-new" title="Regresar al contrato">
-            <i class="fa fa-arrow-left"></i>
-            Contrato
-        </g:link>
-        <g:link controller="planilla" action="list" params="[id: contrato?.id]" class="btn btn-info btn-new" title="Regresar a las planillas del contrato">
-            <i class="fa fa-arrow-left"></i>
-            Planillas
-        </g:link>
-%{--        <g:if test="${editable}">--}%
-%{--            <a href="#" id="btnSave" class="btn btn-success">--}%
-%{--                <i class="fa fa-save"></i>--}%
-%{--                Guardar--}%
-%{--            </a>--}%
-%{--        </g:if>--}%
-        <div class="col-md-3 row" style="margin-top: 5px; text-align: right">
-            <label for="subPresupuesto" class="control-label" style="text-align: right">
-                Seleccione un Sub Presupuesto
-            </label>
-        </div>
-        <div class="col-md-4 row" style="margin-top: 0px">
-            <g:select name="subPresupuesto" from="${ sbpr }" style="margin-left: 10px"
-                      class="form-control input-sm required text-info" optionValue="descripcion" optionKey="id"
-            />
-        </div>
-        <div class="col-md-1" id="divBoton">
-            <a href="#" class="btn btn-success" id="btnCargar" title="Asignar">
-                <i class="fa fa-check"></i> Cargar rubros
-            </a>
-        </div>
-    </div>
+<table class="table table-bordered table-striped table-condensed table-hover">
+    <thead>
+    <tr>
+        <th rowspan="2">N.</th>
+        <th rowspan="2">Descripción del rubro</th>
+        <th rowspan="2" class="borderLeft">U.</th>
+        <th rowspan="2">Precio unitario</th>
+        <th rowspan="2">Volumen contrat.</th>
+        <th colspan="3" class="borderLeft">Cantidades</th>
+        <th colspan="3" class="borderLeft">Valores</th>
+    </tr>
+    <tr>
+        <th class="borderLeft">Anterior</th>
+        <th>Actual</th>
+        <th>Acumulado</th>
+        <th class="borderLeft">Anterior</th>
+        <th>Actual</th>
+        <th>Acumulado</th>
+    </tr>
+    </thead>
+    <tbody id="tbDetalle">
+    <g:set var="totalAnterior" value="${0}"/>
+    <g:set var="totalActual" value="${0}"/>
+    <g:set var="totalAcumulado" value="${0}"/>
 
-    %{--<div class="span3" id="busqueda-Planilla"></div>--}%
-</div>
-
-<elm:headerPlanilla planilla="${planilla}"/>
-
-<div class="container" id="tablaDtpe">
-
-</div>
-
-%{--<table class="table table-bordered table-striped table-condensed table-hover">--}%
-    %{--<thead>--}%
-    %{--<tr>--}%
-        %{--<th rowspan="2">N.</th>--}%
-        %{--<th rowspan="2">Descripción del rubro</th>--}%
-        %{--<th rowspan="2" class="borderLeft">U.</th>--}%
-        %{--<th rowspan="2">Precio unitario</th>--}%
-        %{--<th rowspan="2">Volumen contrat.</th>--}%
-        %{--<th colspan="3" class="borderLeft">Cantidades</th>--}%
-        %{--<th colspan="3" class="borderLeft">Valores</th>--}%
-    %{--</tr>--}%
-    %{--<tr>--}%
-        %{--<th class="borderLeft">Anterior</th>--}%
-        %{--<th>Actual</th>--}%
-        %{--<th>Acumulado</th>--}%
-        %{--<th class="borderLeft">Anterior</th>--}%
-        %{--<th>Actual</th>--}%
-        %{--<th>Acumulado</th>--}%
-    %{--</tr>--}%
-    %{--</thead>--}%
-    %{--<tbody id="tbDetalle">--}%
-    %{--<g:set var="totalAnterior" value="${0}"/>--}%
-    %{--<g:set var="totalActual" value="${0}"/>--}%
-    %{--<g:set var="totalAcumulado" value="${0}"/>--}%
-
-    %{--<g:set var="sp" value="null"/>--}%
-    %{--<g:each in="${detalle}" var="vol">--}%
-        %{--<g:set var="det" value="${janus.ejecucion.DetallePlanillaEjecucion.findByPlanillaAndVolumenContrato(planilla, vol)}"/>--}%
+    <g:set var="sp" value="null"/>
+    <g:each in="${detalle}" var="vol">
+        <g:set var="det" value="${janus.ejecucion.DetallePlanillaEjecucion.findByPlanillaAndVolumenContrato(planilla, vol)}"/>
     %{--                    <g:set var="anteriores" value="${janus.ejecucion.DetallePlanillaEjecucion.findAllByPlanillaInListAndVolumenContrato(planillasAnteriores, vol)}"/>--}%
 
 
-        %{--<g:if test="${planillasAnteriores?.size() > 0}">--}%
-            %{--<g:set var="anteriores" value="${janus.ejecucion.DetallePlanillaEjecucion.findAllByPlanillaInListAndVolumenContrato(planillasAnteriores, vol)}"/>--}%
-            %{--<g:set var="cantAnt" value="${anteriores.sum { it.cantidad } ?: 0}"/>--}%
-            %{--<g:set var="valAnt" value="${anteriores.sum { it.monto } ?: 0}"/>--}%
-        %{--</g:if>--}%
-        %{--<g:else>--}%
-            %{--<g:set var="cantAnt" value="${0}"/>--}%
-            %{--<g:set var="valAnt" value="${0}"/>--}%
-        %{--</g:else>--}%
+        <g:if test="${planillasAnteriores?.size() > 0}">
+            <g:set var="anteriores" value="${janus.ejecucion.DetallePlanillaEjecucion.findAllByPlanillaInListAndVolumenContrato(planillasAnteriores, vol)}"/>
+            <g:set var="cantAnt" value="${anteriores.sum { it.cantidad } ?: 0}"/>
+            <g:set var="valAnt" value="${anteriores.sum { it.monto } ?: 0}"/>
+        </g:if>
+        <g:else>
+            <g:set var="cantAnt" value="${0}"/>
+            <g:set var="valAnt" value="${0}"/>
+        </g:else>
 
 
 
     %{--                    <g:set var="cantAnt" value="${anteriores.sum { it.cantidad } ?: 0}"/>--}%
     %{--                    <g:set var="valAnt" value="${anteriores.sum { it.monto } ?: 0}"/>--}%
-        %{--<g:set var="cant" value="${det?.cantidad ?: 0}"/>--}%
-        %{--<g:set var="val" value="${det?.monto ?: 0}"/>--}%
+        <g:set var="cant" value="${det?.cantidad ?: 0}"/>
+        <g:set var="val" value="${det?.monto ?: 0}"/>
 
-        %{--<g:set var="totalAnterior" value="${totalAnterior + valAnt}"/>--}%
-        %{--<g:set var="totalActual" value="${totalActual + val.toDouble().round(2)}"/>--}%
-        %{--<g:set var="totalAcumulado" value="${totalAcumulado + val.toDouble().round(2) + valAnt}"/>--}%
+        <g:set var="totalAnterior" value="${totalAnterior + valAnt}"/>
+        <g:set var="totalActual" value="${totalActual + val.toDouble().round(2)}"/>
+        <g:set var="totalAcumulado" value="${totalAcumulado + val.toDouble().round(2) + valAnt}"/>
 
-        %{--<g:if test="${sp != vol.subPresupuestoId}">--}%
-            %{--<tr class="subpresupuesto">--}%
-                %{--<th colspan="2">--}%
-                    %{--${vol.subPresupuestoId}--}%%{-- ${vol.subPresupuesto.descripcion}--}%
-                %{--</th>--}%
-                %{--<td colspan="3" class="espacio borderLeft"></td>--}%
-                %{--<td colspan="3" class="espacio borderLeft"></td>--}%
-                %{--<td colspan="3" class="espacio borderLeft"></td>--}%
-            %{--</tr>--}%
-            %{--<g:set var="sp" value="${vol.subPresupuestoId}"/>--}%
-        %{--</g:if>--}%
-        %{--<tr data-id="${det ? det.id : 'nuevo'}" data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" data-canto="${cant}" data-valo="${val}" data-valacu="${val + valAnt}">--}%
-            %{--<td class="codigo">--}%
-                %{--${vol.item.codigo}--}%
-            %{--</td>--}%
-            %{--<td class="nombre">--}%
-                %{--${vol.item.nombre}--}%
-            %{--</td>--}%
-            %{--<td style="text-align: center" class="unidad borderLeft">--}%
-                %{--${vol.item.unidad.codigo}--}%
-            %{--</td>--}%
-            %{--<td class="num precioU" data-valor="${precios[vol.id.toString()]}">--}%
-                %{--<elm:numero number="${precios[vol.id.toString()]}" cero="hide"/>--}%
-            %{--</td>--}%
-            %{--<td class="num cantidad" data-valor="${vol.volumenCantidad}">--}%
-                %{--<elm:numero number="${vol.volumenCantidad}" cero="hide"/>--}%
-            %{--</td>--}%
+        <g:if test="${sp != vol.subPresupuestoId}">
+            <tr class="subpresupuesto">
+                <th colspan="2">
+                    %{--${vol.subPresupuestoId}--}% ${vol.subPresupuesto.descripcion}
+                </th>
+                <td colspan="3" class="espacio borderLeft"></td>
+                <td colspan="3" class="espacio borderLeft"></td>
+                <td colspan="3" class="espacio borderLeft"></td>
+            </tr>
+            <g:set var="sp" value="${vol.subPresupuestoId}"/>
+        </g:if>
+        <tr data-id="${det ? det.id : 'nuevo'}" data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" data-canto="${cant}" data-valo="${val}" data-valacu="${val + valAnt}">
+            <td class="codigo">
+                ${vol.item.codigo}
+            </td>
+            <td class="nombre">
+                ${vol.item.nombre}
+            </td>
+            <td style="text-align: center" class="unidad borderLeft">
+                ${vol.item.unidad.codigo}
+            </td>
+            <td class="num precioU" data-valor="${precios[vol.id.toString()]}">
+                <elm:numero number="${precios[vol.id.toString()]}" cero="hide"/>
+            </td>
+            <td class="num cantidad" data-valor="${vol.volumenCantidad}">
+                <elm:numero number="${vol.volumenCantidad}" cero="hide"/>
+            </td>
 
-            %{--<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->--}%
-            %{--<td class="ant num cant borderLeft" id="ant_${vol.id}_${planilla.id}" data-valor="${cantAnt}" data-valoro="${cantAnt}">--}%
-                %{--<elm:numero number="${cantAnt}" cero="hide"/>--}%
-            %{--</td>--}%
+            <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <td class="ant num cant borderLeft" id="ant_${vol.id}_${planilla.id}" data-valor="${cantAnt}" data-valoro="${cantAnt}">
+                <elm:numero number="${cantAnt}" cero="hide"/>
+            </td>
 
-            %{--<td class="act num cant" data-valor="${cant}" >--}%
-                %{--<g:if test="${editable}">--}%
-                    %{--<div style="display: inline-block">--}%
-                    %{--<g:textField name="val_${vol.id}_${planilla.id}" class="input-mini number act" value="${cant}" style="width:100px"/>--}%
+            <td class="act num cant" data-valor="${cant}" >
+                <g:if test="${editable}">
+                    <div style="display: inline-block">
+                    <g:textField name="val_${vol.id}_${planilla.id}" class="input-mini number act" value="${cant}" style="width:100px"/>
                     %{--<g:textField name="val_${vol.id}_${planilla.id}" class="input-mini number act" value="${cant}"/>--}%
-                    %{--<a href="#" class="btn btn-success btn-xs btnGuardarUno" data-id="${det ? det.id : 'nuevo'}"--}%
-                       %{--data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" title="Guardar" >--}%
-                        %{--<i class="fa fa-save"></i>--}%
-                    %{--</a>--}%
-                    %{--</div>--}%
-                %{--</g:if>--}%
-                %{--<g:else>--}%
-                    %{--<elm:numero number="${cant}" cero="hide"/>--}%
-                %{--</g:else>--}%
-            %{--</td>--}%
-            %{--<td class="acu num cant" id="acu_${vol.id}_ ${planilla.id}" data-valor="${cant + cantAnt}" data-valoro="${cant + cantAnt}">--}%
-                %{--<elm:numero number="${cant + cantAnt}" cero="hide"/>--}%
-            %{--</td>--}%
-            %{--<!-------------------------------------------------------------------------------------------------------------------------------------------------------------->--}%
-            %{--<td class="ant num val borderLeft" data-valor="${valAnt}" data-valoro="${valAnt}">--}%
-                %{--<elm:numero number="${valAnt}" cero="hide"/>--}%
-            %{--</td>--}%
-            %{--<td class="act num val" data-valor="${val}" data-valoro="${val}">--}%
-                %{--<elm:numero number="${val}" cero="hide"/>--}%
-            %{--</td>--}%
-            %{--<td class="acu num val" data-valor="${val + valAnt}" data-valoro="${val + valAnt}">--}%
-                %{--<elm:numero number="${val + valAnt}" cero="hide"/>--}%
-            %{--</td>--}%
-        %{--</tr>--}%
-    %{--</g:each>--}%
-    %{--</tbody>--}%
-    %{--<tfoot>--}%
-    %{--<tr style="font-size: smaller">--}%
-        %{--<td colspan="5" class="borderTop">--}%
-            %{--<b>OBSERVACIONES:</b>--}%
-        %{--</td>--}%
-        %{--<td colspan="3" class="espacio borderLeft borderTop">--}%
-            %{--<b>A) TOTAL AVANCE DE OBRA</b>--}%
+                    <a href="#" class="btn btn-success btn-xs btnGuardarUno" data-id="${det ? det.id : 'nuevo'}"
+                       data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" title="Guardar" >
+                        <i class="fa fa-save"></i>
+                    </a>
+                    </div>
+                </g:if>
+                <g:else>
+                    <elm:numero number="${cant}" cero="hide"/>
+                </g:else>
+            </td>
+            <td class="acu num cant" id="acu_${vol.id}_ ${planilla.id}" data-valor="${cant + cantAnt}" data-valoro="${cant + cantAnt}">
+                <elm:numero number="${cant + cantAnt}" cero="hide"/>
+            </td>
+            <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+            <td class="ant num val borderLeft" data-valor="${valAnt}" data-valoro="${valAnt}">
+                <elm:numero number="${valAnt}" cero="hide"/>
+            </td>
+            <td class="act num val" data-valor="${val}" data-valoro="${val}">
+                <elm:numero number="${val}" cero="hide"/>
+            </td>
+            <td class="acu num val" data-valor="${val + valAnt}" data-valoro="${val + valAnt}">
+                <elm:numero number="${val + valAnt}" cero="hide"/>
+            </td>
+        </tr>
+    </g:each>
+    </tbody>
+    <tfoot>
+    <tr style="font-size: smaller">
+        <td colspan="5" class="borderTop">
+            <b>OBSERVACIONES:</b>
+        </td>
+        <td colspan="3" class="espacio borderLeft borderTop">
+            <b>A) TOTAL AVANCE DE OBRA</b>
             %{--                        <a href="#" id="btnUpdate" class="btn btn-xs btn-success"><i class="fa fa-retweet"></i> Actualizar suma</a>--}%
-        %{--</td>--}%
-        %{--<td class="borderLeft borderTop num totalAnt" data-valor="${totalAnterior}" data-valoro="${totalAnterior}" style="font-size: larger">--}%
-            %{--<elm:numero number="${totalAnterior}" cero="hide"/>--}%
-        %{--</td>--}%
-        %{--<td class="borderTop num totalAct" data-valor="${totalActual}" data-valoro="${totalActual}" style="font-size: larger">--}%
-            %{--<elm:numero number="${totalActual}" cero="hide"/>--}%
-        %{--</td>--}%
-        %{--<td class="borderTop num totalAcu" data-valor="${totalAcumulado}" data-valoro="${totalAcumulado}" data-max="${contrato.monto + cmpl}" style="font-size: larger">--}%
-            %{--<elm:numero number="${totalAcumulado}" cero="hide"/>--}%
-        %{--</td>--}%
-    %{--</tr>--}%
-    %{--</tfoot>--}%
-%{--</table>--}%
+        </td>
+        <td class="borderLeft borderTop num totalAnt" data-valor="${totalAnterior}" data-valoro="${totalAnterior}" style="font-size: larger">
+            <elm:numero number="${totalAnterior}" cero="hide"/>
+        </td>
+        <td class="borderTop num totalAct" data-valor="${totalActual}" data-valoro="${totalActual}" style="font-size: larger">
+            <elm:numero number="${totalActual}" cero="hide"/>
+        </td>
+        <td class="borderTop num totalAcu" data-valor="${totalAcumulado}" data-valoro="${totalAcumulado}" data-max="${contrato.monto + cmpl}" style="font-size: larger">
+            <elm:numero number="${totalAcumulado}" cero="hide"/>
+        </td>
+    </tr>
+    </tfoot>
+</table>
 
 <script type="text/javascript">
     function validarNum(ev) {
@@ -384,29 +304,6 @@
 
         });
 
-        $("#btnCargar").click(function () {
-            var sbpr = $("#subPresupuesto option:selected").val();
-
-            $.ajax({
-                type: 'POST',
-                url: '${createLink(controller: 'planilla', action: 'tablaDtpe_ajax')}',
-                data:{
-                    sbpr: sbpr,
-                    contrato: "${contrato?.id}",
-                    id: "${planilla?.id}"
-                },
-                success: function (msg) {
-                    $("#tablaDtpe").html(msg);
-//                    var parts = msg.split("_");
-//                    if(parts[0] === 'ok'){
-//                    }else{
-//                        log(parts[1], "error")
-//                    }
-                }
-            })
-
-        });
-
         $(".number").bind({
             keydown : function (ev) {
                 // esta parte valida el punto: si empieza con punto le pone un 0 delante, si ya hay un punto lo ignora
@@ -520,4 +417,3 @@
 </script>
 
 </body>
-</html>

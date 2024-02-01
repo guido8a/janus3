@@ -175,7 +175,7 @@
                         <g:if test="${planillaInstance.tipoPlanilla.codigo in ['P', 'Q', 'O', 'L', 'R']}">
                             <g:if test="${(contrato?.fiscalizador?.id == session.usuario.id)}">
                                 <g:if test="${planillaInstance.tipoPlanilla.codigo != 'L'}">
-                                    <g:link action="detalle" id="${planillaInstance.id}" params="[contrato: contrato.id]"
+                                    <g:link action="detalleNuevo" id="${planillaInstance.id}" params="[contrato: contrato.id]"
                                             rel="tooltip" title="Detalles" class="btn btn-xs btn-primary">
                                         <i class="fa fa-list-ul"></i>
                                     </g:link>

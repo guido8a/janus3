@@ -789,19 +789,21 @@ class PlanillaController {
 //        def tipoAvance = TipoPlanilla.findByCodigo('P')
         def liquidacion = Planilla.findByContratoAndTipoPlanilla(contrato, TipoPlanilla.findByCodigo('Q'))?.id > 0
 
-//        println "---> $params"
+        println "---> ..1"
         def listaAdicionales = []
 
-        planillaInstanceList.each {
-            def cn = dbConnectionService.getConnection()
-            def sql = "select rbrocdgo, rbronmbr, unddcdgo, vocrcntd, cntdacml - cntdantr - vocrcntd diff, vocrpcun, vloracml-vlorantr-vocrsbtt vlor from detalle(${it.contrato.id}, ${it.contrato.obra.id}, ${it.id}, 'P') where (cntdacml - cntdantr) > vocrcntd ;"
-            def res = cn.rows(sql.toString())
-
-            if (res) {
-                listaAdicionales.add(it.id)
-            }
-
-        }
+//        planillaInstanceList.each {
+//            def cn = dbConnectionService.getConnection()
+//            def sql = "select rbrocdgo, rbronmbr, unddcdgo, vocrcntd, cntdacml - cntdantr - vocrcntd diff, vocrpcun, " +
+//                    "vloracml-vlorantr-vocrsbtt vlor from detalle(${it.contrato.id}, ${it.contrato.obra.id}, ${it.id}, 'P') " +
+//                    "where (cntdacml - cntdantr) > vocrcntd ;"
+//            def res = cn.rows(sql.toString())
+//
+//            if (res) {
+//                listaAdicionales.add(it.id)
+//            }
+//        }
+        println "---> ..2"
 
         return [contrato: contrato, obra: contrato.oferta.concurso.obra, planillaInstanceList: planillaInstanceList,
                 firma   : firma, liquidacion: liquidacion, adicionales: listaAdicionales]
@@ -3361,7 +3363,9 @@ class PlanillaController {
         def contrato = Contrato.get(params.contrato)
         def cmpl = Contrato.findByPadre(contrato)
 
+        println "eje. detalle"
         redirect(action: "detalleNuevo", params: params)
+        println "eje. detalle ...."
 
         def obra = contrato.obra
         def detalle = [:]
@@ -3369,9 +3373,6 @@ class PlanillaController {
         def respaldo = DocumentoProceso.findByConcursoAndDescripcionIlike(contrato.oferta.concurso, '%respaldo%adicio%')
 
         println "repaldo: $respaldo"
-        /**
-         *   máximo valor a considerar de obras adicionales desde el 20-mar-2017 --> 5%
-         */
         if (contrato.fechaSubscripcion > Date.parse('dd-MM-yyy', '20-03-2017')) {
             obrasAdicionales = 1.05
         }
@@ -3416,6 +3417,7 @@ class PlanillaController {
     }
 
     def detalleNuevo() {
+        println "detalleNuevo $params"
         def planilla = Planilla.get(params.id)
         def contrato = Contrato.get(params.contrato)
         def obra = contrato.obra
@@ -3435,9 +3437,62 @@ class PlanillaController {
         fpsp.each {
             sbpr.add(it.subPresupuesto)
         }
-        println "subpresupuestos de la obra con esta FP: $sbpr --> respaldo: dcmtdscr ilike '%respaldo%adicio%' $respaldo, cncr: ${contrato.oferta.concurso.id}"
-//        detalle = VolumenesObra.findAllByObraAndSubPresupuestoInList(obra, sbpr, [sort: "orden"])
-        detalle = VolumenContrato.findAllByContratoAndObraAndSubPresupuestoInList(contrato, obra, sbpr, [sort: "volumenOrden"])
+//        println "subpresupuestos de la obra con esta FP: $sbpr --> respaldo: dcmtdscr ilike '%respaldo%adicio%' $respaldo, cncr: ${contrato.oferta.concurso.id}"
+//        detalle = VolumenContrato.findAllByContratoAndObraAndSubPresupuestoInList(contrato, obra, sbpr, [sort: "volumenOrden"])
+        detalle = []
+//        println "....1"
+        def precios = [:]
+
+        detalle.each {
+            def res
+//            res = preciosService.precioVlob(obra.id, it.item.id)
+//            precios.put(it.id.toString(), res["precio"][0])
+            precios.put(it.id.toString(), it.volumenPrecio)
+        }
+
+        def planillasAnteriores
+
+        if (planilla.tipoPlanilla.codigo == "O") {
+            planillasAnteriores = Planilla.findAllByContratoAndTipoPlanillaInList(contrato, TipoPlanilla.findAllByCodigoInList(['P', 'Q']))
+        } else {
+            planillasAnteriores = Planilla.withCriteria {
+                eq("contrato", contrato)
+                lt("fechaFin", planilla.fechaInicio)
+            }
+        }
+
+        def editable = planilla.fechaMemoSalidaPlanilla == null && contrato.fiscalizador.id == session.usuario.id
+//        println "${planilla.fechaMemoSalidaPlanilla} == null && ${contrato.fiscalizador.id} == ${session.usuario.id}"
+
+        println "editable: $editable"
+
+        if (!respaldo) obrasAdicionales = 0
+
+//        println "adicionales: $obrasAdicionales, complementario: $cmpl, planillasAnteriores: $planillasAnteriores"
+        return [planilla           : planilla, detalle: detalle, precios: precios, obra: obra, adicionales: obrasAdicionales,
+                planillasAnteriores: planillasAnteriores, contrato: contrato, editable: editable, cmpl: cmpl, sbpr: sbpr]
+    }
+
+    def tablaDtpe_ajax() {
+        println "tablaDtpe_ajax $params"
+        def planilla = Planilla.get(params.id)
+        def contrato = Contrato.get(params.contrato)
+        def obra = contrato.obra
+        def cmpl = Contrato.findByPadre(contrato)?.monto
+        cmpl = cmpl ?: 0
+        def detalle = [:]
+        def obrasAdicionales = 1.25
+        def respaldo = DocumentoProceso.findByConcursoAndDescripcionIlike(contrato.oferta.concurso, '%respaldo%adicio%')
+
+        /** máximo valor a considerar de obras adicionales desde el 20-mar-2017 --> 5% */
+        if (contrato.fechaSubscripcion > Date.parse('dd-MM-yyy', '20-03-2017')) {
+            obrasAdicionales = 1.05
+        }
+
+        def sbpr = SubPresupuesto.get(params.sbpr)
+
+//        detalle = VolumenContrato.findAllByContratoAndObraAndSubPresupuestoInList(contrato, obra, sbpr, [sort: "volumenOrden"])
+        detalle = VolumenContrato.findAllByContratoAndSubPresupuesto(contrato, sbpr, [sort: "volumenOrden"])
 
         def precios = [:]
 
@@ -3465,10 +3520,11 @@ class PlanillaController {
         println "editable: $editable"
 
         if (!respaldo) obrasAdicionales = 0
+        def subPrsp = VolumenContrato.findAllByContrato(planilla.contrato).subPresupuesto.unique()
 
         println "adicionales: $obrasAdicionales, complementario: $cmpl, planillasAnteriores: $planillasAnteriores"
         return [planilla           : planilla, detalle: detalle, precios: precios, obra: obra, adicionales: obrasAdicionales,
-                planillasAnteriores: planillasAnteriores, contrato: contrato, editable: editable, cmpl: cmpl]
+                planillasAnteriores: planillasAnteriores, contrato: contrato, editable: editable, cmpl: cmpl, sbpr: subPrsp]
     }
 
     def dtEntrega() {
