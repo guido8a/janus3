@@ -22,6 +22,7 @@
         </g:if>
 
         <g:uploadForm action="uploadFile" method="post" name="frmUpload" id="${obra}" style="padding: 10px">
+            <g:hiddenField name="id" value="${obra}"/>
             <div id="list-grupo" class="col-md-12" role="main" style="margin: 10px 0 0 0;">
                 <div class="" style="margin: 0 0 20px 0;">
                     <div class="col-md-9">

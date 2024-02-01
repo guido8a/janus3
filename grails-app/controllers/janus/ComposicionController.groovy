@@ -231,7 +231,7 @@ class ComposicionController {
 
 
     def tabla() {
-
+        println "tabla: $params"
         def persona = Persona.get(session.usuario.id)
         def duenoObra = 0
         def cn = dbConnectionService.getConnection()
@@ -263,18 +263,20 @@ class ComposicionController {
             tieneMatriz = d.cuenta > 0
         }
 
-//        println "--> $params"
+        println "--> ${obra.id}"
         return [res: res, obra: obra, tipo: params.tipo, rend: params.rend, campos: campos, duenoObra: duenoObra,
                 persona: persona, tieneMatriz: tieneMatriz]
     }
 
     def formArchivo() {
+        println "formArchivo: $params"
         return [obra: params.id]
     }
 
     def uploadFile() {
+        println "uploadFile: $params"
         def obra = Obra.get(params.id)
-        def path = "/var/janus" + "xlsComposicion/"   //web-app/archivos
+        def path = "/var/janus/" + "xlsComposicion/"   //web-app/archivos
         new File(path).mkdirs()
 
         def f = request.getFile('file')  //archivo = name del input type file
@@ -407,20 +409,21 @@ class ComposicionController {
 
                 flash.message = str
 
-                println "DONE!!"
-                redirect(action: "mensajeUpload", id: params.id)
+                println "DONE!! ${obra?.id}"
+                redirect(controller: 'composicion', action: "mensajeUpload", id: obra?.id)
             } else {
                 flash.message = "Seleccione un archivo Excel xls para procesar (archivos xlsx deben ser convertidos a xls primero)"
                 redirect(action: 'formArchivo')
             }
         } else {
             flash.message = "Seleccione un archivo para procesar"
-            redirect(action: 'formArchivo')
+            redirect(action: 'formArchivo', [params: params])
 //            println "NO FILE"
         }
     }
 
     def mensajeUpload() {
+        println "mensajeUpload: $params"
         return [obra: params.id]
     }
 

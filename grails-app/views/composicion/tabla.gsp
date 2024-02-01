@@ -57,7 +57,7 @@
         <div class="btn-group">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id &&
                     duenoObra == 1 && obra?.estado != 'R')}">
-                <a href="${g.createLink(action:'formArchivo')}" class="btn btn-success" id="${obra.id}">
+                <a href="${g.createLink(action:'formArchivo', params: [id: obra?.id])}" class="btn btn-success" id="${obra.id}">
                     <i class="fa fa-upload"></i> Cargar Excel
                 </a>
                 <a href="#" class="btn recargarComp btn-info" title="Recargar Composición" id="${obra.id}">
@@ -169,7 +169,7 @@
                     <th>Código</th>
                     <th>Equipo</th>
                     <th>U</th>
-                    <th>Cantidad</th>
+                    <th width="100px">Cantidad</th>
                     <th>Tarifa</th>
                     <th>Costo</th>
                     <th>Total</th>
@@ -186,7 +186,7 @@
                     <td class="">${r.item.codigo}</td>
                     <td class="">${r.item.nombre}</td>
                     <td>${r.item.unidad.codigo}</td>
-                    <td class="numero cantidad texto " iden="${r.id}">
+                    <td class="numero cantidad texto " iden="${r.id}" width="100px">
                         <g:formatNumber number="${r.cantidad}" minFractionDigits="2" maxFractionDigits="7" format="##,##0" locale="ec"/>
                     </td>
                     <g:if test="${tipo.toString() != '[2]'}">
