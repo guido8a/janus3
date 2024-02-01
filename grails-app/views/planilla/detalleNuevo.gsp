@@ -150,10 +150,14 @@
 
             <td class="act num cant" data-valor="${cant}" >
                 <g:if test="${editable}">
-                    <g:textField name="val_${vol.id}_${planilla.id}" class="input-mini number act" value="${cant}" />
-                    <a href="#" class="btn btn-success btn-xs btnGuardarUno" data-id="${det ? det.id : 'nuevo'}" data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" >
+                    <div style="display: inline-block">
+                    <g:textField name="val_${vol.id}_${planilla.id}" class="input-mini number act" value="${cant}" style="width:100px"/>
+                    %{--<g:textField name="val_${vol.id}_${planilla.id}" class="input-mini number act" value="${cant}"/>--}%
+                    <a href="#" class="btn btn-success btn-xs btnGuardarUno" data-id="${det ? det.id : 'nuevo'}"
+                       data-vol="${vol.id}" data-cant="${cant}" data-val="${val}" title="Guardar" >
                         <i class="fa fa-save"></i>
                     </a>
+                    </div>
                 </g:if>
                 <g:else>
                     <elm:numero number="${cant}" cero="hide"/>

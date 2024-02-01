@@ -3744,31 +3744,43 @@ class PlanillaController {
     }
 
     def saveDetalleUno_ajax(){
-//        println("params --> " + params)
+        println("params --> " + params)
+        def cn = dbConnectionService.getConnection()
         def planilla = Planilla.get(params.planilla)
         def vol = VolumenContrato.get(params.vol)
         def detalle
+        def sql = ""
 
-        params.nuevoValor = (params.nuevoValor ?: 0)
+        params.nuevoValor = params.nuevoValor?:0
+//        if(params.nuevoValor) {
+            if(params.id){
+                detalle = DetallePlanillaEjecucion.get(params.id)
+                detalle.cantidad = params.nuevoValor?.toDouble()
+//                detalle.monto = params.val?.toDouble()
+                detalle.monto = vol.volumenPrecio * detalle.cantidad
+            }else{
+                detalle = new DetallePlanillaEjecucion()
+                detalle.cantidad = params.nuevoValor?.toDouble()
+//                detalle.monto = params.val?.toDouble()
+                detalle.monto = vol.volumenPrecio * detalle.cantidad
+                detalle.planilla = planilla
+                detalle.volumenContrato = vol
+            }
 
-        if(params.id){
-            detalle = DetallePlanillaEjecucion.get(params.id)
-            detalle.cantidad = params.nuevoValor?.toDouble()
-            detalle.monto = params.val?.toDouble()
-        }else{
-            detalle = new DetallePlanillaEjecucion()
-            detalle.cantidad = params.nuevoValor?.toDouble()
-            detalle.monto = params.val?.toDouble()
-            detalle.planilla = planilla
-            detalle.volumenContrato = vol
-        }
+            if(!detalle.save(flush:true)){
+                println("Error al guardar " + detalle.errors)
+                render "no_Error al guardar"
+            }else{
+                render "ok_Guardado correctamente"
+                sql = "update plnl set plnlmnto = (select sum(dtpemnto) from dtpe where plnl__id = ${params.planilla}) " +
+                        "where plnl__id = ${params.planilla}"
+                println "actualiza $sql"
+                cn.execute(sql.toString())
+            }
+//        } else {
+//            render "no_No hay valor que guardar"
+//        }
 
-        if(!detalle.save(flush:true)){
-            println("Error al guardar " + detalle.errors)
-            render "no_Error al guardar"
-        }else{
-            render "ok_Guardado correctamente"
-        }
     }
 
     def errores() {
