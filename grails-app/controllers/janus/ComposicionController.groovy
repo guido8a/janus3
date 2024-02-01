@@ -364,7 +364,8 @@ class ComposicionController {
                                             }
                                             if (comp.size() == 1) {
                                                 comp = comp[0]
-                                                comp.cantidad = nuevaCant.toDouble()
+//                                                comp.cantidad = nuevaCant.toDouble()
+                                                comp.cantidad = nuevaCant? nuevaCant.toString().replaceAll(',', '.').toDouble() : 0
 
                                                 if (comp.save(flush: true)) {
                                                     done++
