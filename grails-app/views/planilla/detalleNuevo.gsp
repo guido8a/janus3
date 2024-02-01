@@ -78,7 +78,7 @@
 
 <elm:headerPlanilla planilla="${planilla}"/>
 
-<div class="container" id="tablaDtpe">
+<div id="tablaDtpe">
 
 </div>
 

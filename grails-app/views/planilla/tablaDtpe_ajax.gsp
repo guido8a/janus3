@@ -56,8 +56,8 @@
 
         <g:if test="${sp != vol.subPresupuestoId}">
             <tr class="subpresupuesto">
-                <th colspan="2">
-                    %{--${vol.subPresupuestoId}--}% ${vol.subPresupuesto.descripcion}
+                <th colspan="2" style="color: #ffffee; background-color: #0a3a61 !important">
+                    Sub Presupuesto: (${vol.subPresupuestoId}) ${vol.subPresupuesto.descripcion}
                 </th>
                 <td colspan="3" class="espacio borderLeft"></td>
                 <td colspan="3" class="espacio borderLeft"></td>
