@@ -1093,7 +1093,7 @@ class ReportesExcel2Controller {
         row0.createCell(1).setCellValue(Auxiliar.get(1)?.titulo ?: '')
         row0.setRowStyle(style)
         Row row1 = sheet.createRow(2)
-        row1.createCell(1).setCellValue("DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS")
+        row1.createCell(1).setCellValue("DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS")
         row1.setRowStyle(style)
         Row row2 = sheet.createRow(3)
         row2.createCell(1).setCellValue("ANÁLISIS DE PRECIOS UNITARIOS")

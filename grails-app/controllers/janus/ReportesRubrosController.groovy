@@ -850,7 +850,7 @@ class reportesRubrosController {
         reportesPdfService.addCellTb(tablaIndirectos, new Paragraph(numero(totalIndi, 5)?.toString(), times8normal), prmsFilaDerecha)
 
         if(rubro?.codigo?.split("-")[0] == 'TR'){
-            reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("Distancia a la escombrera: ${obra?.distanciaDesalojo ?: '0'} KM", times8bold),
+            reportesPdfService.addCellTb(tablaIndirectos, new Paragraph("Distancia General de Transporte: ${obra?.distanciaDesalojo ?: '0'} KM", times8bold),
                     [border: Color.WHITE, colspan: 3, align: Element.ALIGN_LEFT, valign: Element.ALIGN_LEFT])
         }
 
@@ -1256,7 +1256,7 @@ class reportesRubrosController {
             tablaNota.setWidthPercentage(100);
             tablaNota.setWidths(arregloEnteros([6, 94]))
             if(rubro?.codigo?.split('-')[0] == 'TR'){
-                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia a la escombrera:", times8bold), prmsFilaIzquierda)
+                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia General de Transporte:", times8bold), prmsFilaIzquierda)
                 reportesPdfService.addCellTb(tablaNota, new Paragraph("${obra?.distanciaDesalojo}" + "km", times8normal), prmsFilaIzquierda)
             }
             reportesPdfService.addCellTb(tablaNota, new Paragraph("Nota:", times8bold), prmsFilaIzquierda)
@@ -1711,7 +1711,7 @@ class reportesRubrosController {
             tablaNota.setWidthPercentage(100);
             tablaNota.setWidths(arregloEnteros([6, 94]))
             if(rubro?.codigo?.split('-')[0] == 'TR'){
-                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia a la escombrera:", times8bold), prmsFilaIzquierda)
+                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia General de Transporte:", times8bold), prmsFilaIzquierda)
                 reportesPdfService.addCellTb(tablaNota, new Paragraph("${obra?.distanciaDesalojo}" + "km", times8normal), prmsFilaIzquierda)
             }
             reportesPdfService.addCellTb(tablaNota, new Paragraph("Nota:", times8bold), prmsFilaIzquierda)
@@ -2085,7 +2085,7 @@ class reportesRubrosController {
             tablaNota.setWidthPercentage(100);
             tablaNota.setWidths(arregloEnteros([6, 94]))
 //            if(rubro?.codigo?.split('-')[0] == 'TR'){
-//                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia a la escombrera:", times8bold), prmsFilaIzquierda)
+//                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia General de Transporte:", times8bold), prmsFilaIzquierda)
 //                reportesPdfService.addCellTb(tablaNota, new Paragraph("${obra?.distanciaDesalojo}" + "km", times8normal), prmsFilaIzquierda)
 //            }
             reportesPdfService.addCellTb(tablaNota, new Paragraph("Nota:", times8bold), prmsFilaIzquierda)
@@ -2450,7 +2450,7 @@ class reportesRubrosController {
         tablaNota.setWidthPercentage(100);
         tablaNota.setWidths(arregloEnteros([6, 94]))
         if(rubro?.codigo?.split('-')[0] == 'TR'){
-            reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia a la escombrera:", times8bold), prmsFilaIzquierda)
+            reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia General de Transporte:", times8bold), prmsFilaIzquierda)
             reportesPdfService.addCellTb(tablaNota, new Paragraph("${obra?.distanciaDesalojo}" + "km", times8normal), prmsFilaIzquierda)
         }
         reportesPdfService.addCellTb(tablaNota, new Paragraph("Nota:", times8bold), prmsFilaIzquierda)
@@ -2892,7 +2892,7 @@ class reportesRubrosController {
         tablaNota.setWidthPercentage(100);
         tablaNota.setWidths(arregloEnteros([6, 94]))
         if(rubro?.codigo?.split('-')[0] == 'TR'){
-            reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia a la escombrera:", times8bold), prmsFilaIzquierda)
+            reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia General de Transporte:", times8bold), prmsFilaIzquierda)
             reportesPdfService.addCellTb(tablaNota, new Paragraph("${obra?.distanciaDesalojo}" + "km", times8normal), prmsFilaIzquierda)
         }
         reportesPdfService.addCellTb(tablaNota, new Paragraph("Nota:", times8bold), prmsFilaIzquierda)
@@ -3339,7 +3339,7 @@ class reportesRubrosController {
             tablaNota.setWidthPercentage(100);
             tablaNota.setWidths(arregloEnteros([6, 94]))
             if(rubro?.codigo?.split('-')[0] == 'TR'){
-                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia a la escombrera:", times8bold), prmsFilaIzquierda)
+                reportesPdfService.addCellTb(tablaNota, new Paragraph("Distancia General de Transporte:", times8bold), prmsFilaIzquierda)
                 reportesPdfService.addCellTb(tablaNota, new Paragraph("${obra?.distanciaDesalojo}" + "km", times8normal), prmsFilaIzquierda)
             }
             reportesPdfService.addCellTb(tablaNota, new Paragraph("Nota:", times8bold), prmsFilaIzquierda)

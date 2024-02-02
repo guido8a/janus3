@@ -910,7 +910,7 @@ class Reportes6Controller {
 
         label = new jxl.write.Label(1, 4, (Auxiliar.get(1)?.titulo ?: ''), times16format); sheet.addCell(label);
         label = new jxl.write.Label(1, 6, "CRONOGRAMA"); sheet.addCell(label);
-        label = new jxl.write.Label(1, 8, "DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS: " + obra?.codigo, times16format); sheet.addCell(label);
+        label = new jxl.write.Label(1, 8, "DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS: " + obra?.codigo, times16format); sheet.addCell(label);
         label = new jxl.write.Label(1, 10, "OBRA: ${obra.descripcion}  ( ${meses} mes  ${meses == 1 ? '' : 'es'} )", times16format);
         sheet.addCell(label);
         label = new jxl.write.Label(1, 12, "Requirente: ${obra?.departamento?.direccion?.nombre + ' - ' + obra.departamento?.descripcion}", times16format);

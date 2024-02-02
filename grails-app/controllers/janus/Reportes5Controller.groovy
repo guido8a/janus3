@@ -1076,7 +1076,7 @@ class Reportes5Controller{
         preface.setAlignment(Element.ALIGN_CENTER);
         preface.add(new Paragraph((Auxiliar.get(1)?.titulo ?: ''), catFont3));
         preface.add(new Paragraph("CRONOGRAMA", catFont2));
-        preface.add(new Paragraph("DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS", catFont2));
+        preface.add(new Paragraph("DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS", catFont2));
         addEmptyLine(preface, 1);
         Paragraph preface2 = new Paragraph();
         document.add(preface);

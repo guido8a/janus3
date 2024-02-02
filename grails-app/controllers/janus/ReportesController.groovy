@@ -776,7 +776,7 @@ class ReportesController {
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
-                            "                    <b>DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS</b>\n" +
+                            "                    <b>DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS</b>\n" +
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
@@ -1056,7 +1056,7 @@ class ReportesController {
 
                             "</table>\n"
             if(rubro?.codigo.split('-')[0] == 'TR') {
-                footer += "<div><strong>Distancia a la escombrera:</strong> D= ${obra?.distanciaDesalojo} km</div>"
+                footer += "<div><strong>Distancia General de Transporte:</strong> D= ${obra?.distanciaDesalojo} km</div>"
             }
             footer += "<div><b>Nota:</b> Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales</div>"
             html += "<div class='divRubro'>" + header + tablas + footer + "</div>"

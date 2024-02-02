@@ -1108,7 +1108,7 @@ class Reportes3Controller {
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
-                            "                    DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS\n" +
+                            "                    DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS\n" +
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
@@ -1395,7 +1395,7 @@ class Reportes3Controller {
                             "                </p>\n" +
                             "\n" +
                             "                <p style=\"font-size: 14px\">\n" +
-                            "                   <b>DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS</b><br/>\n" +
+                            "                   <b>DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS</b><br/>\n" +
                             "                   <b>ANÁLISIS DE PRECIOS UNITARIOS</b>" +
                             "                </p>\n" +
                             "\n" +
@@ -2807,7 +2807,7 @@ class Reportes3Controller {
                                 "                </p>\n" +
                                 "\n" +
                                 "                <p style=\"font-size: 14px\">\n" +
-                                "                    <b>DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS</b><br/>\n" +
+                                "                    <b>DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS</b><br/>\n" +
                                 "                    <b>ANÁLISIS DE PRECIOS UNITARIOS</b>\n" +
                                 "                </p>\n" +
                                 "\n" +
@@ -3169,7 +3169,7 @@ class Reportes3Controller {
 
                                 "</table>\n"
                 if(rubro?.codigo.split('-')[0] == 'TR') {
-                    footer += "<div style='margin-top:40px'><strong>Distancia a la escombrera:</strong> D= ${obra?.distanciaDesalojo} km</div>"
+                    footer += "<div style='margin-top:40px'><strong>Distancia General de Transporte:</strong> D= ${obra?.distanciaDesalojo} km</div>"
                     footer += "<div><b>Nota:</b> Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales</div>"
                 } else {
                     footer += "<div style='margin-top:40px'><b>Nota:</b> Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales</div>"

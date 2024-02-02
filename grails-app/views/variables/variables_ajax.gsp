@@ -712,7 +712,7 @@
             </div>
             <div class="col-md-12" style="margin-top: 20px">
                 <div class="col-md-9">
-                    Distancia de desalojo de materiales
+                    Distancia General de Transporte
                 </div>
 
                 <div class="col-md-2">

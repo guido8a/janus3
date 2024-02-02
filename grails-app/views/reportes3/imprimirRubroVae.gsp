@@ -148,7 +148,7 @@
         </p>
 
         <p style="font-size: 14px; margin-top: -15px;">
-            <b>DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS</b><br/>
+            <b>DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS</b><br/>
             <b>ANÁLISIS DE PRECIOS UNITARIOS</b>
         </p>
     </div>
@@ -284,7 +284,7 @@
         <div>
             <g:set var="dist" value="${rubro?.codigo?.split("-")}"/>
             <g:if test="${dist[0] == 'TR'}">
-                <b>Distancia a la escombrera:</b> D= ${obra?.distanciaDesalojo} KM
+                <b>Distancia General de Transporte:</b> D= ${obra?.distanciaDesalojo} KM
             </g:if>
         </div>
         <div>

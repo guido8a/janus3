@@ -673,7 +673,7 @@
             </div>
             <div class="row-fluid" style="margin-top: 20px">
                 <div class="span9">
-                    Distancia de desalojo de materiales
+                    Distancia General de Transporte
                 </div>
 
                 <div class="span2">

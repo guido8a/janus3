@@ -134,7 +134,7 @@
                 </p>
 
                 <p style="font-size: 14px">
-                    <b>DGCP - COORDINACIÓN DE FIJACIÓN DE PRECIOS UNITARIOS</b>
+                    <b>DCP - COORDINACIÓN DE RÉGIMEN DE FIJACIÓN DE COSTOS</b>
                 </p>
 
                 <p style="font-size: 14px">
