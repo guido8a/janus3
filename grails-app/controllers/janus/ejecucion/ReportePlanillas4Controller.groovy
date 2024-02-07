@@ -2039,7 +2039,9 @@ class ReportePlanillas4Controller {
             }
         }
 
-        printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
+//        printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
+        /* se debería  tomar de monto planillas anteriores el valor total anterior */
+        printFooterDetalle([ant: sumaTotlAntr,  act: planilla.valor, acu: sumaTotlAntr + planilla.valor, completo: true])
 
 
         def rjplAntr = planillasService.reajusteAnterior(planilla)
