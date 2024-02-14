@@ -1529,6 +1529,7 @@ class PersonaController {
             if (sesiones.size() == 0) {
                 def sesn = new Sesn()
                 sesn.perfil = perfilOferente
+                sesn.fechaInicio = new Date()
                 sesn.usuario = personaInstance
                 if (!sesn.save(flush: true)) {
                     println "error al grabar sesn perfil: " + perfilOferente + " persona " + personaInstance.id
