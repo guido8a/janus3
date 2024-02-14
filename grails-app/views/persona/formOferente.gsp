@@ -21,7 +21,7 @@
                 </label>
 
                 <span class="col-md-8">
-                    <g:hiddenField name="departamento" class="" value="${seguridad.Prfl.findByCodigo("OFRT")?.id}"/>
+%{--                    <g:hiddenField name="departamento" class="" value="${seguridad.Prfl.findByCodigo("OFRT")?.id}"/>--}%
                     <g:textField name="perfilesTxt" class="form-control" value="${seguridad.Prfl.findByCodigo("OFRT")}" readonly="true"/>
                 </span>
             </span>
