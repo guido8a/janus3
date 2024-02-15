@@ -3809,7 +3809,7 @@ class PlanillaController {
 
         params.nuevoValor = params.nuevoValor?:0
 //        if(params.nuevoValor) {
-            if(params.id){
+            if(params.id != 'nuevo'){
                 detalle = DetallePlanillaEjecucion.get(params.id)
                 detalle.cantidad = params.nuevoValor?.toDouble()
 //                detalle.monto = params.val?.toDouble()
