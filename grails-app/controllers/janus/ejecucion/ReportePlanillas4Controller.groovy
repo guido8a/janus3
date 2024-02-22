@@ -2041,7 +2041,9 @@ class ReportePlanillas4Controller {
 
 //        printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
         /* se debería  tomar de monto planillas anteriores el valor total anterior */
-        printFooterDetalle([ant: sumaTotlAntr,  act: planilla.valor, acu: sumaTotlAntr + planilla.valor, completo: true])
+        sumaTotlActl = planilla.valor
+        sumaTotlAcml = sumaTotlActl + sumaTotlAntr
+        printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
 
 
         def rjplAntr = planillasService.reajusteAnterior(planilla)
@@ -2072,14 +2074,18 @@ class ReportePlanillas4Controller {
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
                 "where plnlpdcs = ${planilla.id})"
-//        println "sql.....: $sql"
+        println "sql.....: $sql"
         def cstoActl = cn.rows(sql.toString())[0]?.plnlmnto?:0
         def cstoAcml = cstoAntr + cstoActl
+
+        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
 
         addCellTabla(tablaDetalles, new Paragraph("RUBROS NO CONTRACTUALES COSTO + PORCENTAJE", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoAntr, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoActl, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(cstoAcml, 2), fontThFooter), frmtSuma)
+
+        println "SUmas: ${cstoAntr} ${cstoActl} ${cstoAcml}"
 
         addCellTabla(tablaDetalles, new Paragraph("SUMATORIA DE AVANCE DE OBRA Y COSTO + PORCENTAJE", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAntr + cstoAntr, 2), fontThFooter), frmtSuma)
