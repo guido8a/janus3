@@ -16,12 +16,12 @@ class WardInterceptor {
 //        println "acción: " + actionName + " controlador: " + controllerName + " params: $params"
 //        println "shield sesión: " + session
 //        println "usuario: " + session.usuario
-        session.an = actionName
-        session.cn = controllerName
-        session.pr = params
         def usro
         if(session) {
             usro = session.usuario
+            session.an = actionName
+            session.cn = controllerName
+            session.pr = params
         }
 
         if(session.an == 'saveTramite' && session.cn == 'tramite'){
