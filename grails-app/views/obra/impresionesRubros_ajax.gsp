@@ -12,8 +12,11 @@
     </div>
 
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
-        <a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-truck"></i>
-            VAE con desglose de Trans.
+        %{--<a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-truck"></i>--}%
+            %{--VAE con desglose de Trans.--}%
+        %{--</a>--}%
+        <a href="#" id="btnReporteVAEsinFecha" class="btn"><i class="fa fa-truck"></i>
+            VAE con desglose de Trans (Sin fecha)
         </a>
         <a href="#" id="btnReporteVencidas" class="btn"><i class="fa fa-print"></i>
             VAE sin desglose de Trans.
@@ -23,11 +26,11 @@
         </a>
     </div>
 
-    <div class="col-md-9 btn-group" style="margin-bottom: 10px">
-        <a href="#" id="btnReporteVAEsinFecha" class="btn"><i class="fa fa-truck"></i>
-            VAE con desglose de Trans (Sin fecha)
-        </a>
-    </div>
+    %{--<div class="col-md-9 btn-group" style="margin-bottom: 10px">--}%
+        %{--<a href="#" id="btnReporteVAEsinFecha" class="btn"><i class="fa fa-truck"></i>--}%
+            %{--VAE con desglose de Trans (Sin fecha)--}%
+        %{--</a>--}%
+    %{--</div>--}%
 
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
         <a href="#" id="btnIlustraciones" class="btn"><i class="fa fa-image"></i>

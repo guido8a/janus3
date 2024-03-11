@@ -1404,10 +1404,10 @@ class ReportesRubros2Controller {
 
             preciosService.ac_rbroObra(obra.id)
             def res = preciosService.precioUnitarioVolumenObraAsc("*", obra.id, rubro.id)
-            println("lll l" + obra?.id)
-            println("lll l" + rubro?.id)
+//            println("lll l" + obra?.id)
+//            println("lll l" + rubro?.id)
             def vae = preciosService.vae_rb(obra.id,rubro.id)
-            println("--> " + vae)
+//            println("--> " + vae)
             def total = 0, totalHer = 0, totalMan = 0, totalMat = 0, totalHerRel = 0,
                 totalHerVae = 0, totalManRel = 0, totalManVae = 0, totalMatRel = 0, totalMatVae = 0,
                 totalTRel=0, totalTVae=0
