@@ -2084,6 +2084,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
             title: 'Cambiar estado de la Obra',
             buttons: {
                 "Aceptar": function () {
+                    var d = cargarLoader("Cargando...");
                     $("#dlgLoad").dialog("open");
                     $(".ui-dialog-titlebar-close").html("x");
                     var estadoCambiado = $("#estado").val();
@@ -2095,6 +2096,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                             url: "${g.createLink(action: 'regitrarObra')}",
                             data: "id=${obra?.id}",
                             success: function (msg) {
+                                d.modal("hide");
                                 if (msg !== "ok") {
                                     $.box({
                                         imageClass: "box_info",
