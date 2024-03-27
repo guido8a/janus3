@@ -2041,6 +2041,10 @@ class ReportePlanillas4Controller {
 
 //        printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
         /* se debería  tomar de monto planillas anteriores el valor total anterior */
+        sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
+                "tppl__id in (3) and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+        println "planillado anterior: $sql"
+        sumaTotlAntr = cn.rows(sql.toString())[0].suma?:0
         sumaTotlActl = planilla.valor
         sumaTotlAcml = sumaTotlActl + sumaTotlAntr
         printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
@@ -2096,6 +2100,7 @@ class ReportePlanillas4Controller {
         sumaTotlActl += rjplActl + cstoActl
         sumaTotlAcml += rjplAcml + cstoAcml
 
+        //actual
         addCellTabla(tablaDetalles, new Paragraph("TOTAL PLANILLA REAJUSTADA INCLUIDO COSTO + PORCENTAJE", fontThFooter), frmtCol8)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAntr, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlActl, 2), fontThFooter), frmtSuma)
