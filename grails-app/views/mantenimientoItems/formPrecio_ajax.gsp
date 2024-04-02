@@ -42,7 +42,7 @@
                     </g:if>
                     <g:else>
                         <input aria-label="" name="fecha" id='datetimepicker3' type='text' class="form-control required"
-                               value="${new Date().format("dd-MM-yyyy")}"/>
+                               value="${fd?.format("dd-MM-yyyy") ?: new Date().format("dd-MM-yyyy")}"/>
                     </g:else>
                 </g:else>
             </span>

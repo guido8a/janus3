@@ -160,6 +160,7 @@
 
 
     function createEditPrecio(precio) {
+        var fechaDefecto = $("#datetimepicker2").val();
         var title = precio ? "Editar" : "Nuevo";
         $.ajax({
             type    : "POST",
@@ -171,7 +172,8 @@
                 fecha       : "${fecha}",
                 all         : "${params.all}",
                 ignore      : "${params.ignore}",
-                id: precio
+                id: precio,
+                fd: fechaDefecto
             },
             success : function (msg) {
                 var b = bootbox.dialog({
