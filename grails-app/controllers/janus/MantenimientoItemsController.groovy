@@ -1584,10 +1584,10 @@ class MantenimientoItemsController {
                 def precioRubrosItemsInstance = new PrecioRubrosItems(params)
                 precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
                 if (precioRubrosItemsInstance.save(flush: true)) {
-                    render "OK"
+                    render "OK_Precio guardado correctamente"
                 } else {
                     println "mantenimiento items controller l 846: " + precioRubrosItemsInstance.errors
-                    render "NO"
+                    render "NO_Error al guardar el precio"
                 }
             } else {
                 def error = 0
