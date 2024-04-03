@@ -1581,13 +1581,8 @@ class MantenimientoItemsController {
             }
         }else{
             if (params.lugar.id != "-1") {
-//                def precioRubrosItemsInstance = new PrecioRubrosItems(params)
-                def precioRubrosItemsInstance = new PrecioRubrosItems()
+                def precioRubrosItemsInstance = new PrecioRubrosItems(params)
                 precioRubrosItemsInstance.precioUnitario = params.precioUnitario.toDouble()
-                precioRubrosItemsInstance.lugar = lugar
-                precioRubrosItemsInstance.item = Item.get(params.item.id)
-                precioRubrosItemsInstance.fecha = params.fecha
-
                 if (precioRubrosItemsInstance.save(flush: true)) {
                     render "OK"
                 } else {
