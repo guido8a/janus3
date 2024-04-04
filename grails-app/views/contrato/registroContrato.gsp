@@ -54,25 +54,28 @@
 <div class="row">
     <div class="col-md-12 btn-group" role="navigation" style="width: 100%;">
         <button class="btn btn-info" id="btn-lista"><i class="fa fa-list"></i> Lista</button>
-        <button class="btn" id="btn-nuevo"><i class="fa fa-plus"></i> Nuevo</button>
-        <g:if test="${contrato?.estado != 'R'}">
-            <button class="btn btn-success" id="btn-aceptar"><i class="fa fa-save"></i> Guardar</button>
-        </g:if>
-        <button class="btn" id="btn-cancelar"><i class="fa fa-times"></i> Cancelar</button>
-        <g:if test="${contrato?.id}">
-            <g:if test="${contrato?.id && contrato?.estado != 'R'}">
-                <button class="btn btn-danger" id="btn-borrar"><i class="fa fa-trash"></i> Eliminar Contrato</button>
-            </g:if>
-        </g:if>
 
-        <g:if test="${contrato?.estado == 'R'}">
-            <g:if test="${planilla == 0}">
-                <button class="btn" id="btn-desregistrar"><i class="fa fa-retweet"></i> Cambiar Estado
-                </button>
+        <g:if test="${session.perfil.codigo == 'CNTR'}">
+            <button class="btn" id="btn-nuevo"><i class="fa fa-plus"></i> Nuevo</button>
+            <g:if test="${contrato?.estado != 'R'}">
+                <button class="btn btn-success" id="btn-aceptar"><i class="fa fa-save"></i> Guardar</button>
             </g:if>
-        </g:if>
-        <g:if test="${contrato?.id && contrato?.estado != 'R'}">
-            <button class="btn" id="btn-registrar"><i class="fa fa-retweet"></i> Registrar</button>
+            <button class="btn" id="btn-cancelar"><i class="fa fa-times"></i> Cancelar</button>
+            <g:if test="${contrato?.id}">
+                <g:if test="${contrato?.id && contrato?.estado != 'R'}">
+                    <button class="btn btn-danger" id="btn-borrar"><i class="fa fa-trash"></i> Eliminar Contrato</button>
+                </g:if>
+            </g:if>
+
+            <g:if test="${contrato?.estado == 'R'}">
+                <g:if test="${planilla == 0}">
+                    <button class="btn" id="btn-desregistrar"><i class="fa fa-retweet"></i> Cambiar Estado
+                    </button>
+                </g:if>
+            </g:if>
+            <g:if test="${contrato?.id && contrato?.estado != 'R'}">
+                <button class="btn" id="btn-registrar"><i class="fa fa-retweet"></i> Registrar</button>
+            </g:if>
         </g:if>
     </div>
 </div>
@@ -95,7 +98,7 @@
         <div class="col-md-3"><g:textField name="memo" class="memo caps allCaps" value="${contrato?.memo}" maxlength="20"/></div>
 
         <div class="col-md-2 " style="font-weight: bolder; font-size: 14px; background-color: ${contrato?.estado == 'R' ? 'green' : '#0b2c89'}; color: white; text-align: center">
-          <i class="${contrato?.estado == 'R' ? 'fa fa-check' : 'fa fa-exclamation-triangle'}"></i>  Contrato ${contrato?.estado == 'R'? 'Registrado' : 'No Registrado'}
+            <i class="${contrato?.estado == 'R' ? 'fa fa-check' : 'fa fa-exclamation-triangle'}"></i>  Contrato ${contrato?.estado == 'R'? 'Registrado' : 'No Registrado'}
         </div>
 
     </fieldset>
@@ -383,61 +386,63 @@
 </g:form>
 
 <g:if test="${contrato}">
-    <div class="btn-group" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
+    <g:if test="${session.perfil.codigo == 'CNTR'}">
+        <div class="btn-group" style="margin-top: 10px;padding-left: 5px;float: left" align="center">
 
-        <g:if test="${contrato?.estado == 'R'}">
-            <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
-                <a href="#" class="btn" id="btnFPoli"><i class="fa fa-superscript"></i> F. polinómica</a>
+            <g:if test="${contrato?.estado == 'R'}">
+                <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
+                    <a href="#" class="btn" id="btnFPoli"><i class="fa fa-superscript"></i> F. polinómica</a>
+                </g:if>
+                <g:else>
+                    <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}">
+                        <i class="fa fa-superscript"></i> F. polinómica</g:link>
+                </g:else>
             </g:if>
             <g:else>
-                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}">
-                    <i class="fa fa-superscript"></i> F. polinómica</g:link>
+                <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
+                    <a href="#" class="btn" id="btnFPoliPregunta"
+                       data-id="${contrato?.id}"><i class="fa fa-superscript"></i> F. polinómica
+                    </a>
+                </g:if>
+                <g:else>
+                    <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}">
+                        <i class="fa fa-superscript"></i> F. polinómica</g:link>
+                </g:else>
             </g:else>
-        </g:if>
-        <g:else>
-            <g:if test="${!janus.ejecucion.FormulaPolinomicaContractual.findAllByContrato(janus.Contrato.get(contrato?.id))}">
-                <a href="#" class="btn" id="btnFPoliPregunta"
-                   data-id="${contrato?.id}"><i class="fa fa-superscript"></i> F. polinómica
+
+            <g:link controller="documentoProceso" class="btn" action="list" id="${contrato?.oferta?.concursoId}"
+                    params="[contrato: contrato?.id, show: 1]">
+                <i class="fa fa-book"></i> Biblioteca
+            </g:link>
+
+            <g:link controller="contrato" action="asignar" class="btn" id="${contrato?.oferta?.concursoId}"
+                    params="[contrato: contrato?.id, show: 1]">
+                <i class="fa fa-plus"></i> Asignar F. Polinómica
+            </g:link>
+
+            <g:if test="${session.perfil.codigo == 'CNTR' && !contrato.padre}">
+                <a href="#" id="btnAgregarAdmin" class="btn adm">
+                    <i class="fa fa-user"></i> Administrador
                 </a>
             </g:if>
-            <g:else>
-                <g:link action="copiarPolinomica" class="btn" id="${contrato?.id}">
-                    <i class="fa fa-superscript"></i> F. polinómica</g:link>
-            </g:else>
-        </g:else>
 
-        <g:link controller="documentoProceso" class="btn" action="list" id="${contrato?.oferta?.concursoId}"
-                params="[contrato: contrato?.id, show: 1]">
-            <i class="fa fa-book"></i> Biblioteca
-        </g:link>
+            <g:link class="comple, btn" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
+                    title="Nuevo Cronograma Contrato Complementario">
+                <i class="fa fa-clipboard"></i> Cronograma Total
+            </g:link>
 
-        <g:link controller="contrato" action="asignar" class="btn" id="${contrato?.oferta?.concursoId}"
-                params="[contrato: contrato?.id, show: 1]">
-            <i class="fa fa-plus"></i> Asignar F. Polinómica
-        </g:link>
-
-        <g:if test="${session.perfil.codigo == 'CNTR' && !contrato.padre}">
-            <a href="#" id="btnAgregarAdmin" class="btn adm">
-                <i class="fa fa-user"></i> Administrador
-            </a>
-        </g:if>
-
-        <g:link class="comple, btn" controller="cronogramaContrato" action="nuevoCronograma" id="${contrato?.id}"
-                title="Nuevo Cronograma Contrato Complementario">
-            <i class="fa fa-clipboard"></i> Cronograma Total
-        </g:link>
-
-        <g:if test="${complementario}">
-            <a href="#" class="comple btn" name="integrarFP_name" id="integrarFP"
-               title="Integración al contrato principal la FP del contrato complementario">
-                <i class="fa fa-th"></i> Integrar FP Comp.
-            </a>
-            <a href="#" class="btn comple" name="integrar_name" id="integrarCronograma"
-               title="Integración al cronograma principal los rubros del contrato complementario">
-                <i class="fa fa-th"></i> Integrar cronograma Comp.
-            </a>
-        </g:if>
-    </div>
+            <g:if test="${complementario}">
+                <a href="#" class="comple btn" name="integrarFP_name" id="integrarFP"
+                   title="Integración al contrato principal la FP del contrato complementario">
+                    <i class="fa fa-th"></i> Integrar FP Comp.
+                </a>
+                <a href="#" class="btn comple" name="integrar_name" id="integrarCronograma"
+                   title="Integración al cronograma principal los rubros del contrato complementario">
+                    <i class="fa fa-th"></i> Integrar cronograma Comp.
+                </a>
+            </g:if>
+        </div>
+    </g:if>
 
 %{--comentar para no incluir complementearios--}%
 
