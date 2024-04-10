@@ -86,7 +86,7 @@
         <i class="fa fa-parking text-success"></i> Provincia
         <i class="fa fa-copyright text-primary"></i> Cantón
         <i class="fa fa-registered text-danger"></i> Parroquia
-    %{--        <i class="fa fa-info-circle text-warning"></i> Comunidad--}%
+            <i class="fa fa-info-circle text-warning"></i> Comunidad
     </div>
 </div>
 
@@ -773,13 +773,14 @@
                                 },
                                 success: function (msg) {
                                     dialog.modal('hide');
-                                    if(msg === 'ok'){
-                                        log("Comunidad borrada correctamente","success");
+                                    var parts = msg.split("_")
+                                    if(parts[0] === 'ok'){
+                                        log(parts[1],"success");
                                         setTimeout(function () {
                                             location.reload();
                                         }, 1000);
                                     }else{
-                                        log("Error al borrar la comunidad", "error")
+                                        log(parts[1], "error")
                                     }
                                 }
                             });
@@ -805,7 +806,7 @@
             items.borrarCanton = borrarCanton;
         } else if (esParroquia) {
             items.agregarParroquia = agregarParroquia2;
-            // items.agregarComunidad = agregarComunidad;
+            items.agregarComunidad = agregarComunidad;
             items.verParroquia = verParroquia;
             items.editarParroquia = editarParroquia;
             items.borrarParroquia = borrarParroquia;
