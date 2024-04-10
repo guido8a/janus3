@@ -17,6 +17,7 @@ class ComunidadController {
     } //list
 
     def form_ajax() {
+        println("params " + params)
         def comunidadInstance = new Comunidad(params)
         if (params.id) {
             comunidadInstance = Comunidad.get(params.id)
@@ -27,7 +28,7 @@ class ComunidadController {
                 return
             } //no existe el objeto
         } //es edit
-        return [comunidadInstance: comunidadInstance]
+        return [comunidadInstance: comunidadInstance, padre: params.padre ?: comunidadInstance?.parroquia?.id]
     } //form_ajax
 
     def save() {
@@ -35,43 +36,25 @@ class ComunidadController {
         if (params.id) {
             comunidadInstance = Comunidad.get(params.id)
             if (!comunidadInstance) {
-                flash.clase = "alert-error"
-                flash.message = "No se encontró Comunidad con id " + params.id
-                redirect(action: 'list')
+                render "no_No se encontró la comunidad"
                 return
             }//no existe el objeto
-            comunidadInstance.properties = params
+
         }//es edit
-        else {
+        else
+        {
             comunidadInstance = new Comunidad(params)
         } //es create
+
+        params.nombre = params.nombre.toUpperCase();
+        comunidadInstance.properties = params
+
         if (!comunidadInstance.save(flush: true)) {
-            flash.clase = "alert-error"
-            def str = "<h4>No se pudo guardar Comunidad " + (comunidadInstance.id ? comunidadInstance.id : "") + "</h4>"
-
-            str += "<ul>"
-            comunidadInstance.errors.allErrors.each { err ->
-                def msg = err.defaultMessage
-                err.arguments.eachWithIndex {  arg, i ->
-                    msg = msg.replaceAll("\\{" + i + "}", arg.toString())
-                }
-                str += "<li>" + msg + "</li>"
-            }
-            str += "</ul>"
-
-            flash.message = str
-            redirect(action: 'list')
-            return
+            println("error al guardar la comunidad " + comunidadInstance.errors)
+            render "no_Error al guardar la comunidad"
+        }else{
+            render "ok_Guardado correctamente"
         }
-
-        if (params.id) {
-            flash.clase = "alert-success"
-            flash.message = "Se ha actualizado correctamente Comunidad " + comunidadInstance.id
-        } else {
-            flash.clase = "alert-success"
-            flash.message = "Se ha creado correctamente Comunidad " + comunidadInstance.id
-        }
-        redirect(action: 'list')
     } //save
 
     def show_ajax() {
@@ -85,25 +68,20 @@ class ComunidadController {
         [comunidadInstance: comunidadInstance]
     } //show
 
-    def delete() {
+    def borrarComunidad_ajax() {
         def comunidadInstance = Comunidad.get(params.id)
         if (!comunidadInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Comunidad con id " + params.id
-            redirect(action: "list")
+            render "no_Error al borrar la comunidad"
             return
         }
 
         try {
             comunidadInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Comunidad " + comunidadInstance.id
-            redirect(action: "list")
+            render "ok_Comunidad borrada correctamente"
         }
-        catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Comunidad " + (comunidadInstance.id ? comunidadInstance.id : "")
-            redirect(action: "list")
+        catch (e) {
+            println("Error al borrar la comunidad " + comunidadInstance?.errors)
+            render "no_Error al borrar la comunidad"
         }
     } //delete
 } //fin controller
