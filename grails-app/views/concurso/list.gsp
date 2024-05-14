@@ -160,7 +160,7 @@
         $("#frmSave-Concurso").submit();
     }
 
-    $(function () {
+    // $(function () {
 
         $("#criterio_con").keydown(function (ev) {
             if (ev.keyCode === 13) {
@@ -341,7 +341,46 @@
             });
         });
 
-    });
+    // });
+
+    function deleteRow(itemId) {
+        bootbox.dialog({
+            title   : "Alerta",
+            message : "<i class='fa fa-trash fa-2x pull-left text-danger text-shadow'></i><p style='font-weight: bold'> Está seguro que desea eliminar este concurso? Esta acción no se puede deshacer.</p>",
+            buttons : {
+                cancelar : {
+                    label     : "Cancelar",
+                    className : "btn-primary",
+                    callback  : function () {
+                    }
+                },
+                eliminar : {
+                    label     : "<i class='fa fa-trash'></i> Eliminar",
+                    className : "btn-danger",
+                    callback  : function () {
+                        var v = cargarLoader("Eliminando...");
+                        $.ajax({
+                            type    : "POST",
+                            url     : '${createLink(action:'delete')}',
+                            data    : {
+                                id : itemId
+                            },
+                            success : function (msg) {
+                                v.modal("hide");
+                                var parts = msg.split("_");
+                                if(parts[0] === 'ok'){
+                                    log(parts[1],"success");
+                                    cargarBusqueda();
+                                }else{
+                                    log(parts[1],"error")
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
 
 
 

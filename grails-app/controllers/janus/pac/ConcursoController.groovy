@@ -732,22 +732,16 @@ class ConcursoController {
     def delete() {
         def concursoInstance = Concurso.get(params.id)
         if (!concursoInstance) {
-            flash.clase = "alert-error"
-            flash.message = "No se encontró Concurso con id " + params.id
-            redirect(action: "list")
+            render "no_Error no se encontró el concurso"
             return
         }
 
         try {
             concursoInstance.delete(flush: true)
-            flash.clase = "alert-success"
-            flash.message = "Se ha eliminado correctamente Concurso " + concursoInstance.id
-            redirect(action: "list")
+            render "ok_Borrado correctamente"
         }
         catch (DataIntegrityViolationException e) {
-            flash.clase = "alert-error"
-            flash.message = "No se pudo eliminar Concurso " + (concursoInstance.id ? concursoInstance.id : "")
-            redirect(action: "list")
+            render "no_Error al borrar el concurso"
         }
     } //delete
 
