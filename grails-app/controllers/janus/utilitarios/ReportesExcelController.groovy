@@ -192,127 +192,266 @@ class ReportesExcelController {
             row6.createCell(1).setCellValue("Descripción: " + rubro.nombre)
             row6.setRowStyle(style)
 
-            Row rowT1 = sheet.createRow(9)
-            rowT1.createCell(0).setCellValue("Equipos")
-            rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2))
-            rowT1.setRowStyle(style)
+//            Row rowT1 = sheet.createRow(9)
+//            rowT1.createCell(0).setCellValue("Equipos")
+//            rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2))
+//            rowT1.setRowStyle(style)
 
-            res.each { r ->
-                if (r["grpocdgo"] == 3) {
-                    if (band == 0) {
-                        Row rowC1 = sheet.createRow(fila)
-                        rowC1.createCell(0).setCellValue("Código")
-                        rowC1.createCell(1).setCellValue("Descripción")
-                        rowC1.createCell(2).setCellValue("Unidad")
-                        rowC1.createCell(3).setCellValue("Cantidad")
-                        rowC1.createCell(4).setCellValue("Tarifa")
-                        rowC1.createCell(5).setCellValue("Costo")
-                        rowC1.createCell(6).setCellValue("Rendimiento")
-                        rowC1.createCell(7).setCellValue("C.Total")
-                        rowC1.setRowStyle(style)
+//            res.each { r ->
+//                if (r["grpocdgo"] == 3) {
+//                    if (band == 0) {
+//                        Row rowC1 = sheet.createRow(fila)
+//                        rowC1.createCell(0).setCellValue("Código")
+//                        rowC1.createCell(1).setCellValue("Descripción")
+//                        rowC1.createCell(2).setCellValue("Unidad")
+//                        rowC1.createCell(3).setCellValue("Cantidad")
+//                        rowC1.createCell(4).setCellValue("Tarifa")
+//                        rowC1.createCell(5).setCellValue("Costo")
+//                        rowC1.createCell(6).setCellValue("Rendimiento")
+//                        rowC1.createCell(7).setCellValue("C.Total")
+//                        rowC1.setRowStyle(style)
+//                        fila++
+//                    }
+//                    band = 1
+//                    Row rowF1 = sheet.createRow(fila)
+//                    rowF1.createCell(0).setCellValue(r["itemcdgo"]?.toString())
+//                    rowF1.createCell(1).setCellValue(r["itemnmbr"]?.toString())
+//                    rowF1.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+//                    rowF1.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+//                    rowF1.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+//                    rowF1.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
+//                    rowF1.createCell(6).setCellValue(r["rndm"]?.toDouble())
+//                    rowF1.createCell(7).setCellValue(r["parcial"]?.toDouble())
+//                    totalHer += r["parcial"]
+//                    fila++
+//                }
+//
+//                if (r["grpocdgo"] == 2) {
+//                    if (band == 1) {
+//                        Row rowP1 = sheet.createRow(fila)
+//                        rowP1.createCell(0).setCellValue("SUBTOTAL")
+//                        rowP1.createCell(7).setCellValue(totalHer)
+//                        fila++
+//                    }
+//                    if (band != 2) {
+//                        fila++
+//                        Row rowT2 = sheet.createRow(fila)
+//                        rowT2.createCell(0).setCellValue("Mano de obra")
+//                        rowT2.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+//                        rowT2.setRowStyle(style)
+//                        fila++
+//                        Row rowC2 = sheet.createRow(fila)
+//                        rowC2.createCell(0).setCellValue("Código")
+//                        rowC2.createCell(1).setCellValue("Descripción")
+//                        rowC2.createCell(2).setCellValue("Unidad")
+//                        rowC2.createCell(3).setCellValue("Cantidad")
+//                        rowC2.createCell(4).setCellValue("Jornal")
+//                        rowC2.createCell(5).setCellValue("Costo")
+//                        rowC2.createCell(6).setCellValue("Rendimiento")
+//                        rowC2.createCell(7).setCellValue("C.Total")
+//                        rowC2.setRowStyle(style)
+//                        fila++
+//                    }
+//                    band = 2
+//                    Row rowF2 = sheet.createRow(fila)
+//                    rowF2.createCell(0).setCellValue(r["itemcdgo"]?.toString())
+//                    rowF2.createCell(1).setCellValue(r["itemnmbr"]?.toString())
+//                    rowF2.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+//                    rowF2.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+//                    rowF2.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+//                    rowF2.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
+//                    rowF2.createCell(6).setCellValue(r["rndm"]?.toDouble())
+//                    rowF2.createCell(7).setCellValue(r["parcial"]?.toDouble())
+//                    totalMan += r["parcial"]
+//                    fila++
+//                }
+//
+//                if (r["grpocdgo"] == 1) {
+//                    if (band == 2) {
+//                        Row rowP2 = sheet.createRow(fila)
+//                        rowP2.createCell(0).setCellValue("SUBTOTAL")
+//                        rowP2.createCell(7).setCellValue(totalMan)
+//                        fila++
+//                    }
+//                    if (band != 3) {
+//                        fila++
+//                        Row rowT3 = sheet.createRow(fila)
+//                        rowT3.createCell(0).setCellValue("Materiales")
+//                        rowT3.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+//                        rowT3.setRowStyle(style)
+//                        fila++
+//                        Row rowC3 = sheet.createRow(fila)
+//                        rowC3.createCell(0).setCellValue("Código")
+//                        rowC3.createCell(1).setCellValue("Descripción")
+//                        rowC3.createCell(2).setCellValue("Unidad")
+//                        rowC3.createCell(3).setCellValue("Cantidad")
+//                        rowC3.createCell(4).setCellValue("Unitario")
+//                        rowC3.createCell(7).setCellValue("C.Total")
+//                        rowC3.setRowStyle(style)
+//                        fila++
+//                    }
+//                    band = 3
+//                    Row rowF3 = sheet.createRow(fila)
+//                    rowF3.createCell(0).setCellValue(r["itemcdgo"]?.toString())
+//                    rowF3.createCell(1).setCellValue(r["itemnmbr"]?.toString())
+//                    rowF3.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+//                    rowF3.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+//                    rowF3.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+//                    rowF3.createCell(7).setCellValue(r["parcial"]?.toDouble())
+//                    totalMat += r["parcial"]
+//                    fila++
+//                }
+//                if (r["grpocdgo"] == 1) {
+//                    rowsTrans.add(r)
+//                    total += r["parcial_t"]
+//                }
+//            }
+
+
+            def imprimirEquipos = {
+                res.each { r ->
+                    if (r["grpocdgo"] == 3) {
+                        if (band == 0) {
+                            Row rowT1 = sheet.createRow(9)
+                            rowT1.createCell(0).setCellValue("Equipos")
+                            rowT1.sheet.addMergedRegion(new CellRangeAddress(9, 9, 0, 2))
+                            rowT1.setRowStyle(style)
+                            Row rowC1 = sheet.createRow(fila)
+                            rowC1.createCell(0).setCellValue("Código")
+                            rowC1.createCell(1).setCellValue("Descripción")
+                            rowC1.createCell(2).setCellValue("Unidad")
+                            rowC1.createCell(3).setCellValue("Cantidad")
+                            rowC1.createCell(4).setCellValue("Tarifa")
+                            rowC1.createCell(5).setCellValue("Costo")
+                            rowC1.createCell(6).setCellValue("Rendimiento")
+                            rowC1.createCell(7).setCellValue("C.Total")
+                            rowC1.setRowStyle(style)
+                            fila++
+                        }
+                        band = 1
+                        Row rowF1 = sheet.createRow(fila)
+                        rowF1.createCell(0).setCellValue(r["itemcdgo"]?.toString())
+                        rowF1.createCell(1).setCellValue(r["itemnmbr"]?.toString())
+                        rowF1.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+                        rowF1.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+                        rowF1.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+                        rowF1.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
+                        rowF1.createCell(6).setCellValue(r["rndm"]?.toDouble())
+                        rowF1.createCell(7).setCellValue(r["parcial"]?.toDouble())
+                        totalHer += r["parcial"]
                         fila++
                     }
-                    band = 1
-                    Row rowF1 = sheet.createRow(fila)
-                    rowF1.createCell(0).setCellValue(r["itemcdgo"]?.toString())
-                    rowF1.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                    rowF1.createCell(2).setCellValue(r["unddcdgo"]?.toString())
-                    rowF1.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
-                    rowF1.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
-                    rowF1.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
-                    rowF1.createCell(6).setCellValue(r["rndm"]?.toDouble())
-                    rowF1.createCell(7).setCellValue(r["parcial"]?.toDouble())
-                    totalHer += r["parcial"]
+                }
+                if(band == 1) {
+                    Row rowP1 = sheet.createRow(fila)
+                    rowP1.createCell(0).setCellValue("SUBTOTAL")
+                    rowP1.createCell(7).setCellValue(totalHer)
                     fila++
                 }
-                if (r["grpocdgo"] == 2) {
-                    if (band == 1) {
-                        Row rowP1 = sheet.createRow(fila)
-                        rowP1.createCell(0).setCellValue("SUBTOTAL")
-                        rowP1.createCell(7).setCellValue(totalHer)
-                        fila++
-                    }
-                    if (band != 2) {
-                        fila++
-                        Row rowT2 = sheet.createRow(fila)
-                        rowT2.createCell(0).setCellValue("Mano de obra")
-                        rowT2.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
-                        rowT2.setRowStyle(style)
-                        fila++
-                        Row rowC2 = sheet.createRow(fila)
-                        rowC2.createCell(0).setCellValue("Código")
-                        rowC2.createCell(1).setCellValue("Descripción")
-                        rowC2.createCell(2).setCellValue("Unidad")
-                        rowC2.createCell(3).setCellValue("Cantidad")
-                        rowC2.createCell(4).setCellValue("Jornal")
-                        rowC2.createCell(5).setCellValue("Costo")
-                        rowC2.createCell(6).setCellValue("Rendimiento")
-                        rowC2.createCell(7).setCellValue("C.Total")
-                        rowC2.setRowStyle(style)
-                        fila++
-                    }
-                    band = 2
-                    Row rowF2 = sheet.createRow(fila)
-                    rowF2.createCell(0).setCellValue(r["itemcdgo"]?.toString())
-                    rowF2.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                    rowF2.createCell(2).setCellValue(r["unddcdgo"]?.toString())
-                    rowF2.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
-                    rowF2.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
-                    rowF2.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
-                    rowF2.createCell(6).setCellValue(r["rndm"]?.toDouble())
-                    rowF2.createCell(7).setCellValue(r["parcial"]?.toDouble())
-                    totalMan += r["parcial"]
-                    fila++
-                }
-
-                if (r["grpocdgo"] == 1) {
-                    if (band == 2) {
-                        Row rowP2 = sheet.createRow(fila)
-                        rowP2.createCell(0).setCellValue("SUBTOTAL")
-                        rowP2.createCell(7).setCellValue(totalMan)
-                        fila++
-                    }
-                    if (band != 3) {
-                        fila++
-                        Row rowT3 = sheet.createRow(fila)
-                        rowT3.createCell(0).setCellValue("Materiales")
-                        rowT3.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
-                        rowT3.setRowStyle(style)
-                        fila++
-                        Row rowC3 = sheet.createRow(fila)
-                        rowC3.createCell(0).setCellValue("Código")
-                        rowC3.createCell(1).setCellValue("Descripción")
-                        rowC3.createCell(2).setCellValue("Unidad")
-                        rowC3.createCell(3).setCellValue("Cantidad")
-                        rowC3.createCell(4).setCellValue("Unitario")
-                        rowC3.createCell(7).setCellValue("C.Total")
-                        rowC3.setRowStyle(style)
-                        fila++
-                    }
-                    band = 3
-                    Row rowF3 = sheet.createRow(fila)
-                    rowF3.createCell(0).setCellValue(r["itemcdgo"]?.toString())
-                    rowF3.createCell(1).setCellValue(r["itemnmbr"]?.toString())
-                    rowF3.createCell(2).setCellValue(r["unddcdgo"]?.toString())
-                    rowF3.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
-                    rowF3.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
-                    rowF3.createCell(7).setCellValue(r["parcial"]?.toDouble())
-                    totalMat += r["parcial"]
-                    fila++
-                }
-                if (r["grpocdgo"] == 1) {
-                    rowsTrans.add(r)
-                    total += r["parcial_t"]
-                }
-
             }
 
-            if (band == 3) {
-                Row rowP3 = sheet.createRow(fila)
-                rowP3.createCell(0).setCellValue("SUBTOTAL")
-                rowP3.createCell(7).setCellValue(totalMat)
+
+            def imprimirMano = {
+                res.each { r ->
+                    if (r["grpocdgo"] == 2) {
+                        if (band != 2) {
+                            fila++
+                            Row rowT2 = sheet.createRow(fila)
+                            rowT2.createCell(0).setCellValue("Mano de obra")
+                            rowT2.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+                            rowT2.setRowStyle(style)
+                            fila++
+                            Row rowC2 = sheet.createRow(fila)
+                            rowC2.createCell(0).setCellValue("Código")
+                            rowC2.createCell(1).setCellValue("Descripción")
+                            rowC2.createCell(2).setCellValue("Unidad")
+                            rowC2.createCell(3).setCellValue("Cantidad")
+                            rowC2.createCell(4).setCellValue("Jornal")
+                            rowC2.createCell(5).setCellValue("Costo")
+                            rowC2.createCell(6).setCellValue("Rendimiento")
+                            rowC2.createCell(7).setCellValue("C.Total")
+                            rowC2.setRowStyle(style)
+                            fila++
+                        }
+                        band = 2
+                        Row rowF2 = sheet.createRow(fila)
+                        rowF2.createCell(0).setCellValue(r["itemcdgo"]?.toString())
+                        rowF2.createCell(1).setCellValue(r["itemnmbr"]?.toString())
+                        rowF2.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+                        rowF2.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+                        rowF2.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+                        rowF2.createCell(5).setCellValue(r["rbpcpcun"] * r["rbrocntd"])
+                        rowF2.createCell(6).setCellValue(r["rndm"]?.toDouble())
+                        rowF2.createCell(7).setCellValue(r["parcial"]?.toDouble())
+                        totalMan += r["parcial"]
+                        fila++
+                    }
+                }
+                if(band == 2){
+                Row rowP2 = sheet.createRow(fila)
+                rowP2.createCell(0).setCellValue("SUBTOTAL")
+                rowP2.createCell(7).setCellValue(totalMan)
                 fila++
+                }
             }
+
+
+            def imprimirMateriales = {
+                res.each { r ->
+                    if (r["grpocdgo"] == 1) {
+                        if (band != 3) {
+                            fila++
+                            Row rowT3 = sheet.createRow(fila)
+                            rowT3.createCell(0).setCellValue("Materiales")
+                            rowT3.sheet.addMergedRegion(new CellRangeAddress(fila, fila, 0, 2));
+                            rowT3.setRowStyle(style)
+                            fila++
+                            Row rowC3 = sheet.createRow(fila)
+                            rowC3.createCell(0).setCellValue("Código")
+                            rowC3.createCell(1).setCellValue("Descripción")
+                            rowC3.createCell(2).setCellValue("Unidad")
+                            rowC3.createCell(3).setCellValue("Cantidad")
+                            rowC3.createCell(4).setCellValue("Unitario")
+                            rowC3.createCell(7).setCellValue("C.Total")
+                            rowC3.setRowStyle(style)
+                            fila++
+                        }
+                        band = 3
+                        Row rowF3 = sheet.createRow(fila)
+                        rowF3.createCell(0).setCellValue(r["itemcdgo"]?.toString())
+                        rowF3.createCell(1).setCellValue(r["itemnmbr"]?.toString())
+                        rowF3.createCell(2).setCellValue(r["unddcdgo"]?.toString())
+                        rowF3.createCell(3).setCellValue(r["rbrocntd"]?.toDouble())
+                        rowF3.createCell(4).setCellValue(r["rbpcpcun"]?.toDouble())
+                        rowF3.createCell(7).setCellValue(r["parcial"]?.toDouble())
+                        totalMat += r["parcial"]
+                        fila++
+                    }
+                    if (r["grpocdgo"] == 1) {
+                        rowsTrans.add(r)
+                        total += r["parcial_t"]
+                    }
+                }
+
+                if(band == 3){
+                    Row rowP3 = sheet.createRow(fila)
+                    rowP3.createCell(0).setCellValue("SUBTOTAL")
+                    rowP3.createCell(7).setCellValue(totalMat)
+                    fila++
+                }
+            }
+
+
+            imprimirEquipos();
+            imprimirMano();
+            imprimirMateriales();
+
+//            if (band == 3) {
+//            Row rowP3 = sheet.createRow(fila)
+//            rowP3.createCell(0).setCellValue("SUBTOTAL M")
+//            rowP3.createCell(7).setCellValue(totalMat)
+//            fila++
+//            }
 
             /*Tranporte*/
             if (rowsTrans.size() > 0) {
