@@ -57,8 +57,8 @@
                 </span>
                 <span class="col-md-2">
                     <label class="control-label text-info">Perfil</label>
-                    <g:select name="perfil" class="form-control" from="${seguridad.Prfl.list()}" optionKey="id"
-                              optionValue="descripcion" noSelection="[null : 'Seleccionar...']"/>
+                    <g:select name="perfil" class="form-control" from="${seguridad.Prfl.list([sort: 'nombre'])}" optionKey="id"
+                              optionValue="nombre" noSelection="[null : 'Seleccionar...']"/>
                 </span>
                 <span class="col-md-3">
                     <label class="control-label text-info">Departamento</label>
@@ -81,7 +81,6 @@
 <script type="text/javascript">
 
     $(".btnReporte").click(function () {
-        %{--location.href = "${g.createLink(controller: 'reportes6', action: '_imprimirUsuarios')}";--}%
         location.href = "${g.createLink(controller: 'reportes6',action: 'imprimirUsuariosExcel')}"
     });
 
@@ -298,9 +297,7 @@
         });
     });
 
-
-
-    function createEditOferente(id) {
+   function createEditOferente(id) {
         var title = id ? "Editar " : "Crear ";
         var data = id ? {id : id} : {};
 

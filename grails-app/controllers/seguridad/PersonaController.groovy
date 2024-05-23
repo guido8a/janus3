@@ -1444,7 +1444,7 @@ class PersonaController {
     }
 
     def tablaUsuarios_ajax(){
-        println "tablaUsuarios_ajax params $params"
+//        println "tablaUsuarios_ajax params $params"
         def datos;
         def sqlTx = ""
         def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
@@ -1462,10 +1462,10 @@ class PersonaController {
         //def select = "select distinct prsn.* from prsn, sesn"
         def select = "select distinct prsn.* from prsn left join sesn on sesn.prsn__id = prsn.prsn__id "
         def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
-                //"sesn.prfl__id::text ilike '${perfil}' and " + //todo: incluir busqueda de perfil
+                "sesn.prfl__id::text ilike '${perfil}' and " + //todo: incluir busqueda de perfil
                 " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
-        println "sql: $sqlTx"
+//        println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()
         datos = cn.rows(sqlTx)
         [data: datos, tipo: params.tipo]
