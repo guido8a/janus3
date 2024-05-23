@@ -31,7 +31,7 @@
                 <td style="width: 19%">
                 <ul>
                     <g:each in="${seguridad.Sesn.findAllByUsuario(seguridad.Persona.get(dt.prsn__id))}" var="perfiles">
-                            <li>${perfiles?.perfil?.descripcion ?: ''}</li>
+                            <li>${perfiles?.perfil?.nombre ?: ''}</li>
                     </g:each>
                 </ul>
                 </td>
