@@ -445,13 +445,16 @@
                     success : function (msg) {
                         dialog.modal('hide');
                         var parts = msg.split("_");
+                        console.log("---> " + parts[0])
                         if(parts[0] === 'OK'){
+
                             log("Suspensión guardada correctamente", "success");
                             setTimeout(function () {
                                 location.reload();
                             }, 800);
                         }else{
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión" + '</strong>');
+                            // bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión" + '</strong>');
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión: " + parts[1] + '</strong>');
                             return false;
                         }
                     }

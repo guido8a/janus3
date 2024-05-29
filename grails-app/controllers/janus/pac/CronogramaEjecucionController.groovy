@@ -97,9 +97,10 @@ class CronogramaEjecucionController {
         println "planillas: ${plnl.fechaInicio} - ${plnl.fechaFin}"
 
         if (plnl.size() > 0) {
-            flash.message = "La fecha ingresada corresponde a un periodo planillado con la planilla: ${plnl.numero} del " +
-                    "periodo: " + plnl[0].fechaInicio.format("dd-MM-yyyy") + " al " + plnl[0].fechaFin.format("dd-MM-yyyy")
-            render "Error"
+//            flash.message = "ERROR: La fecha ingresada corresponde a un periodo planillado con la planilla: ${plnl.numero} del " +
+//                    "periodo: " + plnl[0].fechaInicio.format("dd-MM-yyyy") + " al " + plnl[0].fechaFin.format("dd-MM-yyyy")
+            render "Error_" + "La fecha ingresada corresponde a un periodo planillado con la planilla: ${plnl.numero} del " +
+            "periodo: " + plnl[0].fechaInicio.format("dd-MM-yyyy") + " al " + plnl[0].fechaFin.format("dd-MM-yyyy")
         } else {
 
             if (params.fin) {
@@ -2361,7 +2362,9 @@ class CronogramaEjecucionController {
         cn.close()
 
         if (suspensiones.size() > 1) {
-            return "Error... existe mas de una suspension en curso"
+//            return "Error... existe mas de una suspension en curso"
+            render "Error_Existe mas de una suspension en curso"
+            return true
         } else if (suspensiones.size() == 1) {
             suspension = suspensiones[0]
             diasSusp = finSusp - suspension.fechaInicio + 1
@@ -2398,9 +2401,8 @@ class CronogramaEjecucionController {
             params.contrato = cntr.id
             actualizaPrej()
             render "OK"
+            return true
         }
-
-
     }
 
     def insertaSuspensionNuevo(cntr, pfcin, pfcfn, tipo) {
