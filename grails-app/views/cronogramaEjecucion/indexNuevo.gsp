@@ -454,7 +454,9 @@
                             }, 800);
                         }else{
                             // bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión" + '</strong>');
-                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' + '<strong style="font-size: 14px">' + "Error al guardar la suspensión: " + parts[1] + '</strong>');
+                            bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-3x"></i> ' +
+                                '<strong style="font-size: 14px">' + "Error al guardar la suspensión: " + parts[1] +
+                                '</strong>');
                             return false;
                         }
                     }

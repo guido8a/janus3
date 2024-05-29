@@ -134,8 +134,13 @@ class CronogramaEjecucionController {
                     params.suspension = modificacion.id
                     params.fcfn = fin.format("dd-MM-yyyy")
                     println "registra suspesión e invoca a terminaSuspensionTemp con $params.fcfn"
-                    terminaSuspensionNuevo()
-                }
+                    if(terminaSuspensionNuevo()) {
+                        render "OK"
+                    } else {
+                        render "NO"
+                    }
+
+                } else
                 render "OK"
             }
         }
@@ -1585,7 +1590,7 @@ class CronogramaEjecucionController {
         }
 
 //        direct(action: "indexNuevo", params: [id: params.contrato])
-        render "ok"
+//        render "ok"
     }
 
 
@@ -2400,7 +2405,7 @@ class CronogramaEjecucionController {
             println "Fin de suspensión actualizada a: ${suspension.fechaFin}, dias: ${suspension.dias}"
             params.contrato = cntr.id
             actualizaPrej()
-            render "OK"
+//            render "OK"
             return true
         }
     }
