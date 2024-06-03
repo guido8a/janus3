@@ -207,7 +207,7 @@ option[selected]{
                             <div class="input-group input-group-sm">
                                 <span class="input-group-addon"><i class="fa fa-user"></i>
                                 </span>
-                                <g:field type="login" name="login" maxlength="15" style="" class="form-control input-sm noEspacios required" value="${personaInstance?.login ?: ''}"/>
+                                <g:field type="login" name="login" maxlength="15" minlength="4" style="" class="form-control input-sm noEspacios required" value="${personaInstance?.login ?: ''}"/>
                             </div>
                         </div>
                     </span>

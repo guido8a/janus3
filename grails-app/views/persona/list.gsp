@@ -140,22 +140,35 @@
 
             $.ajax({
                 type    : "POST",
-                url     : '${createLink(controller: 'persona', action:'save_ajax')}',
+                %{--url     : '${createLink(controller: 'persona', action:'save_ajax')}',--}%
+                url     : '${createLink(controller: 'persona', action:'savePersona_ajax')}',
                 data    : $form.serialize(),
                 success : function (msg) {
-                    var parts = msg.split("*");
+                    var parts = msg.split("_");
                     if (parts[0] !== "INFO") {
-                        log(parts[1], parts[0] === "SUCCESS" ? "success" : "error"); // log(msg, type, title, hide)
-                        if (parts[0] === "SUCCESS") {
+                        // log(parts[1], parts[0] === "SUCCESS" ? "success" : "error");
+                        // if (parts[0] === "SUCCESS") {
+                        //     dialog.modal('hide');
+                        //     setTimeout(function () {
+                        //         location.reload();
+                        //     }, 1000);
+                        // } else {
+                        //     spinner.replaceWith($btn);
+                        //     dialog.modal('hide');
+                        //     return false;
+                        // }
+
+                        if(parts[0] == 'ok'){
                             dialog.modal('hide');
+                            log(parts[1], "success")
                             setTimeout(function () {
                                 location.reload();
                             }, 1000);
-                        } else {
-                            spinner.replaceWith($btn);
+                        }else{
                             dialog.modal('hide');
-                            return false;
+                            log(parts[1], "error")
                         }
+
                     } else {
                         // closeLoader();
                         bootbox.dialog({

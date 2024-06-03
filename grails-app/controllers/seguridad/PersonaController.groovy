@@ -1346,7 +1346,7 @@ class PersonaController {
                 params.fecha = new Date()
             }
             params.autorizacion = params.autorizacion.encodeAsMD5()
-            params.unidadEjecutora = persona.unidadEjecutora
+//            params.unidadEjecutora = persona.unidadEjecutora
             texto = "Usuario actualizado correctamente"
         }else{
             persona = new Persona()
@@ -1362,11 +1362,13 @@ class PersonaController {
         }else{
             params.fechaFin = null
         }
+
+        params.mail = params.mail.toString().toLowerCase()
         persona.properties = params
 
         if(!persona.save(flush:true)){
             println("error al guardar el usuario " + persona.errors)
-            render "no_" + texto
+            render "no_Error al guardar el usuario"
         }else{
             render "ok_" + texto
         }
