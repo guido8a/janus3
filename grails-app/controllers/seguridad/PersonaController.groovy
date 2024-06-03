@@ -1461,6 +1461,14 @@ class PersonaController {
             bsca = listaItems[0]
         }
 
+        def estado = ''
+//        params.estado == 1 ? '' : (params.estado == 2 ? ' and sesnfcfn is null' : ' and sesnfcfn is not null ')
+        if(params.estado == '2') {
+           estado = ' and sesnfcfn is null'
+        } else if (params.estado == '3') {
+            estado = ' and sesnfcfn is not null '
+        }
+
         //def select = "select distinct prsn.* from prsn, sesn"
         def select = "select distinct prsn.* from prsn left join sesn on sesn.prsn__id = prsn.prsn__id "
 //        def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
@@ -1469,7 +1477,7 @@ class PersonaController {
         def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
                 " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
         println "perfil: $perfil"
-        txwh = (perfil != '%')? txwh + " and sesn.prfl__id::text ilike '${perfil}' and sesnfcfn is null " : txwh
+        txwh = (perfil != '%')? txwh + " and sesn.prfl__id::text ilike '${perfil}' ${estado} " : txwh
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
         println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()

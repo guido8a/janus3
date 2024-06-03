@@ -51,7 +51,7 @@
                     <g:textField name="buscarCriterio" id="criterioCriterio" class="form-control"/>
                 </span>
                 <span class="col-md-2">
-                    <label class="control-label text-info">Estado</label>
+                    <label class="control-label text-info">Estado del usuario</label>
                     <g:select name="estado" class="estado form-control" from="${[1: 'Todos', 2: 'Activo', 3: 'Inactivo']}" optionKey="key"
                               optionValue="value"/>
                 </span>
