@@ -1444,14 +1444,14 @@ class PersonaController {
     }
 
     def tablaUsuarios_ajax(){
-//        println "tablaUsuarios_ajax params $params"
+        println "tablaUsuarios_ajax params $params"
         def datos;
         def sqlTx = ""
         def listaItems = ['prsnlogn', 'prsnnmbr', 'prsnapll' ]
         def estados = ['%', '1', '0']
         def bsca
-        def perfil = params.perfil == 'null'? '%' : params.perfil
-        def dpto = params.departamento == 'null'? '%' : params.departamento
+        def perfil = params.perfil == '0'? '%' : params.perfil
+        def dpto = params.departamento == '0'? '%' : params.departamento
 
         if(params.buscarPor){
             bsca = listaItems[params.buscarPor?.toInteger()-1]
@@ -1466,6 +1466,7 @@ class PersonaController {
 //                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
         def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
                 " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
+        txwh = perfil == '%' ? txwh + " and sesn.prfl__id::text ilike '${perfil}'" : txwh
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
         println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()

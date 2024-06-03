@@ -58,12 +58,12 @@
                 <span class="col-md-2">
                     <label class="control-label text-info">Perfil</label>
                     <g:select name="perfil" class="form-control" from="${seguridad.Prfl.list([sort: 'nombre'])}" optionKey="id"
-                              optionValue="nombre" noSelection="[null : 'Seleccionar...']"/>
+                              optionValue="nombre" noSelection="[0 : 'Seleccionar...']"/>
                 </span>
                 <span class="col-md-3">
                     <label class="control-label text-info">Departamento</label>
                     <g:select name="departamento" class="form-control" from="${janus.Departamento.list().sort{it.descripcion}}" optionKey="id"
-                              optionValue="descripcion" noSelection="[null : 'Seleccionar...']"/>
+                              optionValue="descripcion" noSelection="[0 : 'Seleccionar...']"/>
                 </span>
             </span>
             <div class="col-md-1" style="margin-top: 20px">
