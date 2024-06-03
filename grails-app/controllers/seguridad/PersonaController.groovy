@@ -1466,7 +1466,8 @@ class PersonaController {
 //                " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
         def txwh = " where dpto__id != 13 and prsn.dpto__id::text ilike '${dpto}' and " +
                 " $bsca ilike '%${params.criterio}%' and prsnactv::text ilike '${estados[params.estado.toInteger()-1]}' "
-        txwh = perfil == '%' ? txwh + " and sesn.prfl__id::text ilike '${perfil}'" : txwh
+        println "perfil: $perfil"
+        txwh = (perfil != '%')? txwh + " and sesn.prfl__id::text ilike '${perfil}'" : txwh
         sqlTx = "${select} ${txwh} order by prsnapll limit 50 ".toString()
         println "sql: $sqlTx"
         def cn = dbConnectionService.getConnection()
