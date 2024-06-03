@@ -12,9 +12,6 @@
     </div>
 
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
-        %{--<a href="#" id="btnReporteDevueltas" class="btn"><i class="fa fa-truck"></i>--}%
-            %{--VAE con desglose de Trans.--}%
-        %{--</a>--}%
         <a href="#" id="btnReporteVAEsinFecha" class="btn"><i class="fa fa-truck"></i>
             VAE con desglose de Trans (Sin fecha)
         </a>
@@ -25,13 +22,6 @@
             Exportar VAE a Excel
         </a>
     </div>
-
-    %{--<div class="col-md-9 btn-group" style="margin-bottom: 10px">--}%
-        %{--<a href="#" id="btnReporteVAEsinFecha" class="btn"><i class="fa fa-truck"></i>--}%
-            %{--VAE con desglose de Trans (Sin fecha)--}%
-        %{--</a>--}%
-    %{--</div>--}%
-
     <div class="col-md-9 btn-group" style="margin-bottom: 10px">
         <a href="#" id="btnIlustraciones" class="btn"><i class="fa fa-image"></i>
             Imprimir las Ilustraciones y las Especificaciones de los Rubros utilizados en la Obra

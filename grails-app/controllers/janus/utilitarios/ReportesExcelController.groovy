@@ -903,7 +903,10 @@ class ReportesExcelController {
             fila++
             def totalRubro = total + totalHer + totalMan + totalMat
             def totalRelativo = totalTRel + totalHerRel + totalMatRel + totalManRel
-            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
+//            def totalVae = totalTVae + totalHerVae + totalMatVae + totalManVae
+            def totalVae = 0 + totalHerVae + totalMatVae + totalManVae
+                        
+
             def totalIndi = totalRubro * indi / 100
             Row rowF5 = sheet.createRow(fila)
             rowF5.createCell(0).setCellValue("Costos indirectos")
