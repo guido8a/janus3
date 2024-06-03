@@ -30,7 +30,7 @@
                 <td style="width: 27%">${janus.Departamento.get(dt.dpto__id).descripcion}</td>
                 <td style="width: 19%">
                 <ul>
-                    <g:each in="${seguridad.Sesn.findAllByUsuario(seguridad.Persona.get(dt.prsn__id))}" var="perfiles">
+                    <g:each in="${seguridad.Sesn.findAllByUsuarioAndFechaFinIsNull(seguridad.Persona.get(dt.prsn__id))}" var="perfiles">
                             <li>${perfiles?.perfil?.nombre ?: ''}</li>
                     </g:each>
                 </ul>
