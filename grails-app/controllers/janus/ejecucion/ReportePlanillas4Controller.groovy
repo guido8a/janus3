@@ -337,7 +337,7 @@ class ReportePlanillas4Controller {
                 pdfs.add(pl.toByteArray())
                 contador++
             }
-            if(planilla.tipoPlanilla.codigo == 'A') {
+            if(planilla.tipoPlanilla.codigo in ['A', 'B']) {
                 println "invoca a resumen... planilla"
                 pl = resumenAnticipo(planilla)
                 pdfs.add(pl.toByteArray())
