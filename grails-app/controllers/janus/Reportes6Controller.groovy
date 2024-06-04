@@ -38,6 +38,7 @@ import org.jfree.chart.renderer.category.BarRenderer
 import org.jfree.data.category.CategoryDataset
 import org.jfree.data.category.DefaultCategoryDataset
 import seguridad.Persona
+import seguridad.Sesn
 
 import java.awt.*
 import java.awt.geom.Rectangle2D
@@ -1994,16 +1995,23 @@ class Reportes6Controller {
         rowC1.createCell(2).setCellValue("Apellido")
         rowC1.createCell(3).setCellValue("Departamento")
         rowC1.createCell(4).setCellValue("Estado")
+        rowC1.createCell(5).setCellValue("Perfiles")
         rowC1.setRowStyle(style)
         fila++
 
         datos.each { r ->
+            def perfiles = Sesn.findAllByUsuarioAndFechaFinIsNull(seguridad.Persona.get(r["prsn__id"]))
+            def arreglo = ''
+            perfiles.each { p->
+                arreglo += (p?.perfil?.nombre + " ,")
+            }
             Row rowF1 = sheet.createRow(fila)
             rowF1.createCell(0).setCellValue(r["prsnlogn"]?.toString())
             rowF1.createCell(1).setCellValue(r["prsnnmbr"]?.toString())
             rowF1.createCell(2).setCellValue(r["prsnapll"]?.toString())
             rowF1.createCell(3).setCellValue(r["dptodscr"]?.toString())
             rowF1.createCell(4).setCellValue(r["prsnactv"] == 0 ? 'Inactivo' : 'Activo')
+            rowF1.createCell(5).setCellValue(arreglo.toString())
             total ++
             fila++
         }
