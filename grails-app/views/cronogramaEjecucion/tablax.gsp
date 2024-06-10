@@ -234,7 +234,9 @@
             }
         };
 
-        items.editar = editar;
+        if(${janus.Contrato.get(contrato)?.fiscalizador?.id == session.usuario.id}){
+            items.editar = editar;
+        }
 
         return items
     }
