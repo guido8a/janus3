@@ -654,7 +654,7 @@ class GrupoController {
 //                            tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='${Grupo.get(params.tipo)?.id}' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
                             tree += "<li id='" + liId + h.id + "' class='" + clase + "' data-tipo='' data-jstree='{\"type\":\"${"item"}\" ${ico}}'>"
 //                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + h?.codigo + " " + "</strong>" + h.nombre + "</a>"
-                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + "</strong>" + h.nombre + "</a>"
+                            tree += "<a href='#' class='label_arbol'>" +  "<strong>" + "" + "</strong>" + h.codigo + " - " + h.nombre + "</a>"
                             tree += "</li>"
                         }
                         break

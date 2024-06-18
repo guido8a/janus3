@@ -936,22 +936,39 @@ class RubroController {
 
 
     def verificaRubro(){
-//        println "verifica rubro "+params
         def rubro = Item.get(params.id)
-        def volumenes = VolumenesObra.findAllByItem(rubro);
-        def obras = volumenes.obra.nombre.unique()
+//        def volumenes = VolumenesObra.findAllByItem(rubro);
+//        def volumenes = VolumenesObra.findAllByItem(rubro);
+//        def obras = volumenes.obra.nombre.unique()
         def respuesta = "<ul>"
-//        println "vol... obras:  ${obras}"
+
+       def volumenes = VolumenesObra.withCriteria{
+         eq("item",rubro)
+           obra{
+               distinct("nombre")
+               resultTransformer org.hibernate.Criteria.DISTINCT_ROOT_ENTITY
+           }
+       }
+
         if(volumenes.size()>0) {
-            obras.each {
-                respuesta += "<li>$it </li>"
+            volumenes.each {
+                    respuesta += "<li>" + it.obra.codigo + " - " + it.obra.nombre + "</li>"
             }
             respuesta += "</ul>"
-//            println ">>>> 1_${respuesta}"
             render "1_${respuesta}"
         } else {
             render "0"
         }
+
+//        if(volumenes.size()>0) {
+//            obras.each {
+//                respuesta += "<li>" + it + "</li>"
+//            }
+//            respuesta += "</ul>"
+//            render "1_${respuesta}"
+//        } else {
+//            render "0"
+//        }
     }
 
     def copiaRubro(){
