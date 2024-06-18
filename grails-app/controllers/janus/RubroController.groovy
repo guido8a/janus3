@@ -950,6 +950,8 @@ class RubroController {
            }
        }
 
+        def obras = volumenes.unique{it.obra.nombre}
+
         if(volumenes.size()>0) {
             volumenes.each {
                     respuesta += "<li>" + it.obra.codigo + " - " + it.obra.nombre + "</li>"
