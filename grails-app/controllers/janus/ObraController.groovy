@@ -540,7 +540,7 @@ class ObraController {
             cn.close()
 
             duenoObra = esDuenoObra(obra) ? 1 : 0
-            println "dueño: $duenoObra, concurso: $concurso, obra: $obra"
+            println "dueño: $duenoObra, concurso: $concurso, obra: ${obra.estadoSif}"
 
             def existeObraOferente = ObraOferente.findByIdJanus(obra)
 

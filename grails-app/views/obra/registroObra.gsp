@@ -1246,10 +1246,10 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         $("#btn-memoSIF").click(function () {
             $.box({
                 imageClass: "box_light",
-                input: "<input type='text' name='memoSIF' id='memoSIF' maxlength='20' class='allCaps' ${(obra?.estadoSif=='R')?'disabled':''} value='" + memoSIF + "' />",
+                input: "<input type='text' name='memoSIF' id='memoSIF' maxlength='20' class='allCaps' ${(obra?.estadoSif !='R')?'disabled':''} value='" + memoSIF + "' />",
                 type: "prompt",
                 title: "Memo S.I.F.",
-                <g:if test="${obra?.estadoSif=='R'}">
+                <g:if test="${obra?.estadoSif!='R'}">
                 text: "Memorando S.I.F. aprobado",
                 </g:if>
                 <g:else>
@@ -1260,7 +1260,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                         $(".ui-dialog-titlebar-close").html("X");
                     },
                     buttons: {
-                        <g:if test="${obra?.estadoSif=='R'}">
+                        <g:if test="${obra?.estadoSif!='R'}">
                         "Cerrar": function (r) {
 
                         }
