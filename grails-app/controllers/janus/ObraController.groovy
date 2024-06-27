@@ -1132,7 +1132,7 @@ class ObraController {
 
         txwh += " and ${campos[cmpo - 1]} ilike '%${params.criterio}%'"
 
-        sqlTx = "${select} ${txwh} order by ${campos[cmpo - 1]} limit 100".toString()
+        sqlTx = "${select} ${txwh} order by ${campos[cmpo - 1]} limit 1500".toString()
         println "sql: cmpo: $cmpo $sqlTx"
 
         def cn = dbConnectionService.getConnection()
