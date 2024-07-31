@@ -3261,7 +3261,7 @@ class ReportePlanillas3Controller {
 
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
@@ -3661,7 +3661,7 @@ class ReportePlanillas3Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
@@ -3961,9 +3961,8 @@ class ReportePlanillas3Controller {
         def frmtCol8 = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 8]
         def frmtCol11 = [border: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 11]
         def frmtSuma = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+
         def printFooterDetalle = { params ->
-
-
             def txt = "AVANCE DE OBRA PARCIAL"
             if (params.completo) {
                 txt = "AVANCE DE OBRA"
@@ -4066,7 +4065,7 @@ class ReportePlanillas3Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
@@ -4458,7 +4457,7 @@ class ReportePlanillas3Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
@@ -4863,7 +4862,7 @@ class ReportePlanillas3Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +

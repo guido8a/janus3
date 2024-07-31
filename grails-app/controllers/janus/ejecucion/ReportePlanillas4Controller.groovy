@@ -1659,7 +1659,7 @@ class ReportePlanillas4Controller {
 
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
@@ -1960,14 +1960,12 @@ class ReportePlanillas4Controller {
         def frmtCol8 = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_LEFT, valign: Element.ALIGN_MIDDLE, colspan: 8]
         def frmtCol11 = [border: Color.BLACK, bg: Color.WHITE, align: Element.ALIGN_CENTER, valign: Element.ALIGN_MIDDLE, colspan: 11]
         def frmtSuma = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
+
         def printFooterDetalle = { params ->
-
-
             def txt = "AVANCE DE OBRA PARCIAL"
             if (params.completo) {
                 txt = "AVANCE DE OBRA"
             }
-
             addCellTabla(tablaDetalles, new Paragraph(txt, fontThFooter), frmtCol8)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.ant, 2), fontThFooter), frmtSuma)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.act, 2), fontThFooter), frmtSuma)
@@ -2015,6 +2013,8 @@ class ReportePlanillas4Controller {
 
 //            println "currentRows $currentRows, maxRows $maxRows"
             if(currentRows >= (maxRows) ) {
+                println "antrP $sumaPrclAntr, antrT: $sumaTotlAntr"
+
                 printFooterDetalle([ant: sumaPrclAntr, act: sumaPrclActl, acu: sumaPrclAcml])
 
                 sumaPrclAntr = 0
@@ -2042,8 +2042,8 @@ class ReportePlanillas4Controller {
 //        printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
         /* se debería  tomar de monto planillas anteriores el valor total anterior */
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id in (3) and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
-        println "planillado anterior: $sql"
+                "tppl__id in (3) and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
+//        println "planillado anterior: $sql, PlanillaAnt: ${planilla.id}"
         sumaTotlAntr = cn.rows(sql.toString())[0].suma?:0
         sumaTotlActl = planilla.valor
         sumaTotlAcml = sumaTotlActl + sumaTotlAntr
@@ -2073,7 +2073,7 @@ class ReportePlanillas4Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
@@ -2476,7 +2476,7 @@ class ReportePlanillas4Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
@@ -2857,7 +2857,7 @@ class ReportePlanillas4Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml + rjplAcml, 2), fontThFooter), frmtSuma)
 
         sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyy-MM-yy')}'"
+                "tppl__id = 5 and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
 
         def cstoAntr = cn.rows(sql.toString())[0].suma?:0
         sql = "select plnlmnto from plnl where plnl__id = (select plnl__id from plnl " +
