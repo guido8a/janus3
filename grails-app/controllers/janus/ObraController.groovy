@@ -260,15 +260,19 @@ class ObraController {
         def crono = 0
         vols.each {
             def tmp = Cronograma.findAllByVolumenObra(it)
-            tmp.each { tm ->
-                crono += tm.porcentaje
-            }
+            if(tmp.size() > 0){
+                tmp.each { tm ->
+                    crono += tm.porcentaje
+                }
 //            println "volObra: " + it.item.codigo + " tmp " + tmp.volumenObra.id + "  " + tmp.porcentaje + "  " + tmp.precio + "  " + tmp.cantidad
 //            println "crono " + crono
-            if (crono.toDouble().round(2) != 100.00) {
-                msg += "<br><span class='label-azul'>Error:</span> La suma de porcentajes del volumen de obra: ${it.item.codigo} (${crono.toDouble().round(2)}) en el cronograma es diferente de 100%"
+                if (crono.toDouble().round(2) != 100.00) {
+                    msg += "<br><span class='label-azul'>Error:</span> La suma de porcentajes del volumen de obra: ${it.item.codigo} (${crono.toDouble().round(2)}) en el cronograma es diferente de 100%"
+                }
+                crono = 0
+            }else{
+                msg += ''
             }
-            crono = 0
         }
         if (msg != "") {
             render msg
