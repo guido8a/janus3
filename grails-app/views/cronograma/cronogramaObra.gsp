@@ -91,6 +91,9 @@
             <table class="table table-bordered table-condensed table-hover">
                 <thead>
                 <tr>
+                    <th class="num">
+                        #
+                    </th>
                     <th class="codigo">
                         Código
                     </th>
@@ -133,6 +136,9 @@
 
                     <tr class="item_row ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''} ${vol.id}" id="${vol.id}" data-id="${vol.id}">
                         <td class="codigo">
+                            ${vol.orden}
+                        </td>
+                        <td class="codigo">
                             ${vol.item.codigo}
                         </td>
                         <td class="nombre">
@@ -172,7 +178,7 @@
                     </tr>
 
                     <tr class="item_prc ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''} ${vol.id}" data-id="${vol.id}">
-                        <td colspan="7">
+                        <td colspan="8">
                             &nbsp
                         </td>
                         <td>
@@ -192,7 +198,7 @@
                     </tr>
 
                     <tr class="item_f ${vol.rutaCritica == 'S' ? 'rutaCritica' : ''} ${vol.id}" data-id="${vol.id}">
-                        <td colspan="7">
+                        <td colspan="8">
                             &nbsp
                         </td>
                         <td>

@@ -260,6 +260,7 @@ class ObraController {
         def crono = 0
         vols.each {
             def tmp = Cronograma.findAllByVolumenObra(it)
+            println "crono: ${tmp.size()}"
             if(tmp.size() > 0){
                 tmp.each { tm ->
                     crono += tm.porcentaje
@@ -274,6 +275,8 @@ class ObraController {
                 msg += ''
             }
         }
+
+        println "msg: ${(msg != "")}"
         if (msg != "") {
             render msg
             return
