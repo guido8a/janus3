@@ -36,7 +36,7 @@
             <i class="fa fa-arrow-left"></i>
             Regresar
         </a>
-        <g:if test="${meses > 0 && plazoOk && matrizOk && obra.estado != 'R'}">
+        <g:if test="${meses > 0 && plazoOk && matrizOk && (obra.estado != 'R' || obra.codigo.contains('OF'))}">
             <g:if test="${(obra?.responsableObra?.departamento?.direccion?.id == persona?.departamento?.direccion?.id && duenoObra == 1) || obra?.id == null }">
                 <a href="#" class="btn disabled" id="btnDeleteRubro">
                     <i class="fa fa-minus"></i>
@@ -74,7 +74,7 @@
                                       style="width: 400px;font-size: 10px" id="subpres" value="${subpre}"
                                       noSelection="['-1': 'TODOS']"/>
             <a href="#" class="btn" style="margin-top: -10px;" id="btnSubpre">Cambiar</a>
-            <g:if test="${obra.estado != 'R'}">
+            <g:if test="${obra.estado != 'R' || obra.codigo.contains('OF')}">
                 <a href="#" class="btn" style="margin-top: -10px;" id="btnDesmarcar">Desmarcar todo</a>
                 <a href="#" class="btn" style="margin-top: -10px;" id="btnRutaOn"><i class="fa fa-check"></i> Marcar ruta crítica
                 </a>
@@ -670,7 +670,7 @@
             location.href = "${createLink(action: 'cronogramaObra')}/${obra.id}?subpre=" + $("#subpres").val();
         });
 
-        <g:if test="${obra.estado!='R'}">
+        <g:if test="${obra.estado!='R' || obra.codigo.contains('OF')}">
         $("#tabla_material").children("tr").click(function () {
 
             if ($(this).hasClass("rowSelected")) {
@@ -696,6 +696,7 @@
             }
 
             var sel = getSelected();
+//            console.log('selecc:', sel.length)
             if (sel.length == 0) {
                 $("#btnLimpiarRubro, #btnDeleteRubro").addClass("disabled");
             } else {
@@ -1039,7 +1040,7 @@
             });
         }
 
-        <g:if test="${obra.estado!='R'}">
+        <g:if test="${obra.estado!='R' || obra.codigo.contains('OF')}">
         $("#btnRutaOn").click(function () {
             modificarRuta("S");
             return false;
@@ -1052,7 +1053,7 @@
         $(".mes").dblclick(function () {
             var $sel = getSelected();
             var $celda = $(this);
-
+            console.log('dbl:', $sel.length)
             if ($sel.length == 1) {
                 clickOne($celda);
             } else {
