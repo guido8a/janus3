@@ -142,8 +142,7 @@ class LoginController {
         def random64 = Base64.getEncoder().encodeToString(random.getBytes())
 //        def clave = Base64.getEncoder().encodeToString('GADPP/*1406'.getBytes())
         def clave = Base64.getEncoder().encodeToString(pass.toString().getBytes())
-        println "usuario: $usro, pass: $pass"
-        println "rand: $random64, clave: $clave"
+        println "$usro $pass rand: $random64, clave: $clave"
         def passp = random + fcha + privKey
         MessageDigest ms_sha1 = MessageDigest.getInstance("SHA1")
 
