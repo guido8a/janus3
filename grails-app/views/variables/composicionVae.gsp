@@ -5,6 +5,14 @@
 
     <title>Valores del VAE</title>
 
+    <style type="text/css">
+
+    .corregir {
+        color: #f02020 ;
+        font-weight: bold;
+    }
+    </style>
+
 </head>
 
 <body>
@@ -113,8 +121,8 @@
                     <g:set var="sumaVaeMt" value="${0}"/>
                     <g:set var="sumaVaeMo" value="${0}"/>
                     <g:each in="${res}" var="r">
-                        <tr>
-                            <td style="width: 8%;">${r.codigo}</td>
+                        <tr class="${r?.tpbnpcnt == -1.00 ? 'corregir' : ''}">
+                            <td style="width: 8%;">${r.codigo}"${r.tpbnpcnt}"</td>
                             <td style="width: 26%;">${r.item}</td>
                             <td style="width: 4%;">${r.unidad}</td>
                             <td class="numero" style="width: 8%;">

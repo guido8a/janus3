@@ -177,6 +177,7 @@ class VariablesController {
                              "g.grpo__id, g.grpodscr, v.tpbnpcnt " +
                   "ORDER BY g.grpo__id ASC, i.itemcdgo"
 
+        println "sql vae: $sql"
         def cn = dbConnectionService.getConnection()
         def res = cn.rows(sql.toString())
 
@@ -197,6 +198,5 @@ class VariablesController {
         }else{
             render "ok_Guardado correctamente"
         }
-
     }
 }
