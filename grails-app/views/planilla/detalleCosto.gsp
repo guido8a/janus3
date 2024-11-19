@@ -158,6 +158,7 @@
     function initRows() {
         var rows1 = '${detalles}';
         var rows = JSON.parse(rows1.replace(/&quot;/g,'"'));
+//        var rows = JSON.parse(rows1.replace(/&quot;/,'"'));
 
         for (var i = 0; i < rows.length; i++) {
             var data = rows[i];

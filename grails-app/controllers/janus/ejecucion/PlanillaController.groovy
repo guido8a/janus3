@@ -3672,7 +3672,7 @@ class PlanillaController {
 
         def json = new JsonBuilder(dets)
 
-//        println "max: $max, totalAnterior: $totalAnterior, anteriores: ${anteriores.valor}, json: ${json} "
+        println "max: $max, totalAnterior: $totalAnterior, anteriores: ${anteriores.valor}, json: ${json} "
 
         return [planilla: planilla, obra: obra, contrato: contrato,
                 editable: editable, detalles: json, iva: iva, detallesSize: detalles.size(), max: max]
@@ -4431,7 +4431,7 @@ class PlanillaController {
 
     /** halla el valor del índice en PRIN de la oferta**/
     def valorIndice(indc, prin) {
-        println "valor Indice de: $indc : ${indc?.id} periodo: $prin --> ${prin?.id}"
+//        println "valor Indice de: $indc : ${indc?.id} periodo: $prin --> ${prin?.id}"
         ValorIndice.findByIndiceAndPeriodo(indc, prin).valor
     }
 

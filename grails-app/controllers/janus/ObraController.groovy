@@ -476,7 +476,7 @@ class ObraController {
     def registroObra() {
 
         def cn = dbConnectionService.getConnection()
-//        println "---" + params
+        println "---" + params
         def obra
         def perfil = session.perfil
         def persona = Persona.get(session.usuario.id)
@@ -537,8 +537,9 @@ class ObraController {
             if (matriz > 0) {
                 matrizOk = true
             }
+            println "++obra: ${obra.id}"
             def concurso = janus.pac.Concurso.findByObra(obra)
-//            println "concursos: ${concurso?.fechaLimiteEntregaOfertas}"
+            println "concursos: $concurso, fcha: ${concurso?.fechaLimiteEntregaOfertas}"
             if (concurso) {
                 if (!concurso.fechaLimiteEntregaOfertas)
                     concurso = null
@@ -547,9 +548,10 @@ class ObraController {
             cn.close()
 
             duenoObra = esDuenoObra(obra) ? 1 : 0
-            println "dueño: $duenoObra, concurso: $concurso, obra: ${obra.estadoSif}"
+            println "dueño: $duenoObra, concurso: $concurso, obra: ${obra.estadoSif} obra_id: ${obra.id}"
 
             def existeObraOferente = ObraOferente.findByIdJanus(obra)
+            println "obara: ${obra?.id} estado: ${obra?.estado} perfil: ${perfil.codigo} cncr: $concurso"
 
             [campos: campos, camposCPC: camposCPC, prov: prov, obra: obra, subs: subs, persona: persona, formula: formula, volumen: volumen,
              matrizOk: matrizOk, verif: verif, verifOK: verifOK, perfil: perfil, programa: programa, tipoObra: tipoObra,

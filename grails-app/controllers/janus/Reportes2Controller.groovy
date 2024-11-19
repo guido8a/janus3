@@ -3326,7 +3326,7 @@ class Reportes2Controller {
         addCellTabla(tablaFirmas, new Paragraph(" ", times10bold), prmsHeaderHoja)
 
         addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph("______________________________________", times8bold), prmsHeaderHoja)
 
         if(contrato?.administrador){
@@ -3337,7 +3337,7 @@ class Reportes2Controller {
             addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
         }
 
-        addCellTabla(tablaFirmas, new Paragraph("", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph("${contrato.oferta.proveedor}", times8bold), prmsHeaderHoja)
 
         if(contrato?.fiscalizador){
             addCellTabla(tablaFirmas, new Paragraph((contrato?.fiscalizador?.titulo?.toUpperCase() ?: '') + " " +
@@ -3349,7 +3349,7 @@ class Reportes2Controller {
         //cargos
 
         addCellTabla(tablaFirmas, new Paragraph("ADMINISTRADOR", times8bold), prmsHeaderHoja)
-        addCellTabla(tablaFirmas, new Paragraph(" ", times8bold), prmsHeaderHoja)
+        addCellTabla(tablaFirmas, new Paragraph("CONTRATISTA", times8bold), prmsHeaderHoja)
         addCellTabla(tablaFirmas, new Paragraph("FISCALIZADOR", times8bold), prmsHeaderHoja)
 
         addCellTabla(tablaFirmas, new Paragraph(contrato?.administrador?.departamento?.descripcion?.toUpperCase() ?: '', times8bold), prmsHeaderHoja)

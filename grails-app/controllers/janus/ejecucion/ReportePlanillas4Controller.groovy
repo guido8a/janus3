@@ -3089,7 +3089,7 @@ class ReportePlanillas4Controller {
         def administrador = contrato.administrador
 
         def strContratista = nombrePersona(contratista, "prov") + "\nContratista"
-        def strFiscalizador = nombrePersona(fiscalizador) + "\nFiscalizador"
+        def strFiscalizador = nombrePersona(fiscalizador) + "\nFiscalizador"  + (fiscalizador.sexo == 'F' ? 'a' :'')
         def strSubdirector = "Ing. Miguel Velasteguí" + "\nSubdirector"
 //        def strAdmin = nombrePersona(administrador) + "\nAdministrador del Contrato - Delegado"
         def strAdmin = nombrePersona(administrador) + "\nAdministrador"
