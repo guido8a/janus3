@@ -3597,14 +3597,20 @@ class PlanillaController {
         params.montoIva = params.montoIva.toDouble();
         params.montoIndirectos = params.montoIndirectos.toDouble();
 
-        detalle.properties = params
-        if (detalle.save(flush: true)) {
-            def planilla = Planilla.get(params.planilla.id)
-            updatePlanilla(planilla)
-            render "OK_" + detalle.id
-        } else {
-            println "ERROR: " + detalle.errors
-            render "NO_Ha ocurrido un error al guardar el rubro"
+
+        if(params.rubro.contains("\"")){
+            println("error")
+            render "no_La descripción del rubro contiene caracteres no soportados"
+        }else{
+            detalle.properties = params
+            if (detalle.save(flush: true)) {
+                def planilla = Planilla.get(params.planilla.id)
+                updatePlanilla(planilla)
+                render "OK_" + detalle.id
+            } else {
+                println "ERROR: " + detalle.errors
+                render "NO_Ha ocurrido un error al guardar el rubro"
+            }
         }
     }
 
@@ -3809,30 +3815,30 @@ class PlanillaController {
 
         params.nuevoValor = params.nuevoValor?:0
 //        if(params.nuevoValor) {
-            if(params.id != 'nuevo'){
-                detalle = DetallePlanillaEjecucion.get(params.id)
-                detalle.cantidad = params.nuevoValor?.toDouble()
+        if(params.id != 'nuevo'){
+            detalle = DetallePlanillaEjecucion.get(params.id)
+            detalle.cantidad = params.nuevoValor?.toDouble()
 //                detalle.monto = params.val?.toDouble()
-                detalle.monto = vol.volumenPrecio * detalle.cantidad
-            }else{
-                detalle = new DetallePlanillaEjecucion()
-                detalle.cantidad = params.nuevoValor?.toDouble()
+            detalle.monto = vol.volumenPrecio * detalle.cantidad
+        }else{
+            detalle = new DetallePlanillaEjecucion()
+            detalle.cantidad = params.nuevoValor?.toDouble()
 //                detalle.monto = params.val?.toDouble()
-                detalle.monto = vol.volumenPrecio * detalle.cantidad
-                detalle.planilla = planilla
-                detalle.volumenContrato = vol
-            }
+            detalle.monto = vol.volumenPrecio * detalle.cantidad
+            detalle.planilla = planilla
+            detalle.volumenContrato = vol
+        }
 
-            if(!detalle.save(flush:true)){
-                println("Error al guardar " + detalle.errors)
-                render "no_Error al guardar"
-            }else{
-                render "ok_Guardado correctamente"
-                sql = "update plnl set plnlmnto = (select sum(dtpemnto) from dtpe where plnl__id = ${params.planilla}) " +
-                        "where plnl__id = ${params.planilla}"
-                println "actualiza $sql"
-                cn.execute(sql.toString())
-            }
+        if(!detalle.save(flush:true)){
+            println("Error al guardar " + detalle.errors)
+            render "no_Error al guardar"
+        }else{
+            render "ok_Guardado correctamente"
+            sql = "update plnl set plnlmnto = (select sum(dtpemnto) from dtpe where plnl__id = ${params.planilla}) " +
+                    "where plnl__id = ${params.planilla}"
+            println "actualiza $sql"
+            cn.execute(sql.toString())
+        }
 //        } else {
 //            render "no_No hay valor que guardar"
 //        }

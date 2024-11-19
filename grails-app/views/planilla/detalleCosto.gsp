@@ -507,6 +507,21 @@
                         reset();
                         spinner.remove();
                         location.reload();
+                    }else{
+                        bootbox.dialog({
+                            id      : "dlgAlerta2",
+                            title   :"Errores",
+                            message : parts[1],
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                        location.reload();
+                                    }
+                                }
+                            } //buttons
+                        }); //dialog
                     }
                 }
             });
@@ -575,6 +590,7 @@
                                             label     : "Cancelar",
                                             className : "btn-primary",
                                             callback  : function () {
+                                                location.reload();
                                             }
                                         }
                                     } //buttons
