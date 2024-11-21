@@ -3166,7 +3166,8 @@ class Reportes2Controller {
         document.add(docReferencia);
 
         Paragraph fecha = new Paragraph();
-        fecha.add(new Paragraph("Fecha: ${printFecha(obra?.fechaCreacionObra)}", info))
+        println "obra: ${obra.id}, fecha: ${obra.fechaInicio}"
+        fecha.add(new Paragraph("Fecha: ${printFecha(obra?.fechaInicio - 1)}", info))
         document.add(fecha);
 
         def cmpl = Contrato.findByPadre(contrato)
