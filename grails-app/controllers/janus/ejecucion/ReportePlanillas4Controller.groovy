@@ -1964,7 +1964,7 @@ class ReportePlanillas4Controller {
         def frmtSuma = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
         def printFooterDetalle = { params ->
-            def txt = "AVANCE DE OBRA PARCIAL (El resultado de la suma de los valores de avance se calcula y se redondea con dos decimales)"
+            def txt = "AVANCE DE OBRA PARCIAL (El resultado de avance se calcula y se redondea con dos decimales)"
             if (params.completo) {
                 txt = "AVANCE DE OBRA"
             }
