@@ -1964,9 +1964,9 @@ class ReportePlanillas4Controller {
         def frmtSuma = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
         def printFooterDetalle = { params ->
-            def txt = "AVANCE DE OBRA PARCIAL (El resultado de avance se calcula y se redondea con dos decimales)"
+            def txt = "AVANCE DE OBRA PARCIAL (Valor calculado con el redondeo a 2 decimales)"
             if (params.completo) {
-                txt = "AVANCE DE OBRA"
+                txt = "AVANCE DE OBRA (Valor calculado con todos los decimales)"
             }
             addCellTabla(tablaDetalles, new Paragraph(txt, fontThFooter), frmtCol8)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.ant, 2), fontThFooter), frmtSuma)
@@ -2202,7 +2202,7 @@ class ReportePlanillas4Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlActl, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml, 2), fontThFooter), frmtSuma)
 
-        addCellTabla(tablaDetalles, new Paragraph(" * Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales.", fontThFooter), frmtCol11)
+        addCellTabla(tablaDetalles, new Paragraph(" * Los cálculos se realizan con todos los decimales y los valores impresos se redondean a 2 decimales.", fontThFooter), frmtCol11)
 
         document.add(tablaDetalles)
 
