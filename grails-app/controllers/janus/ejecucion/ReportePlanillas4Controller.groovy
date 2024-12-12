@@ -1544,6 +1544,8 @@ class ReportePlanillas4Controller {
             if(existe != 0){
                 addCellTabla(tablaDetalles, new Paragraph('', fontThFooter), frmtCol8)
             }
+
+
         }
 
 
@@ -1970,9 +1972,9 @@ class ReportePlanillas4Controller {
             addCellTabla(tablaDetalles, new Paragraph(numero(params.ant, 2), fontThFooter), frmtSuma)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.act, 2), fontThFooter), frmtSuma)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.acu, 2), fontThFooter), frmtSuma)
+
+            addCellTabla(tablaDetalles, new Paragraph(" * El resultado de la suma de los valores de avance se redondea con dos decimales", fontThFooter), frmtCol11)
         }
-
-
         sp = 0
         println("---- " + vocr.size())
         vocr.each {vo ->
@@ -2199,6 +2201,8 @@ class ReportePlanillas4Controller {
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAntr, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlActl, 2), fontThFooter), frmtSuma)
         addCellTabla(tablaDetalles, new Paragraph(numero(sumaTotlAcml, 2), fontThFooter), frmtSuma)
+
+        addCellTabla(tablaDetalles, new Paragraph(" * Los cálculos se hacen con todos los decimales y el resultado final se lo redondea a dos decimales.", fontThFooter), frmtCol11)
 
         document.add(tablaDetalles)
 
