@@ -1966,7 +1966,7 @@ class ReportePlanillas4Controller {
         def printFooterDetalle = { params ->
             def txt = "AVANCE DE OBRA PARCIAL (El resultado de la suma de los valores de avance se calcula y se redondea con dos decimales)"
             if (params.completo) {
-                txt = "AVANCE DE OBRA (El resultado de la suma de los valores de avance se calcula y se redondea con dos decimales)"
+                txt = "AVANCE DE OBRA"
             }
             addCellTabla(tablaDetalles, new Paragraph(txt, fontThFooter), frmtCol8)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.ant, 2), fontThFooter), frmtSuma)
