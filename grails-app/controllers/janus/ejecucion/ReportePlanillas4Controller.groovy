@@ -1964,16 +1964,16 @@ class ReportePlanillas4Controller {
         def frmtSuma = [border: Color.BLACK, bg: Color.LIGHT_GRAY, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE]
 
         def printFooterDetalle = { params ->
-            def txt = "AVANCE DE OBRA PARCIAL"
+            def txt = "AVANCE DE OBRA PARCIAL (El resultado de la suma de los valores de avance se calcula y se redondea con dos decimales)"
             if (params.completo) {
-                txt = "AVANCE DE OBRA"
+                txt = "AVANCE DE OBRA (El resultado de la suma de los valores de avance se calcula y se redondea con dos decimales)"
             }
             addCellTabla(tablaDetalles, new Paragraph(txt, fontThFooter), frmtCol8)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.ant, 2), fontThFooter), frmtSuma)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.act, 2), fontThFooter), frmtSuma)
             addCellTabla(tablaDetalles, new Paragraph(numero(params.acu, 2), fontThFooter), frmtSuma)
 
-            addCellTabla(tablaDetalles, new Paragraph(" * El resultado de la suma de los valores de avance se realiza y se redondea con dos decimales", fontThFooter), frmtCol11)
+//            addCellTabla(tablaDetalles, new Paragraph(" * El resultado de la suma de los valores de avance se realiza y se redondea con dos decimales", fontThFooter), frmtCol11)
         }
         sp = 0
         println("---- " + vocr.size())
