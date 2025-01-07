@@ -1794,7 +1794,7 @@ class ReportePlanillas4Controller {
 
     /** una sola firma **/
     def detalleTodo1f(planilla, tipoRprt) {
-        println "detalle de la planilla ${planilla.id}, tipo: $tipoRprt"
+        println "detalle todo 1f de la planilla ${planilla.id}, tipo: $tipoRprt"
         def obra = planilla.contrato.obra
         def cntr = planilla.contrato
         def cn = dbConnectionService.getConnection()
@@ -1992,7 +1992,7 @@ class ReportePlanillas4Controller {
             addCellTablaWrap(tablaDetalles, new Paragraph(vo.rbronmbr, fontTdTiny), frmtDtIz2)
 
             addCellTabla(tablaDetalles, new Paragraph(vo.unddcdgo, fontTdTiny), frmtDtDr2)
-            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrpcun, 2, "hide"), fontTdTiny), frmtDtDr2)
+            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrpcun, 3, "hide"), fontTdTiny), frmtDtDr2)
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.vocrcntd, 2, "hide"), fontTdTiny), frmtDtDr2)
 
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdantr, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
