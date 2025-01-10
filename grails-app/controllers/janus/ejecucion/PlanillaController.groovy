@@ -4071,11 +4071,11 @@ class PlanillaController {
                 def max = 10
                 def fecha = fcha
                 while (!existe) {
-                    println "periodo actual para recalculo de reajuste...: $prin, fcha: ${fcha}, fecha: ${fecha}"
+                    println "Periodo actual para recalculo de reajuste...: $prin, fcha: ${fcha}, fecha: ${fecha}"
                     fecha = preciosService.primerDiaDelMes(fecha) - 15
                     prin = PeriodosInec.findByFechaInicioLessThanAndFechaFinGreaterThan(fecha, fecha)
                     print "...1+ ${plnl?.contrato?.id}, ${prin?.id}"
-                    existe = preciosService.verificaIndicesPeriodoTodo(plnl.contrato.id, prin.id).size() == 0
+                    existe = preciosService.verificaIndicesPeriodoTodo(plnl.contrato.id, prin?.id).size() == 0
                     if (!max--) {
                         return null
                     }

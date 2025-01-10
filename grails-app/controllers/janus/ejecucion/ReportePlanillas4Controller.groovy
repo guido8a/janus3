@@ -3160,26 +3160,74 @@ class ReportePlanillas4Controller {
         return tablaFirmas
     }
 
-
-
+    /**
+     * Reporte de liquidación del contrato 178-DCP-2022 cuyos valores contratados se manejan con 3 decimales
+     * se pagaron todas las planilla de avance con 2 decimales y la liquidación se calcula con:
+     * valor actual = valor_actual_con_3_decimales - acumulado de valor pagado: detalleNuevoPlanillas
+     **/
     def reporteNuevoPlanillas() {
-        println("params rnp " + params)
+        println "reporteNuevoPlanillas --> params: $params"
         def planilla = Planilla.get(params.id)
+        if(planilla.tipoPlanilla.codigo.trim() == 'E') {
+            redirect action: 'rptPlnlEntrega', params: params
+        }
+
+        println "tipo planilla: ${planilla.tipoPlanilla.codigo}"
+        if (planilla.tipoPlanilla.codigo == 'Q') {
+            if (!planilla.contrato.fechaPedidoRecepcionContratista || !planilla.contrato.fechaPedidoRecepcionFiscalizador) {
+                flash.message = "Por favor ingrese las fechas de pedido de recepción para generar la planilla " +
+                        "final de avance (liquidación)"
+                flash.clase = "alert-error"
+                redirect(controller: "contrato", action: "fechasPedidoRecepcion", id: planilla.contrato.id)
+                return
+            }
+        }
+
         def rjpl = ReajustePlanilla.findAllByPlanilla(planilla)
         def reajustes = []
         def pl = new ByteArrayOutputStream()
         byte[] b
-        def pdfs = []
+        def pdfs = []  /** pdfs a armar en el nuevo documento **/
         def contador = 0
         def name = "reajustes_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
 
         rjpl.each {rj ->
             reajustes.add([planilla: rj.planilla, reajuste: rj.fpReajuste])
         }
+//        println "reajustes: $reajustes"
         reajustes.unique()
+//        println "reajustes unique: $reajustes"
 
+        /* todo: hacer que se imprima el reporteTablas tantas veces como fprj hayan
+        * crear nuevas FP en el contrato 24, igual que en la BD janus_prdc para probar */
+
+
+        if(planilla.contrato.aplicaReajuste == 1) {
+            //** genera B0, P0 y Fr de la planilla **
+//        println "reajustes: ${reajustes}"
+            reajustes.each {
+                pl = reporteTablas(it.planilla, it.reajuste)
+                pdfs.add(pl.toByteArray())
+                contador++
+            }
+            if(planilla.tipoPlanilla.codigo in ['A', 'B']) {
+                println "invoca a resumen... planilla"
+                pl = resumenAnticipo(planilla)
+                pdfs.add(pl.toByteArray())
+                contador++
+            }
+        }
         if(planilla.tipoPlanilla.codigo in ['P', 'Q', 'R', 'L']) {
+            println "invoca multas"
+            pl = multas(planilla, "")
+            if(pl) {
+                pdfs.add(pl.toByteArray())
+                contador++
+            }
+
+            println "invoca detalle"
             pl = detalleNuevoPlanillas(planilla, planilla.tipoContrato)  //una firma
+
             pdfs.add(pl.toByteArray())
             contador++
         }
@@ -3196,8 +3244,11 @@ class ReportePlanillas4Controller {
             pdfs.each {f ->
                 PdfReader reader = new PdfReader(f);
                 for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+                    //nueva página
                     document.newPage();
+                    //importa la página "i" de la fuente "reader"
                     PdfImportedPage page = pdfw.getImportedPage(reader, i);
+                    //añade página
                     cb.addTemplate(page, 0, 0);
                 }
             }
@@ -3212,6 +3263,58 @@ class ReportePlanillas4Controller {
         response.setContentLength(b.length)
         response.getOutputStream().write(b)
     }
+
+
+//    def reporteNuevoPlanillas() {
+//        println("params rnp " + params)
+//        def planilla = Planilla.get(params.id)
+//        def rjpl = ReajustePlanilla.findAllByPlanilla(planilla)
+//        def reajustes = []
+//        def pl = new ByteArrayOutputStream()
+//        byte[] b
+//        def pdfs = []
+//        def contador = 0
+//        def name = "reajustes_" + new Date().format("ddMMyyyy_hhmm") + ".pdf";
+//
+//        rjpl.each {rj ->
+//            reajustes.add([planilla: rj.planilla, reajuste: rj.fpReajuste])
+//        }
+//        reajustes.unique()
+//
+//        if(planilla.tipoPlanilla.codigo in ['P', 'Q', 'R', 'L']) {
+//            pl = detalleNuevoPlanillas(planilla, planilla.tipoContrato)  //una firma
+//            pdfs.add(pl.toByteArray())
+//            contador++
+//        }
+//
+//        if(contador > 1) {
+//            def baos = new ByteArrayOutputStream()
+//            Document document
+//            document = new Document(PageSize.A4);
+//
+//            def pdfw = PdfWriter.getInstance(document, baos);
+//            document.open();
+//            PdfContentByte cb = pdfw.getDirectContent();
+//
+//            pdfs.each {f ->
+//                PdfReader reader = new PdfReader(f);
+//                for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+//                    document.newPage();
+//                    PdfImportedPage page = pdfw.getImportedPage(reader, i);
+//                    cb.addTemplate(page, 0, 0);
+//                }
+//            }
+//            document.close();
+//            b = baos.toByteArray();
+//        } else {
+//            b = pl.toByteArray();
+//        }
+//
+//        response.setContentType("application/pdf")
+//        response.setHeader("Content-disposition", "attachment; filename=${name}")
+//        response.setContentLength(b.length)
+//        response.getOutputStream().write(b)
+//    }
 
 
     def detalleNuevoPlanillas(planilla, tipoRprt){
@@ -3400,10 +3503,10 @@ class ReportePlanillas4Controller {
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdactl, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
             addCellTabla(tablaDetalles, new Paragraph(numero(vo.cntdacml, 2, "hide"), fontTdTiny), frmtDtDrBorde2)
 
-//            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vlorantr, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaDetalles, new Paragraph(numero((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vlorantr, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+//            addCellTabla(tablaDetalles, new Paragraph(numero((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
 //            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloractl, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
-            addCellTabla(tablaDetalles, new Paragraph(numero((vo.vocrpcun * vo.cntdactl), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
+            addCellTabla(tablaDetalles, new Paragraph(numero((vo.cntdacml * vo.vocrpcun - vo.vlorantr), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
 //            addCellTabla(tablaDetalles, new Paragraph(numero(vo.vloracml, 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
             addCellTabla(tablaDetalles, new Paragraph(numero((vo.cntdacml * vo.vocrpcun), 2, "hide"), fontTdTiny), [bwt: 0.1, bct: Color.BLACK, bwb: 0.1, bcb: Color.WHITE, height: height, border: Color.BLACK, align: Element.ALIGN_RIGHT, valign: Element.ALIGN_MIDDLE])
 

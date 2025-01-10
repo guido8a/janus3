@@ -217,12 +217,13 @@
                                 <i class="fa fa-print"></i>
                             </g:link>
 
-%{--                            <g:if test="${planillaInstance.tipoPlanilla.codigo == 'P'}">--}%
+                            <g:if test="${planillaInstance.tipoPlanilla.codigo == 'Q'}">
                                 <g:link controller="reportePlanillas4" action="reporteNuevoPlanillas" id="${planillaInstance.id}"
-                                        class="btn btn-warning btnPrint btn-xs btn-ajax" rel="tooltip" title="Imprimir nuevo reporte">
-                                    <i class="fa fa-print"></i>
+                                        class="btn btn-warning btnPrint btn-xs btn-ajax" rel="tooltip"
+                                        title="Imprimir nuevo reporte">
+                                    <i class="fa fa-print"></i> Liquidación
                                 </g:link>
-%{--                            </g:if>--}%
+                            </g:if>
 
                         </g:if>
 
