@@ -3512,17 +3512,17 @@ class ReportePlanillas4Controller {
 
             currentRows += vo.vocrlnea
             rowsCurPag++
-//            sumaTotlAntr += vo.vlorantr
-            sumaTotlAntr += ((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0))
+            sumaTotlAntr += vo.vlorantr
+//            sumaTotlAntr += ((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0))
 //            sumaTotlActl += vo.vloractl
-            sumaTotlActl += (vo.vocrpcun * vo.cntdactl)
+            sumaTotlActl += (vo.cntdacml * vo.vocrpcun - vo.vlorantr)
 //            sumaTotlAcml += vo.vloracml
             sumaTotlAcml += (vo.cntdacml * vo.vocrpcun)
 
-//            sumaPrclAntr += vo.vlorantr
-            sumaPrclAntr += ((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0))
+            sumaPrclAntr += vo.vlorantr
+//            sumaPrclAntr += ((vo.cntdacml * vo.vocrpcun) - ((vo.vocrpcun * vo.cntdactl) ?: 0))
 //            sumaPrclActl += vo.vloractl
-            sumaPrclActl += (vo.vocrpcun * vo.cntdactl)
+            sumaPrclActl += (vo.cntdacml * vo.vocrpcun - vo.vlorantr)
 //            sumaPrclAcml += vo.vloracml
             sumaPrclAcml += (vo.cntdacml * vo.vocrpcun)
 
@@ -3549,11 +3549,11 @@ class ReportePlanillas4Controller {
             }
         }
 
-        sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
-                "tppl__id in (3) and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
-        sumaTotlAntr = cn.rows(sql.toString())[0].suma?:0
-        sumaTotlActl = planilla.valor
-        sumaTotlAcml = sumaTotlActl + sumaTotlAntr
+//        sql = "select sum(plnlmnto) suma from plnl where cntr__id = ${planilla.contrato.id} and " +
+//                "tppl__id in (3) and plnlfcfn < '${planilla.fechaInicio.format('yyyy-MM-dd')}'"
+//        sumaTotlAntr = cn.rows(sql.toString())[0].suma?:0
+//        sumaTotlActl = planilla.valor
+//        sumaTotlAcml = sumaTotlActl + sumaTotlAntr
         printFooterDetalle([ant: sumaTotlAntr,  act: sumaTotlActl, acu: sumaTotlAcml, completo: true])
 
         def rjplAntr = planillasService.reajusteAnterior(planilla)
