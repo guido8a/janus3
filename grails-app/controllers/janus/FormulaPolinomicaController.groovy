@@ -393,20 +393,23 @@ class FormulaPolinomicaController {
                     println "erroe save fpx " + fpx.errors
                 }
 
-                if (it < 10) {
+            }
+
+            14.times {
+                if (it < 13) {
                     def cuadrilla = new FormulaPolinomica()
                     cuadrilla.obra = obra
                     cuadrilla.subPresupuesto = sbpr
                     cuadrilla.numero = "c0" + (it + 1)
-                    if (it == 9)
+                    if (it >= 9)
                         cuadrilla.numero = "c" + (it + 1)
                     cuadrilla.valor = 0
                     cuadrilla.indice = indiPeon
                     if (!cuadrilla.save(flush: true)) {
-//                        println "error save cuadrilla " + cuadrilla.errors
                     }
                 }
             }
+
         }
         render "ok_${sbpr.id}"
     }
