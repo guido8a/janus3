@@ -376,7 +376,7 @@
         var parentTipo = parent.attr("rel");
         var parts = nodeStrId.split("_");
         var nodeId = parts[1];
-
+        var nodeV = node.attr("valor");
         parts = parentStrId.split("_");
         var parentId = parts[1];
         var nodeHasChildren = node.hasClass("hasChildren");
@@ -468,6 +468,60 @@
                             </g:else>
                         }
                     };
+
+
+                    if(nodeV === '0.000' && num.contains("c")){
+                        menuItems.borrar = {
+                            label            : "<i class='fa fa-trash text-danger'></i> Eliminar nodo",
+                            separator_before : false,
+                            separator_after  : false,
+                            action           : function (obj) {
+                                <g:if test="${obra?.liquidacion==1 || obra?.estado!='R' || obra?.codigo[-1..-2] != 'OF'}">
+                                bootbox.confirm({
+                                    title: "Alerta",
+                                    message: "<i class='fa fa-trash text-danger fa-2x'></i>" + "<strong style='font-size: 14px'>" +  "Está seguro de eliminar este nodo?"  + "</strong>",
+                                    buttons: {
+                                        cancel: {
+                                            label: '<i class="fa fa-times"></i> Cancelar',
+                                            className: 'btn-primary'
+                                        },
+                                        confirm: {
+                                            label: '<i class="fa fa-check"></i> Aceptar',
+                                            className: 'btn-success'
+                                        }
+                                    },
+                                    callback: function (result) {
+                                        if (result) {
+                                            $.ajax({
+                                                type    : "POST",
+                                                url     : "${createLink(controller: 'formulaPolinomica', action:'borrarNodo_ajax')}",
+                                                data    : {
+                                                    id   : nodeStrId.split("_")[1]
+                                                },
+                                                success : function (msg) {
+                                                    var parts = msg.split("_");
+                                                    if(parts[0] === 'ok'){
+                                                        log("Borrado correctamente", "success");
+                                                        setTimeout(function() {
+                                                            location.reload();
+                                                        }, 1000);
+                                                    }else{
+                                                        bootbox.alert('<i class="fa fa-exclamation-triangle text-danger fa-2x"></i> ' + '<strong style="font-size: 12px">' + "No puede borrar la formula" + '</strong>');
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                                </g:if>
+                                <g:else>
+                                bootbox.alert('<i class="fa fa-exclamation-triangle text-info fa-3x"></i> ' + '<strong style="font-size: 14px">' + "No puede modificar los coeficientes de una obra ya registrada" + '</strong>');
+                                </g:else>
+                            }
+                        };
+                    }
+
+
                 }
                 break;
 
