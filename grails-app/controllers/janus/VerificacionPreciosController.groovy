@@ -11,7 +11,8 @@ class VerificacionPreciosController {
 
         def sql = "SELECT distinct itemcdgo codigo, itemnmbr item, unddcdgo unidad, rbpcpcun  punitario, " +
                 "rbpcfcha fecha FROM obra_rbpc(${params.id}) " +
-                "where rbpcfcha <= (cast('${obra.fechaPreciosRubros.format('yyyy-MM-dd')}' as date) - 210) or rbpcfcha is null " +
+                "where rbpcfcha <= (cast('${obra.fechaPreciosRubros.format('yyyy-MM-dd')}' as date) - 1) or " +
+                "rbpcfcha is null " +
                 "ORDER BY itemnmbr"
         println "verif: $sql"
         def res = cn.rows(sql.toString())
