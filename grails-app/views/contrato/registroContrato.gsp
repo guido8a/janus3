@@ -441,6 +441,15 @@
                     <i class="fa fa-th"></i> Integrar cronograma Comp.
                 </a>
             </g:if>
+
+
+            <g:if test="${contrato?.estado != 'R'}">
+                <a href="${createLink(controller: 'contrato', action: 'subirExcelContrato', id: contrato?.id)}" class="btn" id="btnSubirExcel"
+                   title="Subir archivo excel">
+                    <i class="fa fa-upload"></i> Subir excel
+                </a>
+            </g:if>
+
         </div>
     </g:if>
 

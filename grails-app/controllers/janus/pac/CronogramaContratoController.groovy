@@ -904,7 +904,7 @@ class CronogramaContratoController {
         return[contrato:contrato]
     }
 
-    def uploadFile() {
+    def uploadFile_old() {
         def obra = Obra.get(params.id)
         def path = "/var/janus/" + "xlsContratos/"   //web-app/archivos
         new File(path).mkdirs()
@@ -1048,6 +1048,220 @@ class CronogramaContratoController {
             flash.message = "Seleccione un archivo para procesar"
             redirect(action: 'subirExcel')
 //            println "NO FILE"
+        }
+    }
+
+    def uploadFile() {
+        println "uploadFile $params"
+        def cn = dbConnectionService.getConnection()
+        def filasNO = [0, 1]
+        def filasTodasNo = []
+        def cntr_id = params.id
+        def path = "/var/janus/" + "xlsCronosContratos/" + cntr_id + "/"   //web-app/archivos
+        new File(path).mkdirs()
+        def sql = ""
+
+        def f = request.getFile('file')  //archivo = name del input type file
+        if (f && !f.empty) {
+            def fileName = f.getOriginalFilename() //nombre original del archivo
+            def ext
+
+            def parts = fileName.split("\\.")
+            fileName = ""
+            parts.eachWithIndex { obj, i ->
+                if (i < parts.size() - 1) {
+                    fileName += obj
+                } else {
+                    ext = obj
+                }
+            }
+
+            if (ext == "xlsx") {
+
+                fileName = "xlsContratado_" + new Date().format("yyyyMMdd_HHmmss")
+
+                def fn = fileName
+                fileName = fileName + "." + ext
+
+                def pathFile = path + fileName
+                def src = new File(pathFile)
+
+                def i = 1
+                while (src.exists()) {
+                    pathFile = path + fn + "_" + i + "." + ext
+                    src = new File(pathFile)
+                    i++
+                }
+
+                f.transferTo(new File(pathFile)) // guarda el archivo subido al nuevo path
+
+                //procesar excel
+                def htmlInfo = "", errores = "", doneHtml = "", done = 0
+                InputStream ExcelFileToRead = new FileInputStream(pathFile);
+                XSSFWorkbook workbook = new XSSFWorkbook(ExcelFileToRead);
+
+                XSSFSheet sheet1 = workbook.getSheetAt(0);
+                XSSFRow row;
+                XSSFCell cell;
+
+                XSSFRow row1;
+                XSSFCell cell1;
+
+//               Iterator rows1 = sheet1.rowIterator()
+
+//                while (rows1.hasNext()) {i
+//                    row1 = (XSSFRow) rows1.next()
+//                    Iterator cells = row1.cellIterator()
+//
+//                    if(cells[0].getCellType() == XSSFCell.CELL_TYPE_NUMERIC){
+//                        println("si " + row1.rowNum )
+//                    }else{
+//                        filasTodasNo += row1.rowNum
+//                        println("no " + row1.rowNum )
+//                    }
+//                }
+
+                Iterator rows = sheet1.rowIterator();
+                while (rows.hasNext()) {
+                    i
+
+                    row = (XSSFRow) rows.next()
+
+                    if (!(row.rowNum in filasNO)) {
+                        def ok = true
+                        Iterator cells = row.cellIterator()
+                        def rgst = []
+                        def meses = []
+
+                        while (cells.hasNext()) {
+                            cell = (XSSFCell) cells.next()
+
+                            if (cell.columnIndex < 6) {  //separa cronograma
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    rgst.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    rgst.add(cell.getStringCellValue())
+                                } else {
+                                    rgst.add('')
+                                }
+                            } else {
+                                if (cell.getCellType() == XSSFCell.CELL_TYPE_NUMERIC) {
+                                    meses.add(cell.getNumericCellValue())
+                                } else if (cell.getCellType() == XSSFCell.CELL_TYPE_STRING) {
+                                    meses.add(cell.getStringCellValue())
+                                } else {
+                                    meses.add(0)
+                                }
+                            }
+                        }
+
+                        def numero = rgst[0]
+                        def rubro = rgst[1]
+                        def unidad = rgst[2]
+                        def cantidad = rgst[3]
+                        def punitario = rgst[4]
+                        def subtotal = rgst[5]
+                        def pcun = 0.0, cntd = 0.0, pcnt = 0.0, prcl = 0.0, prco = 0.0
+
+//                        println "R: $numero $rubro $unidad $cantidad $punitario $subtotal $meses"
+
+                        try {numero = numero.toDouble()} catch (e) {numero = ''}
+
+                        if ( numero ) {
+//                            println "puede procesar: $rgst, meses: ${meses.size()}"
+                            htmlInfo += "<p>Hoja : " + sheet1.getSheetName() + " - ITEM: " + rubro + meses + "</p>"
+//                            cantidad = cantidad.replaceAll(",", ".")
+//                            punitario = punitario.replaceAll(",", ".")
+//                            def vc = VolumenContrato.findByContratoAndVolumenOrden(contrato, numero)
+                            sql = "select vocr__id from vocr where cntr__id = ${cntr_id} and vocrordn = ${numero}"
+                            def vc_id = cn.rows(sql.toString())[0].vocr__id
+                            if (!vc_id) {
+                                errores += "<li>No se encontró volumen contrato con id ${cod} (linea: ${row.rowNum + 1})</li>"
+                                println "No se encontró volumen contrato con id ${cod}"
+                                ok = false
+                            } else {
+
+                                if (!punitario) {
+                                    punitario = 0
+                                }
+
+                                if (!cantidad) {
+                                    cantidad = 0
+                                }
+//                                println "precio: ${punitario.toDouble()}"
+                                pcun = punitario.toDouble()
+                                cntd = cantidad.toDouble()
+                                sql = "update vocr set vocrpcun = ${pcun}, vocrcntd = ${cntd}, vocrsbtt = ${pcun * cntd} " +
+                                        "where vocr__id = ${vc_id}"
+//                                vc.volumenCantidad = Math.round(cantidad.toDouble() * 100) / 100
+//                                vc.volumenSubtotal = punitario.toDouble() * cantidad.toDouble()
+                                try {
+//                                    vc.save(flush: true)
+                                    cn.execute(sql.toString())
+                                } catch (e) {
+                                    println " no se pudo guardar $rgst: ${e.erros()}"
+                                }
+
+                                println "procesa ${meses}"
+                                /* regsitra cronograma */
+                                prco = 0; prcl = 0; pcnt = 0;
+                                for(m in 0..meses.size()) {
+                                    if(meses[m] > 0) {
+                                        sql = "select crcr__id from crcr where cntr__id = $cntr_id and " +
+                                                "crcrprdo = ${m+1} and vocr__id = $vc_id"
+                                        def crcr_id = cn.rows(sql.toString())[0]?.crcr__id
+                                        prco = meses[m].toDouble()
+                                        prcl = prco / pcun + 0.01
+                                        pcnt = Math.round( (prcl / cntd) * 10000) / 100
+                                        if(crcr_id){
+                                            sql = "update crcr set crcrcntd = ${prcl}, crcrprct = $pcnt, " +
+                                                    "crcrprco = $prco where crcr__id = $crcr_id"
+                                        } else {
+                                            sql = "insert into crcr(cntr__id, vocr__id, crcrprdo, crcrcntd, crcrprct, " +
+                                                    " crcrprco) values ($cntr_id, $vc_id, ${m+1}, $prcl, $pcnt, " +
+                                                    "$prco)"
+                                        }
+                                        try {
+                                            cn.execute(sql.toString())
+                                        } catch (e) {
+                                            println " no se pudo guardar crcr $rgst: ${e.erros()}"
+                                        }
+                                    } else {
+                                        sql = "delete from crcr where cntr__id = $cntr_id and  vocr__id = $vc_id and " +
+                                                "crcrprdo = ${m+1}"
+                                        try {
+                                            cn.execute(sql.toString())
+                                        } catch (e) {
+                                            println " no se pudo guardar crcr $rgst: ${e.erros()}"
+                                        }
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                } //sheets.each
+                if (done > 0) {
+                    doneHtml = "<div class='alert alert-success'>Se han ingresado correctamente " + done + " registros</div>"
+                }
+
+                def str = doneHtml
+                str += htmlInfo
+                if (errores != "") {
+                    str += "<ol>" + errores + "</ol>"
+                }
+
+                flash.message = str
+
+                println "DONE!!"
+                redirect(action: "mensajeUploadContrato", id: params.id)
+            } else {
+                flash.message = "Seleccione un archivo Excel xlsx para procesar (archivos xls deben ser convertidos a xlsx primero)"
+                redirect(action: 'formArchivo')
+            }
+        } else {
+            flash.message = "Seleccione un archivo para procesar"
+            redirect(action: 'subirExcel')
         }
     }
 
