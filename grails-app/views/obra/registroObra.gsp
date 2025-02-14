@@ -310,14 +310,14 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
                 <div class="col-md-1 formato" style="width: 200px;">Documento de referencia</div>
 
                 <div class="col-md-2">
-                    <g:textField name="oficioIngreso" class="memo allCaps" value="${obra?.oficioIngreso}" maxlength="20"
+                    <g:textField name="oficioIngreso" class="memo allCaps" value="${obra?.oficioIngreso}" maxlength="40"
                                  style="width: 120px; margin-left: -10px" title="Número del Oficio de Ingreso"/>
                 </div>
 
                 <div class="col-md-2 formato" style="width: 200px; margin-left: -10px;">Memorando cantidad de obra</div>
 
                 <div class="col-md-2"><g:textField name="memoCantidadObra" class="cantidad allCaps"
-                                                   value="${obra?.memoCantidadObra}" maxlength="20"
+                                                   value="${obra?.memoCantidadObra}" maxlength="40"
                                                    style="width: 120px; margin-left: -20px"
                                                    title="Memorandum u oficio de cantidad de obra"/></div>
 
@@ -1246,7 +1246,7 @@ width: 160px; height: 120px; top: 10%; left: 40%; background-color: #cdcdcd; tex
         $("#btn-memoSIF").click(function () {
             $.box({
                 imageClass: "box_light",
-                input: "<input type='text' name='memoSIF' id='memoSIF' maxlength='20' class='allCaps' ${(obra?.estadoSif !='R')?'disabled':''} value='" + memoSIF + "' />",
+                input: "<input type='text' name='memoSIF' id='memoSIF' maxlength='40' class='allCaps' ${(obra?.estadoSif !='R')?'disabled':''} value='" + memoSIF + "' />",
                 type: "prompt",
                 title: "Memo S.I.F.",
                 <g:if test="${obra?.estadoSif!='R'}">

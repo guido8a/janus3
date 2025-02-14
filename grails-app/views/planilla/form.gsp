@@ -174,7 +174,7 @@
                                 </label>
                                 <span class="col-md-3">
                                     <g:textField name="oficioEntradaPlanilla" class="form-control required allCaps"
-                                                 value="${planillaInstance.oficioEntradaPlanilla}" maxlength="20"/>
+                                                 value="${planillaInstance.oficioEntradaPlanilla}" maxlength="40"/>
 
                                 </span>
                             </span>

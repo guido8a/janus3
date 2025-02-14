@@ -234,10 +234,10 @@ class Planilla {
         fechaInicio(blank: true, nullable: true)
         fechaFin(blank: true, nullable: true)
 
-        oficioEntradaPlanilla(maxSize: 20, blank: true, nullable: true)
-        memoSalidaPlanilla(maxSize: 20, blank: true, nullable: true)
-        memoPedidoPagoPlanilla(maxSize: 20, blank: true, nullable: true)
-        memoPagoPlanilla(maxSize: 20, blank: true, nullable: true)
+        oficioEntradaPlanilla(maxSize: 40, blank: true, nullable: true)
+        memoSalidaPlanilla(maxSize: 40, blank: true, nullable: true)
+        memoPedidoPagoPlanilla(maxSize: 40, blank: true, nullable: true)
+        memoPagoPlanilla(maxSize: 40, blank: true, nullable: true)
 
         fechaOficioEntradaPlanilla(blank: true, nullable: true)
         fechaMemoSalidaPlanilla(blank: true, nullable: true)

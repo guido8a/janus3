@@ -34,7 +34,7 @@ input[readonly] {
                     ${lblMemo}
                 </label>
                 <span class="col-md-5">
-                    <g:textField name="memo" class="form-control required allCaps" maxlength="20" value="${planilla.memoPagoPlanilla}"/>
+                    <g:textField name="memo" class="form-control required allCaps" maxlength="40" value="${planilla.memoPagoPlanilla}"/>
                     <p class="help-block ui-helper-hidden"></p>
                 </span>
             </span>

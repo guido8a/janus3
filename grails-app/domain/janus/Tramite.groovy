@@ -61,7 +61,7 @@ class Tramite implements Auditable {
         fechaRecepcion(blank: true, nullable: true, attributes: [title: 'tipoFechaRecepcion'])
         documentosAdjuntos(size: 1..127, blank: true, nullable: true, attributes: [title: 'tramiteDocsAdjuntos'])
         fechaEnvio(blank: true, nullable: true, attributes: [title: 'Fecha de envío'])
-        memo(maxSize: 20, blank: true, nullable: true, attributes: [title: 'numero de memo'])
+        memo(maxSize: 40, blank: true, nullable: true, attributes: [title: 'numero de memo'])
         planilla(blank:true,nullable: true)
         fechaRespuesta(blank: true, nullable: true, attributes: [title: 'tipoFechaRecepcion'])
         fechaFinalizacion(blank: true, nullable: true, attributes: [title: 'tipoFechaRecepcion'])
