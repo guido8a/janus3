@@ -321,7 +321,7 @@ class ReportePlanillas4Controller {
         rjpl.each {rj ->
             reajustes.add([planilla: rj.planilla, reajuste: rj.fpReajuste])
         }
-//        println "reajustes: $reajustes"
+        println "reajustes: $reajustes"
         reajustes.unique()
 //        println "reajustes unique: $reajustes"
 
@@ -331,7 +331,7 @@ class ReportePlanillas4Controller {
 
         if(planilla.contrato.aplicaReajuste == 1) {
             //** genera B0, P0 y Fr de la planilla **
-//        println "reajustes: ${reajustes}"
+        println "reajustes2: ${reajustes}"
             reajustes.each {
                 pl = reporteTablas(it.planilla, it.reajuste)
                 pdfs.add(pl.toByteArray())
@@ -343,6 +343,8 @@ class ReportePlanillas4Controller {
                 pdfs.add(pl.toByteArray())
                 contador++
             }
+        } else {
+            pl =  resumenAnticipo(planilla)  //no hay reajuste
         }
         if(planilla.tipoPlanilla.codigo in ['P', 'Q', 'R', 'L']) {
             println "invoca multas"
@@ -359,6 +361,7 @@ class ReportePlanillas4Controller {
             contador++
         }
 
+        println "contador: $contador"
         if(contador > 1) {
             def baos = new ByteArrayOutputStream()
             Document document
