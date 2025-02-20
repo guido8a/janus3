@@ -285,7 +285,7 @@ class CronogramaContratoController {
 
 
         def subpres = VolumenContrato.findAllByObra(obra, [sort: "volumenOrden"]).subPresupuesto.unique()
-
+        println "subpres: $subpres"
         def subpre = params.subpre
         if (!subpre) {
             subpre = subpres[0].id

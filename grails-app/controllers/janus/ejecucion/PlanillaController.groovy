@@ -5634,7 +5634,9 @@ class PlanillaController {
     def prorrateaPo(fprj, cntr, plnl) {
         println "prorrateaPo: fprj: $fprj, obra: ${cntr.obraContratada.id}, valor: $plnl"
         def cn = dbConnectionService.getConnection()
-        def sql = "select sum(vlobsbtt) suma from fpsp, vlob where vlob.sbpr__id = fpsp.sbpr__id and " +
+//        def sql = "select sum(vlobsbtt) suma from fpsp, vlob where vlob.sbpr__id = fpsp.sbpr__id and " +
+//                "fprj__id = ${fprj} and obra__id = ${cntr.obraContratada.id}"
+        def sql = "select sum(vocrsbtt) suma from fpsp, vocr where vocr.sbpr__id = fpsp.sbpr__id and " +
                 "fprj__id = ${fprj} and obra__id = ${cntr.obraContratada.id}"
         println "prorrateaPo--sql: $sql"
         def valor = cn.rows(sql.toString())[0].suma * plnl / cntr.monto
