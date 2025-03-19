@@ -171,6 +171,8 @@ class Reportes2Controller {
         def persona = Persona.get(session.usuario.id)
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
         def rubros
+        def falta = []
+        def cnta = 0
 
         if((tama -1) >= 100){
             rubros = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique()[0..100]
@@ -223,7 +225,7 @@ class Reportes2Controller {
 
         def tipo = params.tipo //i: ilustraciones, e: especificaciones, ie: ambas
 
-        println "rubros: ${rubros.size()}"
+//        println "rubros: ${rubros}"
         rubros.eachWithIndex { rubro, ik ->
 
             Paragraph paragraphRubro = new Paragraph();
@@ -256,17 +258,23 @@ class Reportes2Controller {
                 extEspecificacion = ares.ruta.split("\\.")
                 extEspecificacion = extEspecificacion[extEspecificacion.size() - 1]
                 pathEspecificacion = "/var/janus/" + "rubros" + File.separatorChar + ares?.ruta
-                println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+//                println "ruta: --> ${ares?.ruta} path: ${pathEspecificacion.toLowerCase()}"
+//                println "...$cnta $falta"
                 if (pathEspecificacion.toLowerCase().contains("pdf")) {
-                    readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion));
-                    println "pags: ${readerEspecificacion.getNumberOfPages()}"
-                    pagesEspecificacion = readerEspecificacion.getNumberOfPages()
+                    try {
+                        readerEspecificacion = new PdfReader(new FileInputStream(pathEspecificacion))
+//                        println "pags: ${readerEspecificacion.getNumberOfPages()}"
+                        pagesEspecificacion = readerEspecificacion.getNumberOfPages()
+                    } catch (e) {
+                        falta.add("item: " + rubro.codigo + " archivo: " + ares.ruta)
+                        cnta++
+                    }
                 }else{
                     //redirect(controller: "contrato", action: "verContrato", params: [contrato: params.id])
                 }
             }
 
-            println "...2--"
+//            println "...2--"
             def maxImageSize = 400
 
             addCellTabla(tablaRubro, new Paragraph("Código", fontTh), prmsTh)
@@ -330,7 +338,7 @@ class Reportes2Controller {
             document.add(tablaRubro)
 
             infoText(cb, document, rubrosText, DOC)
-            println "paginas: $pagesEspecificacion"
+//            println "paginas: $pagesEspecificacion"
             if (extEspecificacion == "pdf") {
                 pagesEspecificacion.times {
                     document.newPage();
@@ -358,6 +366,17 @@ class Reportes2Controller {
                 }
                 document.newPage();
             }
+
+        }
+        /** pdfs que faltan */
+        if(falta != "") {
+            falta = falta.unique()
+            def tx = "Archivos que faltan: <br>"
+            falta.each { f ->
+                tx += f + '<br>'
+            }
+            render "${tx}"
+            return
         }
 
         println "...termina reporte"
