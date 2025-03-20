@@ -26,7 +26,7 @@
         text-align: right;
     }
     .totales {
-        width: 80px;
+        /*width: 80px;*/
         text-align: right;
         font-weight: bold;
     }
@@ -126,8 +126,10 @@
     </tbody>
 </table>
 
-<div class="row" id="divTotalesTabla" style="margin-top: -10px">
+<div class="row" style="margin-top: -10px">
+    <div class="col-md-12" id="divTotalesTabla">
 
+    </div>
 </div>
 
 </html>
