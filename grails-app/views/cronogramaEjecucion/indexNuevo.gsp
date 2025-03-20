@@ -65,11 +65,22 @@
                     </a>
                 </g:if>
             </div>
-            <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">
-                <i class="fa fa-print"></i> Imprimir
-            </a>
+            <div class="btn-group">
+                <a href="#" id="btnReporte" class="btn btn-success" title="Imprimir">
+                    <i class="fa fa-print"></i> Imprimir
+                </a>
+            </div>
         </g:if>
-%{--        <g:if test="${contrato.fiscalizador?.id == session.usuario.id || contrato.administrador?.id == session.usuario.id}">--}%
+
+        %{--<div class="btn-group" style="margin-left: 35px">--}%
+            %{--<g:each in="${paginas}" var="pg">--}%
+                %{--<a href="#" class="btn btn-info btnPg" data-valor="${pg}">--}%
+                    %{--<i class="fa fa-edit"></i> ${pg}--}%
+                %{--</a>--}%
+            %{--</g:each>--}%
+        %{--</div>--}%
+
+    %{--        <g:if test="${contrato.fiscalizador?.id == session.usuario.id || contrato.administrador?.id == session.usuario.id}">--}%
 %{--            <g:if test="${contrato.administrador?.id == session.usuario.id}">--}%
 %{--                <div class="btn-group" style="width: 400px">--}%
 %{--                </div>--}%
@@ -114,7 +125,7 @@
     </div>
 </g:if>
 
-<div id="divTabla" style="max-height: 650px; overflow: auto;">
+<div id="divTabla" style="max-height: 650px; overflow: auto; width: 1360px">
 
 </div>
 
@@ -197,14 +208,15 @@
     %{--}--}%
 
 
-    function updateTabla() {
+    function updateTabla(pag) {
         var g = cargarLoader("Cargando...");
         $("#toolbar").hide();
         $.ajax({
             type: "POST",
             url: "${createLink(action: 'tablax')}",
             data: {
-                id: ${contrato.id}
+                id: ${contrato.id},
+                pag: pag
             },
             success: function (msg) {
                 g.modal("hide");
@@ -213,6 +225,26 @@
             }
         });
     }
+
+
+    %{--$(".btnPg").click(function () {--}%
+        %{--var g = cargarLoader("Cargando...");--}%
+        %{--var pag = $(this).data("valor");--}%
+        %{--$("#toolbar").hide();--}%
+        %{--$.ajax({--}%
+            %{--type: "POST",--}%
+            %{--url: "${createLink(action: 'tablax')}",--}%
+            %{--data: {--}%
+                %{--id: ${contrato.id},--}%
+                %{--pag: pag--}%
+            %{--},--}%
+            %{--success: function (msg) {--}%
+                %{--g.modal("hide");--}%
+                %{--$("#divTabla").html(msg);--}%
+                %{--$("#toolbar").show();--}%
+            %{--}--}%
+        %{--});--}%
+    %{--});--}%
 
 
 

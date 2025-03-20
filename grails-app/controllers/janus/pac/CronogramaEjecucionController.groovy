@@ -1493,8 +1493,8 @@ class CronogramaEjecucionController {
     }
 
     def indexNuevo() {
-
         println "indexNuevo: $params"
+        def cn = dbConnectionService.getConnection()
         def desde = params.desde ?: 1
         def hasta = params.hasta?.toInteger() ?: 10
 //        hasta = Math.min(hasta, 10)
@@ -1526,15 +1526,6 @@ class CronogramaEjecucionController {
             eq("obra", obra)
             eq("tipo", "S")
             isNull("fechaFin")
-/*
-            or {
-                isNull("fechaFin")
-                and {
-                    le("fechaInicio", new Date().clearTime())
-                    gt("fechaFin", new Date().clearTime())
-                }
-            }
-*/
         }
 
         println "obra: ${obra.id}, suspensiones: ${suspensiones}"
@@ -1552,8 +1543,9 @@ class CronogramaEjecucionController {
 
         def comp = Contrato.findByPadreAndTipoContrato(contrato, TipoContrato.findByCodigo('C'))
 
-        return [obra : obra, contrato: contrato, suspensiones: suspensiones, ini: ini.last(), desde: desde.toInteger(),
-                hasta: hasta.toInteger(), maximo: 100, complementario: comp?.id ?: 0]
+        return [obra : obra, contrato: contrato, suspensiones: suspensiones, ini: ini.last(),
+                desde: desde.toInteger(), hasta: hasta.toInteger(), maximo: 100,
+                complementario: comp?.id ?: 0]
     }
 
 
@@ -1984,8 +1976,8 @@ class CronogramaEjecucionController {
 
 //        println "finalizado creaCrngEjec"
 
-//        redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
-        redirect(action: "index_jx", params: [obra: obra, id: contrato.id, ini: fcin])
+        redirect(action: "indexNuevo", params: [obra: obra, id: contrato.id, ini: fcin])
+//        redirect(action: "index_jx", params: [obra: obra, id: contrato.id, ini: fcin])
     }
 
     def insertaPrej(prmt) {
@@ -3313,11 +3305,16 @@ class CronogramaEjecucionController {
         def sql1 = ""
         def sqlp = ""
         def sqle = ""
+        def salta = ""
+        def registros = 10
+        if(params.pag) {
+            salta = "offset ${(params.pag.toInteger() - 1) * registros}"
+        }
         def sql = "select prej__id, prejfcin, prejfcfn, prejtipo, case when prejtipo = 'P' then 'Periodo' " +
                 "when prejtipo = 'S' then 'Suspensión' when prejtipo = 'A' then 'Ampliación' " +
                 "when prejtipo = 'C' then 'Complement.' end tipo, prejnmro, '<br>('||prejfcfn-prejfcin+1||' días)' dias " +
                 "from prej where cntr__id = ${params.id} order by prejfcin"
-//        println "sql: $sql"
+        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
             titulo1.add(["${d.prejfcin.format('dd-MM-yyyy')} a ${d.prejfcfn.format('dd-MM-yyyy')}", d.prejtipo])
@@ -3338,7 +3335,7 @@ class CronogramaEjecucionController {
         sql = "select itemcdgo, itemnmbr, unddcdgo, vocr__id, vocrsbtt, vocrpcun, vocrcntd, vocr__id " +
                 "from item, undd, vocr " +
                 "where item.item__id = vocr.item__id and " +
-                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn"
+                "undd.undd__id = item.undd__id and cntr__id = ${params.id} order by vocrordn limit ${registros} ${salta} "
 //        println "sql: $sql"
 
         cn.eachRow(sql.toString()) { d ->
@@ -3390,13 +3387,20 @@ class CronogramaEjecucionController {
 //        println "--> $rubros"
 //        println "--> $totales"
 //        println "--> $total_ac"
+        sql = "select ceil(count(*)/10::float) cnta from vocr where cntr__id = ${params.id}"
+        def pagn = []
+        cn.rows(sql.toString())[0].cnta.times {
+            pagn.add(it+1)
+        }
+        println pagn
+
 
         cn.close()
         cn1.close()
         cnp.close()
         cne.close()
         [titulo1: titulo1, titulo2: titulo2, rubros: rubros, totales: totales, suma: suma, total_ac: total_ac,
-         ttpc: total_pc, ttpa: total_pa, contrato: params.id]
+         ttpc: total_pc, ttpa: total_pa, contrato: params.id, pagina: params.pag, paginas: pagn ]
 
     }
 

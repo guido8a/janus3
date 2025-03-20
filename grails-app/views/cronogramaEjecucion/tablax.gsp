@@ -51,6 +51,18 @@
 
 
 </head>
+
+<div class="btn-group" style="margin-left: 35px">
+    <g:each in="${paginas}" var="pg">
+        <a href="#" class="btn btn-info btnPg" data-valor="${pg}">
+            <i class="fa fa-edit"></i> ${pg}
+        </a>
+    </g:each>
+    <div class="btn">Páginas de 10 rubros: Página actual: ${pagina?:0}</div>
+</div>
+
+
+
 <table class="table table-bordered table-condensed table-hover table-striped">
     <thead>
     <tr>
@@ -155,6 +167,7 @@
                             className : "btn-success",
                             callback  : function () {
                                 var data = "obra=${janus.Contrato.get(contrato)?.obra?.id}";
+                                data += "&pag=${pagina}";
                                 $(".tiny").each(function () {
                                     var tipo = $(this).data("tipo");
                                     var val = parseFloat($(this).val());
@@ -169,7 +182,7 @@
                                     data: data,
                                     success: function (msg) {
                                         b.modal("hide");
-                                        updateTabla();
+                                        updateTabla(${pagina});
                                     }
                                 });
                             } //callback
@@ -250,6 +263,14 @@
             $(".trHighlight").removeClass("trHighlight");
         }
     });
+
+    $(".btnPg").click(function () {
+        var pag = $(this).data("valor");
+        updateTabla(pag);
+    });
+
+
+
 
 
 </script>
