@@ -1,7 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <meta name="layout" content="main">
+    <meta name="layout" content="mainMatriz">
+    %{--<meta name="layout" content="mainCrono">--}%
     <title>Cronograma ejecución</title>
 
     <style type="text/css">
@@ -125,7 +126,7 @@
     </div>
 </g:if>
 
-<div id="divTabla" style="max-height: 650px; overflow: auto; width: 1360px">
+<div id="divTabla" style="max-height: 650px; overflow: auto; max-width: 1360px">
 
 </div>
 

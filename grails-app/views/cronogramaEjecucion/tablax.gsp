@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <meta name="layout" content="mainCrono">
+    %{--<meta name="layout" content="mainCrono">--}%
 
 
     %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
@@ -63,7 +63,7 @@
 
 
 
-<table class="table table-bordered table-condensed table-hover table-striped">
+<table class="table table-bordered table-condensed table-hover table-striped" width="1360px">
     <thead>
     <tr>
         <th rowspan="2" style="width:70px;">Código</th>
