@@ -3118,9 +3118,9 @@ class CronogramaEjecucionController {
         def maxDolAcu = 0, maxPrctAcu = 0, maxCanAcu = 0
 
         periodos.eachWithIndex { periodo, i ->
-            filaDolPla += "<td class='dol planilla num ${periodo.tipo}'>"
-            filaPorPla += "<td class='prct planilla num ${periodo.tipo}'>"
-            filaCanPla += "<td class='fis planilla num ${periodo.tipo}'>"
+//            filaDolPla += "<td class='dol planilla num ${periodo.tipo}'>"
+//            filaPorPla += "<td class='prct planilla num ${periodo.tipo}'>"
+//            filaCanPla += "<td class='fis planilla num ${periodo.tipo}'>"
             filaDolMod += "<td class='dol modificacion num ${periodo.tipo}'>"
             filaPorMod += "<td class='prct modificacion num ${periodo.tipo}'>"
             filaCanMod += "<td class='fis modificacion num ${periodo.tipo}'>"
@@ -3244,30 +3244,31 @@ class CronogramaEjecucionController {
         html += "</td>"
         html += "</tr>"
 
-        html += "<tr class='item_row ' data-vol='" + cronos.volumen.id + "'>"
-        html += '<th rowspan="3">Planillado</th>'
-        html += '<td>$</td>'
-        html += filaDolPla
-        html += "<td class='num dol total totalRubro'>"
-        html += numero(totDolPla)
-        html += "</td>"
-        html += "</tr>"
+//        html += "<tr class='item_row ' data-vol='" + cronos.volumen.id + "'>"
+//        html += '<th rowspan="3">Planillado</th>'
+//        html += '<td>$</td>'
+//        html += filaDolPla
+//        html += "<td class='num dol total totalRubro'>"
+//        html += numero(totDolPla)
+//        html += "</td>"
+//        html += "</tr>"
 
         html += "<tr class='click item_prc '>"
-        html += '<td>%</td>'
+//        html += '<td>%</td>'
+        html += '<td></td>'
         html += filaPorPla
         html += "<td class='num prct total totalRubro'>"
-        html += numero(totPorPla)
+//        html += numero(totPorPla)
         html += "</td>"
         html += "</tr>"
 
-        html += "<tr class='click item_f '>"
-        html += '<td>F</td>'
-        html += filaCanPla
-        html += "<td class='num fis total totalRubro'>"
-        html += numero(totCanPla)
-        html += "</td>"
-        html += "</tr>"
+//        html += "<tr class='click item_f '>"
+//        html += '<td>F</td>'
+//        html += filaCanPla
+//        html += "<td class='num fis total totalRubro'>"
+//        html += numero(totCanPla)
+//        html += "</td>"
+//        html += "</tr>"
 
         html += "<tr class='item_row ' data-vol='" + cronos.volumen.id + "'>"
         html += '<th rowspan="3">Modificaciones</th>'
