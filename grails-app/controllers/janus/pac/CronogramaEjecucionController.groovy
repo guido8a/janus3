@@ -3009,7 +3009,7 @@ class CronogramaEjecucionController {
         html += "<table class='table table-condensed'>"
         html += "<tr>"
         html += "<th>Rubro</th>"
-        html += "<td>" + cronos.codigo + " " + cronos.nombre + "</td>"
+        html += "<td style='font-size: 14px'>" + cronos.codigo + " - " + cronos.nombre + "</td>"
         html += "</tr>"
         html += "<tr>"
         html += "<th>Unidad</th>"
