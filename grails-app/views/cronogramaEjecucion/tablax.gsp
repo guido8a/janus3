@@ -36,16 +36,6 @@
         background-color: #f0f0f0;
     }
 
-    table {
-        table-layout: fixed;
-        overflow-x: scroll;
-    }
-    th, td {
-        overflow: auto;
-        text-overflow: ellipsis;
-        /*word-wrap: break-word;*/
-    }
-
     </style>
 
 
@@ -66,7 +56,7 @@
 <table class="table table-bordered table-condensed table-hover table-striped" width="1360px">
     <thead>
     <tr style="width: 100%">
-%{--        <th rowspan="2" style="width:70px;">Código</th>--}%
+        <th rowspan="2" style="width:70px;">Código</th>
         <th rowspan="2" style="width:150px;">Rubro</th>
         <th rowspan="2" style="width:26px;">*</th>
         <th rowspan="2" style="width:60px;">Cantidad Unitario Total</th>

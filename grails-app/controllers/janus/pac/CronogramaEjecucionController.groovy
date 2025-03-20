@@ -3348,8 +3348,8 @@ class CronogramaEjecucionController {
         cn.eachRow(sql.toString()) { d ->
             val = []
             val.add(d.vocr__id)
-//            val.add(d.itemcdgo)
-            val.add("<strong> ${d.itemcdgo} </strong> - " + "${d.itemnmbr}<br><strong>Unidad: ${d.unddcdgo}</strong>")
+            val.add(d.itemcdgo)
+            val.add("${d.itemnmbr}<br><strong>Unidad: ${d.unddcdgo}</strong>")
             val.add("Subtt.<br>P.U.<br>Cant.")
             val.add("${d.vocrsbtt}<br>${d.vocrpcun}<br>${d.vocrcntd}")
 
