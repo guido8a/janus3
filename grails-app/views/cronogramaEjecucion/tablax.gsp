@@ -35,6 +35,17 @@
     .pie2 {
         background-color: #f0f0f0;
     }
+
+    table {
+        table-layout: fixed;
+        overflow-x: scroll;
+    }
+    th, td {
+        overflow: auto;
+        text-overflow: ellipsis;
+        /*word-wrap: break-word;*/
+    }
+
     </style>
 
 
@@ -55,19 +66,19 @@
 <table class="table table-bordered table-condensed table-hover table-striped" width="1360px">
     <thead>
     <tr style="width: 100%">
-        <th rowspan="2" style="width:70px;">Código</th>
-        <th rowspan="2" style="width:220px;">Rubro</th>
+%{--        <th rowspan="2" style="width:70px;">Código</th>--}%
+        <th rowspan="2" style="width:150px;">Rubro</th>
         <th rowspan="2" style="width:26px;">*</th>
         <th rowspan="2" style="width:60px;">Cantidad Unitario Total</th>
         <th rowspan="2" style="width:12px;">T.</th>
         <g:each in="${titulo1}" var="t">
-            <th class="${t[1] == 'S' ? 'suspension' : ''}">${t[0]}</th>
+            <th class="${t[1] == 'S' ? 'suspension' : 'numero'}">${t[0]}</th>
         </g:each>
         <th rowspan="2">Total rubro</th>
     </tr>
     <tr>
         <g:each in="${titulo2}" var="t">
-            <th class="${t[1] == 'S' ? 'suspension' : ''}">${raw(t[0])}</th>
+            <th class="${t[1] == 'S' ? 'suspension' : 'numero'}">${raw(t[0])}</th>
         </g:each>
     </tr>
     </thead>
