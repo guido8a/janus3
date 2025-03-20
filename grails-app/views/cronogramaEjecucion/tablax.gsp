@@ -3,19 +3,7 @@
 <head>
     %{--<meta name="layout" content="mainCrono">--}%
 
-
-    %{--<link href="${resource(dir: 'js/jquery/plugins/box/css', file: 'jquery.luz.box.css')}" rel="stylesheet">--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/box/js', file: 'jquery.luz.box.js')}"></script>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'jquery.validate.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'custom-methods.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/jquery/plugins/jquery-validation-1.9.0', file: 'messages_es.js')}"></script>--}%
-
-    %{--<script src="${resource(dir: 'js/jquery/i18n', file: 'jquery.ui.datepicker-es.js')}"></script>--}%
-
-    %{--<link href="${resource(dir: 'css', file: 'cronograma.css')}" rel="stylesheet">--}%
-
-    %{-- <title>Cronograma ejecución</title>--}%
+    <title></title>
 
     <style type="text/css">
     .valor {
@@ -52,20 +40,21 @@
 
 </head>
 
-<div class="btn-group" style="margin-left: 35px">
-    <g:each in="${paginas}" var="pg">
-        <a href="#" class="btn btn-info btnPg" data-valor="${pg}">
-            <i class="fa fa-edit"></i> ${pg}
-        </a>
-    </g:each>
-    <div class="btn">Páginas de 10 rubros: Página actual: ${pagina?:0}</div>
-</div>
-
+%{--<div class="row">--}%
+%{--    <div class="col-md-12 btn-group" style="margin-left: 35px">--}%
+%{--        <g:each in="${paginas}" var="pg">--}%
+%{--            <a href="#" class="btn btn-info btnPg" data-valor="${pg}">--}%
+%{--                <i class="fa fa-edit"></i> ${pg}--}%
+%{--            </a>--}%
+%{--        </g:each>--}%
+%{--        <div class="btn">Páginas de 10 rubros: Página actual: ${pagina?:0}</div>--}%
+%{--    </div>--}%
+%{--</div>--}%
 
 
 <table class="table table-bordered table-condensed table-hover table-striped" width="1360px">
     <thead>
-    <tr>
+    <tr style="width: 100%">
         <th rowspan="2" style="width:70px;">Código</th>
         <th rowspan="2" style="width:220px;">Rubro</th>
         <th rowspan="2" style="width:26px;">*</th>
@@ -82,59 +71,63 @@
         </g:each>
     </tr>
     </thead>
+    %{--</table>--}%
 
+    %{--<div class="" style="width: 99.7%;height: 600px; overflow-y: auto;float: right; margin-top: -20px">--}%
+    %{--    <table class="table-bordered table-condensed table-hover table-striped" style="width: 100%">--}%
     <tbody>
-        <g:each in="${rubros}" var="rubro">
-            <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
-                <g:each in="${rubro}" var="val" status="i">
-                    <g:if test="${i > 0}">
+    <g:each in="${rubros}" var="rubro">
+        <tr class="click item_row   rowSelected" data-vol="${rubro[1]}" data-vocr="${rubro[0]}">
+            <g:each in="${rubro}" var="val" status="i">
+                <g:if test="${i > 0}">
                     <g:if test="${i == 3}">
                         <td class="valor2">${raw(val)}</td>
                     </g:if>
                     <g:else>
-                    <g:if test="${i<5}">
-                        <td class="valor">${raw(val)}</td>
-                    </g:if>
-                    <g:else>
-                        <td class="numero">${raw(val)}</td>
+                        <g:if test="${i<5}">
+                            <td class="valor">${raw(val)}</td>
+                        </g:if>
+                        <g:else>
+                            <td class="numero">${raw(val)}</td>
+                        </g:else>
                     </g:else>
-                    </g:else>
-                    </g:if>
-                </g:each>
-            </tr>
-        </g:each>
+                </g:if>
+            </g:each>
+        </tr>
+    </g:each>
 
-        <tr class="pie">
-            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>
-            <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>
-            <g:each in="${totales}" var="tot" status="i">
-                <td class="totales">${raw(tot)}</td>
-            </g:each>
-        </tr>
-        <tr class="pie2">
-            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>
-            <td colspan="2"></td>
-            <g:each in="${total_ac}" var="tot" status="i">
-                <td class="totales">${raw(tot)}</td>
-            </g:each>
-        </tr>
-        <tr class="pie">
-            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>
-            <td colspan="2"></td>
-            <g:each in="${ttpc}" var="tot" status="i">
-                <td class="totales">${raw(tot)}</td>
-            </g:each>
-        </tr>
-        <tr class="pie2">
-            <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>
-            <td colspan="2"></td>
-            <g:each in="${ttpa}" var="tot" status="i">
-                <td class="totales">${raw(tot)}</td>
-            </g:each>
-        </tr>
+    <tr class="pie">
+        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL PARCIAL</td>
+        <td class="valor" colspan="2" style="text-align: right; font-weight: bold">${suma}</td>
+        <g:each in="${totales}" var="tot" status="i">
+            <td class="totales">${raw(tot)}</td>
+        </g:each>
+    </tr>
+    <tr class="pie2">
+        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">TOTAL ACUMULADO</td>
+        <td colspan="2"></td>
+        <g:each in="${total_ac}" var="tot" status="i">
+            <td class="totales">${raw(tot)}</td>
+        </g:each>
+    </tr>
+    <tr class="pie">
+        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL PARCIAL</td>
+        <td colspan="2"></td>
+        <g:each in="${ttpc}" var="tot" status="i">
+            <td class="totales">${raw(tot)}</td>
+        </g:each>
+    </tr>
+    <tr class="pie2">
+        <td class="valor" colspan="3" style="text-align: right; font-weight: bold">% TOTAL ACUMULADO</td>
+        <td colspan="2"></td>
+        <g:each in="${ttpa}" var="tot" status="i">
+            <td class="totales">${raw(tot)}</td>
+        </g:each>
+    </tr>
 
     </tbody>
 </table>
+%{--</div>--}%
 </html>
 
 <script type="text/javascript">

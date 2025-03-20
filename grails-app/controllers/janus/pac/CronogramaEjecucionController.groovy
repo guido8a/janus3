@@ -1543,9 +1543,16 @@ class CronogramaEjecucionController {
 
         def comp = Contrato.findByPadreAndTipoContrato(contrato, TipoContrato.findByCodigo('C'))
 
+       def sqlP = "select ceil(count(*)/10::float) cnta from vocr where cntr__id = ${params.id}"
+        def pagn = []
+        cn.rows(sqlP.toString())[0].cnta.times {
+            pagn.add(it+1)
+        }
+        println pagn
+
         return [obra : obra, contrato: contrato, suspensiones: suspensiones, ini: ini.last(),
                 desde: desde.toInteger(), hasta: hasta.toInteger(), maximo: 100,
-                complementario: comp?.id ?: 0]
+                complementario: comp?.id ?: 0, paginas: pagn, pagina: params.pag]
     }
 
 

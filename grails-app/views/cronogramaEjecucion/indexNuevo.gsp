@@ -9,9 +9,33 @@
     .cmplcss {
         color: #0c4c85;
     }
+
+    .center {
+        text-align: center;
+    }
+
+    .pagination {
+        display: inline-block;
+    }
+
+    .pagination a {
+        color: white;
+        float: left;
+        padding: 5px 8px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+
+    .pagination a.active {
+        background-color: #72af97;
+        color: black;
+        border: 1px solid #72af97;
+    }
+    .pagination a:hover:not(.active) {background-color: #ddd;}
+
     </style>
-
-
 </head>
 
 <body>
@@ -34,10 +58,10 @@
                         <i class="fa fa-expand"></i>
                         Ampliación
                     </a>
-%{--                    <a href="#" class="btn btn-info" id="btnModif">--}%
-%{--                        <i class="fa fa-retweet"></i>--}%
-%{--                        Modificación--}%
-%{--                    </a>--}%
+                %{--                    <a href="#" class="btn btn-info" id="btnModif">--}%
+                %{--                        <i class="fa fa-retweet"></i>--}%
+                %{--                        Modificación--}%
+                %{--                    </a>--}%
                     <a href="#" class="btn btn-warning" id="btnSusp">
                         <i class="fa fa-clock"></i>
                         Suspensión
@@ -73,33 +97,33 @@
             </div>
         </g:if>
 
-        %{--<div class="btn-group" style="margin-left: 35px">--}%
-            %{--<g:each in="${paginas}" var="pg">--}%
-                %{--<a href="#" class="btn btn-info btnPg" data-valor="${pg}">--}%
-                    %{--<i class="fa fa-edit"></i> ${pg}--}%
-                %{--</a>--}%
-            %{--</g:each>--}%
-        %{--</div>--}%
+    %{--<div class="btn-group" style="margin-left: 35px">--}%
+    %{--<g:each in="${paginas}" var="pg">--}%
+    %{--<a href="#" class="btn btn-info btnPg" data-valor="${pg}">--}%
+    %{--<i class="fa fa-edit"></i> ${pg}--}%
+    %{--</a>--}%
+    %{--</g:each>--}%
+    %{--</div>--}%
 
     %{--        <g:if test="${contrato.fiscalizador?.id == session.usuario.id || contrato.administrador?.id == session.usuario.id}">--}%
-%{--            <g:if test="${contrato.administrador?.id == session.usuario.id}">--}%
-%{--                <div class="btn-group" style="width: 400px">--}%
-%{--                </div>--}%
-%{--            </g:if>--}%
+    %{--            <g:if test="${contrato.administrador?.id == session.usuario.id}">--}%
+    %{--                <div class="btn-group" style="width: 400px">--}%
+    %{--                </div>--}%
+    %{--            </g:if>--}%
 
-%{--            <div class="btn" style="height: 30px; font-size: 10px">--}%
-%{--                De:--}%
-%{--                <g:field type="number" name="desde" step="1" pattern="#" value="${desde}" min="0" max="${hasta+1}" class="input-mini"/>--}%
-%{--                a:--}%
-%{--                <g:field type="number" name="hasta" step="1" pattern="#" value="${hasta}" min="0" max="${maximo}" class="input-mini"/>--}%
-%{--                <a href="#" id="btnRango" class="btn" style="margin-top: -8px;"> <i class="icon-check"></i> Ir</a>--}%
-%{--                <a href="#" id="btnTodos" class="btn" style="margin-top: -8px;"> <i class="icon-all"></i>Todo</a>--}%
-%{--            </div>--}%
-%{--        </g:if>--}%
+    %{--            <div class="btn" style="height: 30px; font-size: 10px">--}%
+    %{--                De:--}%
+    %{--                <g:field type="number" name="desde" step="1" pattern="#" value="${desde}" min="0" max="${hasta+1}" class="input-mini"/>--}%
+    %{--                a:--}%
+    %{--                <g:field type="number" name="hasta" step="1" pattern="#" value="${hasta}" min="0" max="${maximo}" class="input-mini"/>--}%
+    %{--                <a href="#" id="btnRango" class="btn" style="margin-top: -8px;"> <i class="icon-check"></i> Ir</a>--}%
+    %{--                <a href="#" id="btnTodos" class="btn" style="margin-top: -8px;"> <i class="icon-all"></i>Todo</a>--}%
+    %{--            </div>--}%
+    %{--        </g:if>--}%
     </g:if>
 </div>
 
-<div class="alert alert-info" style="margin-top: 10px">
+<div class="alert alert-info" style="margin-top: 10px; font-size: 14px; font-weight: bold">
     Cronograma de ejecución de la obra: ${obra.nombre} (${meses} mes${meses == 1 ? "" : "es"})
 </div>
 
@@ -126,7 +150,19 @@
     </div>
 </g:if>
 
-<div id="divTabla" style="max-height: 650px; overflow: auto; max-width: 1360px">
+<div class="row" style="margin-top: -20px">
+    <div class="col-md-12 pagination">
+        <g:each in="${paginas}" var="pg">
+            <a href="#" class="btn btn-info btnPg" id="btn_${pg}" data-valor="${pg}">
+                <i class="fa fa-edit"></i> ${pg}
+            </a>
+        </g:each>
+        <div class="btn" style="float: right">Páginas de 10 rubros: Página actual: <strong id="divActual"></strong> </div>
+    </div>
+</div>
+
+%{--<div id="divTabla" style="max-height: 650px; overflow: auto; width: 1360px">--}%
+<div id="divTabla" style="height: 600px; overflow: auto; width: 100%">
 
 </div>
 
@@ -147,6 +183,22 @@
 
 
 <script type="text/javascript">
+
+    $(".btnPg").click(function () {
+        var pag = $(this).data("valor");
+        $(".btnPg").removeClass("active");
+        $("#btn_" + pag).addClass("active");
+        $("#divActual").html(pag);
+        updateTabla(pag);
+    });
+
+    primeroActive();
+
+    function primeroActive(){
+        $("#btn_" + 1).addClass("active");
+        $("#divActual").html("1")
+    }
+
     // function daydiff(first, second) {
     //     return (second - first) / (1000 * 60 * 60 * 24)
     // }
@@ -183,10 +235,10 @@
          39         -> flecha der
          */
         return ((ev.keyCode >= 48 && ev.keyCode <= 57) ||
-        (ev.keyCode >= 96 && ev.keyCode <= 105) ||
-        //                        ev.keyCode == 190 || ev.keyCode == 110 ||
-        ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
-        ev.keyCode == 37 || ev.keyCode == 39);
+            (ev.keyCode >= 96 && ev.keyCode <= 105) ||
+            //                        ev.keyCode == 190 || ev.keyCode == 110 ||
+            ev.keyCode == 8 || ev.keyCode == 46 || ev.keyCode == 9 ||
+            ev.keyCode == 37 || ev.keyCode == 39);
     }
 
     %{--function updateTabla() {--}%
@@ -229,22 +281,22 @@
 
 
     %{--$(".btnPg").click(function () {--}%
-        %{--var g = cargarLoader("Cargando...");--}%
-        %{--var pag = $(this).data("valor");--}%
-        %{--$("#toolbar").hide();--}%
-        %{--$.ajax({--}%
-            %{--type: "POST",--}%
-            %{--url: "${createLink(action: 'tablax')}",--}%
-            %{--data: {--}%
-                %{--id: ${contrato.id},--}%
-                %{--pag: pag--}%
-            %{--},--}%
-            %{--success: function (msg) {--}%
-                %{--g.modal("hide");--}%
-                %{--$("#divTabla").html(msg);--}%
-                %{--$("#toolbar").show();--}%
-            %{--}--}%
-        %{--});--}%
+    %{--var g = cargarLoader("Cargando...");--}%
+    %{--var pag = $(this).data("valor");--}%
+    %{--$("#toolbar").hide();--}%
+    %{--$.ajax({--}%
+    %{--type: "POST",--}%
+    %{--url: "${createLink(action: 'tablax')}",--}%
+    %{--data: {--}%
+    %{--id: ${contrato.id},--}%
+    %{--pag: pag--}%
+    %{--},--}%
+    %{--success: function (msg) {--}%
+    %{--g.modal("hide");--}%
+    %{--$("#divTabla").html(msg);--}%
+    %{--$("#toolbar").show();--}%
+    %{--}--}%
+    %{--});--}%
     %{--});--}%
 
 
@@ -318,7 +370,7 @@
                             } //guardar
                         } //buttons
                     }); //dialog
-                  }
+                }
             });
             return false;
         });
