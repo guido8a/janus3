@@ -257,10 +257,10 @@
         }
     });
 
-    $(".btnPg").click(function () {
-        var pag = $(this).data("valor");
-        updateTabla(pag);
-    });
+    // $(".btnPg").click(function () {
+    //     var pag = $(this).data("valor");
+    //     updateTabla(pag);
+    // });
 
 
 
