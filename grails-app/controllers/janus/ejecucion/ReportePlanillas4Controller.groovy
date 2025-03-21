@@ -3101,8 +3101,10 @@ class ReportePlanillas4Controller {
         def strSubdirector = "Ing. Miguel Velasteguí" + "\nSubdirector"
 //        def strAdmin = nombrePersona(administrador) + "\nAdministrador del Contrato - Delegado"
         def strAdmin = nombrePersona(administrador) + "\nAdministrador"
-        def strFechaPresentacion = fechaConFormato(planilla.fechaPresentacion, "dd-MMM-yyyy") + "\nFecha de presentación"
-        def strFechaAprobacion = fechaConFormato(planilla.fechaIngreso, "dd-MMM-yyyy") + "\nFecha de aprobación"
+//        def strFechaPresentacion = fechaConFormato(planilla.fechaPresentacion, "dd-MMM-yyyy") + "\nFecha de presentación"
+//        def strFechaAprobacion = fechaConFormato(planilla.fechaIngreso, "dd-MMM-yyyy") + "\nFecha de aprobación"
+        def strFechaPresentacion = ""
+        def strFechaAprobacion = ""
 
         Font fontThFirmas = new Font(Font.TIMES_ROMAN, 10, Font.BOLD);
         Font fontTdFirmas = new Font(Font.TIMES_ROMAN, 10, Font.NORMAL);
