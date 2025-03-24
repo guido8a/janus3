@@ -3835,11 +3835,11 @@ class PlanillaController {
             println("Error al guardar " + detalle.errors)
             render "no_Error al guardar"
         }else{
-            render "ok_Guardado correctamente"
             sql = "update plnl set plnlmnto = (select sum(dtpemnto) from dtpe where plnl__id = ${params.planilla}) " +
                     "where plnl__id = ${params.planilla}"
             println "actualiza $sql"
             cn.execute(sql.toString())
+            render "ok_Guardado correctamente"
         }
 //        } else {
 //            render "no_No hay valor que guardar"
