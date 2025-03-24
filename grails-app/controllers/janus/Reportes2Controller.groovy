@@ -166,7 +166,7 @@ class Reportes2Controller {
     }
 
     def reporteRubroIlustracion() {
-        println "inicia reporteRubroIlustracion"
+        println "inicia reporteRubroIlustracion --"
         def obra = Obra.get(params.id)
         def persona = Persona.get(session.usuario.id)
         def tama = VolumenesObra.findAllByObra(obra, [sort: 'orden']).item.unique().size()
@@ -369,7 +369,8 @@ class Reportes2Controller {
 
         }
         /** pdfs que faltan */
-        if(falta != "") {
+        println "falta: $falta"
+        if(falta.size() > 0) {
             falta = falta.unique()
             def tx = "Archivos que faltan: <br>"
             falta.each { f ->
