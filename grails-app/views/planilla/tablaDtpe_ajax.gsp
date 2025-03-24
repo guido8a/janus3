@@ -295,6 +295,7 @@
                 success: function (msg) {
                     var parts = msg.split("_");
                     if(parts[0] === 'ok'){
+                        $("#val_" + volumen + "_" + planilla).focus();
                         log(parts[1], "success")
                     }else{
                         log(parts[1], "error")

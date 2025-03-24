@@ -760,4 +760,81 @@ class ItemController {
             redirect(action: "list")
         }
     } //delete
+
+
+    def historicoEspecificaciones(){
+
+    }
+
+    def tablaHistorico_ajax() {
+        def cn = dbConnectionService.getConnection()
+        def sql = "select item.item__id, itemcdgo, itemnmbr, ares.itemcdes, aresruta, aresespe, itemfoto " +
+                "from item, ares where ares.itemcdes = item.itemcdes and tpit__id = 2 and " +
+                "itemnmbr ilike '%${params.criterio}%'"
+        println "sql: $sql"
+        def data = cn.rows(sql.toString())
+
+        return [datos: data]
+    }
+
+    def tablaArchivosHistoricos_ajax() {
+        def item = Item.get(params.id)
+        def cdes = item.codigoEspecificacion
+        def items = Item.findAllByCodigoEspecificacion(cdes)
+        def ids = items.id.flatten().join(' ')
+        def codigos = items.codigo.flatten().join(', ')
+        def nombres = items.nombre.flatten().join('<br>')
+        def arch = ""
+
+        def filtrados = []
+        File[] archivos
+        def ruta = '/var/janus/rubros'
+        File carpeta = new File(ruta)
+        def partes
+        if (carpeta.exists()) {
+            if (carpeta.isDirectory()) {
+                archivos = carpeta.listFiles()
+                for (int i = 0; i < archivos.length; i++) {
+                    if (archivos[i].getName().endsWith('pdf')) {
+                        arch = archivos[i].getName()
+                        println "$arch"
+                        try {
+                            partes = arch.split("_")[2]
+                        } catch (e) {
+                            partes = ""
+                        }
+//                        if (arch.contains('800')) println "----------- $arch  --> $partes"
+                        if ((partes != "") && ids.contains(partes)) {
+//                            println "añade: $arch"
+                            def filtrado = arch
+                            filtrados.add(filtrado)
+                        }
+                    }
+                }
+            }
+        }
+        println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
+        println(" > " + filtrados)
+
+        return [cdes: cdes, datos: filtrados, codigos: codigos, ids: ids, nombres: nombres]
+    }
+
+    def downloadFile() {
+        def ext = "pdf"
+        def nombre = params.id + "." + ext
+        def folder = "rubros"
+        def path = "/var/janus/" + folder + File.separatorChar + nombre
+        println "path " + path
+        def file = new File(path)
+        if (file.exists()) {
+            def b = file.getBytes()
+            response.setContentType(ext == 'pdf' ? "application/pdf" : "image/" + "pdf")
+            response.setHeader("Content-disposition", "attachment; filename=" + params.id)
+            response.setContentLength(b.length)
+            response.getOutputStream().write(b)
+        } else {
+
+        }
+    }
+
 } //fin controller
