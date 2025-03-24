@@ -797,7 +797,7 @@ class ItemController {
                 for (int i = 0; i < archivos.length; i++) {
                     if (archivos[i].getName().endsWith('pdf')) {
                         arch = archivos[i].getName()
-                        println "$arch"
+//                        println "$arch"
                         try {
                             partes = arch.split("_")[2]
                         } catch (e) {
@@ -814,7 +814,7 @@ class ItemController {
             }
         }
         println "se han halla ${archivos.size()} archivos en la carpeta: $ruta"
-        println(" > " + filtrados)
+//        println(" > " + filtrados)
 
         return [cdes: cdes, datos: filtrados, codigos: codigos, ids: ids, nombres: nombres]
     }
@@ -824,7 +824,7 @@ class ItemController {
         def nombre = params.id + "." + ext
         def folder = "rubros"
         def path = "/var/janus/" + folder + File.separatorChar + nombre
-        println "path " + path
+//        println "path " + path
         def file = new File(path)
         if (file.exists()) {
             def b = file.getBytes()
