@@ -1780,6 +1780,7 @@ class PlanillaController {
 
         def anticipoPagado = false
         def esAnticipo = false
+        def esAnticipoC = false
         if (!pla) {
             esAnticipo = false
         } else {
@@ -1803,9 +1804,9 @@ class PlanillaController {
                 def plaC = Planilla.findByContratoAndTipoPlanillaInList(contrato, [anticipoCmpl])
                 if (!plaC) {
                     tiposPlanilla = TipoPlanilla.findAllByCodigo('B')
-                    esAnticipo = true
+                    esAnticipoC = true
                 } else {
-                    esAnticipo = planillaInstance?.tipoPlanilla?.codigo == 'B'
+                    esAnticipoC = planillaInstance?.tipoPlanilla?.codigo == 'B'
                     /* Otros tipos de complementario*/
                 }
             } else {
@@ -1944,7 +1945,7 @@ class PlanillaController {
                 periodos        : periodos, esAnticipo: esAnticipo, anticipoPagado: anticipoPagado, maxDatePres: maxDatePres,
                 minDatePres     : minDatePres, fiscalizadorAnterior: fiscalizadorAnterior, liquidado: liquidado, fechaMax: fechaMax,
                 suspensiones    : suspensiones, ini: ini, planillas: planillasAvanceAsociada, formulas: formulasVarias,
-                hayCmpl         : (cmpl ? true : false)]
+                hayCmpl         : (cmpl ? true : false), esAnticipoC: esAnticipoC]
     }
 
     /* este tipod eobras no requieren anticipo ni FP:

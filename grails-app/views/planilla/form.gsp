@@ -241,7 +241,8 @@
                             </span>
                         </div>
 
-                        <g:if test="${!(esAnticipo || planillaInstance?.tipoPlanilla?.codigo == 'A')}">   %{-- no es anticipo--}%
+                        %{--<g:if test="${!(esAnticipo || planillaInstance?.tipoPlanilla?.codigo == 'A')}">   --}%%{-- no es anticipo--}%
+                        <g:if test="${!(esAnticipo)}">   %{-- no es anticipo--}%
                             <div class="form-group col-md-12">
                                 <span class="grupo">
                                     <label class="col-md-2 control-label text-info formato">
